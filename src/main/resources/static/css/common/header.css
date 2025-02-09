@@ -4,31 +4,33 @@
 	border: 1px solid red;
 }
 
+/* 헤더 상단 */
 #header .header_top {
+	border: 1px solid blue;
 	margin: 0px auto;
 	padding: 0px 40px;
 	width: 1160px;
 }
 
-#header .header_top .top_inner {
+#header .header_top .inner {
 	display: flex;
     /* -webkit-box-pack: justify; */
-    justify-content: space-between;
-    padding: 4px 0px;
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 20px;
-    letter-spacing: -0.2px;
-    color: rgb(126, 128, 130);
+	justify-content: space-between;
+	padding: 4px 0px;
+	font-weight: 500;
+	font-size: 12px;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+	color: var(--gray-500);
 }
 
-#header .header_top .top_inner .tip a {
+/* 헤더 상단 (요리팁) */
+#header .header_top .inner .cook_tip {
+	display: flex;
+}
+
+#header .header_top .inner .cook_tip a {
 	padding: 8px 0px;
 	display: inline-block;
 	border-radius: 4px;
-}
-
-
-#header .header_top .top_inner .tip span {
-	padding-left: 0px;
 }

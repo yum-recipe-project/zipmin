@@ -12,6 +12,6 @@
 	
 	<body>
 		<%@include file="common/header.jsp" %>
-		<h2>홈입니다.</h2>
+		<h2>홈입니다</h2>
 	</body>
 </html>

@@ -106,6 +106,9 @@
     font-weight: 700;
 }
 
+#header .header_bottom .inner .gnb ul li.active a {
+	color: var(--point-color1);
+}
 
 /* 헤더 하단 (검색창) */
 #header .header_bottom .inner .search_form {

@@ -13,5 +13,6 @@
 	<body>
 		<%@include file="common/header.jsp" %>
 		<h2>홈입니다</h2>
+		<%@include file="common/footer.jsp" %>
 	</body>
 </html>

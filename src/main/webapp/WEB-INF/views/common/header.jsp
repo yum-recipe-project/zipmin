@@ -15,8 +15,8 @@
 			<!-- 유틸 메뉴 -->
 			<div class="util_menu">
 				<!-- 비로그인 상태 -->
-				<c:if test="${ false }">
-					<a href="#none">로그인</a>
+				<c:if test="${ true }">
+					<a href="/member/login.do">로그인</a>
 					<div class="divider"></div>
 					<a href="#none">회원가입</a>
 				</c:if>

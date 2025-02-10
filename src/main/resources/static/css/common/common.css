@@ -246,28 +246,31 @@ input[type='email'] {
 	display: inline-block;
 }
 input[type='checkbox'] + label {
-	color: #333;
+	color: var(--txt-color-600);
+	font-weight: 400;
 	cursor: pointer;
 	position: relative;
 }
 input[type='checkbox'] + label::before {
 	content: '';
 	display: inline-block;
-	width: 25px;
-	height: 25px;
-	border: 1px solid #dddddd;
+	width: 24px;
+	height: 24px;
+	border: 1px solid var(--line-color2);
+	border-radius: 2px;
 	vertical-align: middle;
-	margin-right: 6px;
+	margin-right: 8px;
 }
 input[type='checkbox']:checked + label::after {
 	content: '';
 	position: absolute;
 	left: 0;
 	top: 50%;
-	transform: translateY(-40%);
+	transform: translateY(-46%);
 	width:24px;
 	height: 24px;
-	background: url(/images/check.svg) no-repeat 0 0 / 100%;
+	border-radius: 2px;
+	background: var(--point-color2) url('/images/member/check.svg') no-repeat center / 100%;
 }
   
 /* radio 공통 */

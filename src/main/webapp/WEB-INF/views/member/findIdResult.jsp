@@ -26,14 +26,7 @@
 				</div>
 				
 				<!-- 하단 정보 -->
-				<div class="info">
-					<div class="link">
-						<a href="/">홈으로 이동</a>
-						<div class="divider"></div>
-						<a href="/member/login.do">로그인</a>
-						<div class="divider"></div>
-						<a href="/member/join.do">회원가입</a>
-					</div>
+				<div class="buttom_info">
 					<p class="copy">© Yum Recipe Project</p>
 				</div>
 			</div>

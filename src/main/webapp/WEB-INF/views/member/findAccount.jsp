@@ -34,6 +34,7 @@
 								<p id="phoneHint">휴대폰 번호를 입력해주세요.</p>
 							</div>
 							<button type="submit" class="submit_btn">아이디 찾기</button>
+							<a href="/member/findAccount/idResult.do">아이디 결과 페이지</a>
 						</form>
 						
 						<!-- 비밀번호 찾기 -->
@@ -48,20 +49,14 @@
 								<input type="email" id="emailInput" name="" value="" placeholder="이메일 입력">
 								<p id="emailHint">이메일을 입력해주세요.</p>
 							</div>
-							<button type="submit" class="submit_btn">임시 비밀번호 받기</button>
+							<button type="submit" class="submit_btn">인증하기</button>
+							<a href="/member/findAccount/passwordResult.do">임시 비밀번호 받기 페이지로 이동</a>
 						</form>
 					</div>
 				</div>
 				
 				<!-- 하단 정보 -->
-				<div class="info">
-					<div class="link">
-						<a href="/">홈으로 이동</a>
-						<div class="divider"></div>
-						<a href="/member/login.do">로그인</a>
-						<div class="divider"></div>
-						<a href="">회원가입</a>
-					</div>
+				<div class="buttom_info">
 					<p class="copy">© Yum Recipe Project</p>
 				</div>
 			</div>

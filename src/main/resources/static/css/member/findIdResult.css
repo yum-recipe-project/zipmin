@@ -82,7 +82,7 @@
 
 
 /* 하단 정보 */
-#container .info {
+#container .buttom_info {
 	padding: 24px;
 	margin: 0px auto 32px;
 	display: flex;
@@ -93,34 +93,8 @@
 	text-align: center;
 }
 
-/* 하단 정보 (링크) */
-#container .info .link {
-	display: flex;
-	flex-direction: row;
-	margin-bottom: 16px;
-	align-items: center;
-	justify-content: center;
-}
-
-#container .info .link a {
-	color: var(--txt-color-500);
-	font-size: 12px;
-}
-
-#container .info .link a:first-child {
-	font-weight: 600;
-}
-
-#container .info .link .divider {
-	width: 1px;
-	height: 12px;
-	background: var(--line-color1);
-	margin-left: 10px;
-	margin-right: 10px;
-}
-
 /* 하단 정보 (출처) */
-#container .info .copy {
+#container .buttom_info .copy {
 	font-size: 12px;
 	font-weight: 300;
 	color: var(--txt-color-400);

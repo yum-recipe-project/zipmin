@@ -41,8 +41,8 @@
 							</div>
 							<!-- 비밀번호 찾기 및 회원가입 -->
 							<div class="util">
-								<a>비밀번호 찾기</a>
-								<a>회원가입</a>
+								<a href="/member/findAccount.do">비밀번호 찾기</a>
+								<a href="">회원가입</a>
 							</div>
 						</div>
 						<button type="submit" class="submit_btn">로그인</button>

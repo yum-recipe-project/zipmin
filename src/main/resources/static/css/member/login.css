@@ -157,6 +157,7 @@
 #container .support .util a {
 	color: #82929F;
 	font-weight: 400;
+	cursor: pointer;
 }
 
 #container .support .util a + a {

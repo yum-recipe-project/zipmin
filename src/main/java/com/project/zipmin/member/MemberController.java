@@ -11,4 +11,9 @@ public class MemberController {
 	public String login() {
 		return "member/login";
 	}
+	
+	@GetMapping("/member/findAccount.do")
+	public String findAccount() {
+		return "member/findAccount";
+	}
 }

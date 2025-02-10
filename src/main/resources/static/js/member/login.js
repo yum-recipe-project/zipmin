@@ -1,5 +1,5 @@
 /**
- * 아이디와 비밀번호 폼을 검증하는 함수
+ * 폼 입력 검증 함수
  */
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector("form");

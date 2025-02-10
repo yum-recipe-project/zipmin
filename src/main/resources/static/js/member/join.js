@@ -1,5 +1,5 @@
 /**
- * 
+ * 회원가입 폼 입력 검증 함수
  */
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector("form");
@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const passwordInput = document.getElementById("passwordInput");
     const passwordInputCheck = document.getElementById("passwordInputCheck");
     const passwordHint = document.getElementById("passwordHint");
+    const passwordHintCheck = document.getElementById("passwordHintCheck");
 	const nicknameInput = document.getElementById("nicknameInput");
 	const nicknameHint = document.getElementById("nicknameHint");
 	const emailInput = document.getElementById("emailInput");
@@ -69,11 +70,11 @@ document.addEventListener("DOMContentLoaded", function () {
 	passwordInputCheck.addEventListener("input", function() {
 		if (passwordInputCheck.value.trim() === "") {
 			passwordInputCheck.classList.add("danger");
-			passwordHint.style.display = "block";
+			passwordHintCheck.style.display = "block";
 		}
 		else {
 			passwordInputCheck.classList.remove("danger");
-			passwordHint.style.display = "none";
+			passwordHintCheck.style.display = "none";
 		}
 	});
 	
@@ -118,11 +119,13 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 		
 		if (passwordInputCheck.value.trim() === "") {
-				event.preventDefault();
-				passwordInputCheck.classList.add("danger");
-				passwordHint.style.display = "block";
-				passwordInputCheck.focus();
+			event.preventDefault();
+			passwordInputCheck.classList.add("danger");
+			if (passwordInput.value.trim() !== "") {
+				passwordHintCheck.style.display = "block";
 			}
+			passwordInputCheck.focus();
+		}
 		
 		if (passwordInput.value.trim() === "") {
 			event.preventDefault();

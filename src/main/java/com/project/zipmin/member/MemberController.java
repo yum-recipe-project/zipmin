@@ -2,6 +2,7 @@ package com.project.zipmin.member;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class MemberController {
@@ -15,6 +16,11 @@ public class MemberController {
 	@GetMapping("/member/join.do")
 	public String join() {
 		return "member/join";
+	}
+	
+	@GetMapping("member/join/complete.do")
+	public String joinComplete() {
+		return "member/joinComplete";
 	}
 	
 	@GetMapping("/member/findAccount.do")

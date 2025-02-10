@@ -46,6 +46,7 @@
 									<input type="password" id="passwordInput" name="" value="" placeholder="비밀번호">
 									<input type="password" id="passwordInputCheck" name="" value="" placeholder="비밀번호 재입력">
 									<p id="passwordHint">비밀번호를 입력해주세요.</p>
+									<p id="passwordHintCheck">비밀번호 확인을 위해 한번 더 입력해주세요.</p>
 								</div>
 								<div class="nickname_field">
 									<label>닉네임</label>
@@ -67,13 +68,13 @@
 							
 							<!-- 다음 버튼 -->
 							<button type="submit" class="next_btn">다음</button>
-							
+							<a href="/member/join/complete.do">다음</a>
 						</form>
 					</div>
 				</div>
 				
 				<!-- 하단 정보 -->
-				<div class="info">
+				<div class="bottom_info">
 					<p class="copy">© Yum Recipe Project</p>
 				</div>
 			</div>

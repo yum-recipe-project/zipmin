@@ -449,7 +449,7 @@
 
 
 /* 하단 정보 */
-#container .info {
+#container .bottom_info {
 	padding: 24px;
 	margin: 0px auto 32px;
 	display: flex;
@@ -461,7 +461,7 @@
 }
 
 /* 하단 정보 (출처) */
-#container .info .copy {
+#container .bottom_info .copy {
 	font-size: 12px;
 	font-weight: 300;
 	color: var(--txt-color-400);

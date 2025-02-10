@@ -6,8 +6,8 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>집밥의민족</title>
-		<%@include file="../common/common-head.jsp" %>
-		<link rel="stylesheet" href="/css/member/findIdResult.css">
+		<%@include file="../common/head.jsp" %>
+		<link rel="stylesheet" href="/css/member/find-id-result.css">
 	</head>
 	
 	<body>

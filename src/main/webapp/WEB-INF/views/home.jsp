@@ -7,7 +7,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>집밥의 민족</title>
-		<%@include file="common/common-head.jsp" %>
+		<%@include file="common/head.jsp" %>
 		<link rel="stylesheet" href="/css/home.css">
 	</head>
 	
@@ -18,7 +18,7 @@
 				<!-- 메인 배너 -->
 				<div class="main_banner">
 					
-				
+					<a href="/kitchen/viewGuide.do">키친가이드 상세보기</a>
 				</div>
 				
 				<!-- 카테고리 메뉴 -->

@@ -5,9 +5,9 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>집밥의민족</title>
-		<%@include file="../common/common-head.jsp" %>
-		<link rel="stylesheet" href="/css/member/findAccount.css">
-		<script src="/js/member/findAccount.js"></script>
+		<%@include file="../common/head.jsp" %>
+		<link rel="stylesheet" href="/css/member/find-account.css">
+		<script src="/js/member/find-account.js"></script>
 	</head>
 	
 	<body>

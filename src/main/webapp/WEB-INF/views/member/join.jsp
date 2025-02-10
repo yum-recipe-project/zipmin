@@ -6,7 +6,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>집밥의민족</title>
-		<%@include file="../common/common-head.jsp" %>
+		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/member/join.css">
 		<script src="/js/member/join.js"></script>
 	</head>

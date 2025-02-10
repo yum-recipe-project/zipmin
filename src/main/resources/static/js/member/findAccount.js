@@ -98,25 +98,38 @@ document.addEventListener("DOMContentLoaded", function () {
  * 탭 메뉴 클릭 시 탭 메뉴를 활성화하고 해당하는 내용을 표시하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	const tabItems = document.querySelectorAll('.tab_button button');
-	const contentItems = document.querySelectorAll('.tab_content');
-	
-	tabItems.forEach((item, index) => {
-		item.addEventListener("click", function(event) {
-			event.preventDefault();
-			
-			tabItems.forEach(button => button.classList.remove('active'));
-			this.classList.add('active');
-			
-			contentItems.forEach(content => content.style.display = 'none');
-			contentItems[index].style.display = 'block';
-		});
-	});
-	
-	// 첫 번째 탭과 내용을 기본으로 활성화
-	tabItems[0].classList.add('active');
-	contentItems.forEach(content => content.style.display = 'none');
-	contentItems[0].style.display = 'block';
+    const tabItems = document.querySelectorAll('.tab_button button');
+    const contentItems = document.querySelectorAll('.tab_content');
+
+    // URL에서 mode 파라미터 추출
+    const urlParams = new URLSearchParams(window.location.search);
+    const mode = urlParams.get('mode');
+
+    // 기본 활성화할 탭 인덱스 설정
+    let activeIndex = 0;
+    if (mode === 'password' && tabItems.length > 1) {
+        activeIndex = 1;
+    }
+
+    // 탭 클릭 이벤트 설정
+    tabItems.forEach((item, index) => {
+        item.addEventListener("click", function(event) {
+            event.preventDefault();
+            
+            tabItems.forEach(button => button.classList.remove('active'));
+            this.classList.add('active');
+            
+            contentItems.forEach(content => content.style.display = 'none');
+            contentItems[index].style.display = 'block';
+        });
+    });
+
+    // 선택된 탭 활성화
+    tabItems.forEach(button => button.classList.remove('active'));
+    contentItems.forEach(content => content.style.display = 'none');
+
+    tabItems[activeIndex].classList.add('active');
+    contentItems[activeIndex].style.display = 'block';
 });
 
 

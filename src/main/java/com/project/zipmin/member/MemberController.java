@@ -16,4 +16,14 @@ public class MemberController {
 	public String findAccount() {
 		return "member/findAccount";
 	}
+	
+	@GetMapping("/member/findAccount/idResult.do")
+	public String findAccountId() {
+		return "member/findIdResult";
+	}
+	
+	@GetMapping("/member/findAccount/passwordResult.do")
+	public String findAccountPassword() {
+		return "member/findPasswordResult";
+	}
 }

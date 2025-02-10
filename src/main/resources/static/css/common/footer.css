@@ -20,8 +20,9 @@
 	display: flex;
 	border: 0px;
 	padding: 0px;
-	width: 1080px;
+	width: 1160px;
 	margin: 0px auto;
+	padding: 0px 40px;
 	height: 48px;
 	align-items: center;
 }
@@ -62,9 +63,10 @@
 
 #footer .footer_bottom .inner {
 	border: 0px;
-	padding: 24px 0px;
-	width: 1080px;
+	width: 1160px;
 	margin: 0px auto;
+	padding: 24px 40px;
+
 }
 
 /* 푸터 하단 (팀) */

@@ -18,7 +18,7 @@
 				<c:if test="${ true }">
 					<a href="/member/login.do">로그인</a>
 					<div class="divider"></div>
-					<a href="/member/findAccount/passwordResult.do">회원가입</a>
+					<a href="/member/join.do">회원가입</a>
 				</c:if>
 				<!-- 로그인 상태 -->
 				<c:if test="${ true }">

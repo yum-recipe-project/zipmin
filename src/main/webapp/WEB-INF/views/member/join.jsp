@@ -8,6 +8,7 @@
 		<title>집밥의민족</title>
 		<%@include file="../common/common-head.jsp" %>
 		<link rel="stylesheet" href="/css/member/join.css">
+		<script src="/js/member/join.js"></script>
 	</head>
 	<body>
 		<main id="container">
@@ -46,9 +47,14 @@
 									<input type="password" id="passwordInputCheck" name="" value="" placeholder="비밀번호 재입력">
 									<p id="passwordHint">비밀번호를 입력해주세요.</p>
 								</div>
+								<div class="nickname_field">
+									<label>닉네임</label>
+									<input type="text" id="nicknameInput" name="" value="" placeholder="닉네임 입력">
+									<p id="nicknameHint">닉네임을 입력해주세요.</p>
+								</div>
 								<div class="email_field">
 									<label>이메일</label>
-									<input type="text" id="emailInput" name="" value="" placeholder="이메일 입력">
+									<input type="email" id="emailInput" name="" value="" placeholder="이메일 입력">
 									<p id="emailHint">이메일을 입력해주세요.</p>
 								</div>
 							</div>

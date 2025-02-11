@@ -293,7 +293,12 @@
 	margin-top: 24px;
 }
 
-#container .join_wrap .member_info .nickname_field label {
+#container .join_wrap .member_info .nickname_field .nickname_label {
+	display: flex;
+	justify-content: space-between;
+}
+
+#container .join_wrap .member_info .nickname_field .nickname_label label {
 	font-weight: 500;
 	display: block;
 	margin-bottom: 4px;
@@ -301,6 +306,28 @@
 	line-height: 20px;
 	letter-spacing: -0.2px;
 	color: var(--txt-color-600);
+}
+
+#container .join_wrap .member_info .nickname_field .nickname_label button {
+	display: flex;
+	gap: 4px;
+	align-items: center;
+	border: none;
+	background: none;
+}
+
+#container .join_wrap .member_info .nickname_field .nickname_label button span {
+	color: var(--point-color2);
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 1.4;
+	letter-spacing: -0.02em;
+	
+}
+
+#container .join_wrap .member_info .nickname_field .nickname_label button img {
+	width: 18px;
+	height: 18px;
 }
 
 #container .join_wrap .member_info .nickname_field input {

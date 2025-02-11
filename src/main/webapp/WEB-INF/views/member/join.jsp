@@ -49,7 +49,13 @@
 									<p id="passwordHintCheck">비밀번호 확인을 위해 한번 더 입력해주세요.</p>
 								</div>
 								<div class="nickname_field">
-									<label>닉네임</label>
+									<div class="nickname_label">
+										<label>닉네임</label>
+										<button onclick="javascript:void(0);">
+											<span>랜덤 생성</span>
+											<img src="/images/member/refresh.png">
+										</button>
+									</div>
 									<input type="text" id="nicknameInput" name="" value="" placeholder="닉네임 입력">
 									<p id="nicknameHint">닉네임을 입력해주세요.</p>
 								</div>

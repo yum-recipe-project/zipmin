@@ -108,16 +108,21 @@
 }
 
 #container .content .guide_wrap .list_btn button {
-	padding: 0 30px;
-	background: #FFF;
-	height: 48px;
 	border-radius: 4px;
-	border: 1px solid var(--line-color2);
-    overflow: hidden;
+	width: auto;
+	display: inline-flex;
+	justify-content: center;
 	align-items: center;
-    justify-content: center;
-    width: fit-content;
-    font-weight: 500;
+	text-align: center;
+	padding: 12px 24px;
+	height: 48px;
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: -0.4px;
+	font-weight: 600;
+	border: 1px solid var(--line-color2);
+	color: var(--txt-color-600);
+	background-color: #FFF;
 }
 
 #container .content .guide_wrap .list_btn button:hover {
@@ -271,23 +276,26 @@
 }
 
 #container .comment_wrap .comment_write .write_btn button {
-	padding: 0 30px;
-	height: 42px;
 	border-radius: 4px;
-	background: var(--point-color2);
-	color: #FFF;
+	width: auto;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	padding: 12px 24px;
+	height: 48px;
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: -0.4px;
 	font-weight: 600;
 	border: none;
-    overflow: hidden;
-	align-items: center;
-    justify-content: center;
-    width: fit-content;
-    position: relative;
+	color: #FFF;
+	background-color: var(--point-color2);
 }
 
 #container .comment_wrap .comment_write .write_btn button:hover {
-	background: hsl(210, 90%, 45%);
-    color: hsl(0, 0%, 95%);
+	background: #0073E6;
+    color: #F2F2F2;
 }
 
 #container .comment_wrap .comment_write .write_btn button.disable {

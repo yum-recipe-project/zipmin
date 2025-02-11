@@ -41,7 +41,7 @@
 							</div>
 							<!-- 비밀번호 찾기 및 회원가입 -->
 							<div class="util">
-								<a href="/member/findAccount.do">비밀번호 찾기</a>
+								<a href="/member/findAccount.do">아이디 ・ 비밀번호 찾기</a>
 								<a href="/member/join.do">회원가입</a>
 							</div>
 						</div>

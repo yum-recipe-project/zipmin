@@ -47,7 +47,13 @@
 										<input class="checkbox_group" type="checkbox" id="vote2">
 										<label for="vote2">하겐다즈 녹차 아이스크림</label>
 									</div>
-								</li>						
+								</li>
+								<li>
+									<div class="forum_checkbox_wrap">
+										<input class="checkbox_group" type="checkbox" id="vote3">
+										<label for="vote3">나뚜르 녹차 아이스크림</label>
+									</div>
+								</li>
 							</ul>
 						
 						</div>

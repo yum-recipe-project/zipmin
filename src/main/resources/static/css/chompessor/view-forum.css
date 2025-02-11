@@ -83,6 +83,10 @@
 	letter-spacing: -0.4px;
 }
 
+#container .forum_checkbox_wrap input[type='checkbox'].disable + label {
+	color: #B1B3B5;
+}
+
 #container .forum_checkbox_wrap input[type='checkbox']:checked + label {
 	border: 1px solid var(--point-color2);
 	background: #F3F8FF;

@@ -46,6 +46,7 @@ public class MypageController {
 	public String following() {
 		return "mypage/following";
 	}
+
 	
 	
 

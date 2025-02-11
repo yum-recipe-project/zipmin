@@ -37,4 +37,19 @@ public class MemberController {
 	public String findAccountPassword() {
 		return "member/findPasswordResult";
 	}
+	
+	@GetMapping("/member/verifyPassword.do")
+	public String verifyPassword() {
+		return "member/verifyPassword";
+	}
+	
+	@GetMapping("/member/changePassword.do")
+	public String changePassword() {
+		return "member/changePassword";
+	}
+	
+	@GetMapping("/member/viewMemberInfo.do")
+	public String viewMemberInfo() {
+		return "member/viewMemberInfo";
+	}
 }

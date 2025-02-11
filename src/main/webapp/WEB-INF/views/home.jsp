@@ -17,9 +17,37 @@
 			<div class="content">
 				<!-- 메인 배너 -->
 				<div class="main_banner">
+					<h2>회원</h2>
+					<button onclick="location.href='/member/verifyPassword.do';">비밀번호 확인</button>
+					<button onclick="location.href='/member/changePassword.do';">비밀번호 변경</button>
+					<button onclick="location.href='/member/viewMemberInfo.do';">회원 정보</button>
+					<br/><br/>
+					
+					<h2>레시피</h2>
+					<br/><br/>
+					
+					
+					
+					
+					
+					<h2>키친가이드</h2>
+					<button onclick="location.href='/kitchen/listGuide.do';">키친가이드 목록</button>
 					<button onclick="location.href='/kitchen/viewGuide.do';">키친가이드 상세</button>
+					<button onclick="location.href='/kitchen/writeGuide.do';">키친가이드 작성</button>
+					<button onclick="location.href='/kitchen/editGuide.do';">키친가이드 수정</button>
+					<br/><br/>
+					
+					<h2>쩝쩝박사</h2>
 					<button onclick="location.href='/chompessor/viewForum.do';">쩝쩝박사 상세</button>
-					<button onclick="location.href='/mypage/modifyMember.do';">회원정보</button>
+					<br/><br/>
+					
+					<h2>나의 냉장고</h2>
+					<button onclick="location.href='/fridge/viewFridge.do';">나의 냉장고</button>
+					<br/><br/>
+					
+					<h2>마이페이지</h2>
+					<button onclick="location.href='/mypage/myComment.do';">내 댓글</button>
+					<br/><br/>
 				</div>
 				
 				<!-- 카테고리 메뉴 -->

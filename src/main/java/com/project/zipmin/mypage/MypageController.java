@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class MypageController {
 	
-	
-	@GetMapping("/mypage/modifyMember.do")
-	public String login() {
-		return "mypage/modifyMember";
+	@GetMapping("/mypage/myComment.do")
+	public String myComment() {
+		return "mypage/myComment";
 	}
 	
 	

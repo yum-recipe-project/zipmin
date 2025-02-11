@@ -6,15 +6,15 @@
 		<meta charset="UTF-8">
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
-		<link rel="stylesheet" href="/css/mypage/my-comment.css">
-		<script src="/js/mypage/my-comment.js"></script>
+		<link rel="stylesheet" href="/css/kitchen/list-guide.css">
+		<script src="/js/kitchen/list-guide.js"></script>
 	</head>
 	<body>
 		<%@include file="../common/header.jsp" %>
 		
 		<main id="container">
 			<div class="inner">
-				<h2>내 댓글</h2>
+				<h2>키친가이드 목록</h2>
 			
 			</div>
 		</main>

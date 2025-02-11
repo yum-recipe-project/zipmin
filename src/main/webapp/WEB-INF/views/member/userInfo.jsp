@@ -9,19 +9,19 @@
 		<meta charset="UTF-8">
 		<title>집밥의 민족</title>
 		<%@include file="../common/head.jsp" %>
-		<link rel="stylesheet" href="/css/member/view-member-info.css">
+		<link rel="stylesheet" href="/css/member/user-info.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,300,0,0&icon_names=edit_square" />
+		<script src="/js/member/user-info.js"></script>
 	</head>
 	
 	<body>
-		<%@include file="../common/header.jsp" %>
 		<main id="container">
 			<div class="content">
-				
 				<div class="info_wrap">
-					<h1>회원 정보</h1>
 					<div>
-						<!-- 아이디/비밀번호 정보 -->
+						<h2>회원정보</h2>
+						
+						<!-- 아이디 정보 -->
 						<form>
 							<div class="account_info">
 								<h3>아이디</h3>
@@ -83,13 +83,14 @@
 						<div class="btn_wrap">
 							<button type="submit" class="delete_btn">탈퇴하기</button>
 						</div>
-							
 					</div>
 				</div>
 				
+				<!-- 하단 정보 -->
+				<div class="buttom_info">
+					<p class="copy">© Yum Recipe Project</p>
+				</div>
 			</div>
 		</main>
-		
-		<%@include file="../common/footer.jsp" %>
 	</body>
 </html>

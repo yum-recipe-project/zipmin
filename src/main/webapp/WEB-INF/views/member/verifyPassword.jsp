@@ -27,11 +27,12 @@
 							<p id="passwordHint">비밀번호를 입력해주세요.</p>
 						</div>
 						<button type="submit" class="submit_btn">확인</button>
+						<!-- 임시 링크 -->
+						<a href="">비밀번호 변경 페이지</a><br/>
+						<a href="/member/userInfo.do">회원정보 페이지</a>
 						<span class="forgot_password">
 							<a href="/member/findAccount.do?mode=password">비밀번호를 잊으셨나요?</a>
 						</span>
-						<a href="">비밀번호 변경 페이지</a>
-						<a href="">비밀번호 변경 페이지</a>
 					</form>
 				</div>
 				

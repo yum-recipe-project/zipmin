@@ -15,20 +15,25 @@
 	letter-spacing: -0.4px;
 }
 
-
 /* 회원 정보 */
 #container .content .info_wrap {
+	padding: 48px 40px;
 	width: 448px;
+	border: 1px solid var(--line-color2);
+	border-radius: 4px;
 }
 
-/* 요소 제목 */
-#container .content .info_wrap h1 {
+#container .content .info_wrap h2 {
+	margin-bottom: 24px;
 	font-weight: 700;
-	word-break: keep-all;
 	font-size: 32px;
-	line-height: 32px;
-	letter-spacing: -0.4px;
+	line-height: 48px;
+	text-align: center;
+	letter-spacing: -1.2px;
+	color: #212329;
 }
+
+
 #container .content .info_wrap h3 {
 	font-weight: 600;
 	font-size: 18px;
@@ -36,8 +41,9 @@
 	letter-spacing: -0.4px;
 	color: var(--txt-color-600);
 }
+
 #container .content .info_wrap p {
-	font-weight: 400;
+	font-weight: 300;
 	font-size: 16px;
 	line-height: 24px;
 	letter-spacing: -0.4px;
@@ -84,20 +90,24 @@
 	align-items: center;
 	justify-content: space-between;
 }
+
 #container .info_wrap .info_title h3 {
 	margin: 0;
 }
+
 #container .info_wrap .info_title .edit_btn_wrap {
 	display: flex;	
 	align-items: center;
 	gap: 2px;
 }
+
 #container .info_wrap .info_title .edit_btn_wrap a {
     font-size: 16px;
     margin: 0;
     line-height: 1;
     color: var(--point-color2);
 }
+
 #container .info_wrap .info_title .edit_btn {
 	height: 20px;
 }
@@ -117,4 +127,28 @@
     border-radius: 4px;
     font-size: 14px;
     cursor: pointer;
+}
+
+
+
+
+
+/* 하단 정보 */
+#container .buttom_info {
+	padding: 24px;
+	margin: 0px auto 32px;
+	display: flex;
+	flex-direction: column;
+	align-self: center;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+
+/* 하단 정보 (출처) */
+#container .buttom_info .copy {
+	font-size: 12px;
+	font-weight: 300;
+	color: var(--txt-color-400);
+	letter-spacing: -0.02em;
 }

@@ -24,7 +24,7 @@
 						<div class="password_field">
 							<label>비밀번호</label>
 							<input type="text" id="passwordInput" name="" value="" placeholder="비밀번호 입력">
-							<p id="nameHint">비밀번호를 입력해주세요.</p>
+							<p id="passwordHint">비밀번호를 입력해주세요.</p>
 						</div>
 						<button type="submit" class="submit_btn">확인</button>
 						<span class="forgot_password">
@@ -34,12 +34,13 @@
 						<a href="">비밀번호 변경 페이지</a>
 					</form>
 				</div>
+				
+				<!-- 하단 정보 -->
+				<div class="buttom_info">
+					<p class="copy">© Yum Recipe Project</p>
+				</div>
 			</div>
 		</main>
 		
-		<!-- 하단 정보 -->
-		<div class="buttom_info">
-			<p class="copy">© Yum Recipe Project</p>
-		</div>
 	</body>
 </html>

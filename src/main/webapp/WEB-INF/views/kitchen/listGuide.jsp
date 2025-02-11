@@ -13,7 +13,7 @@
 		<%@include file="../common/header.jsp" %>
 		
 		<main id="container">
-			<div class="inner">
+			<div class="content">
 				<h2>키친가이드 목록</h2>
 			
 			</div>

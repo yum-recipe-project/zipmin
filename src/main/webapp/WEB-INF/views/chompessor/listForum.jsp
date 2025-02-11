@@ -2,20 +2,18 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<html>
 	<head>
-		<meta charset="UTF-8">
-		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
-		<link rel="stylesheet" href="/css/kitchen/write-guide.css">
-		<script src="/js/kitchen/write-guide.js"></script>
+		<link rel="stylesheet" href="/css/chompessor/list-forum.css">
+		<script src="/js/fridge/list-forum.js"></script>
 	</head>
+	
 	<body>
 		<%@include file="../common/header.jsp" %>
 		
 		<main id="container">
 			<div class="content">
-				<h2>키친가이드 작성</h2>
+				<h2>쩝쩝박사 목록</h2>
 			
 			</div>
 		</main>

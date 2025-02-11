@@ -14,7 +14,7 @@
 		<%@include file="../common/header.jsp" %>
 		
 		<main id="container">
-			<div class="inner">
+			<div class="content">
 				<h2>팔로잉 목록</h2>
 			
 			</div>

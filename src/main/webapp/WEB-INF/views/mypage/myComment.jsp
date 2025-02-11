@@ -13,9 +13,14 @@
 		<%@include file="../common/header.jsp" %>
 		
 		<main id="container">
-			<div class="inner">
-				<h2>내 댓글</h2>
-			
+			<div class="content">
+				<div class="mycomment_wrap">
+					<div class="mycomment_header">
+						
+						<h2>내 댓글</h2>
+						
+					</div>
+				</div>
 			</div>
 		</main>
 		

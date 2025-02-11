@@ -18,6 +18,7 @@
 				<!-- 메인 배너 -->
 				<div class="main_banner">
 					<h2>회원</h2>
+					<p>로그인 회원가입 관련 페이지들은 링크에 직접 연결해놨삼</p>
 					<button onclick="location.href='/member/verifyPassword.do';">비밀번호 확인</button>
 					<button onclick="location.href='/member/changePassword.do';">비밀번호 변경</button>
 					<button onclick="location.href='/member/viewMemberInfo.do';">회원 정보</button>
@@ -38,6 +39,7 @@
 					<br/><br/>
 					
 					<h2>쩝쩝박사</h2>
+					<button onclick="location.href='/chompessor/listForum.do';">쩝쩝박사 목록</button>
 					<button onclick="location.href='/chompessor/viewForum.do';">쩝쩝박사 상세</button>
 					<br/><br/>
 					

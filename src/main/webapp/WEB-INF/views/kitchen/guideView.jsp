@@ -92,7 +92,7 @@
 									<span>400</span>
 								</div>
 								<div class="write_btn">
-									<button id="commentButton" class="disable" onclick="location.href=''">작성하기</button>
+									<button type="submit" id="commentButton" class="disable" onclick="" disabled>작성하기</button>
 								</div>
 							</form>
 						</c:if>

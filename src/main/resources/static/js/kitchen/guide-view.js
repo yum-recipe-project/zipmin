@@ -1,5 +1,5 @@
 /**
- * textarea의 focus 여부에 따라 클래스를 토글하는 함수
+ * 댓글 작성 폼의 focus 여부에 따라 입력창 활성화 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
   const textarea = document.querySelector('.comment_input textarea');
@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
   textarea.addEventListener('focus', function() {
       commentInput.classList.add('focus');
     });
-
+	
     textarea.addEventListener('blur', function() {
       commentInput.classList.remove('focus');
     });
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /**
- * 댓글 작성 폼 입력 검증 함수
+ * 댓글 작성 폼 입력 검증 함수 (댓글 내용 미작성 시 버튼 비활성화)
  */
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector("form");
@@ -28,9 +28,11 @@ document.addEventListener("DOMContentLoaded", function () {
     commentInput.addEventListener("input", function() {
         if (commentInput.value.trim() !== "") {
             commentButton.classList.remove("disable");
+			commentButton.removeAttribute("disabled");
         }
         else {
             commentButton.classList.add("disable");
+			commentButton.setAttribute("disabled", "true");
         }
     });
 });

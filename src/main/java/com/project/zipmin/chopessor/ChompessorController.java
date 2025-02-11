@@ -11,6 +11,11 @@ public class ChompessorController {
 		return "chompessor/viewForum";
 	}
 	
+	@GetMapping("/chompessor/listForum.do")
+	public String listforum() {
+		return "chompessor/listForum";
+	}
+	
 	
 	
 	

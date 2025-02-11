@@ -21,7 +21,7 @@
 					<p>로그인 회원가입 관련 페이지들은 링크에 직접 연결해놨삼</p>
 					<button onclick="location.href='/member/verifyPassword.do';">비밀번호 확인</button>
 					<button onclick="location.href='/member/changePassword.do';">비밀번호 변경</button>
-					<button onclick="location.href='/member/viewMemberInfo.do';">회원 정보</button>
+					<button onclick="location.href='/member/userInfo.do';">회원 정보</button>
 					<br/><br/>
 					
 					<h2>레시피</h2>

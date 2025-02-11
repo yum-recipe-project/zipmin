@@ -48,8 +48,8 @@ public class MemberController {
 		return "member/changePassword";
 	}
 	
-	@GetMapping("/member/viewMemberInfo.do")
+	@GetMapping("/member/userInfo.do")
 	public String viewMemberInfo() {
-		return "member/viewMemberInfo";
+		return "member/userInfo";
 	}
 }

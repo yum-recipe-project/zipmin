@@ -14,8 +14,25 @@
 		
 		<main id="container">
 			<div class="content">
-				<h2>레시피 작성</h2>
-			
+				<div class="basic_wrap">
+					<h2>맛있는 한 끼를 위한<br/>레시피를 소개해주세요!</h2>
+					
+					<form>
+						<div class="title_field">
+							<label>제목</label>
+							<div class="title_input">
+								<textarea id="titleInput" rows="1" maxlength="50" placeholder="요리 이름을 작성해주세요."></textarea>
+								<span>50</span>
+							</div>
+							<p id="titleHint">제목을 작성해주세요.</p>
+						</div>
+						
+						
+					
+					
+					</form>
+				
+				</div>
 			</div>
 		</main>
 		

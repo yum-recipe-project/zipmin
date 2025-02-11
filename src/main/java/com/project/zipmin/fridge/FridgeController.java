@@ -11,6 +11,11 @@ public class FridgeController {
 		return "fridge/viewFridge";
 	}
 	
+	@GetMapping("/fridge/viewMemo.do")
+	public String viewMemo() {
+		return "fridge/viewMemo";
+	}
+	
 	
 	
 }

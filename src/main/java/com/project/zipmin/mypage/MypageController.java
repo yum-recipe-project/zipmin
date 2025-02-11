@@ -12,6 +12,41 @@ public class MypageController {
 		return "mypage/myComment";
 	}
 	
+	@GetMapping("/mypage/myReview.do")
+	public String myReview() {
+		return "mypage/myReview";
+	}
+	
+	@GetMapping("/mypage/myRecipe.do")
+	public String myRecipe() {
+		return "mypage/myRecipe";
+	}
+	
+	@GetMapping("/mypage/savedRecipe.do")
+	public String savedRecipe() {
+		return "mypage/savedRecipe";
+	}
+	
+	@GetMapping("/mypage.do")
+	public String mypage() {
+		return "mypage/mypage";
+	}
+	
+	@GetMapping("/mypage/profile.do")
+	public String profile() {
+		return "mypage/profile";
+	}
+	
+	@GetMapping("/mypage/follower.do")
+	public String follower() {
+		return "mypage/follower";
+	}
+	
+	@GetMapping("/mypage/following.do")
+	public String following() {
+		return "mypage/following";
+	}
+	
 	
 
 }

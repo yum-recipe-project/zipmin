@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const commentInput = document.getElementById("commentInput");
 	const commentButton = document.getElementById("commentButton")
 	
-    // 댓글 작성 실시간 검사
+    // 댓글 작성 폼 실시간 검사
     commentInput.addEventListener("input", function() {
         if (commentInput.value.trim() !== "") {
             commentButton.classList.remove("disable");

@@ -52,7 +52,7 @@
 }
 
 #container .info_wrap .member_info,
-#container .info_wrap .email_info {
+#container .info_wrap .email_inf {
     border-top: 1px solid var(--line-color2);
 }
 
@@ -87,19 +87,21 @@
 #container .info_wrap .info_title h3 {
 	margin: 0;
 }
-#container .info_wrap .info_title .modify_btn_wrap {
+#container .info_wrap .info_title .modify_btn_wrap .modify_btn {
 	display: flex;	
 	align-items: center;
 	gap: 2px;
+	background: none;
+	border: none;
 }
-#container .info_wrap .info_title .modify_btn_wrap a {
+#container .info_wrap .info_title .modify_btn_wrap .modify_btn img {
+	height: 20px;
+}
+#container .info_wrap .info_title .modify_btn_wrap .modify_btn p {
     font-size: 16px;
     margin: 0;
     line-height: 1;
     color: var(--point-color2);
-}
-#container .info_wrap .info_title .modify_btn {
-	height: 20px;
 }
 
 

@@ -9,7 +9,7 @@
 		<meta charset="UTF-8">
 		<title>집밥의 민족</title>
 		<%@include file="../common/head.jsp" %>
-		<link rel="stylesheet" href="/css/mypage/modify-member.css">
+		<link rel="stylesheet" href="/css/mypage/my-info.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,300,0,0&icon_names=edit_square" />
 	</head>
 	
@@ -26,7 +26,6 @@
 							<div class="account_info">
 								<h3>아이디</h3>
 								<div class="id_field">
-									<input type="hidden" id="idInput" name="" value="" placeholder="영문 혹은 영문+숫자, 4~20자">
 									<p>dyboo1346</p>
 								</div>
 							</div>
@@ -37,8 +36,8 @@
 							<div class="member_info">
 								<div class="info_title">
 									<h3>기본정보</h3>
-									<div class="edit_btn_wrap">
-										<img class="edit_btn" src="/images/mypage/edit_member.png">
+									<div class="modify_btn_wrap">
+										<img class="modify_btn" src="/images/mypage/modify_member.png">
 										<a href="#">수정</a>
 									</div>
 								</div>
@@ -67,14 +66,18 @@
 							<div class="email_info">
 								<div class="info_title">
 									<h3>이메일</h3>
-									<div class="edit_btn_wrap">
-										<img class="edit_btn" src="/images/mypage/edit_member.png">
+									<div class="modify_btn_wrap">
+										<img class="modify_btn" src="/images/mypage/modify_member.png" alt="수정">
 										<a href="#">수정</a>
 									</div>
 								</div>
 								<div class="email_field">
-									<input type="hidden" id="emailInput" name="" value="" placeholder="이메일 입력">
-									<p>dyboo1346@naver.com</p>
+<!-- 									<p>dyboo1346@naver.com</p> -->
+									<!-- 이메일 수정 -->
+									<div class="modify_email" style="display: none;">
+										<label>이름</label>
+										<input type="email" id="emailInput" name="" value="" placeholder="이메일 입력">
+									</div>
 								</div>
 							</div>
 						</form>

@@ -19,7 +19,7 @@
 				<div class="main_banner">
 					<button onclick="location.href='/kitchen/viewGuide.do';">키친가이드 상세</button>
 					<button onclick="location.href='/chompessor/viewForum.do';">쩝쩝박사 상세</button>
-					<button onclick="location.href='/mypage/modifyMember.do';">회원정보</button>
+					<button onclick="location.href='/mypage/myInfo.do';">회원정보</button>
 				</div>
 				
 				<!-- 카테고리 메뉴 -->

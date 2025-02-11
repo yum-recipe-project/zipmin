@@ -87,18 +87,18 @@
 #container .info_wrap .info_title h3 {
 	margin: 0;
 }
-#container .info_wrap .info_title .edit_btn_wrap {
+#container .info_wrap .info_title .modify_btn_wrap {
 	display: flex;	
 	align-items: center;
 	gap: 2px;
 }
-#container .info_wrap .info_title .edit_btn_wrap a {
+#container .info_wrap .info_title .modify_btn_wrap a {
     font-size: 16px;
     margin: 0;
     line-height: 1;
     color: var(--point-color2);
 }
-#container .info_wrap .info_title .edit_btn {
+#container .info_wrap .info_title .modify_btn {
 	height: 20px;
 }
 

@@ -8,10 +8,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class MypageController {
 	
 	
-	@GetMapping("/mypage/modifyMember.do")
+	@GetMapping("/mypage/myInfo.do")
 	public String login() {
-		return "mypage/modifyMember";
+		return "mypage/myInfo";
 	}
+
 	
 	
 

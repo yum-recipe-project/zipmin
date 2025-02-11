@@ -9,7 +9,7 @@
 		<meta charset="UTF-8">
 		<title>집밥의 민족</title>
 		<%@include file="../common/head.jsp" %>
-		<link rel="stylesheet" href="/css/mypage/modifyMember.css">
+		<link rel="stylesheet" href="/css/mypage/modify-member.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,300,0,0&icon_names=edit_square" />
 	</head>
 	
@@ -31,7 +31,7 @@
 								</div>
 							</div>
 						</form>
-							
+						
 						<!-- 기본 정보 -->
 						<form>
 							<div class="member_info">

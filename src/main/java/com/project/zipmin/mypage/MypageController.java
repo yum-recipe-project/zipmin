@@ -12,5 +12,7 @@ public class MypageController {
 	public String login() {
 		return "mypage/modifyMember";
 	}
+	
+	
 
 }

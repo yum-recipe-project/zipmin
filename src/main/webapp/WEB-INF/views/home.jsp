@@ -59,9 +59,9 @@
 					<button onclick="location.href='/mypage/profile.do';">프로필</button>
 					<button onclick="location.href='/mypage/follower.do';">팔로워</button>
 					<button onclick="location.href='/mypage/following.do';">팔로잉</button>
-					<button onclick="location.href='/mypage/myComment.do';">내 댓글</button>
-					<button onclick="location.href='/mypage/myReview.do';">내 리뷰</button>
-					<button onclick="location.href='/mypage/myRecipe.do';">내 레시피</button>
+					<button onclick="location.href='/mypage/comment.do';">내 댓글</button>
+					<button onclick="location.href='/mypage/review.do';">내 리뷰</button>
+					<button onclick="location.href='/mypage/recipe.do';">내 레시피</button>
 					<button onclick="location.href='/mypage/savedRecipe.do';">저장한 레시피</button>
 					<button onclick="location.href='/mypage/savedGuide.do';">저장한 가이드</button>
 					<br/><br/>

@@ -99,51 +99,35 @@
 					</div>
 					
 					<!-- 댓글 목록 -->
-					<%-- <c:if test="${  }"> --%>
+					<c:if test="${ true }">
 						<ul class="comment_list">
-							<li>
-								<!-- 댓글 헤더 -->
-								<div class="comment_header">
-									<div class="comment_writer">
-										<img src="/images/common/black.png">
-										<span>아잠만</span>
-										<span>2025.02.11</span>
-									</div>
-									<c:if test="${ true }">
-										<div class="comment_action">
-											<a href="">수정</a>
-											<a href="">삭제</a>
+							<!-- 댓글을 돌면서 -->
+							<%-- <c:forEach> --%>
+								<li>
+									<!-- 댓글 헤더 -->
+									<div class="comment_header">
+										<div class="comment_writer">
+											<img src="/images/common/black.png">
+											<span>아잠만</span>
+											<span>2025.02.11</span>
 										</div>
-									</c:if>
-								</div>
-								<!-- 댓글 내용 -->
-								<p class="comment_content">
-									검은 부분을 누르면 이빨과 침샘을 더 쉽게 제거할 수 있어요
-								</p>
-							</li>
-							<li>
-								<!-- 댓글 헤더 -->
-								<div class="comment_header">
-									<div class="comment_writer">
-										<img src="/images/common/black.png">
-										<span>김뿌영</span>
-										<span>2025.02.11</span>
+										<c:if test="${ true }">
+											<div class="comment_action">
+												<a href="">수정</a>
+												<a href="">삭제</a>
+											</div>
+										</c:if>
 									</div>
-									<c:if test="${ true }">
-										<div class="comment_action">
-											<a href="">수정</a>
-											<a href="">삭제</a>
-										</div>
-									</c:if>
-								</div>
-								<!-- 댓글 내용 -->
-								<p class="comment_content">
-									이쑤시개를 이용하는 게 제일 편합니다
-								</p>
-							</li>
+									<!-- 댓글 내용 -->
+									<p class="comment_content">
+										검은 부분을 누르면 이빨과 침샘을 더 쉽게 제거할 수 있어요
+									</p>
+								</li>
+							<%-- </c:forEach> --%>
 						</ul>
-					<%-- </c:if> --%>
+					</c:if>
 					
+					<!-- 더보기 버튼 -->
 					<div class="more_btn">
 						<button>
 							<span>더보기</span>

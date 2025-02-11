@@ -7,19 +7,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class MypageController {
 	
-	@GetMapping("/mypage/myComment.do")
-	public String myComment() {
-		return "mypage/myComment";
+	@GetMapping("/mypage/comment.do")
+	public String comment() {
+		return "mypage/comment";
 	}
 	
-	@GetMapping("/mypage/myReview.do")
-	public String myReview() {
-		return "mypage/myReview";
+	@GetMapping("/mypage/review.do")
+	public String review() {
+		return "mypage/review";
 	}
 	
 	@GetMapping("/mypage/myRecipe.do")
 	public String myRecipe() {
-		return "mypage/myRecipe";
+		return "mypage/recipe";
 	}
 	
 	@GetMapping("/mypage/savedRecipe.do")

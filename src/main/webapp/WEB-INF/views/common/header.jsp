@@ -22,12 +22,12 @@
 				</c:if>
 				<!-- 로그인 상태 -->
 				<c:if test="${ true }">
-					<a class="account" href="#none">
+					<a class="account" href="/mypage.do">
 						<img src="/images/common/account.png">
 						정하림님
 					</a>
 					<div class="divider"></div>
-					<a href="#none">장보기메모</a>
+					<a href="/fridge/viewMemo.do">장보기메모</a>
 				</c:if>
 			</div>
 		</div>

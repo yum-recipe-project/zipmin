@@ -1,5 +1,16 @@
 @charset "UTF-8";
 
+/* 메인베너 링크연결을 위한 임시 설정값임 수정 필요 */
+#container .main_banner {
+	margin: 30px auto;
+	padding: 0 40px;
+	width: 1160px;
+}
+
+
+
+
+
 
 /* 카테고리 메뉴 */
 #container .category_menu {

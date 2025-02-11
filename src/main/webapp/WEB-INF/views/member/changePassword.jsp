@@ -11,6 +11,10 @@
 	</head>
 	
 	<body>
-		<h2>비밀번호 수정</h2>
+		<main id="container">
+			<div class="content">
+				
+			</div>
+		</main>
 	</body>
 </html>

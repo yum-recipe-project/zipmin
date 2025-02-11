@@ -52,7 +52,7 @@
 }
 
 #container .info_wrap .member_info,
-#container .info_wrap .email_inf {
+#container .info_wrap .email_info {
     border-top: 1px solid var(--line-color2);
 }
 

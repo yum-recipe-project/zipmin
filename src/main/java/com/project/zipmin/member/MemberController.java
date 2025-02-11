@@ -49,7 +49,12 @@ public class MemberController {
 	}
 	
 	@GetMapping("/member/userInfo.do")
-	public String viewMemberInfo() {
+	public String userInfo() {
 		return "member/userInfo";
+	}
+	
+	@GetMapping("/member/viewMemberInfo.do")
+	public String viewMemberInfo() {
+		return "member/viewMemberInfo";
 	}
 }

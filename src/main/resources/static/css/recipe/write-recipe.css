@@ -563,6 +563,7 @@
 	display: flex;
 	align-items: center;
 	gap: 2px;
+	cursor: pointer;
 }
 
 #container .content .ingredient_wrap .ingredient_field .remove_btn img {
@@ -693,6 +694,7 @@
 	align-items: center;
 	gap: 2px;
 	white-space: no-wrap;
+	cursor: pointer;
 }
 
 #container .content .step_wrap .description_field .remove_btn img {

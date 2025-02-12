@@ -21,9 +21,4 @@ public class RecipeController {
 		return "recipe/writeRecipe";
 	}
 	
-	@GetMapping("/recipe/editRecipe.do")
-	public String editRecripe() {
-		return "recipe/editRecipe";
-	}
-	
 }

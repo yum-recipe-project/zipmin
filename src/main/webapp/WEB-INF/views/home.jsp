@@ -28,7 +28,6 @@
 					<button onclick="location.href='/recipe/listRecipe.do';">레시피 목록</button>
 					<button onclick="location.href='/recipe/viewRecipe.do';">레시피 상세</button>
 					<button onclick="location.href='/recipe/writeRecipe.do';">레시피 작성</button>
-					<button onclick="location.href='/recipe/editRecipe.do';">레시피 수정</button>
 					<br/><br/>
 					
 					<h2>키친가이드</h2>

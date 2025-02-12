@@ -323,6 +323,13 @@
 					</div>
 				</div>
 				
+				<!-- 후원하기 -->
+				<div class="tab_content">
+					<div class="support_wrap">
+						<h2>리뷰</h2>
+					
+					</div>
+				</div>
 				
 			</div>
 		</main>

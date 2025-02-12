@@ -98,38 +98,26 @@
 						<!-- 카테고리 -->
 						<div class="category_field">
 							<label>카테고리</label>
-							<div>
-								<label for="categoryTypeInput" class="sub_label">종류별</label>
-								<select id="categoryTypeInput" name="">
-									<option value="">선택안함</option>
-									<option value="type1">종류1</option>
-									<option value="type2">종류2</option>
-								</select>
-							</div>
-							<div>
-								<label for="categoryCaseInput" class="sub_label">상황별</label>
-								<select id="categoryCaseInput" name="">
-									<option value="">선택안함</option>
-									<option value="case1">상황1</option>
-									<option value="case2">상황2</option>
-								</select>
-							</div>
-							<div>
-								<label for="categoryIngredientInput" class="sub_label">재료별</label>
-								<select id="categoryIngredientInput" name="">
-									<option value="">선택안함</option>
-									<option value="ingredient1">재료1</option>
-									<option value="ingredient2">재료2</option>
-								</select>
-							</div>
-							<div>
-								<label for="categoryWayInput" class="sub_label">방법별</label>
-								<select id="categoryWayInput" name="">
-									<option value="">선택안함</option>
-									<option value="way1">방법1</option>
-									<option value="way2">방법2</option>
-								</select>
-							</div>
+							<select id="categoryTypeInput" name="">
+								<option value="">종류별</option>
+								<option value="type1">종류1</option>
+								<option value="type2">종류2</option>
+							</select>
+							<select id="categoryCaseInput" name="">
+								<option value="">상황별</option>
+								<option value="case1">상황1</option>
+								<option value="case2">상황2</option>
+							</select>
+							<select id="categoryIngredientInput" name="">
+								<option value="">재료별</option>
+								<option value="ingredient1">재료1</option>
+								<option value="ingredient2">재료2</option>
+							</select>
+							<select id="categoryWayInput" name="">
+								<option value="">방법별</option>
+								<option value="way1">방법1</option>
+								<option value="way2">방법2</option>
+							</select>
 						</div>
 					</div>
 					
@@ -187,8 +175,37 @@
 					
 					<div class="tip_wrap">
 						<h2>팁 및 주의사항</h2>
+						
+						<!-- 제목 -->
+						<div class="tip_field">
+							<label>팁 및 주의사항 (선택사항)</label>
+							<input type="text" id="tipInput" name="" value="" placeholder="요리팁이나 주의사항을 작성해주세요">
+						</div>
+						
+						<!-- 공지사항 -->
+						<div class="notice_info">
+							<h5>이런 경우 레시피가 삭제될 수 있어요</h5>
+							<p>・&nbsp;&nbsp;존재하지 않는 재료나 조리법을 입력하는 경우</p>
+							<p>・&nbsp;&nbsp;부정확한 정보로 인해 많은 사용자가 신고한 경우</p>
+							<p>・&nbsp;&nbsp;레시피와 관련 없는 해시태그를 입력하는 경우</p>
+							<p>・&nbsp;&nbsp;음란성, 폭력성, 혐오감을 유발하는 내용이 포함된 경우</p>
+							<p>・&nbsp;&nbsp;특정 브랜드 홍보, 과도한 링크 삽입, 무관한 광고성 내용이 포함된 경우</p>
+						</div>
+						
+						<!-- 공지사항에 대한 동의 -->
+						<div class="accept_notice">
+							<div class="checkbox_wrap">
+								<input type="checkbox" id="acceptNotice" name="" value="">
+								<label for="acceptNotice">유의사항을 모두 확인했으며, 동의합니다.</label>
+							</div>
+						</div>
 					</div>
 					
+					<!-- 업로드 버튼 -->
+					<div class="btn_wrap">
+						<button onclick="">취소하기</button>
+						<button type="submit" onclick="">업로드하기</button>
+					</div>
 				</form>
 			</div>
 		</main>

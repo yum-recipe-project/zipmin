@@ -176,7 +176,7 @@
 									<input type="file" id="imageInput" name="image" accept="image/*">
 								</div>
 								<div class="description_field">
-									<input type="text" id="descriptionInput" name="" value="" placeholder="소개를 작성해주세요.">
+									<input type="text" id="descriptionInput" name="" value="" placeholder="조리 방법을 자세히 작성해주세요">
 								</div>
 							</li>
 						</ul>

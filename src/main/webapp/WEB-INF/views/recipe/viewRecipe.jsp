@@ -44,8 +44,10 @@
 						
 						<!-- 작성자 -->
 						<div class="recipe_writer">
-							<img src="/images/common/black.png">
-							<p>아잠만</p>
+							<a class="nickname" href="">
+								<img src="/images/common/black.png">
+								아잠만
+							</a>
 							<c:if test="${ true }">
 								<a href="">팔로우</a>
 							</c:if>
@@ -137,24 +139,53 @@
 					<div class="recipe_step">
 						<!-- 제목 -->
 						<h3>조리 순서</h3>
+						<ul class="step_list">
+							<%-- <c:forEach> --%>
+								<li>
+									<div class="description">
+										<h5>STEP1</h5>
+										<p>카레가루를 냄비에 부어버립니다</p>
+									</div>
+									<c:if test="${ false }">
+										<div class="image">
+											<img src="/images/common/black.png">
+										</div>
+									</c:if>
+								</li>
+								<li>
+									<div class="description">
+										<h5>STEP1</h5>
+										<p>카레가루를 냄비에 부어버립니다</p>
+									</div>
+									<c:if test="${ false }">
+										<div class="image">
+											<img src="/images/common/black.png">
+										</div>
+									</c:if>
+								</li>
+								<li>
+									<div class="description">
+										<h5>STEP1</h5>
+										<p>카레가루를 냄비에 부어버립니다</p>
+									</div>
+									<c:if test="${ true }">
+										<div class="image">
+											<img src="/images/common/black.png">
+										</div>
+									</c:if>
+								</li>
+							<%-- </c:forEach> --%>
+						</ul>
 						
 					</div>
 					
-					
+					<!-- 요리팁 -->
 					<div class="recipe_tip">
 						<!-- 제목 -->
 						<h3>주의사항</h3>
 						<p>마법의 카레 가루는 이틀 이내에 모두 먹어야 합니다.</p>
 					</div>
-				
-				
-				
 				</div>
-			
-			
-				
-				
-				
 			</div>
 		</main>
 		

@@ -69,7 +69,7 @@
 					<div class="more_btn">
 						<button>
 							<span>더보기</span>
-							<img src="/images/kitchen/arrow_down.png">
+							<img src="/images/mypage/arrow_down.png">
 						</button>
 					</div>
 				</div>

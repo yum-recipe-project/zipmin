@@ -20,7 +20,7 @@
 						<h2>마법의 카레 가루</h2>
 						
 						<!-- 스크랩 버튼 -->
-						<div class="recipe_save_btn">
+						<div class="save_recipe_btn">
 							<button onclick="">
 								<img src="/images/recipe/star.png"> 저장
 							</button>
@@ -77,7 +77,74 @@
 								<img src="/images/recipe/print.png">
 							</button>
 						</div>
+					</div>
+					
+					<div class="recipe_ingredient">
+						<!-- 제목 -->
+						<h3>재료</h3>
 						
+						<!-- 장보기메모에 재료 담기 버튼 -->
+						<div class="save_ingredient_btn">
+							<button onclick="">
+								<img src="/images/recipe/sell.png"> 장보기메모에 재료 담기
+							</button>
+						</div>
+						
+						<!-- 양 -->
+						<div class="recipe_serving">
+							<select id="servingInput" name="">
+								<option value="serving1">1인분</option>
+								<option value="serving2">2인분</option>
+								<option value="serving3">3인분</option>
+								<option value="serving4">4인분</option>
+								<option value="serving5">5인분</option>
+							</select>
+							<p>레시피의 용량을 단순히 인분에 맞춰 계산한 것이므로, 실제 조리 시 정확하지 않을 수 있습니다.</p>
+						</div>
+						
+						<!-- 재료 표 -->
+						<table class="ingredient_list">
+							<thead>
+								<tr>
+									<th width="236px">재료</th>
+									<th width="236px">용량</th>
+									<th width="472px">비고</th>
+								</tr>
+							</thead>
+							<tbody>
+								<%-- <c:forEach> --%>
+									<tr>
+										<td>마늘</td>
+										<td>5쪽</td>
+										<td>슬라이스</td>
+									</tr>
+									<tr>
+										<td>카레 가루</td>
+										<td>2큰술</td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>치킨스탁</td>
+										<td>7ea</td>
+										<td>태태락치킨다시다 50배 희석</td>
+									</tr>
+								<%-- </c:forEach> --%>
+							</tbody>
+						
+						</table>
+					</div>
+					
+					<div class="recipe_step">
+						<!-- 제목 -->
+						<h3>조리 순서</h3>
+						
+					</div>
+					
+					
+					<div class="recipe_tip">
+						<!-- 제목 -->
+						<h3>주의사항</h3>
+						<p>마법의 카레 가루는 이틀 이내에 모두 소진해야 합니다.</p>
 					</div>
 				
 				

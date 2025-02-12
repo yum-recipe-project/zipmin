@@ -134,8 +134,6 @@
 							<img src="/images/kitchen/arrow_down.png">
 						</button>
 					</div>
-					
-					
 				</div>
 			</div>
 		</main>

@@ -399,10 +399,246 @@
 	margin: 0px auto;
 	padding: 0 108px;
 	width: 1160px;
+	margin-top: 48px;
+	margin-bottom: 80px;
+}
+
+/* 리뷰 (리뷰 요약) */
+#container .review_wrap .review_summary {
+	background: #F9F9F9;
+	width: 100%;
+	height: 200px;
+	border-radius: 10px;
+	margin-bottom: 40px;
+}
+
+/* 리뷰 (리뷰 헤더) */
+#container .review_wrap .review_header {
+	display: flex;
+	justify-content: space-between;
+}
+
+/* 리뷰 (리뷰 헤더 - 리뷰 수) */
+#container .review_wrap .review_header .review_count {
+	display: flex;
+	align-items: center;
+}
+
+#container .review_wrap .review_header .review_count span {
+	font-weight: 500;
+	line-height: 1.5;
+	letter-spacing: -0.025em;
+	font-size: 16px;
+}
+
+#container .review_wrap .review_header .review_count span + span {
+	font-weight: 400;
+	color: var(--txt-color-500);
+	font-size: 12px;
+	margin-left: 8px;
 }
 
 
+/* 리뷰 (리뷰 헤더 - 정렬 순서) */
+#container .review_wrap .review_header .review_order {
+	display: flex;
+	gap: 16px;
+}
 
+#container .review_wrap .review_header .review_order button {
+	color: var(--txt-color-500);
+	font-weight: 400;
+	line-height: 1.4;
+	letter-spacing: -0.02em;
+	font-size: 14px;
+	border: none;
+	background: none;
+}
+
+#container .review_wrap .review_header .review_order button.active {
+	color: var(--txt-color-600);
+	font-weight: 700;
+	line-height: 1.4;
+}
+
+/* 리뷰 작성 */
+
+
+
+
+
+/* 리뷰 (목록) */
+#container .review_wrap .review_list > li {
+	width: 100%;
+	height: 100%;
+	padding: 10px;
+	border-bottom: 1px solid var(--line-color1);
+	background: #FFF;
+	display: flex;
+	justify-content: flex-start;
+	gap: 15px;
+	padding: 24px 10px;
+}
+
+#container .review_wrap .review_list > li:last-child {
+	border: none;
+}
+
+#container .review_wrap .review_list > li img {
+	border-radius: 50%;
+	background: #ddd;
+	width: 32px;
+	height: 32px;
+}
+
+#container .review_wrap .review_list .review {
+	width: 100%;
+	padding-top: 8px;
+}
+
+#container .review_wrap .review_list .review_header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 12px;
+}
+
+#container .review_wrap .review_list .review_header .review_writer {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+#container .review_wrap .review_list .review_header .review_writer span {
+	font-size: 14px;
+	font-weight: 500;
+}
+
+#container .review_wrap .review_list .review_header .review_writer span:last-child {
+	font-size: 12px;
+	font-weight: 300;
+	color: var(--txt-color-500);
+}
+
+#container .review_wrap .review_list .review_header .review_action {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+#container .review_wrap .review_list .review_header .review_action a {
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--txt-color-500);
+}
+
+/* 리뷰 (목록 - 별점) */
+#container .review_wrap .review_list .review_score {
+	display: flex;
+	text-align: center;
+	gap: 5px;
+	margin-bottom: 12px;
+}
+
+#container .review_wrap .review_list .review_score .star {
+	display: flex;
+	text-align: center;
+	gap: 2px;
+}
+
+#container .review_wrap .review_list .review_score .star img {
+	width: 16px;
+	height: 16px;
+	background: none;
+}
+
+#container .review_wrap .review_list .review_score p {
+	font-size: 14px;
+	color: var(--txt-color-500);
+}
+
+#container .review_wrap .review_list .review_content {
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 1.4;
+	letter-spacing: -0.02em;
+}
+
+/* 리뷰 (목록 - 좋아요 버튼) */
+#container .review_wrap .review_list .like_review_btn {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-top: 8px;
+}
+
+#container .review_wrap .review_list .like_review_btn button {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	border: 1px solid var(--line-color2);
+	height: 32px;
+	padding: 0 15px;
+	background: #FFF;
+	border-radius: 30px;
+}
+
+#container .review_wrap .review_list .like_review_btn button:hover {
+	background: #F3F5F7;
+}
+
+#container .review_wrap .review_list .like_review_btn button img {
+	background: none;
+	width: 18px;
+	height: 18px;
+}
+
+#container .review_wrap .review_list .like_review_btn button p {
+	font-size: 14px;
+	color: var(--txt-color-500);
+}
+
+#container .review_wrap .review_list .like_review_btn p {
+	font-weight: 500;
+	font-size: 14px;
+	color: var(--txt-color-500);
+}
+
+
+/* 리뷰 더보기 버튼 */
+#container .content .more_btn {
+	margin-top: 24px;
+}
+
+#container .content .more_btn button {
+	font-weight: 500;
+	border-radius: 4px;
+	width: 100%;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	padding: 12px 24px;
+	height: 48px;
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: -0.4px;
+	color: var(--txt-color-600);
+    background-color: #FFF;
+    border: 1px solid var(--line-color2);
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+#container .content .more_btn button:hover {
+	background: #F3F5F7;
+}
+
+#container .content .more_btn button img {
+	width: 20px;
+	height: 20px;
+}
 
 
 

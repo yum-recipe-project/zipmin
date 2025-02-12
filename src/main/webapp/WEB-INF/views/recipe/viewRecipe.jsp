@@ -146,28 +146,6 @@
 										<h5>STEP1</h5>
 										<p>카레가루를 냄비에 부어버립니다</p>
 									</div>
-									<c:if test="${ false }">
-										<div class="image">
-											<img src="/images/common/black.png">
-										</div>
-									</c:if>
-								</li>
-								<li>
-									<div class="description">
-										<h5>STEP1</h5>
-										<p>카레가루를 냄비에 부어버립니다</p>
-									</div>
-									<c:if test="${ false }">
-										<div class="image">
-											<img src="/images/common/black.png">
-										</div>
-									</c:if>
-								</li>
-								<li>
-									<div class="description">
-										<h5>STEP1</h5>
-										<p>카레가루를 냄비에 부어버립니다</p>
-									</div>
 									<c:if test="${ true }">
 										<div class="image">
 											<img src="/images/common/black.png">
@@ -199,7 +177,138 @@
 				<!-- 리뷰 -->
 				<div class="tab_content">
 					<div class="review_wrap">
-						<h2>리뷰</h2>
+						<!-- 리뷰 요약 -->
+						<div class="review_summary">
+						<button class="write_review_btn" type="button" 
+						        data-bs-toggle="modal" 
+						        data-bs-target="#writeReviewModal"
+						        onclick="">
+						    <span>리뷰 작성하기</span>
+						</button>
+							
+						</div>
+					
+						<!-- 리뷰 헤더 -->
+						<div class="review_header">
+							<div></div>
+							<div class="review_order">
+								<button class="active">최신순</button>
+								<button>도움순</button>
+							</div>
+						</div>
+						
+						<!-- 리뷰 목록 -->
+						<c:if test="${ true }">
+							<ul class="review_list">
+								<!-- 리뷰를 돌면서 original idx랑 comment idx랑 일치하면 -->
+								<%-- <c:foreach> --%>
+									<c:if test="${ true }">
+										<li>
+											<img src="/images/common/black.png">
+											<div class="review">
+												<!-- 리뷰 헤더 -->
+												<div class="review_header">
+													<div class="review_writer">
+														<span>아잠만</span>
+														<span>2025.02.11</span>
+													</div>
+													<c:if test="${ true }">
+														<div class="review_action">
+															<a href="">수정</a>
+															<a href="">삭제</a>
+														</div>
+													</c:if>
+												</div>
+												<!-- 리뷰 별점 -->
+												<div class="review_score">
+													<div class="star">
+														<%-- <c:forEach> --%>
+															<img src="/images/recipe/star_full.png">
+														<%-- </c:forEach> --%>
+														<%-- <c:forEach> --%>
+															<img src="/images/recipe/star_empty.png">
+														<%-- </c:forEach> --%>
+													</div>
+													<p>3</p>
+												</div>
+												<!-- 리뷰 내용 -->
+												<p class="review_content">
+													녹차 아이스크림은 배스킨라빈스가 최고입니다
+												</p>
+												<!-- 리뷰 좋아요 버튼 -->
+												<div class="like_review_btn">
+													<button onclick="">
+														<c:if test="${ false }">
+															<img src="/images/recipe/thumb_up_full.png">
+														</c:if>
+														<c:if test="${ true }">
+															<img src="/images/recipe/thumb_up_empty.png">
+														</c:if>
+														<p>5</p>
+													</button>
+													<p>이 리뷰가 도움이 되었다면 꾹!</p>
+												</div>
+											</div>
+										</li>
+										<li>
+											<img src="/images/common/black.png">
+											<div class="review">
+												<!-- 리뷰 헤더 -->
+												<div class="review_header">
+													<div class="review_writer">
+														<span>아잠만</span>
+														<span>2025.02.11</span>
+													</div>
+													<c:if test="${ true }">
+														<div class="review_action">
+															<a href="">수정</a>
+															<a href="">삭제</a>
+														</div>
+													</c:if>
+												</div>
+												<!-- 리뷰 별점 -->
+												<div class="review_score">
+													<div class="star">
+														<%-- <c:forEach> --%>
+															<img src="/images/recipe/star_full.png">
+														<%-- </c:forEach> --%>
+														<%-- <c:forEach> --%>
+															<img src="/images/recipe/star_empty.png">
+														<%-- </c:forEach> --%>
+													</div>
+													<p>3</p>
+												</div>
+												<!-- 리뷰 내용 -->
+												<p class="review_content">
+													녹차 아이스크림은 배스킨라빈스가 최고입니다
+												</p>
+												<!-- 리뷰 좋아요 버튼 -->
+												<div class="like_review_btn">
+													<button onclick="">
+														<c:if test="${ false }">
+															<img src="/images/recipe/thumb_up_full.png">
+														</c:if>
+														<c:if test="${ true }">
+															<img src="/images/recipe/thumb_up_empty.png">
+														</c:if>
+														<p>5</p>
+													</button>
+													<p>이 리뷰가 도움이 되었다면 꾹!</p>
+												</div>
+											</div>
+										</li>
+									</c:if>
+								<%-- </c:foreach> --%>
+							</ul>
+						</c:if>
+						
+						<div class="more_btn">
+							<button>
+								<span>더보기</span>
+								<img src="/images/recipe/arrow_down_black.png">
+							</button>
+						</div>
+						
 					
 					</div>
 				</div>
@@ -317,7 +426,7 @@
 						<div class="more_btn">
 							<button>
 								<span>더보기</span>
-								<img src="/images/chompessor/arrow_down.png">
+								<img src="/images/recipe/arrow_down_black.png">
 							</button>
 						</div>
 					</div>

@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 /**
- * 
+ * 재료 추가하기 버튼 클릭 시 재료 입력폼을 추가하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById("addIngredientBtn").addEventListener('click', function(event) {

@@ -51,8 +51,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-
-
+/**
+ * 
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	document.getElementById("addIngredientBtn").addEventListener('click', function(event) {
+        event.preventDefault();
+		
+		const ul = document.querySelector('.ingredient_field ul');
+		const li = document.createElement('li');
+		
+		li.innerHTML = `
+		<input type="text" id="ingredientInput" name="" value="" placeholder="재료">
+			<img src="/images/recipe/commit.png">
+			<input type="text" id="amountInput" name="" value="" placeholder="단위가 포함된 양">
+			<img src="/images/recipe/commit.png">
+			<input type="text" id="noteInput" name="" value="" placeholder="비고 (선택사항)">
+			<div class="remove_btn">
+				<a class="removeIngredientBtn">
+					<img src="/images/recipe/close.png">지우기
+				</a>
+			</div>
+		`;
+		ul.append(li);
+		
+		// 삭제 기능
+		li.querySelector(".removeIngredientBtn").addEventListener('click', function(event) {
+			event.preventDefault();
+			li.remove();
+		});
+    });
+});
 
 
 

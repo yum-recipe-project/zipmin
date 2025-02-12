@@ -14,10 +14,10 @@
 		
 		<main id="container">
 			<div class="content">
-				<div class="recipe_info_wrap">
-					<h2>맛있는 한 끼를 위한<br/>레시피를 소개해주세요!</h2>
-					
-					<form>
+				<form name="writeRecipeForm" method="post" enctype="multipart/form-data" action="" onsubmit="">
+					<div class="recipe_info_wrap">
+						<h2>맛있는 한 끼를 위한<br/>레시피를 소개해주세요!</h2>
+	
 						<!-- 대표 이미지 -->
 						<div class="thumbnail_field">
 							<label>대표 이미지</label>
@@ -131,9 +131,51 @@
 								</select>
 							</div>
 						</div>
-					</form>
-				
-				</div>
+					</div>
+					
+					<div class="ingredient_wrap">
+						<h2>재료</h2>
+						
+						<!-- 조리 양 -->
+						<div class="serving_field">
+							<label>조리 양</label>
+							<select id="servingInput" name="">
+								<option value="serving1">1인분</option>
+								<option value="serving2">2인분</option>
+								<option value="serving3">3인분</option>
+								<option value="serving4">4인분</option>
+								<option value="serving5">5인분</option>
+							</select>
+							<p id="servingHint">양을 선택해주세요.</p>
+						</div>
+						
+						<!-- 재료 -->
+						<div class="ingredient_field">
+							<label>재료</label>
+							<ul>
+								<li>
+									<input type="text" id="ingredientInput" name="" value="" placeholder="재료">
+									<img src="/images/recipe/commit.png">
+									<input type="text" id="amountInput" name="" value="" placeholder="단위가 포함된 양">
+									<img src="/images/recipe/commit.png">
+									<input type="text" id="noteInput" name="" value="" placeholder="비고 (선택사항)">
+								</li>
+							</ul>
+							<div class="add_btn">
+								<a id="addIngredientBtn" href="">재료 추가하기</a>
+							</div>
+						</div>
+					</div>
+					
+					<div class="step_wrap">
+						<h2>조리 순서</h2>
+					</div>
+					
+					<div class="tip_wrap">
+						<h2>팁 및 주의사항</h2>
+					</div>
+					
+				</form>
 			</div>
 		</main>
 		

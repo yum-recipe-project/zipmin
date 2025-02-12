@@ -205,7 +205,7 @@
 	font-size: 16px;
 	line-height: 24px;
 	letter-spacing: -0.4px;
-	font-weight: 600;
+	font-weight: 500;
 	border: 1px solid var(--line-color2);
 	color: var(--txt-color-600);
 	background-color: #FFF;
@@ -273,6 +273,8 @@
 	padding: 0 45px 0 10px;
 	height: 42px;
 	border: 1px solid var(--line-color2);
+	color: var(--txt-color-500);
+	font-weight: 500;
 	border-radius: 4px;
 	cursor: pointer;
 	position: relative;
@@ -319,7 +321,7 @@
 	font-size: 16px;
 	line-height: 24px;
 	letter-spacing: -0.4px;
-	font-weight: 600;
+	font-weight: 500;
 	border: 1px solid var(--line-color2);
 	color: var(--txt-color-600);
 	background-color: #FFF;
@@ -379,7 +381,6 @@
 	font-size: 14px;
 	line-height: 20px;
 	letter-spacing: -0.2px;
-	color: var(--txt-color-600);
 }
 
 #container .content .recipe_info_wrap .category_field div + div {
@@ -390,7 +391,7 @@
 	display: inline-block;
 	margin-right: 8px;
 	font-size: 16px;
-	color: var(--txt-color-500);
+	font-weight: 500;
 }
 
 #container .content .recipe_info_wrap .category_field select {
@@ -400,6 +401,8 @@
 	border: 1px solid var(--line-color2);
 	border-radius: 4px;
 	cursor: pointer;
+	color: var(--txt-color-500);
+	font-weight: 500;
 	position: relative;
 	background: url(/images/recipe/arrow_down.png) no-repeat right 5px top 50%;
 	background-size: 24px;
@@ -416,7 +419,159 @@
 
 
 
+/* 재료 */
+#container .content .ingredient_wrap {
+	margin: 0px auto;
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	box-sizing: border-box;
+	padding: 40px 0;
+	border-bottom: 2px solid var(--line-color1);
+}
+
+#container .content .ingredient_wrap h2 {
+	font-weight: 700;
+	line-height: 1.5;
+	letter-spacing: -0.03em;
+	font-size: 32px;
+	margin-bottom: 48px;
+}
 
 
 
+/* 재료 (조리 양) */
+#container .content .ingredient_wrap .serving_field label {
+	font-weight: 600;
+	display: block;
+	margin-bottom: 8px;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+	color: var(--txt-color-600);
+}
 
+#container .content .ingredient_wrap .serving_field select {
+	width: auto;
+	padding: 0 45px 0 10px;
+	height: 42px;
+	border: 1px solid var(--line-color2);
+	color: var(--txt-color-500);
+	font-weight: 500;
+	border-radius: 4px;
+	cursor: pointer;
+	position: relative;
+	background: url(/images/recipe/arrow_down.png) no-repeat right 5px top 50%;
+	background-size: 24px;
+}
+
+#container .content .ingredient_wrap .serving_field p {
+	display: none;
+	margin-top: 4px;
+	font-size: 12px;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+	color: #F45452;
+}
+
+
+
+/* 재료 (재료) */
+#container .content .ingredient_wrap .ingredient_field {
+	margin-top: 24px;
+}
+
+#container .content .ingredient_wrap .ingredient_field ul li {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+#container .content .ingredient_wrap .ingredient_field ul li + li {
+	margin-top: 8px;
+}
+
+#container .content .ingredient_wrap .ingredient_field label {
+	font-weight: 600;
+	display: block;
+	margin-bottom: 8px;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+	color: var(--txt-color-600);
+}
+
+#container .content .ingredient_wrap .ingredient_field input {
+	appearance: none;
+	padding: 11px 0px 13px 12px;
+	width: auto;
+	height: 50px;
+	vertical-align: middle;
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: -0.4px;
+	color: rgb(33, 35, 41);
+	background: rgb(255, 255, 255);
+	border: 1px solid rgb(215, 219, 230);
+	border-radius: 4px;
+	outline: none;
+}
+
+#container .content .ingredient_wrap .ingredient_field input.danger {
+	appearance: none;
+	padding: 11px 32px 13px 12px;
+	width: 100%;
+	height: 50px;
+	vertical-align: middle;
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: -0.4px;
+	color: rgb(33, 35, 41);
+	border-radius: 4px;
+	outline: none;
+	border: 1px solid #F45452;
+	background: rgb(254, 245, 245);
+}
+
+#container .content .ingredient_wrap .ingredient_field img {
+	width: 20px;
+	height: 20px;
+}
+
+#container .content .ingredient_wrap .ingredient_field p {
+	display: none;
+	margin-top: 4px;
+	font-size: 12px;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+	color: #F45452;
+}
+
+#container .content .ingredient_wrap .ingredient_field .add_btn {
+	margin-top: 8px;
+}
+
+#container .content .ingredient_wrap .ingredient_field .add_btn a {
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--point-color2);
+}
+
+#container .content .ingredient_wrap .ingredient_field .remove_btn {
+	margin-top: 8px;
+
+}
+
+#container .content .ingredient_wrap .ingredient_field .remove_btn a {
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--point-color2);
+	display: flex;
+	align-items: center;
+	gap: 2px;
+}
+
+#container .content .ingredient_wrap .ingredient_field .remove_btn img {
+	width: 16px;
+	height: 16px;
+}

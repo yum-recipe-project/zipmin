@@ -85,6 +85,47 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+/**
+ * 다음 단계 작성하기 버튼 클릭 시 조리 순서 입력폼을 추가하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	document.getElementById("addStepBtn").addEventListener('click', function(event) {
+        event.preventDefault();
+		
+		const ul = document.querySelector('.step_wrap ul');
+		const li = document.createElement('li');
+		const stepCount = ul.children.length + 1;
+		
+		li.innerHTML = `
+			<div class="image_field">
+				<label>STEP ${ stepCount }</label>
+				<input type="file" id="imageInput" name="image" accept="image/*">
+			</div>
+			<div class="description_field">
+				<input type="text" id="descriptionInput" name="" value="" placeholder="소개를 작성해주세요.">
+				<div class="remove_btn">
+					<a class="removeIngredientBtn">
+						<img src="/images/recipe/close.png">지우기
+					</a>
+				</div>
+			</div>
+		`;
+		ul.append(li);
+		
+		// 삭제 기능
+		li.querySelector(".removeIngredientBtn").addEventListener('click', function(event) {
+			event.preventDefault();
+			li.remove();
+			// 삭제 시 번호 재정렬
+	        for (let i = 0; i < ul.children.length; i++) {
+	            ul.children[i].querySelector("label").textContent = `STEP ${i + 1}`;
+	        }
+		});
+    });
+});
+
+
+
 
 
 

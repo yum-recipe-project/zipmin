@@ -169,6 +169,20 @@
 					
 					<div class="step_wrap">
 						<h2>조리 순서</h2>
+						<ul>
+							<li>
+								<div class="image_field">
+									<label>STEP 1</label>
+									<input type="file" id="imageInput" name="image" accept="image/*">
+								</div>
+								<div class="description_field">
+									<input type="text" id="descriptionInput" name="" value="" placeholder="소개를 작성해주세요.">
+								</div>
+							</li>
+						</ul>
+						<div class="add_btn">
+							<a id="addStepBtn" href="">다음 단계 작성하기</a>
+						</div>
 					</div>
 					
 					<div class="tip_wrap">

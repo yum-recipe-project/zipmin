@@ -164,6 +164,28 @@
 						<h3>주의사항</h3>
 						<p>마법의 카레 가루는 이틀 이내에 모두 먹어야 합니다.</p>
 					</div>
+					
+					<!-- 구독 및 후원 -->
+					<div class="recipe_util">
+						<div class="profile">
+							<img src="/images/common/black.png">
+							<div>
+								<h5>아잠만</h5>
+								<p>구독자 45명</p>
+							</div>
+						</div>
+						<div class="btn_wrap">
+							<!-- 여기서 모달창 열어야겠지 -->
+							<button onclick="">레시피 후원하기</button>
+							
+							<c:if test="${ true }">
+								<button class="follow_btn" type="submit" onclick="">구독</button>
+							</c:if>
+							<c:if test="${ true }">
+								<button class="unfollow_btn" type="submit" onclick="">구독 중</button>
+							</c:if>
+						</div>
+					</div>
 				</div>
 				
 				<!-- 탭 메뉴 버튼 -->

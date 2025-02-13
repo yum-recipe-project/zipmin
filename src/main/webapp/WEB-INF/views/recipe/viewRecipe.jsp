@@ -176,7 +176,10 @@
 						</div>
 						<div class="btn_wrap">
 							<!-- 여기서 모달창 열어야겠지 -->
-							<button onclick="">레시피 후원하기</button>
+							<button type="button" data-bs-toggle="modal" data-bs-target="#supportRecipeModal"
+								onclick="openRecipeSupportModal();">
+								레시피 후원하기
+							</button>
 							
 							<c:if test="${ true }">
 								<button class="follow_btn" type="submit" onclick="">구독</button>
@@ -193,7 +196,6 @@
 					<div class="tab_button">
 						<button class="active">리뷰 (3,432)</button>
 						<button>댓글 (27)</button>
-						<button>후원하기</button>
 					</div>
 				</div>
 				
@@ -207,17 +209,31 @@
 					<div id="recipeCommentContent"></div>
 				</div>
 				
-				<!-- 후원하기 -->
-				<div class="tab_content">
-					<div class="support_wrap">
-						<h2>리뷰</h2>
-					
-					</div>
-				</div>
-				
 			</div>
 		</main>
 		
 		<%@include file="../common/footer.jsp" %>
+		
+		<!-- 후원 모달창 -->
+		<form id="supportRecipeForm" onsubmit="">
+			<!-- 히든폼 필요하다면 이곳에 추가 -->
+			<div class="modal" id="supportRecipeModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5>제목입력</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+						</div>
+						<div class="modal-body">
+							
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+							<button type="submit" class="btn btn-primary">작성하기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
 	</body>
 </html>

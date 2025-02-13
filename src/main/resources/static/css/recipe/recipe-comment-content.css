@@ -132,6 +132,7 @@
     background: #FFF;
     box-sizing: border-box;
     border-radius: 4px;
+    resize: none;
 }
 
 #container .comment_wrap .comment_write .comment_input span {
@@ -260,6 +261,8 @@
 	font-weight: 500;
 	border: 1px solid var(--line-color1);
 	border-radius: 4px;
+	color: var(--txt-color-600);
+	text-decoration: none;
 }
 
 #container .comment_wrap .comment_list .write_subcomment_btn:hover {

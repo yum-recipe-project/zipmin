@@ -29,6 +29,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /**
+ * 레시피를 후원하는 모달창을 여는 함수
+ */
+function openRecipeSupportModal() {
+	
+}
+
+
+
+/**
  * 
  */
 var reviewOffset = 0; // 현재 데이터 시작 위치

@@ -34,8 +34,8 @@
 								<p id="checkPasswordHint">비밀번호를 입력해주세요.</p>
 							</div>
 							<div class="notice">
-								<p>・&nbsp;&nbsp;비밀번호 변경 후 집밥의민족 회원 계정으로 다시 로그인해주세요.</p>
-								<p>・&nbsp;&nbsp;공지 2</p>
+								<p>・&nbsp;&nbsp;원활한 이용을 위해 안전한 비밀번호로 설정해 주세요.</p>
+								<p>・&nbsp;&nbsp;비밀번호 변경 후 변경된 비밀번호를 입력하여 다시 로그인 해주세요.</p>
 							</div>
 							
 							<!-- 버튼 -->

@@ -206,16 +206,63 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5></h5>
+							<h5>수정하기</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 						</div>
 						<div class="modal-body">
-							<textarea class="form-control" name="content" style="height: 100px;"></textarea>
+							<div class="form-group">
+		    					<label>별점</label>
+								<div id="editStarGroup" class="star_group">
+									<img src="/images/recipe/star_full.png" class="star" data-value="1">
+									<img src="/images/recipe/star_outline.png" class="star" data-value="2">
+									<img src="/images/recipe/star_outline.png" class="star" data-value="3">
+									<img src="/images/recipe/star_outline.png" class="star" data-value="4">
+									<img src="/images/recipe/star_outline.png" class="star" data-value="5">
+									<input type="hidden" id="editStarInput" name="rating" value="1">
+								</div>
+							</div>
+							<script>
+								const editStars = document.querySelectorAll('#editStarGroup .star');
+								const editStarInput = document.getElementById('editStarInput');
+								
+								editStars.forEach(star => {
+									star.addEventListener('click', function() {
+										starInput.value = this.getAttribute('data-value');
+										editStars.forEach(s => {
+											const starValue = Number(s.getAttribute('data-value'));
+											s.src = starValue <= this.getAttribute('data-value') ? '/images/recipe/star_full.png' : '/images/recipe/star_outline.png';
+										});
+									});
+								});
+							</script>
+							<div class="form-group">
+								<label>내용</label>
+								<textarea class="form-control" id="editReviewContentInput" name="content" style="height: 90px;"></textarea>
+							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
-							<button type="submit" class="btn btn-primary">작성하기</button>
+							<button type="button" class="btn" data-bs-dismiss="modal">닫기</button>
+							<button type="submit" id="editReviewButton" class="btn btn-disable" disabled>작성하기</button>
 						</div>
+						<script>
+							/**
+							 * 내용 입력창의 폼값을 검증하는 함수
+							 */
+							const editReviewContentInput = document.getElementById("editReviewContentInput");
+							const editReviewButton = document.getElementById("editReviewButton");
+							editReviewContentInput.addEventListener("input", function() {
+						        if (editReviewContentInput.value.trim() !== "") {
+						        	editReviewButton.classList.remove("btn-disable");
+						        	editReviewButton.classList.add("btn-primary");
+						        	editReviewButton.removeAttribute("disabled");
+						        }
+						        else {
+						        	editReviewButton.classList.remove("btn-primary");
+						        	editReviewButton.classList.add("btn-disable");
+						        	editReviewButton.setAttribute("disabled", "true");
+						        }
+						    });
+						</script>
 					</div>
 				</div>
 			</div>

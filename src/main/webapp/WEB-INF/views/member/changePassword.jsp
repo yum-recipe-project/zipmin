@@ -39,10 +39,14 @@
 							</div>
 							
 							<!-- 버튼 -->
-							<button type="submit" class="save_btn">다음</button>
+							<button type="submit" class="change_btn">다음</button>
 						</form>
 					</div>
-				
+					
+					<!-- 하단 정보 -->
+					<div class="buttom_info">
+						<p class="copy">© Yum Recipe Project</p>
+					</div>
 				</div>
 			</div>
 		</main>

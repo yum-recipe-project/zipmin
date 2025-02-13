@@ -15,8 +15,8 @@
 			<div class="content">
 				<div class="verify_wrap">
 					<div>
-						<h2>비밀번호 변경</h2>
-						<h3>비밀번호를 변경해주세요</h3>
+						<h2>비밀번호 확인</h2>
+						<h3>비밀번호를 입력해주세요</h3>
 						<h5>회원님의 개인정보를 안전하게 보호하기 위해 비밀번호를 다시 한번 확인합니다.</h5>
 					</div>
 					
@@ -27,9 +27,6 @@
 							<p id="passwordHint">비밀번호를 입력해주세요.</p>
 						</div>
 						<button type="submit" class="submit_btn">확인</button>
-						<!-- 임시 링크 -->
-						<a href="">비밀번호 변경 페이지</a><br/>
-						<a href="/member/userInfo.do">회원정보 페이지</a>
 						<span class="forgot_password">
 							<a href="/member/findAccount.do?mode=password">비밀번호를 잊으셨나요?</a>
 						</span>

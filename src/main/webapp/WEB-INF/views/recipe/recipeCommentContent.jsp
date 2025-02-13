@@ -22,6 +22,34 @@
 					<button class="active">최신순</button>
 					<button>오래된순</button>
 				</div>
+				<script>
+					/**
+					 * 댓글 정렬 방법 탭 메뉴 클릭 시 탭 메뉴를 활성화하고 해당하는 내용을 표시하는 함수
+					 * (ajax로 불러오기 때문에 더보기 버튼 상황에 따라서 적절히 변경해야할 수도 있음 아니면 view-recipe에 전역변수 선언해서 하거나)
+					 */
+					const tabCommentItems = document.querySelectorAll('.comment_order button');
+				    const contentCommentItems = document.querySelectorAll('.comment_list');
+
+				    // 탭 클릭 이벤트 설정
+				    tabCommentItems.forEach((item, index) => {
+				        item.addEventListener("click", function(event) {
+				            event.preventDefault();
+				            
+				            tabCommentItems.forEach(button => button.classList.remove('active'));
+				            this.classList.add('active');
+				            
+				            contentCommentItems.forEach(content => content.style.display = 'none');
+				            contentCommentItems[index].style.display = 'block';
+				        });
+				    });
+	
+				    // 기본으로 첫번째 활성화
+				    tabCommentItems.forEach(button => button.classList.remove('active'));
+				    contentCommentItems.forEach(content => content.style.display = 'none');
+	
+				    tabCommentItems[0].classList.add('active');
+				    contentCommentItems[0].style.display = 'block';
+				</script>
 			</div>
 			
 			<!-- 댓글 작성 -->
@@ -47,6 +75,23 @@
 						<div class="write_btn">
 							<button type="submit" id="commentButton" class="disable" onclick="" disabled>작성하기</button>
 						</div>
+						<script>
+							/**
+							 * 댓글 입력창의 폼 값을 검증하는 함수
+							 */
+							const commentInput = document.getElementById("commentInput");
+							const commentButton = document.getElementById("commentButton");
+							commentInput.addEventListener("input", function() {
+						        if (commentInput.value.trim() !== "") {
+						        	commentButton.classList.remove("disable");
+						        	commentButton.removeAttribute("disabled");
+						        }
+						        else {
+						        	commentButton.classList.add("disable");
+						        	commentButton.setAttribute("disabled", "true");
+						        }
+						    });
+						</script>
 					</form>
 				</c:if>
 			</div>
@@ -67,7 +112,18 @@
 									</div>
 									<c:if test="${ true }">
 										<div class="comment_action">
-											<a href="">수정</a>
+											<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editRecipeCommentModal"
+												onclick="openEditRecipeCommentModal();">
+												수정
+											</a>
+											<script>
+												/**
+												 * 레시피의 댓글을 수정하는 모달창의 히든 폼에 파라미터로 전달받은 데이터를 꽂아주는 함수
+												 */
+												function openEditRecipeCommentModal() {
+													
+												}
+											</script>
 											<a href="">삭제</a>
 										</div>
 									</c:if>
@@ -77,10 +133,18 @@
 									녹차 아이스크림은 배스킨라빈스가 최고입니다
 								</p>
 								<!-- 대댓글 쓰기 버튼 -->
-								<a class="write_subcomment_btn" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#subcommentWriteModal"
-									onclick="openSubcommentWriteModal();">
+								<a class="write_subcomment_btn" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#writeRecipeSubcommentModal"
+									onclick="openWriteRecipeSubcommentModal();">
 									<span>답글 쓰기</span>
 								</a>
+								<script>
+									/**
+									 * 레시피의 대댓글을 작성하는 모달창의 히든 폼에 파라미터로 전달받은 데이터를 꽂아주는 함수
+									 */
+									function openWriteRecipeSubcommentModal() {
+										
+									}
+								</script>
 							</li>
 						</c:if>
 						
@@ -101,7 +165,18 @@
 												</div>
 												<c:if test="${ true }">
 													<div class="subcomment_action">
-														<a href="">수정</a>
+														<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editRecipeSubcommentModal"
+															onclick="openEditRecipeSubcommentModal();">
+															수정
+														</a>
+														<script>
+															/**
+															 * 레시피의 대댓글을 수정하는 모달창의 히든 폼에 파라미터로 전달받은 데이터를 꽂아주는 함수
+															 */
+															function openEditRecipeReviewModal() {
+																
+															}
+														</script>
 														<a href="">삭제</a>
 													</div>
 												</c:if>
@@ -126,5 +201,68 @@
 				</button>
 			</div>
 		</div>
+		
+		<!-- 레시피의 댓글 수정 모달창 -->
+		<form method="post" action="" onsubmit="">
+			<div class="modal" id="editRecipeCommentModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5></h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+						</div>
+						<div class="modal-body">
+							<textarea class="form-control" name="content" style="height: 100px;"></textarea>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+							<button type="submit" class="btn btn-primary">작성하기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+		
+		<!-- 레시피의 대댓글 작성 모달창 -->
+		<form method="post" action="" onsubmit="">
+			<div class="modal" id="writeRecipeSubcommentModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5></h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+						</div>
+						<div class="modal-body">
+							<textarea class="form-control" name="content" style="height: 100px;"></textarea>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+							<button type="submit" class="btn btn-primary">작성하기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+		
+		<!-- 레시피의 대댓글 수정 모달창 -->
+		<form method="post" action="" onsubmit="">
+			<div class="modal" id="editRecipeSubcommentModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5></h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+						</div>
+						<div class="modal-body">
+							<textarea class="form-control" name="content" style="height: 100px;"></textarea>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+							<button type="submit" class="btn btn-primary">작성하기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
 	</body>
 </html>

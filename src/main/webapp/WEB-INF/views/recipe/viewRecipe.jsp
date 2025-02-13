@@ -69,7 +69,7 @@
 						</div>
 						
 						<!-- 버튼 -->
-						<div class="btn_wrap">
+						<div class="icon_btn_wrap">
 							<button onclick="">
 								<img src="/images/recipe/siren.png">
 							</button>

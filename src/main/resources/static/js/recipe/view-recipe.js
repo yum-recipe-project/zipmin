@@ -1,5 +1,14 @@
 /**
- * 탭 메뉴 클릭 시 탭 메뉴를 활성화하고 해당하는 내용을 표시하는 함수
+ * 레시피를 후원하는 모달창을 여는 함수
+ */
+function openRecipeSupportModal() {
+	
+}
+
+
+
+/**
+ * 리뷰/댓글 탭 메뉴 클릭 시 탭 메뉴를 활성화하고 해당하는 내용을 표시하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
     const tabItems = document.querySelectorAll('.tab_button button');
@@ -25,15 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
     tabItems[0].classList.add('active');
     contentItems[0].style.display = 'block';
 });
-
-
-
-/**
- * 레시피를 후원하는 모달창을 여는 함수
- */
-function openRecipeSupportModal() {
-	
-}
 
 
 

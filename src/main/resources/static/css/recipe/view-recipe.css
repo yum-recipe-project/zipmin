@@ -1,9 +1,5 @@
 @charset "UTF-8";
 
-#container .content p {
-	margin-bottom: 0;
-}
-
 #container .content .recipe_wrap {
 	margin: 0px auto;
 	padding: 0 108px;
@@ -149,7 +145,7 @@
 }
 
 /* 레시피 헤더 (버튼) */
-#container .content .recipe_wrap .recipe_header .btn_wrap {
+#container .content .recipe_wrap .recipe_header .icon_btn_wrap {
 	display: flex;
 	align-items: center;
 	gap: 8px;
@@ -157,7 +153,10 @@
 	margin-left: auto;
 }
 
-#container .content .recipe_wrap .recipe_header .btn_wrap button {
+#container .content .recipe_wrap .recipe_header .icon_btn_wrap button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	width: 32px;
 	height: 32px;
 	border-radius: 50%;
@@ -165,11 +164,11 @@
 	background: #FFF;
 }
 
-#container .content .recipe_wrap .recipe_header .btn_wrap button:hover {
+#container .content .recipe_wrap .recipe_header .icon_btn_wrap button:hover {
 	background: #F3F5F7;
 }
 
-#container .content .recipe_wrap .recipe_header .btn_wrap button img {
+#container .content .recipe_wrap .recipe_header .icon_btn_wrap button img {
 	width: 60%;
 }
 
@@ -361,7 +360,6 @@
 	border: 1px solid var(--line-color2);
 	border-radius: 4px;
 	padding: 24px;
-	margin-top: 40px;
 }
 
 #container .content .recipe_wrap .recipe_util .profile {
@@ -460,9 +458,9 @@
 
 #container .content .tab_button_wrap .tab_button button.active {
 	background: #FFF;
-	border-top: 1px solid var(--point-color1);
-	border-left: 1px solid var(--point-color1);
-	border-right: 1px solid var(--point-color1);
+	border-top: 2px solid var(--point-color1);
+	border-left: 2px solid var(--point-color1);
+	border-right: 2px solid var(--point-color1);
 	border-bottom: none;
 	color: var(--txt-color-600);
 }

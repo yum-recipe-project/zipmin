@@ -66,6 +66,7 @@
 							});
 						</script>
 						
+						<!-- 리뷰 입력창 -->
 						<div class="review_input">
 							<textarea id="reviewInput" rows="2" maxlength="400" placeholder="욕설, 비방, 허위 정보 및 부적절한 댓글은 사전 경고 없이 삭제될 수 있습니다."></textarea>
 							<span>400</span>
@@ -73,6 +74,22 @@
 						<div class="write_btn">
 							<button type="submit" id="reviewButton" class="disable" onclick="" disabled>작성하기</button>
 						</div>
+						<script>
+							const reviewInput = document.getElementById("reviewInput");
+							const reviewButton = document.getElementById("reviewButton")
+							
+						    // 댓글 작성 폼 실시간 검사
+						    reviewInput.addEventListener("input", function() {
+						        if (reviewInput.value.trim() !== "") {
+						            reviewButton.classList.remove("disable");
+									reviewButton.removeAttribute("disabled");
+						        }
+						        else {
+						            reviewButton.classList.add("disable");
+									reviewButton.setAttribute("disabled", "true");
+						        }
+						    });
+						</script>
 					</form>
 				</c:if>
 			</div>
@@ -113,7 +130,7 @@
 									</div>
 									<!-- 리뷰 내용 -->
 									<p class="review_content">
-										녹차 아이스크림은 배스킨라빈스가 최고입니다
+										좋은 레시피 감사합니다
 									</p>
 									<!-- 리뷰 좋아요 버튼 -->
 									<div class="like_review_btn">

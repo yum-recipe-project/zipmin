@@ -1,9 +1,10 @@
 /**
  * 레시피를 후원하는 모달창을 여는 함수
  */
-function openRecipeSupportModal() {
+function openSupportRecipeModal() {
 	
 }
+
 
 
 

@@ -175,9 +175,8 @@
 							</div>
 						</div>
 						<div class="btn_wrap">
-							<!-- 여기서 모달창 열어야겠지 -->
 							<button type="button" data-bs-toggle="modal" data-bs-target="#supportRecipeModal"
-								onclick="openRecipeSupportModal();">
+								onclick="openSupportRecipeModal();">
 								레시피 후원하기
 							</button>
 							

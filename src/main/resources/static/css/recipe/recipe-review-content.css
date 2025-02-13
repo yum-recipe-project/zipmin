@@ -269,7 +269,7 @@
 /* 목록 (별점) */
 #container .review_wrap .review_list .review .review_score {
 	display: flex;
-	text-align: center;
+	align-items: center;
 	gap: 5px;
 	margin-bottom: 12px;
 }

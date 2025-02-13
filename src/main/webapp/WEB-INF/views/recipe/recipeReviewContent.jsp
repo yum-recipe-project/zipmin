@@ -23,6 +23,34 @@
 					<button class="active">최신순</button>
 					<button>도움순</button>
 				</div>
+				<script>
+					/**
+					 * 리뷰 정렬 방법 탭 메뉴 클릭 시 탭 메뉴를 활성화하고 해당하는 내용을 표시하는 함수
+					 * (ajax로 불러오기 때문에 더보기 버튼 상황에 따라서 적절히 변경해야할 수도 있음 아니면 view-recipe에 전역변수 선언해서 하거나)
+					 */
+					const tabItems = document.querySelectorAll('.review_order button');
+				    const contentItems = document.querySelectorAll('.review_list');
+					
+				    // 탭 클릭 이벤트 설정
+				    tabItems.forEach((item, index) => {
+				        item.addEventListener("click", function(event) {
+				            event.preventDefault();
+				            
+				            tabItems.forEach(button => button.classList.remove('active'));
+				            this.classList.add('active');
+				            
+				            contentItems.forEach(content => content.style.display = 'none');
+				            contentItems[index].style.display = 'block';
+				        });
+				    });
+	
+				    // 기본으로 첫번째 활성화
+				    tabItems.forEach(button => button.classList.remove('active'));
+				    contentItems.forEach(content => content.style.display = 'none');
+	
+				    tabItems[0].classList.add('active');
+				    contentItems[0].style.display = 'block';
+				</script>
 			</div>
 			
 			<!-- 리뷰 작성 -->
@@ -75,10 +103,11 @@
 							<button type="submit" id="reviewButton" class="disable" onclick="" disabled>작성하기</button>
 						</div>
 						<script>
+							/**
+							 * 리뷰 입력창의 폼 값을 검증하는 함수
+							 */
 							const reviewInput = document.getElementById("reviewInput");
-							const reviewButton = document.getElementById("reviewButton")
-							
-						    // 댓글 작성 폼 실시간 검사
+							const reviewButton = document.getElementById("reviewButton");
 						    reviewInput.addEventListener("input", function() {
 						        if (reviewInput.value.trim() !== "") {
 						            reviewButton.classList.remove("disable");
@@ -111,7 +140,18 @@
 										</div>
 										<c:if test="${ true }">
 											<div class="review_action">
-												<a href="">수정</a>
+												<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editRecipeReviewModal"
+													onclick="openEditRecipeReviewModal();">
+													수정
+												</a>
+												<script>
+													/**
+													 * 레시피 리뷰를 수정하는 모달창의 히든 폼에 파라미터로 전달받은 데이터를 꽂아주는 함수
+													 */
+													function openEditRecipeReviewModal() {
+														
+													}
+												</script>
 												<a href="">삭제</a>
 											</div>
 										</c:if>
@@ -159,5 +199,26 @@
 				</button>
 			</div>
 		</div>
+		
+		<!-- 리뷰 수정 -->
+		<form method="post" action="" onsubmit="">
+			<div class="modal" id="editRecipeReviewModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5></h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+						</div>
+						<div class="modal-body">
+							<textarea class="form-control" name="content" style="height: 100px;"></textarea>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+							<button type="submit" class="btn btn-primary">작성하기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
 	</body>
 </html>

@@ -189,7 +189,7 @@
 #container .comment_wrap .comment_list .comment {
 	width: 100%;
 	height: 100%;
-	padding: 24px;
+	padding: 24px 0;
 	border-bottom: 1px solid var(--line-color1);
 	background: #FFF;
 }
@@ -272,21 +272,12 @@
 #container .comment_wrap .subcomment_list .subcomment {
 	width: 100%;
 	height: 100%;
-	padding: 24px;
+	padding: 24px 0;
 	border-bottom: 1px solid var(--line-color1);
 	background: #FFF;
 	display: flex;
 	justify-content: flex-start;
 	gap: 10px;
-}
-
-#container .comment_wrap .subcomment_list > .subcomment:last-child {
-	border: none;
-}
-
-#container .comment_wrap .subcomment_list .subcomment {
-	width: 100%;
-    height: 100%;
 }
 
 #container .comment_wrap .subcomment_list .subcomment img {

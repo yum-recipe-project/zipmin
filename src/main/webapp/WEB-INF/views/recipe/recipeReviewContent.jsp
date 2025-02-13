@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -65,9 +66,9 @@
 					<!-- 리뷰를 돌면서 original idx랑 comment idx랑 일치하면 -->
 					<%-- <c:foreach> --%>
 						<c:if test="${ true }">
-							<li>
+							<li class="review">
 								<img src="/images/common/black.png">
-								<div class="review">
+								<div class="review_inner">
 									<!-- 리뷰 헤더 -->
 									<div class="review_header">
 										<div class="review_writer">
@@ -99,16 +100,16 @@
 									</p>
 									<!-- 리뷰 좋아요 버튼 -->
 									<div class="like_review_btn">
+										<p>이 리뷰가 도움이 되었다면 꾹!</p>
 										<button onclick="">
-											<c:if test="${ false }">
+											<c:if test="${ true }">
 												<img src="/images/recipe/thumb_up_full.png">
 											</c:if>
-											<c:if test="${ true }">
+											<c:if test="${ false }">
 												<img src="/images/recipe/thumb_up_empty.png">
 											</c:if>
 											<p>5</p>
 										</button>
-										<p>이 리뷰가 도움이 되었다면 꾹!</p>
 									</div>
 								</div>
 							</li>

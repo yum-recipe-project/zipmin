@@ -106,15 +106,26 @@
 }
 
 /* 리뷰 작성 (로그인 - 별점) */
+#container .review_wrap .review_write .star_group {
+	margin-top: 8px;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	gap: 2px;
+	pointer-events: auto;
+}
 
-
+#container .review_wrap .review_write .star_group .star {
+	width: 20px;
+	height: 20px;
+}
 
 /* 리뷰 작성 (로그인 - 작성창) */
 #container .review_wrap .review_write .review_input {
 	background: #FFF;
 	border-radius: 4px;
 	margin-bottom: 8px;
-	margin-top: 8px;
+	margin-top: 12px;
 	position: relative;
 	display: block;
 	border: 1px solid var(--line-color2);

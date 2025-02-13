@@ -41,14 +41,34 @@
 							<img src="/images/common/black.png">
 							<span>아잠만</span>
 						</div>
-						<div class="rating">
-							<span class="star" data-value="5">★</span>
-							<span class="star" data-value="4">★</span>
-							<span class="star" data-value="3">★</span>
-							<span class="star" data-value="2">★</span>
-							<span class="star" data-value="1">★</span>
-							<input type="hidden" id="ratingValue" name="rating" value="0">
+						
+						<!-- 별점 (별점 선택하는 함수 여러가지 이유로 분리 못함) -->
+						<div id="starGroup" class="star_group">
+							<img src="/images/recipe/star_full.png" class="star" data-value="1">
+							<img src="/images/recipe/star_outline.png" class="star" data-value="2">
+							<img src="/images/recipe/star_outline.png" class="star" data-value="3">
+							<img src="/images/recipe/star_outline.png" class="star" data-value="4">
+							<img src="/images/recipe/star_outline.png" class="star" data-value="5">
+							<input type="hidden" id="starInput" name="rating" value="1">
 						</div>
+						<script>
+							const stars = document.querySelectorAll('#starGroup .star');
+							const starInput = document.getElementById('starInput');
+							
+							stars.forEach(star => {
+								star.addEventListener('click', function() {
+									const selectedValue = Number(this.getAttribute('data-value'));
+									starInput.value = selectedValue;
+									
+									// 선택된 별과 그 이하의 별은 색을 변경
+									stars.forEach(s => {
+										const starValue = Number(s.getAttribute('data-value'));
+										s.src = starValue <= selectedValue ? '/images/recipe/star_full.png' : '/images/recipe/star_outline.png';
+									});
+								});
+							});
+						</script>
+						
 						<div class="review_input">
 							<textarea id="reviewInput" rows="2" maxlength="400" placeholder="욕설, 비방, 허위 정보 및 부적절한 댓글은 사전 경고 없이 삭제될 수 있습니다."></textarea>
 							<span>400</span>

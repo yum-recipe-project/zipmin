@@ -37,7 +37,7 @@
 
 #container .content .title h2 {
 	font-size: 32px;
-	font-weight: 400;
+	font-weight: 600;
 	line-height: 48px;
 	letter-spacing: -1.2px;
 }
@@ -164,8 +164,8 @@
 	margin-left: 16px;
 }
 
-/* 폼 (제출 버튼) */
-#container .submit_btn {
+/* 폼 (로그인 버튼) */
+#container .login_btn {
 	border-radius: 4px;
 	border: none;
 	margin: 32px 0px 0px;

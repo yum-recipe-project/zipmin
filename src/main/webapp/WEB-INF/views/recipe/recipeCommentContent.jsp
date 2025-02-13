@@ -208,16 +208,38 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5></h5>
+							<h5>댓글 수정하기</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 						</div>
 						<div class="modal-body">
-							<textarea class="form-control" name="content" style="height: 100px;"></textarea>
+							<div class="form-group">
+								<label>내용</label>
+								<textarea class="form-control" id="editCommentContentInput" name="content" style="height: 90px;"></textarea>
+							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
-							<button type="submit" class="btn btn-primary">작성하기</button>
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
+							<button type="submit" id="editCommentButton" class="btn btn-disable" disabled>작성하기</button>
 						</div>
+						<script>
+							/**
+							 * 내용 입력창의 폼값을 검증하는 함수
+							 */
+							const editCommentContentInput = document.getElementById("editCommentContentInput");
+							const editCommentButton = document.getElementById("editCommentButton");
+							editCommentContentInput.addEventListener("input", function() {
+						        if (editCommentContentInput.value.trim() !== "") {
+						        	editCommentButton.classList.remove("btn-disable");
+						        	editCommentButton.classList.add("btn-primary");
+						        	editCommentButton.removeAttribute("disabled");
+						        }
+						        else {
+						        	editCommentButton.classList.remove("btn-primary");
+						        	editCommentButton.classList.add("btn-disable");
+						        	editCommentButton.setAttribute("disabled", "true");
+						        }
+						    });
+						</script>
 					</div>
 				</div>
 			</div>
@@ -229,16 +251,38 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5></h5>
+							<h5>대댓글 작성하기</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 						</div>
 						<div class="modal-body">
-							<textarea class="form-control" name="content" style="height: 100px;"></textarea>
+							<div class="form-group">
+								<label>내용</label>
+								<textarea class="form-control" id="writeSubcommentContentInput" name="content" style="height: 100px;"></textarea>
+							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
-							<button type="submit" class="btn btn-primary">작성하기</button>
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
+							<button type="submit" id="writeSubcommentButton" class="btn btn-disable" disabled>작성하기</button>
 						</div>
+						<script>
+							/**
+							 * 내용 입력창의 폼값을 검증하는 함수
+							 */
+							const writeSubcommentContentInput = document.getElementById("writeSubcommentContentInput");
+							const writeSubcommentButton = document.getElementById("writeSubcommentButton");
+							writeSubcommentContentInput.addEventListener("input", function() {
+						        if (writeSubcommentContentInput.value.trim() !== "") {
+						        	writeSubcommentButton.classList.remove("btn-disable");
+						        	writeSubcommentButton.classList.add("btn-primary");
+						        	writeSubcommentButton.removeAttribute("disabled");
+						        }
+						        else {
+						        	writeSubcommentButton.classList.remove("btn-primary");
+						        	writeSubcommentButton.classList.add("btn-disable");
+						        	writeSubcommentButton.setAttribute("disabled", "true");
+						        }
+						    });
+						</script>
 					</div>
 				</div>
 			</div>
@@ -250,16 +294,35 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5></h5>
+							<h5>대댓글 수정하기</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 						</div>
 						<div class="modal-body">
-							<textarea class="form-control" name="content" style="height: 100px;"></textarea>
+							<textarea class="form-control" id="editSubcommentContentInput" name="content" style="height: 100px;"></textarea>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
-							<button type="submit" class="btn btn-primary">작성하기</button>
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
+							<button type="submit" id="editSubcommentButton" class="btn btn-disable" disabled>작성하기</button>
 						</div>
+						<script>
+							/**
+							 * 내용 입력창의 폼값을 검증하는 함수
+							 */
+							const editSubcommentContentInput = document.getElementById("editSubcommentContentInput");
+							const editSubcommentButton = document.getElementById("editSubcommentButton");
+							editSubcommentContentInput.addEventListener("input", function() {
+						        if (editSubcommentContentInput.value.trim() !== "") {
+						        	editSubcommentButton.classList.remove("btn-disable");
+						        	editSubcommentButton.classList.add("btn-primary");
+						        	editSubcommentButton.removeAttribute("disabled");
+						        }
+						        else {
+						        	editSubcommentButton.classList.remove("btn-primary");
+						        	editSubcommentButton.classList.add("btn-disable");
+						        	editSubcommentButton.setAttribute("disabled", "true");
+						        }
+						    });
+						</script>
 					</div>
 				</div>
 			</div>

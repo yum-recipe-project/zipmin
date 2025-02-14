@@ -14,7 +14,7 @@
 		
 		<main id="container">
 			<div class="content">
-				<form name="writeRecipeForm" method="post" enctype="multipart/form-data" action="" onsubmit="">
+				<form id="writeRecipeForm" name="writeRecipeForm" enctype="multipart/form-data" action="" onsubmit="">
 					<div class="recipe_info_wrap">
 						<h2>맛있는 한 끼를 위한<br/>레시피를 소개해주세요!</h2>
 	
@@ -22,7 +22,7 @@
 						<div class="thumbnail_field">
 							<label>대표 이미지</label>
 							<input type="file" id="thumbnailInput" name="image" accept="image/*">
-							<p id="titleHint">대표 이미지를 첨부해주세요.</p>
+							<p id="thumbnailHint">대표 이미지를 첨부해주세요.</p>
 						</div>
 						
 					
@@ -62,7 +62,7 @@
 						<!-- 조리시간 -->
 						<div class="time_field">
 							<label>조리시간</label>
-							<select id="timeInput" name="">
+							<select id="timeSelectbox" name="">
 								<option value="">조리시간을 선택하세요</option>
 								<option value="time1">10분</option>
 								<option value="time2">30분</option>
@@ -70,6 +70,7 @@
 								<option value="time4">1시간 30분</option>
 								<option value="time5">2시간 이상</option>
 							</select>
+							<input type="hidden" id="timeInput">
 							<p id="timeHint">조리시간을 선택해주세요.</p>
 						</div>
 						
@@ -98,26 +99,31 @@
 						<!-- 카테고리 -->
 						<div class="category_field">
 							<label>카테고리</label>
-							<select id="categoryTypeInput" name="">
+							<select id="categoryTypeSelectbox" name="">
 								<option value="">종류별</option>
 								<option value="type1">종류1</option>
 								<option value="type2">종류2</option>
 							</select>
-							<select id="categoryCaseInput" name="">
+							<input type="hidden" id="categoryTypeInput">
+							<select class="categoryCaseSelectbox" name="">
 								<option value="">상황별</option>
 								<option value="case1">상황1</option>
 								<option value="case2">상황2</option>
 							</select>
-							<select id="categoryIngredientInput" name="">
+							<input type="hidden" id="categoryCaseInput">
+							<select class="categoryIngredientSelectbox" name="">
 								<option value="">재료별</option>
 								<option value="ingredient1">재료1</option>
 								<option value="ingredient2">재료2</option>
 							</select>
-							<select id="categoryWayInput" name="">
+							<input type="hidden" id="categoryIngredientInput">
+							<select class="categoryWaySelectbox" name="">
 								<option value="">방법별</option>
 								<option value="way1">방법1</option>
 								<option value="way2">방법2</option>
 							</select>
+							<input type="hidden" id="categorWayInput">
+							<p id="categoryWayInput">카테고리를 선택해주세요.</p>
 						</div>
 					</div>
 					
@@ -144,11 +150,12 @@
 								<li>
 									<input type="text" id="ingredientInput" name="" value="" placeholder="재료">
 									<img src="/images/recipe/commit.png">
-									<input type="text" id="amountInput" name="" value="" placeholder="단위가 포함된 양">
+									<input type="text" id="ingredientAmountInput" name="" value="" placeholder="단위가 포함된 양">
 									<img src="/images/recipe/commit.png">
-									<input type="text" id="noteInput" name="" value="" placeholder="비고 (선택사항)">
+									<input type="text" id="ingredientNoteInput" name="" value="" placeholder="비고 (선택사항)">
 								</li>
 							</ul>
+							<p id="ingredientHint">재료를 입력해주세요.</p>
 							<div class="add_btn">
 								<a id="addIngredientBtn" href="">재료 추가하기</a>
 							</div>
@@ -168,6 +175,7 @@
 								</div>
 							</li>
 						</ul>
+						<p id="ingredientHint">재료를 입력해주세요.</p>
 						<div class="add_btn">
 							<a id="addStepBtn" href="">다음 단계 작성하기</a>
 						</div>

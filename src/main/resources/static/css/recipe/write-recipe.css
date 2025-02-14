@@ -225,9 +225,15 @@
 	line-height: 24px;
 	letter-spacing: -0.4px;
 	font-weight: 600;
-	border: none;
+	border: 1px solid var(--txt-color-600);
 	color: #FFF;
-	background-color: var(--point-color2);
+	background-color: var(--txt-color-600);
+}
+
+#container .content .recipe_info_wrap .level_field .level_btn.danger {
+	appearance: none;
+	border: 1px solid #F45452;
+	background: rgb(254, 245, 245);
 }
 
 #container .content .recipe_info_wrap .level_field p {
@@ -281,6 +287,13 @@
 	position: relative;
 	background: url(/images/recipe/arrow_down.png) no-repeat right 5px top 50%;
 	background-size: 24px;
+}
+
+#container .content .recipe_info_wrap .time_field select.danger {
+	appearance: none;
+	border: 1px solid #F45452;
+	background-color: rgb(254, 245, 245);
+	background-image: url(/images/recipe/arrow_down.png) no-repeat right 5px top 50%;
 }
 
 #container .content .recipe_info_wrap .time_field p {
@@ -341,9 +354,15 @@
 	line-height: 24px;
 	letter-spacing: -0.4px;
 	font-weight: 600;
-	border: none;
+	border: 1px solid var(--txt-color-600);
 	color: #FFF;
-	background-color: var(--point-color2);
+	background-color: var(--txt-color-600);
+}
+
+#container .content .recipe_info_wrap .spicy_field .spicy_btn.danger {
+	appearance: none;
+	border: 1px solid #F45452;
+	background: rgb(254, 245, 245);
 }
 
 #container .content .recipe_info_wrap .spicy_field p {

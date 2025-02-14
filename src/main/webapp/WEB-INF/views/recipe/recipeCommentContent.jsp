@@ -208,7 +208,7 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5>댓글 수정하기</h5>
+							<h5>수정하기</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 						</div>
 						<div class="modal-body">
@@ -251,13 +251,13 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5>대댓글 작성하기</h5>
+							<h5>작성하기</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 						</div>
 						<div class="modal-body">
 							<div class="form-group">
 								<label>내용</label>
-								<textarea class="form-control" id="writeSubcommentContentInput" name="content" style="height: 100px;"></textarea>
+								<textarea class="form-control" id="writeSubcommentContentInput" name="content" style="height: 90px;"></textarea>
 							</div>
 						</div>
 						<div class="modal-footer">
@@ -294,11 +294,14 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5>대댓글 수정하기</h5>
+							<h5>수정하기</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 						</div>
 						<div class="modal-body">
-							<textarea class="form-control" id="editSubcommentContentInput" name="content" style="height: 100px;"></textarea>
+							<div class="form-group">
+								<label>내용</label>
+								<textarea class="form-control" id="editSubcommentContentInput" name="content" style="height: 90px;"></textarea>
+							</div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>

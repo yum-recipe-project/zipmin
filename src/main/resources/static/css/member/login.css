@@ -1,0 +1,218 @@
+@charset "UTF-8";
+
+#container .content {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	margin: 0px auto;
+	padding: 80px 40px;
+	max-width: 1120px;
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: -0.4px;
+}
+
+#container .content .login_wrap {
+	padding: 48px 40px;
+	width: 448px;
+	border: 1px solid var(--line-color1);
+	border-radius: 4px;
+}
+
+
+
+/* 타이틀 */
+#container .content .title {
+	text-align: center;
+	margin-bottom: 40px;
+}
+
+#container .content .title h5 {
+	font-size: 16px;
+	font-weight: 500;
+	line-height: 24px;
+	letter-spacing: -0.4px;
+}
+
+#container .content .title h2 {
+	font-size: 32px;
+	font-weight: 600;
+	line-height: 48px;
+	letter-spacing: -1.2px;
+}
+
+
+
+/* 폼 (아이디) */
+#container .content .login_wrap .id_field input {
+	appearance: none;
+	padding: 11px 0px 13px 12px;
+	width: 100%;
+	height: 50px;
+	vertical-align: middle;
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: -0.4px;
+	color: rgb(33, 35, 41);
+	background: rgb(255, 255, 255);
+	border: 1px solid rgb(215, 219, 230);
+	border-radius: 4px;
+	outline: none;
+}
+
+#container .content .login_wrap .id_field input.danger {
+	appearance: none;
+	padding: 11px 32px 13px 12px;
+	width: 100%;
+	height: 50px;
+	vertical-align: middle;
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: -0.4px;
+	color: rgb(33, 35, 41);
+	border-radius: 4px;
+	outline: none;
+	border: 1px solid #F45452;
+	background: rgb(254, 245, 245);
+}
+
+#container .content .login_wrap .id_field p {
+	display: none;
+	margin-top: 4px;
+	font-size: 12px;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+	color: #F45452;
+}
+
+/* 폼 (비밀번호) */
+#container .content .login_wrap .password_field {
+	margin-top: 12px;
+}
+
+#container .content .login_wrap .password_field input {
+	appearance: none;
+	padding: 11px 0px 13px 12px;
+	width: 100%;
+	height: 50px;
+	vertical-align: middle;
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: -0.4px;
+	color: rgb(33, 35, 41);
+	background: rgb(255, 255, 255);
+	border: 1px solid rgb(215, 219, 230);
+	border-radius: 4px;
+	outline: none;
+}
+
+#container .content .login_wrap .password_field input.danger {
+	appearance: none;
+	padding: 11px 32px 13px 12px;
+	width: 100%;
+	height: 50px;
+	vertical-align: middle;
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: -0.4px;
+	color: rgb(33, 35, 41);
+	border-radius: 4px;
+	outline: none;
+	border: 1px solid #F45452;
+	background: rgb(254, 245, 245);
+}
+
+#container .content .login_wrap .password_field p {
+	display: none;
+	margin-top: 4px;
+	font-size: 12px;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+	color: #F45452;
+}
+
+/* 폼 (서포트) */
+#container .support {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	margin: 8px 0px 0px;
+}
+
+/* 폼 (서포트 - 아이디 저장) : common.css에서 수정 */
+#container .support .save_id .checkbox_wrap {
+	padding: 8px 0px;
+	display: flex;
+}
+
+/* 폼 (서포트 - 비밀번호 찾기 및 회원가입) */
+#container .support .util {
+	margin-left: auto;
+	font-size: 12px;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+}
+
+#container .support .util a {
+	color: #82929F;
+	font-weight: 400;
+	cursor: pointer;
+}
+
+#container .support .util a + a {
+	margin-left: 16px;
+}
+
+/* 폼 (로그인 버튼) */
+#container .btn_primary_wide {
+	margin: 32px 0px 0px;
+}
+
+
+
+/* 소셜 로그인 */
+#container .social {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 24px;
+}
+
+/* 소셜 로그인 (안내문) */
+#container .social .text {
+	text-align: center;
+}
+
+#container .social .text span {
+	color: var(--point-color2);
+    font-weight: 600;
+}
+
+/* 소셜 로그인 (이미지) */
+#container .social .image {
+	display: flex;
+	margin-top: 24px;
+}
+
+#container .social .image img {
+	width: 48px;
+	height: 48px;
+}
+
+#container .social .image img:not(:last-child) {
+	margin-right: 24px;
+}
+
+
+
+/* 출처 */
+#container .copy {
+	font-size: 12px;
+	font-weight: 300;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+	margin-top: 40px;
+	color: #8E929F;
+	text-align: center;
+}

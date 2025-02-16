@@ -114,7 +114,10 @@
 									</div>
 									<c:if test="${ true }">
 										<div class="comment_action">
-											<a href="">수정</a>
+											<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editForumCommentModal"
+												onclick="openEditForumCommentModal();">
+												수정
+											</a>
 											<a href="">삭제</a>
 										</div>
 									</c:if>
@@ -124,8 +127,8 @@
 									녹차 아이스크림은 배스킨라빈스가 최고입니다
 								</p>
 								<!-- 대댓글 쓰기 버튼 -->
-								<a class="write_subcomment_btn" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#subcommentWriteModal"
-									onclick="openSubcommentWriteModal();">
+								<a class="write_subcomment_btn" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#writeForumSubcommentModal"
+									onclick="openWriteForumSubcommentModal();">
 									<span>답글 쓰기</span>
 								</a>
 							</li>
@@ -148,7 +151,10 @@
 												</div>
 												<c:if test="${ true }">
 													<div class="subcomment_action">
-														<a href="">수정</a>
+														<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editForumSubcommentModal"
+															onclick="openWriteForumSubcommentModal();">
+															수정
+														</a>
 														<a href="">삭제</a>
 													</div>
 												</c:if>
@@ -165,6 +171,26 @@
 					<%-- </c:foreach> --%>
 				</ul>
 			</c:if>
+			<script>
+				/**
+				 * 포럼의 댓글을 수정하는 모달창의 히든 폼에 파라미터로 전달받은 데이터를 꽂아주는 함수
+				 */
+				function openEditForumCommentModal() {
+					
+				}
+				/**
+				 * 포럼의 대댓글을 작성하는 모달창의 히든 폼에 파라미터로 전달받은 데이터를 꽂아주는 함수
+				 */
+				function openWriteForumSubcommentModal() {
+					
+				}
+				/**
+				 * 포럼의 대댓글을 수정하는 모달창의 히든 폼에 파라미터로 전달받은 데이터를 꽂아주는 함수
+				 */
+				function openEditForumSubcommentModal() {
+					
+				}
+			</script>
 			
 			<!-- 더보기 버튼 viewForum 쪽으로 빼야할 수도 있음 -->
 			<div class="more_comment_btn">
@@ -174,5 +200,120 @@
 				</button>
 			</div>
 		</div>
+		
+		<!--  포럼의 댓글 수정 모달창 -->
+		<form method="post" action="" onsubmit="">
+			<div class="modal" id="editForumCommentModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5>수정하기</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label>내용</label>
+								<textarea class="form-control" id="editForumCommentContentInput" name="content" style="height: 90px;"></textarea>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
+							<button type="submit" id="editForumCommentButton" class="btn btn-disable" disabled>작성하기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+		<script>
+			/**
+			 * 내용 입력창의 폼값을 검증하는 함수
+			 */
+			const editForumCommentContentInput = document.getElementById("editForumCommentContentInput");
+			const editForumCommentButton = document.getElementById("editForumCommentButton");
+			editForumCommentContentInput.addEventListener("input", function() {
+				const isEditForumCommentContentInputEmpty = editForumCommentContentInput.value.trim() === "";
+				editForumCommentButton.classList.toggle("btn-disable", isEditForumCommentContentInputEmpty);
+				editForumCommentButton.classList.toggle("btn-primary", !isEditForumCommentContentInputEmpty);
+				editForumCommentButton.disabled = isEditForumCommentContentInputEmpty;
+		    });
+		</script>
+		
+		<!-- 포럼의 대댓글 작성 모달창 -->
+		<form method="post" action="" onsubmit="">
+			<div class="modal" id="writeForumSubcommentModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5>작성하기</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label>내용</label>
+								<textarea class="form-control" id="writeForumSubcommentContentInput" name="content" style="height: 90px;"></textarea>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
+							<button type="submit" id="writeForumSubcommentButton" class="btn btn-disable" disabled>작성하기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+		<script>
+			/**
+			 * 내용 입력창의 폼값을 검증하는 함수
+			 */
+			const writeForumSubcommentContentInput = document.getElementById("writeForumSubcommentContentInput");
+			const writeForumSubcommentButton = document.getElementById("writeForumSubcommentButton");
+			writeForumSubcommentContentInput.addEventListener("input", function() {
+				const isWriteForumSubcommentContentInputEmpty = writeForumSubcommentContentInput.value.trim() === "";
+				writeForumSubcommentButton.classList.toggle("btn-disable", isWriteForumSubcommentContentInputEmpty);
+				writeForumSubcommentButton.classList.toggle("btn-primary", !isWriteForumSubcommentContentInputEmpty);
+				writeForumSubcommentButton.disabled = isWriteForumSubcommentContentInputEmpty;
+		    });
+		</script>
+		
+		<!-- 포럼의 대댓글 수정 모달창 -->
+		<form method="post" action="" onsubmit="">
+			<div class="modal" id="editForumSubcommentModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5>수정하기</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label>내용</label>
+								<textarea class="form-control" id="editForumSubcommentContentInput" name="content" style="height: 90px;"></textarea>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
+							<button type="submit" id="editForumSubcommentButton" class="btn btn-disable" disabled>작성하기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+		<script>
+			/**
+			 * 내용 입력창의 폼값을 검증하는 함수
+			 */
+			const editForumSubcommentContentInput = document.getElementById("editForumSubcommentContentInput");
+			const editForumSubcommentButton = document.getElementById("editForumSubcommentButton");
+			editForumSubcommentContentInput.addEventListener("input", function() {
+				const isEditForumSubcommentContentInputEmpty = editForumSubcommentContentInput.value.trim() === "";
+				editForumSubcommentButton.classList.toggle("btn-disable", isEditForumSubcommentContentInputEmpty);
+				editForumSubcommentButton.classList.toggle("btn-primary", !isEditForumSubcommentContentInputEmpty);
+				editForumSubcommentButton.disabled = isEditForumSubcommentContentInputEmpty;
+			});
+		</script>
+		
+		
+		
+		
 	</body>
 </html>

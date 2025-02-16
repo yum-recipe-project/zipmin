@@ -188,7 +188,7 @@
 				/**
 				 * 레시피의 대댓글을 수정하는 모달창의 히든 폼에 파라미터로 전달받은 데이터를 꽂아주는 함수
 				 */
-				function openEditRecipeReviewModal() {
+				function openEditRecipeSubcommentModal() {
 					
 				}
 			</script>
@@ -228,19 +228,13 @@
 			/**
 			 * 내용 입력창의 폼값을 검증하는 함수
 			 */
-			const editCommentContentInput = document.getElementById("editRecipeCommentContentInput");
-			const editCommentButton = document.getElementById("editRecipeCommentButton");
-			editCommentContentInput.addEventListener("input", function() {
-		        if (editCommentContentInput.value.trim() !== "") {
-		        	editCommentButton.classList.remove("btn-disable");
-		        	editCommentButton.classList.add("btn-primary");
-		        	editCommentButton.removeAttribute("disabled");
-		        }
-		        else {
-		        	editCommentButton.classList.remove("btn-primary");
-		        	editCommentButton.classList.add("btn-disable");
-		        	editCommentButton.setAttribute("disabled", "true");
-		        }
+			const editRecipeCommentContentInput = document.getElementById("editRecipeCommentContentInput");
+			const editRecipeCommentButton = document.getElementById("editRecipeCommentButton");
+			editRecipeCommentContentInput.addEventListener("input", function() {
+				const isEditRecipeCommentContentInputEmpty = editRecipeCommentContentInput.value.trim() === "";
+				editRecipeCommentButton.classList.toggle("btn-disable", isEditRecipeCommentContentInputEmpty);
+				editRecipeCommentButton.classList.toggle("btn-primary", !isEditRecipeCommentContentInputEmpty);
+				editRecipeCommentButtom = isEditRecipeCommentContentInputEmpty;
 		    });
 		</script>
 		
@@ -256,12 +250,12 @@
 						<div class="modal-body">
 							<div class="form-group">
 								<label>내용</label>
-								<textarea class="form-control" id="writeSubcommentContentInput" name="content" style="height: 90px;"></textarea>
+								<textarea class="form-control" id="writeRecipeSubcommentContentInput" name="content" style="height: 90px;"></textarea>
 							</div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
-							<button type="submit" id="writeSubcommentButton" class="btn btn-disable" disabled>작성하기</button>
+							<button type="submit" id="writeRecipeSubcommentButton" class="btn btn-disable" disabled>작성하기</button>
 						</div>
 					</div>
 				</div>
@@ -271,19 +265,13 @@
 			/**
 			 * 내용 입력창의 폼값을 검증하는 함수
 			 */
-			const writeSubcommentContentInput = document.getElementById("writeSubcommentContentInput");
-			const writeSubcommentButton = document.getElementById("writeSubcommentButton");
-			writeSubcommentContentInput.addEventListener("input", function() {
-		        if (writeSubcommentContentInput.value.trim() !== "") {
-		        	writeSubcommentButton.classList.remove("btn-disable");
-		        	writeSubcommentButton.classList.add("btn-primary");
-		        	writeSubcommentButton.removeAttribute("disabled");
-		        }
-		        else {
-		        	writeSubcommentButton.classList.remove("btn-primary");
-		        	writeSubcommentButton.classList.add("btn-disable");
-		        	writeSubcommentButton.setAttribute("disabled", "true");
-		        }
+			const writeRecipeSubcommentContentInput = document.getElementById("writeRecipeSubcommentContentInput");
+			const writeRecipeSubcommentButton = document.getElementById("writeRecipeSubcommentButton");
+			writeRecipeSubcommentContentInput.addEventListener("input", function() {
+				const isWriteRecipeSubcommentContentInputEmpty = writeRecipeSubcommentContentInput.value.trim() === "";
+				writeRecipeSubcommentButton.classList.toggle("btn-disable", isWriteRecipeSubcommentContentInputEmpty);
+				writeRecipeSubcommentButton.classList.toggle("btn-primary", !isWriteRecipeSubcommentContentInputEmpty);
+				writeRecipeSubcommentButton.disabled = isWriteRecipeSubcommentContentInputEmpty;
 		    });
 		</script>
 		
@@ -299,12 +287,12 @@
 						<div class="modal-body">
 							<div class="form-group">
 								<label>내용</label>
-								<textarea class="form-control" id="editSubcommentContentInput" name="content" style="height: 90px;"></textarea>
+								<textarea class="form-control" id="editRecipeSubcommentContentInput" name="content" style="height: 90px;"></textarea>
 							</div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
-							<button type="submit" id="editSubcommentButton" class="btn btn-disable" disabled>작성하기</button>
+							<button type="submit" id="editRecipeSubcommentButton" class="btn btn-disable" disabled>작성하기</button>
 						</div>
 					</div>
 				</div>
@@ -314,20 +302,14 @@
 			/**
 			 * 내용 입력창의 폼값을 검증하는 함수
 			 */
-			const editSubcommentContentInput = document.getElementById("editSubcommentContentInput");
-			const editSubcommentButton = document.getElementById("editSubcommentButton");
-			editSubcommentContentInput.addEventListener("input", function() {
-		        if (editSubcommentContentInput.value.trim() !== "") {
-		        	editSubcommentButton.classList.remove("btn-disable");
-		        	editSubcommentButton.classList.add("btn-primary");
-		        	editSubcommentButton.removeAttribute("disabled");
-		        }
-		        else {
-		        	editSubcommentButton.classList.remove("btn-primary");
-		        	editSubcommentButton.classList.add("btn-disable");
-		        	editSubcommentButton.setAttribute("disabled", "true");
-		        }
-		    });
+			const editRecipeSubcommentContentInput = document.getElementById("editRecipeSubcommentContentInput");
+			const editRecipeSubcommentButton = document.getElementById("editRecipeSubcommentButton");
+			editRecipeSubcommentContentInput.addEventListener("input", function() {
+				const isEditRecipeSubcommentContentInputEmpty = editRecipeSubcommentContentInput.value.trim() === "";
+				editRecipeSubcommentButton.classList.toggle("btn-disable", isEditRecipeSubcommentContentInputEmpty);
+				editRecipeSubcommentButton.classList.toggle("btn-primary", !isEditRecipeSubcommentContentInputEmpty);
+				editRecipeSubcommentButton.disabled = isEditRecipeSubcommentContentInputEmpty;
+			});
 		</script>
 	</body>
 </html>

@@ -197,6 +197,7 @@
 				}
 			</script>
 			
+			<!-- 더보기 버튼 viewReview 쪽으로 빼야할 수도 있음 -->
 			<div class="more_review_btn">
 				<button>
 					<span>더보기</span>

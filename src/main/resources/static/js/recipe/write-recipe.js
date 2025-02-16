@@ -10,16 +10,19 @@ document.addEventListener('DOMContentLoaded', function() {
 		li.classList.add('ingredient_row');
 		
 		li.innerHTML = `
-			<input type="text" class="ingredient_input" name="" value="" placeholder="재료">
-			<img src="/images/recipe/commit.png">
-			<input type="text" class="ingredient_amount_input" name="" value="" placeholder="단위가 포함된 양">
-			<img src="/images/recipe/commit.png">
-			<input type="text" class="ingredient_note_input" name="" value="" placeholder="비고 (선택사항)">
-			<div class="remove_btn">
-				<a class="remove_ingredient_btn">
-					<img src="/images/recipe/close.png">지우기
-				</a>
+			<div class="ingredient_flex">
+				<input type="text" class="ingredient_input" name="" value="" placeholder="재료">
+				<img src="/images/recipe/commit.png">
+				<input type="text" class="ingredient_amount_input" name="" value="" placeholder="단위가 포함된 양">
+				<img src="/images/recipe/commit.png">
+				<input type="text" class="ingredient_note_input" name="" value="" placeholder="비고 (선택사항)">
+				<div class="remove_btn">
+					<a class="remove_ingredient_btn">
+						<img src="/images/recipe/close.png">지우기
+					</a>
+				</div>
 			</div>
+			<p class="ingredient_hint">재료를 입력해주세요.</p>
 		`;
 		ul.append(li);
 		
@@ -85,14 +88,9 @@ document.addEventListener("DOMContentLoaded", function () {
 	const thumbnailInput = document.getElementById("thumbnailInput");
 	const thumbnailHint = document.getElementById("thumbnailHint");
 	thumbnailInput.addEventListener("input", function() {
-		if (thumbnailInput.value.trim() === "") {
-			thumbnailInput.classList.add("danger");
-			thumbnailHint.style.display = "block";
-		}
-		else {
-			thumbnailInput.classList.remove("danger");
-			thumbnailHint.style.display = "none";
-		}
+		const isThumbnailEmpty = thumbnailInput.value.trim() === "";
+		thumbnailInput.classList.toggle("danger", isThumbnailEmpty);
+		thumbnailHint.style.display = isThumbnailEmpty ? "block" : "none";
 	});
 	
 	// 제목 실시간 검사
@@ -216,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const ingredientRow = event.target.closest(".ingredient_row");
             if (!ingredientRow) return;
             const ingredientInput = ingredientRow.querySelector(".ingredient_input");
-            const ingredientHint = document.querySelector(".ingredient_hint");
+            const ingredientHint = ingredientRow.querySelector(".ingredient_hint");
             const isIngredientEmpty = ingredientInput.value.trim() === "";
             ingredientInput.classList.toggle("danger", isIngredientEmpty);
             ingredientHint.style.display = isIngredientEmpty ? "block" : "none";
@@ -226,7 +224,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const ingredientRow = event.target.closest(".ingredient_row");
             if (!ingredientRow) return;
             const ingredientAmountInput = ingredientRow.querySelector(".ingredient_amount_input");
-            const ingredientHint = document.querySelector(".ingredient_hint");
+            const ingredientHint = ingredientRow.querySelector(".ingredient_hint");
             const isIngredientAmountEmpty = ingredientAmountInput.value.trim() === "";
             ingredientAmountInput.classList.toggle("danger", isIngredientAmountEmpty);
             ingredientHint.style.display = isIngredientAmountEmpty ? "block" : "none";
@@ -265,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		ingredientRow.forEach((row) => {
 			const ingredientInput = row.querySelector(".ingredient_input");
 			const ingredientAmountInput = row.querySelector(".ingredient_amount_input");
-			const ingredientHint = document.querySelector(".ingredient_hint");
+			const ingredientHint = row.querySelector(".ingredient_hint");
 			if (ingredientInput.value.trim() === "") {
 				event.preventDefault();
 				ingredientInput.classList.add("danger");
@@ -352,6 +350,13 @@ document.addEventListener("DOMContentLoaded", function () {
 			titleInput.classList.add("danger");
 			titleHint.style.display = "block";
 			titleInput.focus();
+			isValid = false;
+		}
+		if (thumbnailInput.value.trim() === "") {
+			event.preventDefault();
+			thumbnailInput.classList.add("danger");
+			thumbnailHint.style.display = "block";
+			thumbnailInput.focus();
 			isValid = false;
 		}
 

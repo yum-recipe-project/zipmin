@@ -51,6 +51,11 @@
     overflow: hidden;
 }
 
+#container .content .recipe_info_wrap .thumbnail_field input.danger {
+	border: 1px dashed #F45452;
+	background-color: rgb(254, 245, 245);
+}
+
 #container .content .recipe_info_wrap .thumbnail_field p {
 	display: none;
 	margin-top: 4px;
@@ -508,7 +513,7 @@
 	margin-top: 24px;
 }
 
-#container .content .ingredient_wrap .ingredient_field ul li {
+#container .content .ingredient_wrap .ingredient_field .ingredient_flex {
 	display: flex;
 	align-items: center;
 	gap: 8px;
@@ -517,6 +522,8 @@
 #container .content .ingredient_wrap .ingredient_field ul li + li {
 	margin-top: 8px;
 }
+
+
 
 #container .content .ingredient_wrap .ingredient_field label {
 	font-weight: 600;

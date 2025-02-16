@@ -150,14 +150,16 @@
 							<label>재료</label>
 							<ul>
 								<li class="ingredient_row">
-									<input type="text" class="ingredient_input" name="" value="" placeholder="재료">
-									<img src="/images/recipe/commit.png">
-									<input type="text" class="ingredient_amount_input" name="" value="" placeholder="단위가 포함된 양">
-									<img src="/images/recipe/commit.png">
-									<input type="text" class="ingredient_note_input" name="" value="" placeholder="비고 (선택사항)">
+									<div class="ingredient_flex">
+										<input type="text" class="ingredient_input" name="" value="" placeholder="재료">
+										<img src="/images/recipe/commit.png">
+										<input type="text" class="ingredient_amount_input" name="" value="" placeholder="단위가 포함된 양">
+										<img src="/images/recipe/commit.png">
+										<input type="text" class="ingredient_note_input" name="" value="" placeholder="비고 (선택사항)">
+									</div>
+									<p class="ingredient_hint">재료를 입력해주세요.</p>
 								</li>
 							</ul>
-							<p class="ingredient_hint">재료를 입력해주세요.</p>
 							<div class="add_btn">
 								<a id="addIngredientBtn" href="">재료 추가하기</a>
 							</div>

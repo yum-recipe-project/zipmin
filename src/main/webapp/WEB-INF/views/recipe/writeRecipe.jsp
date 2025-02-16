@@ -215,8 +215,8 @@
 					
 					<!-- 업로드 버튼 -->
 					<div class="btn_wrap">
-						<button onclick="">취소하기</button>
-						<button type="submit" onclick="">업로드하기</button>
+						<button class="btn_outline" onclick="">취소하기</button>
+						<button class="btn_primary" type="submit" onclick="">업로드하기</button>
 					</div>
 				</form>
 			</div>

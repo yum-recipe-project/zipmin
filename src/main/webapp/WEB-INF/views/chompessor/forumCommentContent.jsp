@@ -69,7 +69,7 @@
 							<span>400</span>
 						</div>
 						<div class="write_btn">
-							<button type="submit" id="commentButton" class="disable" onclick="" disabled>작성하기</button>
+							<button class="btn_primary disable" type="submit" id="commentButton" class="disable" onclick="" disabled>작성하기</button>
 						</div>
 					</form>
 				</c:if>
@@ -127,7 +127,7 @@
 									녹차 아이스크림은 배스킨라빈스가 최고입니다
 								</p>
 								<!-- 대댓글 쓰기 버튼 -->
-								<a class="write_subcomment_btn" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#writeForumSubcommentModal"
+								<a class="btn_outline_small write_subcomment_btn" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#writeForumSubcommentModal"
 									onclick="openWriteForumSubcommentModal();">
 									<span>답글 쓰기</span>
 								</a>

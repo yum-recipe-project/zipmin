@@ -83,7 +83,7 @@
 							<span>400</span>
 						</div>
 						<div class="write_btn">
-							<button type="submit" id="reviewButton" class="disable" onclick="" disabled>작성하기</button>
+							<button class="btn_primary" type="submit" id="reviewButton" class="disable" onclick="" disabled>작성하기</button>
 						</div>
 					</form>
 				</c:if>
@@ -172,7 +172,7 @@
 									<!-- 리뷰 좋아요 버튼 -->
 									<div class="like_review_btn">
 										<p>이 리뷰가 도움이 되었다면 꾹!</p>
-										<button onclick="">
+										<button class="btn_rounded_icon" onclick="">
 											<c:if test="${ true }">
 												<img src="/images/recipe/thumb_up_full.png">
 											</c:if>

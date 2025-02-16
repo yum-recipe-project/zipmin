@@ -39,7 +39,7 @@
 							</div>
 							
 							<!-- 버튼 -->
-							<button type="submit" class="change_btn">다음</button>
+							<button type="submit" class="btn_primary_wide">다음</button>
 						</form>
 					</div>
 					

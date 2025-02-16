@@ -40,7 +40,7 @@
 						<p class="edit_info">• 위 내용은 <b>집밥의민족 회원 정보</b>에서 수정할 수 있습니다</p>
 						
 						<!-- 완료버튼 -->
-						<a href="/" class="done_btn">완료</a>
+						<a href="/" class="btn_primary_wide">완료</a>
 					</div>
 				</div>
 				

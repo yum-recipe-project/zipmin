@@ -26,7 +26,7 @@
 							<input type="text" id="passwordInput" name="" value="" placeholder="비밀번호 입력">
 							<p id="passwordHint">비밀번호를 입력해주세요.</p>
 						</div>
-						<button type="submit" class="submit_btn">확인</button>
+						<button type="submit" class="btn_primary_wide">확인</button>
 						<span class="forgot_password">
 							<a href="/member/findAccount.do?mode=password">비밀번호를 잊으셨나요?</a>
 						</span>

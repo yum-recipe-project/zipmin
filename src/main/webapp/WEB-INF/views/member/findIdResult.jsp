@@ -18,7 +18,7 @@
 						<h2>아이디 ・ 비밀번호 찾기</h2>
 						<h5>인증된 휴대폰 번호로 가입한 아이디입니다. 아이디 확인 후 로그인을 진행해 주세요.</h5>
 						<h3>jhrchicken</h3>
-						<a class="move_btn" href="/member/login.do">로그인하러 가기</a>
+						<a class="btn_primary_wide" href="/member/login.do">로그인하러 가기</a>
 						<span class="forgot_password">
 							<a href="/member/findAccount.do?mode=password">비밀번호를 잊으셨나요?</a>
 						</span>

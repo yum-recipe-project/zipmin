@@ -41,21 +41,18 @@
 	display: flex;
 	gap: 16px;
 }
-
 #container .review_wrap .review_header .review_order button {
-	color: var(--txt-color-500);
-	font-weight: 400;
-	line-height: 1.4;
-	letter-spacing: -0.02em;
-	font-size: 14px;
 	border: none;
 	background: none;
-}
-
-#container .review_wrap .review_header .review_order button.active {
-	color: var(--txt-color-600);
-	font-weight: 700;
+	font-size: 14px;
+	font-weight: 400;
+	color: var(--txt-color-500);
 	line-height: 1.4;
+	letter-spacing: -0.02em;
+}
+#container .review_wrap .review_header .review_order button.active {
+	font-weight: 700;
+	color: var(--txt-color-600);
 }
 
 
@@ -160,42 +157,8 @@
     margin: 0px 12px 12px 0px;
 }
 
-/* 리뷰 작성 (로그인 - 작성 완료 버튼) */
 #container .review_wrap .review_write .write_btn {
 	text-align: right;
-}
-
-#container .review_wrap .review_write .write_btn button {
-	border-radius: 4px;
-	width: auto;
-	display: inline-flex;
-	justify-content: center;
-	align-items: center;
-	text-align: center;
-	padding: 12px 24px;
-	height: 48px;
-	font-size: 16px;
-	line-height: 24px;
-	letter-spacing: -0.4px;
-	font-weight: 600;
-	border: none;
-	color: #FFF;
-	background-color: var(--point-color2);
-}
-
-#container .review_wrap .review_write .write_btn button:hover {
-	background: #0073E6;
-    color: #F2F2F2;
-}
-
-#container .review_wrap .review_write .write_btn button.disable {
-	opacity: 0.4;
-	cursor: not-allowed;
-}
-
-#container .review_wrap .review_write .write_btn button.disable:hover {
-	background: var(--point-color2);
-	color: #FFF;
 }
 
 
@@ -305,35 +268,8 @@
 	margin-top: 8px;
 }
 
-#container .review_wrap .review_list .review .like_review_btn button {
-	display: flex;
-	align-items: center;
-	gap: 5px;
-	border: 1px solid var(--line-color2);
-	height: 32px;
-	padding: 0 15px;
-	background: #FFF;
-	border-radius: 30px;
-}
-
-#container .review_wrap .review_list .review .like_review_btn button:hover {
-	background: #F3F5F7;
-}
-
-#container .review_wrap .review_list .review .like_review_btn button img {
-	background: none;
-	width: 18px;
-	height: 18px;
-}
-
-#container .review_wrap .review_list .review .like_review_btn button p {
-	font-size: 14px;
-	color: var(--txt-color-500);
-}
-
 #container .review_wrap .review_list .review .like_review_btn p {
 	font-weight: 500;
 	font-size: 12px;
 	color: var(--txt-color-500);
 }
-

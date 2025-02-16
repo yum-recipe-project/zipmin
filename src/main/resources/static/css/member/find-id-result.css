@@ -47,21 +47,8 @@
 	letter-spacing: -0.4px;
 }
 
-#container .content .result_wrap .move_btn {
-	border-radius: 4px;
+#container .btn_primary_wide {
 	margin: 32px 0px 0px;
-	width: 100%;
-	display: inline-flex;
-	justify-content: center;
-	align-items: center;
-	text-align: center;
-	padding: 15px 32px 16px;
-	font-size: 18px;
-	line-height: 24px;
-	letter-spacing: -0.4px;
-	font-weight: bold;
-	color: #FFF;
-	background-color: var(--point-color2);
 }
 
 #container .content .result_wrap .forgot_password {

@@ -45,7 +45,7 @@
 								<a href="/member/join.do">회원가입</a>
 							</div>
 						</div>
-						<button type="submit" class="login_btn">로그인</button>
+						<button type="submit" class="btn_primary_wide">로그인</button>
 					</form>
 					
 					<!-- 소셜 로그인 -->

@@ -13,6 +13,25 @@
 	margin-bottom: 16px;
 }
 
+/* 댓글 헤더 (정렬 순서) */
+#container .comment_wrap .comment_header .comment_order {
+	display: flex;
+	gap: 16px;
+}
+#container .comment_wrap .comment_header .comment_order button {
+	border: none;
+	background: none;
+	font-size: 14px;
+	font-weight: 400;
+	color: var(--txt-color-500);
+	line-height: 1.4;
+	letter-spacing: -0.02em;
+}
+#container .comment_wrap .comment_header .comment_order button.active {
+	font-weight: 700;
+	color: var(--txt-color-600);
+}
+
 /* 댓글 헤더 (댓글 수) */
 #container .comment_wrap .comment_header .comment_count {
 	display: flex;
@@ -34,27 +53,6 @@
 }
 
 
-/* 댓글 헤더 (정렬 순서) */
-#container .comment_wrap .comment_header .comment_order {
-	display: flex;
-	gap: 16px;
-}
-
-#container .comment_wrap .comment_header .comment_order button {
-	color: var(--txt-color-500);
-	font-weight: 400;
-	line-height: 1.4;
-	letter-spacing: -0.02em;
-	font-size: 14px;
-	border: none;
-	background: none;
-}
-
-#container .comment_wrap .comment_header .comment_order button.active {
-	color: var(--txt-color-600);
-	font-weight: 700;
-	line-height: 1.4;
-}
 
 /* 댓글 작성 */
 #container .comment_wrap .comment_write {
@@ -145,39 +143,6 @@
 	text-align: right;
 }
 
-#container .comment_wrap .comment_write .write_btn button {
-	border-radius: 4px;
-	width: auto;
-	display: inline-flex;
-	justify-content: center;
-	align-items: center;
-	text-align: center;
-	padding: 12px 24px;
-	height: 48px;
-	font-size: 16px;
-	line-height: 24px;
-	letter-spacing: -0.4px;
-	font-weight: 600;
-	border: none;
-	color: #FFF;
-	background-color: var(--point-color2);
-}
-
-#container .comment_wrap .comment_write .write_btn button:hover {
-	background: #0073E6;
-    color: #F2F2F2;
-}
-
-#container .comment_wrap .comment_write .write_btn button.disable {
-	opacity: 0.4;
-	cursor: not-allowed;
-}
-
-#container .comment_wrap .comment_write .write_btn button.disable:hover {
-	background: var(--point-color2);
-	color: #FFF;
-}
-
 
 
 /* 댓글 목록 */
@@ -242,27 +207,8 @@
 	letter-spacing: -0.02em;
 }
 
-
-
-/* 대댓글 작성 버튼 */
 #container .comment_wrap .comment_list .write_subcomment_btn {
 	margin-top: 16px;
-	height: 32px;
-	width: fit-content;
-	padding: 5px 12px 7px;
-	display: flex;
-	align-items: center;
-	gap: 2px;
-	font-size: 14px;
-	line-height: 20px;
-	letter-spacing: -0.4px;
-	font-weight: 500;
-	border: 1px solid var(--line-color1);
-	border-radius: 4px;
-}
-
-#container .comment_wrap .comment_list .write_subcomment_btn:hover {
-	background: #F3F5F7;
 }
 
 

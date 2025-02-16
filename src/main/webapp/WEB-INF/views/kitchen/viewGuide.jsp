@@ -32,7 +32,7 @@
 							<span>2025.02.10</span>
 						</div>
 						<div class="btn_wrap">
-							<button onclick="">
+							<button class="btn_ouline_icon" onclick="">
 								<img src="/images/kitchen/star.png"> 저장
 							</button>
 						</div>
@@ -53,7 +53,7 @@
 					
 					<!-- 목록 버튼 -->
 					<div class="list_btn">
-						<button onclick="location.href=''">목록으로</button>
+						<button class="btn_outline" onclick="location.href=''">목록으로</button>
 					</div>
 				</div>
 				
@@ -62,7 +62,7 @@
 				
 				<!-- 댓글 더보기 버튼 -->
 				<div class="more_comment_btn">
-					<button>
+					<button class="btn_outline_wide">
 						<span>더보기</span>
 						<img src="/images/kitchen/arrow_down.png">
 					</button>

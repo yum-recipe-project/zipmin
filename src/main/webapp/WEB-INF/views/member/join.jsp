@@ -73,7 +73,7 @@
 							</div>
 							
 							<!-- 다음 버튼 -->
-							<button type="submit" class="next_btn">다음</button>
+							<button type="submit" class="btn_primary_wide">다음</button>
 							<a href="/member/join/complete.do">다음</a>
 						</form>
 					</div>

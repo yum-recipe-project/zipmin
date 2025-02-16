@@ -33,7 +33,7 @@
 								<input type="text" id="phoneInput" name="" value="" placeholder="- 없이 휴대폰 번호 입력">
 								<p id="phoneHint">휴대폰 번호를 입력해주세요.</p>
 							</div>
-							<button type="submit" class="submit_btn">아이디 찾기</button>
+							<button type="submit" class="btn_primary_wide">아이디 찾기</button>
 							<a href="/member/findAccount/idResult.do">아이디 결과 페이지</a>
 						</form>
 						
@@ -49,7 +49,7 @@
 								<input type="email" id="emailInput" name="" value="" placeholder="이메일 입력">
 								<p id="emailHint">이메일을 입력해주세요.</p>
 							</div>
-							<button type="submit" class="submit_btn">인증하기</button>
+							<button type="submit" class="btn_primary_wide">인증하기</button>
 							<a href="/member/findAccount/passwordResult.do">임시 비밀번호 받기 페이지로 이동</a>
 						</form>
 					</div>

@@ -1,0 +1,240 @@
+@charset "UTF-8";
+
+.btn_wrap {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	width: fit-content;
+}
+
+
+
+/* 기본 버튼 (회색 테두리 버튼) */
+.btn_outline {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	width: auto;
+	height: 48px;
+	padding: 12px 24px;
+	border: 1px solid var(--line-color2);
+	border-radius: 4px;
+	background: #FFF;
+	font-size: 16px;
+	font-weight: 600;
+	color: var(--txt-color-600);
+	line-height: 24px;
+	letter-spacing: -0.4px;
+}
+.btn_outline:hover {
+	background: #F3F5F7;
+}
+
+
+
+/* 파란 버튼 */
+.btn_primary {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	width: auto;
+	height: 48px;
+	padding: 12px 24px;
+	border: none;
+	border-radius: 4px;
+	background: var(--point-color2);
+	font-size: 16px;
+	font-weight: 600;
+	color: #FFF;
+	line-height: 24px;
+	letter-spacing: -0.4px;
+}
+.btn_primary:hover {
+	background: #0073E6;
+    color: #F2F2F2;
+}
+.btn_primary.disable {
+	opacity: 0.4;
+	cursor: not-allowed;
+}
+.btn_primary.disable:hover {
+	background: var(--point-color2);
+	color: #FFF;
+}
+
+
+
+/* 파란 버튼인데 width 100%인 버튼 (회원가입 등에 쓰인 버튼) */
+.btn_primary_wide {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	margin: 32px 0px 0px;
+	width: 100%;
+	padding: 15px 32px 16px;
+	border-radius: 4px;
+	border: none;
+	background: var(--point-color2);
+	font-size: 18px;
+	font-weight: 500;
+	line-height: 24px;
+	color: #FFF;
+	letter-spacing: -0.4px;
+}
+
+
+
+/* 검은 버튼 */
+.btn_dark {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	
+	width: auto;
+	height: 48px;
+	padding: 12px 24px;
+	border: none;
+	border-radius: 4px;
+	background-color: var(--txt-color-600);
+	
+	font-size: 16px;
+	font-weight: 600;
+	color: #FFF;
+	line-height: 24px;
+	letter-spacing: -0.4px;
+}
+.btn_dark:hover {
+	background: #000;
+	color: #F2F2F2;
+}
+
+
+
+/* 테두리가 있는 작은 버튼 (대댓글 작성하기 버튼에 사용함) */
+.btn_outline_small {
+	display: flex;
+	gap: 2px;
+	align-items: center;
+	width: fit-content;
+	height: 32px;
+	padding: 5px 12px 7px;
+	border-radius: 4px;
+	border: 1px solid var(--line-color2);
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 20px;
+	letter-spacing: -0.4px;
+}
+
+.btn_outline_small:hover {
+	background: #F3F5F7;
+}
+
+
+
+/* 아이콘 (그냥 동그란 아이콘) */
+.btn_icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+	width: 32px;
+	height: 32px;
+	background: #FFF;
+	
+	border: 1px solid var(--line-color2);
+	border-radius: 50%;
+}
+.btn_icon:hover {
+	background: #F3F5F7;
+}
+.btn_icon img {
+	width: 60%;
+}
+
+
+
+/* 아이콘이 들어있는 둥근 버튼 (좋아요 버튼) */
+.btn_rounded_icon {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	height: 32px;
+	padding: 0 15px;
+	background: #FFF;
+	border: 1px solid var(--line-color2);
+	border-radius: 30px;
+}
+.btn_rounded_icon:hover {
+	background: #F3F5F7;
+}
+.btn_rounded_icon img {
+	background: none !important;
+	width: 18px !important;
+	height: 18px !important;
+}
+.btn_rounded_icon p {
+	font-size: 14px;
+	color: var(--txt-color-500);
+}
+
+
+
+/* 테두리가 있는 넓은 버튼 (더보기 버튼) */
+.btn_outline_wide {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+	text-align: center;
+	justify-content: center;
+	width: 100%;
+	height: 48px;
+	padding: 12px 24px;
+	border: 1px solid var(--line-color2);
+	border-radius: 4px;
+    background: #FFF;
+	font-size: 16px;
+	font-weight: 500;
+	color: var(--txt-color-600);
+	line-height: 24px;
+	letter-spacing: -0.4px;
+
+}
+.btn_outline_wide:hover {
+	background: #F3F5F7;
+}
+.btn_outline_wide img {
+	width: 20px;
+	height: 20px;
+}
+
+
+
+/* 아이콘 달려있는 버튼 (스크랩 버튼) */
+.btn_outline_icon {
+	position: relative;
+	display: inline-flex;
+	box-sizing: border-box;
+    justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	height: 32px;
+	padding: 0 12px;
+	border: 1px solid var(--line-color2);
+	border-radius: 4px;
+	background: #FFF;
+    font-size: 14px;
+}
+.btn_outline_icon:hover {
+	background: #F3F5F7;
+}
+.btn_outline_icon img {
+	margin-right: 2px;
+	width: 20px;
+	height: 20px;
+}
+

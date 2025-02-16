@@ -46,6 +46,7 @@
 					<br/><br/>
 					
 					<h2>쿠킹클래스</h2>
+					<button onclick="location.href='/cooking/listClass.do';">쿠킹클래스 목록</button>
 					<br/><br/>
 					
 					<h2>후원</h2>

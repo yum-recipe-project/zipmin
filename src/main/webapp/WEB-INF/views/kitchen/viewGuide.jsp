@@ -32,7 +32,7 @@
 							<span>2025.02.10</span>
 						</div>
 						<div class="btn_wrap">
-							<button class="btn_ouline_icon" onclick="">
+							<button class="btn_outline_icon" onclick="">
 								<img src="/images/kitchen/star.png"> 저장
 							</button>
 						</div>

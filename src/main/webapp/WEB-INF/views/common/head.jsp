@@ -4,6 +4,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
 <link rel="stylesheet" href="/css/common/jquery-ui.min.css">
 <link rel="stylesheet" href="/css/common/common.css">
+<link rel="stylesheet" href="/css/common/button.css">
+<link rel="stylesheet" href="/css/common/modal.css">
 <link rel="stylesheet" href="/css/common/header.css">
 <link rel="stylesheet" href="/css/common/footer.css">
 

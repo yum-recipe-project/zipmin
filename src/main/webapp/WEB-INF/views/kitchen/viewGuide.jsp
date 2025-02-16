@@ -59,6 +59,14 @@
 				
 				<!-- 댓글 -->
 				<div id="guideCommentContent"></div>
+				
+				<!-- 댓글 더보기 버튼 -->
+				<div class="more_comment_btn">
+					<button>
+						<span>더보기</span>
+						<img src="/images/kitchen/arrow_down.png">
+					</button>
+				</div>
 			</div>
 		</main>
 		

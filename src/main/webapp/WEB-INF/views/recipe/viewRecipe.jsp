@@ -201,13 +201,24 @@
 				<!-- 리뷰 -->
 				<div class="tab_content">
 					<div id="recipeReviewContent"></div>
+					<div class="more_review_btn">
+						<button>
+							<span>더보기</span>
+							<img src="/images/recipe/arrow_down_black.png">
+						</button>
+					</div>
 				</div>
 				
 				<!-- 댓글 -->
 				<div class="tab_content">
 					<div id="recipeCommentContent"></div>
+					<div class="more_comment_btn">
+						<button>
+							<span>더보기</span>
+							<img src="/images/recipe/arrow_down_black.png">
+						</button>
+					</div>
 				</div>
-				
 			</div>
 		</main>
 		

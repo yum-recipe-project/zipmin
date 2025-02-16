@@ -191,14 +191,6 @@
 					
 				}
 			</script>
-			
-			<!-- 더보기 버튼 viewForum 쪽으로 빼야할 수도 있음 -->
-			<div class="more_comment_btn">
-				<button>
-					<span>더보기</span>
-					<img src="/images/chompessor/arrow_down.png">
-				</button>
-			</div>
 		</div>
 		
 		<!--  포럼의 댓글 수정 모달창 -->
@@ -311,9 +303,6 @@
 				editForumSubcommentButton.disabled = isEditForumSubcommentContentInputEmpty;
 			});
 		</script>
-		
-		
-		
-		
+
 	</body>
 </html>

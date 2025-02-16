@@ -192,13 +192,6 @@
 					
 				}
 			</script>
-			
-			<div class="more_comment_btn">
-				<button>
-					<span>더보기</span>
-					<img src="/images/recipe/arrow_down_black.png">
-				</button>
-			</div>
 		</div>
 		
 		<!-- 레시피의 댓글 수정 모달창 -->

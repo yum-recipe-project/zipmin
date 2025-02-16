@@ -197,13 +197,6 @@
 				}
 			</script>
 			
-			<!-- 더보기 버튼 viewReview 쪽으로 빼야할 수도 있음 -->
-			<div class="more_review_btn">
-				<button>
-					<span>더보기</span>
-					<img src="/images/recipe/arrow_down_black.png">
-				</button>
-			</div>
 		</div>
 		
 		<!-- 레시피의 리뷰 수정 모달창 -->

@@ -1,5 +1,4 @@
 @charset "UTF-8";
-
 #container .content .recipe_wrap {
 	margin: 0px auto;
 	padding: 0 108px;
@@ -468,6 +467,84 @@
 
 
 
+/* 리뷰 더보기 버튼 */
+#container .content .more_review_btn {
+	margin: 0px auto;
+	padding: 0 108px;
+	width: 1160px;
+	margin-top: 24px;
+	margin-bottom: 80px;
+}
 
+#container .content .more_review_btn button {
+	font-weight: 500;
+	border-radius: 4px;
+	width: 100%;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	padding: 12px 24px;
+	height: 48px;
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: -0.4px;
+	color: var(--txt-color-600);
+    background-color: #FFF;
+    border: 1px solid var(--line-color2);
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+#container .content .more_review_btn button:hover {
+	background: #F3F5F7;
+}
+
+#container .content .more_review_btn button img {
+	width: 20px;
+	height: 20px;
+}
+
+
+
+/* 댓글 더보기 버튼 */
+#container .content .more_comment_btn {
+	margin: 0px auto;
+	padding: 0 108px;
+	width: 1160px;
+	margin-top: 24px;
+	margin-bottom: 80px;
+}
+
+#container .content .more_comment_btn button {
+	font-weight: 500;
+	border-radius: 4px;
+	width: 100%;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	padding: 12px 24px;
+	height: 48px;
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: -0.4px;
+	color: var(--txt-color-600);
+    background-color: #FFF;
+    border: 1px solid var(--line-color2);
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+#container .content .more_comment_btn button:hover {
+	background: #F3F5F7;
+}
+
+#container .content .more_comment_btn button img {
+	width: 20px;
+	height: 20px;
+}
 
 

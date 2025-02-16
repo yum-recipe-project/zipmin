@@ -142,13 +142,6 @@
 				}
 			</script>
 			
-			<!-- 더보기 버튼 viewGuide 쪽으로 빼야할 수도 있음 -->
-			<div class="more_comment_btn">
-				<button>
-					<span>더보기</span>
-					<img src="/images/kitchen/arrow_down.png">
-				</button>
-			</div>
 		</div>
 		
 		<!-- 키친가이드의 댓글 수정 모달창 -->

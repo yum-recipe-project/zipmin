@@ -226,6 +226,13 @@
 					    
 					</div>
 					
+					<!-- 더보기 버튼 -->
+					<div class="more_btn">
+						<button>
+							<span>더보기</span>
+							<img src="/images/mypage/arrow_down.png">
+						</button>
+					</div>
 					
 					
 				</div>

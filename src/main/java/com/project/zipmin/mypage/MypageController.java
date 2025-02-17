@@ -17,7 +17,7 @@ public class MypageController {
 		return "mypage/review";
 	}
 	
-	@GetMapping("/mypage/myRecipe.do")
+	@GetMapping("/mypage/recipe.do")
 	public String myRecipe() {
 		return "mypage/recipe";
 	}

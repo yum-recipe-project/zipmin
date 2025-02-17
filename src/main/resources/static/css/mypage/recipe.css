@@ -1,1 +1,197 @@
 @charset "UTF-8";
+
+#container .content {
+	margin: 0px auto;
+	padding: 0 108px;
+	width: 1160px;
+}
+
+#container .content .recipe_wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	margin-top: 40px;
+	margin-bottom: 80px;
+}
+
+
+
+
+
+/* 타이틀 (링크) */
+#container .content .recipe_wrap .recipe_title a {
+	padding: 8px 0px;
+	color: var(--txt-color-500);
+	font-weight: 500;
+	line-height: 1.4;
+	letter-spacing: -0.02em;
+	font-size: 14px;
+}
+
+#container .content .recipe_wrap .recipe_title a span {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+#container .content .recipe_wrap .recipe_title a span img {
+	width: 20px;
+	height: 20px;
+}
+
+/* 타이틀 (제목) */
+#container .content .recipe_wrap .recipe_title h2 {
+	margin-top: 8px;
+	font-weight: 700;
+	line-height: 1.5;
+	letter-spacing: -0.03em;
+	font-size: 32px;
+}
+
+#container .content .recipe_wrap .recipe_etc {
+	display: flex;
+	justify-content: space-between;
+}
+
+/* 게시글 수 */
+#container .content .recipe_wrap .recipe_etc .recipe_count span {
+	font-weight: 500;
+	line-height: 1.5;
+	letter-spacing: -0.025em;
+	font-size: 12px;
+	color: var(--txt-color-500);
+}
+
+
+
+/* 게시글 진행 상태 탭 */
+#container .content .recipe_wrap .recipe_etc .recipe_tap {
+	display: flex;
+	gap: 10px;
+	cursor: pointer;
+}
+
+#container .content .recipe_wrap .recipe_etc .recipe_tap li {
+	color: var(--txt-color-400);	
+	font-size: 16px;
+}
+
+/* 활성화된 탭 */
+#container .content .recipe_wrap .recipe_etc .recipe_tap li.active {
+    color: var(--txt-color-600);
+}
+
+
+
+
+/* 탭 컨텐츠 */
+#container .content .recipe_wrap .recipe_content  {
+    display: none; 
+}
+
+/* 활성화된 콘텐츠 */
+#container .content .recipe_wrap .recipe_content.active {
+    display: block;
+}
+
+
+/* 작성한 레시피 */
+#container .content .recipe_wrap .recipe_content .recipe_box {
+	border-bottom: 1px solid var(--line-color3);
+	height: 160px;
+	padding: 30px 0;
+	display: flex;
+	align-items: center;
+	
+}
+
+#container .content .recipe_wrap .recipe_content .recipe_box img {
+	height: 100px;
+	width: 100px;
+}
+
+
+
+
+
+/* 레시피 디테일 */
+#container .content .recipe_wrap .recipe_details {
+	margin-left: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	width: 100%;
+}
+
+/* 레시피 디테일 (레시피 상단) */
+#container .content .recipe_wrap .recipe_top {
+	display: flex;
+	justify-content: space-between;
+}
+#container .content .recipe_wrap .recipe_top p {
+	font-size: 18px;
+	font-weight: 600;
+}
+#container .content .recipe_wrap .recipe_top .recipe_management button {
+	border: none;
+	background: none;
+	margin-left: 5px;
+	color: var(--txt-color-500);
+}
+
+
+
+
+/* 레시피 디테일 (레시피 정보) */
+#container .content .recipe_wrap .recipe_details .recipe_info {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+}
+
+#container .content .recipe_wrap .recipe_details .recipe_info .recipe_info_item {
+	display: flex;
+	align-items: center;
+	gap: 3px;
+}
+
+#container .content .recipe_wrap .recipe_details .recipe_info .recipe_info_item img {
+	width: 14px;
+	height: 14px;
+}
+
+#container .content .recipe_wrap .recipe_details .recipe_info .recipe_info_item p {
+	color: var(--txt-color-500);
+	font-size: 12px;
+}
+
+
+/* 레시피 디테일 (레시피 별점) */
+#container .content .recipe_wrap .recipe_details .recipe_score {
+	display: flex;
+}
+#container .content .recipe_wrap .recipe_details .recipe_score p {
+	color: var(--txt-color-500);
+	font-size: 12px;
+	margin-left: 4px;
+}
+
+#container .content .recipe_wrap .recipe_details .recipe_score .star {
+	display: flex;
+	align-items: center;
+}
+#container .content .recipe_wrap .recipe_details .recipe_score .star img {
+	height: 13px;
+	width: 13px;
+}
+
+
+
+
+
+
+
+
+
+
+

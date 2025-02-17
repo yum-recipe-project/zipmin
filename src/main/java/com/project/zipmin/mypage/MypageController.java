@@ -27,6 +27,11 @@ public class MypageController {
 		return "mypage/savedRecipe";
 	}
 	
+	@GetMapping("/mypage/savedGuide.do")
+	public String savedGuide() {
+		return "mypage/savedGuide";
+	}
+	
 	@GetMapping("/mypage.do")
 	public String mypage() {
 		return "mypage/mypage";

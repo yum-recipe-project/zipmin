@@ -97,7 +97,7 @@
 
 /* 작성한 레시피 */
 #container .content .recipe_wrap .recipe_content .recipe_box {
-	border-bottom: 1px solid var(--line-color3);
+	border-bottom: 1px solid var(--line-color2);
 	height: 160px;
 	padding: 30px 0;
 	display: flex;

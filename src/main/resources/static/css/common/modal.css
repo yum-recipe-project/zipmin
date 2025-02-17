@@ -15,6 +15,9 @@
 	border-radius: 12px;
 }
 
+
+
+/* 헤더 */
 #container .modal-content .modal-header {
 	padding: 20px 20px 14px;
 	border-bottom: 1px solid var(--line-color1);
@@ -39,6 +42,9 @@
     box-shadow: none !important;
 }
 
+
+
+/* 바디 */
 #container .modal-content .modal-body {
 	padding: 20px;
 }
@@ -53,6 +59,7 @@
 	margin-bottom: 8px;
 }
 
+/* 바디 (별점) */
 #container .modal-content .modal-body .star_group {
 	display: flex;
 	align-items: center;
@@ -66,12 +73,34 @@
 	height: 20px;
 }
 
+/* 바디 (폼) */
 #container .modal-content .modal-body .form-control:focus {
 	outline: none !important;
     box-shadow: none !important;
     border: 1px solid var(--point-color2);
 }
 
+/* 바디 (주의사항) */
+#container .modal-content .modal-body .form-notice {
+	display: flex;
+	align-items: center;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: -.2px;
+	font-weight: 400;
+	margin-top: 24px;
+    color: var(--txt-color-600);
+}
+
+#container .modal-content .modal-body .form-notice img {
+	width: 20px;
+	height: 20px;
+	margin-right: 4px;
+}
+
+
+
+/* 푸터 */
 #container .modal-content .modal-footer {
 	padding: 8px 20px;
 	border-top: 1px solid var(--line-color1);

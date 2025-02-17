@@ -67,7 +67,7 @@
 
 /* 팔로잉 목록 */
 #container .content .following_wrap .following_list li {
-	border-bottom: 1px solid var(--line-color3);
+	border-bottom: 1px solid var(--line-color2);
 }
 #container .content .following_wrap .following_list .following_box {
 	height: 90px;

@@ -67,7 +67,7 @@
 
 /* 팔로워 목록 */
 #container .content .follower_wrap .follower_list li {
-	border-bottom: 1px solid var(--line-color3);
+	border-bottom: 1px solid var(--line-color2);
 }
 #container .content .follower_wrap .follower_list .follower_box {
 	height: 90px;

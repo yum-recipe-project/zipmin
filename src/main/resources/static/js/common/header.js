@@ -13,8 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	
     // 메뉴 항목 클릭 시 이벤트 리스너 추가
     menuItems.forEach((item, index) => {
-        item.addEventListener('click', function(event) {
-            event.preventDefault();
+        item.addEventListener('click', function() {
             document.querySelectorAll('.gnb li').forEach(li => li.classList.remove('active'));
             this.classList.add('active');
             localStorage.setItem('activeMenuIndex', index);

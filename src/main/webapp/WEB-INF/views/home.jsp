@@ -18,7 +18,6 @@
 				<!-- 메인 배너 -->
 				<div class="main_banner">
 					<h2>회원</h2>
-					<p>로그인 회원가입 관련 페이지들은 링크에 직접 연결해놨삼</p>
 					<button onclick="location.href='/member/verifyPassword.do';">비밀번호 확인</button>
 					<button onclick="location.href='/member/changePassword.do';">비밀번호 변경</button>
 					<button onclick="location.href='/member/userInfo.do';">회원 정보</button>
@@ -63,6 +62,7 @@
 					<button onclick="location.href='/mypage/recipe.do';">내 레시피</button>
 					<button onclick="location.href='/mypage/savedRecipe.do';">저장한 레시피</button>
 					<button onclick="location.href='/mypage/savedGuide.do';">저장한 가이드</button>
+					<button onclick="location.href='/mypage/appliedClass.do';">신청한 클래스</button>
 					<br/><br/>
 				</div>
 				

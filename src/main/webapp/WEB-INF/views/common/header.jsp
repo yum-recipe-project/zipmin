@@ -46,7 +46,7 @@
 					<li><a href="#none">레시피</a></li>
 					<li><a href="#none">키친가이드</a></li>
 					<li><a href="#none">쩝쩝박사</a></li>
-					<li><a href="#none">쿠킹클래스</a></li>
+					<li><a href="/cooking/listClass.do">쿠킹클래스</a></li>
 					<li><a href="#none">나의 냉장고</a></li>
 				</ul>
 			</nav>

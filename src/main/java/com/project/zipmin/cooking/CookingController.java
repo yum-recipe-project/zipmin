@@ -15,4 +15,9 @@ public class CookingController {
 	public String viewClass() {
 		return "cooking/viewClass";
 	}
+	
+	@GetMapping("/cooking/openClass.do")
+	public String openClass() {
+		return "cooking/openClass";
+	}
 }

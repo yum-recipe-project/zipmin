@@ -267,7 +267,7 @@ input[type='checkbox']:checked + label::after {
 	position: absolute;
 	left: 0;
 	top: 50%;
-	transform: translateY(-46%);
+	transform: translateY(-50%);
 	width:24px;
 	height: 24px;
 	border-radius: 2px;

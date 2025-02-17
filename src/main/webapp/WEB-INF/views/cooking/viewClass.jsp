@@ -132,9 +132,7 @@
 					</div>
 				</div>
 			</div>
-			
-			<div id="snackbar">신청이 완료되었습니다</div>
-			
+						
 			<!-- 클래스 신청 모달창 -->
 			<form id="applyClassForm" method="post" action="" onsubmit="">
 				<!-- 히든 폼에 사용자 정보 숨겨서 같이 보내야 함 -->

@@ -47,6 +47,7 @@
 					<h2>쿠킹클래스</h2>
 					<button onclick="location.href='/cooking/listClass.do';">쿠킹클래스 목록</button>
 					<button onclick="location.href='/cooking/viewClass.do';">쿠킹클래스 상세</button>
+					<button onclick="location.href='/cooking/openClass.do';">쿠킹클래스 개설 신청</button>
 					<br/><br/>
 					
 					<h2>후원</h2>
@@ -62,7 +63,9 @@
 					<button onclick="location.href='/mypage/recipe.do';">내 레시피</button>
 					<button onclick="location.href='/mypage/savedRecipe.do';">저장한 레시피</button>
 					<button onclick="location.href='/mypage/savedGuide.do';">저장한 가이드</button>
+					<br/>
 					<button onclick="location.href='/mypage/appliedClass.do';">신청한 클래스</button>
+					<button onclick="location.href='/mypage/class.do';">나의 클래스</button>
 					<br/><br/>
 				</div>
 				

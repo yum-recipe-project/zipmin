@@ -51,6 +51,11 @@ public class MypageController {
 	public String appliedClass() {
 		return "mypage/appliedClass";
 	}
+	
+	@GetMapping("/mypage/class.do")
+	public String myClass() {
+		return "mypage/class";
+	}
 
 	
 	

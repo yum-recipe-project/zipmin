@@ -11,10 +11,18 @@ public class MypageController {
 	public String comment() {
 		return "mypage/comment";
 	}
+	@GetMapping("/mypage/comment/comment.do")
+	public String commentContent() {
+		return "mypage/commentContent";
+	}
 	
 	@GetMapping("/mypage/review.do")
 	public String review() {
 		return "mypage/review";
+	}
+	@GetMapping("/mypage/review/review.do")
+	public String reviewContent() {
+		return "mypage/reviewContent";
 	}
 	
 	@GetMapping("/mypage/recipe.do")

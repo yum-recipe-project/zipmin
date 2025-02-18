@@ -40,25 +40,10 @@
 							</div>
 						</div>
 						
-						<!-- 목록 -->
-						<c:if test="${ true }">
-							<ul class="class_list">
-								<%-- <c:foreach> --%>
-									<li class="class">
-										<a href="/cooking/viewClass.do">
-											<div class="class_thumbnail">
-												<img src="/images/common/test.png">
-											</div>
-											<div class="class_info">
-												<h5>한식 입문 클래스</h5>
-												<p class="flag">모집중</p>
-												<p class="date">2025.03.04 - 2025.04.03</p>
-											</div>
-										</a>
-									</li>
-								<%-- </c:foreach> --%>
-							</ul>
-						</c:if>
+						<!-- 클래스 목록 -->
+						<div class="">
+							<div id="classContent"></div>
+						</div>
 						
 						<!-- 클래스 더보기 버튼 -->
 						<div class="more_class_btn">

@@ -57,18 +57,59 @@
 								</li>
 							</ul>
 							<div class="btn_wrap">
-								<button class="btn_outline" onclick="location.href='/';">목록으로</button>
+								<button class="btn_outline" onclick="location.href='/chompessor/listForum.do';">목록으로</button>
 								<button class="btn_primary" type="submit" onclick="">투표하기</button>
 							</div>
 						</div>
 					</div>
 					
 					<!-- 댓글 -->
-					<div id="forumCommentContent"></div>
+					<div class="comment_wrap">
+						<!-- 댓글 헤더 -->
+						<div class="comment_header">
+							<div class="comment_count">
+								<span>댓글</span>
+								<span>7</span>
+							</div>
+							<div class="comment_order">
+								<button class="active">최신순</button>
+								<button>오래된순</button>
+							</div>
+						</div>
+						
+						<!-- 댓글 작성 -->
+						<div class="comment_write">
+							<!-- 로그인 하지 않은 경우 -->
+							<c:if test="${ false }">
+								<a href="/member/login.do">
+									<span>댓글 작성을 위해 로그인을 해주세요.</span>
+									<span>400</span>
+								</a>
+							</c:if>
+							<!-- 로그인 한 경우 -->
+							<c:if test="${ true }">
+								<form>
+									<div class="login_user">
+										<img src="/images/common/test.png">
+										<span>아잠만</span>
+									</div>
+									<div class="comment_input">
+										<textarea id="commentInput" rows="2" maxlength="400" placeholder="욕설, 비방, 허위 정보 및 부적절한 댓글은 사전 경고 없이 삭제될 수 있습니다."></textarea>
+										<span>400</span>
+									</div>
+									<div class="write_btn">
+										<button class="btn_primary disable" type="submit" id="commentButton" class="disable" onclick="" disabled>작성하기</button>
+									</div>
+								</form>
+							</c:if>
+						</div>
+						<!-- 댓글 목록 -->
+						<div id="forumCommentContent"></div>
+					</div>
 					
 					<!-- 댓글 더보기 버튼 -->
 					<div class="more_comment_btn">
-						<button class="btn_outline_wide">
+						<button class="btn_more">
 							<span>더보기</span>
 							<img src="/images/chompessor/arrow_down.png">
 						</button>

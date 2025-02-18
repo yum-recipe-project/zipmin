@@ -175,6 +175,7 @@
 							</div>
 						</div>
 						<div class="btn_wrap">
+							
 							<button class="btn_outline" type="button" data-bs-toggle="modal" data-bs-target="#supportRecipeModal"
 								onclick="openSupportRecipeModal();">
 								레시피 후원하기
@@ -348,7 +349,10 @@
 											<p>포인트가 부족해요.</p>
 											<p>부족한 포인트를 충전하고 레시피를 후원해 보세요.</p>
 										</div>
-										<button>포인트 충전</button>
+										<button type="button" data-bs-toggle="modal" data-bs-target="#topUpPointModal"
+											onclick="">
+											포인트 충전
+										</button>
 									</div>
 								</c:if>
 								<div class="form-explain">
@@ -366,6 +370,75 @@
 					</div>
 				</div>
 			</form>
+			
+			<form id="topUpPointForm" onsubmit="">
+				<!-- 히든폼 필요하다면 이곳에 추가 -->
+				<div class="modal" id="topUpPointModal">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5>충전하기</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+							</div>
+							<div class="modal-body">
+								<div class="">
+									<label>충전할 포인트</label>
+									<div class="modal-topup">
+										<div class="modal-point">
+											<div class="modal-radio">
+												<div>
+													<input type="radio" id="1000P" name="point" value="">
+													<label for="1000P">1,000P</label>
+												</div>
+												<p>1,000원</p>
+											</div>
+											<div class="modal-radio">
+												<div class="radio">
+													<input type="radio" id="3000P" name="point" value="">
+													<label for="3000P">3,000P</label>
+												</div>
+												<p>3,000원</p>
+											</div>
+											<div class="modal-radio">
+												<div>
+													<input type="radio" id="5000P" name="point" value="">
+													<label for="5000P">5,000P</label>
+												</div>
+												<p>5,000원</p>
+											</div>
+											<div class="modal-radio">
+												<div>
+													<input type="radio" id="10000P" name="point" value="">
+													<label for="10000P">10,000P</label>
+												</div>
+												<p>10,000원</p>
+											</div>
+										</div>
+										<div class="modal-result">
+											<p>충전 후 예상 보유 포인트</p>
+											<p><em>5,000P</em></p>
+										</div>
+										<div class="form-explain">
+											<p>
+												본 사이트는 개인 포트폴리오를 위한 비상업적 웹사이트로, 연구 및 실험 목적만을 위해 운영됩니다.
+												모든 기능은 수익 창출과 무관하며 결제된 금액은 자동으로 전액 환불됩니다.
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+								<button type="submit" class="btn btn-primary">충전하기</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+			
+			
+			
+			
 		</main>
 		
 		<%@include file="../common/footer.jsp" %>

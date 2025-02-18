@@ -11,6 +11,11 @@ public class CookingController {
 		return "cooking/listClass";
 	}
 	
+	@GetMapping("/cooking/listClass/class.do")
+	public String listClassContent() {
+		return "cooking/classContent";
+	}
+	
 	@GetMapping("/cooking/viewClass.do")
 	public String viewClass() {
 		return "cooking/viewClass";

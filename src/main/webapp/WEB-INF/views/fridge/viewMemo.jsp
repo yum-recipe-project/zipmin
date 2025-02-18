@@ -15,7 +15,6 @@
 		<main id="container">
 			<div class="content">
 			
-			
 				<div class="memo_wrap">
 				
 					<div class="memo_header">

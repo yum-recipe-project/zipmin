@@ -22,7 +22,7 @@
 						
 						<!-- 스크랩 버튼 -->
 						<div class="save_recipe_btn">
-							<button class="btn_outline_icon" onclick="">
+							<button class="btn_tool" onclick="">
 								<img src="/images/recipe/star.png"> 저장
 							</button>
 						</div>
@@ -46,7 +46,7 @@
 						<!-- 작성자 -->
 						<div class="recipe_writer">
 							<a class="nickname" href="">
-								<img src="/images/common/black.png">
+								<img src="/images/common/test.png">
 								아잠만
 							</a>
 							<c:if test="${ true }">
@@ -88,7 +88,7 @@
 						
 						<!-- 장보기메모에 재료 담기 버튼 -->
 						<div class="save_ingredient_btn">
-							<button class="btn_outline_icon" onclick="">
+							<button class="btn_tool" onclick="">
 								<img src="/images/recipe/sell.png"> 장보기메모에 재료 담기
 							</button>
 						</div>
@@ -149,7 +149,7 @@
 									</div>
 									<c:if test="${ true }">
 										<div class="image">
-											<img src="/images/common/black.png">
+											<img src="/images/common/test.png">
 										</div>
 									</c:if>
 								</li>
@@ -168,7 +168,7 @@
 					<!-- 구독 및 후원 -->
 					<div class="recipe_util">
 						<div class="profile">
-							<img src="/images/common/black.png">
+							<img src="/images/common/test.png">
 							<div>
 								<h5>아잠만</h5>
 								<p>구독자 45명</p>
@@ -181,10 +181,10 @@
 							</button>
 							
 							<c:if test="${ true }">
-								<button class="btn_dark" class="follow_btn" type="submit" onclick="">구독</button>
+								<button class="btn_dark" type="submit" onclick="">구독</button>
 							</c:if>
 							<c:if test="${ true }">
-								<button class="btn_outline" class="unfollow_btn" type="submit" onclick="">구독 중</button>
+								<button class="btn_outline" type="submit" onclick="">구독 중</button>
 							</c:if>
 						</div>
 					</div>
@@ -202,7 +202,7 @@
 				<div class="tab_content">
 					<div id="recipeReviewContent"></div>
 					<div class="more_review_btn">
-						<button class="btn_outline_wide">
+						<button class="btn_more">
 							<span>더보기</span>
 							<img src="/images/recipe/arrow_down_black.png">
 						</button>
@@ -213,7 +213,7 @@
 				<div class="tab_content">
 					<div id="recipeCommentContent"></div>
 					<div class="more_comment_btn">
-						<button class="btn_outline_wide">
+						<button class="btn_more">
 							<span>더보기</span>
 							<img src="/images/recipe/arrow_down_black.png">
 						</button>

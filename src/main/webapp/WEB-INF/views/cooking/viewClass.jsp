@@ -146,11 +146,11 @@
 							<div class="modal-body">
 								<div class="form-group">
 									<label>1. 클래스를 신청하게 된 동기와 이유를 적어주세요 (500자 이내)</label>
-									<textarea class="form-control" id="applyClass어쩌구Input" name="content" style="height: 90px;"></textarea>
+									<textarea class="form-control" id="applyClassReasonInput" name="content" style="height: 90px;"></textarea>
 								</div>
 								<div class="form-group">
 									<label>2. 강사님께 궁금한 점이 있다면 적어주세요 (선택사항)</label>
-									<textarea class="form-control" id="applyClass어쩌구Input" name="content" style="height: 90px;"></textarea>
+									<textarea class="form-control" id="applyClassQuestionInput" name="content" style="height: 90px;"></textarea>
 								</div>
 								<p class="form-notice">
 									<img src="/images/cooking/error.png">

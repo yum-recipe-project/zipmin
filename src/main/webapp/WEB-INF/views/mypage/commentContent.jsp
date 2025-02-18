@@ -30,7 +30,10 @@
 									<span>2025.02.11</span>
 								</div>
 								<div class="mycomment_action">
-									<a href="">수정</a>
+									<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editCommentModal"
+										onclick="openCommentModal();">
+										수정
+									</a>
 									<a href="">삭제</a>
 								</div>
 							</div>

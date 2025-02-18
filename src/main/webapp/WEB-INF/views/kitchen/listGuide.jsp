@@ -7,6 +7,7 @@
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/kitchen/list-guide.css">
+		<link rel="stylesheet" href="/css/common/pagination.css">
 		<script src="/js/kitchen/list-guide.js"></script>
 	</head>
 	<body>
@@ -38,6 +39,7 @@
 				
 				<div class="guide_content">
 				
+					<!-- 가이드 정렬 요소 -->
 					<div class="guide_util">
 						<p class="total">총 23개</p>
 						<div class="guide_sort">
@@ -45,16 +47,188 @@
 							<button class="btn_sort">인기순</button>
 						</div>
 					</div>
+					
+					<!-- 키친가이드 목록 -->
+					<ul class="guide_list">
+						<li>
+							<div class="guide_item">
+
+								<div class="guide_details">
+									<div class="guide_top">
+										<span>제주 바다향을 담은</span>
+										<!-- 찜 버튼 -->
+										<button class="favorite_btn"></button>
+									</div>
+									
+									<span>뿔 소라 손질법</span>
+									
+									<div class="info">
+										<p>스크랩 39</p>
+										<p>2025.02.08</p>
+									</div>
+									
+									<div class="writer">
+										<!-- 프로필 이미지 -->
+										<c:if test="${ false }">
+											<img src="/images/common/hh.jpg">
+										</c:if>
+										<c:if test="${ true }">
+											<span class="profile_img"></span>
+										</c:if>
+										
+										<p>아잠만</p>
+									</div>
+								</div>
+								
+							</div>	
+						</li>
 						
+						<li>
+							<div class="guide_item">
+
+								<div class="guide_details">
+									<div class="guide_top">
+										<span>제주 바다향을 담은</span>
+										<!-- 찜 버튼 -->
+										<button class="favorite_btn"></button>
+									</div>
+									
+									<span>뿔 소라 손질법</span>
+									
+									<div class="info">
+										<p>스크랩 39</p>
+										<p>2025.02.08</p>
+									</div>
+									
+									<div class="writer">
+										<!-- 프로필 이미지 -->
+										<c:if test="${ false }">
+											<img src="/images/common/hh.jpg">
+										</c:if>
+										<c:if test="${ true }">
+											<span class="profile_img"></span>
+										</c:if>
+										
+										<p>아잠만</p>
+									</div>
+								</div>
+								
+							</div>	
+						</li>
+						<li>
+							<div class="guide_item">
+
+								<div class="guide_details">
+									<div class="guide_top">
+										<span>제주 바다향을 담은</span>
+										<!-- 찜 버튼 -->
+										<button class="favorite_btn"></button>
+									</div>
+									
+									<span>뿔 소라 손질법</span>
+									
+									<div class="info">
+										<p>스크랩 39</p>
+										<p>2025.02.08</p>
+									</div>
+									
+									<div class="writer">
+										<!-- 프로필 이미지 -->
+										<c:if test="${ false }">
+											<img src="/images/common/hh.jpg">
+										</c:if>
+										<c:if test="${ true }">
+											<span class="profile_img"></span>
+										</c:if>
+										
+										<p>아잠만</p>
+									</div>
+								</div>
+								
+							</div>	
+						</li>
+						<li>
+							<div class="guide_item">
+
+								<div class="guide_details">
+									<div class="guide_top">
+										<span>제주 바다향을 담은</span>
+										<!-- 찜 버튼 -->
+										<button class="favorite_btn"></button>
+									</div>
+									
+									<span>뿔 소라 손질법</span>
+									
+									<div class="info">
+										<p>스크랩 39</p>
+										<p>2025.02.08</p>
+									</div>
+									
+									<div class="writer">
+										<!-- 프로필 이미지 -->
+										<c:if test="${ false }">
+											<img src="/images/common/hh.jpg">
+										</c:if>
+										<c:if test="${ true }">
+											<span class="profile_img"></span>
+										</c:if>
+										
+										<p>아잠만</p>
+									</div>
+								</div>
+								
+							</div>	
+						</li>
+						<li>
+							<div class="guide_item">
+
+								<div class="guide_details">
+									<div class="guide_top">
+										<span>제주 바다향을 담은</span>
+										<!-- 찜 버튼 -->
+										<button class="favorite_btn"></button>
+									</div>
+									
+									<span>뿔 소라 손질법</span>
+									
+									<div class="info">
+										<p>스크랩 39</p>
+										<p>2025.02.08</p>
+									</div>
+									
+									<div class="writer">
+										<!-- 프로필 이미지 -->
+										<c:if test="${ false }">
+											<img src="/images/common/hh.jpg">
+										</c:if>
+										<c:if test="${ true }">
+											<span class="profile_img"></span>
+										</c:if>
+										
+										<p>아잠만</p>
+									</div>
+								</div>
+								
+							</div>	
+						</li>
+						
+					</ul>
 						
 				</div>
-			
-			
-			
-			
-			
-			
-			
+	
+				<div class="pagination_wrap">
+					<div class="pagination">
+					    <ul>
+					        <li><a href="#" class="prev"><img src="/images/common/chevron_left.png"></a></li>
+					        <li><a href="#" class="page active">1</a></li>
+					        <li><a href="#" class="page">2</a></li>
+					        <li><a href="#" class="page">3</a></li>
+					        <li><a href="#" class="page">4</a></li>
+					        <li><a href="#" class="page">5</a></li>
+					        <li><a href="#" class="next"><img src="/images/common/chevron_right.png"></a></li>
+					    </ul>
+					</div>
+				</div>
 			
 			</div>
 		</main>

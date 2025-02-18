@@ -1,1 +1,57 @@
 @charset "UTF-8";
+
+#container .content {
+	margin: 0px auto;
+	padding: 0 108px;
+	width: 1160px;
+}
+
+/* 가이드 헤더 */
+#container .content .guide_header {
+	margin: 0px auto;
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	box-sizing: border-box;
+	padding: 40px 0;
+}
+
+#container .content .guide_header h2 {
+	font-weight: 700;
+	line-height: 1.5;
+	letter-spacing: -0.03em;
+	font-size: 32px;
+	margin-bottom: 40px;
+}
+
+#container .content .guide_header .tab {
+	flex-wrap: wrap;
+	height: auto;
+	margin: -2px;
+	padding: 12px 0;
+}
+
+#container .content .guide_header .tab a {
+	margin: 4px;
+}
+
+
+
+/* 가이드 콘텐츠 (개수/정렬) */
+#container .content .guide_content .guide_util {
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: -.2px;
+	font-weight: 400;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: -8px;
+	margin-bottom: 16px;
+	color: var(--txt-color-500);
+}
+
+#container .content .guide_util .guide_sort {
+	display: flex;
+	gap: 16px;
+}

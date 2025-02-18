@@ -1,0 +1,368 @@
+@charset "UTF-8";
+
+#container .content {
+	margin: 0px auto;
+	padding: 0 108px;
+	width: 1160px;
+}
+
+
+
+/* 클래스 헤더 */
+#container .content .class_header {
+	display: flex;
+	flex-direction: column;
+	padding-top: 56px;
+	padding-bottom: 32px;
+}
+
+#container .content .class_header h2 {
+	text-align: center;
+	font-weight: 600;
+	line-height: 1.5;
+	letter-spacing: -0.03em;
+	font-size: 32px;
+}
+
+
+
+/* 동의 */
+#container .agree_wrap {
+	display: flex;
+	margin: 30px 0;
+	gap: 0 20px;
+	padding-bottom: 30px;
+}
+
+#container .agree_wrap .agree {
+	width: calc(50% - 10px);
+}
+
+#container .agree_wrap .agree .agree_title {
+	font-size: 16px;
+	font-weight: 500;
+	color: var(--txt-color-500);
+	margin-bottom: 10px;
+}
+
+#container .agree_wrap .agree_box {
+	border: 1px solid var(--line-color2);
+	padding: 15px 10px 15px 15px;
+	margin-bottom: 10px;
+	height: 150px;
+	overflow-y: auto;
+	font-size: 14px;
+	color: #BBB;
+}
+
+/* 동의 (체크박스) */
+#container .content .agree_wrap .accept_notice label {
+	font-size: 14px;
+}
+
+#container .content .agree_wrap .accept_notice span {
+	color: var(--point-color1);
+	font-weight: 600;
+	margin-left: 5px;
+}
+
+
+
+
+
+#container .class_wrap h3 {
+	font-size: 24px;
+    line-height: 32px;
+    letter-spacing: -0.4px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    margin-top: 40px;
+}
+
+#container .class_wrap .class_info {
+	position: relative;
+}
+
+
+#container .class_wrap .class_intro {
+	position: relative;
+}
+
+
+
+
+
+
+
+
+
+#container .class_wrap .rt_note {
+	position: absolute;
+	right: 0;
+	top: -29px;
+	color: #999;
+	font-size: 14px;
+	background: url(/images/cooking/icon_ess.png) 0 7px no-repeat;
+	padding-left: 10px;
+}
+
+
+
+
+
+#container .class_wrap table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	width: 100%;
+}
+
+#container .class_wrap table tbody {
+	display: table-row-group;
+	vertical-align: middle;
+	border-color: inherit;
+}
+
+#container .class_wrap table tbody tr {
+	display: table-row;
+	vertical-align: inherit;
+	unicode-bidi: isolate;
+	border-color: inherit;
+}
+
+#container .class_wrap table tbody tr th {
+	font-weight: 300;
+	color: #666;
+	font-size: 16px;
+	height: 21px;
+	padding-top: 24px;
+	border-bottom: 1px solid #e8e8e8;
+	text-align: left;
+	vertical-align: top;
+}
+
+#container .class_wrap table tbody tr th .ess {
+	background: url(/images/cooking/icon_ess.png) 0 0 no-repeat;
+	width: 7px;
+	height: 6px;
+	display: inline-block;
+	vertical-align: middle;
+	position: relative;
+	margin-left: 4px;
+	top: -2px;
+}
+
+#container .class_wrap table tbody tr td {
+	height: 45px;
+	padding: 12px 0;
+	border-bottom: 1px solid #e8e8e8;
+}
+
+#container .class_wrap .form_text {
+	background-color: #f8f8f8;
+	display: inline-block;
+	width: 100%;
+}
+
+#container .class_wrap .form_text input {
+	width: 100%;
+	border: 0;
+	background: transparent;
+	height: 45px;
+	color: #292929;
+	font-size: 16px;
+	text-indent: 10px;
+}
+
+#container .class_wrap .form_textarea {
+	background-color: #f8f8f8;
+    display: inline-block;
+    width: 100%;
+}
+
+#container .class_wrap .form_textarea textarea {
+	background-color: transparent;
+	width: 100%;
+	border: 0;
+	font-size: 16px;
+	height: 90px;
+	padding: 10px 20px;
+}
+
+
+
+#container .class_wrap .form_select {
+	display: inline-block;
+	vertical-align: middle;
+	overflow: hidden;
+	position: relative;
+	border: 2px solid #DDD;
+	width: 196px;
+	margin-right: 7px;
+	box-sizing: border-box;
+}
+
+#container .class_wrap .form_select:before {
+	content: '';
+	position: absolute;
+	right: 13px;
+	top: 18px;
+	width: 12px;
+	height: 7px;
+	background: url(/images/cooking/arrow_down.png) 0 0 no-repeat;
+	z-index: 3;
+}
+
+#container .class_wrap .form_select select {
+	width: 100%;
+	border: 0;
+	height: 41px;
+	line-height: 41px;
+	font-size: 16px;
+	color: #999;
+	position: relative;
+	z-index: 1;
+	text-indent: 9px;
+}
+
+
+
+#container .class_wrap .form_file {
+	width: 466px;
+	border: 2px solid #dddddd;
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
+	padding-right: 98px;
+	box-sizing: border-box;
+}
+
+#container .class_wrap .form_file:before {
+	content: '';
+	position: absolute;
+	right: 96px;
+	top: 13px;
+	width: 2px;
+	height: 16px;
+	background: #E8E8E8;
+}
+
+#container .class_wrap .form_file input[type='file'] {
+	position: absolute;
+	right: 0;
+	top: 0;
+	height: 41px;
+	width: 98px;
+	text-indent: -9999px;
+	opacity: 0;
+	z-index: 3;
+	cursor: pointer;
+}
+
+#container .class_wrap .form_file input[type='text'] {
+	width: 100%;
+    height: 41px;
+    border: 0;
+    display: block;
+    text-indent: 13px;
+}
+
+#container .class_wrap .form_file:after {
+	content: '파일선택';
+	position: absolute;
+	right: 20px;
+	top: 0;
+	z-index: 1;
+	cursor: pointer;
+	line-height: 41px;
+	color: var(--point-color1);
+	font-size: 16px;
+	font-weight: 300;
+	letter-spacing: -0.05em;
+}
+
+
+
+#container .class_wrap .form_datepicker {
+	display: inline-block;
+	vertical-align: middle;
+	position: relative;
+	overflow: visible;
+	border: 2px solid #DDD;
+	width: 196px;
+	margin-right: 7px;
+	box-sizing: border-box;
+}
+
+#container .class_wrap .form_datepicker:before {
+	content: '';
+	position: absolute;
+	transform: translateY(-50%);
+	right: 10px;
+	top: 20px;
+	width: 24px;
+	height: 24px;
+	background: url(/images/cooking/calendar.png) 0 0 no-repeat;
+	background-size: contain;
+	pointer-events: none;
+}
+
+#container .class_wrap .form_datepicker input {
+	border: none;
+	box-shadow: none;
+}
+
+#container .class_wrap .form_datepicker input.form-control:focus {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+#container .class_wrap .form_timepicker {
+	display: inline-block;
+	vertical-align: middle;
+	position: relative;
+	overflow: visible;
+	border: 2px solid #DDD;
+	width: 196px;
+	margin-right: 7px;
+	box-sizing: border-box;
+}
+
+#container .class_wrap .form_timepicker:before {
+	content: '';
+	position: absolute;
+	transform: translateY(-50%);
+	right: 10px;
+	top: 20px;
+	width: 24px;
+	height: 24px;
+	background: url(/images/cooking/clock.png) 0 0 no-repeat;
+	background-size: contain;
+	pointer-events: none;
+}
+
+#container .class_wrap .form_timepicker input {
+	border: none;
+	box-shadow: none;
+}
+
+#container .class_wrap .form_timepicker input.form-control:focus {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+
+
+#container .btn_wrap {
+	width: 100%;
+	margin-top: 40px;
+	margin-bottom: 80px;
+	justify-content: center;
+}
+
+
+
+

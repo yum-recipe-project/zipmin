@@ -1,0 +1,205 @@
+@charset "UTF-8";
+
+#container .content {
+	margin: 0px auto;
+	padding: 0 108px;
+	width: 1160px;
+}
+
+#container .content .class_wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	margin-top: 40px;
+	margin-bottom: 80px;
+}
+
+
+
+/* 헤더 (링크) */
+#container .content .class_wrap .class_header a {
+	padding: 8px 0px;
+	color: var(--txt-color-500);
+	font-weight: 500;
+	line-height: 1.4;
+	letter-spacing: -0.02em;
+	font-size: 14px;
+}
+
+#container .content .class_wrap .class_header a span {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	
+}
+
+#container .content .class_wrap .class_header a span img {
+	width: 20px;
+	height: 20px;
+}
+
+/* 헤더 (제목) */
+#container .content .class_wrap .class_header h2 {
+	margin-top: 8px;
+	font-weight: 700;
+	line-height: 1.5;
+	letter-spacing: -0.03em;
+	font-size: 32px;
+}
+
+
+
+
+
+#container .content .class_wrap .class_util {
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+	font-weight: 400;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	color: var(--txt-color-500);
+}
+
+#container .content .class_wrap .class_util .class_sort {
+	display: flex;
+	gap: 16px;
+}
+
+
+
+/* 결석 */
+#container .content .class_wrap .class_absent {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 0 0 24px;
+	padding: 24px;
+	color: var(--txt-color-600);
+    background-color: #F8F8F8;
+    border: 1px solid #DDD;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.2px;
+    font-weight: 400;
+}
+
+#container .content .class_wrap .class_absent button {
+	background: none;
+	border: none;
+}
+
+#container .content .class_wrap .class_absent button span {
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: -.2px;
+	font-weight: 400;
+	position: relative;
+	color: var(--txt-color-600);
+}
+
+#container .content .class_wrap .class_absent button span::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: -2px;
+	height: 1px;
+	background: var(--txt-color-600);
+}
+
+
+
+
+
+
+/* 클래스 목록 */
+#container .content .class_wrap .class_list li:not(:first-child) {
+	margin-top: 24px;
+	padding-top: 24px;
+	border-top: 1px solid #EEE;
+}
+
+#container .content .class_wrap .class_list .status {
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: -.4px;
+	font-weight: 700;
+	margin-bottom: 16px;
+	color: var(--txt-color-500);
+}
+	
+#container .content .class_wrap .class_list .class {
+	display: flex;
+	align-items: center;
+}
+
+/* 클래스 목록 (썸네일) */
+#container .content .class_wrap .class_list .thumbnail {
+	width: 252px;
+	min-width: 252px;
+	height: 142px;
+	margin-right: 16px;
+	border-radius: 4px;
+}
+
+#container .content .class_wrap .class_list .thumbnail img {
+	width: 100%;
+	height: 100%;
+	border-radius: 4px;
+}
+
+/* 클래스 목록 (정보) */
+#container .content .class_wrap .class_list .info {
+	max-width: 600px;
+	flex: 1 1 auto;
+	width: 100%;
+}
+
+#container .content .class_wrap .class_list .info a {
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: -0.4px;
+	font-weight: 600;
+	overflow: hidden;
+	display: block;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-align: left;
+}
+
+#container .content .class_wrap .class_list .info p {
+	display: flex;
+	flex-direction: column;
+	margin-top: 4px;
+	color: var(--txt-color-500);
+}
+
+#container .content .class_wrap .class_list .info span {
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+	font-weight: 400;
+	overflow: hidden;
+	display: block;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	margin-top: 4px;
+}
+
+#container .content .class_wrap .class_list .info span em {
+	margin-right: 8px;
+    color: var(--txt-color-600);
+}
+
+/* 클래스 목록 (신청 취소 버튼) */
+#container .content .class_wrap .class_list .cancel_btn {
+	align-self: center;
+	flex: none;
+	margin-left: 16px;	
+}
+
+
+

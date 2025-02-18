@@ -1,11 +1,11 @@
 @charset "UTF-8";
 
+
 #container .content {
 	margin: 0px auto;
-	padding: 0 108px;
+	padding: 0 40px;
 	width: 1160px;
 }
-
 
 
 /* 레시피 헤더 */
@@ -114,18 +114,18 @@
 #container .content .recipe_content .recipe_list {
 	display: flex;
 	flex-wrap: wrap;
-	margin: -29px -14px;
+	margin: -29px -16px;
 }
 
 #container .content .recipe_content .recipe_list .recipe {
-	width: calc(25% - 28px);
-	margin: 29px 14px;
+	width: calc(25% - 32px);
+	margin: 29px 16px;
 	display: block;
 }
 
 #container .content .recipe_content .recipe_list .recipe .recipe_thumbnail {
-	height: 222px;
-	width: 222px;
+	height: 258px;
+	width: 258px;
 	margin-bottom: 16px;
 	border-radius: 4px;
 }

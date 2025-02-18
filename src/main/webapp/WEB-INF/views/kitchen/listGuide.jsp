@@ -17,7 +17,7 @@
 			<div class="content">
 			
 				<div class="guide_header">
-					<h2>키친가이드 목록</h2>
+					<h2>키친가이드</h2>
 					<div class="tab">
 						<a class="btn_tab active" href="">
 							<span>전체</span>

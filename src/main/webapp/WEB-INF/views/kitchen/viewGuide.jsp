@@ -23,7 +23,7 @@
 						<span>제주 바다향을 담은</span>
 						<h2>뿔 소라 손질법</h2>
 						<div class="guide_writer">
-							<img src="/images/common/black.png">
+							<img src="/images/common/test.png">
 							<span><b>아잠만</b></span>
 							<span> ・ </span>
 							<span>저장</span>
@@ -32,7 +32,7 @@
 							<span>2025.02.10</span>
 						</div>
 						<div class="btn_wrap">
-							<button class="btn_outline_icon" onclick="">
+							<button class="btn_tool" onclick="">
 								<img src="/images/kitchen/star.png"> 저장
 							</button>
 						</div>
@@ -58,11 +58,52 @@
 				</div>
 				
 				<!-- 댓글 -->
-				<div id="guideCommentContent"></div>
+				<div class="comment_wrap">
+					<!-- 댓글 헤더 -->
+					<div class="comment_header">
+						<div class="comment_count">
+							<span>키친 한마디</span>
+							<span>4</span>
+						</div>
+						<div class="comment_order">
+							<button class="active">최신순</button>
+							<button>오래된순</button>
+						</div>
+					</div>
+					
+					<!-- 댓글 작성 -->
+					<div class="comment_write">
+						<!-- 로그인 하지 않은 경우 -->
+						<c:if test="${ false }">
+							<a href="/member/login.do">
+								<span>키친 한마디 작성을 위해 로그인을 해주세요.</span>
+								<span>400</span>
+							</a>
+						</c:if>
+						<!-- 로그인 한 경우 -->
+						<c:if test="${ true }">
+							<form>
+								<div class="login_user">
+									<img src="/images/common/test.png">
+									<span>아잠만</span>
+								</div>
+								<div class="comment_input">
+									<textarea id="commentInput" rows="2" maxlength="400" placeholder="나누고 싶은 좋은 방법이 있다면 키친 한마디을 남겨주세요!&#10;주제와 무관한 키친 한마디는 삭제될 수 있습니다."></textarea>
+									<span>400</span>
+								</div>
+								<div class="write_btn">
+									<button class="btn_primary disable" type="submit" id="commentButton" onclick="" disabled>작성하기</button>
+								</div>
+							</form>
+						</c:if>
+					</div>
+					<!-- 댓글 목록 -->
+					<div id="guideCommentContent"></div>
+				</div>
 				
 				<!-- 댓글 더보기 버튼 -->
 				<div class="more_comment_btn">
-					<button class="btn_outline_wide">
+					<button class="btn_more">
 						<span>더보기</span>
 						<img src="/images/kitchen/arrow_down.png">
 					</button>

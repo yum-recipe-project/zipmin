@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		})
 		.catch(error => console.log(error));
 	*/
+	// 일단 하드코딩 해두었음
 	ownedPoint.innerText = 200;
 	remainPoint.innerText = 100;
 	
@@ -45,6 +46,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	const pointRadio = document.getElementsByName("point");
 	
 	// 패치해와서 hidden 폼에 보유한 포인트 꽂기 + 토탈 포인트 기본 초기값
+	// 일단 하드코딩 해두었음
 	ownedPoint.innerText = 200;
 	totalPoint.innerText = 200 + "P";
 	
@@ -54,6 +56,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		})
 	});
 });
+
 
 
 

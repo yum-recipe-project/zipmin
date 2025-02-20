@@ -1,4 +1,107 @@
 /**
+ * 레시피 상세 페이지에 데이터를 설정하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const title = document.getElementById("title");
+	const level = document.getElementById("level");
+	const time = document.getElementById("time");
+	const spicy = document.getElementById("spicy");
+	const introduce = document.getElementById("introduce");
+	const tip = document.getElementById("tip");
+	const category = document.getElementById("category");
+	const nickname = document.querySelectorAll(".nickname[data-id]");
+	const servingInput = document.getElementById("servingInput");
+	const ingredientkk = document.getElementById("ingredient");
+	const stepkk = document.getElementById("step");
+	const follower = document.getElementById("follower");
+	const followButton = document.getElementById("followButton");
+	const reviewCount = document.querySelectorAll(".review_count[data-id]");
+	const commentCount = document.querySelectorAll(".comment_count[data-id]");
+	
+	// 데이터 패치
+	fetch("http://localhost:8586/recipe/1", {
+		method: "get"
+	})
+	.then(response => response.json())
+	.then(data => {
+		title.innerText = data.title;
+		level.innerText = data.level;
+		time.innerText = data.time;
+		spicy.innerText = data.spicy;
+		introduce.innerText = data.introduce;
+		tip.innerText = data.tip;
+		// 카테고리
+		const span1 = document.createElement('span');
+		span1.textContent = `#${ data.category.type }`;
+		category.appendChild(span1);
+		const span2 = document.createElement('span');
+		span2.textContent = `#${ data.category.situation }`;
+		category.appendChild(span2);
+		const span3 = document.createElement('span');
+		span3.textContent = `#${ data.category.ingredient }`;
+		category.appendChild(span3);
+		const span4 = document.createElement('span');
+		span4.textContent = `#${ data.category.way }`;
+		category.appendChild(span4);
+		//
+		nickname.forEach(n => {
+			n.innerText = data.member.nickname;
+		});
+		servingInput.value = data.serving;
+		previousValue = parseFloat(data.serving);
+		// 재료
+		data.ingredient_list.forEach(ingredient => {
+			const tr = document.createElement("tr");
+			const tdName = document.createElement("td");
+			tdName.textContent = ingredient.name;
+			const tdAmount = document.createElement("td");
+			tdAmount.textContent = ingredient.amount + ingredient.unit;
+			const tdNote = document.createElement("td");
+			tdNote.textContent = ingredient.note || "";
+			tr.appendChild(tdName);
+			tr.appendChild(tdAmount);
+			tr.appendChild(tdNote);
+			ingredientkk.appendChild(tr);
+		});
+		// 조리 순서
+		stepkk.innerHTML = data.step_list.map((step, index) => `
+	        <li>
+	            <div class="description">
+	                <h5>STEP${ index + 1 }</h5>
+	                <p>${ step.description }</p>
+	            </div>
+	            ${step.image ? `<div class="image"><img src="${step.image}"></div>` : `<div class="image"><img src="/images/common/test.png"></div>`}
+	        </li>
+	    `).join("");
+		
+		// 구독자 수
+		follower.innerText = data.follower_count;
+		// 구독 버튼
+		followButton.classList.toggle("btn_outline", data.isFollow);
+		followButton.classList.toggle("btn_dark", !data.isFollow);
+		followButton.innerText = (data.isFollow === false ? "구독" : "구독 중");
+		
+		// 댓글 수
+		commentCount.forEach(c => {
+			c.innerHTML = data.comment_count;
+		})
+		
+		// 리뷰 수
+		reviewCount.forEach(r => {
+			r.innerHTML = data.review_count;
+		});
+		
+	})
+	.catch(error => console.log(error));
+});
+
+
+
+
+
+
+
+/**
  * 리뷰/댓글 탭 메뉴 클릭 시 탭 메뉴를 활성화하고 해당하는 내용을 표시하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {

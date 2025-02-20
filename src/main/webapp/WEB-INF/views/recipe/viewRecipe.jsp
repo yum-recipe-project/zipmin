@@ -19,12 +19,12 @@
 				<div class="recipe_wrap">
 					<div class="recipe_header">
 						<!-- 제목 -->
-						<h2>마법의 카레 가루</h2>
+						<h2 id="title"></h2>
 						
 						<!-- 스크랩 버튼 -->
 						<div class="save_recipe_btn">
 							<button class="btn_tool" onclick="">
-								<img src="/images/recipe/star.png"> 저장
+								<img src="/images/recipe/bookmark.png"> 저장
 							</button>
 						</div>
 						
@@ -32,15 +32,15 @@
 						<div class="recipe_info">
 							<div class="recipe_info_item">
 								<img src="/images/recipe/level.png">
-								<p>초급</p>
+								<p id="level"></p>
 							</div>
 							<div class="recipe_info_item">
 								<img src="/images/recipe/time.png">
-								<p>40분</p>
+								<p id="time"></p>
 							</div>
 							<div class="recipe_info_item">
 								<img src="/images/recipe/spicy.png">
-								<p>매움</p>
+								<p id="spicy"></p>
 							</div>
 						</div>
 						
@@ -48,7 +48,7 @@
 						<div class="recipe_writer">
 							<a class="nickname" href="">
 								<img src="/images/common/test.png">
-								아잠만
+								<span class="nickname" data-id="1">아잠만</span>
 							</a>
 							<c:if test="${ true }">
 								<a href="">팔로우</a>
@@ -56,17 +56,10 @@
 						</div>
 						
 						<!-- 소개 -->
-						<p class="recipe_introduce">
-							이 요리는 영국에서 최초로 시작되어 일년에 한바퀴를 돌면서 받는 사람에게 행운을 주었고
-							지금은 당신에게로 옮겨진 이 요리는 4일 안에 당신 곁을 떠나야 합니다.
-							이 요리를 포함해서 7통을 행운이 필요한 사람에게 보내 주셔야 합니다.
-							복사를 해도 좋습니다. 혹 미신이라 하실지 모르겠지만 사실입니다.
-						</p>
+						<p id="introduce" class="recipe_introduce"></p>
 						
 						<!-- 카테고리 -->
-						<div class="recipe_category">
-							<span>#한식</span>
-							<span>#크리스마스</span>
+						<div id="category" class="recipe_category">
 						</div>
 						
 						<!-- 버튼 -->
@@ -90,18 +83,18 @@
 						<!-- 장보기메모에 재료 담기 버튼 -->
 						<div class="save_ingredient_btn">
 							<button class="btn_tool" onclick="">
-								<img src="/images/recipe/sell.png"> 장보기메모에 재료 담기
+								<img src="/images/recipe/pen.png"> 장보기메모에 재료 담기
 							</button>
 						</div>
 						
 						<!-- 양 -->
 						<div class="recipe_serving">
 							<select id="servingInput" name="">
-								<option value="serving1">1인분</option>
-								<option value="serving2">2인분</option>
-								<option value="serving3">3인분</option>
-								<option value="serving4">4인분</option>
-								<option value="serving5">5인분</option>
+								<option value="1">1인분</option>
+								<option value="2">2인분</option>
+								<option value="3">3인분</option>
+								<option value="4">4인분</option>
+								<option value="5">5인분</option>
 							</select>
 							<p>레시피의 용량을 단순히 인분에 맞춰 계산한 것이므로, 실제 조리 시 정확하지 않을 수 있습니다.</p>
 						</div>
@@ -115,55 +108,20 @@
 									<th width="472px">비고</th>
 								</tr>
 							</thead>
-							<tbody>
-								<%-- <c:forEach> --%>
-									<tr>
-										<td>마늘</td>
-										<td>5쪽</td>
-										<td>슬라이스</td>
-									</tr>
-									<tr>
-										<td>카레 가루</td>
-										<td>2큰술</td>
-										<td></td>
-									</tr>
-									<tr>
-										<td>치킨스탁</td>
-										<td>7ea</td>
-										<td>태태락치킨다시다 50배 희석</td>
-									</tr>
-								<%-- </c:forEach> --%>
-							</tbody>
-						
+							<tbody id="ingredient"></tbody>
 						</table>
 					</div>
 					
 					<div class="recipe_step">
 						<!-- 제목 -->
 						<h3>조리 순서</h3>
-						<ul class="step_list">
-							<%-- <c:forEach> --%>
-								<li>
-									<div class="description">
-										<h5>STEP1</h5>
-										<p>카레가루를 냄비에 부어버립니다</p>
-									</div>
-									<c:if test="${ true }">
-										<div class="image">
-											<img src="/images/common/test.png">
-										</div>
-									</c:if>
-								</li>
-							<%-- </c:forEach> --%>
-						</ul>
-						
+						<ul class="step_list" id="step"></ul>
 					</div>
 					
 					<!-- 요리팁 -->
 					<div class="recipe_tip">
-						<!-- 제목 -->
 						<h3>주의사항</h3>
-						<p>마법의 카레 가루는 이틀 이내에 모두 먹어야 합니다.</p>
+						<p id="tip"></p>
 					</div>
 					
 					<!-- 구독 및 후원 -->
@@ -171,8 +129,8 @@
 						<div class="profile">
 							<img src="/images/common/test.png">
 							<div>
-								<h5>아잠만</h5>
-								<p>구독자 45명</p>
+								<h5 class="nickname" data-id="2"></h5>
+								<p>구독자 <em id="follower">45</em>명</p>
 							</div>
 						</div>
 						<div class="btn_wrap">
@@ -182,12 +140,7 @@
 								레시피 후원하기
 							</button>
 							
-							<c:if test="${ true }">
-								<button class="btn_dark" type="submit" onclick="">구독</button>
-							</c:if>
-							<c:if test="${ true }">
-								<button class="btn_outline" type="submit" onclick="">구독 중</button>
-							</c:if>
+							<button id="followButton" class="btn_dark" type="submit" onclick="">구독</button>
 						</div>
 					</div>
 				</div>
@@ -195,8 +148,8 @@
 				<!-- 탭 메뉴 버튼 -->
 				<div class="tab_button_wrap">
 					<div class="tab_button">
-						<button class="active">리뷰 (3,432)</button>
-						<button>댓글 (27)</button>
+						<button class="active">리뷰 (<em class="review_count" data-id="1"></em>)</button>
+						<button>댓글 (<em class="comment_count" data-id="1"></em>)</button>
 					</div>
 				</div>
 				
@@ -207,7 +160,7 @@
 						<div class="review_header">
 							<div class="review_count">
 								<span>리뷰</span>
-								<span>7</span>
+								<span class="review_count" data-id="2"></span>
 							</div>
 							<div class="review_order">
 								<button class="btn_sort active">최신순</button>
@@ -228,9 +181,9 @@
 								<form>
 									<div class="login_user">
 										<img src="/images/common/test.png">
-										<span>아잠만</span>
+										<span class="nickname" data-id="3"></span>
 									</div>
-									<!-- 별점 (별점 선택하는 함수 여러가지 이유로 분리 못함) -->
+									<!-- 별점 -->
 									<div id="starGroup" class="star_group">
 										<img src="/images/recipe/star_full.png" class="star" data-value="1">
 										<img src="/images/recipe/star_outline.png" class="star" data-value="2">
@@ -268,7 +221,7 @@
 						<div class="comment_header">
 							<div class="comment_count">
 								<span>댓글</span>
-								<span>7</span>
+								<span class="comment_count" data-id="2">7</span>
 							</div>
 							<div class="comment_order">
 								<button class="active">최신순</button>
@@ -289,7 +242,7 @@
 								<form>
 									<div class="login_user">
 										<img src="/images/common/test.png">
-										<span>아잠만</span>
+										<span class="nickname" data-id="4"></span>
 									</div>
 									<div class="comment_input">
 										<textarea id="commentInput" rows="2" maxlength="400" placeholder="욕설, 비방, 허위 정보 및 부적절한 댓글은 사전 경고 없이 삭제될 수 있습니다."></textarea>

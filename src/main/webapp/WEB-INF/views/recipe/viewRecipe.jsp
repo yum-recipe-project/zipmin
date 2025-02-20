@@ -9,6 +9,7 @@
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/recipe/view-recipe.css">
 		<script src="/js/recipe/view-recipe.js"></script>
+		<script src="/js/support/support-recipe.js"></script>
 	</head>
 	<body>
 		<%@include file="../common/header.jsp" %>
@@ -313,8 +314,8 @@
 			</div>
 			
 			<!-- 후원 모달창 -->
+			<!-- 후원 관련 모달창 JS는 support-recipe.js에 있음 !!! 참고!! -->
 			<form id="supportRecipeForm" onsubmit="">
-				<!-- 히든폼 필요하다면 이곳에 추가 -->
 				<div class="modal" id="supportRecipeModal">
 					<div class="modal-dialog">
 						<div class="modal-content">
@@ -333,29 +334,27 @@
 									</thead>
 									<tbody>
 										<tr>
-											<td>0</td>
+											<td id="ownedPoint"></td>
 											<td>
 												<div class="form-input">
-													<input type="number" value="">
+													<input id="pointInput" type="number" value="100" min="100" step="1">
 												</div>
 											</td>
-											<td>-100</td>
+											<td id="remainPoint">-100</td>
 										</tr>
 									</tbody>
 								</table>
-								<c:if test="${ true }">
-									<div class="form-error">
-										<div class="form-message">
-											<p>포인트가 부족해요.</p>
-											<p>부족한 포인트를 충전하고 레시피를 후원해 보세요.</p>
-										</div>
-										<button type="button" data-bs-toggle="modal" data-bs-target="#topUpPointModal"
-											onclick="">
-											포인트 충전
-										</button>
+								<div class="form-box">
+									<div class="message">
+										<p>포인트 충전하기</p>
+										<p>포인트를 충전하고 레시피를 후원해 보세요.</p>
 									</div>
-								</c:if>
-								<div class="form-explain">
+									<button type="button" data-bs-toggle="modal" data-bs-target="#topUpPointModal"
+										onclick="">
+										포인트 충전
+									</button>
+								</div>
+								<div class="form-info">
 									<p>
 										본 사이트는 개인 포트폴리오를 위한 비상업적 웹사이트로, 연구 및 실험 목적만을 위해 운영됩니다.
 										모든 기능은 수익 창출과 무관하며 후원된 금액은 자동으로 전액 환불됩니다.
@@ -372,7 +371,7 @@
 			</form>
 			
 			<form id="topUpPointForm" onsubmit="">
-				<!-- 히든폼 필요하다면 이곳에 추가 -->
+				<input type="hidden" id="ownedPoint" >
 				<div class="modal" id="topUpPointModal">
 					<div class="modal-dialog">
 						<div class="modal-content">
@@ -383,42 +382,42 @@
 							<div class="modal-body">
 								<div class="">
 									<label>충전할 포인트</label>
-									<div class="modal-topup">
-										<div class="modal-point">
-											<div class="modal-radio">
+									<div class="topup">
+										<div class="point">
+											<div class="form-radio">
 												<div>
-													<input type="radio" id="1000P" name="point" value="">
-													<label for="1000P">1,000P</label>
+													<input type="radio" id="point1" name="point" value="1000">
+													<label for="point1">1,000P</label>
 												</div>
 												<p>1,000원</p>
 											</div>
-											<div class="modal-radio">
+											<div class="form-radio">
 												<div class="radio">
-													<input type="radio" id="3000P" name="point" value="">
-													<label for="3000P">3,000P</label>
+													<input type="radio" id="point2" name="point" value="3000">
+													<label for="point2">3,000P</label>
 												</div>
 												<p>3,000원</p>
 											</div>
-											<div class="modal-radio">
+											<div class="form-radio">
 												<div>
-													<input type="radio" id="5000P" name="point" value="">
-													<label for="5000P">5,000P</label>
+													<input type="radio" id="point3" name="point" value="5000">
+													<label for="point3">5,000P</label>
 												</div>
 												<p>5,000원</p>
 											</div>
-											<div class="modal-radio">
+											<div class="form-radio">
 												<div>
-													<input type="radio" id="10000P" name="point" value="">
-													<label for="10000P">10,000P</label>
+													<input type="radio" id="point4" name="point" value="10000">
+													<label for="point4">10,000P</label>
 												</div>
 												<p>10,000원</p>
 											</div>
 										</div>
-										<div class="modal-result">
+										<div class="form-result">
 											<p>충전 후 예상 보유 포인트</p>
-											<p><em>5,000P</em></p>
+											<p><em id="totalPoint"></em></p>
 										</div>
-										<div class="form-explain">
+										<div class="form-info">
 											<p>
 												본 사이트는 개인 포트폴리오를 위한 비상업적 웹사이트로, 연구 및 실험 목적만을 위해 운영됩니다.
 												모든 기능은 수익 창출과 무관하며 결제된 금액은 자동으로 전액 환불됩니다.
@@ -435,10 +434,6 @@
 					</div>
 				</div>
 			</form>
-			
-			
-			
-			
 		</main>
 		
 		<%@include file="../common/footer.jsp" %>

@@ -1,6 +1,5 @@
 @charset "UTF-8";
 
-
 /* 모달창 */
 .modal-backdrop {
 	background-color: rgba(0, 0, 0, 0.4) !important;
@@ -14,6 +13,8 @@
 	border: none;
 	border-radius: 12px;
 }
+
+
 
 
 
@@ -86,7 +87,7 @@
 	align-items: center;
 	font-size: 14px;
 	line-height: 20px;
-	letter-spacing: -.2px;
+	letter-spacing: -0.2px;
 	font-weight: 400;
 	margin-top: 24px;
     color: var(--txt-color-600);
@@ -98,12 +99,11 @@
 	margin-right: 4px;
 }
 
-/* 바디 (하단 설명 문구) */
-#container .modal-content .modal-body .form-explain {
+/* 바디 (하단 회색 설명 문구) */
+#container .modal-content .modal-body .form-info {
 	margin-top: 20px;
 }
-
-#container .modal-content .modal-body .form-explain p {
+#container .modal-content .modal-body .form-info p {
 	margin: 0;
 	font-weight: 400;
 	font-size: 12px;
@@ -154,15 +154,15 @@
     color: var(--point-color2);
 }
 
-/* 바디 (라디오 박스) */
-#container .modal-content .modal-body .modal-topup {
+/* 바디 (포인트 충전) */
+#container .modal-content .modal-body .topup {
 	display: flex;
 	width: 100%;
 	gap: 10px;
 	flex-direction: column;
 }
 
-#container .modal-content .modal-body .modal-topup .modal-point {
+#container .modal-content .modal-body .topup .point {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
@@ -171,24 +171,22 @@
 	border-radius: 12px;
 }
 
-#container .modal-content .modal-body .modal-topup .modal-point .modal-radio {
+/* 바디 (라디오) */
+#container .modal-content .modal-body .topup .point .form-radio {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	padding: 12px 0;
 	border-top: 1px solid var(--line-color1);
 }
-
-#container .modal-content .modal-body .modal-topup .modal-point .modal-radio:first-child {
+#container .modal-content .modal-body .topup .point .form-radio:first-child {
 	border: none;
 }
-
-#container .modal-content .modal-body .modal-topup .modal-point .modal-radio .radio {
+#container .modal-content .modal-body .topup .point .form-radio .radio {
 	align-items: center;
 	display: inline-block;
 }
-
-#container .modal-content .modal-body .modal-topup .modal-point .modal-radio input[type='radio'] + label {
+#container .modal-content .modal-body .topup .point .form-radio input[type='radio'] + label {
 	margin: 0;
 	cursor: pointer;
 	position: relative;
@@ -197,9 +195,7 @@
 	font-weight: 400;
 	width: 350px;
 }
-
-
-#container .modal-content .modal-body .modal-topup .modal-point .modal-radio input[type='radio'] + label:before {
+#container .modal-content .modal-body .topup .point .form-radio input[type='radio'] + label:before {
 	content: '';
 	display: inline-block;
 	width: 20px;
@@ -209,7 +205,7 @@
 	vertical-align: middle;
 	margin-right: 10px;
 }
-#container .modal-content .modal-body .modal-topup .modal-point .modal-radio input[type='radio']:checked + label:after {
+#container .modal-content .modal-body .topup .point .form-radio input[type='radio']:checked + label:after {
 	content: '';
 	position: absolute;
 	left: 5px;
@@ -221,15 +217,14 @@
 	background: #333;
 	border-radius: 50%;
 }
-
-#container .modal-content .modal-body .modal-topup .modal-point .modal-radio p {
+#container .modal-content .modal-body .topup .point .form-radio p {
 	font-size: 16px;
 	font-weight: 500;
 	color: var(--txt-color-500);
 }
 
-/**/
-#container .modal-content .modal-body .modal-topup .modal-result {
+/* 모달 (결과) */
+#container .modal-content .modal-body .topup .form-result {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -239,20 +234,20 @@
 	border-radius: 8px;
 }
 
-#container .modal-content .modal-body .modal-topup .modal-result p {
+#container .modal-content .modal-body .topup .form-result p {
 	font-size: 14px;
 	font-weight: 400;
 	line-height: 1.5;
 }
 
-#container .modal-content .modal-body .modal-topup .modal-result p em {
+#container .modal-content .modal-body .topup .form-result p em {
 	font-weight: 600;
 	color: var(--point-color1);
 }
 
 
-/* 바디 (에러) */
-#container .modal-content .modal-body .form-error {
+/* 바디 (포인트 충전 박스) */
+#container .modal-content .modal-body .form-box {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -262,27 +257,23 @@
 	border-radius: 8px;
 	margin-top: 20px;
 }
-
-#container .modal-content .modal-body .form-error .form-message {
+#container .modal-content .modal-body .form-box .message {
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
+	gap: 4px;
 }
-
-#container .modal-content .modal-body .form-error .form-message p {
+#container .modal-content .modal-body .form-box .message p {
 	margin: 0px;
 	font-weight: 400;
 	font-size: 14px;
 	line-height: 1.5;
 	color: var(--point-color2);
 }
-
-#container .modal-content .modal-body .form-error .form-message p:first-child {
+#container .modal-content .modal-body .form-box .message p:first-child {
 	font-weight: 500;
 	font-size: 16px;
 }
-
-#container .modal-content .modal-body .form-error button {
+#container .modal-content .modal-body .form-box button {
     width: 88px;
 	height: 32px;
 	font-size: 14px;
@@ -299,11 +290,13 @@
     background: var(--point-color2);
     font-weight: 500;
 }
-
-#container .modal-content .modal-body .form-error button:hover {
+#container .modal-content .modal-body .form-box button:hover {
 	background: #0073E6;
     color: #F2F2F2;
 }
+
+
+
 
 
 /* 푸터 */

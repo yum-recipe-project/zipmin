@@ -19,53 +19,14 @@
 				<div class="main_banner">
 					<h2>회원</h2>
 					<button onclick="location.href='/member/verifyPassword.do';">비밀번호 확인</button>
-					<button onclick="location.href='/member/changePassword.do';">비밀번호 변경</button>
-					<button onclick="location.href='/member/userInfo.do';">회원 정보</button>
-					<br/><br/>
-					
-					<h2>레시피</h2>
-					<button onclick="location.href='/recipe/listRecipe.do';">레시피 목록</button>
-					<button onclick="location.href='/recipe/viewRecipe.do';">레시피 상세</button>
-					<button onclick="location.href='/recipe/writeRecipe.do';">레시피 작성</button>
 					<br/><br/>
 					
 					<h2>키친가이드</h2>
-					<button onclick="location.href='/kitchen/listGuide.do';">키친가이드 목록</button>
 					<button onclick="location.href='/kitchen/viewGuide.do';">키친가이드 상세</button>
 					<br/><br/>
 					
-					<h2>쩝쩝박사</h2>
-					<button onclick="location.href='/chompessor/listForum.do';">쩝쩝박사 목록</button>
-					<button onclick="location.href='/chompessor/viewForum.do';">쩝쩝박사 상세</button>
-					<br/><br/>
-					
-					<h2>나의 냉장고</h2>
-					<button onclick="location.href='/fridge/viewFridge.do';">나의 냉장고</button>
-					<button onclick="location.href='/fridge/viewMemo.do';">장보기 메모</button>
-					<br/><br/>
-					
-					<h2>쿠킹클래스</h2>
-					<button onclick="location.href='/cooking/listClass.do';">쿠킹클래스 목록</button>
-					<button onclick="location.href='/cooking/viewClass.do';">쿠킹클래스 상세</button>
-					<button onclick="location.href='/cooking/openClass.do';">쿠킹클래스 개설 신청</button>
-					<br/><br/>
-					
-					<h2>후원</h2>
-					<br/><br/>
-					
 					<h2>마이페이지</h2>
-					<button onclick="location.href='/mypage.do';">마이페이지</button>
 					<button onclick="location.href='/mypage/profile.do';">프로필</button>
-					<button onclick="location.href='/mypage/follower.do';">팔로워</button>
-					<button onclick="location.href='/mypage/following.do';">팔로잉</button>
-					<button onclick="location.href='/mypage/comment.do';">내 댓글</button>
-					<button onclick="location.href='/mypage/review.do';">내 리뷰</button>
-					<button onclick="location.href='/mypage/recipe.do';">내 레시피</button>
-					<button onclick="location.href='/mypage/savedRecipe.do';">저장한 레시피</button>
-					<button onclick="location.href='/mypage/savedGuide.do';">저장한 가이드</button>
-					<br/>
-					<button onclick="location.href='/mypage/appliedClass.do';">신청한 클래스</button>
-					<button onclick="location.href='/mypage/class.do';">나의 클래스</button>
 					<br/><br/>
 				</div>
 				

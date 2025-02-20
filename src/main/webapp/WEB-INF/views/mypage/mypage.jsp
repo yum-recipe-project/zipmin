@@ -128,21 +128,21 @@
 							
 							<div class="info">
 							
-								<div class="info_box">
+								<a href="/member/userInfo.do" class="info_box">
 									<div class="info_txt">
 										<span>회원정보</span>
 										<p>집밥의민족 회원정보를 조회, 수정합니다.</p>
 									</div>
 									<img src="/images/mypage/arrow_right.png">
-								</div>
+								</a>
 								
-								<div class="info_box">
+								<a href="/member/changePassword.do" class="info_box">
 									<div class="info_txt">
 										<span>비밀번호 변경</span>
 										<p>비밀번호를 변경합니다.</p>
 									</div>
 									<img src="/images/mypage/arrow_right.png">
-								</div>
+								</a>
 								
 							</div>
 							
@@ -154,45 +154,45 @@
 							
 							<div class="info">
 							
-								<div class="info_box">
+								<a href="/mypage/recipe.do" class="info_box">
 									<div class="info_txt">
 										<span>내 레시피</span>
 										<p>작성한 레시피를 조회, 수정합니다.</p>
 									</div>
 									<img src="/images/mypage/arrow_right.png">
-								</div>
+								</a>
 								
-								<div class="info_box">
+								<a href="/mypage/review.do" class="info_box">
 									<div class="info_txt">
 										<span>내 요리 후기</span>
 										<p>내 레시피에 작성된 후기를 조회합니다.</p>
 									</div>
 									<img src="/images/mypage/arrow_right.png">
-								</div>
+								</a>
 								
-								<div class="info_box">
+								<a href="/mypage/comment.do" class="info_box">
 									<div class="info_txt">
 										<span>내 댓글</span>
 										<p>작성한 댓글을 조회, 수정합니다.</p>
 									</div>
 									<img src="/images/mypage/arrow_right.png">
-								</div>
+								</a>
 								
-								<div class="info_box">
+								<a href="/mypage/savedRecipe.do" class="info_box">
 									<div class="info_txt">
 										<span>저장한 레시피</span>
 										<p>저장한 레시피를 조회합니다.</p>
 									</div>
 									<img src="/images/mypage/arrow_right.png">
-								</div>
+								</a>
 								
-								<div class="info_box">
+								<a href="/mypage/savedGuide.do" class="info_box">
 									<div class="info_txt">
 										<span>저장한 키친가이드</span>
 										<p>저장한 키친가이드를 조회합니다.</p>
 									</div>
 									<img src="/images/mypage/arrow_right.png">
-								</div>
+								</a>
 							
 							</div>
 							
@@ -207,21 +207,21 @@
 							
 							<div class="info">
 							
-								<div class="info_box">
+								<a href="/mypage/appliedClass.do" class="info_box">
 									<div class="info_txt">
 										<span>신청 목록 관리</span>
 										<p>내가 신청한 쿠킹클래스를 조회합니다.</p>
 									</div>
 									<img src="/images/mypage/arrow_right.png">
-								</div>
+								</a>
 								
-								<div class="info_box">
+								<a href="/mypage/class.do" class="info_box">
 									<div class="info_txt">
 										<span>내 쿠킹클래스</span>
 										<p>내가 주최한 쿠킹클래스를 관리합니다.</p>
 									</div>
 									<img src="/images/mypage/arrow_right.png">
-								</div>
+								</a>
 								
 							</div>
 							

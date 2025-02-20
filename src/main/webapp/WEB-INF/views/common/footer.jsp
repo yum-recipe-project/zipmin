@@ -8,7 +8,7 @@
 		<div class="divider"></div>
 		<a href="#none">집밥의민족 이용 약관</a>
 		<div class="divider"></div>
-		<a class="blue" href="">입점문의</a>
+		<a class="blue" href="/cooking/openClass.do">쿠킹클래스 개설 신청</a>
 	</div>
 
 	<!-- 푸터 하단 -->

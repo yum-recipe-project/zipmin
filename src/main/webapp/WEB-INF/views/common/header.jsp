@@ -28,6 +28,8 @@
 					</a>
 					<div class="divider"></div>
 					<a href="/fridge/viewMemo.do">장보기메모</a>
+					<div class="divider"></div>
+					<a href="/recipe/writeRecipe.do">레시피 작성</a>
 				</c:if>
 			</div>
 		</div>

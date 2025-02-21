@@ -171,22 +171,39 @@
 	border-radius: 12px;
 }
 
+/* 바디 (신고하기) */
+#container .modal-content .modal-body .report {
+	display: flex;
+	width: 100%;
+	gap: 10px;
+	flex-direction: column;
+}
+
+#container .modal-content .modal-body .report .reason {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	border: 1px solid var(--line-color2);
+	padding: 12px 20px;
+	border-radius: 12px;
+}
+
 /* 바디 (라디오) */
-#container .modal-content .modal-body .topup .point .form-radio {
+#container .modal-content .modal-body .form-radio {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	padding: 12px 0;
 	border-top: 1px solid var(--line-color1);
 }
-#container .modal-content .modal-body .topup .point .form-radio:first-child {
+#container .modal-content .modal-body .form-radio:first-child {
 	border: none;
 }
-#container .modal-content .modal-body .topup .point .form-radio .radio {
+#container .modal-content .modal-body .form-radio .radio {
 	align-items: center;
 	display: inline-block;
 }
-#container .modal-content .modal-body .topup .point .form-radio input[type='radio'] + label {
+#container .modal-content .modal-body .form-radio input[type='radio'] + label {
 	margin: 0;
 	cursor: pointer;
 	position: relative;
@@ -195,7 +212,7 @@
 	font-weight: 400;
 	width: 350px;
 }
-#container .modal-content .modal-body .topup .point .form-radio input[type='radio'] + label:before {
+#container .modal-content .modal-body .form-radio input[type='radio'] + label:before {
 	content: '';
 	display: inline-block;
 	width: 20px;
@@ -205,7 +222,7 @@
 	vertical-align: middle;
 	margin-right: 10px;
 }
-#container .modal-content .modal-body .topup .point .form-radio input[type='radio']:checked + label:after {
+#container .modal-content .modal-body .form-radio input[type='radio']:checked + label:after {
 	content: '';
 	position: absolute;
 	left: 5px;
@@ -217,14 +234,14 @@
 	background: #333;
 	border-radius: 50%;
 }
-#container .modal-content .modal-body .topup .point .form-radio p {
+#container .modal-content .modal-body .form-radio p {
 	font-size: 16px;
 	font-weight: 500;
 	color: var(--txt-color-500);
 }
 
 /* 모달 (결과) */
-#container .modal-content .modal-body .topup .form-result {
+#container .modal-content .modal-body .form-result {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -234,13 +251,13 @@
 	border-radius: 8px;
 }
 
-#container .modal-content .modal-body .topup .form-result p {
+#container .modal-content .modal-body .form-result p {
 	font-size: 14px;
 	font-weight: 400;
 	line-height: 1.5;
 }
 
-#container .modal-content .modal-body .topup .form-result p em {
+#container .modal-content .modal-body .form-result p em {
 	font-weight: 600;
 	color: var(--point-color1);
 }

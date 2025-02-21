@@ -4,10 +4,10 @@ import lombok.Data;
 
 @Data
 public class IngredientDTO {
-	private Integer ingredient_idx;
+	private int ingredient_idx;
 	private String name;
-	private Integer amount;
+	private int amount;
 	private String unit;
 	private String note;
-	private Integer recipe_ref;
+	private int recipe_ref;
 }

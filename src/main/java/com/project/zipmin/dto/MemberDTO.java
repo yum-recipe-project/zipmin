@@ -9,6 +9,6 @@ public class MemberDTO {
 	private String name;
 	private String nickname;
 	private String email;
-	private Integer point;
-	// 프로필 사진도 추가
+	private String avatar; // 프사
+	private int point;
 }

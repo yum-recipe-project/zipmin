@@ -5,9 +5,9 @@ import lombok.Data;
 
 @Data
 public class StepDTO {
-	private Integer step_idx;
+	private int step_idx;
 	// private Integer index;
 	private String description;
 	private String image;
-	private Integer recipe_ref;
+	private int recipe_ref;
 }

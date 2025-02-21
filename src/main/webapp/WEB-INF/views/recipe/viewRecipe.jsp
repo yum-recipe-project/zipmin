@@ -281,8 +281,8 @@
 							</div>
 							<div class="modal-body">
 								<label>레시피 신고 사유</label>
-								<div class="topup">
-									<div class="point">
+								<div class="report">
+									<div class="reason">
 										<div class="form-radio">
 											<div>
 												<input type="radio" id="reason1" name="reason" value="">
@@ -320,6 +320,12 @@
 											</div>
 										</div>
 									</div>
+								</div>
+								<div class="form-info">
+									<p>
+										신고는 반대의견을 나타내는 기능이 아닙니다.
+										신고 사유에 맞지 않는 신고를 했을 경우, 해당 신고는 처리되지 않습니다.
+									</p>
 								</div>
 							</div>
 							<div class="modal-footer">

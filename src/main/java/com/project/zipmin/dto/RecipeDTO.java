@@ -14,7 +14,7 @@ public class RecipeDTO {
 	private String time;
 	private String spicy;
 	private String introduce;
-	private Integer serving;
+	private int serving;
 	private String tip;
 	private String member_ref;
 	

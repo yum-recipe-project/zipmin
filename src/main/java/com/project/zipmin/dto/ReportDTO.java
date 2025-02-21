@@ -8,4 +8,5 @@ public class ReportDTO {
 	private Integer comment_ref;
 	private String review_ref;
 	private String member_ref;
+	private String reason;
 }

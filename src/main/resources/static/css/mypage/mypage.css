@@ -1,0 +1,286 @@
+@charset "UTF-8";
+
+#container .content {
+	margin: 0px auto;
+	padding: 0 40px;
+	width: 1160px;
+}
+
+#container .content .profile_wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 50px;
+	margin-top: 40px;
+	margin-bottom: 80px;
+}
+
+
+
+
+/* 유저 프로필 (정보) */
+#container .content .profile_wrap .info_wrap {
+	width: 100%;
+}
+#container .content .profile_wrap .info_wrap .info_inner {
+	padding: 48px 40px 0;
+	width: 448px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	margin: 0px auto;
+/* 	min-height: 100vh; */
+	max-width: 448px;
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: -0.4px;
+}
+
+
+
+/* 유저 프로필 */
+#container .content .profile_wrap .info_wrap .info_inner .profile {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+}
+
+#container .content .profile_wrap .info_wrap .info_inner .profile span {
+	font-size: 16px;
+	font-weight: 600;	
+}
+
+#container .content .profile_wrap .info_wrap .info_inner .profile .profile_img {
+	display: block;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: #ddd;
+    flex-shrink: 0;
+    
+    /* 이미지 추가 테스트 */
+    background-size: cover;  
+    background-position: center;
+}
+
+
+
+/* 유저 정보 */
+#container .content .profile_wrap .info_wrap .info_inner .summary {
+	width: 100%;
+}
+#container .content .profile_wrap .info_wrap .info_inner .summary .field_top {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+}
+#container .content .profile_wrap .info_wrap .info_inner .summary .field_bottom {
+	display: flex;
+	gap: 10px;
+}
+
+/* 수정버튼 */
+.modify_btn_wrap .modify_btn {
+	display: flex;	
+	align-items: center;
+	gap: 2px;
+	background: none;
+	border: none;
+}
+.modify_btn_wrap .modify_btn img {
+	height: 20px;
+}
+.modify_btn_wrap .modify_btn p {
+    font-size: 16px;
+    margin: 0;
+    line-height: 1;
+    color: var(--point-color2);
+}
+
+
+/* 수정 필드  */
+.modify_field input {
+	border: 1px solid var(--line-color1);
+	border-radius: 4px;
+	width: 100%;
+	height: 50px;
+}
+
+input::placeholder {
+    font-size: 16px;
+}
+
+#modifyNickName {
+	margin-top: 5px;
+}
+.nickname_warning {
+	margin-top: 5px;
+	font-size: 12px;
+	color: var(--txt-color-500);
+}
+
+
+/* 랜덤 버튼 */
+.nickname_random_field {
+	display: flex;
+	justify-content: space-between;
+}
+.nickname_random_field .random_wrap {
+	background: none;
+	border: none;
+	display: flex;
+	align-items: center;
+	gap: 3px;
+	margin-bottom: 10px;
+}
+.nickname_random_field .random_wrap img {
+	width: 18px;
+	height: 18px;
+}
+.nickname_random_field .random_wrap span {
+	color: var(--point-color2);
+}
+
+
+/* 저장버튼 */
+.submit_btn_wrap {
+	margin-top: 32px;
+}
+.submit_btn_wrap .save_btn {
+	width: 100%;
+    border-radius: 4px;
+    border:none;
+    background-color: var(--point-color2);
+    color: #fff;
+    padding: 15px 32px 16px;
+    font-size: 18px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+
+
+
+
+#container .content .profile_wrap .info_wrap .info_inner .summary .nickname_field, 
+#container .content .profile_wrap .info_wrap .info_inner .summary .grade_field, 
+#container .content .profile_wrap .info_wrap .info_inner .summary .comment_field {
+	margin: 16px 0;
+	padding: 16px 0;
+	border-bottom: 1px solid var(--line-color2);
+}
+
+#container .content .profile_wrap .info_wrap .info_inner .summary label {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.2px;
+    color: var(--txt-color-600);
+   	font-weight: 600;
+}
+
+
+
+/* 유저 정보 (팔로워 정보) */
+#container .content .profile_wrap .info_wrap .info_inner .summary .follow_txt {
+	display: flex;
+	gap: 11px;
+}
+
+#container .content .profile_wrap .info_wrap .info_inner .summary .follow_txt a {
+	position: relative;
+	color: var(--point-color1);
+	font-size: 12px;
+}
+
+#container .content .profile_wrap .info_wrap .info_inner .summary .follow_txt a:first-child::after {
+	content: "";
+    position: absolute;
+    top: 50%;
+    right: -6px;
+    width: 2px;
+    height: 2px;
+    background-color: var(--point-color1);
+    border-radius: 50%; 
+    transform: translateY(-50%);
+}
+
+
+
+
+
+
+
+
+
+
+/* 내 정보 관리 */
+#container .content .profile_wrap .menu_wrap h2 {
+	margin-top: 8px;
+	font-weight: 700;
+	line-height: 1.5;
+	letter-spacing: -0.03em;
+	font-size: 32px;
+	margin-bottom: 24px;
+}
+
+#container .content .profile_wrap .menu_wrap label {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.2px;
+    color: var(--txt-color-600);
+   	font-weight: 600;
+}
+
+
+/* 내 정보 관리 (메뉴)  */
+#container .content .profile_wrap .menu_wrap .my_info {
+	margin-bottom: 24px;
+}
+#container .content .profile_wrap .menu_wrap .my_info .info {
+    display: flex;
+    flex-wrap: wrap; 
+    width: 100%;
+    gap: 20px;
+}
+
+#container .content .profile_wrap .menu_wrap .my_info .info_box {
+    display: flex;
+    width: calc(50% - 10px); 
+    height: 100px;
+    border: 1px solid var(--line-color2);
+    border-radius: 4px;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box; 
+}
+
+#container .content .profile_wrap .menu_wrap .my_info .info_box:nth-child(odd):last-child {
+    width: calc(50% - 10px);
+}
+
+/* 내 정보 관리 (글자/화살표)  */
+#container .content .profile_wrap .menu_wrap .my_info .info_box .info_txt span {
+	font-size: 18px;
+	font-weight: 600;
+}
+#container .content .profile_wrap .menu_wrap .my_info .info_box .info_txt p {
+	font-size: 14px;
+	color: var(--txt-color-500);
+}
+
+#container .content .profile_wrap .menu_wrap .my_info .info_box img {
+	width: 30px;
+	height: 30px;
+	margin-left: auto;
+}
+	

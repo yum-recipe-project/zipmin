@@ -1,0 +1,194 @@
+@charset "UTF-8";
+
+#container .content {
+	margin: 0px auto;
+	padding: 0 40px;
+	width: 1160px;
+}
+
+/* 가이드 헤더 */
+#container .content .guide_header {
+	margin: 0px auto;
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	box-sizing: border-box;
+	padding: 40px 0;
+}
+
+#container .content .guide_header h2 {
+	font-weight: 700;
+	line-height: 1.5;
+	letter-spacing: -0.03em;
+	font-size: 32px;
+	margin-bottom: 20px;
+}
+
+#container .content .guide_header .tab {
+	flex-wrap: wrap;
+	height: auto;
+	margin: -2px;
+	padding: 12px 0;
+}
+
+#container .content .guide_header .tab a {
+	margin: 4px;
+}
+
+
+
+/* 가이드 콘텐츠 (정렬 요소) */
+#container .content .guide_content {
+	padding-bottom: 40px;	
+}
+
+#container .content .guide_content .guide_util {
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: -.2px;
+	font-weight: 400;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: -8px;
+	margin-bottom: 16px;
+	color: var(--txt-color-500);
+}
+
+#container .content .guide_util .guide_sort {
+	display: flex;
+	gap: 16px;
+}
+
+
+
+
+
+
+
+
+
+/* 가이드 목록 */
+#container .content .guide_content .guide_list .guide_item {
+	height: 160px;
+	display: flex;
+	justify-content: space-between;
+	border-bottom: 1px solid var(--line-color2);
+	align-items: center;
+}
+#container .content .guide_content .guide_list li:last-child .guide_item {
+    border-bottom: none;
+}
+
+
+#container .content .guide_content .guide_list .guide_item .guide_details {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+#container .content .guide_content .guide_list .guide_item .guide_details span {
+	font-size: 18px;
+	font-weight: 600;
+	margin-bottom: 5px;
+}
+
+
+
+/* 가이드 목록 (상단 - 찜버튼) */
+#container .content .guide_content .guide_list .guide_item .guide_details .guide_top {
+	display: flex;
+	justify-content: space-between;	
+}
+
+#container .content .guide_content .guide_list .guide_item .guide_details .guide_top span{
+	font-size: 14px;
+	font-weight: 300;
+	color: var(--txt-color-500);
+}
+
+#container .content .guide_content .guide_list .guide_item .guide_details .guide_top .favorite_btn {
+	width: 17px;
+    height: 17px;
+    background-image: url('/images/recipe/star_empty.png');
+    background-color: #fff;
+    background-size: cover;
+    border: none;
+    cursor: pointer;
+}
+
+#container .content .guide_content .guide_list .guide_item .guide_details .guide_top .favorite_btn.active {
+	background-image: url('/images/recipe/star_full.png');
+}
+
+
+
+/* 가이드 목록 (스크랩/날짜) */
+#container .content .guide_content .guide_list .guide_item .guide_details .info {
+	display: flex;
+	gap: 12px;
+	margin-bottom: 13px;
+}
+#container .content .guide_content .guide_list .guide_item .guide_details .info p {
+	font-size: 12px;
+}
+#container .content .guide_content .guide_list .guide_item .guide_details .info p:first-child {
+	color: var(--point-color2);
+}
+#container .content .guide_content .guide_list .guide_item .guide_details .info p:nth-of-type(2) {
+	color: var(--txt-color-500);
+}
+
+#container .content .guide_content .guide_list .guide_item .guide_details .info p {
+    position: relative;
+}
+#container .content .guide_content .guide_list .guide_item .guide_details .info p:first-child::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -7px;
+    width: 2px;
+    height: 2px;
+    background-color: var(--txt-color-500);
+    border-radius: 50%; 
+    transform: translateY(-50%);
+}
+
+
+/* 가이드 목록 (작성자) */
+#container .content .guide_content .guide_list .guide_item .guide_details .writer {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+#container .content .guide_content .guide_list .guide_item .guide_details .writer p {
+	font-size: 12px;
+	color: var(--txt-color-500);
+}
+
+#container .content .guide_content .guide_list .guide_item .guide_details .writer img {
+	border-radius: 50%;
+	width: 24px;
+	height: 24px;
+}
+
+#container .content .guide_content .guide_list .guide_item .guide_details .writer .profile_img {
+	display: block;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #ddd;
+    flex-shrink: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+

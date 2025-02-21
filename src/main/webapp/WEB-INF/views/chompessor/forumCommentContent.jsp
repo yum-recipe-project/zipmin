@@ -18,7 +18,7 @@
 					<c:if test="${ true }">
 						<li class="comment">
 							<!-- 댓글 헤더 -->
-							<div class="comment_header">
+							<div class="comment_info">
 								<div class="comment_writer">
 									<img src="/images/common/test.png">
 									<span>아잠만</span>
@@ -52,10 +52,10 @@
 						<%-- <c:forEach> --%>
 							<c:if test="${ true }">
 								<li class="subcomment">
-									<img src="/images/chompessor/arrow_right.png">
+									<img class="subcomment_arrow" src="/images/chompessor/arrow_right.png">
 									<div class="subcomment_inner">
 										<!-- 대댓글 헤더 -->
-										<div class="subcomment_header">
+										<div class="subcomment_info">
 											<div class="subcomment_writer">
 												<img src="/images/common/test.png">
 												<span>아잠만</span>

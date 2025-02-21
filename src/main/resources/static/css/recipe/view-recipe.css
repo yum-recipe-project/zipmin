@@ -360,3 +360,12 @@
 	margin-top: 48px;
 	margin-bottom: 80px;
 }
+
+/* 리뷰 */
+#container .review_wrap {
+	margin: 0px auto;
+	padding: 0 108px;
+	width: 1160px;
+	margin-top: 48px;
+	margin-bottom: 80px;
+}

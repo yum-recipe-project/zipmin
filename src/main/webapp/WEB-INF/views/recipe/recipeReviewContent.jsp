@@ -19,10 +19,10 @@
 				<%-- <c:foreach> --%>
 					<c:if test="${ true }">
 						<li class="review">
-							<img src="/images/common/test.png">
+							<img class="review_avatar" src="/images/common/test.png">
 							<div class="review_inner">
 								<!-- 리뷰 헤더 -->
-								<div class="review_header">
+								<div class="review_info">
 									<div class="review_writer">
 										<span>아잠만</span>
 										<span>2025.02.11</span>

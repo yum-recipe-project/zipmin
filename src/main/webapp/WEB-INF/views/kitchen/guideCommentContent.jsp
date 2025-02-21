@@ -17,7 +17,7 @@
 				<%-- <c:forEach> --%>
 					<li class="comment">
 						<!-- 댓글 헤더 -->
-						<div class="comment_header">
+						<div class="comment_info">
 							<div class="comment_writer">
 								<img src="/images/common/test.png">
 								<span>아잠만</span>

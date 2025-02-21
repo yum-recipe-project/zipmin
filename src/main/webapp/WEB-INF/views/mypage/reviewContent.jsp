@@ -24,23 +24,23 @@
 							</c:if>
 						</div>
 						<div class="myreview">
-							<img src="/images/common/test.png">
-							<div class="myreview_info">
-								<!-- 리뷰 헤더 -->
-								<div class="myreview_header">
-									<div class="myreview_writer">
+							<img class="review_avatar" src="/images/common/test.png">
+							<div class="review_inner">
+								<!-- 리뷰 정보 -->
+								<div class="review_info">
+									<div class="review_writer">
 										<span>아잠만</span>
 										<span>2025.02.11</span>
 									</div>
 									<c:if test="${ true }">
-										<div class="myreview_action">
+										<div class="review_action">
 											<a href="">수정</a>
 											<a href="">삭제</a>
 										</div>
 									</c:if>
 								</div>
 								<!-- 리뷰 별점 -->
-								<div class="myreview_score">
+								<div class="review_score">
 									<div class="star">
 										<%-- <c:forEach> --%>
 											<img src="/images/recipe/star_full.png">
@@ -52,7 +52,7 @@
 									<p>3</p>
 								</div>
 								<!-- 리뷰 내용 -->
-								<p class="myreview_content">
+								<p class="review_content">
 									녹차 아이스크림은 배스킨라빈스가 최고입니다
 								</p>
 							</div>

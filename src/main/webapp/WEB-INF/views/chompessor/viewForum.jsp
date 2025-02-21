@@ -72,8 +72,8 @@
 								<span>7</span>
 							</div>
 							<div class="comment_order">
-								<button class="active">최신순</button>
-								<button>오래된순</button>
+								<button class="btn_sort_small active">최신순</button>
+								<button class="btn_sort_small">오래된순</button>
 							</div>
 						</div>
 						

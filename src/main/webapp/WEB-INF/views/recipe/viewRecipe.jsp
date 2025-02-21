@@ -155,7 +155,7 @@
 				
 				<!-- 리뷰 -->
 				<div class="tab_content">
-						<div class="review_wrap">
+					<div class="review_wrap">
 						<!-- 리뷰 헤더 -->
 						<div class="review_header">
 							<div class="review_count">
@@ -163,8 +163,8 @@
 								<span class="review_count" data-id="2"></span>
 							</div>
 							<div class="review_order">
-								<button class="btn_sort active">최신순</button>
-								<button class="btn_sort">도움순</button>
+								<button class="btn_sort_small active">최신순</button>
+								<button class="btn_sort_small">도움순</button>
 							</div>
 						</div>
 						<!-- 리뷰 작성 -->
@@ -205,12 +205,14 @@
 						</div>
 						<!-- 리뷰 목록 -->
 						<div id="recipeReviewContent"></div>
-					</div>
-					<div class="more_review_btn">
-						<button class="btn_more">
-							<span>더보기</span>
-							<img src="/images/recipe/arrow_down_black.png">
-						</button>
+						
+						<!-- 더보기 버튼 -->
+						<div class="more_review_btn">
+							<button class="btn_more">
+								<span>더보기</span>
+								<img src="/images/recipe/arrow_down_black.png">
+							</button>
+						</div>
 					</div>
 				</div>
 				
@@ -224,8 +226,8 @@
 								<span class="comment_count" data-id="2">7</span>
 							</div>
 							<div class="comment_order">
-								<button class="active">최신순</button>
-								<button>오래된순</button>
+								<button class="btn_sort_small active">최신순</button>
+								<button class="btn_sort_small">오래된순</button>
 							</div>
 						</div>
 						<!-- 댓글 작성 -->
@@ -256,12 +258,13 @@
 						</div>
 						<!-- 댓글 목록 -->
 						<div id="recipeCommentContent"></div>
-					</div>
-					<div class="more_comment_btn">
-						<button class="btn_more">
-							<span>더보기</span>
-							<img src="/images/recipe/arrow_down_black.png">
-						</button>
+						<!-- 댓글 더보기 버튼 -->
+						<div class="more_comment_btn">
+							<button class="btn_more">
+								<span>더보기</span>
+								<img src="/images/recipe/arrow_down_black.png">
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>

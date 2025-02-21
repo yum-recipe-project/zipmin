@@ -6,7 +6,6 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>집밥의민족</title>
-		<link rel="stylesheet" href="/css/recipe/recipe-comment-content.css">
 	</head>
 	<body>
 		<input type="hidden" id="commentCount" value="">

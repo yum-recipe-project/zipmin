@@ -6,7 +6,6 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>집밥의민족</title>
-		<link rel="stylesheet" href="/css/kitchen/guide-comment-content.css">
 	</head>
 	<body>
 		<input type="hidden" id="commentCount" value="">
@@ -16,7 +15,7 @@
 			<ul class="comment_list">
 				<!-- 댓글을 돌면서 -->
 				<%-- <c:forEach> --%>
-					<li>
+					<li class="comment">
 						<!-- 댓글 헤더 -->
 						<div class="comment_header">
 							<div class="comment_writer">

@@ -6,7 +6,6 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>집밥의민족</title>
-		<link rel="stylesheet" href="/css/chompessor/forum-comment-content.css">
 	</head>
 	<body>
 		<input type="hidden" id="commentCount" value="">
@@ -17,7 +16,7 @@
 				<!-- 댓글을 돌면서 original idx랑 comment idx랑 일치하면 -->
 				<%-- <c:foreach> --%>
 					<c:if test="${ true }">
-						<li>
+						<li class="comment">
 							<!-- 댓글 헤더 -->
 							<div class="comment_header">
 								<div class="comment_writer">
@@ -52,9 +51,9 @@
 						<!-- 댓글 테이블을 돌면서 orginal idx랑 comment idx랑 다르고 (=대댓글이고) && 이 댓글에 해당하는 대댓글이면 -->
 						<%-- <c:forEach> --%>
 							<c:if test="${ true }">
-								<li>
+								<li class="subcomment">
 									<img src="/images/chompessor/arrow_right.png">
-									<div class="subcomment">
+									<div class="subcomment_inner">
 										<!-- 대댓글 헤더 -->
 										<div class="subcomment_header">
 											<div class="subcomment_writer">

@@ -274,13 +274,26 @@
 	cursor: pointer;
 }
 .btn_sort.active {
-	font-weight: 600;
+	font-weight: 700;
 	color: var(--txt-color-600);
 }
 
 
 
-
+/* 정렬 순서에 쓰는 작은 버튼 (글자만 있는 버튼 댓글 리뷰에서 사용됨) */
+.btn_sort_small {
+	border: none;
+	background: none;
+	font-size: 14px;
+	font-weight: 400;
+	color: var(--txt-color-500);
+	line-height: 1.4;
+	letter-spacing: -0.02em;
+}
+.btn_sort_small.active {
+	font-weight: 700;
+	color: var(--txt-color-600);
+}
 
 
 

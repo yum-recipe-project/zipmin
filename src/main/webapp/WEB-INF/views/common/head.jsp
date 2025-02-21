@@ -7,6 +7,9 @@
 <link rel="stylesheet" href="/css/common/common.css">
 <link rel="stylesheet" href="/css/common/button.css">
 <link rel="stylesheet" href="/css/common/modal.css">
+<link rel="stylesheet" href="/css/common/comment.css">
+<link rel="stylesheet" href="/css/common/review.css">
+<link rel="stylesheet" href="/css/common/pagination.css">
 <link rel="stylesheet" href="/css/common/header.css">
 <link rel="stylesheet" href="/css/common/footer.css">
 

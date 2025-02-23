@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	        <li>
 	            <div class="description">
 	                <h5>STEP${ index + 1 }</h5>
-	                <p>${ step.description }</p>
+	                <p><span class="hidden">${ index + 1 }.&nbsp;</span>${ step.description }</p>
 	            </div>
 	            ${step.image ? `<div class="image"><img src="${step.image}"></div>` : `<div class="image"><img src="/images/common/test.png"></div>`}
 	        </li>

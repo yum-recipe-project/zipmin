@@ -233,6 +233,10 @@
 	margin-top: 8px;
 }
 
+#container .content .recipe_wrap .recipe_step .step_list .description .hidden {
+	display: none;
+}
+
 #container .content .recipe_wrap .recipe_step .step_list .image {
 	flex-shrink: 0;
 	width: 252px;
@@ -374,23 +378,45 @@
 
 
 
-
-
-
-
 /* 프린트 */
 @media print {
 	#header,
 	.save_recipe_btn,
 	.btn_wrap,
-	.recipe_writer .follow,
+	.recipe_writer,
 	.save_ingredient_btn,
+	.recipe_serving,
 	.recipe_util,
 	.recipe_step .image,
+	.recipe_step .description h5,
 	.tab_button_wrap,
 	.tab_content,
 	#footer {
 		display: none !important;
+	}
+	
+	.recipe_step .description .hidden {
+		display: inline !important;
+	}
+	
+	.recipe_introduce {
+		margin-top: 16px !important;
+	}
+	
+	.recipe_ingredient .ingredient_list {
+		margin-top: 40px !important;
+	}
+	
+	.recipe_ingredient .ingredient_list th {
+		border-top: 1px solid var(--line-color2) !important;
+	}
+	
+	.recipe_step .step_list li + li {
+		margin-top: 0 !important;
+	}
+	
+	.recipe_step .description p {
+		margin-top: 0;
 	}
 	
 	#container .content .recipe_wrap {

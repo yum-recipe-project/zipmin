@@ -51,7 +51,7 @@
 								<span class="nickname" data-id="1">아잠만</span>
 							</a>
 							<c:if test="${ true }">
-								<a class="follow" href="">팔로우</a>
+								<a href="">팔로우</a>
 							</c:if>
 						</div>
 						

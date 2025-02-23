@@ -51,7 +51,7 @@
 								<span class="nickname" data-id="1">아잠만</span>
 							</a>
 							<c:if test="${ true }">
-								<a href="">팔로우</a>
+								<a class="follow" href="">팔로우</a>
 							</c:if>
 						</div>
 						
@@ -71,7 +71,7 @@
 							<button class="btn_icon" onclick="">
 								<img src="/images/recipe/youtube.png">
 							</button>
-							<button class="btn_icon" onclick="">
+							<button class="btn_icon print" onclick="window.print();">
 								<img src="/images/recipe/print.png">
 							</button>
 						</div>
@@ -104,9 +104,9 @@
 						<table class="ingredient_list">
 							<thead>
 								<tr>
-									<th width="236px">재료</th>
-									<th width="236px">용량</th>
-									<th width="472px">비고</th>
+									<th width="25%">재료</th>
+									<th width="25%">용량</th>
+									<th width="50%">비고</th>
 								</tr>
 							</thead>
 							<tbody id="ingredient"></tbody>
@@ -335,11 +335,6 @@
 					</div>
 				</div>
 			</form>
-			
-				<div class="checkbox_wrap">
-					<input type="checkbox" id="saveId" name="" value="">
-					<label for="saveId">아이디 저장</label>
-				</div>
 			
 			<!-- 장보기메모에 담기 모달창 -->
 			<form id="" onsubmit="addMemoForm">

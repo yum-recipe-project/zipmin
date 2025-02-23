@@ -369,3 +369,33 @@
 	margin-top: 48px;
 	margin-bottom: 80px;
 }
+
+
+
+
+
+
+
+
+
+/* 프린트 */
+@media print {
+	#header,
+	.save_recipe_btn,
+	.btn_wrap,
+	.recipe_writer .follow,
+	.save_ingredient_btn,
+	.recipe_util,
+	.recipe_step .image,
+	.tab_button_wrap,
+	.tab_content,
+	#footer {
+		display: none !important;
+	}
+	
+	#container .content .recipe_wrap {
+		padding: 0;
+		width: 90%;
+	}
+
+}

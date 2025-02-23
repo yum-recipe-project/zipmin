@@ -54,7 +54,7 @@
 	margin-top: 24px;
 }
 
-#container .modal-content .modal-body label {
+#container .modal-content .modal-body > label {
 	font-size: 14px;
 	font-weight: 500;
 	margin-bottom: 8px;
@@ -135,7 +135,7 @@
 	padding:  16px;
 }
 
-#container .modal-content .modal-body label {
+#container .modal-content .modal-body table input[type='checkbox'] + label {
 	margin-bottom: 0;
 }
 

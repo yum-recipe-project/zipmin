@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	const followButton = document.getElementById("followButton");
 	const reviewCount = document.querySelectorAll(".review_count[data-id]");
 	const commentCount = document.querySelectorAll(".comment_count[data-id]");
+	const memo = document.getElementById("memo");
 	
 	// 데이터 패치
 	fetch("http://localhost:8586/recipe/1", {
@@ -91,6 +92,22 @@ document.addEventListener('DOMContentLoaded', function() {
 			r.innerHTML = data.review_count;
 		});
 		
+		
+		// 메모
+		data.ingredient_list.forEach((ingredient, index) => {
+			const tr = document.createElement("tr");
+			const tdName = document.createElement("td");
+			tdName.textContent = ingredient.name;
+			const tdAmount = document.createElement("td");
+			tdAmount.textContent = ingredient.amount + ingredient.unit;
+			const tdCheck = document.createElement("td");
+			tdCheck.innerHTML = `<input type="checkbox" id="addMemo_${ index }" checked>
+				<label for="addMemo_${ index }"></label>`;
+			tr.appendChild(tdName);
+			tr.appendChild(tdAmount);
+			tr.appendChild(tdCheck);
+			memo.appendChild(tr);
+		});
 	})
 	.catch(error => console.log(error));
 });

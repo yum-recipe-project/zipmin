@@ -80,10 +80,10 @@
 					<div class="recipe_ingredient">
 						<!-- 제목 -->
 						<h3>재료</h3>
-						
 						<!-- 장보기메모에 재료 담기 버튼 -->
 						<div class="save_ingredient_btn">
-							<button class="btn_tool" onclick="">
+							<button class="btn_tool" data-bs-toggle="modal" data-bs-target="#addMemoModal"
+								onclick="">
 								<img src="/images/recipe/pen.png"> 장보기메모에 재료 담기
 							</button>
 						</div>
@@ -135,7 +135,6 @@
 							</div>
 						</div>
 						<div class="btn_wrap">
-							
 							<button class="btn_outline" type="button" data-bs-toggle="modal" data-bs-target="#supportRecipeModal"
 								onclick="openSupportRecipeModal();">
 								레시피 후원하기
@@ -337,6 +336,41 @@
 				</div>
 			</form>
 			
+				<div class="checkbox_wrap">
+					<input type="checkbox" id="saveId" name="" value="">
+					<label for="saveId">아이디 저장</label>
+				</div>
+			
+			<!-- 장보기메모에 담기 모달창 -->
+			<form id="" onsubmit="addMemoForm">
+				<div class="modal" id="addMemoModal">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5>장보기메모에 재료 담기</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+							</div>
+							<div class="modal-body">
+								<table>
+									<thead>
+										<tr>
+											<th width="43%">재료</th>
+											<th width="43%">용량</th>
+											<th width="14%">선택</th>
+										</tr>
+									</thead>
+									<tbody id="memo"></tbody>
+								</table>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+								<button type="submit" class="btn btn-primary">재료 담기</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+			
 			<!-- 후원 모달창 -->
 			<!-- 후원 관련 모달창 JS는 support-recipe.js에 있음 !!! 참고!! -->
 			<form id="supportRecipeForm" onsubmit="">
@@ -348,7 +382,7 @@
 								<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 							</div>
 							<div class="modal-body">
-								<table>
+								<table class="point">
 									<thead>
 										<tr>
 											<th><p>보유 포인트</p></th>

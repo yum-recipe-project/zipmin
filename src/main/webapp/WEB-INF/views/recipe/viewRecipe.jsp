@@ -270,7 +270,7 @@
 			</div>
 			
 			<!-- 신고 모달창 -->
-			<form id="reportRecipeForm" onsubmit="">
+			<form id="reportRecipeForm" onsubmit="return validateReportRecipeForm();">
 				<div class="modal" id="reportRecipeModal">
 					<div class="modal-dialog">
 						<div class="modal-content">
@@ -337,7 +337,7 @@
 			</form>
 			
 			<!-- 장보기메모에 담기 모달창 -->
-			<form id="" onsubmit="addMemoForm">
+			<form id="addMemoForm" onsubmit="return validateAddMemoForm();">
 				<div class="modal" id="addMemoModal">
 					<div class="modal-dialog">
 						<div class="modal-content">

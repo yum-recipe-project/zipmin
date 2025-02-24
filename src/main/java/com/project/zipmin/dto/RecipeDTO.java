@@ -19,7 +19,7 @@ public class RecipeDTO {
 	private String member_ref;
 	
 	// 추가 컬럼
-	private CategoryDTO category;
+	private List<CategoryDTO> category_list;
 	private MemberDTO member;
 	private List<IngredientDTO> ingredient_list;
 	private List<StepDTO> step_list;

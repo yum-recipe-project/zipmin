@@ -8,28 +8,34 @@ import com.project.zipmin.service.ILikeService;
 public class LikeServiceImpl implements ILikeService {
 
 	@Override
-	public Boolean selectLikeStatusByRecipeIdx(String id, Integer recipeIdx) {
-		return true;
+	public int selectLikeCountByTable(String tablename, int recodenum) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
-	public Boolean selectLikeStatusByCommentIdx(String id, Integer commentIdx) {
-		return true;
+	public int selectFollowerCountByMemberId(String id) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
-	public Boolean selectLikeStatusByChefIdx(String id, String chefIdx) {
-		return true;
+	public int selectFollowingCountByMemberId(String id) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
-	public Integer selectLikeCountByChefIdx(String chefIdx) {
-		return 34;
+	public boolean selectLikeStatusByTable(String id, String tablename, int recodenum) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
-	public Integer selectLikeCountById(String id) {
-		return 12;
+	public int deleteLikesByTable(String tablename, int recodenum) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
+
 	
 }

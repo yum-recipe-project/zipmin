@@ -1,60 +1,63 @@
 package com.project.zipmin.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import java.util.List;
 
-@Controller
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.project.zipmin.dto.MemberDTO;
+import com.project.zipmin.service.IMemberService;
+
+@RestController
+@RequestMapping("/members")
 public class MemberController {
 	
-	
-	@GetMapping("/member/login.do")
-	public String login() {
-		return "member/login";
+	@Autowired
+	IMemberService memberDAO;
+
+	// 사용자 목록 조회
+	@GetMapping("")
+	public List<MemberDTO> listMember() {
+		
+		
+		
+		return null;
 	}
 	
-	@GetMapping("/member/join.do")
-	public String join() {
-		return "member/join";
+	// 특정 사용자 조회
+	@GetMapping("/{id}")
+	public MemberDTO viewMember(@PathVariable("id") String id) {
+		return null;
 	}
 	
-	@GetMapping("member/join/complete.do")
-	public String joinComplete() {
-		return "member/joinComplete";
+	// 사용자 생성
+	@PostMapping("")
+	public int addMember() {
+		return 0;
 	}
 	
-	@GetMapping("/member/findAccount.do")
-	public String findAccount() {
-		return "member/findAccount";
+	// 사용자 정보 수정
+	@PutMapping("/{id}")
+	public int editMember(@PathVariable("id") String id) {
+		return 0;
 	}
 	
-	@GetMapping("/member/findAccount/idResult.do")
-	public String findAccountId() {
-		return "member/findIdResult";
+	// 사용자 삭제
+	@DeleteMapping("/{id}")
+	public int deleteMember(@PathVariable("id") String id) {
+		return 0;
 	}
 	
-	@GetMapping("/member/findAccount/passwordResult.do")
-	public String findAccountPassword() {
-		return "member/findPasswordResult";
-	}
 	
-	@GetMapping("/member/verifyPassword.do")
-	public String verifyPassword() {
-		return "member/verifyPassword";
-	}
 	
-	@GetMapping("/member/changePassword.do")
-	public String changePassword() {
-		return "member/changePassword";
-	}
 	
-	@GetMapping("/member/userInfo.do")
-	public String userInfo() {
-		return "member/userInfo";
-	}
 	
-	@GetMapping("/member/viewMemberInfo.do")
-	public String viewMemberInfo() {
-		return "member/viewMemberInfo";
-	}
+	
+
 }

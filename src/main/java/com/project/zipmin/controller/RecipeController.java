@@ -1,15 +1,11 @@
 package com.project.zipmin.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.dto.CategoryDTO;
@@ -28,7 +24,7 @@ import com.project.zipmin.service.IReviewService;
 import com.project.zipmin.service.IStepService;
 
 @RestController
-@RequestMapping("/recipe")
+@RequestMapping("/recipes")
 public class RecipeController {
 	
 	@Autowired
@@ -51,51 +47,44 @@ public class RecipeController {
 	ICommentService commentDAO;
 	
 	
-	@GetMapping("")
-	public List<Map<String, Object>> listRecipe() {
-		return null;
-	}
-	
 	@GetMapping("/{recipeIdx}")
-	@ResponseBody
 	public RecipeDTO viewRecipe(@PathVariable("recipeIdx") Integer recipeIdx) {
 		
-		// recipeIdx 보내서 레시피 받아오기
+		// 레시피 조회
 		RecipeDTO recipeDTO = recipeDAO.selectRecipe(recipeIdx);
 		
-		// reviewIdx 보내서 해당하는 category 읽어오기
-		CategoryDTO categoryDTO = categoryDAO.selectCategoryByRecipeIdx(recipeIdx);
-		recipeDTO.setCategory(categoryDTO);
+		// 카테고리 목록 조회
+		List<CategoryDTO> categoryList = categoryDAO.selectCategoryListByRecipeIdx(recipeIdx);
+		recipeDTO.setCategory_list(categoryList);
 		
-		// member_ref 보내서 해당하는 member 닉네임 가져오기
-		MemberDTO memberDTO = memberDAO.selectMemberById(recipeDTO.getMember_ref());
+		// 작성자 조회
+		MemberDTO memberDTO = memberDAO.selectMember(recipeDTO.getMember_ref());
 		recipeDTO.setMember(memberDTO);
 		
-		// recipeIdx랑 로그인 한 user의 로그인 정보 보내서 레시피에 좋아요와 신고 누른 여부 각각 가져와야 함
-		Boolean isLike = likeDAO.selectLikeStatusByRecipeIdx("harim", recipeIdx);
-		Boolean isReport = reportDAO.selectReportStatusByRecipeIdx("harim", recipeIdx);
-		recipeDTO.setIsLike(isLike);
-		recipeDTO.setIsReport(isReport);
-		// 가져와서 아이콘 처리하기 (아마 JS단에서)
-		
-		// 재료 recipeIdx 보내서 해당하는 재료 목록 가져오기
-		List<IngredientDTO> ingredientList = ingredientDAO.selectIngredientsByRecipeIdx(recipeIdx);
+		// 재료 목록 조회
+		List<IngredientDTO> ingredientList = ingredientDAO.selectIngredientListByRecipeIdx(recipeIdx);
 		recipeDTO.setIngredient_list(ingredientList);
 		
-		// 조리 순서 recipeIdx 보내서 해당하는 조리 과정 index 순서대로 가져오기
-		List<StepDTO> stepList = stepDAO.selectStepsByRecipeIdx(recipeIdx);
+		// 조리 순서 목록 조회
+		List<StepDTO> stepList = stepDAO.selectStepList(recipeIdx);
 		recipeDTO.setStep_list(stepList);
 		
-		// memberidx랑 login user 보내서 팔로우 여부 팔로우 수 등등
-		int followerCount = likeDAO.selectLikeCountByChefIdx("harim");
+		// recipeIdx랑 로그인 한 user의 로그인 정보 보내서 레시피에 좋아요와 신고 누른 여부 각각 가져와야 함
+		Boolean isLike = likeDAO.selectLikeStatusByTable("dayeong", "recipe", recipeIdx);
+		Boolean isReport = reportDAO.selectReportStatusByTable("dayeong", "recipe", recipeIdx);
+		recipeDTO.setIsLike(isLike);
+		recipeDTO.setIsReport(isReport);
+		
+		// 팔로워 수와 팔로우 여부 조회
+		int followerCount = likeDAO.selectFollowerCountByMemberId(recipeDTO.getMember().getId());
+		Boolean isFollow = likeDAO.selectLikeStatusByTable("dayeong", "recipe", recipeDTO.getRecipe_idx());
 		recipeDTO.setFollower_count(followerCount);
-		Boolean isFollow = likeDAO.selectLikeStatusByChefIdx("dayeong", "harim");
 		recipeDTO.setIsFollow(isFollow);
 		
-		// 리뷰수와 댓글 수
+		// 리뷰 수와 댓글 수 조회
 		int reviewCount = reviewDAO.selectReviewCountByRecipeIdx(recipeIdx);
 		recipeDTO.setReview_count(reviewCount);
-		int commentCount = commentDAO.selectCommentCountByRecipeIdx(recipeIdx);
+		int commentCount = commentDAO.selectCommentCountByTable("recipe", recipeIdx);
 		recipeDTO.setComment_count(commentCount);
 		
 		return recipeDTO;

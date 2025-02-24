@@ -1,28 +1,10 @@
 package com.project.zipmin.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
+@RequestMapping("/guides")
 public class CookingController {
-	
-	@GetMapping("/cooking/listClass.do")
-	public String listClass() {
-		return "cooking/listClass";
-	}
-	
-	@GetMapping("/cooking/listClass/class.do")
-	public String listClassContent() {
-		return "cooking/classContent";
-	}
-	
-	@GetMapping("/cooking/viewClass.do")
-	public String viewClass() {
-		return "cooking/viewClass";
-	}
-	
-	@GetMapping("/cooking/openClass.do")
-	public String openClass() {
-		return "cooking/openClass";
-	}
+
 }

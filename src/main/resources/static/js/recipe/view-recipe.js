@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	const memo = document.getElementById("memo");
 	
 	// 데이터 패치
-	fetch("http://localhost:8586/recipe/1", {
+	fetch("http://localhost:8586/recipes/1", {
 		method: "get"
 	})
 	.then(response => response.json())
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			const tdAmount = document.createElement("td");
 			tdAmount.textContent = ingredient.amount + ingredient.unit;
 			const tdCheck = document.createElement("td");
-			tdCheck.innerHTML = `<input type="checkbox" id="addMemo_${ index }" checked>
+			tdCheck.innerHTML = `<input type="checkbox" id="addMemo_${ index }" name="ingredient" checked>
 				<label for="addMemo_${ index }"></label>`;
 			tr.appendChild(tdName);
 			tr.appendChild(tdAmount);
@@ -326,6 +326,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+
 /**
  * 댓글 정렬 방법 탭 메뉴 클릭 시 탭 메뉴를 활성화하고 해당하는 내용을 표시하는 함수
  */
@@ -380,3 +381,36 @@ document.addEventListener('DOMContentLoaded', function() {
 		commentButton.disabled = isCommentEmpty;
 	});
 });
+
+
+
+/**
+ * 신고 모달창의 신고 사유를 선택했는지 검증하는 함수
+ * 
+ * @returns {boolean} - 검증 결과
+ */
+function validateReportRecipeForm() {
+	if (!document.querySelector('input[name="reason"]:checked')) {
+		alert("신고 사유를 선택하세요.");
+		return false;
+	}
+}
+
+
+
+/**
+ * 장보기메모에 재로 담기 모달창의 재료를 선택했는지 검증하는 함수
+ * 
+ * @returns {boolean} - 검증 결과
+ */
+function validateAddMemoForm() {
+	if (!document.querySelector('input[name=ingredient]:checked')) {
+		alert("재료를 하나 이상 선택하세요.");
+		return false;
+	}
+}
+
+
+
+
+

@@ -14,7 +14,8 @@ document.addEventListener("DOMContentLoaded", function() {
 	const ownedPoint = document.getElementById("ownedPoint");
 	const remainPoint = document.getElementById("remainPoint");
 	const pointInput = document.getElementById("pointInput");
-	// 일단 패치 해온거에서 ownedPoint 설정
+	
+	// 데이터 가져오기
 	/*
 	fetch("주소", {method: "get"})
 		.then(response => response.json())
@@ -27,8 +28,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	// 일단 하드코딩 해두었음
 	ownedPoint.innerText = 200;
 	remainPoint.innerText = 100;
-	
-	
+
 	// 포인트가 입력되면 남은 포인트 계산 그리고 pointAlert 노출 여부
 	pointInput.addEventListener("input", function() {
 		remainPoint.innerText = ownedPoint.innerText - pointInput.value;
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	pointRadio.forEach(radio => {
 		radio.addEventListener("change", function() {
 			totalPoint.innerText = parseInt(ownedPoint.innerText) + parseInt(radio.value) + "P";
-		})
+		});
 	});
 });
 

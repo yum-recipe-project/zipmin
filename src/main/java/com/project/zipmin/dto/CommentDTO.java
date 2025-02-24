@@ -7,11 +7,11 @@ import lombok.Data;
 @Data
 public class CommentDTO {
 	private int comm_idx;
-	private int comm_ref; // 자기 참조
+	private int comm_ref;
 	private Date postdate;
 	private String content;
-	private String boardname;
+	private String tablename;
+	private int recodenum;
 	private Boolean rewrite;
-	private int board_ref;
 	private int member_ref;
 }

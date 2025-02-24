@@ -30,8 +30,7 @@ public class ReviewServiceImpl implements IReviewService {
 
 	@Override
 	public int selectReviewCountByRecipeIdx(int recipeIdx) {
-		// TODO Auto-generated method stub
-		return 0;
+		return 23;
 	}
 
 	@Override
@@ -42,8 +41,7 @@ public class ReviewServiceImpl implements IReviewService {
 
 	@Override
 	public int selectReviewCountByMemberId(String id) {
-		// TODO Auto-generated method stub
-		return 0;
+		return 34;
 	}
 
 	@Override

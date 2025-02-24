@@ -48,7 +48,7 @@
 						<div class="recipe_writer">
 							<a class="nickname" href="">
 								<img src="/images/common/test.png">
-								<span class="nickname" data-id="1">아잠만</span>
+								<span class="nickname" data-id="1"></span>
 							</a>
 							<c:if test="${ true }">
 								<a href="">팔로우</a>

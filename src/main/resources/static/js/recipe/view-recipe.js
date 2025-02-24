@@ -2,112 +2,82 @@
  * 레시피 상세 페이지에 데이터를 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	const title = document.getElementById("title");
-	const level = document.getElementById("level");
-	const time = document.getElementById("time");
-	const spicy = document.getElementById("spicy");
-	const introduce = document.getElementById("introduce");
-	const tip = document.getElementById("tip");
-	const category = document.getElementById("category");
-	const nickname = document.querySelectorAll(".nickname[data-id]");
-	const servingInput = document.getElementById("servingInput");
-	const ingredientkk = document.getElementById("ingredient");
-	const stepkk = document.getElementById("step");
-	const follower = document.getElementById("follower");
-	const followButton = document.getElementById("followButton");
-	const reviewCount = document.querySelectorAll(".review_count[data-id]");
-	const commentCount = document.querySelectorAll(".comment_count[data-id]");
-	const memo = document.getElementById("memo");
-	
 	// 데이터 패치
 	fetch("http://localhost:8586/recipes/1", {
 		method: "get"
 	})
 	.then(response => response.json())
 	.then(data => {
-		title.innerText = data.title;
-		level.innerText = data.level;
-		time.innerText = data.time;
-		spicy.innerText = data.spicy;
-		introduce.innerText = data.introduce;
-		tip.innerText = data.tip;
-		// 카테고리
-		const span1 = document.createElement('span');
-		span1.textContent = `#${ data.category.type }`;
-		category.appendChild(span1);
-		const span2 = document.createElement('span');
-		span2.textContent = `#${ data.category.situation }`;
-		category.appendChild(span2);
-		const span3 = document.createElement('span');
-		span3.textContent = `#${ data.category.ingredient }`;
-		category.appendChild(span3);
-		const span4 = document.createElement('span');
-		span4.textContent = `#${ data.category.way }`;
-		category.appendChild(span4);
-		//
-		nickname.forEach(n => {
-			n.innerText = data.member.nickname;
-		});
+		// 제목
+		const titleElement = document.getElementById("title");
+		titleElement.innerText = data.title;
+		// 단계
+		const levelElement = document.getElementById("level");
+		levelElement.innerText = data.level;
+		// 조리 시간
+		const timeElement = document.getElementById("time");
+		timeElement.innerText = data.time;
+		// 맵기 정도
+		const spicyElement = document.getElementById("spicy");
+		spicyElement.innerText = data.spicy;
+		// 소개
+		const introduceElement = document.getElementById("introduce");
+		introduceElement.innerText = data.introduce;
+		// 팁
+		const tipElement = document.getElementById("tip");
+		tipElement.innerText = data.tip;
+		// 닉네임
+		const nicknameElement = document.querySelectorAll(".nickname[data-id]");
+		nicknameElement.forEach(nickname => { nickname.innerText = data.member.nickname; });
+		// 조리 양
+		const servingInput = document.getElementById("servingInput");
 		servingInput.value = data.serving;
-		previousValue = parseFloat(data.serving);
 		// 재료
-		data.ingredient_list.forEach(ingredient => {
-			const tr = document.createElement("tr");
-			const tdName = document.createElement("td");
-			tdName.textContent = ingredient.name;
-			const tdAmount = document.createElement("td");
-			tdAmount.textContent = ingredient.amount + ingredient.unit;
-			const tdNote = document.createElement("td");
-			tdNote.textContent = ingredient.note || "";
-			tr.appendChild(tdName);
-			tr.appendChild(tdAmount);
-			tr.appendChild(tdNote);
-			ingredientkk.appendChild(tr);
-		});
+		const ingredientElement = document.getElementById("ingredient");
+		ingredientElement.innerHTML = data.ingredient_list.map(ingredient => `
+		    <tr>
+		        <td>${ingredient.name}</td>
+		        <td>${ingredient.amount}${ingredient.unit}</td>
+		        <td>${ingredient.note || ""}</td>
+		    </tr>
+		`).join("");
 		// 조리 순서
-		stepkk.innerHTML = data.step_list.map((step, index) => `
-	        <li>
-	            <div class="description">
-	                <h5>STEP${ index + 1 }</h5>
-	                <p><span class="hidden">${ index + 1 }.&nbsp;</span>${ step.description }</p>
-	            </div>
-	            ${step.image ? `<div class="image"><img src="${step.image}"></div>` : `<div class="image"><img src="/images/common/test.png"></div>`}
-	        </li>
-	    `).join("");
-		
+		const stepElement = document.getElementById("step");
+		stepElement.innerHTML = data.step_list.map((step, index) => `
+			<li>
+				<div class="description">
+					<h5>STEP${ index + 1 }</h5>
+					<p><span class="hidden">${ index + 1 }.&nbsp;</span>${ step.description }</p>
+				</div>
+				${step.image ? `<div class="image"><img src="${step.image}"></div>` : `<div class="image"><img src="/images/common/test.png"></div>`}
+			</li>
+		`).join("");
 		// 구독자 수
-		follower.innerText = data.follower_count;
+		const followerElement = document.getElementById("follower");
+		followerElement.innerText = data.follower_count;
 		// 구독 버튼
+		const followButton = document.getElementById("followButton");
 		followButton.classList.toggle("btn_outline", data.isFollow);
 		followButton.classList.toggle("btn_dark", !data.isFollow);
 		followButton.innerText = (data.isFollow === false ? "구독" : "구독 중");
-		
-		// 댓글 수
-		commentCount.forEach(c => {
-			c.innerHTML = data.comment_count;
-		})
-		
 		// 리뷰 수
-		reviewCount.forEach(r => {
-			r.innerHTML = data.review_count;
-		});
-		
-		
-		// 메모
-		data.ingredient_list.forEach((ingredient, index) => {
-			const tr = document.createElement("tr");
-			const tdName = document.createElement("td");
-			tdName.textContent = ingredient.name;
-			const tdAmount = document.createElement("td");
-			tdAmount.textContent = ingredient.amount + ingredient.unit;
-			const tdCheck = document.createElement("td");
-			tdCheck.innerHTML = `<input type="checkbox" id="addMemo_${ index }" name="ingredient" checked>
-				<label for="addMemo_${ index }"></label>`;
-			tr.appendChild(tdName);
-			tr.appendChild(tdAmount);
-			tr.appendChild(tdCheck);
-			memo.appendChild(tr);
-		});
+		const reviewCountElement = document.querySelectorAll(".review_count[data-id]");
+		reviewCountElement.forEach(reviewcount => { reviewcount.innerText = data.review_count; });
+		// 댓글 수
+		const commentCountElement = document.querySelectorAll(".comment_count[data-id]");
+		commentCountElement.forEach(commentcount => { commentcount.innerText = data.comment_count; });
+		// 장보기메모 (모달창)
+		const memoElement = document.getElementById("memo");
+		memoElement.innerHTML = data.ingredient_list.map((ingredient, index) => `
+		    <tr>
+		        <td>${ingredient.name}</td>
+		        <td>${ingredient.amount}${ingredient.unit}</td>
+		        <td>
+		            <input type="checkbox" id="addMemo_${index}" name="ingredient" checked>
+		            <label for="addMemo_${index}"></label>
+		        </td>
+		    </tr>
+		`).join("");
 	})
 	.catch(error => console.log(error));
 });

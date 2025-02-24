@@ -30,8 +30,13 @@ public class MemberServiceImpl implements IMemberService {
 
 	@Override
 	public MemberDTO selectMember(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		MemberDTO memberDTO = new MemberDTO();
+		// 더미데이터
+		memberDTO.setId("harim");
+		memberDTO.setName("정하림");
+		memberDTO.setNickname("뽀야미가 되고 싶은 아잠만");
+		memberDTO.setPoint(300);
+		return memberDTO;
 	}
 
 	@Override

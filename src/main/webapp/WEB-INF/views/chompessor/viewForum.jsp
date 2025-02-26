@@ -74,6 +74,7 @@
 							<div class="comment_order">
 								<button class="btn_sort_small active">최신순</button>
 								<button class="btn_sort_small">오래된순</button>
+								<button class="btn_sort_small">인기순</button>
 							</div>
 						</div>
 						

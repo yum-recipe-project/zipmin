@@ -98,5 +98,64 @@ public class ChompessorController {
 			@PathVariable("commId") int commId) {
 		return 0;
 	}
-
+	
+	
+	
+	// 특정 투표의 특정 댓글 좋아요
+	@PostMapping("/{voteId}/comments/{commId}/likes")
+	public int likeVoteComment(
+			@PathVariable("voteId") int voteId,
+			@PathVariable("commId") int commId) {
+		return 0;
+	}
+	
+	
+	
+	// 특정 투표의 특정 댓글 좋아요 개수
+	@GetMapping("/{voteId}/comments/{commId}/likes/count")
+	public int countLikeVoteComment(
+			@PathVariable("voteId") int voteId,
+			@PathVariable("commId") int commId) {
+		return 0;
+	}
+	
+	
+	
+	// 특정 투표의 특정 댓글 좋아요 여부
+	@GetMapping("/{voteId}/comments/{commId}/likes/status")
+	public boolean checkLikeVoteComment(
+			@PathVariable("voteId") int voteId,
+			@PathVariable("commId") int commId) {
+		return false;
+	}
+	
+	
+	
+	// 특정 투표의 특정 댓글 신고
+	@PostMapping("/{voteId}/comments/{commId}/reports")
+	public int reportVoteComment(
+			@PathVariable("voteId") int voteId,
+			@PathVariable("commId") int commId) {
+		return 0;
+	}
+	
+	
+	
+	// 특정 투표의 특정 댓글 신고 개수 (관리자)
+	@GetMapping("/{voteId}/comments/{commId}/reports/count")
+	public int countReportVoteComment(
+			@PathVariable("voteId") int voteId,
+			@PathVariable("commId") int commId) {
+		return 0;
+	}
+	
+	
+	
+	// 특정 투표의 특정 댓글 신고 여부
+	@GetMapping("/{voteId}/comments/{commId}/reports/status")
+	public boolean checkReportVoteComment(
+			@PathVariable("voteId") int voteId,
+			@PathVariable("commId") int commId) {
+		return false;
+	}
 }

@@ -24,7 +24,7 @@
 						<h2>뿔 소라 손질법</h2>
 						<div class="guide_writer">
 							<img src="/images/common/test.png">
-							<span><b>아잠만</b></span>
+							<span><b>관리자</b></span>
 							<span> ・ </span>
 							<span>저장</span>
 							<span>26</span>
@@ -68,6 +68,7 @@
 						<div class="comment_order">
 							<button class="btn_sort_small active">최신순</button>
 							<button class="btn_sort_small">오래된순</button>
+							<button class="btn_sort_small">인기순</button>
 						</div>
 					</div>
 					
@@ -88,7 +89,7 @@
 									<span>아잠만</span>
 								</div>
 								<div class="comment_input">
-									<textarea id="commentInput" rows="2" maxlength="400" placeholder="나누고 싶은 좋은 방법이 있다면 키친 한마디을 남겨주세요!&#10;주제와 무관한 키친 한마디는 삭제될 수 있습니다."></textarea>
+									<textarea id="commentInput" rows="2" maxlength="400" placeholder="나누고 싶은 좋은 방법이 있다면 키친 노하우를 남겨주세요!&#10;주제와 무관한 키친 한마디는 삭제될 수 있습니다."></textarea>
 									<span>400</span>
 								</div>
 								<div class="write_btn">

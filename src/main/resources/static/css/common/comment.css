@@ -193,10 +193,11 @@
 	letter-spacing: -0.02em;
 }
 
-#container .write_subcomment_btn {
+#container .comment_tool {
+	display: flex;
+	gap: 10px;
 	margin-top: 16px;
 }
-
 
 
 

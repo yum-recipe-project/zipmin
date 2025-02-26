@@ -147,10 +147,7 @@ public class UserController {
 	}
 
 	
-	
 
-	
-	
 	// 사용자가 참가한 모든 클래스 조회
 	@GetMapping("/{userId}/classes")
 	public List<ClassDTO> listUserClass(

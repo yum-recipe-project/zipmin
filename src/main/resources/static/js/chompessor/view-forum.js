@@ -139,7 +139,54 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+/**
+ * 포럼의 댓글을 수정하는 모달창의 히든 폼에 파라미터로 전달받은 데이터를 꽂아주는 함수
+ */
+function openEditForumCommentModal() {
+	
+}
+/**
+ * 포럼의 대댓글을 작성하는 모달창의 히든 폼에 파라미터로 전달받은 데이터를 꽂아주는 함수
+ */
+function openWriteForumSubcommentModal() {
+	
+}
+/**
+ * 포럼의 대댓글을 수정하는 모달창의 히든 폼에 파라미터로 전달받은 데이터를 꽂아주는 함수
+ */
+function openEditForumSubcommentModal() {
+}
 
 
+/**
+ * 모달창의 내용 입력창의 폼값을 검증하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const editForumCommentContentInput = document.getElementById("editForumCommentContentInput");
+	const editForumCommentButton = document.getElementById("editForumCommentButton");
+	editForumCommentContentInput.addEventListener("input", function() {
+		const isEditForumCommentContentInputEmpty = editForumCommentContentInput.value.trim() === "";
+		editForumCommentButton.classList.toggle("btn-disable", isEditForumCommentContentInputEmpty);
+		editForumCommentButton.classList.toggle("btn-primary", !isEditForumCommentContentInputEmpty);
+		editForumCommentButton.disabled = isEditForumCommentContentInputEmpty;
+    });
+	
+	const writeForumSubcommentContentInput = document.getElementById("writeForumSubcommentContentInput");
+	const writeForumSubcommentButton = document.getElementById("writeForumSubcommentButton");
+	writeForumSubcommentContentInput.addEventListener("input", function() {
+		const isWriteForumSubcommentContentInputEmpty = writeForumSubcommentContentInput.value.trim() === "";
+		writeForumSubcommentButton.classList.toggle("btn-disable", isWriteForumSubcommentContentInputEmpty);
+		writeForumSubcommentButton.classList.toggle("btn-primary", !isWriteForumSubcommentContentInputEmpty);
+		writeForumSubcommentButton.disabled = isWriteForumSubcommentContentInputEmpty;
+    });
+				
+	const editForumSubcommentContentInput = document.getElementById("editForumSubcommentContentInput");
+	const editForumSubcommentButton = document.getElementById("editForumSubcommentButton");
+	editForumSubcommentContentInput.addEventListener("input", function() {
+		const isEditForumSubcommentContentInputEmpty = editForumSubcommentContentInput.value.trim() === "";
+		editForumSubcommentButton.classList.toggle("btn-disable", isEditForumSubcommentContentInputEmpty);
+		editForumSubcommentButton.classList.toggle("btn-primary", !isEditForumSubcommentContentInputEmpty);
+		editForumSubcommentButton.disabled = isEditForumSubcommentContentInputEmpty;
+	});
 
-
+});

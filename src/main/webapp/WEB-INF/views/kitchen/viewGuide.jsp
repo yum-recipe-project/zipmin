@@ -131,7 +131,7 @@
 									</p>
 									<!-- 댓글 도구 -->
 									<div class="comment_tool">
-										<button class="btn_tool write_subcomment_btn" href="">
+										<button class="btn_tool write_subcomment_btn">
 											<img src="/images/recipe/thumb_up_full.png">
 				                            <img src="/images/recipe/thumb_up_empty.png">
 				                            <p>3</p>

@@ -104,18 +104,319 @@
 							</c:if>
 						</div>
 						<!-- 댓글 목록 -->
-						<div id="forumCommentContent"></div>
+						<c:if test="${ true }">
+							<ul class="comment_list">
+								<!-- 댓글을 돌면서 original idx랑 comment idx랑 일치하면 -->
+								<%-- <c:foreach> --%>
+									<c:if test="${ true }">
+										<li class="comment">
+											<!-- 댓글 헤더 -->
+											<div class="comment_info">
+												<div class="comment_writer">
+													<img src="/images/common/test.png">
+													<span>아잠만</span>
+													<span>2025.02.11</span>
+												</div>
+												<c:if test="${ true }">
+													<div class="comment_action">
+														<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportForumCommentModal"
+															onclick="openReportForumCommentModal();">
+															신고
+														</a>
+														<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editForumCommentModal"
+															onclick="openEditForumCommentModal();">
+															수정
+														</a>
+														<a href="">삭제</a>
+													</div>
+												</c:if>
+											</div>
+											<!-- 댓글 내용 -->
+											<p class="comment_content">
+												녹차 아이스크림은 배스킨라빈스가 최고입니다
+											</p>
+											<!-- 대댓글 쓰기 버튼 -->
+											<div class="comment_tool">
+												<button class="btn_tool write_subcomment_btn">
+													<img src="/images/recipe/thumb_up_full.png">
+						                            <img src="/images/recipe/thumb_up_empty.png">
+						                            <p>3</p>
+												</button>
+												<a class="btn_outline_small write_subcomment_btn" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#writeForumSubcommentModal"
+													onclick="openWriteForumSubcommentModal();">
+													<span>답글 쓰기</span>
+												</a>
+											</div>
+										</li>
+									</c:if>
+									
+									<!-- 대댓글 -->
+									<ul class="subcomment_list">
+										<!-- 댓글 테이블을 돌면서 orginal idx랑 comment idx랑 다르고 (=대댓글이고) && 이 댓글에 해당하는 대댓글이면 -->
+										<%-- <c:forEach> --%>
+											<c:if test="${ true }">
+												<li class="subcomment">
+													<img class="subcomment_arrow" src="/images/chompessor/arrow_right.png">
+													<div class="subcomment_inner">
+														<!-- 대댓글 헤더 -->
+														<div class="subcomment_info">
+															<div class="subcomment_writer">
+																<img src="/images/common/test.png">
+																<span>아잠만</span>
+																<span>2025.02.11</span>
+															</div>
+															<c:if test="${ true }">
+																<div class="subcomment_action">
+																	<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportForumSubcommentModal"
+																		onclick="openReportWriteForumSubcommentModal();">
+																		신고
+																	</a>
+																	<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editForumSubcommentModal"
+																		onclick="openWriteForumSubcommentModal();">
+																		수정
+																	</a>
+																	<a href="">삭제</a>
+																</div>
+															</c:if>
+														</div>
+														<!-- 대댓글 내용 -->
+														<p class="subcomment_content">
+															나뚜르가 최곤데 뭘 모르시네요
+														</p>
+														<!-- 대댓글 좋아요 -->
+														<div class="comment_tool">
+															<button class="btn_tool write_subcomment_btn">
+																<img src="/images/recipe/thumb_up_full.png">
+									                            <img src="/images/recipe/thumb_up_empty.png">
+									                            <p>3</p>
+															</button>
+														</div>
+													</div>
+												</li>
+											</c:if>
+										<%-- </c:forEach> --%>
+									</ul>
+								<%-- </c:foreach> --%>
+							</ul>
+						</c:if>
+						
+						<!-- 댓글 더보기 버튼 -->
+						<div class="more_comment_btn">
+							<button class="btn_more">
+								<span>더보기</span>
+								<img src="/images/chompessor/arrow_down.png">
+							</button>
+						</div>
 					</div>
-					
-					<!-- 댓글 더보기 버튼 -->
-					<div class="more_comment_btn">
-						<button class="btn_more">
-							<span>더보기</span>
-							<img src="/images/chompessor/arrow_down.png">
-						</button>
-					</div>
-
 				</div>
+				
+				<!--  포럼의 댓글 수정 모달창 -->
+				<form method="post" action="" onsubmit="">
+					<div class="modal" id="editForumCommentModal">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5>수정하기</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+								</div>
+								<div class="modal-body">
+									<div class="form-group">
+										<label>내용</label>
+										<textarea class="form-control" id="editForumCommentContentInput" name="content" style="height: 90px;"></textarea>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
+									<button type="submit" id="editForumCommentButton" class="btn btn-disable" disabled>작성하기</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+				
+				<!-- 포럼의 대댓글 작성 모달창 -->
+				<form method="post" action="" onsubmit="">
+					<div class="modal" id="writeForumSubcommentModal">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5>작성하기</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+								</div>
+								<div class="modal-body">
+									<div class="form-group">
+										<label>내용</label>
+										<textarea class="form-control" id="writeForumSubcommentContentInput" name="content" style="height: 90px;"></textarea>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
+									<button type="submit" id="writeForumSubcommentButton" class="btn btn-disable" disabled>작성하기</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+				
+				<!-- 포럼의 대댓글 수정 모달창 -->
+				<form method="post" action="" onsubmit="">
+					<div class="modal" id="editForumSubcommentModal">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5>수정하기</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+								</div>
+								<div class="modal-body">
+									<div class="form-group">
+										<label>내용</label>
+										<textarea class="form-control" id="editForumSubcommentContentInput" name="content" style="height: 90px;"></textarea>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
+									<button type="submit" id="editForumSubcommentButton" class="btn btn-disable" disabled>작성하기</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+				
+				
+				<!-- 댓글 신고 모달창 -->
+				<form id="reportForumCommentForm" onsubmit="return validateReportForumCommentForm();">
+					<div class="modal" id="reportForumCommentModal">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5>신고하기</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+								</div>
+								<div class="modal-body">
+									<label>댓글 신고 사유</label>
+									<div class="report">
+										<div class="reason">
+											<div class="form-radio">
+												<div>
+													<input type="radio" id="reason1" name="reason" value="">
+													<label for="reason1">정당/정치인 비하 및 선거운동</label>
+												</div>
+											</div>
+											<div class="form-radio">
+												<div>
+													<input type="radio" id="reason2" name="reason" value="">
+													<label for="reason2">유출/사칭/사기</label>
+												</div>
+											</div>
+											<div class="form-radio">
+												<div>
+													<input type="radio" id="reason3" name="reason" value="">
+													<label for="reason3">욕설/비하</label>
+												</div>
+											</div>
+											<div class="form-radio">
+												<div>
+													<input type="radio" id="reason4" name="reason" value="">
+													<label for="reason4">낚시/놀람/도배</label>
+												</div>
+											</div>
+											<div class="form-radio">
+												<div>
+													<input type="radio" id="reason5" name="reason" value="">
+													<label for="reason5">상업적 광고 및 판매</label>
+												</div>
+											</div>
+											<div class="form-radio">
+												<div>
+													<input type="radio" id="reason6" name="reason" value="">
+													<label for="reason6">불법촬영물 등의 유통</label>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-info">
+										<p>
+											신고는 반대의견을 나타내는 기능이 아닙니다.
+											신고 사유에 맞지 않는 신고를 했을 경우, 해당 신고는 처리되지 않습니다.
+										</p>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+									<button type="submit" class="btn btn-primary">신고하기</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+				
+				
+				<!-- 대댓글 신고 모달창 -->
+				<form id="reportForumSubcommentForm" onsubmit="return validateReportForumSubcommentForm();">
+					<div class="modal" id="reportForumSubcommentModal">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5>신고하기</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+								</div>
+								<div class="modal-body">
+									<label>대댓글 신고 사유</label>
+									<div class="report">
+										<div class="reason">
+											<div class="form-radio">
+												<div>
+													<input type="radio" id="reason1" name="reason" value="">
+													<label for="reason1">정당/정치인 비하 및 선거운동</label>
+												</div>
+											</div>
+											<div class="form-radio">
+												<div>
+													<input type="radio" id="reason2" name="reason" value="">
+													<label for="reason2">유출/사칭/사기</label>
+												</div>
+											</div>
+											<div class="form-radio">
+												<div>
+													<input type="radio" id="reason3" name="reason" value="">
+													<label for="reason3">욕설/비하</label>
+												</div>
+											</div>
+											<div class="form-radio">
+												<div>
+													<input type="radio" id="reason4" name="reason" value="">
+													<label for="reason4">낚시/놀람/도배</label>
+												</div>
+											</div>
+											<div class="form-radio">
+												<div>
+													<input type="radio" id="reason5" name="reason" value="">
+													<label for="reason5">상업적 광고 및 판매</label>
+												</div>
+											</div>
+											<div class="form-radio">
+												<div>
+													<input type="radio" id="reason6" name="reason" value="">
+													<label for="reason6">불법촬영물 등의 유통</label>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-info">
+										<p>
+											신고는 반대의견을 나타내는 기능이 아닙니다.
+											신고 사유에 맞지 않는 신고를 했을 경우, 해당 신고는 처리되지 않습니다.
+										</p>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+									<button type="submit" class="btn btn-primary">신고하기</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
 			</main>
 		
 		<%@include file="../common/footer.jsp" %>

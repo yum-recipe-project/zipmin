@@ -22,20 +22,20 @@ public class IngredientServiceImpl implements IIngredientService {
 		List<IngredientDTO> ingredientList = new ArrayList<IngredientDTO>();
 		// 더미데이터 1
 		IngredientDTO ingredientDTO1 = new IngredientDTO();
-		ingredientDTO1.setIngr_idx(1);
+		ingredientDTO1.setId(1);
 		ingredientDTO1.setName("마늘");
 		ingredientDTO1.setAmount(5);
 		ingredientDTO1.setUnit("쪽");
 		ingredientDTO1.setNote("슬라이스");
-		ingredientDTO1.setRecipe_ref(1);
+		ingredientDTO1.setRecipe_id(1);
 		ingredientList.add(ingredientDTO1);
 		// 더미데이터 2
 		IngredientDTO ingredientDTO2 = new IngredientDTO();
-		ingredientDTO2.setIngr_idx(2);
+		ingredientDTO2.setId(2);
 		ingredientDTO2.setName("김치");
 		ingredientDTO2.setAmount(2);
 		ingredientDTO2.setUnit("포기");
-		ingredientDTO2.setRecipe_ref(1);
+		ingredientDTO2.setRecipe_id(1);
 		ingredientList.add(ingredientDTO2);
 		return ingredientList;
 	}

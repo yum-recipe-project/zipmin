@@ -6,12 +6,11 @@ import lombok.Data;
 
 @Data
 public class CommentDTO {
-	private int comm_idx;
-	private int comm_ref;
+	private int id;
+	private int comm_id; // id를 참조
 	private Date postdate;
 	private String content;
 	private String tablename;
 	private int recodenum;
-	private Boolean rewrite;
-	private int member_ref;
+	private int user_id;
 }

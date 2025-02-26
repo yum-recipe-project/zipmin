@@ -10,13 +10,13 @@ import com.project.zipmin.dto.ReviewDTO;
 public interface IReviewService {
 	
 	// 레시피 일련번호를 이용해 리뷰 목록 조회 (최신순)
-	public List<ReviewDTO> selectReviewListByRecipeIdxSortAsc(int recipeIdx);
+	public List<ReviewDTO> selectReviewListByRecipeIdxSortNew(int recipeIdx);
 	
 	// 레시피 일련번호를 이용해 리뷰 목록 조회 (오래된순)
-	public List<ReviewDTO> selectReviewListByRecipeIdxSortDesc(int recipeIdx);
+	public List<ReviewDTO> selectReviewListByRecipeIdxSortOld(int recipeIdx);
 	
 	// 레시피 일련번호를 이용해 리뷰 목록 조회 (도움순)
-	public List<ReviewDTO> selectReviewListByRecipeIdxSortLike(int recipeIdx);
+	public List<ReviewDTO> selectReviewListByRecipeIdxSortHelp(int recipeIdx);
 	
 	// 레시피 일련번호를 이용해 레시피의 리뷰 수 조회
 	public int selectReviewCountByRecipeIdx(int recipeIdx);

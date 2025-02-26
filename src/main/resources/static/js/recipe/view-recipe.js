@@ -4,7 +4,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 	// 데이터 패치
 	fetch("http://localhost:8586/recipes/1", {
-		method: "get"
+		method: "GET"
 	})
 	.then(response => response.json())
 	.then(data => {
@@ -118,68 +118,93 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-/**
- * 
- */
+// 리뷰 데이터 관련 변수
 var reviewOffset = 0; // 현재 데이터 시작 위치
 var reviewLimit = 10; // 한 번에 가져올 데이터 개수
-var reviewCount = 0; // 리뷰 전체 데이터 개수
-var commentOffset = 0; // 현재 데이터 시작 위치
-var commentLimit = 10; // 한 번에 가져올 데이터 개수
-var commentCount = 0; // 리뷰 전체 데이터 개수
-$(document).ready(function () {
+var reviewCount = 0; // 전체 리뷰 개수
 
-	// 초기 페이지 로딩 시 데이터 로드
+document.addEventListener("DOMContentLoaded", function () {
+    // 초기 리뷰 데이터 로드
     loadRecipeReviewContent();
-    loadRecipeCommentContent();
-	
-    // 리뷰 더보기 버튼 클릭 시 추가 데이터 로드
-    $('.more_review_btn').click(function (event) {
+
+    // "더보기" 버튼 클릭 시 추가 데이터 로드
+    document.querySelector('.more_review_btn').addEventListener('click', function (event) {
         event.preventDefault();
         loadRecipeReviewContent();
     });
-	
-    // 댓글 더보기 버튼 클릭 시 추가 데이터 로드
-    $('.more_comment_btn').click(function (event) {
-        event.preventDefault();
-        loadRecipeCommentContent();
-    });
 });
 
-
-
 /**
- * 레시피 리뷰 목록 데이터를 로드하는 함수
+ * 레시피 리뷰 목록 데이터를 fetch로 로드하는 함수
  */
 function loadRecipeReviewContent() {
-	
-    $.ajax({
-        url: '/recipe/viewRecipe/review.do',
-        type: 'GET',
-        data: {
-	        offset: reviewOffset,
-	        limit: reviewLimit
-		},
-        success: function (response) {
-            // 응답 데이터를 리스트에 추가
-            $('#recipeReviewContent').append(response);
+    fetch("http://localhost:8586/recipes/1/reviews", {
+		method: "GET"
+    })
+	.then(response => response.json())
+	.then(data => {
+		const reviewListElement = document.getElementById("reviewList");
+        reviewListElement.innerHTML = data.map(review => `
+            <li class="review">
+                <img class="review_avatar" src="/images/common/test.png">
+                <div class="review_inner">
+                    <!-- 리뷰 헤더 -->
+                    <div class="review_info">
+                        <div class="review_writer">
+                            <span>${review.writer}</span>
+                            <span>${review.postdate}</span>
+                        </div>
+                        <div class="review_action">
+                            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editRecipeReviewModal"
+                                onclick="openEditRecipeReviewModal();">수정</a>
+                            <a href="javascript:void(0);">삭제</a>
+                        </div>
+                    </div>
+                    <!-- 리뷰 별점 -->
+                    <div class="review_score">
+                        <div class="star">
+                            ${'<img src="/images/recipe/star_full.png">'.repeat(review.score)}
+                            ${'<img src="/images/recipe/star_empty.png">'.repeat(5 - review.score)}
+                        </div>
+                        <p>${review.score}</p>
+                    </div>
+                    <!-- 리뷰 내용 -->
+                    <p class="review_content">${review.content}</p>
+                    <!-- 리뷰 좋아요 버튼 -->
+                    <div class="like_review_btn">
+                        <p>이 리뷰가 도움이 되었다면 꾹!</p>
+                        <button class="btn_like">
+                            <img src="/images/recipe/thumb_up_full.png">
+                            <img src="/images/recipe/thumb_up_empty.png">
+                            <p>${review.likes}</p>
+                        </button>
+                    </div>
+                </div>
+            </li>
+        `).join("");
 
-            // 서버에서 총 데이터의 개수를 가져와서 설정
-            reviewCount = parseInt($('#reviewCount').val());
-	        reviewOffset += reviewLimit;
-
-            // 불러올 데이터가 없으면 더보기 버튼 숨김
-            if (reviewOffset >= reviewCount) {
-                $('.more_review_btn').hide();
-            } else {
-                $('.more_review_btn').show();
-            }
-        },
-        error: function () {
-            $('.more_review_btn').hide();
+        // 전체 리뷰 개수 설정 (첫 요청 시)
+        if (reviewCount === 0) {
+            reviewCount = data.totalCount; // 서버에서 전체 개수를 제공한다고 가정
         }
+
+        // offset 증가 (다음 데이터 가져오기 위한 설정)
+        reviewOffset += reviewLimit;
+
+        // 불러올 데이터가 없으면 "더보기" 버튼 숨김
+        const moreReviewButton = document.querySelector('.more_review_btn');
+        if (reviewOffset >= reviewCount) {
+            moreReviewButton.style.display = "none";
+        } else {
+            moreReviewButton.style.display = "block";
+        }
+    })
+    .catch(error => {
+        console.error("리뷰 데이터를 불러오는 중 오류 발생:", error);
+        document.querySelector('.more_review_btn').style.display = "none";
     });
 }
+
 
 
 

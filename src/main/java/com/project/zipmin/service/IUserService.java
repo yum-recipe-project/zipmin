@@ -4,32 +4,32 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.project.zipmin.dto.MemberDTO;
+import com.project.zipmin.dto.UserDTO;
 
 @Service
-public interface IMemberService {
+public interface IUserService {
 	
 	// 회원 목록 조회
-	public List<MemberDTO> selectMemberList();
+	public List<UserDTO> selectUserList();
 	
 	// 팔로우 목록 조회
-	public List<MemberDTO> selectFollowerList(String id);
+	public List<UserDTO> selectFollowerList(String id);
 	
 	// 팔로잉 목록 조회
-	public List<MemberDTO> selectFollowingList(String id);
+	public List<UserDTO> selectFollowingList(String id);
 	
 	// 아이디를 이용해 특정 회원 조회
-	public MemberDTO selectMember(String id);
+	public UserDTO selectUser(String id);
 	
 	// 회원가입
-	public int insertMember(MemberDTO memberDTO);
+	public int insertUser(UserDTO memberDTO);
 	
 	// 회원 정보 수정
-	public int updateMember(MemberDTO memberDTO);
+	public int updateUser(UserDTO memberDTO);
 	
 	// 비밀번호 변경
 	public int updatePassword(String id, String password);
 	
 	// 회원 정보 삭제
-	public int deleteMember(String id);
+	public int deleteUser(String id);
 }

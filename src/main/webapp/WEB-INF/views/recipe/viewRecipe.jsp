@@ -204,7 +204,9 @@
 							</c:if>
 						</div>
 						<!-- 리뷰 목록 -->
-						<div id="recipeReviewContent"></div>
+						<div id="recipeReviewContent">
+							<ul id="reviewList" class="review_list"></ul>
+						</div>
 						
 						<!-- 더보기 버튼 -->
 						<div class="more_review_btn">

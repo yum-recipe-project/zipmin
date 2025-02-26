@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.dto.ClassDTO;
+import com.project.zipmin.dto.SupportDTO;
 import com.project.zipmin.dto.UserDTO;
 import com.project.zipmin.service.IUserService;
 
@@ -172,4 +173,43 @@ public class UserController {
 	public int cancelApplyClass() {
 		return 0;
 	}
+	
+	
+	
+	// 특정 사용자가 다른 사용자에게 후원
+	@PostMapping("/{sponsorId}/supports/{receiverId}")
+	public int supportUser(
+			@PathVariable("sponsorId") String sponsorId,
+			@PathVariable("receiverId") String receiverId) {
+		return 0;
+	}
+	
+	
+	
+	// 특정 사용자가 받은 후원 조회
+	@GetMapping("/{userId}/supports")
+	public List<SupportDTO> listMySupport(
+			@PathVariable("userId") String userId) {
+		return null;
+	}
+	
+	
+	
+	// 특정 유저가 포인트 충전 요청
+	@PostMapping("/{userId}/points/deposit")
+	public int depositPoint(
+			@PathVariable("userId") String userId) {
+		return 0;
+	}
+	
+	
+	
+	// 특정 유저가 포인트 인출 요청
+	@PostMapping("/{userId}/points/withdraw")
+	public int withdrawPoint(
+			@PathVariable("userId") String userId) {
+		return 0;
+	}
+	
+	
 }

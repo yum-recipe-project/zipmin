@@ -29,30 +29,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /**
- * 내용 입력창의 폼값을 검증하는 함수
+ * 댓글 정렬 탭 메뉴 클릭 시 탭 메뉴를 활성화하고 해당하는 내용을 표시하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	const editCommentContentInput = document.getElementById("editGuideCommentContentInput");
-	const editCommentButton = document.getElementById("editGuideCommentButton");
-	editCommentContentInput.addEventListener("input", function() {
-	    if (editCommentContentInput.value.trim() !== "") {
-	    	editCommentButton.classList.remove("btn-disable");
-	    	editCommentButton.classList.add("btn-primary");
-	    	editCommentButton.removeAttribute("disabled");
-	    }
-	    else {
-	    	editCommentButton.classList.remove("btn-primary");
-	    	editCommentButton.classList.add("btn-disable");
-	    	editCommentButton.setAttribute("disabled", "true");
-	    }
+	const tabCommentItems = document.querySelectorAll('.comment_order button');
+	const contentCommentItems = document.querySelectorAll('.comment_list');
+	// 탭 클릭 이벤트 설정
+	tabCommentItems.forEach((item, index) => {
+	    item.addEventListener("click", function(event) {
+	        event.preventDefault();
+	        
+	        tabCommentItems.forEach(button => button.classList.remove('active'));
+	        this.classList.add('active');
+	        
+	        contentCommentItems.forEach(content => content.style.display = 'none');
+	        contentCommentItems[index].style.display = 'block';
+	    });
 	});
+	// 기본으로 첫번째 활성화
+	tabCommentItems.forEach(button => button.classList.remove('active'));
+	contentCommentItems.forEach(content => content.style.display = 'none');
+	tabCommentItems[0].classList.add('active');
+	contentCommentItems[0].style.display = 'block';
 });
-
-
-/**
- * 레시피의 댓글을 수정하는 모달창의 히든 폼에 파라미터로 전달받은 데이터를 꽂아주는 함수
- */
-function openEditGuideCommentModal() {
-	
-}
-

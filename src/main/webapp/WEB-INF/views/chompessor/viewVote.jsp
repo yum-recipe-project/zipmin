@@ -8,8 +8,8 @@
 		<meta charset="UTF-8">
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
-		<link rel="stylesheet" href="/css/chompessor/view-forum.css">
-		<script src="/js/chompessor/view-forum.js"></script>
+		<link rel="stylesheet" href="/css/chompessor/view-vote.css">
+		<script src="/js/chompessor/view-vote.js"></script>
 	</head>
 	
 	<body>
@@ -17,12 +17,12 @@
 			<main id="container">
 				<div class="content">
 					<!-- 포럼 -->
-					<div class="forum_wrap">
+					<div class="vote_wrap">
 						<!-- 포럼 헤더 -->
-						<div class="forum_header">
+						<div class="vote_header">
 							<span>아이스크림</span>
 							<h2>당신의 녹차 아이스크림에 투표하세요</h2>
-							<div class="forum_info">
+							<div class="vote_info">
 								<div class="period">
 									<span>2025.01.03 - 2024.02.11</span>
 								</div>
@@ -35,29 +35,29 @@
 						</div>
 						
 						<!-- 포럼 내용 -->
-						<div class="forum_content">
+						<div class="vote_content">
 							<ul>
 								<li>
-									<div class="forum_checkbox_wrap">
+									<div class="vote_checkbox_wrap">
 										<input class="checkbox_group" type="checkbox" id="vote1">
 										<label for="vote1">배스킨라빈스 녹차 아이스크림</label>
 									</div>
 								</li>
 								<li>
-									<div class="forum_checkbox_wrap">
+									<div class="vote_checkbox_wrap">
 										<input class="checkbox_group" type="checkbox" id="vote2">
 										<label for="vote2">하겐다즈 녹차 아이스크림</label>
 									</div>
 								</li>
 								<li>
-									<div class="forum_checkbox_wrap">
+									<div class="vote_checkbox_wrap">
 										<input class="checkbox_group" type="checkbox" id="vote3">
 										<label for="vote3">나뚜르 녹차 아이스크림</label>
 									</div>
 								</li>
 							</ul>
 							<div class="btn_wrap">
-								<button class="btn_outline" onclick="location.href='/chompessor/listForum.do';">목록으로</button>
+								<button class="btn_outline" onclick="location.href='/chompessor/listVote.do';">목록으로</button>
 								<button class="btn_primary" type="submit" onclick="">투표하기</button>
 							</div>
 						</div>
@@ -120,12 +120,12 @@
 												</div>
 												<c:if test="${ true }">
 													<div class="comment_action">
-														<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportForumCommentModal"
-															onclick="openReportForumCommentModal();">
+														<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportVoteCommentModal"
+															onclick="openReportVoteCommentModal();">
 															신고
 														</a>
-														<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editForumCommentModal"
-															onclick="openEditForumCommentModal();">
+														<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editVoteCommentModal"
+															onclick="openEditVoteCommentModal();">
 															수정
 														</a>
 														<a href="">삭제</a>
@@ -143,8 +143,8 @@
 						                            <img src="/images/recipe/thumb_up_empty.png">
 						                            <p>3</p>
 												</button>
-												<a class="btn_outline_small write_subcomment_btn" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#writeForumSubcommentModal"
-													onclick="openWriteForumSubcommentModal();">
+												<a class="btn_outline_small write_subcomment_btn" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#writeVoteSubcommentModal"
+													onclick="openWriteVoteSubcommentModal();">
 													<span>답글 쓰기</span>
 												</a>
 											</div>
@@ -168,12 +168,12 @@
 															</div>
 															<c:if test="${ true }">
 																<div class="subcomment_action">
-																	<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportForumSubcommentModal"
-																		onclick="openReportWriteForumSubcommentModal();">
+																	<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportVoteSubcommentModal"
+																		onclick="openReportWriteVoteSubcommentModal();">
 																		신고
 																	</a>
-																	<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editForumSubcommentModal"
-																		onclick="openWriteForumSubcommentModal();">
+																	<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editVoteSubcommentModal"
+																		onclick="openWriteVoteSubcommentModal();">
 																		수정
 																	</a>
 																	<a href="">삭제</a>
@@ -213,7 +213,7 @@
 				
 				<!--  포럼의 댓글 수정 모달창 -->
 				<form method="post" action="" onsubmit="">
-					<div class="modal" id="editForumCommentModal">
+					<div class="modal" id="editVoteCommentModal">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -223,12 +223,12 @@
 								<div class="modal-body">
 									<div class="form-group">
 										<label>내용</label>
-										<textarea class="form-control" id="editForumCommentContentInput" name="content" style="height: 90px;"></textarea>
+										<textarea class="form-control" id="editVoteCommentContentInput" name="content" style="height: 90px;"></textarea>
 									</div>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
-									<button type="submit" id="editForumCommentButton" class="btn btn-disable" disabled>작성하기</button>
+									<button type="submit" id="editVoteCommentButton" class="btn btn-disable" disabled>작성하기</button>
 								</div>
 							</div>
 						</div>
@@ -237,7 +237,7 @@
 				
 				<!-- 포럼의 대댓글 작성 모달창 -->
 				<form method="post" action="" onsubmit="">
-					<div class="modal" id="writeForumSubcommentModal">
+					<div class="modal" id="writeVoteSubcommentModal">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -247,12 +247,12 @@
 								<div class="modal-body">
 									<div class="form-group">
 										<label>내용</label>
-										<textarea class="form-control" id="writeForumSubcommentContentInput" name="content" style="height: 90px;"></textarea>
+										<textarea class="form-control" id="writeVoteSubcommentContentInput" name="content" style="height: 90px;"></textarea>
 									</div>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
-									<button type="submit" id="writeForumSubcommentButton" class="btn btn-disable" disabled>작성하기</button>
+									<button type="submit" id="writeVoteSubcommentButton" class="btn btn-disable" disabled>작성하기</button>
 								</div>
 							</div>
 						</div>
@@ -261,7 +261,7 @@
 				
 				<!-- 포럼의 대댓글 수정 모달창 -->
 				<form method="post" action="" onsubmit="">
-					<div class="modal" id="editForumSubcommentModal">
+					<div class="modal" id="editVoteSubcommentModal">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -271,12 +271,12 @@
 								<div class="modal-body">
 									<div class="form-group">
 										<label>내용</label>
-										<textarea class="form-control" id="editForumSubcommentContentInput" name="content" style="height: 90px;"></textarea>
+										<textarea class="form-control" id="editVoteSubcommentContentInput" name="content" style="height: 90px;"></textarea>
 									</div>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
-									<button type="submit" id="editForumSubcommentButton" class="btn btn-disable" disabled>작성하기</button>
+									<button type="submit" id="editVoteSubcommentButton" class="btn btn-disable" disabled>작성하기</button>
 								</div>
 							</div>
 						</div>
@@ -285,8 +285,8 @@
 				
 				
 				<!-- 댓글 신고 모달창 -->
-				<form id="reportForumCommentForm" onsubmit="return validateReportForumCommentForm();">
-					<div class="modal" id="reportForumCommentModal">
+				<form id="reportVoteCommentForm" onsubmit="return validateReportVoteCommentForm();">
+					<div class="modal" id="reportVoteCommentModal">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -353,8 +353,8 @@
 				
 				
 				<!-- 대댓글 신고 모달창 -->
-				<form id="reportForumSubcommentForm" onsubmit="return validateReportForumSubcommentForm();">
-					<div class="modal" id="reportForumSubcommentModal">
+				<form id="reportVoteSubcommentForm" onsubmit="return validateReportVoteSubcommentForm();">
+					<div class="modal" id="reportVoteSubcommentModal">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">

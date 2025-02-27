@@ -17,3 +17,20 @@ document.addEventListener("DOMContentLoaded", function() {
 		});
 	});
 });
+
+
+
+/**
+ * 포인트를 충전하는 모달창의 충전할 포인트를 선택했는지 검증하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const pointRadio = document.querySelectorAll("input[name='point']");
+	const submitButton = document.querySelector("#topUpPointForm button[type='submit']");
+	
+	pointRadio.forEach(function(radio) {
+        radio.addEventListener("change", function() {
+			const isChecked = Array.from(pointRadio).some(radio => radio.checked);
+			submitButton.classList.toggle("disabled", !isChecked);
+        });
+    });
+});

@@ -9,6 +9,8 @@
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/kitchen/view-guide.css">
 		<script src="/js/kitchen/view-guide.js"></script>
+		<script src="/js/modal/edit-guide-comment-modal.js"></script>
+		<script src="/js/modal/report-guide-comment-modal.js"></script>
 	</head>
 	
 	<body>
@@ -153,95 +155,11 @@
 			</div>
 			
 			<!-- 키친가이드의 댓글 수정 모달창 -->
-			<form method="post" action="" onsubmit="">
-				<div class="modal" id="editGuideCommentModal">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5>수정하기</h5>
-								<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-							</div>
-							<div class="modal-body">
-								<div class="form-group">
-									<label>내용</label>
-									<textarea class="form-control" id="editGuideCommentContentInput" name="content" style="height: 90px;"></textarea>
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
-								<button type="submit" id="editGuideCommentButton" class="btn btn-disable" disabled>작성하기</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</form>
+			<%@include file="../modal/editGuideCommentModal.jsp" %>
 			
-			<!-- 신고 모달창 -->
-			<form id="reportGuideCommentForm" onsubmit="return validateReportGuideCommentForm();">
-				<div class="modal" id="reportGuideCommentModal">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5>신고하기</h5>
-								<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-							</div>
-							<div class="modal-body">
-								<label>키친 한마디 신고 사유</label>
-								<div class="report">
-									<div class="reason">
-										<div class="form-radio">
-											<div>
-												<input type="radio" id="reason1" name="reason" value="">
-												<label for="reason1">정당/정치인 비하 및 선거운동</label>
-											</div>
-										</div>
-										<div class="form-radio">
-											<div>
-												<input type="radio" id="reason2" name="reason" value="">
-												<label for="reason2">유출/사칭/사기</label>
-											</div>
-										</div>
-										<div class="form-radio">
-											<div>
-												<input type="radio" id="reason3" name="reason" value="">
-												<label for="reason3">욕설/비하</label>
-											</div>
-										</div>
-										<div class="form-radio">
-											<div>
-												<input type="radio" id="reason4" name="reason" value="">
-												<label for="reason4">낚시/놀람/도배</label>
-											</div>
-										</div>
-										<div class="form-radio">
-											<div>
-												<input type="radio" id="reason5" name="reason" value="">
-												<label for="reason5">상업적 광고 및 판매</label>
-											</div>
-										</div>
-										<div class="form-radio">
-											<div>
-												<input type="radio" id="reason6" name="reason" value="">
-												<label for="reason6">불법촬영물 등의 유통</label>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="form-info">
-									<p>
-										신고는 반대의견을 나타내는 기능이 아닙니다.
-										신고 사유에 맞지 않는 신고를 했을 경우, 해당 신고는 처리되지 않습니다.
-									</p>
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
-								<button type="submit" class="btn btn-primary">신고하기</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</form>
+			<!-- 키친가이드의 댓글 신고 모달창 -->
+			<%@include file="../modal/reportGuideCommentModal.jsp" %>
+			
 		</main>
 		
 		<%@include file="../common/footer.jsp" %>

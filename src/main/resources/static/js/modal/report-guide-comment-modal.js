@@ -1,10 +1,10 @@
 /**
- * 레시피 신고 모달창의 신고 사유를 선택했는지 검증하는 함수
+ * 가이드 댓글 신고 모달창의 신고 사유를 선택했는지 검증하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	const reasonRadio = document.querySelectorAll("#reportRecipeForm input[name='reason']");
-	const submitButton = document.querySelector("#reportRecipeForm button[type='submit']");
-	
+	const reasonRadio = document.querySelectorAll("#reportGuideCommentForm input[name='reason']");
+	const submitButton = document.querySelector("#reportGuideCommentForm button[type='submit']");
+
 	reasonRadio.forEach(function(radio) {
         radio.addEventListener("change", function() {
 			const isChecked = Array.from(reasonRadio).some(radio => radio.checked);

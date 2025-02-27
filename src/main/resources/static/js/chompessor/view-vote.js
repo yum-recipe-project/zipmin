@@ -36,12 +36,12 @@ var commentCount = 0;
 $(document).ready(function () {
 
 	// 초기 페이지 로딩 시 데이터 로드
-    loadForumCommentContent();
+    loadVoteCommentContent();
 	
     // 댓글 더보기 버튼 클릭 시 추가 데이터 로드
     $('.more_comment_btn').click(function (event) {
         event.preventDefault();
-        loadForumCommentContent();
+        loadVoteCommentContent();
     });
 });
 
@@ -50,9 +50,9 @@ $(document).ready(function () {
 /**
  * 레시피 댓글 목록 데이터를 로드하는 함수
  */
-function loadForumCommentContent() {
+function loadVoteCommentContent() {
     $.ajax({
-        url: '/chompessor/viewForum/comment.do',
+        url: '/chompessor/viewVote/comment.do',
         type: 'GET',
         data: {
 	        offset: commentOffset,
@@ -60,7 +60,7 @@ function loadForumCommentContent() {
 		},
         success: function (response) {
             // 응답 데이터를 리스트에 추가
-            $('#forumCommentContent').append(response);
+            $('#voteCommentContent').append(response);
 
             // 서버에서 총 데이터의 개수를 가져와서 설정
             commentCount = parseInt($('#commentCount').val());
@@ -142,19 +142,19 @@ document.addEventListener('DOMContentLoaded', function() {
 /**
  * 포럼의 댓글을 수정하는 모달창의 히든 폼에 파라미터로 전달받은 데이터를 꽂아주는 함수
  */
-function openEditForumCommentModal() {
+function openEditVoteCommentModal() {
 	
 }
 /**
  * 포럼의 대댓글을 작성하는 모달창의 히든 폼에 파라미터로 전달받은 데이터를 꽂아주는 함수
  */
-function openWriteForumSubcommentModal() {
+function openWriteVoteSubcommentModal() {
 	
 }
 /**
  * 포럼의 대댓글을 수정하는 모달창의 히든 폼에 파라미터로 전달받은 데이터를 꽂아주는 함수
  */
-function openEditForumSubcommentModal() {
+function openEditVoteSubcommentModal() {
 }
 
 
@@ -162,31 +162,31 @@ function openEditForumSubcommentModal() {
  * 모달창의 내용 입력창의 폼값을 검증하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	const editForumCommentContentInput = document.getElementById("editForumCommentContentInput");
-	const editForumCommentButton = document.getElementById("editForumCommentButton");
-	editForumCommentContentInput.addEventListener("input", function() {
-		const isEditForumCommentContentInputEmpty = editForumCommentContentInput.value.trim() === "";
-		editForumCommentButton.classList.toggle("btn-disable", isEditForumCommentContentInputEmpty);
-		editForumCommentButton.classList.toggle("btn-primary", !isEditForumCommentContentInputEmpty);
-		editForumCommentButton.disabled = isEditForumCommentContentInputEmpty;
+	const editVoteCommentContentInput = document.getElementById("editVoteCommentContentInput");
+	const editVoteCommentButton = document.getElementById("editVoteCommentButton");
+	editVoteCommentContentInput.addEventListener("input", function() {
+		const isEditVoteCommentContentInputEmpty = editVoteCommentContentInput.value.trim() === "";
+		editVoteCommentButton.classList.toggle("btn-disable", isEditVoteCommentContentInputEmpty);
+		editVoteCommentButton.classList.toggle("btn-primary", !isEditVoteCommentContentInputEmpty);
+		editVoteCommentButton.disabled = isEditVoteCommentContentInputEmpty;
     });
 	
-	const writeForumSubcommentContentInput = document.getElementById("writeForumSubcommentContentInput");
-	const writeForumSubcommentButton = document.getElementById("writeForumSubcommentButton");
-	writeForumSubcommentContentInput.addEventListener("input", function() {
-		const isWriteForumSubcommentContentInputEmpty = writeForumSubcommentContentInput.value.trim() === "";
-		writeForumSubcommentButton.classList.toggle("btn-disable", isWriteForumSubcommentContentInputEmpty);
-		writeForumSubcommentButton.classList.toggle("btn-primary", !isWriteForumSubcommentContentInputEmpty);
-		writeForumSubcommentButton.disabled = isWriteForumSubcommentContentInputEmpty;
+	const writeVoteSubcommentContentInput = document.getElementById("writeVoteSubcommentContentInput");
+	const writeVoteSubcommentButton = document.getElementById("writeVoteSubcommentButton");
+	writeVoteSubcommentContentInput.addEventListener("input", function() {
+		const isWriteVoteSubcommentContentInputEmpty = writeVoteSubcommentContentInput.value.trim() === "";
+		writeVoteSubcommentButton.classList.toggle("btn-disable", isWriteVoteSubcommentContentInputEmpty);
+		writeVoteSubcommentButton.classList.toggle("btn-primary", !isWriteVoteSubcommentContentInputEmpty);
+		writeVoteSubcommentButton.disabled = isWriteVoteSubcommentContentInputEmpty;
     });
 				
-	const editForumSubcommentContentInput = document.getElementById("editForumSubcommentContentInput");
-	const editForumSubcommentButton = document.getElementById("editForumSubcommentButton");
-	editForumSubcommentContentInput.addEventListener("input", function() {
-		const isEditForumSubcommentContentInputEmpty = editForumSubcommentContentInput.value.trim() === "";
-		editForumSubcommentButton.classList.toggle("btn-disable", isEditForumSubcommentContentInputEmpty);
-		editForumSubcommentButton.classList.toggle("btn-primary", !isEditForumSubcommentContentInputEmpty);
-		editForumSubcommentButton.disabled = isEditForumSubcommentContentInputEmpty;
+	const editVoteSubcommentContentInput = document.getElementById("editVoteSubcommentContentInput");
+	const editVoteSubcommentButton = document.getElementById("editVoteSubcommentButton");
+	editVoteSubcommentContentInput.addEventListener("input", function() {
+		const isEditVoteSubcommentContentInputEmpty = editVoteSubcommentContentInput.value.trim() === "";
+		editVoteSubcommentButton.classList.toggle("btn-disable", isEditVoteSubcommentContentInputEmpty);
+		editVoteSubcommentButton.classList.toggle("btn-primary", !isEditVoteSubcommentContentInputEmpty);
+		editVoteSubcommentButton.disabled = isEditVoteSubcommentContentInputEmpty;
 	});
 
 });

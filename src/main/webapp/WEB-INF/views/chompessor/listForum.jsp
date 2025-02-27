@@ -51,7 +51,7 @@
 						<ul class="forum_list">
 							<%-- <c:foreach> --%>
 								<li class="forum">
-									<a href="/chompessor/viewForum.do">
+									<a href="/chompessor/viewVote.do">
 										<div class="forum_thumbnail">
 											<img src="/images/common/test.png">
 										</div>

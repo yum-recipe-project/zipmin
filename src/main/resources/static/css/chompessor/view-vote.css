@@ -10,7 +10,7 @@
 
 
 /* 포럼 */
-#container .content .forum_wrap {
+#container .content .vote_wrap {
 	display: flex;
 	flex-direction: column;
 	gap: 24px;
@@ -19,7 +19,7 @@
 }
 
 /* 포럼 (헤더) */
-#container .content .forum_wrap .forum_header span {
+#container .content .vote_wrap .vote_header span {
 	color: var(--txt-color-500);
 	font-weight: 400;
 	line-height: 1.4;
@@ -27,7 +27,7 @@
 	font-size: 14px;
 }
 
-#container .content .forum_wrap .forum_header h2 {
+#container .content .vote_wrap .vote_header h2 {
 	margin-top: 8px;
 	font-weight: 700;
 	line-height: 1.5;
@@ -36,14 +36,14 @@
 }
 
 /* 포럼 (헤더 - 정보) */
-#container .content .forum_wrap .forum_header .forum_info {
+#container .content .vote_wrap .vote_header .vote_info {
 	margin-top: 8px;
 	display: flex;
 	gap: 4px;
 	align-items: center;
 }
 
-#container .content .forum_wrap .forum_header .forum_info .period {
+#container .content .vote_wrap .vote_header .vote_info .period {
 	background: #000;
 	border-radius: 30px;
 	padding: 4px 10px;
@@ -53,7 +53,7 @@
 	margin-right: 8px;
 }
 
-#container .content .forum_wrap .forum_header .forum_info .period span {
+#container .content .vote_wrap .vote_header .vote_info .period span {
 	white-space: pre-wrap;
 	font-size: 12px;
 	color: #FFF;
@@ -61,13 +61,13 @@
 }
 
 /* 포럼 (내용) */
-#container .forum_checkbox_wrap {
+#container .vote_checkbox_wrap {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
 }
 
-#container .forum_checkbox_wrap input[type='checkbox'] + label {
+#container .vote_checkbox_wrap input[type='checkbox'] + label {
 	display: flex;
 	width: 100%;
 	border-radius: 4px;
@@ -79,16 +79,16 @@
 	letter-spacing: -0.4px;
 }
 
-#container .forum_checkbox_wrap input[type='checkbox'].disable + label {
+#container .vote_checkbox_wrap input[type='checkbox'].disable + label {
 	color: #B1B3B5;
 }
 
-#container .forum_checkbox_wrap input[type='checkbox']:checked + label {
+#container .vote_checkbox_wrap input[type='checkbox']:checked + label {
 	border: 1px solid var(--point-color2);
 	background: #F3F8FF;
 }
 
-#container .forum_checkbox_wrap input[type='checkbox'] + label::before {
+#container .vote_checkbox_wrap input[type='checkbox'] + label::before {
 	content: '';
 	width: 18px;
 	height: 18px;
@@ -98,7 +98,7 @@
 	border: none;
 }
 
-#container .forum_checkbox_wrap input[type='checkbox']:checked + label::after {
+#container .vote_checkbox_wrap input[type='checkbox']:checked + label::after {
 	content: '';
 	position: absolute;
 	left: 16px;
@@ -111,7 +111,7 @@
 }
 
 /* 포럼 (내용 - 버튼) */
-#container .forum_content .btn_wrap {
+#container .vote_content .btn_wrap {
 	margin-top: 16px;
 	margin-left: auto;
 }

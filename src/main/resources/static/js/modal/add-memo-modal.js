@@ -3,7 +3,7 @@
  */
 document.addEventListener("DOMContentLoaded", function() {
     const memoElement = document.getElementById("memo");
-    const submitButton = document.querySelector("#addMemoForm .modal-footer button[type='submit']");
+    const submitButton = document.querySelector("#addMemoForm button[type='submit']");
 
     memoElement.addEventListener("change", function(event) {
 		if (event.target.matches('input[name="ingredient"]')) {

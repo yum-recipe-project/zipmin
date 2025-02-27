@@ -11,4 +11,5 @@ public class UserDTO {
 	private String email;
 	private String avatar; // 프사
 	private int point;
+	// 받은 포인트도 있어야 함
 }

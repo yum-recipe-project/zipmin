@@ -28,8 +28,8 @@ public class KitchenController {
 	
 	
 	// 특정 가이드 조회
-	@GetMapping("/{guideIdx}")
-	public GuideDTO viewGuide(@PathVariable("guideIdx") int guideIdx) {
+	@GetMapping("/{guideId}")
+	public GuideDTO viewGuide(@PathVariable("guideId") int guideId) {
 		return null;
 	}
 	
@@ -44,25 +44,25 @@ public class KitchenController {
 	
 	
 	// 특정 가이드 수정 (관리자)
-	@PutMapping("/{guideIdx}")
-	public int editGuide(@PathVariable("guideIdx") int guideIdx) {
+	@PutMapping("/{guideId}")
+	public int editGuide(@PathVariable("guideId") int guideId) {
 		return 0;
 	}
 	
 	
 	
 	// 특정 가이드 삭제 (관리자)
-	@DeleteMapping("/{guideIdx}")
-	public int deleteGuide(@PathVariable("guideIdx") int guideIdx) {
+	@DeleteMapping("/{guideId}")
+	public int deleteGuide(@PathVariable("guideId") int guideId) {
 		return 0;
 	}
 	
 	
 	
 	// 특정 가이드의 댓글 목록 조회
-	@GetMapping("/{guideIdx}/comments")
+	@GetMapping("/{guideId}/comments")
 	public List<CommentDTO> listGuideComment(
-			@PathVariable("guideIdx") int guideIdx,
+			@PathVariable("guideId") int guideId,
 			@RequestParam(name = "sort", defaultValue = "new") String sort) {
 		return null;
 	}
@@ -70,29 +70,109 @@ public class KitchenController {
 	
 	
 	// 특정 가이드에 댓글 작성
-	@PostMapping("/{guideIdx}/comments")
+	@PostMapping("/{guideId}/comments")
 	public int writeGuideComment(
-			@PathVariable("guideIdx") int guideIdx) {
+			@PathVariable("guideId") int guideId) {
 		return 0;
 	}
 	
 	
 	
 	// 특정 가이드의 특정 댓글 수정
-	@PutMapping("/{guideIdx}/comments/{commIdx}")
+	@PutMapping("/{guideId}/comments/{commId}")
 	public int editGuideComment(
-			@PathVariable("guideIdx") int guideIdx,
-			@PathVariable("commIdx") int commIdx) {
+			@PathVariable("guideId") int guideId,
+			@PathVariable("commId") int commId) {
 		return 0;
 	}
 	
 	
 	
 	// 특정 가이드의 특정 댓글 삭제
-	@DeleteMapping("/{guideIdx}/comments/{commIdx}")
+	@DeleteMapping("/{guideId}/comments/{commId}")
 	public int deleteGuideComment(
-			@PathVariable("guideIdx") int guideIdx,
-			@PathVariable("commIdx") int commIdx) {
+			@PathVariable("guideId") int guideId,
+			@PathVariable("commId") int commId) {
 		return 0;
 	}
+	
+	
+	
+	// 특정 가이드 좋아요 (저장)
+	@PostMapping("/{guideId}/likes")
+	public int likeGuide(
+			@PathVariable("guideId") int guideId) {
+		return 0;
+	}
+	
+	
+	
+	// 특정 가이드의 특정 댓글 좋아요
+	@PostMapping("/{guideId}/comments/{commId}/likes")
+	public int likeGuideComment(
+			@PathVariable("guideId") int guideId,
+			@PathVariable("commId") int commId) {
+		return 0;
+	}
+	
+	
+	
+	// 특정 가이드의 특정 댓글 좋아요 개수
+	@GetMapping("/{guideId}/comments/{commId}/likes/count")
+	public int countLikeGuideComment(
+			@PathVariable("guideId") int guideId,
+			@PathVariable("commId") int commId) {
+		return 0;
+	}
+	
+	
+	
+	// 특정 가이드의 특정 댓글 좋아요 여부
+	@GetMapping("/{guideId}/comments/{commId}/likes/status")
+	public boolean checkLikeGuideComment(
+			@PathVariable("guideId") int guideId,
+			@PathVariable("commId") int commId) {
+		return false;
+	}
+	
+	
+	
+	// 특정 가이드의 특정 댓글 신고
+	@PostMapping("/{guideId}/comments/{commId}/likes/reports")
+	public int reportGuideComment(
+			@PathVariable("guideId") int guideId,
+			@PathVariable("commId") int commId) {
+		return 0;
+	}
+	
+	
+	
+	// 특정 가이드의 특정 댓글 신고 개수 (관리자)
+	@GetMapping("/{guideId}/comments/{commId}/likes/reports/count")
+	public int countReportGuideComment(
+			@PathVariable("guideId") int guideId,
+			@PathVariable("commId") int commId) {
+		return 0;
+	}
+	
+	
+	
+	// 특정 가이드의 특정 댓글 신고 여부
+	@GetMapping("/{guideId}/comments/{commId}/reports/status")
+	public boolean checkReportGuideComment(
+			@PathVariable("guideId") int guideId,
+			@PathVariable("commId") int commId) {
+		return false;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

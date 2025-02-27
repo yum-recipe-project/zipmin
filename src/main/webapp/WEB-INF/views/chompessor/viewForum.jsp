@@ -299,38 +299,38 @@
 										<div class="reason">
 											<div class="form-radio">
 												<div>
-													<input type="radio" id="reason1" name="reason" value="">
-													<label for="reason1">정당/정치인 비하 및 선거운동</label>
+													<input type="radio" id="commentReason1" name="reason" value="">
+													<label for="commentReason1">정당/정치인 비하 및 선거운동</label>
 												</div>
 											</div>
 											<div class="form-radio">
 												<div>
-													<input type="radio" id="reason2" name="reason" value="">
-													<label for="reason2">유출/사칭/사기</label>
+													<input type="radio" id="commentReason2" name="reason" value="">
+													<label for="commentReason2">유출/사칭/사기</label>
 												</div>
 											</div>
 											<div class="form-radio">
 												<div>
-													<input type="radio" id="reason3" name="reason" value="">
-													<label for="reason3">욕설/비하</label>
+													<input type="radio" id="commentReason3" name="reason" value="">
+													<label for="commentReason3">욕설/비하</label>
 												</div>
 											</div>
 											<div class="form-radio">
 												<div>
-													<input type="radio" id="reason4" name="reason" value="">
-													<label for="reason4">낚시/놀람/도배</label>
+													<input type="radio" id="commentReason4" name="reason" value="">
+													<label for="commentReason4">낚시/놀람/도배</label>
 												</div>
 											</div>
 											<div class="form-radio">
 												<div>
-													<input type="radio" id="reason5" name="reason" value="">
-													<label for="reason5">상업적 광고 및 판매</label>
+													<input type="radio" id="commentReason5" name="reason" value="">
+													<label for="commentReason5">상업적 광고 및 판매</label>
 												</div>
 											</div>
 											<div class="form-radio">
 												<div>
-													<input type="radio" id="reason6" name="reason" value="">
-													<label for="reason6">불법촬영물 등의 유통</label>
+													<input type="radio" id="commentReason6" name="reason" value="">
+													<label for="commentReason6">불법촬영물 등의 유통</label>
 												</div>
 											</div>
 										</div>
@@ -367,38 +367,38 @@
 										<div class="reason">
 											<div class="form-radio">
 												<div>
-													<input type="radio" id="reason1" name="reason" value="">
-													<label for="reason1">정당/정치인 비하 및 선거운동</label>
+													<input type="radio" id="subcommentReason1" name="reason" value="">
+													<label for="subcommentReason1">정당/정치인 비하 및 선거운동</label>
 												</div>
 											</div>
 											<div class="form-radio">
 												<div>
-													<input type="radio" id="reason2" name="reason" value="">
-													<label for="reason2">유출/사칭/사기</label>
+													<input type="radio" id="subcommentReason2" name="reason" value="">
+													<label for="subcommentReason2">유출/사칭/사기</label>
 												</div>
 											</div>
 											<div class="form-radio">
 												<div>
-													<input type="radio" id="reason3" name="reason" value="">
-													<label for="reason3">욕설/비하</label>
+													<input type="radio" id="subcommentReason3" name="reason" value="">
+													<label for="subcommentReason3">욕설/비하</label>
 												</div>
 											</div>
 											<div class="form-radio">
 												<div>
-													<input type="radio" id="reason4" name="reason" value="">
-													<label for="reason4">낚시/놀람/도배</label>
+													<input type="radio" id="subcommentReason4" name="reason" value="">
+													<label for="subcommentReason4">낚시/놀람/도배</label>
 												</div>
 											</div>
 											<div class="form-radio">
 												<div>
-													<input type="radio" id="reason5" name="reason" value="">
-													<label for="reason5">상업적 광고 및 판매</label>
+													<input type="radio" id="subcommentReason5" name="reason" value="">
+													<label for="subcommentReason5">상업적 광고 및 판매</label>
 												</div>
 											</div>
 											<div class="form-radio">
 												<div>
-													<input type="radio" id="reason6" name="reason" value="">
-													<label for="reason6">불법촬영물 등의 유통</label>
+													<input type="radio" id="subcommentReason6" name="reason" value="">
+													<label for="subcommentReason6">불법촬영물 등의 유통</label>
 												</div>
 											</div>
 										</div>

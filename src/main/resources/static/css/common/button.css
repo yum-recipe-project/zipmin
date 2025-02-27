@@ -92,14 +92,12 @@
 	justify-content: center;
 	align-items: center;
 	text-align: center;
-	
 	width: auto;
 	height: 48px;
 	padding: 12px 24px;
 	border: none;
 	border-radius: 4px;
 	background-color: var(--txt-color-600);
-	
 	font-size: 16px;
 	font-weight: 600;
 	color: #FFF;
@@ -109,6 +107,14 @@
 .btn_dark:hover {
 	background: #000;
 	color: #F2F2F2;
+}
+.btn_dark.disable {
+	opacity: 0.4;
+	cursor: not-allowed;
+}
+.btn_dark.disable:hover {
+	background: var(--txt-color-600);
+	opacity: 0.4;
 }
 
 

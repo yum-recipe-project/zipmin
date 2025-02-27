@@ -60,6 +60,12 @@
 	margin-bottom: 8px;
 }
 
+/* 바디 제목 */
+#container .modal-content .modal-body h5 {
+	font-size: 20px;
+	font-weight: 600;
+}
+
 /* 바디 (별점) */
 #container .modal-content .modal-body .star_group {
 	display: flex;
@@ -74,11 +80,26 @@
 	height: 20px;
 }
 
-/* 바디 (폼) */
+/* 폼 */
 #container .modal-content .modal-body .form-control:focus {
 	outline: none !important;
     box-shadow: none !important;
     border: 1px solid var(--point-color2);
+}
+
+/* 드롭다운 */
+#container .modal-content .modal-body .form-select:focus {
+	outline: none !important;
+    box-shadow: none !important;
+    border: 1px solid var(--point-color2);
+}
+
+#container .modal-content .modal-body .form-group p {
+	margin-top: 10px;
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 1.5;
+	color: var(--txt-color-500);
 }
 
 /* 바디 (주의사항) */
@@ -272,6 +293,7 @@
 	color: var(--txt-color-500);
 }
 
+
 /* 모달 (결과) */
 #container .modal-content .modal-body .form-result {
 	display: flex;
@@ -344,7 +366,22 @@
     color: #F2F2F2;
 }
 
+#container .modal-content .modal-body .form-account {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	padding: 12px 16px;
+	background: #F2F2F3;
+	border-radius: 8px;
+	margin-top: 14px;
+	margin-bottom: 40px;
+}
 
+#container .modal-content .modal-body .form-account p {
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 1.5;
+}
 
 
 

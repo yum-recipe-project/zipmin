@@ -84,10 +84,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
-
-
-
 /**
  * 리뷰/댓글 탭 메뉴 클릭 시 탭 메뉴를 활성화하고 해당하는 내용을 표시하는 함수
  */

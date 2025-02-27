@@ -28,10 +28,6 @@
 					
 					<div class="support_util">
 						<p class="total">총 23개</p>
-						<div class="support_sort">
-							<button class="btn_sort active">전체</button>
-							<button class="btn_sort">레시피</button>
-						</div>
 					</div>
 					
 					<div class="support_point">
@@ -40,7 +36,7 @@
 							<span>0원</span>
 						</div>
 						<button class="btn_dark" data-bs-toggle="modal" data-bs-target="#withdrawPointModal"
-							onclick="">
+							onclick="openWithdrawPointModal()">
 							출금하기
 						</button>
 					</div>
@@ -71,6 +67,20 @@
 						</ul>
 					</c:if>
 				</div>
+				
+				<div class="pagination_wrap">
+					<div class="pagination">
+					    <ul>
+					        <li><a href="#" class="prev"><img src="/images/common/chevron_left.png"></a></li>
+					        <li><a href="#" class="page active">1</a></li>
+					        <li><a href="#" class="page">2</a></li>
+					        <li><a href="#" class="page">3</a></li>
+					        <li><a href="#" class="page">4</a></li>
+					        <li><a href="#" class="page">5</a></li>
+					        <li><a href="#" class="next"><img src="/images/common/chevron_right.png"></a></li>
+					    </ul>
+					</div>
+				</div>
 			</div>
 			
 			<!-- 출금 모달창 -->			
@@ -93,13 +103,13 @@
 									</thead>
 									<tbody>
 										<tr>
-											<td id="ownedPoint">0</td>
+											<td id="ownedPoint"></td>
 											<td>
 												<div class="form-input">
 													<input id="pointInput" type="number" value="10000" min="10000" step="1">
 												</div>
 											</td>
-											<td id="remainPoint">-10000</td>
+											<td id="remainPoint"></td>
 										</tr>
 									</tbody>
 								</table>

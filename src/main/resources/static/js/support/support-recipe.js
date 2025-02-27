@@ -29,10 +29,12 @@ document.addEventListener("DOMContentLoaded", function() {
 	ownedPoint.innerText = 200;
 	remainPoint.innerText = 100;
 
-	// 포인트가 입력되면 남은 포인트 계산 그리고 pointAlert 노출 여부
+	// 포인트가 입력되면 남은 포인트 계산
 	pointInput.addEventListener("input", function() {
 		remainPoint.innerText = ownedPoint.innerText - pointInput.value;
 	});
+	
+	
 });
 
 

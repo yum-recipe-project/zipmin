@@ -60,7 +60,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
-					<button type="submit" class="btn btn-primary">신고하기</button>
+					<button type="submit" class="btn btn-primary disabled">신고하기</button>
 				</div>
 			</div>
 		</div>

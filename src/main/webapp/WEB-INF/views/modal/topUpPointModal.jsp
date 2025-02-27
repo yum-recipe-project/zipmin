@@ -57,7 +57,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
-					<button type="submit" class="btn btn-primary">충전하기</button>
+					<button type="submit" class="btn btn-primary disabled">충전하기</button>
 				</div>
 			</div>
 		</div>

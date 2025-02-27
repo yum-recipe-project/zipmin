@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<!-- 후원 관련 모달창 JS는 support-recipe.js에 있음 !!! 참고!! -->
 <form id="supportRecipeForm" onsubmit="">
 	<div class="modal" id="supportRecipeModal">
 		<div class="modal-dialog">

@@ -9,7 +9,10 @@
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/recipe/view-recipe.css">
 		<script src="/js/recipe/view-recipe.js"></script>
-		<script src="/js/support/support-recipe.js"></script>
+		<script src="/js/modal/report-recipe-modal.js"></script>
+		<script src="/js/modal/add-memo-modal.js"></script>
+		<script src="/js/modal/support-recipe-modal.js"></script>
+		<script src="/js/modal/top-up-point-modal.js"></script>
 	</head>
 	<body>
 		<%@include file="../common/header.jsp" %>

@@ -375,33 +375,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-/**
- * 신고 모달창의 신고 사유를 선택했는지 검증하는 함수
- * 
- * @returns {boolean} - 검증 결과
- */
-function validateReportRecipeForm() {
-	if (!document.querySelector('input[name="reason"]:checked')) {
-		alert("신고 사유를 선택하세요.");
-		return false;
-	}
-}
-
-
-
-/**
- * 장보기메모에 재로 담기 모달창의 재료를 선택했는지 검증하는 함수
- * 
- * @returns {boolean} - 검증 결과
- */
-function validateAddMemoForm() {
-	if (!document.querySelector('input[name=ingredient]:checked')) {
-		alert("재료를 하나 이상 선택하세요.");
-		return false;
-	}
-}
-
-
-
-
 

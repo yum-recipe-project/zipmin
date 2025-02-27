@@ -90,10 +90,10 @@
 			</div>
 			
 			<!-- 출금 계좌 모달창 -->
-			<%@include file="./changeAccountModal.jsp" %>
+			<%@include file="../modal/changeAccountModal.jsp" %>
 			
 			<!-- 출금 모달창 -->			
-			<%@include file="./withdrawPointModal.jsp" %>
+			<%@include file="../modal/withdrawPointModal.jsp" %>
 			
 		</main>
 		<%@include file="../common/footer.jsp" %>

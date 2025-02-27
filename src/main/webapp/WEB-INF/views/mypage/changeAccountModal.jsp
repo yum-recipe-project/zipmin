@@ -20,7 +20,7 @@
 					<h5>출금 계좌 변경</h5>
 					<div class="form-group">
 						<label>은행</label>
-		                <select class="form-select" id="dropdownSelect">
+		                <select class="form-select" id="accountBankInput">
 		                    <option value="1">산업은행</option>
 		                    <option value="2">기업은행</option>
 		                    <option value="3">국민은행</option>
@@ -56,7 +56,7 @@
 					</div>
 					<div class="form-group">
 						<label>계좌번호</label>
-						<input class="form-control" id="accountNumberInput" name="" value="">
+						<input class="form-control" id="accountNumberInput" name="" value="" type="number" step="1">
 						<p>'-' 없이 숫자만 입력해 주세요. 선불전자지급수단은 사용할 수 없어요.</p>
 					</div>
 					<div class="form-group">
@@ -67,7 +67,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
-					<button type="submit" class="btn btn-primary">변경하기</button>
+					<button type="submit" class="btn btn-primary disabled">변경하기</button>
 				</div>
 			</div>
 		</div>

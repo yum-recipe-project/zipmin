@@ -81,6 +81,10 @@
 }
 
 /* 폼 */
+#container .modal-content .modal-body .form-control {
+	border: 1px solid #DEE2E6;
+}
+
 #container .modal-content .modal-body .form-control:focus {
 	outline: none !important;
     box-shadow: none !important;
@@ -88,6 +92,10 @@
 }
 
 /* 드롭다운 */
+#container .modal-content .modal-body .form-select {
+    height: 40px;
+}
+
 #container .modal-content .modal-body .form-select:focus {
 	outline: none !important;
     box-shadow: none !important;

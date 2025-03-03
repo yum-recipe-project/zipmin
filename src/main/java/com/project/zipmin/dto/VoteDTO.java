@@ -10,5 +10,6 @@ public class VoteDTO {
 	private String title;
 	private Date opendate;
 	private Date closedate;
+	private int chomp_id;
 	// 카테고리?
 }

@@ -16,8 +16,6 @@ import com.project.zipmin.dto.SupportDTO;
 import com.project.zipmin.dto.UserDTO;
 import com.project.zipmin.service.IUserService;
 
-import jakarta.websocket.server.PathParam;
-
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -25,7 +23,7 @@ public class UserController {
 	@Autowired
 	IUserService memberDAO;
 
-	// 사용자 목록 조회
+	// 사용자 목록 조회 (관리자)
 	@GetMapping("")
 	public List<UserDTO> listMember() {
 		return null;
@@ -36,6 +34,7 @@ public class UserController {
 	// 특정 사용자 조회
 	@GetMapping("/{userId}")
 	public UserDTO viewMember(@PathVariable("userId") String id) {
+		// 프로필 넣말
 		return null;
 	}
 	
@@ -63,6 +62,10 @@ public class UserController {
 		return 0;
 	}
 	
+	
+	
+	
+	// ==============
 	
 	
 	// 팔로워 목록
@@ -130,10 +133,11 @@ public class UserController {
 	
 	
 	// 특정 사용자의 투표 참여
-	@PostMapping("/{userId}/votes/{voteIdx}/cast")
+	@PostMapping("/votes/{voteId}/record")
 	public int castVote(
 			@PathVariable("userId") String userId,
-			@PathVariable("voteIdx") int voteIdx) {
+			@PathVariable("voteId") int voteIdx) {
+		// 변경
 		return 0;
 	}
 	
@@ -162,7 +166,7 @@ public class UserController {
 	@PostMapping("/{userId}/classes/{classId}/apply")
 	public int applyClass(
 			@PathVariable("userId") String userId,
-			@PathVariable("classId") int classId) {
+			@PathVariable int classId) {
 		return 0;
 	}
 	

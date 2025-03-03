@@ -77,14 +77,14 @@
 					<!-- 댓글 작성 -->
 					<div class="comment_write">
 						<!-- 로그인 하지 않은 경우 -->
-						<c:if test="${ false }">
+						<c:if test="${ true }">
 							<a href="/member/login.do">
 								<span>키친 한마디 작성을 위해 로그인을 해주세요.</span>
 								<span>400</span>
 							</a>
 						</c:if>
 						<!-- 로그인 한 경우 -->
-						<c:if test="${ true }">
+						<c:if test="${ false }">
 							<form>
 								<div class="login_user">
 									<img src="/images/common/test.png">

@@ -18,19 +18,19 @@ public class ReviewServiceImpl implements IReviewService {
 		List<ReviewDTO> reviewList = new ArrayList<ReviewDTO>();
 		// 더미데이터1
 		ReviewDTO reviewDTO1 = new ReviewDTO();
-		reviewDTO1.setReview_idx(1);
-		reviewDTO1.setMember_ref("dayeong");
+		reviewDTO1.setId(1);
+		reviewDTO1.setUser_id("dayeong");
 		reviewDTO1.setPostdate(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-		reviewDTO1.setRecipe_ref(1);
+		reviewDTO1.setRecipe_id(1);
 		reviewDTO1.setScore(5);
 		reviewDTO1.setContent("최신순으로 정렬");
 		reviewList.add(reviewDTO1);
 		// 더미데이터2
 		ReviewDTO reviewDTO2 = new ReviewDTO();
-		reviewDTO2.setReview_idx(2);
-		reviewDTO2.setMember_ref("harim");
+		reviewDTO2.setId(2);
+		reviewDTO2.setUser_id("harim");
 		reviewDTO2.setPostdate(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-		reviewDTO2.setRecipe_ref(1);
+		reviewDTO2.setRecipe_id(1);
 		reviewDTO2.setScore(1);
 		reviewDTO2.setContent("별로네요");
 		reviewList.add(reviewDTO2);
@@ -42,17 +42,17 @@ public class ReviewServiceImpl implements IReviewService {
 		List<ReviewDTO> reviewList = new ArrayList<ReviewDTO>();
 		// 더미데이터1
 		ReviewDTO reviewDTO1 = new ReviewDTO();
-		reviewDTO1.setReview_idx(1);
-		reviewDTO1.setMember_ref("dayeong");
-		reviewDTO1.setRecipe_ref(1);
+		reviewDTO1.setId(1);
+		reviewDTO1.setUser_id("dayeong");
+		reviewDTO1.setRecipe_id(1);
 		reviewDTO1.setScore(5);
 		reviewDTO1.setContent("오래된순");
 		reviewList.add(reviewDTO1);
 		// 더미데이터2
 		ReviewDTO reviewDTO2 = new ReviewDTO();
-		reviewDTO2.setReview_idx(2);
-		reviewDTO2.setMember_ref("harim");
-		reviewDTO2.setRecipe_ref(1);
+		reviewDTO2.setId(2);
+		reviewDTO2.setUser_id("harim");
+		reviewDTO2.setRecipe_id(1);
 		reviewDTO2.setScore(1);
 		reviewDTO2.setContent("별로네요");
 		reviewList.add(reviewDTO2);
@@ -64,17 +64,17 @@ public class ReviewServiceImpl implements IReviewService {
 		List<ReviewDTO> reviewList = new ArrayList<ReviewDTO>();
 		// 더미데이터1
 		ReviewDTO reviewDTO1 = new ReviewDTO();
-		reviewDTO1.setReview_idx(1);
-		reviewDTO1.setMember_ref("dayeong");
-		reviewDTO1.setRecipe_ref(1);
+		reviewDTO1.setId(1);
+		reviewDTO1.setUser_id("dayeong");
+		reviewDTO1.setRecipe_id(1);
 		reviewDTO1.setScore(5);
 		reviewDTO1.setContent("도움순");
 		reviewList.add(reviewDTO1);
 		// 더미데이터2
 		ReviewDTO reviewDTO2 = new ReviewDTO();
-		reviewDTO2.setReview_idx(2);
-		reviewDTO2.setMember_ref("harim");
-		reviewDTO2.setRecipe_ref(1);
+		reviewDTO2.setId(2);
+		reviewDTO2.setUser_id("harim");
+		reviewDTO2.setRecipe_id(1);
 		reviewDTO2.setScore(1);
 		reviewDTO2.setContent("별로네요");
 		reviewList.add(reviewDTO2);

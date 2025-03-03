@@ -20,6 +20,7 @@ public class SupportController {
 	}
 	
 	
+	
 	// 특정 후원 취소 (관리자)
 	@DeleteMapping("/{supportId}")
 	public int deleteSupport(

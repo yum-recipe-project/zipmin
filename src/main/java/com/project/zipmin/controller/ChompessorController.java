@@ -15,12 +15,13 @@ import com.project.zipmin.dto.CommentDTO;
 import com.project.zipmin.dto.VoteDTO;
 
 @RestController
-@RequestMapping("/votes")
 public class ChompessorController {
 	
 	
+	
+	
 	// 투표 목록 조회
-	@GetMapping("")
+	@GetMapping("/votes")
 	public List<VoteDTO> listVote() {
 		return null;
 	}
@@ -28,7 +29,7 @@ public class ChompessorController {
 	
 	
 	// 특정 투표 조회
-	@GetMapping("/{voteId}")
+	@GetMapping("/votes/{voteId}")
 	public VoteDTO viewVote(
 			@PathVariable("voteId") int voteId) {
 		return null;
@@ -37,7 +38,7 @@ public class ChompessorController {
 	
 	
 	// 새 투표 등록 (관리자)
-	@PostMapping("")
+	@PostMapping("/votes")
 	public int writeVote() {
 		return 0;
 	}
@@ -45,7 +46,7 @@ public class ChompessorController {
 	
 	
 	// 특정 투표 수정 (관리자)
-	@PutMapping("/{voteId}")
+	@PutMapping("/votes/{voteId}")
 	public int editVote(
 			@PathVariable("voteId") int voteId) {
 		return 0;
@@ -54,7 +55,7 @@ public class ChompessorController {
 	
 	
 	// 특정 투표 삭제 (관리자)
-	@DeleteMapping("/{voteId}")
+	@DeleteMapping("/votes/{voteId}")
 	public int deleteVote(
 			@PathVariable("voteId") int voteId) {
 		return 0;
@@ -63,7 +64,7 @@ public class ChompessorController {
 	
 	
 	// 특정 투표의 댓글 목록 조회
-	@GetMapping("/{voteId}/comments")
+	@GetMapping("/votes/{voteId}/comments")
 	public List<CommentDTO> listVoteComment(
 			@PathVariable("guideId") int guideId,
 			@RequestParam(name = "sort", defaultValue = "new") String sort) {
@@ -73,7 +74,7 @@ public class ChompessorController {
 	
 	
 	// 특정 투표에 댓글 작성
-	@PostMapping("/{voteId}/comments")
+	@PostMapping("/votes/{voteId}/comments")
 	public int writeVoteComment(
 			@PathVariable("voteId") int voteId) {
 		return 0;
@@ -82,7 +83,7 @@ public class ChompessorController {
 	
 	
 	// 특정 투표의 특정 댓글 수정
-	@PutMapping("/{voteId}/comments/{commId}")
+	@PutMapping("/votes/{voteId}/comments/{commId}")
 	public int editVoteComment(
 			@PathVariable("voteId") int voteId,
 			@PathVariable("commId") int commId) {
@@ -92,7 +93,7 @@ public class ChompessorController {
 	
 	
 	// 특정 투표의 특정 댓글 삭제
-	@DeleteMapping("/{voteId}/comments/{commId}")
+	@DeleteMapping("/votes/{voteId}/comments/{commId}")
 	public int deleteVoteComment(
 			@PathVariable("voteId") int voteId,
 			@PathVariable("commId") int commId) {
@@ -102,7 +103,7 @@ public class ChompessorController {
 	
 	
 	// 특정 투표의 특정 댓글 좋아요
-	@PostMapping("/{voteId}/comments/{commId}/likes")
+	@PostMapping("/votes/{voteId}/comments/{commId}/likes")
 	public int likeVoteComment(
 			@PathVariable("voteId") int voteId,
 			@PathVariable("commId") int commId) {
@@ -112,7 +113,7 @@ public class ChompessorController {
 	
 	
 	// 특정 투표의 특정 댓글 좋아요 개수
-	@GetMapping("/{voteId}/comments/{commId}/likes/count")
+	@GetMapping("/votes/{voteId}/comments/{commId}/likes/count")
 	public int countLikeVoteComment(
 			@PathVariable("voteId") int voteId,
 			@PathVariable("commId") int commId) {
@@ -122,7 +123,7 @@ public class ChompessorController {
 	
 	
 	// 특정 투표의 특정 댓글 좋아요 여부
-	@GetMapping("/{voteId}/comments/{commId}/likes/status")
+	@GetMapping("/votes/{voteId}/comments/{commId}/likes/status")
 	public boolean checkLikeVoteComment(
 			@PathVariable("voteId") int voteId,
 			@PathVariable("commId") int commId) {
@@ -132,7 +133,7 @@ public class ChompessorController {
 	
 	
 	// 특정 투표의 특정 댓글 신고
-	@PostMapping("/{voteId}/comments/{commId}/reports")
+	@PostMapping("/votes/{voteId}/comments/{commId}/reports")
 	public int reportVoteComment(
 			@PathVariable("voteId") int voteId,
 			@PathVariable("commId") int commId) {
@@ -142,7 +143,7 @@ public class ChompessorController {
 	
 	
 	// 특정 투표의 특정 댓글 신고 개수 (관리자)
-	@GetMapping("/{voteId}/comments/{commId}/reports/count")
+	@GetMapping("/votes/{voteId}/comments/{commId}/reports/count")
 	public int countReportVoteComment(
 			@PathVariable("voteId") int voteId,
 			@PathVariable("commId") int commId) {
@@ -152,7 +153,7 @@ public class ChompessorController {
 	
 	
 	// 특정 투표의 특정 댓글 신고 여부
-	@GetMapping("/{voteId}/comments/{commId}/reports/status")
+	@GetMapping("/votes/{voteId}/comments/{commId}/reports/status")
 	public boolean checkReportVoteComment(
 			@PathVariable("voteId") int voteId,
 			@PathVariable("commId") int commId) {

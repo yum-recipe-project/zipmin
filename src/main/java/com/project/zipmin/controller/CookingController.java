@@ -51,7 +51,7 @@ public class CookingController {
 	
 	
 	// 클래스 승인 및 거절 (관리자)
-	@PatchMapping("/{classId}")
+	@PatchMapping("/{classId}/status")
 	public int updateClassStatus(
 			@PathVariable("classId") int classId) {
 		return 0;
@@ -166,31 +166,13 @@ public class CookingController {
 	
 	
 	// 출석
-	// @PatchMapping("/{classId}/applications/{applyId}")
+	// @PatchMapping("/{classId}/applies/{applyId}")
 	
 	
 	
 	// 3번 이상 결석했는지 확인
 	
-	
-	
-	// 특정 클래스의 특정 신청서 승인
-	@PatchMapping("/{classId}/applications/{applyId}/approve")
-	public int approveApplication(
-			@PathVariable("classId") int classId,
-			@PathVariable("applyId") int applyId) {
-		return 0;
-	}
-	
-	
-	// 특정 클래스의 특정 신청서 거절
-	@PatchMapping("/{classId}/applications/{applyId}/reject")
-	public int rejectApplication(
-			@PathVariable("classId") int classId,
-			@PathVariable("applyId") int applyId) {
-		return 0;
-	}
-	
+
 	
 
 }

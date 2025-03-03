@@ -15,9 +15,9 @@ public class MypageViewController {
 	public String commentContent() {
 		return "mypage/commentContent";
 	}
-	@GetMapping("/mypage/receivedSupport.do")
+	@GetMapping("/mypage/fund.do")
 	public String myPoint() {
-		return "mypage/receivedSupport";
+		return "mypage/fund";
 	}
 	
 	@GetMapping("/mypage/review.do")

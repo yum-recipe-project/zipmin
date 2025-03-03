@@ -10,6 +10,6 @@ import lombok.Data;
 public class VoteRecordDTO {
 	private int id;
 	private int voteId;
-	private int user_id;
-	private int option_id;
+	private int userId;
+	private int optionId;
 }

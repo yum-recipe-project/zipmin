@@ -128,7 +128,7 @@
 							
 							<div class="info">
 							
-								<a href="/member/userInfo.do" class="info_box">
+								<a href="/user/userInfo.do" class="info_box">
 									<div class="info_txt">
 										<span>회원정보</span>
 										<p>집밥의민족 회원정보를 조회, 수정합니다.</p>
@@ -136,7 +136,7 @@
 									<img src="/images/mypage/arrow_right.png">
 								</a>
 								
-								<a href="/member/changePassword.do" class="info_box">
+								<a href="/user/changePassword.do" class="info_box">
 									<div class="info_txt">
 										<span>비밀번호 변경</span>
 										<p>비밀번호를 변경합니다.</p>

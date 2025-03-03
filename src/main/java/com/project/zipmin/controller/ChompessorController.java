@@ -112,6 +112,16 @@ public class ChompessorController {
 	
 	
 	
+	// 특정 사용자의 투표 참여
+	@PostMapping("/votes/{voteId}/record")
+	public int castVote(
+			@PathVariable("voteId") int voteIdx) {
+		// 변경
+		return 0;
+	}
+	
+	
+	
 	// 특정 투표의 특정 댓글 좋아요 개수
 	@GetMapping("/votes/{voteId}/comments/{commId}/likes/count")
 	public int countLikeVoteComment(

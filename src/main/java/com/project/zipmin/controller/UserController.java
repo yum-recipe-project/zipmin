@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.dto.ClassDTO;
-import com.project.zipmin.dto.SupportDTO;
+import com.project.zipmin.dto.FundDTO;
 import com.project.zipmin.dto.UserDTO;
 import com.project.zipmin.service.IUserService;
 
@@ -123,7 +123,7 @@ public class UserController {
 	
 	
 	// 특정 사용자의 투표 여부 확인
-	@GetMapping("/{userId}/votes/{voteId}")
+	@GetMapping("/votes/{voteId}")
 	public boolean checkUserVote(
 			@PathVariable("userId") String userId,
 			@PathVariable("voteIdx") int voteIdx) {
@@ -131,20 +131,8 @@ public class UserController {
 	}
 	
 	
-	
-	// 특정 사용자의 투표 참여
-	@PostMapping("/votes/{voteId}/record")
-	public int castVote(
-			@PathVariable("userId") String userId,
-			@PathVariable("voteId") int voteIdx) {
-		// 변경
-		return 0;
-	}
-	
-	
-	
 	// 특정 사용자가 본인의 투표 내역을 확인하면서 전체 결과도 같이 조회
-	@GetMapping("/{userId}/votes/{voteIdx}/result")
+	@GetMapping("/votes/{voteIdx}/result")
 	public Object getUserVoteResult(
 			@PathVariable("userId") String userId,
 			@PathVariable("voteIdx") int voteIdx) {
@@ -163,7 +151,7 @@ public class UserController {
 	
 	
 	// 특정 사용자의 참가 지원
-	@PostMapping("/{userId}/classes/{classId}/apply")
+	@PostMapping("/classes/{classId}/apply")
 	public int applyClass(
 			@PathVariable("userId") String userId,
 			@PathVariable int classId) {
@@ -180,29 +168,17 @@ public class UserController {
 	
 	
 	
-	// 특정 사용자가 다른 사용자에게 후원
-	@PostMapping("/{sponsorId}/supports/{receiverId}")
-	public int supportUser(
-			@PathVariable("sponsorId") String sponsorId,
-			@PathVariable("receiverId") String receiverId) {
-		return 0;
-	}
-	
-	
-	
-	// 특정 사용자가 받은 후원 조회
-	@GetMapping("/{userId}/supports")
-	public List<SupportDTO> listMySupport(
-			@PathVariable("userId") String userId) {
+	// 로그인 한 사용자가 받은 후원 조회
+	@GetMapping("/supports")
+	public List<FundDTO> listMySupport() {
 		return null;
 	}
 	
 	
 	
-	// 특정 유저가 포인트 충전 요청
-	@PostMapping("/{userId}/points/deposit")
-	public int depositPoint(
-			@PathVariable("userId") String userId) {
+	// 로그인 한 유저가 포인트 충전 요청
+	@PostMapping("/points/deposit")
+	public int depositPoint() {
 		return 0;
 	}
 	

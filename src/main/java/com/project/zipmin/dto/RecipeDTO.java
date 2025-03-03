@@ -2,13 +2,17 @@ package com.project.zipmin.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
 import lombok.Data;
 
 @Data
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class RecipeDTO {
 	// 기본 컬럼
 	private int id;
-	private int image;
+	private int imageUrl;
 	private String title;
 	private String level;
 	private String time;
@@ -16,17 +20,18 @@ public class RecipeDTO {
 	private String introduce;
 	private int portion;
 	private String tip;
-	private String user_id;
+	private String youtubeUrl;
+	private String userId;
 	
 	// 추가 컬럼
-	private List<CategoryDTO> category_list;
+	private List<RecipeCategoryDTO> categoryList;
 	private UserDTO member;
-	private List<IngredientDTO> ingredient_list;
-	private List<RecipeStepDTO> step_list;
-	private Integer follower_count;
+	private List<RecipeIngredientDTO> ingredientList;
+	private List<RecipeStepDTO> stepList;
+	private Integer followerCount;
 	private Boolean isLike;
 	private Boolean isReport;
 	private Boolean isFollow;
-	private Integer review_count;
-	private Integer comment_count;
+	private Integer reviewCount;
+	private Integer commentCount;
 }

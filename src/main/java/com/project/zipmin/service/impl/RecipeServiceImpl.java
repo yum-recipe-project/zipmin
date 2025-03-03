@@ -61,7 +61,7 @@ public class RecipeServiceImpl implements IRecipeService {
 		recipeDTO.setLevel("쉬움");
 		recipeDTO.setTime("15분");
 		recipeDTO.setSpicy("아주 매움");
-		recipeDTO.setUser_id("harim");
+		recipeDTO.setUserId("harim");
 		recipeDTO.setIntroduce("이 요리는 영국에서 최초로 시작되어 일년에 한바퀴를 돌면서 받는 사람에게 행운을 주었고"
 				+ "	지금은 당신에게로 옮겨진 이 요리는 4일 안에 당신 곁을 떠나야 합니다."
 				+ "	이 요리를 포함해서 7통을 행운이 필요한 사람에게 보내 주셔야 합니다."
@@ -90,13 +90,13 @@ public class RecipeServiceImpl implements IRecipeService {
 		RecipeStepDTO stepDTO1 = new RecipeStepDTO();
 		stepDTO1.setId(1);
 		stepDTO1.setContent("1번 설명입니다");
-		stepDTO1.setRecipe_id(1);
+		stepDTO1.setRecipeId(1);
 		stepList.add(stepDTO1);
 		// 더미데이터 2
 		RecipeStepDTO stepDTO2 = new RecipeStepDTO();
 		stepDTO2.setId(2);
 		stepDTO2.setContent("2번 설명입니다");
-		stepDTO2.setRecipe_id(1);
+		stepDTO2.setRecipeId(1);
 		stepList.add(stepDTO2);
 		return stepList;
 	}

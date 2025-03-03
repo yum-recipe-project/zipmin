@@ -8,52 +8,53 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class UserViewController {
 	
 	
-	@GetMapping("/member/login.do")
+	@GetMapping("/user/login.do")
 	public String login() {
-		return "member/login";
+		return "user/login";
 	}
 	
-	@GetMapping("/member/join.do")
+	@GetMapping("/user/join.do")
 	public String join() {
-		return "member/join";
+		return "user/join";
 	}
 	
-	@GetMapping("member/join/complete.do")
+	@GetMapping("user/join/complete.do")
 	public String joinComplete() {
-		return "member/joinComplete";
+		return "user/joinComplete";
 	}
 	
-	@GetMapping("/member/findAccount.do")
+	@GetMapping("/user/findAccount.do")
 	public String findAccount() {
-		return "member/findAccount";
+		return "user/findAccount";
 	}
 	
-	@GetMapping("/member/findAccount/idResult.do")
+	@GetMapping("/user/findAccount/idResult.do")
 	public String findAccountId() {
-		return "member/findIdResult";
+		return "user/findIdResult";
 	}
 	
-	@GetMapping("/member/findAccount/passwordResult.do")
+	@GetMapping("/user/findAccount/passwordResult.do")
 	public String findAccountPassword() {
-		return "member/findPasswordResult";
+		return "user/findPasswordResult";
 	}
 	
-	@GetMapping("/member/verifyPassword.do")
+	@GetMapping("/user/verifyPassword.do")
 	public String verifyPassword() {
-		return "member/verifyPassword";
+		return "user/verifyPassword";
 	}
 	
-	@GetMapping("/member/changePassword.do")
+	@GetMapping("/user/changePassword.do")
 	public String changePassword() {
-		return "member/changePassword";
+		return "user/changePassword";
 	}
 	
-	@GetMapping("/member/userInfo.do")
+	@GetMapping("/user/userInfo.do")
 	public String userInfo() {
-		return "member/userInfo";
+		return "user/userInfo";
 	}
 	
-	@GetMapping("/member/viewMemberInfo.do")
+	// 제거 할 것
+	@GetMapping("/user/viewMemberInfo.do")
 	public String viewMemberInfo() {
 		return "member/viewMemberInfo";
 	}

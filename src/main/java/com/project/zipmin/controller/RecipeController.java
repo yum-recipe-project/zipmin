@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.zipmin.dto.CategoryDTO;
+import com.project.zipmin.dto.RecipeCategoryDTO;
 import com.project.zipmin.dto.CommentDTO;
-import com.project.zipmin.dto.IngredientDTO;
+import com.project.zipmin.dto.RecipeIngredientDTO;
 import com.project.zipmin.dto.RecipeDTO;
 import com.project.zipmin.dto.ReviewDTO;
 import com.project.zipmin.dto.RecipeStepDTO;
@@ -70,20 +70,20 @@ public class RecipeController {
 		RecipeDTO recipeDTO = recipeDAO.selectRecipe(recipeIdx);
 		
 		// 카테고리 목록 조회
-		List<CategoryDTO> categoryList = categoryDAO.selectCategoryListByRecipeIdx(recipeIdx);
-		recipeDTO.setCategory_list(categoryList);
+		List<RecipeCategoryDTO> categoryList = categoryDAO.selectCategoryListByRecipeIdx(recipeIdx);
+		recipeDTO.setCategoryList(categoryList);
 		
 		// 작성자 조회
-		UserDTO userDTO = userDAO.selectUser(recipeDTO.getUser_id());
+		UserDTO userDTO = userDAO.selectUser(recipeDTO.getUserId());
 		recipeDTO.setMember(userDTO);
 		
 		// 재료 목록 조회
-		List<IngredientDTO> ingredientList = ingredientDAO.selectIngredientListByRecipeIdx(recipeIdx);
-		recipeDTO.setIngredient_list(ingredientList);
+		List<RecipeIngredientDTO> ingredientList = ingredientDAO.selectIngredientListByRecipeIdx(recipeIdx);
+		recipeDTO.setIngredientList(ingredientList);
 		
 		// 조리 순서 목록 조회
 		List<RecipeStepDTO> stepList = recipeDAO.selectStepList(recipeIdx);
-		recipeDTO.setStep_list(stepList);
+		recipeDTO.setStepList(stepList);
 		
 		// recipeIdx랑 로그인 한 user의 로그인 정보 보내서 레시피에 좋아요와 신고 누른 여부 각각 가져와야 함
 		Boolean isLike = likeDAO.selectLikeStatusByTable("dayeong", "recipe", recipeIdx);
@@ -94,14 +94,14 @@ public class RecipeController {
 		// 팔로워 수와 팔로우 여부 조회
 		int followerCount = likeDAO.selectFollowerCountByMemberId(recipeDTO.getMember().getId());
 		Boolean isFollow = likeDAO.selectLikeStatusByTable("dayeong", "recipe", recipeDTO.getId());
-		recipeDTO.setFollower_count(followerCount);
+		recipeDTO.setFollowerCount(followerCount);
 		recipeDTO.setIsFollow(isFollow);
 		
 		// 리뷰 수와 댓글 수 조회
 		int reviewCount = reviewDAO.selectReviewCountByRecipeIdx(recipeIdx);
-		recipeDTO.setReview_count(reviewCount);
+		recipeDTO.setReviewCount(reviewCount);
 		int commentCount = commentDAO.selectCommentCountByTable("recipe", recipeIdx);
-		recipeDTO.setComment_count(commentCount);
+		recipeDTO.setCommentCount(commentCount);
 		
 		return recipeDTO;
 	}

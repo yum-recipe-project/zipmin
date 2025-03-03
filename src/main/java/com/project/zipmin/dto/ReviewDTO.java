@@ -1,14 +1,18 @@
 package com.project.zipmin.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
 import lombok.Data;
 
 @Data
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ReviewDTO {
-	private int id; // 기본키
+	private int id;
 	// private Date postdate;
 	private String postdate;
-	private String user_id; // 작성자
-	private int recipe_id; // 어떤 레시피에
-	private int score; // 별점
-	private String content; // 내용
+	private int score;
+	private String content;
+	private int recipeId;
+	private String userId;
 }

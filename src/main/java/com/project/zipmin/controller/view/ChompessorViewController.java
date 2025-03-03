@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ChompessorViewController {
 	
 	
-	@GetMapping("/chompessor/listForum.do")
+	@GetMapping("/chompessor/listChomp.do")
 	public String listForum() {
-		return "chompessor/listForum";
+		return "chompessor/listChomp";
 	}
 	
 	@GetMapping("/chompessor/viewVote.do")

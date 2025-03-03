@@ -1,12 +1,16 @@
 package com.project.zipmin.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
 import lombok.Data;
 
 @Data
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ReportDTO {
-	private int report_idx;
-	private String member_ref; // 누가
-	private String tablename; // 어떤 테이블의
-	private int recodenum; // 어떤 게시물을
-	private String reason; // 어떤 이유로
+	private int id;
+	private String userId;
+	private String tablename;
+	private int recodenum;
+	private String reason;
 }

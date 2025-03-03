@@ -1,11 +1,15 @@
 package com.project.zipmin.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
 import lombok.Data;
 
 @Data
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class LikeDTO {
 	private int id;
-	private String user_id; // 누가 (유저 id)
-	private String tablename; // 테이블 이름 (member, comment, recipe, guide, )
-	private int recodenum; // 어떤 게시물을
+	private String userId;
+	private String tablename;
+	private int recodenum;
 }

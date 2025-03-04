@@ -18,7 +18,7 @@
 				<!-- 메인 배너 -->
 				<div class="main_banner">
 					<h2>회원</h2>
-					<button onclick="location.href='/member/verifyPassword.do';">비밀번호 확인</button>
+					<button onclick="location.href='/user/verifyPassword.do';">비밀번호 확인</button>
 					<br/><br/>
 					
 					<h2>키친가이드</h2>

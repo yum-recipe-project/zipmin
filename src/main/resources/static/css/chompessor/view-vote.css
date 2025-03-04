@@ -7,9 +7,6 @@
 	padding-bottom: 80px;
 }
 
-
-
-/* 포럼 */
 #container .content .vote_wrap {
 	display: flex;
 	flex-direction: column;
@@ -18,7 +15,9 @@
 	margin-bottom: 80px;
 }
 
-/* 포럼 (헤더) */
+
+
+/* 투표 헤더 */
 #container .content .vote_wrap .vote_header span {
 	color: var(--txt-color-500);
 	font-weight: 400;
@@ -35,7 +34,6 @@
 	font-size: 32px;
 }
 
-/* 포럼 (헤더 - 정보) */
 #container .content .vote_wrap .vote_header .vote_info {
 	margin-top: 8px;
 	display: flex;
@@ -60,14 +58,16 @@
 	line-height: 16px;
 }
 
-/* 포럼 (내용) */
-#container .vote_checkbox_wrap {
+
+
+/* 투표 내용 */
+#container .vote_content .vote_checkbox_wrap {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
 }
 
-#container .vote_checkbox_wrap input[type='checkbox'] + label {
+#container .vote_content .vote_checkbox_wrap input[type='checkbox'] + label {
 	display: flex;
 	width: 100%;
 	border-radius: 4px;
@@ -79,16 +79,16 @@
 	letter-spacing: -0.4px;
 }
 
-#container .vote_checkbox_wrap input[type='checkbox'].disable + label {
+#container .vote_content .vote_checkbox_wrap input[type='checkbox'].disable + label {
 	color: #B1B3B5;
 }
 
-#container .vote_checkbox_wrap input[type='checkbox']:checked + label {
+#container .vote_content .vote_checkbox_wrap input[type='checkbox']:checked + label {
 	border: 1px solid var(--point-color2);
 	background: #F3F8FF;
 }
 
-#container .vote_checkbox_wrap input[type='checkbox'] + label::before {
+#container .vote_content .vote_checkbox_wrap input[type='checkbox'] + label::before {
 	content: '';
 	width: 18px;
 	height: 18px;
@@ -98,7 +98,7 @@
 	border: none;
 }
 
-#container .vote_checkbox_wrap input[type='checkbox']:checked + label::after {
+#container .vote_content .vote_checkbox_wrap input[type='checkbox']:checked + label::after {
 	content: '';
 	position: absolute;
 	left: 16px;
@@ -110,8 +110,94 @@
 	background: url('/images/chompessor/check_blue.png') no-repeat center / 100%;
 }
 
-/* 포럼 (내용 - 버튼) */
+
+
+/* 투표 결과 */
+#container .vote_result ul {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+#container .vote_result .vote_option_wrap {
+	position: relative;
+	background: rgb(243, 245, 247);;
+	border-radius: 4px;
+	overflow: hidden;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex: 1 1 0%;
+}
+
+#container .vote_result .vote_option_wrap::before {
+	position: absolute;
+	display: block;
+	content: '';
+	top: 0px;
+	left: 0px;
+	/* 값 변경 필요 */
+	width: 66.3%;
+	height: 100%;
+	background: rgb(215, 219, 230);
+}
+
+#container .vote_result .vote_option_wrap.select::before {
+	background: rgb(189, 217, 255);
+}
+
+#container .vote_result .vote_option_wrap h5 {
+	position: relative;
+	flex: 1 1 0%;
+	padding: 12px 0px 12px 16px;
+	font-weight: 500 !important;
+	gap: 8px !important;
+	display: flex;
+	align-items: center;
+	font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.4px;
+}
+
+#container .vote_result .vote_option_wrap h5 img {
+	width:18px;
+	height: 18px;
+}
+
+#container .vote_result .vote_option_wrap span {
+	position: relative;
+	color: rgb(126, 128, 130);
+	margin: 0px 8px;
+	font-size: 12px;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+}
+
+#container .vote_result .vote_option_wrap h3 {
+	position: relative;
+	font-weight: 700 !important;
+	margin-right: 16px !important;
+	font-size: 22px;
+	line-height: 32px;
+	letter-spacing: -0.4px;  
+}
+
+#container .vote_result .vote_option_wrap.select h3 {
+	color: var(--point-color2);
+}
+
+
+
+
+
+
+/* 투표 버튼 */
 #container .vote_content .btn_wrap {
+	margin-top: 16px;
+	margin-left: auto;
+}
+
+#container .vote_result .btn_wrap {
 	margin-top: 16px;
 	margin-left: auto;
 }

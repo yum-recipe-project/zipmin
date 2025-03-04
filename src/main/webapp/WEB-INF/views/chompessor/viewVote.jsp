@@ -21,9 +21,9 @@
 		<%@include file="../common/header.jsp" %>
 			<main id="container">
 				<div class="content">
-					<!-- 포럼 -->
+					<!-- 투표 -->
 					<div class="vote_wrap">
-						<!-- 포럼 헤더 -->
+						<!-- 투표 헤더 -->
 						<div class="vote_header">
 							<span>아이스크림</span>
 							<h2>당신의 녹차 아이스크림에 투표하세요</h2>
@@ -39,7 +39,7 @@
 							</div>
 						</div>
 						
-						<!-- 포럼 내용 -->
+						<!-- 투표 내용 -->
 						<div class="vote_content">
 							<ul>
 								<li>
@@ -62,8 +62,39 @@
 								</li>
 							</ul>
 							<div class="btn_wrap">
-								<button class="btn_outline" onclick="location.href='/chompessor/listVote.do';">목록으로</button>
+								<button class="btn_outline" onclick="location.href='/chompessor/listChomp.do';">목록으로</button>
 								<button class="btn_primary" type="submit" onclick="">투표하기</button>
+							</div>
+						</div>
+						
+						<!-- 투표 결과 -->
+						<div class="vote_result">
+							<ul>
+								<li>
+									<div class="vote_option_wrap">
+										<h5>베스킨라빈스 녹차 아이스크림</h5>
+										<span>138명</span>
+										<h3>66.3%</h3>
+									</div>
+								</li>
+								<li>
+									<div class="vote_option_wrap select">
+										<h5><img src="/images/chompessor/check_blue.png">하겐다즈 녹차 아이스크림</h5>
+										<span>138명</span>
+										<h3>66.3%</h3>
+									</div>
+								</li>
+								<li>
+									<div class="vote_option_wrap">
+										<h5>나뚜르 녹차 아이스크림</h5>
+										<span>138명</span>
+										<h3>66.3%</h3>
+									</div>
+								</li>
+							</ul>
+							<div class="btn_wrap">
+								<button class="btn_outline" onclick="location.href='/chompessor/listChomp.do';">목록으로</button>
+								<button class="btn_primary" type="submit" onclick="">다시 투표하기</button>
 							</div>
 						</div>
 					</div>

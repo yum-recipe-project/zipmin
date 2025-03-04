@@ -7,8 +7,8 @@
 		<meta charset="UTF-8">
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
-		<link rel="stylesheet" href="/css/member/join.css">
-		<script src="/js/member/join.js"></script>
+		<link rel="stylesheet" href="/css/user/join.css">
+		<script src="/js/user/join.js"></script>
 	</head>
 	<body>
 		<main id="container">
@@ -53,7 +53,7 @@
 										<label>닉네임</label>
 										<button onclick="javascript:void(0);">
 											<span>랜덤 생성</span>
-											<img src="/images/member/refresh.png">
+											<img src="/images/user/refresh.png">
 										</button>
 									</div>
 									<input type="text" id="nicknameInput" name="" value="" placeholder="닉네임 입력">
@@ -68,13 +68,13 @@
 							
 							<!-- 이메일 안내문 -->
 							<div class="email_info">
-								<img src="/images/member/error.png">
+								<img src="/images/user/error.png">
 								<p>개인정보 보호를 위해 본인이 소유한 이메일을 정확히 입력해주세요.</p>
 							</div>
 							
 							<!-- 다음 버튼 -->
 							<button type="submit" class="btn_primary_wide">다음</button>
-							<a href="/member/join/complete.do">다음</a>
+							<a href="/user/join/complete.do">다음</a>
 						</form>
 					</div>
 				</div>

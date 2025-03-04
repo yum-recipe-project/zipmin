@@ -6,8 +6,8 @@
 		<meta charset="UTF-8">
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
-		<link rel="stylesheet" href="/css/member/login.css">
-		<script src="/js/member/login.js"></script>
+		<link rel="stylesheet" href="/css/user/login.css">
+		<script src="/js/user/login.js"></script>
 	</head>
 	
 	<body>
@@ -41,8 +41,8 @@
 							</div>
 							<!-- 비밀번호 찾기 및 회원가입 -->
 							<div class="util">
-								<a href="/member/findAccount.do">아이디 ・ 비밀번호 찾기</a>
-								<a href="/member/join.do">회원가입</a>
+								<a href="/user/findAccount.do">아이디 ・ 비밀번호 찾기</a>
+								<a href="/user/join.do">회원가입</a>
 							</div>
 						</div>
 						<button type="submit" class="btn_primary_wide">로그인</button>
@@ -54,8 +54,8 @@
 							집밥의민족 신규가입하고<br/><span>다양한 레시피</span> 만나보세요!
 						</div>
 						<div class="image">
-							<img src="/images/member/naver.png">
-							<img src="/images/member/kakao.png">
+							<img src="/images/user/naver.png">
+							<img src="/images/user/kakao.png">
 						</div>
 					</div>
 					

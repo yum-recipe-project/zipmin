@@ -6,8 +6,8 @@
 		<meta charset="UTF-8">
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
-		<link rel="stylesheet" href="/css/member/change-password.css">
-		<script src="/js/member/change-password.js"></script>
+		<link rel="stylesheet" href="/css/user/change-password.css">
+		<script src="/js/user/change-password.js"></script>
 	</head>
 	
 	<body>

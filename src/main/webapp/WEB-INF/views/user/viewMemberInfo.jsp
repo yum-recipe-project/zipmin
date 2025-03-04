@@ -9,9 +9,9 @@
 		<meta charset="UTF-8">
 		<title>집밥의 민족</title>
 		<%@include file="../common/head.jsp" %>
-		<link rel="stylesheet" href="/css/member/view-member-info.css">
-		<link rel="stylesheet" href="/css/member/modify-member.css">
-		<script src="/js/member/view-member-info.js"></script>
+		<link rel="stylesheet" href="/css/user/view-user-info.css">
+		<link rel="stylesheet" href="/css/user/modify-user.css">
+		<script src="/js/user/view-user-info.js"></script>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,300,0,0&icon_names=edit_square" />
 	</head>
 	
@@ -40,7 +40,7 @@
 									<h3>기본정보</h3>
 									<div class="modify_btn_wrap">
 										<button class="modify_btn" id="basicModifyBtn">
-										    <img id="basicIcon" src="/images/member/modify_member.png" alt="수정">
+										    <img id="basicIcon" src="/images/user/edit_user.png" alt="수정">
 										    <p id="basicState">수정</p>
 										</button>
 									</div>
@@ -95,7 +95,7 @@
 									<!-- 수정 버튼 -->
 									<div class="modify_btn_wrap">
 										<button class="modify_btn" id="emailModifyBtn">
-										    <img id="emailIcon" src="/images/member/modify_member.png" alt="수정">
+										    <img id="emailIcon" src="/images/user/edit_user.png" alt="수정">
 										    <p id="emailState">수정</p>
 										</button>
 									</div>
@@ -109,7 +109,7 @@
 											<input type="email" name="" value="" placeholder="이메일 입력">
 										</div>
 										<div class="email_warning">
-											<img src="/images/member/error.png">
+											<img src="/images/user/error.png">
 											<p>이메일로 비밀번호 변경 링크 등이 발송됩니다. 개인정보 보호를 위해 정확한 메일 정보를 입력해주세요.</p>
 										</div>
 										<div class="email_btn_wrap">

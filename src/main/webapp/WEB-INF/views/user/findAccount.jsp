@@ -6,8 +6,8 @@
 		<meta charset="UTF-8">
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
-		<link rel="stylesheet" href="/css/member/find-account.css">
-		<script src="/js/member/find-account.js"></script>
+		<link rel="stylesheet" href="/css/user/find-account.css">
+		<script src="/js/user/find-account.js"></script>
 	</head>
 	
 	<body>
@@ -34,7 +34,7 @@
 								<p id="phoneHint">휴대폰 번호를 입력해주세요.</p>
 							</div>
 							<button type="submit" class="btn_primary_wide">아이디 찾기</button>
-							<a href="/member/findAccount/idResult.do">아이디 결과 페이지</a>
+							<a href="/user/findAccount/idResult.do">아이디 결과 페이지</a>
 						</form>
 						
 						<!-- 비밀번호 찾기 -->
@@ -50,7 +50,7 @@
 								<p id="emailHint">이메일을 입력해주세요.</p>
 							</div>
 							<button type="submit" class="btn_primary_wide">인증하기</button>
-							<a href="/member/findAccount/passwordResult.do">임시 비밀번호 받기 페이지로 이동</a>
+							<a href="/user/findAccount/passwordResult.do">임시 비밀번호 받기 페이지로 이동</a>
 						</form>
 					</div>
 				</div>

@@ -9,9 +9,9 @@
 		<meta charset="UTF-8">
 		<title>집밥의 민족</title>
 		<%@include file="../common/head.jsp" %>
-		<link rel="stylesheet" href="/css/member/user-info.css">
+		<link rel="stylesheet" href="/css/user/user-info.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,300,0,0&icon_names=edit_square" />
-		<script src="/js/member/user-info.js"></script>
+		<script src="/js/user/user-info.js"></script>
 	</head>
 	
 	<body>
@@ -38,7 +38,7 @@
 								<div class="info_title">
 									<h3>기본정보</h3>
 									<div class="edit_btn_wrap">
-										<img class="edit_btn" src="/images/mypage/edit_member.png">
+										<img class="edit_btn" src="/images/user/edit_user.png">
 										<a href="#">수정</a>
 									</div>
 								</div>
@@ -68,7 +68,7 @@
 								<div class="info_title">
 									<h3>이메일</h3>
 									<div class="edit_btn_wrap">
-										<img class="edit_btn" src="/images/mypage/edit_member.png">
+										<img class="edit_btn" src="/images/user/edit_user.png">
 										<a href="#">수정</a>
 									</div>
 								</div>

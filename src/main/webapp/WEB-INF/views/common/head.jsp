@@ -20,3 +20,4 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 <script src="/js/common/ui-common.js"></script>
 <script src="/js/common/header.js"></script>
+<script src="/js/common/pagination.js"></script>

@@ -16,9 +16,9 @@
 			<div class="util_menu">
 				<!-- 비로그인 상태 -->
 				<c:if test="${ true }">
-					<a href="/member/login.do">로그인</a>
+					<a href="/user/login.do">로그인</a>
 					<div class="divider"></div>
-					<a href="/member/join.do">회원가입</a>
+					<a href="/user/join.do">회원가입</a>
 				</c:if>
 				<!-- 로그인 상태 -->
 				<c:if test="${ true }">
@@ -47,7 +47,7 @@
 				<ul>
 					<li><a href="/recipe/listRecipe.do">레시피</a></li>
 					<li><a href="/kitchen/listGuide.do">키친가이드</a></li>
-					<li><a href="/chompessor/listForum.do">쩝쩝박사</a></li>
+					<li><a href="/chompessor/listChomp.do">쩝쩝박사</a></li>
 					<li><a href="/cooking/listClass.do">쿠킹클래스</a></li>
 					<li><a href="/fridge/viewFridge.do">나의 냉장고</a></li>
 				</ul>

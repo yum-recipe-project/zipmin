@@ -6,8 +6,8 @@
 		<meta charset="UTF-8">
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
-		<link rel="stylesheet" href="/css/member/verify-password.css">
-		<script src="/js/member/verify-password.js"></script>
+		<link rel="stylesheet" href="/css/user/verify-password.css">
+		<script src="/js/user/verify-password.js"></script>
 	</head>
 	
 	<body>
@@ -28,7 +28,7 @@
 						</div>
 						<button type="submit" class="btn_primary_wide">확인</button>
 						<span class="forgot_password">
-							<a href="/member/findAccount.do?mode=password">비밀번호를 잊으셨나요?</a>
+							<a href="/user/findAccount.do?mode=password">비밀번호를 잊으셨나요?</a>
 						</span>
 					</form>
 				</div>

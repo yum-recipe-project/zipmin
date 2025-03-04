@@ -27,7 +27,7 @@
 								<span class="profile_img"></span>
 								<div class="modify_btn_wrap">
 									<button class="modify_btn" id="profileModifyBtn">
-									    <img id="profileIcon" src="/images/member/modify_member.png" alt="수정">
+									    <img id="profileIcon" src="/images/user/modify_user.png" alt="수정">
 									    <p id="profileState">프로필 이미지 설정</p>
 									</button>
 									
@@ -46,7 +46,7 @@
 										<input type="hidden" id="nicknameInput" name="" value="" placeholder="이름 입력">
 										<div class="modify_btn_wrap">
 											<button class="modify_btn" id="nickNameModifyBtn">
-											    <img id="nickNameIcon" src="/images/member/modify_member.png" alt="수정">
+											    <img id="nickNameIcon" src="/images/user/modify_user.png" alt="수정">
 											    <p id="nickNameState">수정</p>
 											</button>
 										</div>
@@ -91,7 +91,7 @@
 										<input type="hidden" id="nameInput" name="" value="" placeholder="이름 입력">
 										<div class="modify_btn_wrap">
 											<button class="modify_btn" id="commentModifyBtn">
-											    <img id="commentIcon" src="/images/member/modify_member.png" alt="수정">
+											    <img id="commentIcon" src="/images/user/modify_user.png" alt="수정">
 											    <p id="commentState">수정</p>
 											</button>
 										</div>

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.dto.ChompDTO;
 import com.project.zipmin.dto.CommentDTO;
-import com.project.zipmin.dto.VoteDTO;
+import com.project.zipmin.dto.ChompVoteDTO;
 
 @RestController
 public class ChompessorController {
@@ -28,7 +28,7 @@ public class ChompessorController {
 	
 	// 특정 투표 조회
 	@GetMapping("/votes/{voteId}")
-	public VoteDTO viewVote(
+	public ChompVoteDTO viewVote(
 			@PathVariable("voteId") int voteId) {
 		return null;
 	}
@@ -181,7 +181,7 @@ public class ChompessorController {
 	
 	// 특정 매거진 조회
 	@GetMapping("/megazines/{megazineId}")
-	public VoteDTO viewMegazine(
+	public ChompVoteDTO viewMegazine(
 			@PathVariable("megazineId") int megazineId) {
 		return null;
 	}

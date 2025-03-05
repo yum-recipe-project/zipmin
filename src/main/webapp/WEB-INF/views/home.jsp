@@ -28,6 +28,12 @@
 					<h2>마이페이지</h2>
 					<button onclick="location.href='/mypage/profile.do';">프로필</button>
 					<br/><br/>
+					
+					<h2>쩝쩝박사</h2>
+					<button onclick="location.href='/chompessor/viewEvent.do';">이벤트</button>
+					<br/><br/>
+					
+					
 				</div>
 				
 				<!-- 카테고리 메뉴 -->

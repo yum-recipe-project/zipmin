@@ -27,6 +27,11 @@ public class ChompessorViewController {
 	public String viewMegazine() {
 		return "chompessor/viewMegazine";
 	}
+	
+	@GetMapping("/chompessor/viewEvent.do")
+	public String viewEvent() {
+		return "chompessor/viewEvent";
+	}
 
 	
 }

@@ -120,24 +120,6 @@ public class UserController {
 	}
 	
 	
-	
-	
-	// 특정 사용자의 투표 여부 확인
-	@GetMapping("/votes/{voteId}")
-	public boolean checkUserVote(
-			@PathVariable("userId") String userId,
-			@PathVariable("voteIdx") int voteIdx) {
-		return false;
-	}
-	
-	
-	// 특정 사용자가 본인의 투표 내역을 확인하면서 전체 결과도 같이 조회
-	@GetMapping("/votes/{voteIdx}/result")
-	public Object getUserVoteResult(
-			@PathVariable("userId") String userId,
-			@PathVariable("voteIdx") int voteIdx) {
-		return null;
-	}
 
 	
 

@@ -31,6 +31,10 @@
 							<input type="password" id="passwordInput" name="" value="" placeholder="비밀번호">
 							<p id="passwordHint">비밀번호를 입력해주세요.</p>
 						</div>
+						<h6 class="alert">
+							<img src="/images/user/alert.png">
+							아이디 또는 비밀번호가 일치하지 않습니다.
+						</h6>
 						<div class="support">
 							<!-- 아이디 저장 -->
 							<div class="save_id">

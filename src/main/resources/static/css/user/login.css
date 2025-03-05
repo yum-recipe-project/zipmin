@@ -132,6 +132,26 @@
 	color: #F45452;
 }
 
+/* 폼 (알림) */
+#container .alert {
+	margin-top: 16px !important;
+	display: flex;
+	padding: 11px 12px 13px;
+	border-radius: 4px;
+	color: rgb(244, 84, 82);
+	background-color: rgb(254, 245, 245);
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: -0.4px;
+}
+
+#container .alert img {
+	margin-right: 8px;
+	letter-spacing: -0.4px;
+    width: 20px;
+    height: 20px;
+}
+
 /* 폼 (서포트) */
 #container .support {
 	display: flex;

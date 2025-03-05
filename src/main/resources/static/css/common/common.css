@@ -271,7 +271,7 @@ input[type='checkbox']:checked + label::after {
 	width:24px;
 	height: 24px;
 	border-radius: 2px;
-	background: var(--point-color2) url('/images/member/check.svg') no-repeat center / 100%;
+	background: var(--point-color2) url('/images/common/check.svg') no-repeat center / 100%;
 }
   
 /* radio 공통 */

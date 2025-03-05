@@ -61,13 +61,13 @@
 
 
 /* 투표 내용 */
-#container .vote_content .vote_checkbox_wrap {
+#container .vote_form .vote_checkbox_wrap {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
 }
 
-#container .vote_content .vote_checkbox_wrap input[type='checkbox'] + label {
+#container .vote_form .vote_checkbox_wrap input[type='checkbox'] + label {
 	display: flex;
 	width: 100%;
 	border-radius: 4px;
@@ -79,16 +79,16 @@
 	letter-spacing: -0.4px;
 }
 
-#container .vote_content .vote_checkbox_wrap input[type='checkbox'].disable + label {
+#container .vote_form .vote_checkbox_wrap input[type='checkbox'].disable + label {
 	color: #B1B3B5;
 }
 
-#container .vote_content .vote_checkbox_wrap input[type='checkbox']:checked + label {
+#container .vote_form .vote_checkbox_wrap input[type='checkbox']:checked + label {
 	border: 1px solid var(--point-color2);
 	background: #F3F8FF;
 }
 
-#container .vote_content .vote_checkbox_wrap input[type='checkbox'] + label::before {
+#container .vote_form .vote_checkbox_wrap input[type='checkbox'] + label::before {
 	content: '';
 	width: 18px;
 	height: 18px;
@@ -98,7 +98,7 @@
 	border: none;
 }
 
-#container .vote_content .vote_checkbox_wrap input[type='checkbox']:checked + label::after {
+#container .vote_form .vote_checkbox_wrap input[type='checkbox']:checked + label::after {
 	content: '';
 	position: absolute;
 	left: 16px;
@@ -192,7 +192,7 @@
 
 
 /* 투표 버튼 */
-#container .vote_content .btn_wrap {
+#container .vote_form .btn_wrap {
 	margin-top: 16px;
 	margin-left: auto;
 }

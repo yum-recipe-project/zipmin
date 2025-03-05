@@ -36,12 +36,12 @@ var commentCount = 0;
 $(document).ready(function () {
 
 	// 초기 페이지 로딩 시 데이터 로드
-    loadVoteCommentContent();
+    loadForumCommentContent();
 	
     // 댓글 더보기 버튼 클릭 시 추가 데이터 로드
     $('.more_comment_btn').click(function (event) {
         event.preventDefault();
-        loadVoteCommentContent();
+        loadForumCommentContent();
     });
 });
 
@@ -50,9 +50,9 @@ $(document).ready(function () {
 /**
  * 레시피 댓글 목록 데이터를 로드하는 함수
  */
-function loadVoteCommentContent() {
+function loadForumCommentContent() {
     $.ajax({
-        url: '/chompessor/viewVote/comment.do',
+        url: '/chompessor/viewForum/comment.do',
         type: 'GET',
         data: {
 	        offset: commentOffset,
@@ -60,7 +60,7 @@ function loadVoteCommentContent() {
 		},
         success: function (response) {
             // 응답 데이터를 리스트에 추가
-            $('#voteCommentContent').append(response);
+            $('#forumCommentContent').append(response);
 
             // 서버에서 총 데이터의 개수를 가져와서 설정
             commentCount = parseInt($('#commentCount').val());
@@ -123,8 +123,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		commentInputBorder.classList.remove('focus');
 	});
 });
-
-
 
 /**
  * 댓글 작성 폼값을 검증하는 함수 (댓글 내용 미작성 시 버튼 비활성화)

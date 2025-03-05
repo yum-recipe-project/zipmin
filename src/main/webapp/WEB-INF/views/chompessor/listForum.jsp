@@ -4,8 +4,10 @@
 <html>
 	<head>
 		<%@include file="../common/head.jsp" %>
-		<link rel="stylesheet" href="/css/chompessor/list-chomp.css">
-		<script src="/js/chompessor/list-chomp.js"></script>
+		<link rel="stylesheet" href="/css/chompessor/list-forum.css">
+		<link rel="stylesheet" href="/css/common/pagination.css">
+		<script src="/js/fridge/list-forum.js"></script>
+		<script src="/js/common/pagination.js"></script>
 	</head>
 	
 	<body>
@@ -49,7 +51,7 @@
 						<ul class="forum_list">
 							<%-- <c:foreach> --%>
 								<li class="forum">
-									<a href="/chompessor/viewVote.do">
+									<a href="/chompessor/viewForum.do">
 										<div class="forum_thumbnail">
 											<img src="/images/common/test.png">
 										</div>
@@ -65,7 +67,7 @@
 								</li>
 								
 								<li class="forum">
-									<a href="/chompessor/viewMegazine.do">
+									<a href="/chompessor/viewForum.do">
 										<div class="forum_thumbnail">
 											<img src="/images/common/test.png">
 										</div>

@@ -1,101 +1,45 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
-
 <html>
 	<head>
 		<meta charset="UTF-8">
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
-		<link rel="stylesheet" href="/css/chompessor/view-vote.css">
-		<script src="/js/chompessor/view-vote.js"></script>
-		<script src="/js/modal/edit-vote-comment-modal.js"></script>
-		<script src="/js/modal/write-vote-subcomment-modal.js"></script>
-		<script src="/js/modal/edit-vote-subcomment-modal.js"></script>
-		<script src="/js/modal/report-vote-comment-modal.js"></script>
-		<script src="/js/modal/report-vote-subcomment-modal.js"></script>
+		<link rel="stylesheet" href="/css/chompessor/view-megazine.css">
+		<script src="/js/chompessor/view-megazine.js"></script>
+		<script src="/js/modal/edit-megazine-comment-modal.js"></script>
+		<script src="/js/modal/write-megazine-subcomment-modal.js"></script>
+		<script src="/js/modal/edit-megazine-subcomment-modal.js"></script>
+		<script src="/js/modal/report-megazine-comment-modal.js"></script>
+		<script src="/js/modal/report-megazine-subcomment-modal.js"></script>
 	</head>
 	
 	<body>
 		<%@include file="../common/header.jsp" %>
 		<main id="container">
 			<div class="content">
-				<!-- 투표 -->
-				<div class="vote_wrap">
-					<!-- 투표 헤더 -->
-					<div class="vote_header">
+				<div class="megazine_wrap">
+					<!-- 매거진 헤더 -->
+					<div class="megazine_header">
 						<span>아이스크림</span>
-						<h2>당신의 녹차 아이스크림에 투표하세요</h2>
-						<div class="vote_info">
-							<div class="period">
-								<span>2025.01.03 - 2024.02.11</span>
-							</div>
-							<span>참여</span>
-							<span>26</span>
+						<h2>녹차아이스크림 4종 비교</h2>
+						<div class="megazine_writer">
+							<img src="/images/common/test.png">
+							<span><b>집밥의민족</b></span>
 							<span> ・ </span>
-							<span>댓글</span>
-							<span>235개</span>
+							<span>2025.02.10</span>
 						</div>
 					</div>
 					
-					<!-- 투표 내용 -->
-					<form name="" class="vote_form">
-						<ul>
-							<li>
-								<div class="vote_checkbox_wrap">
-									<input class="checkbox_group" type="checkbox" id="vote1">
-									<label for="vote1">배스킨라빈스 녹차 아이스크림</label>
-								</div>
-							</li>
-							<li>
-								<div class="vote_checkbox_wrap">
-									<input class="checkbox_group" type="checkbox" id="vote2">
-									<label for="vote2">하겐다즈 녹차 아이스크림</label>
-								</div>
-							</li>
-							<li>
-								<div class="vote_checkbox_wrap">
-									<input class="checkbox_group" type="checkbox" id="vote3">
-									<label for="vote3">나뚜르 녹차 아이스크림</label>
-								</div>
-							</li>
-						</ul>
-						<div class="btn_wrap">
-							<button class="btn_outline" onclick="location.href='/chompessor/listChomp.do';">목록으로</button>
-							<button class="btn_primary" type="submit" onclick="">투표하기</button>
-						</div>
-					</form>
+					<!-- 매거진 내용 -->
+					<p class="megazine_content">
+						녹차아이스크림 최고!
+					</p>
 					
-					<!-- 투표 결과 -->
-					<div class="vote_result">
-						<ul>
-							<li>
-								<div class="vote_option_wrap">
-									<h5>베스킨라빈스 녹차 아이스크림</h5>
-									<span>138명</span>
-									<h3>66.3%</h3>
-								</div>
-							</li>
-							<li>
-								<div class="vote_option_wrap select">
-									<h5><img src="/images/chompessor/check_blue.png">하겐다즈 녹차 아이스크림</h5>
-									<span>138명</span>
-									<h3>66.3%</h3>
-								</div>
-							</li>
-							<li>
-								<div class="vote_option_wrap">
-									<h5>나뚜르 녹차 아이스크림</h5>
-									<span>138명</span>
-									<h3>66.3%</h3>
-								</div>
-							</li>
-						</ul>
-						<div class="btn_wrap">
-							<button class="btn_outline" onclick="location.href='/chompessor/listChomp.do';">목록으로</button>
-							<button class="btn_primary" type="submit" onclick="">다시 투표하기</button>
-						</div>
+					<!-- 목록 버튼 -->
+					<div class="list_btn">
+						<button class="btn_outline" onclick="location.href='/chompessor/listChomp.do'">목록으로</button>
 					</div>
 				</div>
 				
@@ -156,12 +100,12 @@
 											</div>
 											<c:if test="${ true }">
 												<div class="comment_action">
-													<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportVoteCommentModal"
-														onclick="openReportVoteCommentModal();">
+													<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportMegazineCommentModal"
+														onclick="openReportMegazineCommentModal();">
 														신고
 													</a>
-													<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editVoteCommentModal"
-														onclick="openEditVoteCommentModal();">
+													<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editMegazineCommentModal"
+														onclick="openEditMegazineCommentModal();">
 														수정
 													</a>
 													<a href="">삭제</a>
@@ -179,8 +123,8 @@
 					                            <img src="/images/recipe/thumb_up_empty.png">
 					                            <p>3</p>
 											</button>
-											<a class="btn_outline_small write_subcomment_btn" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#writeVoteSubcommentModal"
-												onclick="openWriteVoteSubcommentModal();">
+											<a class="btn_outline_small write_subcomment_btn" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#writeMegazineSubcommentModal"
+												onclick="openWriteMegazineSubcommentModal();">
 												<span>답글 쓰기</span>
 											</a>
 										</div>
@@ -204,12 +148,12 @@
 														</div>
 														<c:if test="${ true }">
 															<div class="subcomment_action">
-																<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportVoteSubcommentModal"
-																	onclick="openReportVoteSubcommentModal();">
+																<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportMegazineSubcommentModal"
+																	onclick="openReportMegazineSubcommentModal();">
 																	신고
 																</a>
-																<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editVoteSubcommentModal"
-																	onclick="openEditVoteSubcommentModal();">
+																<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editMegazineSubcommentModal"
+																	onclick="openEditMegazineSubcommentModal();">
 																	수정
 																</a>
 																<a href="">삭제</a>
@@ -247,22 +191,21 @@
 				</div>
 			</div>
 			
-			<!-- 투표의 댓글 수정 모달창 -->
-			<%@include file="../modal/editVoteCommentModal.jsp" %>
+			<!-- 매거진의 댓글 수정 모달창 -->
+			<%@include file="../modal/editMegazineCommentModal.jsp" %>
 			
-			<!-- 투표의 대댓글 작성 모달창 -->
-			<%@include file="../modal/writeVoteSubcommentModal.jsp" %>
+			<!-- 매거진의 대댓글 작성 모달창 -->
+			<%@include file="../modal/writeMegazineSubcommentModal.jsp" %>
 			
-			<!-- 투표의 대댓글 수정 모달창 -->
-			<%@include file="../modal/editVoteSubcommentModal.jsp" %>
+			<!-- 매거진의 대댓글 수정 모달창 -->
+			<%@include file="../modal/editMegazineSubcommentModal.jsp" %>
 			
-			<!-- 투표의 댓글 신고 모달창 -->
-			<%@include file="../modal/reportVoteCommentModal.jsp" %>
+			<!-- 매거진의 댓글 신고 모달창 -->
+			<%@include file="../modal/reportMegazineCommentModal.jsp" %>
 
-			<!-- 투표의 대댓글 신고 모달창 -->
-			<%@include file="../modal/reportVoteSubcommentModal.jsp" %>
+			<!-- 매거진의 대댓글 신고 모달창 -->
+			<%@include file="../modal/reportMegazineSubcommentModal.jsp" %>
 		</main>
-		
 		<%@include file="../common/footer.jsp" %>
 	</body>
 </html>

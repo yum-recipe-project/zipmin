@@ -21,6 +21,12 @@ public class ChompessorViewController {
 	public String viewVoteComment() {
 		return "chompessor/voteCommentContent";
 	}
+	
+	
+	@GetMapping("/chompessor/viewMegazine.do")
+	public String viewMegazine() {
+		return "chompessor/viewMegazine";
+	}
 
 	
 }

@@ -143,6 +143,10 @@
 	background: #FFF;
 }
 
+#container .comment_list li:last-child {
+	border-bottom: none;
+}
+
 #container .comment_info {
 	display: flex;
 	justify-content: space-between;

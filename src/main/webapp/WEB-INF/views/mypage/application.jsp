@@ -67,7 +67,6 @@
 							</div>
 						</li>					
 					</ul>
-					
 				</div>
 			</div>
 		</main>

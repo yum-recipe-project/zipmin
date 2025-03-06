@@ -66,7 +66,7 @@
 											</p>
 										</div>
 										<div class="cancel_btn">
-											<button class="btn_outline">신청서 보기</button>
+											<button class="btn_outline" onclick="location.href='/mypage/class/application.do';">신청서 보기</button>
 										</div>
 									</div>
 								</li>

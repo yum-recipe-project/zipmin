@@ -15,9 +15,9 @@ public class MypageViewController {
 	public String commentContent() {
 		return "mypage/commentContent";
 	}
-	@GetMapping("/mypage/fund.do")
+	@GetMapping("/mypage/revenue.do")
 	public String myPoint() {
-		return "mypage/fund";
+		return "mypage/revenue";
 	}
 	
 	@GetMapping("/mypage/review.do")
@@ -72,6 +72,11 @@ public class MypageViewController {
 	@GetMapping("/mypage/class.do")
 	public String myClass() {
 		return "mypage/class";
+	}
+	
+	@GetMapping("/mypage/class/application.do")
+	public String myClassApplication() {
+		return "mypage/application";
 	}
 
 	

@@ -16,7 +16,7 @@
 
 
 
-/* 헤더 (링크) */
+/* 헤더 */
 #container .content .class_wrap .class_header a {
 	padding: 8px 0px;
 	color: var(--txt-color-500);
@@ -38,7 +38,6 @@
 	height: 20px;
 }
 
-/* 헤더 (제목) */
 #container .content .class_wrap .class_header h2 {
 	margin-top: 8px;
 	font-weight: 700;
@@ -49,8 +48,7 @@
 
 
 
-
-
+/* 클래스 유틸 */
 #container .content .class_wrap .class_util {
 	font-size: 14px;
 	line-height: 20px;

@@ -144,7 +144,7 @@
 									<img src="/images/mypage/arrow_right.png">
 								</a>
 								
-								<a href="/mypage/receivedSupport.do" class="info_box">
+								<a href="/mypage/revenue.do" class="info_box">
 									<div class="info_txt">
 										<span>수익</span>
 										<p>수익을 확인합니다.</p>

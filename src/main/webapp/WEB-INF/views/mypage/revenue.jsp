@@ -6,8 +6,8 @@
 		<meta charset="UTF-8">
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
-		<link rel="stylesheet" href="/css/mypage/received-support.css">
-		<script src="/js/mypage/received-support.js"></script>
+		<link rel="stylesheet" href="/css/mypage/revenue.css">
+		<script src="/js/mypage/revenue.js"></script>
 		<script src="/js/modal/change-account-modal.js"></script>
 		<script src="/js/modal/withdraw-point-modal.js"></script>
 	</head>

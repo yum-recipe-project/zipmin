@@ -10,6 +10,9 @@
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/chompessor/view-event.css">
 		<script src="/js/chompessor/view-event.js"></script>
+		<script src="/js/modal/edit-comment-modal.js"></script>
+		<script src="/js/modal/write-subcomment-modal.js"></script>
+		<script src="/js/modal/report-comment-modal.js"></script>
 	</head>
 	
 	<body>

@@ -16,4 +16,5 @@ public class FundDTO {
 	private String recipeId;
 	private int point;
 	private Date funddate;
+	private int status;
 }

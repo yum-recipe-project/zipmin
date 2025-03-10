@@ -10,11 +10,9 @@
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/chompessor/view-vote.css">
 		<script src="/js/chompessor/view-vote.js"></script>
-		<script src="/js/modal/edit-vote-comment-modal.js"></script>
-		<script src="/js/modal/write-vote-subcomment-modal.js"></script>
-		<script src="/js/modal/edit-vote-subcomment-modal.js"></script>
-		<script src="/js/modal/report-vote-comment-modal.js"></script>
-		<script src="/js/modal/report-vote-subcomment-modal.js"></script>
+		<script src="/js/modal/edit-comment-modal.js"></script>
+		<script src="/js/modal/report-comment-modal.js"></script>
+		<script src="/js/modal/write-subcomment-modal.js"></script>
 	</head>
 	
 	<body>
@@ -156,12 +154,12 @@
 											</div>
 											<c:if test="${ true }">
 												<div class="comment_action">
-													<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportVoteCommentModal"
-														onclick="openReportVoteCommentModal();">
+													<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportCommentModal"
+														onclick="openReportCommentModal();">
 														신고
 													</a>
-													<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editVoteCommentModal"
-														onclick="openEditVoteCommentModal();">
+													<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editCommentModal"
+														onclick="openEditCommentModal();">
 														수정
 													</a>
 													<a href="">삭제</a>
@@ -179,8 +177,8 @@
 					                            <img src="/images/recipe/thumb_up_empty.png">
 					                            <p>3</p>
 											</button>
-											<a class="btn_outline_small write_subcomment_btn" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#writeVoteSubcommentModal"
-												onclick="openWriteVoteSubcommentModal();">
+											<a class="btn_outline_small write_subcomment_btn" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#writeSubcommentModal"
+												onclick="openWriteSubcommentModal();">
 												<span>답글 쓰기</span>
 											</a>
 										</div>
@@ -204,12 +202,12 @@
 														</div>
 														<c:if test="${ true }">
 															<div class="subcomment_action">
-																<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportVoteSubcommentModal"
-																	onclick="openReportVoteSubcommentModal();">
+																<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportCommentModal"
+																	onclick="openReportCommentModal();">
 																	신고
 																</a>
-																<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editVoteSubcommentModal"
-																	onclick="openEditVoteSubcommentModal();">
+																<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editCommentModal"
+																	onclick="openEditCommentModal();">
 																	수정
 																</a>
 																<a href="">삭제</a>
@@ -247,20 +245,14 @@
 				</div>
 			</div>
 			
-			<!-- 투표의 댓글 수정 모달창 -->
-			<%@include file="../modal/editVoteCommentModal.jsp" %>
+			<!-- 댓글 수정 모달창 -->
+			<%@include file="../modal/editCommentModal.jsp" %>
+			
+			<!-- 댓글 신고 모달창 -->
+			<%@include file="../modal/reportCommentModal.jsp" %>
 			
 			<!-- 투표의 대댓글 작성 모달창 -->
-			<%@include file="../modal/writeVoteSubcommentModal.jsp" %>
-			
-			<!-- 투표의 대댓글 수정 모달창 -->
-			<%@include file="../modal/editVoteSubcommentModal.jsp" %>
-			
-			<!-- 투표의 댓글 신고 모달창 -->
-			<%@include file="../modal/reportVoteCommentModal.jsp" %>
-
-			<!-- 투표의 대댓글 신고 모달창 -->
-			<%@include file="../modal/reportVoteSubcommentModal.jsp" %>
+			<%@include file="../modal/writeSubcommentModal.jsp" %>
 		</main>
 		
 		<%@include file="../common/footer.jsp" %>

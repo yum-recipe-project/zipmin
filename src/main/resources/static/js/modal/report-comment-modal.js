@@ -1,9 +1,9 @@
 /**
- * 매거진 댓글 신고 모달창의 신고 사유를 선택했는지 검증하는 함수
+ * 댓글 신고 모달창의 신고 사유를 선택했는지 검증하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	const reasonRadio = document.querySelectorAll("#reportMegazineCommentForm input[name='reason']");
-	const submitButton = document.querySelector("#reportMegazineCommentForm button[type='submit']");
+	const reasonRadio = document.querySelectorAll("#reportCommentForm input[name='reason']");
+	const submitButton = document.querySelector("#reportCommentForm button[type='submit']");
 
 	reasonRadio.forEach(function(radio) {
         radio.addEventListener("change", function() {

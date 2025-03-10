@@ -8,11 +8,9 @@
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/chompessor/view-megazine.css">
 		<script src="/js/chompessor/view-megazine.js"></script>
-		<script src="/js/modal/edit-megazine-comment-modal.js"></script>
-		<script src="/js/modal/write-megazine-subcomment-modal.js"></script>
-		<script src="/js/modal/edit-megazine-subcomment-modal.js"></script>
-		<script src="/js/modal/report-megazine-comment-modal.js"></script>
-		<script src="/js/modal/report-megazine-subcomment-modal.js"></script>
+		<script src="/js/modal/edit-comment-modal.js"></script>
+		<script src="/js/modal/write-subcomment-modal.js"></script>
+		<script src="/js/modal/report-comment-modal.js"></script>
 	</head>
 	
 	<body>
@@ -100,12 +98,12 @@
 											</div>
 											<c:if test="${ true }">
 												<div class="comment_action">
-													<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportMegazineCommentModal"
-														onclick="openReportMegazineCommentModal();">
+													<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reporCommentModal"
+														onclick="openReportCommentModal();">
 														신고
 													</a>
-													<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editMegazineCommentModal"
-														onclick="openEditMegazineCommentModal();">
+													<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editCommentModal"
+														onclick="openEditCommentModal();">
 														수정
 													</a>
 													<a href="">삭제</a>
@@ -123,8 +121,8 @@
 					                            <img src="/images/recipe/thumb_up_empty.png">
 					                            <p>3</p>
 											</button>
-											<a class="btn_outline_small write_subcomment_btn" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#writeMegazineSubcommentModal"
-												onclick="openWriteMegazineSubcommentModal();">
+											<a class="btn_outline_small write_subcomment_btn" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#writeSubcommentModal"
+												onclick="openWriteSubcommentModal();">
 												<span>답글 쓰기</span>
 											</a>
 										</div>
@@ -148,12 +146,12 @@
 														</div>
 														<c:if test="${ true }">
 															<div class="subcomment_action">
-																<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportMegazineSubcommentModal"
-																	onclick="openReportMegazineSubcommentModal();">
+																<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportCommentModal"
+																	onclick="openReportCommentModal();">
 																	신고
 																</a>
-																<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editMegazineSubcommentModal"
-																	onclick="openEditMegazineSubcommentModal();">
+																<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editCommentModal"
+																	onclick="openEditCommentModal();">
 																	수정
 																</a>
 																<a href="">삭제</a>
@@ -191,20 +189,14 @@
 				</div>
 			</div>
 			
-			<!-- 매거진의 댓글 수정 모달창 -->
-			<%@include file="../modal/editMegazineCommentModal.jsp" %>
+			<!-- 댓글 수정 모달창 -->
+			<%@include file="../modal/editCommentModal.jsp" %>
 			
-			<!-- 매거진의 대댓글 작성 모달창 -->
-			<%@include file="../modal/writeMegazineSubcommentModal.jsp" %>
+			<!-- 댓글 신고 모달창 -->
+			<%@include file="../modal/reportCommentModal.jsp" %>
 			
-			<!-- 매거진의 대댓글 수정 모달창 -->
-			<%@include file="../modal/editMegazineSubcommentModal.jsp" %>
-			
-			<!-- 매거진의 댓글 신고 모달창 -->
-			<%@include file="../modal/reportMegazineCommentModal.jsp" %>
-
-			<!-- 매거진의 대댓글 신고 모달창 -->
-			<%@include file="../modal/reportMegazineSubcommentModal.jsp" %>
+			<!-- 대댓글 작성 모달창 -->
+			<%@include file="../modal/writeSubcommentModal.jsp" %>
 		</main>
 		<%@include file="../common/footer.jsp" %>
 	</body>

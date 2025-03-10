@@ -80,13 +80,8 @@
 			</div>
 			
 			<!-- 키친가이드의 댓글 수정 모달창 -->
-			<%@include file="../modal/editGuideCommentModal.jsp" %>
+			<%@include file="../modal/editCommentModal.jsp" %>
 			
-			<!-- 투표의 댓글 수정 모달창 -->
-			<%@include file="../modal/editVoteCommentModal.jsp" %>
-			
-			<!-- 매거진의 댓글 수정 모달창 -->
-			<%@include file="../modal/editMegazineCommentModal.jsp" %>
 			
 		</main>
 		

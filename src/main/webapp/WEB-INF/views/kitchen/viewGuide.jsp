@@ -9,8 +9,8 @@
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/kitchen/view-guide.css">
 		<script src="/js/kitchen/view-guide.js"></script>
-		<script src="/js/modal/edit-guide-comment-modal.js"></script>
-		<script src="/js/modal/report-guide-comment-modal.js"></script>
+		<script src="/js/modal/edit-comment-modal.js"></script>
+		<script src="/js/modal/report-comment-modal.js"></script>
 	</head>
 	
 	<body>
@@ -115,12 +115,12 @@
 										</div>
 										<c:if test="${ true }">
 											<div class="comment_action">
-												<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportGuideCommentModal"
-													onclick="openReportGuideCommentModal();">
+												<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportCommentModal"
+													onclick="openReportCommentModal();">
 													신고
 												</a>
-												<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editGuideCommentModal"
-													onclick="openEditGuideCommentModal();">
+												<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editCommentModal"
+													onclick="openEditCommentModal();">
 													수정
 												</a>
 												<a href="">삭제</a>
@@ -154,11 +154,11 @@
 				</div>
 			</div>
 			
-			<!-- 키친가이드의 댓글 수정 모달창 -->
-			<%@include file="../modal/editGuideCommentModal.jsp" %>
+			<!-- 댓글 수정 모달창 -->
+			<%@include file="../modal/editCommentModal.jsp" %>
 			
-			<!-- 키친가이드의 댓글 신고 모달창 -->
-			<%@include file="../modal/reportGuideCommentModal.jsp" %>
+			<!-- 댓글 신고 모달창 -->
+			<%@include file="../modal/reportCommentModal.jsp" %>
 			
 		</main>
 		

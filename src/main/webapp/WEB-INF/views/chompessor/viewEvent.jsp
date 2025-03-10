@@ -10,7 +10,6 @@
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/chompessor/view-event.css">
 		<script src="/js/chompessor/view-event.js"></script>
-		<script src="/js/chompessor/view-event.js"></script>
 	</head>
 	
 	<body>
@@ -207,20 +206,14 @@
 				</div>
 			</div>
 			
-			<!-- 투표의 댓글 수정 모달창 -->
-			<%@include file="../modal/editVoteCommentModal.jsp" %>
+			<!-- 댓글 수정 모달창 -->
+			<%@include file="../modal/editCommentModal.jsp" %>
 			
-			<!-- 투표의 대댓글 작성 모달창 -->
-			<%@include file="../modal/writeVoteSubcommentModal.jsp" %>
+			<!-- 댓글 신고 모달창 -->
+			<%@include file="../modal/reportCommentModal.jsp" %>
 			
-			<!-- 투표의 대댓글 수정 모달창 -->
-			<%@include file="../modal/editVoteSubcommentModal.jsp" %>
-			
-			<!-- 투표의 댓글 신고 모달창 -->
-			<%@include file="../modal/reportVoteCommentModal.jsp" %>
-
-			<!-- 투표의 대댓글 신고 모달창 -->
-			<%@include file="../modal/reportVoteSubcommentModal.jsp" %>
+			<!-- 대댓글 작성 모달창 -->
+			<%@include file="../modal/writeSubcommentModal.jsp" %>
 		</main>
 		
 		<%@include file="../common/footer.jsp" %>

@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-title: "[FEATURE] 제목"
+title: "[FEAT] 제목"
 labels: feature
 assignees: ''
 

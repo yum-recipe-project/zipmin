@@ -33,12 +33,12 @@
 				</div>
 				<!-- 별점 -->
 				<div id="starGroup" class="star_group">
-					<img src="/images/recipe/star_full.png" class="star" data-value="1">
-					<img src="/images/recipe/star_outline.png" class="star" data-value="2">
-					<img src="/images/recipe/star_outline.png" class="star" data-value="3">
-					<img src="/images/recipe/star_outline.png" class="star" data-value="4">
-					<img src="/images/recipe/star_outline.png" class="star" data-value="5">
-					<input type="hidden" id="starInput" name="rating" value="1">
+					<img src="/images/common/star_full.png" class="star" data-value="1">
+					<img src="/images/common/star_outline.png" class="star" data-value="2">
+					<img src="/images/common/star_outline.png" class="star" data-value="3">
+					<img src="/images/common/star_outline.png" class="star" data-value="4">
+					<img src="/images/common/star_outline.png" class="star" data-value="5">
+					<input type="hidden" id="starInput" name="" value="1">
 				</div>
 				<!-- 리뷰 입력창 -->
 				<div class="review_input">
@@ -53,15 +53,58 @@
 	</div>
 	
 	<!-- 리뷰 목록 -->
-	<div id="recipeReviewContent">
-		<ul id="reviewList" class="review_list"></ul>
-	</div>
+	<ul id="reviewList" class="review_list">
+		<li class="review">
+			<img class="review_avatar" src="/images/common/test.png">
+			<div class="review_inner">
+				<!-- 리뷰 헤더 -->
+				<div class="review_info">
+					<div class="review_writer">
+						<span>아잠만</span>
+						<span>${ review.postdate }</span>
+					</div>
+						<div class="review_action">
+							<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportReviewModal">
+								신고
+							</a>
+							<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editReviewModal">
+								수정
+							</a>
+							<a href="">삭제</a>
+						</div>
+				</div>
+				<!-- 리뷰 별점 -->
+				<div class="review_score">
+					<div class="star">
+						<%-- <c:forEach> --%>
+							<img src="/images/recipe/star_full.png">
+						<%-- </c:forEach> --%>
+						<%-- <c:forEach> --%>
+							<img src="/images/recipe/star_empty.png">
+						<%-- </c:forEach> --%>
+					</div>
+					<p>3</p>
+				</div>
+				<!-- 리뷰 내용 -->
+				<p class="review_content">리뷰를 작성해볼게요</p>
+				<!-- 리뷰 좋아요 버튼 -->
+				<div class="like_review_btn">
+					<p>이 리뷰가 도움이 되었다면 꾹!</p>
+					<button class="btn_like" onclick="">
+							<img src="/images/recipe/thumb_up_full.png">
+							<img src="/images/recipe/thumb_up_empty.png">
+						<p>5</p>
+					</button>
+				</div>
+			</div>
+		</li>
+	</ul>
 	
 	<!-- 더보기 버튼 -->
 	<div class="more_review_btn">
 		<button class="btn_more">
 			<span>더보기</span>
-			<img src="/images/recipe/arrow_down_black.png">
+			<img src="/images/common/arrow_down.png">
 		</button>
 	</div>
 </div>

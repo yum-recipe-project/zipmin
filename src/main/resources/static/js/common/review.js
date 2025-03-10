@@ -35,6 +35,82 @@ document.addEventListener('DOMContentLoaded', function() {
 })
 
 
+/**
+ * 리뷰 정렬 방법 탭 메뉴 클릭 시 탭 메뉴를 활성화하고 해당하는 내용을 표시하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const tabReviewItems = document.querySelectorAll('.review_order button');
+	const contentReviewItems = document.querySelectorAll('.review_list');
+	// 탭 클릭 이벤트 설정
+	tabReviewItems.forEach((item, index) => {
+		item.addEventListener("click", function(event) {
+			event.preventDefault();
+            
+			tabReviewItems.forEach(button => button.classList.remove('active'));
+			this.classList.add('active');
+            
+			contentReviewItems.forEach(content => content.style.display = 'none');
+			contentReviewItems[index].style.display = 'block';
+        });
+	});
+	// 기본으로 첫번째 활성화
+	tabReviewItems.forEach(button => button.classList.remove('active'));
+	contentReviewItems.forEach(content => content.style.display = 'none');
+	tabReviewItems[0].classList.add('active');
+	contentReviewItems[0].style.display = 'block';
+});
+
+
+
+
+/**
+ * 리뷰 작성 폼의 별점을 선택하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {	
+	const stars = document.querySelectorAll('#starGroup .star');
+	const starInput = document.getElementById('starInput');
+	
+	stars.forEach(star => {
+		star.addEventListener('click', function() {
+			starInput.value = this.getAttribute('data-value');
+			stars.forEach(s => {
+				const starValue = Number(s.getAttribute('data-value'));
+				s.src = starValue <= this.getAttribute('data-value') ? '/images/recipe/star_full.png' : '/images/recipe/star_outline.png';
+			});
+		});
+	});
+});
+
+
+
+/**
+ * 리뷰 작성 폼의 focus 여부에 따라 입력창을 활성화하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const reviewInput = document.getElementById("reviewInput");
+	const reviewInputBorder = document.querySelector('.review_input');
+	reviewInput.addEventListener('focus', function() {
+		reviewInputBorder.classList.add('focus');
+	});
+	reviewInput.addEventListener('blur', function() {
+		reviewInputBorder.classList.remove('focus');
+	});
+});
+
+
+
+/**
+ * 리뷰 작성 폼값을 검증하는 함수 (댓글 내용 미작성 시 버튼 비활성화)
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const reviewButton = document.getElementById("reviewButton");
+	reviewInput.addEventListener("input", function() {
+		const isReviewEmpty = reviewInput.value.trim() === "";
+		reviewButton.classList.toggle("disable", isReviewEmpty);
+		reviewButton.disabled = isReviewEmpty;
+	});
+});
+
 
 
 
@@ -42,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
 /**
  * 레시피 리뷰에 데이터를 설정하는 함수
  */
+/*
 fetch("http://localhost:8586/recipes/1/reviews", {
 	method: "GET"
 })
@@ -59,7 +136,6 @@ fetch("http://localhost:8586/recipes/1/reviews", {
 						<span>아잠만</span>
 						<span>${ review.postdate }</span>
 					</div>
-					/* 조건 */
 						<div class="review_action">
 							<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editRecipeReviewModal"
 								onclick="openEditRecipeReviewModal();">
@@ -80,9 +156,7 @@ fetch("http://localhost:8586/recipes/1/reviews", {
 					</div>
 					<p>3</p>
 				</div>
-				<!-- 리뷰 내용 -->
 				<p class="review_content">${ review.content }</p>
-				<!-- 리뷰 좋아요 버튼 -->
 				<div class="like_review_btn">
 					<p>이 리뷰가 도움이 되었다면 꾹!</p>
 					<button class="btn_like" onclick="">
@@ -96,3 +170,8 @@ fetch("http://localhost:8586/recipes/1/reviews", {
 	`).join("");
 })
 .catch(error => console.log(error));
+*/
+
+
+
+/**************** 여기까지 테스트 ***********/

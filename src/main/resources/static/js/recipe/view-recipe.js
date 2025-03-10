@@ -1,3 +1,11 @@
+
+
+
+
+/** =========== 모두 테스트 코드 ============= */
+
+
+
 /**
  * 레시피 상세 페이지에 데이터를 설정하는 함수
  */
@@ -133,6 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
 /**
  * 레시피 리뷰 목록 데이터를 fetch로 로드하는 함수
  */
+/*
 function loadRecipeReviewContent() {
     fetch("http://localhost:8586/recipes/1/reviews", {
 		method: "GET"
@@ -200,7 +209,7 @@ function loadRecipeReviewContent() {
         document.querySelector('.more_review_btn').style.display = "none";
     });
 }
-
+*/
 
 
 
@@ -236,83 +245,5 @@ function loadRecipeCommentContent() {
     });
 }
 
-
-
-
-
-/**
- * 리뷰 정렬 방법 탭 메뉴 클릭 시 탭 메뉴를 활성화하고 해당하는 내용을 표시하는 함수
- */
-document.addEventListener('DOMContentLoaded', function() {
-	const tabReviewItems = document.querySelectorAll('.review_order button');
-	const contentReviewItems = document.querySelectorAll('.review_list');
-	// 탭 클릭 이벤트 설정
-	tabReviewItems.forEach((item, index) => {
-		item.addEventListener("click", function(event) {
-			event.preventDefault();
-            
-			tabReviewItems.forEach(button => button.classList.remove('active'));
-			this.classList.add('active');
-            
-			contentReviewItems.forEach(content => content.style.display = 'none');
-			contentReviewItems[index].style.display = 'block';
-        });
-	});
-	// 기본으로 첫번째 활성화
-	tabReviewItems.forEach(button => button.classList.remove('active'));
-	contentReviewItems.forEach(content => content.style.display = 'none');
-	tabReviewItems[0].classList.add('active');
-	contentReviewItems[0].style.display = 'block';
-});
-
-
-
-/**
- * 리뷰 작성 폼의 별점을 선택하는 함수
- */
-document.addEventListener('DOMContentLoaded', function() {	
-	const stars = document.querySelectorAll('#starGroup .star');
-	const starInput = document.getElementById('starInput');
-	
-	stars.forEach(star => {
-		star.addEventListener('click', function() {
-			starInput.value = this.getAttribute('data-value');
-			stars.forEach(s => {
-				const starValue = Number(s.getAttribute('data-value'));
-				s.src = starValue <= this.getAttribute('data-value') ? '/images/recipe/star_full.png' : '/images/recipe/star_outline.png';
-			});
-		});
-	});
-});
-
-
-
-/**
- * 리뷰 작성 폼의 focus 여부에 따라 입력창을 활성화하는 함수
- */
-document.addEventListener('DOMContentLoaded', function() {
-	const reviewInput = document.getElementById("reviewInput");
-	const reviewInputBorder = document.querySelector('.review_input');
-	reviewInput.addEventListener('focus', function() {
-		reviewInputBorder.classList.add('focus');
-	});
-	reviewInput.addEventListener('blur', function() {
-		reviewInputBorder.classList.remove('focus');
-	});
-});
-
-
-
-/**
- * 리뷰 작성 폼값을 검증하는 함수 (댓글 내용 미작성 시 버튼 비활성화)
- */
-document.addEventListener('DOMContentLoaded', function() {
-	const reviewButton = document.getElementById("reviewButton");
-	reviewInput.addEventListener("input", function() {
-		const isReviewEmpty = reviewInput.value.trim() === "";
-		reviewButton.classList.toggle("disable", isReviewEmpty);
-		reviewButton.disabled = isReviewEmpty;
-	});
-});
 
 

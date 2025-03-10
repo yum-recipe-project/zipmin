@@ -41,6 +41,7 @@
 			</form>
 		</c:if>
 	</div>
+	
 	<!-- 댓글 목록 -->
 	<c:if test="${ true }">
 		<ul class="comment_list">

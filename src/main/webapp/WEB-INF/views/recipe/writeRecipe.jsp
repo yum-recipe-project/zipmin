@@ -125,6 +125,12 @@
 							<input type="hidden" id="categoryWayInput">
 							<p id="categoryHint">카테고리를 선택해주세요.</p>
 						</div>
+						
+						<!-- 제목 -->
+						<div class="youtube_field">
+							<label>유튜브 링크 (선택사항)</label>
+							<input type="text" id="youtubeInput" name="" value="" placeholder="유튜브 링크를 입력해주세요.">
+						</div>
 					</div>
 					
 					<div class="ingredient_wrap">

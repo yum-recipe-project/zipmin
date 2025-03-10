@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<form id="reportCommentForm" onsubmit="">
-	<div class="modal" id="reportCommentModal">
+<form id="reportReviewForm" onsubmit="">
+	<div class="modal" id="reportReviewModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -15,38 +15,38 @@
 						<div class="reason">
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportCommentReason1" name="reason" value="">
-									<label for="reportCommentReason1">정당/정치인 비하 및 선거운동</label>
+									<input type="radio" id="reportReviewReason1" name="reason" value="">
+									<label for="reportReviewReason1">정당/정치인 비하 및 선거운동</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportCommentReason2" name="reason" value="">
-									<label for="reportCommentReason2">유출/사칭/사기</label>
+									<input type="radio" id="reportReviewReason2" name="reason" value="">
+									<label for="reportReviewReason2">유출/사칭/사기</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportCommentReason3" name="reason" value="">
-									<label for="reportCommentReason3">욕설/비하</label>
+									<input type="radio" id="reportReviewReason3" name="reason" value="">
+									<label for="reportReviewReason3">욕설/비하</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportCommentReason4" name="reason" value="">
-									<label for="reportCommentReason4">낚시/놀람/도배</label>
+									<input type="radio" id="reportReviewReason4" name="reason" value="">
+									<label for="reportReviewReason4">낚시/놀람/도배</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportCommentReason5" name="reason" value="">
-									<label for="reportCommentReason5">상업적 광고 및 판매</label>
+									<input type="radio" id="reportReviewReason5" name="reason" value="">
+									<label for="reportReviewReason5">상업적 광고 및 판매</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportCommentReason6" name="reason" value="">
-									<label for="reportCommentReason6">불법촬영물 등의 유통</label>
+									<input type="radio" id="reportReviewReason6" name="reason" value="">
+									<label for="reportReviewReason6">불법촬영물 등의 유통</label>
 								</div>
 							</div>
 						</div>

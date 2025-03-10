@@ -15,38 +15,38 @@
 						<div class="reason">
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reason1" name="reason" value="">
-									<label for="reason1">정당/정치인 비하 및 선거운동</label>
+									<input type="radio" id="reportRecipeReason1" name="reason" value="">
+									<label for="reportRecipeReason1">정당/정치인 비하 및 선거운동</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reason2" name="reason" value="">
-									<label for="reason2">유출/사칭/사기</label>
+									<input type="radio" id="reportRecipeReason2" name="reason" value="">
+									<label for="reportRecipeReason2">유출/사칭/사기</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reason3" name="reason" value="">
-									<label for="reason3">욕설/비하</label>
+									<input type="radio" id="reportRecipeReason3" name="reason" value="">
+									<label for="reportRecipeReason3">욕설/비하</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reason4" name="reason" value="">
-									<label for="reason4">낚시/놀람/도배</label>
+									<input type="radio" id="reportRecipeReason4" name="reason" value="">
+									<label for="reportRecipeReason4">낚시/놀람/도배</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reason5" name="reason" value="">
-									<label for="reason5">상업적 광고 및 판매</label>
+									<input type="radio" id="reportRecipeReason5" name="reason" value="">
+									<label for="reportRecipeReason5">상업적 광고 및 판매</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reason6" name="reason" value="">
-									<label for="reason6">불법촬영물 등의 유통</label>
+									<input type="radio" id="reportRecipeReason6" name="reason" value="">
+									<label for="reportRecipeReason6">불법촬영물 등의 유통</label>
 								</div>
 							</div>
 						</div>

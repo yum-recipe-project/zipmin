@@ -29,13 +29,13 @@ document.addEventListener('DOMContentLoaded', function() {
  * 댓글 작성 폼의 포커스 여부에 따라 입력창을 활성화하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	const commentInput = document.getElementById("commentInput");
-	const commentInputBorder = document.querySelector('.comment_input');
-	commentInput.addEventListener('focus', function() {
-		commentInputBorder.classList.add('focus');
+	const writeCommentContent = document.getElementById("writeCommentContent");
+	const commentContentBorder = document.querySelector('.comment_input');
+	writeCommentContent.addEventListener('focus', function() {
+		commentContentBorder.classList.add('focus');
 	});
-	commentInput.addEventListener('blur', function() {
-		commentInputBorder.classList.remove('focus');
+	writeCommentContent.addEventListener('blur', function() {
+		commentContentBorder.classList.remove('focus');
 	});
 });
 
@@ -45,12 +45,12 @@ document.addEventListener('DOMContentLoaded', function() {
  * 댓글 작성 폼값을 검증하고 버튼을 활성화하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	const commentInput = document.getElementById("commentInput");
-	const commentButton = document.getElementById("commentButton");
-	commentInput.addEventListener("input", function() {
-		const isCommentEmpty = commentInput.value.trim() === "";
-		commentButton.classList.toggle("disable", isCommentEmpty);
-		commentButton.disabled = isCommentEmpty;
+	const writeCommentContent = document.getElementById("writeCommentContent");
+	const writeCommentButton = document.querySelector("#writeCommentForm button[type='submit']");
+	writeCommentContent.addEventListener("input", function() {
+		const isCommentContentEmpty = writeCommentContent.value.trim() === "";
+		writeCommentButton.classList.toggle("disable", isCommentContentEmpty);
+		writeCommentButton.disabled = isCommentContentEmpty;
 	});
 });
 
@@ -63,8 +63,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	const editCommentContent = document.getElementById("editCommentContent");
 	const editCommentButton = document.querySelector("#editCommentForm button[type='submit']");
 	editCommentContent.addEventListener("input", function() {
-		const isCommentEmpty = editCommentContent.value.trim() === "";
-		editCommentButton.classList.toggle("disabled", isCommentEmpty);
+		const isCommentContentEmpty = editCommentContent.value.trim() === "";
+		editCommentButton.classList.toggle("disabled", isCommentContentEmpty);
 	});
 });
 

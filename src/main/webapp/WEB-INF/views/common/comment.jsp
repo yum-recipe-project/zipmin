@@ -32,7 +32,7 @@
 					<span>아잠만</span>
 				</div>
 				<div class="comment_input">
-					<textarea id="commentInput" rows="2" maxlength="400" placeholder="욕설, 비방, 허위 정보 및 부적절한 댓글은 사전 경고 없이 삭제될 수 있습니다."></textarea>
+					<textarea id="writeCommentContent" rows="2" maxlength="400" placeholder="욕설, 비방, 허위 정보 및 부적절한 댓글은 사전 경고 없이 삭제될 수 있습니다."></textarea>
 					<span>400</span>
 				</div>
 				<div class="write_btn">

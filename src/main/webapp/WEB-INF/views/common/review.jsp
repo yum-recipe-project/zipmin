@@ -16,7 +16,7 @@
 	</div>
 	
 	<!-- 리뷰 작성 -->
-	<div class="review_write">
+	<form id="writeReviewForm" class="review_write">
 		<!-- 로그인 하지 않은 경우 -->
 		<c:if test="${ false }">
 			<a href="/member/login.do">
@@ -50,7 +50,7 @@
 				</div>
 			</form>
 		</c:if>
-	</div>
+	</form>
 	
 	<!-- 리뷰 목록 -->
 	<ul id="reviewList" class="review_list">

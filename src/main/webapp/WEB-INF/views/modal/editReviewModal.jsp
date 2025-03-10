@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<form method="post" action="" onsubmit="">
+<form id="editReviewForm" method="post" action="">
 	<div class="modal" id="editReviewModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -12,7 +12,7 @@
 				<div class="modal-body">
 					<div class="form-group">
     					<label>별점</label>
-						<div id="editStarGroup" class="star_group">
+						<div id="editReviewStarGroup" class="star_group">
 							<img src="/images/recipe/star_full.png" class="star" data-value="1">
 							<img src="/images/recipe/star_outline.png" class="star" data-value="2">
 							<img src="/images/recipe/star_outline.png" class="star" data-value="3">
@@ -28,7 +28,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn" data-bs-dismiss="modal">닫기</button>
-					<button type="submit" class="btn btn-disable" disabled>작성하기</button>
+					<button type="submit" class="btn btn-primary disabled">작성하기</button>
 				</div>
 			</div>
 		</div>

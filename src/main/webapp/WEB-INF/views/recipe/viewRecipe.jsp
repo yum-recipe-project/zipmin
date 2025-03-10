@@ -178,6 +178,21 @@
 			
 			<!-- 포인트 충전 -->
 			<%@include file="../modal/topUpPointModal.jsp" %>
+			
+			<!-- 댓글 수정 모달창 -->
+			<%@include file="../modal/editCommentModal.jsp" %>
+			
+			<!-- 댓글 신고 모달창 -->
+			<%@include file="../modal/reportCommentModal.jsp" %>
+			
+			<!-- 대댓글 작성 모달창 -->
+			<%@include file="../modal/writeSubcommentModal.jsp" %>
+			
+			<!-- 리뷰 수정 모달창 -->
+			<%@include file="../modal/editReviewModal.jsp" %>
+			
+			<!-- 리뷰 신고 모달창 -->
+			<%@include file="../modal/reportReviewModal.jsp" %>
 		</main>
 		
 		<%@include file="../common/footer.jsp" %>

@@ -211,9 +211,7 @@
 								
 							</div>	
 						</li>
-						
 					</ul>
-						
 				</div>
 	
 				<div class="pagination_wrap">

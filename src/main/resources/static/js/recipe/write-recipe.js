@@ -1,4 +1,28 @@
 /**
+ * 
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const thumbnailInput = document.getElementById("thumbnailInput");
+	thumbnailInput.addEventListener("change", function(event) {
+		const file = event.target.files[0];
+		if (file) {
+			const reader = new FileReader();
+			reader.onload = function(e) {
+				thumbnailInput.style.background = `url(${e.target.result})`;
+				thumbnailInput.style.backgroundSize = "cover";
+				thumbnailInput.style.backgroundPosition = "center";
+				thumbnailInput.style.border = "1px solid #EEE";
+			};
+			reader.readAsDataURL(file);
+		}
+	});
+});
+
+
+
+
+
+/**
  * 재료 추가하기 버튼 클릭 시 재료 입력폼을 추가하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {

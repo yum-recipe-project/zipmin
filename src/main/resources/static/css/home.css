@@ -9,9 +9,9 @@
 	height: 380px;
 	
 	display: flex;
-    align-items: center;  /* 수직 중앙 정렬 */
-    justify-content: center; /* 수평 중앙 정렬 */
-    text-align: center;  /* 내부 텍스트 중앙 정렬 */
+    align-items: center;  
+    justify-content: center;
+    text-align: center;  
     position: relative;
 }
 
@@ -24,8 +24,8 @@
 
 #container .main_banner .txt {
 	display: flex;
-    flex-direction: column; /* 버튼과 텍스트를 세로 정렬 */
-    align-items: center; /* 내부 요소들도 중앙 정렬 */
+    flex-direction: column;
+    align-items: center; 
     text-align: center;
 }
 

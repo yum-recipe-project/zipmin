@@ -302,6 +302,125 @@
 }
 
 
+
+
+
+/* 바디 (냉장고 재료 추가하기) */
+#container .modal-content .modal-body .category_img {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 10px;
+	margin-bottom: 20px;
+}
+
+#container .modal-content .modal-body .category_img .title {
+	text-align: left;
+	font-size: 16px;
+	color: var(--txt-color-600);
+	font-weight: 700;
+}
+
+
+#container .modal-content .modal-body .category_img .img_select {
+	display: flex;
+	gap: 10px;
+}
+
+#container .modal-content .modal-body .category_img .img_select .ingredient_img {
+	display: block;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: #ddd;
+    flex-shrink: 0;
+    
+    /* 이미지 추가 테스트 */
+    background-size: cover;  
+    background-position: center;
+}
+
+#container .modal-content .modal-body .category_img .img_select .add_btn {
+	display: flex;	
+	align-items: center;
+	gap: 2px;
+	background: none;
+	border: none;
+}
+#container .modal-content .modal-body .category_img .img_select .add_btn img {
+	height: 20px;
+}
+#container .modal-content .modal-body .category_img .img_select .add_btn p {
+    font-size: 14px;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+#container .modal-content .modal-body .img_select_wrap {
+    display: none; 
+	margin: -15px 0 30px 66px;
+}
+
+
+
+#container .modal-content .modal-body .img_wrap {
+	
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 10px;
+	margin-bottom: 20px;
+}
+#container .modal-content .modal-body .img_wrap .title {
+	text-align: left;
+	font-size: 16px;
+	color: var(--txt-color-600);
+	font-weight: 700;
+}
+#container .modal-content .modal-body .img_wrap .img_list {
+	display: flex;
+	gap: 10px;
+}
+#container .modal-content .modal-body .img_wrap .img_list .img_btn {
+	display: block;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: #f1f6fd;
+    flex-shrink: 0;
+    border: 1px solid var(--line-color3); 
+    
+    /* 이미지 추가 테스트 */
+    background-size: cover;  
+    background-position: center;
+}
+#container .modal-content .modal-body .img_wrap .img_list .img_btn img {
+	height: 40px;
+}
+
+#container .modal-content .modal-body .input_wrap {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 20px;
+}
+#container .modal-content .modal-body .input_wrap  .title {
+	text-align: left;
+	font-size: 16px;
+	color: var(--txt-color-600);
+	font-weight: 700;
+	width: 70px;
+}
+
+
+
+
+
+
+
+
+
+
 /* 모달 (결과) */
 #container .modal-content .modal-body .form-result {
 	display: flex;

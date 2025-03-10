@@ -56,7 +56,7 @@ public class UserViewController {
 	// 제거 할 것
 	@GetMapping("/user/viewMemberInfo.do")
 	public String viewMemberInfo() {
-		return "member/viewMemberInfo";
+		return "user/viewMemberInfo";
 	}
 	
 }

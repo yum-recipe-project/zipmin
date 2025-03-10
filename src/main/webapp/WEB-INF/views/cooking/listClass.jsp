@@ -17,17 +17,6 @@
 				<div class="class_wrap">
 					<div class="class_header">
 						<h2>쿠킹클래스</h2>
-						<div class="tab">
-							<a class="btn_tab active" href="">
-								<span>전체</span>
-							</a>
-							<a class="btn_tab" href="">
-								<span>전체</span>
-							</a>
-							<a class="btn_tab" href="">
-								<span>전체</span>
-							</a>
-						</div>
 					</div>
 				
 					<div class="class_content">

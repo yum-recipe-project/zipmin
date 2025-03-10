@@ -40,7 +40,7 @@
 						<!-- 소개 -->
 						<section id="intro" class="intro_wrap">
 							<h3>클래스 소개</h3>
-							<div class="intro">
+							<div class="target">
 								<h4>이런 분께 추천해요</h4>
 								<p>한식을 제대로 배우고 싶은 분</p>
 								<p>요리에 대한 기초가 부족한 분</p>
@@ -48,9 +48,7 @@
 							</div>
 							<div class="intro">
 								<h4>어떤 걸 배울까요?</h4>
-								<p>한식의 기본 재료 손질과 조리법</p>
-								<p>대표적인 한식 요리 실습 (김치, 찌개, 전 등)</p>
-								<p>맛을 내는 비법과 응용 레시피</p>
+								<p>한식의 기본 재료 손질과 조리법을 배웁니다.<br/>쉽게 알려줍니다.</p>
 							</div>
 						</section>
 						<!-- 커리큘럼 -->
@@ -80,10 +78,6 @@
 									<h5>이집밥</h5>
 									<p>한식 전문 셰프 (10년 경력)</p>
 									<p>한식 조리 기능사</p>
-									<button class="more" onclick="location.href='';">
-										<span>프로필 자세히보기</span>
-										<img src="/images/cooking/arrow_right.png">
-									</button>
 								</div>
 							</div>
 						</section>
@@ -113,7 +107,7 @@
 							</div>
 							<div class="info">
 								<img src="/images/cooking/announce.png">
-								<p>2025.02.05 14:00 선정 발표</p>
+								<p>선착순 마감</p>
 							</div>
 							<div class="info">
 								<img src="/images/cooking/bag.png">

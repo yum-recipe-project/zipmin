@@ -47,7 +47,7 @@
 								<li>
 									<c:if test="${ true }">
 										<div class="status">
-											선정 진행 중이에요
+											대기 중이에요
 										</div>
 									</c:if>
 									<c:if test="${ false }">
@@ -68,7 +68,7 @@
 											<a href="/cooking/viewClass.do">한식 입문 클래스</a>
 											<p>
 												<span><em>수업일정</em>2025.04.05(수) 15:00-17:00</span>
-												<span><em>선정발표</em>2025.03.15(월) 12:00</span>
+												<span><em>신청마감</em>2025.04.02(일) 12:00</span>
 											</p>
 										</div>
 										<div class="cancel_btn">

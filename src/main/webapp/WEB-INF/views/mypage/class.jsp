@@ -41,17 +41,12 @@
 								<li>
 									<c:if test="${ true }">
 										<div class="status">
-											선정 진행 중이에요
+											진행중
 										</div>
 									</c:if>
 									<c:if test="${ false }">
 										<div class="status ">
-											신청 완료
-										</div>
-									</c:if>
-									<c:if test="${ false }">
-										<div class="status ">
-											선정 되지 않았어요
+											마감
 										</div>
 									</c:if>
 									<div class="class">

@@ -16,7 +16,7 @@
 	</div>
 	
 	<!-- 댓글 작성 -->
-	<div class="comment_write">
+	<form id="writeCommentForm" class="comment_write">
 		<!-- 로그인 하지 않은 경우 -->
 		<c:if test="${ false }">
 			<a href="/member/login.do">
@@ -36,11 +36,11 @@
 					<span>400</span>
 				</div>
 				<div class="write_btn">
-					<button class="btn_primary disable" type="submit" id="commentButton" class="disable" disabled>작성하기</button>
+					<button class="btn_primary disable" type="submit" class="disable" disabled>작성하기</button>
 				</div>
 			</form>
 		</c:if>
-	</div>
+	</form>
 	
 	<!-- 댓글 목록 -->
 	<c:if test="${ true }">

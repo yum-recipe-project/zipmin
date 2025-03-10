@@ -19,7 +19,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
-					<button type="submit" class="btn btn-disable" disabled>작성하기</button>
+					<button type="submit" class="btn btn-primary disabled">작성하기</button>
 				</div>
 			</div>
 		</div>

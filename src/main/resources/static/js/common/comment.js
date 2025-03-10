@@ -1,26 +1,15 @@
 /**
- * 댓글 정렬 방법 탭 메뉴 클릭 시 탭 메뉴를 활성화하고 해당하는 내용을 표시하는 함수
+ * 댓글 정렬 탭 메뉴 클릭 시 탭 메뉴를 활성화하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	const tabCommentItems = document.querySelectorAll('.comment_order button');
-	const contentCommentItems = document.querySelectorAll('.comment_list');
-	// 탭 클릭 이벤트 설정
-	tabCommentItems.forEach((item, index) => {
-	    item.addEventListener("click", function(event) {
+	const tabList = document.querySelectorAll('.comment_order button');
+	tabList.forEach(tabI => {
+	    tabI.addEventListener("click", function(event) {
 	        event.preventDefault();
-	        
-	        tabCommentItems.forEach(button => button.classList.remove('active'));
+	        tabList.forEach(tabJ => tabJ.classList.remove('active'));
 	        this.classList.add('active');
-	        
-	        contentCommentItems.forEach(content => content.style.display = 'none');
-	        contentCommentItems[index].style.display = 'block';
 	    });
 	});
-	// 기본으로 첫번째 활성화
-	tabCommentItems.forEach(button => button.classList.remove('active'));
-	contentCommentItems.forEach(content => content.style.display = 'none');
-	tabCommentItems[0].classList.add('active');
-	contentCommentItems[0].style.display = 'block';
 });
 
 
@@ -92,11 +81,9 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 document.addEventListener('DOMContentLoaded', function() {
 	const writeSubcommentContent = document.getElementById("writeSubcommentContent");
-	const writeSubcommentButton = document.querySelector("#writeSubcommentForm button[type='submit]");
+	const writeSubcommentButton = document.querySelector("#writeSubcommentForm button[type='submit']");
 	writeSubcommentContent.addEventListener("input", function() {
 		const isWriteSubcommentContentEmpty = writeSubcommentContent.value.trim() === "";
-		writeSubcommentButton.classList.toggle("btn-disable", isWriteSubcommentContentEmpty);
-		writeSubcommentButton.classList.toggle("btn-primary", !isWriteSubcommentContentEmpty);
-		writeSubcommentButton.disabled = isWriteSubcommentContentEmpty;
+		writeSubcommentButton.classList.toggle("disabled", isWriteSubcommentContentEmpty);
     });
 });

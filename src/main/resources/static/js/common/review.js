@@ -1,5 +1,5 @@
 /**
- * 리뷰 정렬 방법 탭 메뉴 클릭 시 탭 메뉴를 활성화하는 함수
+ * 리뷰 정렬 탭 메뉴 클릭 시 탭 메뉴를 활성화하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
 	const tabList = document.querySelectorAll('.review_order button');

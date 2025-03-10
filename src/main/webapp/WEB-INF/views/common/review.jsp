@@ -32,17 +32,17 @@
 					<span class="nickname" data-id="3"></span>
 				</div>
 				<!-- 별점 -->
-				<div id="starGroup" class="star_group">
+				<div id="writeReviewStarGroup" class="star_group">
 					<img src="/images/common/star_full.png" class="star" data-value="1">
 					<img src="/images/common/star_outline.png" class="star" data-value="2">
 					<img src="/images/common/star_outline.png" class="star" data-value="3">
 					<img src="/images/common/star_outline.png" class="star" data-value="4">
 					<img src="/images/common/star_outline.png" class="star" data-value="5">
-					<input type="hidden" id="starInput" name="" value="1">
+					<input type="hidden" id="writeReviewStar" name="" value="1">
 				</div>
 				<!-- 리뷰 입력창 -->
 				<div class="review_input">
-					<textarea id="reviewInput" rows="2" maxlength="400" placeholder="욕설, 비방, 허위 정보 및 부적절한 댓글은 사전 경고 없이 삭제될 수 있습니다."></textarea>
+					<textarea id="writeReviewContent" rows="2" maxlength="400" placeholder="욕설, 비방, 허위 정보 및 부적절한 댓글은 사전 경고 없이 삭제될 수 있습니다."></textarea>
 					<span>400</span>
 				</div>
 				<div class="write_btn">

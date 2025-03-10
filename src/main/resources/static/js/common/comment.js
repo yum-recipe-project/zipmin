@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /**
- * 댓글 작성 폼의 focus 여부에 따라 입력창을 활성화하는 함수
+ * 댓글 작성 폼의 포커스 여부에 따라 입력창을 활성화하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
 	const commentInput = document.getElementById("commentInput");
@@ -42,9 +42,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /**
- * 댓글 작성 폼값을 검증하는 함수 (댓글 내용 미작성 시 버튼 비활성화)
+ * 댓글 작성 폼값을 검증하고 버튼을 활성화하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
+	const commentInput = document.getElementById("commentInput");
 	const commentButton = document.getElementById("commentButton");
 	commentInput.addEventListener("input", function() {
 		const isCommentEmpty = commentInput.value.trim() === "";

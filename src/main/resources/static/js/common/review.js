@@ -1,122 +1,6 @@
-/**
- * 
- */
-document.addEventListener('DOMContentLoaded', function() {
-	const editStars = document.querySelectorAll('#editStarGroup .star');
-	const editStarInput = document.getElementById('editStarInput');
-
-	editStars.forEach(star => {
-		star.addEventListener('click', function() {
-			starInput.value = this.getAttribute('data-value');
-			editStars.forEach(s => {
-				const starValue = Number(s.getAttribute('data-value'));
-				s.src = starValue <= this.getAttribute('data-value') ? '/images/recipe/star_full.png' : '/images/recipe/star_outline.png';
-			});
-		});
-	});
-
-	/**
-	 * 내용 입력창의 폼값을 검증하는 함수
-	 */
-	const editReviewContentInput = document.getElementById("editReviewContentInput");
-	const editReviewButton = document.getElementById("editReviewButton");
-	editReviewContentInput.addEventListener("input", function() {
-	    if (editReviewContentInput.value.trim() !== "") {
-	    	editReviewButton.classList.remove("btn-disable");
-	    	editReviewButton.classList.add("btn-primary");
-	    	editReviewButton.removeAttribute("disabled");
-	    }
-	    else {
-	    	editReviewButton.classList.remove("btn-primary");
-	    	editReviewButton.classList.add("btn-disable");
-	    	editReviewButton.setAttribute("disabled", "true");
-	    }
-	});
-})
-
 
 /**
- * 리뷰 정렬 방법 탭 메뉴 클릭 시 탭 메뉴를 활성화하고 해당하는 내용을 표시하는 함수
- */
-document.addEventListener('DOMContentLoaded', function() {
-	const tabReviewItems = document.querySelectorAll('.review_order button');
-	const contentReviewItems = document.querySelectorAll('.review_list');
-	// 탭 클릭 이벤트 설정
-	tabReviewItems.forEach((item, index) => {
-		item.addEventListener("click", function(event) {
-			event.preventDefault();
-            
-			tabReviewItems.forEach(button => button.classList.remove('active'));
-			this.classList.add('active');
-            
-			contentReviewItems.forEach(content => content.style.display = 'none');
-			contentReviewItems[index].style.display = 'block';
-        });
-	});
-	// 기본으로 첫번째 활성화
-	tabReviewItems.forEach(button => button.classList.remove('active'));
-	contentReviewItems.forEach(content => content.style.display = 'none');
-	tabReviewItems[0].classList.add('active');
-	contentReviewItems[0].style.display = 'block';
-});
-
-
-
-
-/**
- * 리뷰 작성 폼의 별점을 선택하는 함수
- */
-document.addEventListener('DOMContentLoaded', function() {	
-	const stars = document.querySelectorAll('#starGroup .star');
-	const starInput = document.getElementById('starInput');
-	
-	stars.forEach(star => {
-		star.addEventListener('click', function() {
-			starInput.value = this.getAttribute('data-value');
-			stars.forEach(s => {
-				const starValue = Number(s.getAttribute('data-value'));
-				s.src = starValue <= this.getAttribute('data-value') ? '/images/recipe/star_full.png' : '/images/recipe/star_outline.png';
-			});
-		});
-	});
-});
-
-
-
-/**
- * 리뷰 작성 폼의 focus 여부에 따라 입력창을 활성화하는 함수
- */
-document.addEventListener('DOMContentLoaded', function() {
-	const reviewInput = document.getElementById("reviewInput");
-	const reviewInputBorder = document.querySelector('.review_input');
-	reviewInput.addEventListener('focus', function() {
-		reviewInputBorder.classList.add('focus');
-	});
-	reviewInput.addEventListener('blur', function() {
-		reviewInputBorder.classList.remove('focus');
-	});
-});
-
-
-
-/**
- * 리뷰 작성 폼값을 검증하는 함수 (댓글 내용 미작성 시 버튼 비활성화)
- */
-document.addEventListener('DOMContentLoaded', function() {
-	const reviewButton = document.getElementById("reviewButton");
-	reviewInput.addEventListener("input", function() {
-		const isReviewEmpty = reviewInput.value.trim() === "";
-		reviewButton.classList.toggle("disable", isReviewEmpty);
-		reviewButton.disabled = isReviewEmpty;
-	});
-});
-
-
-
-
-
-/**
- * 레시피 리뷰에 데이터를 설정하는 함수
+ * 레시피 리뷰에 데이터를 설정하는 함수 (******** 테스트 ***********)
  */
 /*
 fetch("http://localhost:8586/recipes/1/reviews", {
@@ -174,4 +58,110 @@ fetch("http://localhost:8586/recipes/1/reviews", {
 
 
 
-/**************** 여기까지 테스트 ***********/
+
+/**
+ * 리뷰 정렬 방법 탭 메뉴 클릭 시 탭 메뉴를 활성화하고 해당하는 내용을 표시하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const tabReviewItems = document.querySelectorAll('.review_order button');
+	const contentReviewItems = document.querySelectorAll('.review_list');
+	// 탭 클릭 이벤트 설정
+	tabReviewItems.forEach((item, index) => {
+		item.addEventListener("click", function(event) {
+			event.preventDefault();
+            
+			tabReviewItems.forEach(button => button.classList.remove('active'));
+			this.classList.add('active');
+            
+			contentReviewItems.forEach(content => content.style.display = 'none');
+			contentReviewItems[index].style.display = 'block';
+        });
+	});
+	// 기본으로 첫번째 활성화
+	tabReviewItems.forEach(button => button.classList.remove('active'));
+	contentReviewItems.forEach(content => content.style.display = 'none');
+	tabReviewItems[0].classList.add('active');
+	contentReviewItems[0].style.display = 'block';
+});
+
+
+
+/**
+ * 리뷰 작성 폼의 포커스 여부에 따라 입력창을 활성화하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const writeReviewContent = document.getElementById("writeReviewContent");
+	const reviewInputBorder = document.querySelector('.review_input');
+	writeReviewContent.addEventListener('focus', function() {
+		reviewInputBorder.classList.add('focus');
+	});
+	writeReviewContent.addEventListener('blur', function() {
+		reviewInputBorder.classList.remove('focus');
+	});
+});
+
+
+
+/**
+ * 리뷰를 작성하는 폼의 별점을 선택하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const writeReviewStarStarGroup = document.querySelectorAll('#writeReviewStarGroup .star');
+	const writeReviewStar = document.getElementById('editReviewStar');
+
+	writeReviewStarStarGroup.forEach(starI => {
+		starI.addEventListener('click', function() {
+			writeReviewStar.value = this.getAttribute('data-value');
+			stargroup.forEach(starJ => {
+				const value = Number(starJ.getAttribute('data-value'));
+				starJ.src = value <= this.getAttribute('data-value') ? '/images/common/star_full.png' : '/images/common/star_outline.png';
+			});
+		});
+	});
+});
+
+
+
+/**
+ * 리뷰 작성 폼값을 검증하고 버튼을 활성화하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const writeReviewContent = document.getElementById("writeReviewContent");
+	const writeReviewButton = document.querySelector("#writeReviewForm button[type='submit']");
+	writeReviewContent.addEventListener("input", function() {
+		const isReviewCommentEmpty = writeReviewContent.value.trim() === "";
+		writeReviewButton.classList.toggle("disable", isReviewCommentEmpty);
+		writeReviewButton.disabled = isReviewCommentEmpty;
+	});
+});
+
+
+
+/**
+ * 리뷰를 수정하는 모달창의 폼값을 검증하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const editReviewContent = document.getElementById("editReviewContent");
+	const editReviewButton = document.querySelector("#editReviewForm button[type='submit']");
+	editReviewContent.addEventListener("input", function() {
+		const isReviewEmpty = editReviewContent.value.trim() === "";
+		editReviewButton.classList.toggle("disabled", isReviewEmpty);
+	});
+});
+
+
+
+/**
+ * 리뷰를 신고하는 모달창의 신고 사유를 선택했는지 검증하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const reasonRadio = document.querySelectorAll("#reportReviewForm input[name='reason']");
+	const submitButton = document.querySelector("#reportReviewForm button[type='submit']");
+
+	reasonRadio.forEach(function(radio) {
+        radio.addEventListener("change", function() {
+			const isChecked = Array.from(reasonRadio).some(radio => radio.checked);
+			submitButton.classList.toggle("disabled", !isChecked);
+        });
+    });
+});

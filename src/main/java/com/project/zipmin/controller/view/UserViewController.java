@@ -58,4 +58,5 @@ public class UserViewController {
 	public String viewMemberInfo() {
 		return "member/viewMemberInfo";
 	}
+	
 }

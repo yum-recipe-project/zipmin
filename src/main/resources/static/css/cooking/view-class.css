@@ -1,0 +1,507 @@
+@charset "UTF-8";
+
+#container .content {
+	margin: 0px auto;
+	padding: 0 40px;
+	width: 1160px;
+}
+
+
+
+/* 네비게이션 바 */
+#container .content .nav_wrap {
+	display: flex;
+	align-items: center;
+	height: 56px;
+}
+
+#container .content .nav_wrap a {
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: -.2px;
+	font-weight: 400;
+	flex: none;
+	display: inline-flex;
+	align-items: center;
+	overflow: hidden;
+}
+
+#container .content .nav_wrap a img {
+	width: 16px;
+	height: 16px;
+	flex: none;
+	margin: 0 4px;
+}
+
+#container .content .nav_wrap a span {
+	position: relative;
+	color: var(--txt-color-500);
+}
+
+#container .content .nav_wrap a span:hover::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 1px;
+	height: 1px;
+	background: var(--txt-color-500);
+}
+
+#container .content .nav_wrap a.active {
+	pointer-events: none;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: -.2px;
+	font-weight: 500;
+	flex: none;
+	display: inline-flex;
+	align-items: center;
+	overflow: hidden; 
+}
+
+#container .content .nav_wrap a.active span {
+	color: var(--txt-color-600);
+}
+
+
+
+/* 클래스 */
+#container .class_content {
+	padding-top: 32px;
+	display: flex;
+	align-items: flex-start;
+	align-content: flex-start;
+	justify-content: space-between;
+	margin-bottom: 80px;
+}
+
+
+
+/* 클래스 정보 */
+#container .class_content .class_info {
+	position: relative;
+	flex: none;
+	width: 680px;
+}
+
+/* 클래스 정보 (썸네일) */
+#container .class_content .class_info .thumbnail {
+	width: 100%;
+	height: 381px;
+	margin-bottom: 24px;
+	position: relative;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+#container .class_content .class_info .thumbnail img {
+	width: 100%;
+	height: 100%;
+}
+
+/* 클래스 정보 (탭) */
+#container .class_content .class_info .tab {
+	top: 137px;
+	margin-bottom: 0;
+	z-index: 1;
+	overflow: hidden;
+	box-shadow: 0 1px 0 0 #eee;
+}
+
+#container .class_content .class_info .tab a {
+	position: relative;
+    height: 100%;
+    padding: 0 16px;
+    border: 0;
+    font-size: 16px;
+    line-height: 24px;
+    height: 48px;
+    letter-spacing: -0.4px;
+    font-weight: 400;
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--txt-color-500);
+    box-sizing: border-box;
+}
+
+#container .class_content .class_info .tab a.active {
+	color: var(--txt-color-600);
+	font-weight: 600;
+}
+
+#container .class_content .class_info .tab a.active:before {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 2px;
+	background: var(--txt-color-600);
+}
+
+/* 클래스 정보 (소개) */
+#container .class_content .class_info .intro_wrap {
+	padding-top: 40px;
+	position: relative;
+	padding-bottom: 40px;
+}
+
+#container .class_content .class_info .intro_wrap h3 {
+	font-size: 24px;
+	line-height: 32px;
+	letter-spacing: -.4px;
+	font-weight: 700;
+	margin-bottom: 24px;
+}
+
+#container .class_content .class_info .intro_wrap .target h4 {
+	font-size: 18px;
+	line-height: 26px;
+	letter-spacing: -0.4px;
+	font-weight: 700;
+	margin-bottom: 16px;
+}
+
+#container .class_content .class_info .intro_wrap .target p {
+	font-size: 16px;
+	line-height: 28px;
+	letter-spacing: -0.4px;
+	font-weight: 400;
+	padding-left: 12px;
+	position: relative;
+}
+
+#container .class_content .class_info .intro_wrap .target p::before {
+	content: '';
+	position: absolute;
+	top: 13px;
+	left: 0;
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
+	background-color: var(--txt-color-600);
+	transform: translateY(-50%);
+}
+
+#container .class_content .class_info .intro_wrap .intro {
+    margin-top: 24px;
+}
+
+#container .class_content .class_info .intro_wrap .intro h4 {
+	font-size: 18px;
+	line-height: 26px;
+	letter-spacing: -0.4px;
+	font-weight: 700;
+	margin-bottom: 16px;
+}
+
+#container .class_content .class_info .intro_wrap .intro p {
+	font-size: 16px;
+	line-height: 28px;
+	letter-spacing: -0.4px;
+	font-weight: 400;
+}
+
+/* 클래스 정보 (커리큘럼) */
+#container .class_content .class_info .curriculum_wrap {
+	padding-top: 40px;
+	position: relative;
+	padding-bottom: 40px;
+	border-top: 1px solid #EEE;
+}
+
+#container .class_content .class_info .curriculum_wrap h3 {
+	font-size: 24px;
+	line-height: 32px;
+	letter-spacing: -0.4px;
+	font-weight: 700;
+	margin-bottom: 24px;
+}
+
+#container .class_content .class_info .curriculum_wrap .curriculum_list {
+	position: relative;
+}
+
+#container .class_content .class_info .curriculum_wrap .curriculum_list li {
+	margin-top: 16px;
+	padding: 16px 16px 0;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+
+#container .class_content .class_info .curriculum_wrap .curriculum_list .meta {
+	display: flex;
+	align-items: center;
+}
+
+#container .class_content .class_info .curriculum_wrap .curriculum_list .meta span {
+	margin-left: 8px;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+	font-weight: 400;
+}
+
+#container .class_content .class_info .curriculum_wrap .curriculum_list .meta span.badge {
+	margin-left: 0;
+	color: var(--txt-color-600);
+	background: #EEE;
+	font-size: 12px;    
+	letter-spacing: -.2px;
+	font-weight: 500;
+	flex: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 32px;
+	height: 24px;
+	line-height: 0;
+	padding: 0 8px;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+#container .class_content .class_info .curriculum_wrap .curriculum_list .title {
+	font-size: 18px;
+	line-height: 26px;
+	letter-spacing: -.4px;
+	font-weight: 700;
+	padding: 16px 0;
+}
+
+#container .class_content .class_info .curriculum_wrap .curriculum_list .title strong {
+	font-weight: 600;
+}
+
+
+#container .class_content .class_info .curriculum_wrap .curriculum_list .title span {
+	color: var(--txt-color-500);
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: -.2px;
+	font-weight: 400;
+	display: block;
+	margin-top: 4px;
+}
+
+/* 클래스 정보 (강사) */
+#container .class_content .class_info .lecturer_wrap {
+	padding-top: 40px;
+	position: relative;
+	padding-bottom: 40px;
+	border-top: 1px solid #EEE;
+}
+
+#container .class_content .class_info .lecturer_wrap h3 {
+	font-size: 24px;
+	line-height: 32px;
+	letter-spacing: -.4px;
+	font-weight: 700;
+	margin-bottom: 24px;
+}
+
+#container .class_content .class_info .lecturer_wrap .lecturer {
+	flex: none;
+	width: 100%;
+	margin: 12px 0;
+	display: inline-flex;
+	align-items: center;
+	align-content: flex-start;
+	flex-wrap: wrap;
+	box-sizing: border-box;
+}
+
+#container .class_content .class_info .lecturer_wrap .lecturer .photo {
+	flex: none;
+	width: 160px;
+	height: 160px;
+	margin-right: 24px;
+	border: 1px solid rgba(0, 0, 0, .1);
+	border-radius: 4px;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+
+#container .class_content .class_info .lecturer_wrap .lecturer .photo img {
+	width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#container .class_content .class_info .lecturer_wrap .lecturer .profile {
+	width: calc(100% - 184px);
+	display: block;
+}
+
+#container .class_content .class_info .lecturer_wrap .lecturer .profile h5 {
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: -.4px;
+	font-weight: 500;
+	margin-top: 0px;
+}
+
+#container .class_content .class_info .lecturer_wrap .lecturer .profile p {
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+	font-weight: 400;
+	overflow: hidden;
+	margin-top: 4px;
+	color: var(--txt-color-600);
+}
+
+/* 클래스 정보 (공지사항) */
+#container .class_content .class_info .notice {
+	padding-top: 40px;
+	position: relative;
+	border-top: 1px solid #EEE;
+}
+
+
+#container .class_content .class_info .notice h3 {
+	font-size: 24px;
+	line-height: 32px;
+	letter-spacing: -.4px;
+	font-weight: 700;
+	margin-bottom: 24px;
+}
+
+#container .class_content .class_info .notice p {
+	font-size: 14px;
+	line-height: 20px;
+    letter-spacing: -.2px;
+    font-weight: 400;
+    position: relative;
+    padding-left: 12px;
+    color: #181a1c;
+    margin-top: 8px;
+}
+
+#container .class_content .class_info .notice p::before {
+	content: '';
+	position: absolute;
+	top: 10px;
+	left: 0;
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
+	background-color: #181a1c;
+	transform: translateY(-50%);
+}
+
+
+
+/* 클래스 신청 */
+#container .class_content .class_apply {
+	position: relative;
+	padding: 24px;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	width: 360px;
+}
+
+#container .class_content .class_apply .apply_header {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+#container .class_content .class_apply .apply_header h2 {
+	font-size: 24px;
+	line-height: 32px;
+	letter-spacing: -0.4px;
+	font-weight: 700;
+	width: 100%;
+	margin-bottom: 16px;
+}
+
+#container .class_content .class_apply .apply_info {
+	margin-top: 16px;
+}
+
+#container .class_content .class_apply .apply_info .info {
+	position: relative;
+	display: flex;
+	margin-top: 16px;
+}
+
+#container .class_content .class_apply .apply_info .info img {
+	position: absolute;
+	top: -1px;
+	left: 0;
+	width: 24px;
+	height: 24px;
+}
+
+#container .class_content .class_apply .apply_info .info p {
+	margin-left: 40px;
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: -.4px;
+	font-weight: 500;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+#container .class_content .class_apply .apply_address {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	margin-top: 12px;
+	background-color: #f4f8fe;
+	padding: 24px;
+	gap: 16px;
+}
+
+#container .class_content .class_apply .apply_address .place {
+	display: flex;
+	gap: 8px;
+}
+
+#container .class_content .class_apply .apply_address .place em {
+	background: #FF8400;
+	font-size: 12px;
+	letter-spacing: -0.2px;
+	font-weight: 400;
+	flex: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 32px;
+	height: 24px;
+	line-height: 0;
+	padding: 0 8px;
+	color: #fff;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+#container .class_content .class_apply .apply_address .place span {
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: -0.4px;
+	font-weight: 500;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+#container .class_content .class_apply .apply_address .date span {
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: -0.4px;
+	font-weight: 500;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+
+
+
+

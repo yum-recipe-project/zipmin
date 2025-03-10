@@ -1,0 +1,204 @@
+@charset "UTF-8";
+
+#container .content {
+	margin: 0px auto;
+	padding: 0 108px;
+	width: 1160px;
+	padding-bottom: 80px;
+}
+
+#container .content .vote_wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	margin-top: 40px;
+	margin-bottom: 80px;
+}
+
+
+
+/* 투표 헤더 */
+#container .content .vote_wrap .vote_header span {
+	color: var(--txt-color-500);
+	font-weight: 400;
+	line-height: 1.4;
+	letter-spacing: -0.02em;
+	font-size: 14px;
+}
+
+#container .content .vote_wrap .vote_header h2 {
+	margin-top: 8px;
+	font-weight: 700;
+	line-height: 1.5;
+	letter-spacing: -0.03em;
+	font-size: 32px;
+}
+
+#container .content .vote_wrap .vote_header .vote_info {
+	margin-top: 8px;
+	display: flex;
+	gap: 4px;
+	align-items: center;
+}
+
+#container .content .vote_wrap .vote_header .vote_info .period {
+	background: #000;
+	border-radius: 30px;
+	padding: 4px 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-right: 8px;
+}
+
+#container .content .vote_wrap .vote_header .vote_info .period span {
+	white-space: pre-wrap;
+	font-size: 12px;
+	color: #FFF;
+	line-height: 16px;
+}
+
+
+
+/* 투표 내용 */
+#container .vote_form .vote_checkbox_wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+#container .vote_form .vote_checkbox_wrap input[type='checkbox'] + label {
+	display: flex;
+	width: 100%;
+	border-radius: 4px;
+	padding: 16px 8px 16px 16px;
+	border: 1px solid var(--line-color2);
+	letter-spacing: -0.4px;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: -0.4px;
+}
+
+#container .vote_form .vote_checkbox_wrap input[type='checkbox'].disable + label {
+	color: #B1B3B5;
+}
+
+#container .vote_form .vote_checkbox_wrap input[type='checkbox']:checked + label {
+	border: 1px solid var(--point-color2);
+	background: #F3F8FF;
+}
+
+#container .vote_form .vote_checkbox_wrap input[type='checkbox'] + label::before {
+	content: '';
+	width: 18px;
+	height: 18px;
+	background: url(/images/chompessor/check.png);
+	background-size: cover;
+	vertical-align: middle;
+	border: none;
+}
+
+#container .vote_form .vote_checkbox_wrap input[type='checkbox']:checked + label::after {
+	content: '';
+	position: absolute;
+	left: 16px;
+	top: 50%;
+	transform: translateY(-55%);
+	width:18px;
+	height: 18px;
+	border: none;
+	background: url('/images/chompessor/check_blue.png') no-repeat center / 100%;
+}
+
+
+
+/* 투표 결과 */
+#container .vote_result ul {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+#container .vote_result .vote_option_wrap {
+	position: relative;
+	background: rgb(243, 245, 247);;
+	border-radius: 4px;
+	overflow: hidden;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex: 1 1 0%;
+}
+
+#container .vote_result .vote_option_wrap::before {
+	position: absolute;
+	display: block;
+	content: '';
+	top: 0px;
+	left: 0px;
+	/* 값 변경 필요 */
+	width: 66.3%;
+	height: 100%;
+	background: rgb(215, 219, 230);
+}
+
+#container .vote_result .vote_option_wrap.select::before {
+	background: rgb(189, 217, 255);
+}
+
+#container .vote_result .vote_option_wrap h5 {
+	position: relative;
+	flex: 1 1 0%;
+	padding: 12px 0px 12px 16px;
+	font-weight: 500 !important;
+	gap: 8px !important;
+	display: flex;
+	align-items: center;
+	font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.4px;
+}
+
+#container .vote_result .vote_option_wrap h5 img {
+	width:18px;
+	height: 18px;
+}
+
+#container .vote_result .vote_option_wrap span {
+	position: relative;
+	color: rgb(126, 128, 130);
+	margin: 0px 8px;
+	font-size: 12px;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+}
+
+#container .vote_result .vote_option_wrap h3 {
+	position: relative;
+	font-weight: 700 !important;
+	margin-right: 16px !important;
+	font-size: 22px;
+	line-height: 32px;
+	letter-spacing: -0.4px;  
+}
+
+#container .vote_result .vote_option_wrap.select h3 {
+	color: var(--point-color2);
+}
+
+
+
+
+
+
+/* 투표 버튼 */
+#container .vote_form .btn_wrap {
+	margin-top: 16px;
+	margin-left: auto;
+}
+
+#container .vote_result .btn_wrap {
+	margin-top: 16px;
+	margin-left: auto;
+}
+

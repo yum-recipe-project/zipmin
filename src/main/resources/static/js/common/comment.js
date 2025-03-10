@@ -76,6 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+
 /**
  * 대댓글을 입력하는 모달창의 내용 입력창의 폼값을 검증하는 함수
  */

@@ -21,3 +21,4 @@
 <script src="/js/common/ui-common.js"></script>
 <script src="/js/common/header.js"></script>
 <script src="/js/common/pagination.js"></script>
+<script src="/js/common/comment.js"></script>

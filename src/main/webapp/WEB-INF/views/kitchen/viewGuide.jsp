@@ -9,8 +9,6 @@
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/kitchen/view-guide.css">
 		<script src="/js/kitchen/view-guide.js"></script>
-		<script src="/js/modal/edit-comment-modal.js"></script>
-		<script src="/js/modal/report-comment-modal.js"></script>
 	</head>
 	
 	<body>
@@ -60,98 +58,7 @@
 				</div>
 				
 				<!-- 댓글 -->
-				<div class="comment_wrap">
-					<!-- 댓글 헤더 -->
-					<div class="comment_header">
-						<div class="comment_count">
-							<span>키친 한마디</span>
-							<span>4</span>
-						</div>
-						<div class="comment_order">
-							<button class="btn_sort_small active">최신순</button>
-							<button class="btn_sort_small">오래된순</button>
-							<button class="btn_sort_small">인기순</button>
-						</div>
-					</div>
-					
-					<!-- 댓글 작성 -->
-					<div class="comment_write">
-						<!-- 로그인 하지 않은 경우 -->
-						<c:if test="${ true }">
-							<a href="/member/login.do">
-								<span>키친 한마디 작성을 위해 로그인을 해주세요.</span>
-								<span>400</span>
-							</a>
-						</c:if>
-						<!-- 로그인 한 경우 -->
-						<c:if test="${ false }">
-							<form>
-								<div class="login_user">
-									<img src="/images/common/test.png">
-									<span>아잠만</span>
-								</div>
-								<div class="comment_input">
-									<textarea id="commentInput" rows="2" maxlength="400" placeholder="나누고 싶은 좋은 방법이 있다면 키친 노하우를 남겨주세요!&#10;주제와 무관한 키친 한마디는 삭제될 수 있습니다."></textarea>
-									<span>400</span>
-								</div>
-								<div class="write_btn">
-									<button class="btn_primary disable" type="submit" id="commentButton" onclick="" disabled>작성하기</button>
-								</div>
-							</form>
-						</c:if>
-					</div>
-					<!-- 댓글 목록 -->
-					<c:if test="${ true }">
-						<ul class="comment_list">
-							<!-- 댓글을 돌면서 -->
-							<%-- <c:forEach> --%>
-								<li class="comment">
-									<!-- 댓글 헤더 -->
-									<div class="comment_info">
-										<div class="comment_writer">
-											<img src="/images/common/test.png">
-											<span>아잠만</span>
-											<span>2025.02.11</span>
-										</div>
-										<c:if test="${ true }">
-											<div class="comment_action">
-												<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportCommentModal"
-													onclick="openReportCommentModal();">
-													신고
-												</a>
-												<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editCommentModal"
-													onclick="openEditCommentModal();">
-													수정
-												</a>
-												<a href="">삭제</a>
-											</div>
-										</c:if>
-									</div>
-									<!-- 댓글 내용 -->
-									<p class="comment_content">
-										검은 부분을 누르면 이빨과 침샘을 더 쉽게 제거할 수 있어요
-									</p>
-									<!-- 댓글 도구 -->
-									<div class="comment_tool">
-										<button class="btn_tool write_subcomment_btn">
-											<img src="/images/recipe/thumb_up_full.png">
-				                            <img src="/images/recipe/thumb_up_empty.png">
-				                            <p>3</p>
-										</button>
-									</div>
-								</li>
-							<%-- </c:forEach> --%>
-						</ul>
-					</c:if>
-					
-					<!-- 댓글 더보기 버튼 -->
-					<div class="more_comment_btn">
-						<button class="btn_more">
-							<span>더보기</span>
-							<img src="/images/kitchen/arrow_down.png">
-						</button>
-					</div>
-				</div>
+				<%@include file="../common/comment.jsp" %>
 			</div>
 			
 			<!-- 댓글 수정 모달창 -->
@@ -160,6 +67,8 @@
 			<!-- 댓글 신고 모달창 -->
 			<%@include file="../modal/reportCommentModal.jsp" %>
 			
+			<!-- 투표의 대댓글 작성 모달창 -->
+			<%@include file="../modal/writeSubcommentModal.jsp" %>
 		</main>
 		
 		<%@include file="../common/footer.jsp" %>

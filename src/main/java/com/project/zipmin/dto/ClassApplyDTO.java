@@ -11,11 +11,11 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ClassApplyDTO {
 	private int id;
-	private int userId;
-	// private String  신청동기
-	// 질문
-	private int classId;
+	private String user_id;
+	private int class_id;
 	private Date applydate;
-	// 출석 여부 결석 여부????
-	// 승인 여부??
+	private String motivate;
+	private String question;
+	private int attend;
 }
+

@@ -157,10 +157,38 @@
 	margin-bottom: 24px;
 }
 
-#container .class_content .class_info .intro_wrap .intro + .intro {
-    margin-top: 24px;
+#container .class_content .class_info .intro_wrap .target h4 {
+	font-size: 18px;
+	line-height: 26px;
+	letter-spacing: -0.4px;
+	font-weight: 700;
+	margin-bottom: 16px;
 }
 
+#container .class_content .class_info .intro_wrap .target p {
+	font-size: 16px;
+	line-height: 28px;
+	letter-spacing: -0.4px;
+	font-weight: 400;
+	padding-left: 12px;
+	position: relative;
+}
+
+#container .class_content .class_info .intro_wrap .target p::before {
+	content: '';
+	position: absolute;
+	top: 13px;
+	left: 0;
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
+	background-color: var(--txt-color-600);
+	transform: translateY(-50%);
+}
+
+#container .class_content .class_info .intro_wrap .intro {
+    margin-top: 24px;
+}
 
 #container .class_content .class_info .intro_wrap .intro h4 {
 	font-size: 18px;
@@ -175,20 +203,6 @@
 	line-height: 28px;
 	letter-spacing: -0.4px;
 	font-weight: 400;
-	padding-left: 12px;
-	position: relative;
-}
-
-#container .class_content .class_info .intro_wrap .intro p::before {
-	content: '';
-	position: absolute;
-	top: 13px;
-	left: 0;
-	width: 4px;
-	height: 4px;
-	border-radius: 50%;
-	background-color: var(--txt-color-600);
-	transform: translateY(-50%);
 }
 
 /* 클래스 정보 (커리큘럼) */
@@ -294,7 +308,7 @@
 	width: 100%;
 	margin: 12px 0;
 	display: inline-flex;
-	align-items: flex-start;
+	align-items: center;
 	align-content: flex-start;
 	flex-wrap: wrap;
 	box-sizing: border-box;
@@ -338,42 +352,6 @@
 	overflow: hidden;
 	margin-top: 4px;
 	color: var(--txt-color-600);
-}
-
-#container .class_content .class_info .lecturer_wrap .lecturer .profile .more {
-	display: flex;
-	align-items: center;
-	font-size: 12px;
-	line-height: 20px;
-	letter-spacing: -0.2px;
-	font-weight: 500;
-	min-width: 0;
-	margin-left: -4px;
-	padding: 0 4px;
-	background: none;
-	border: none;
-	margin-top: 16px;
-}
-
-#container .class_content .class_info .lecturer_wrap .lecturer .profile .more span {
-	position: relative;
-	margin: 0 2px;
-	color: var(--txt-color-500);
-}
-
-#container .class_content .class_info .lecturer_wrap .lecturer .profile .more span::after {
-	content: '';
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 1px;
-	height: 1px;
-	background: var(--txt-color-500);
-}
-
-#container .class_content .class_info .lecturer_wrap .lecturer .profile .more img {
-	width: 16px;
-	height: 16px;
 }
 
 /* 클래스 정보 (공지사항) */

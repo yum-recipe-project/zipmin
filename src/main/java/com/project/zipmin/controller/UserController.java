@@ -130,24 +130,20 @@ public class UserController {
 		return null;
 	}
 	
-	
-	
-	// 특정 사용자의 참가 지원
-	@PostMapping("/classes/{classId}/apply")
-	public int applyClass(
-			@PathVariable("userId") String userId,
-			@PathVariable int classId) {
+	// 사용자의 클래스 결석 횟수 조회
+	@GetMapping("/{userId}/applies/count")
+	public int countApply(
+			@PathVariable("userId") String userId) {
 		return 0;
 	}
 	
 	
 	
-	// 특정 사용자의 참가 지원 취소
-	@DeleteMapping("/{userId}/classes/classId/apply")
-	public int cancelApplyClass() {
-		return 0;
-	}
 	
+	
+	
+
+
 	
 	
 	// 로그인 한 사용자가 받은 후원 조회

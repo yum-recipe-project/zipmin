@@ -31,18 +31,6 @@
 	margin-bottom: 40px;
 }
 
-#container .content .class_wrap .class_header .tab {
-	flex-wrap: wrap;
-	height: auto;
-	margin: -2px;
-	padding: 12px 0;
-}
-
-#container .content .class_wrap .class_header .tab a {
-	margin: 4px;
-}
-
-
 
 
 /* 내용 */

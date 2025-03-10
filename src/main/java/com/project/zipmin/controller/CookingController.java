@@ -30,35 +30,27 @@ public class CookingController {
 	public List<ClassDTO> listClass() {
 		return null;
 	}
-	
-	
-	
+
 	// 특정 클래스 조회
 	@GetMapping("/{classId}")
 	public ClassDTO viewClass(
 			@PathVariable("classId") int classId) {
 		return null;
 	}
-	
-	
-	
+
 	// 새 클래스 신청
 	@PostMapping("")
 	public int writeClass() {
 		return 0;
 	}
-	
-	
-	
+
 	// 클래스 승인 및 거절 (관리자)
 	@PatchMapping("/{classId}/status")
 	public int updateClassStatus(
 			@PathVariable("classId") int classId) {
 		return 0;
 	}
-	
-	
-	
+
 	// 특정 클래스 수정 (관리자)
 	@PutMapping("/{classId}")
 	public int editClass(
@@ -66,9 +58,7 @@ public class CookingController {
 		// 구현 안할듯
 		return 0;
 	}
-	
-	
-	
+
 	// 특정 클래스 삭제 (관리자)
 	@DeleteMapping("/{classId}")
 	public int deleteGuide(
@@ -85,18 +75,14 @@ public class CookingController {
 		// 필요에 따라선 클래스 조회에서 일정 목록을 한번에 조회하게 될 수도 있음
 		return null;
 	}
-	
-	
-	
+
 	// 특정 클래스의 일정 추가
 	@PostMapping("/{classId}/schedules")
 	public int writeSchedule(
 			@PathVariable("classId") int classId) {
 		return 0;
 	}
-	
-	
-	
+
 	// 특정 클래스의 일정 수정
 	@PutMapping("/{classId}/schedules")
 	public int editSchedule(
@@ -104,9 +90,7 @@ public class CookingController {
 		// 필요 없을수도있음
 		return 0;
 	}
-	
-	
-	
+
 	// 특정 클래스의 일정 삭제
 	@DeleteMapping("/{classId}/schedules")
 	public int deleteSchedule(
@@ -124,18 +108,14 @@ public class CookingController {
 		// 필요에 따라선 클래스 조회에서 일정 목록을 한번에 조회하게 될 수도 있음
 		return null;
 	}
-	
-	
-	
+
 	// 특정 클래스의 강사 추가
 	@PostMapping("/{classId}/teacher")
 	public int writeTeacher(
 			@PathVariable("classId") int classId) {
 		return 0;
 	}
-	
-	
-	
+
 	// 특정 클래스의 강사 수정
 	@PutMapping("/{classId}/teacher")
 	public int editTeacher(
@@ -143,9 +123,7 @@ public class CookingController {
 		// 필요 없을수도있음
 		return 0;
 	}
-	
-	
-	
+
 	// 특정 클래스의 강사 삭제
 	@DeleteMapping("/{classId}/teacher")
 	public int deleteTeacher(
@@ -157,22 +135,30 @@ public class CookingController {
 	
 	
 	// 특정 클래스의 신청서 목록 조회
-	@GetMapping("/{classId}/applications")
+	@GetMapping("/{classId}/applies")
 	public List<ClassApplyDTO> listClassApply(
 			@PathVariable("classId") int classId) {
 		return null;
 	}
 	
+	// 특정 클래스에 참가 신청
+	@PostMapping("/{classId}/applies")
+	public int applyClass(
+			@PathVariable("classId") int classId) {
+		return 0;
+	}
 	
+	// 특정 클래스에 참가 신청 취소
+	@DeleteMapping("/{classId}/applies")
+	public int cancelApplyClass(
+			@PathVariable("classId") int classId) {
+		return 0;
+	}
 	
-	// 출석
-	// @PatchMapping("/{classId}/applies/{applyId}")
-	
-	
-	
-	// 3번 이상 결석했는지 확인
-	
-
-	
-
+	// 특정 클래스 출석
+	@PatchMapping("/{classId}/applies/{applyId}")
+	public int attendClass(
+			@PathVariable("classId") int classId) {
+		return 0;
+	}
 }

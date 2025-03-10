@@ -17,7 +17,6 @@ public class ClassDTO {
 	private Date eventdate;
 	private String starttime;
 	private String endtime;
-	private String content;
 	private int headcount;
 	private String need;
 	private String imageUrl;

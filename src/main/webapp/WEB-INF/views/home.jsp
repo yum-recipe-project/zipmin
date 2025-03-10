@@ -253,10 +253,6 @@
 				<button onclick="location.href='/user/verifyPassword.do';">비밀번호 확인</button>
 				<br/><br/>
 				
-				<h2>키친가이드</h2>
-				<button onclick="location.href='/kitchen/viewGuide.do';">키친가이드 상세</button>
-				<br/><br/>
-				
 				<h2>마이페이지</h2>
 				<button onclick="location.href='/mypage/profile.do';">프로필</button>
 				<br/><br/>

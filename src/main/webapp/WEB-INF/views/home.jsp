@@ -257,14 +257,6 @@
 				<button onclick="location.href='/mypage/profile.do';">프로필</button>
 				<br/><br/>
 				
-				<h2>쩝쩝박사</h2>
-				<button onclick="location.href='/chompessor/viewEvent.do';">이벤트</button>
-				<br/><br/>
-				
-				<h2>홈</h2>
-				<button onclick="location.href='/homeDemo.do';">홈 작업화면</button>
-				<br/><br/>
-				
 			</div>
 		</main>
 		

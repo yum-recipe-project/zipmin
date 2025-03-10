@@ -56,7 +56,7 @@
 											<img src="/images/common/test.png">
 										</div>
 										<div class="forum_info">
-											<p class="type">아이스크림</p>
+											<p class="type">투표</p>
 											<h5>당신의 녹차 아이스크림에 투표하세요</h5>
 											<div class="info">
 												<p class="ing_flag">모집중</p>
@@ -72,7 +72,22 @@
 											<img src="/images/common/test.png">
 										</div>
 										<div class="forum_info">
-											<p class="type">아이스크림</p>
+											<p class="type">정보</p>
+											<h5>당신의 녹차 아이스크림에 투표하세요</h5>
+											<div class="info">
+												<p class="end_flag">마감</p>
+												<p class="date">2025.03.04 - 2025.04.03</p>
+											</div>
+										</div>
+									</a>
+								</li>
+								<li class="forum">
+									<a href="/chompessor/viewEvent.do">
+										<div class="forum_thumbnail">
+											<img src="/images/common/test.png">
+										</div>
+										<div class="forum_info">
+											<p class="type">이벤트</p>
 											<h5>당신의 녹차 아이스크림에 투표하세요</h5>
 											<div class="info">
 												<p class="end_flag">마감</p>

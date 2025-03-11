@@ -17,10 +17,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (nickNameField.classList.contains("hidden")) {
                 nickNameState.textContent = "취소";
-                nickNameIcon.src = "/images/member/cancel_modify.png";
+                nickNameIcon.src = "/images/user/cancel_modify.png";
             } else {
                 nickNameState.textContent = "수정";
-                nickNameIcon.src = "/images/member/modify_member.png"; 
+                nickNameIcon.src = "/images/user/modify_member.png"; 
             }
         });
     }
@@ -42,10 +42,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (comment.classList.contains("hidden")) {
                 commentState.textContent = "취소";
-                commentIcon.src = "/images/member/cancel_modify.png";
+                commentIcon.src = "/images/user/cancel_modify.png";
             } else {
                 commentState.textContent = "수정";
-                commentIcon.src = "/images/member/modify_member.png"; 
+                commentIcon.src = "/images/user/modify_member.png"; 
             }
         });
     }

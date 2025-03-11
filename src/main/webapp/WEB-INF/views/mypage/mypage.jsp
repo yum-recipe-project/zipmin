@@ -8,6 +8,7 @@
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/mypage/mypage.css">
 		<script src="/js/mypage/mypage.js"></script>
+		<script src="/js/modal/top-up-point-modal.js"></script>
 	</head>
 	<body>
 		<%@include file="../common/header.jsp" %>
@@ -109,6 +110,11 @@
 									</div>
 									
 									
+								</div>
+								
+								<div class="point_field">
+									<span>500P</span>
+									<button class="btn_primary" type="button" data-bs-toggle="modal" data-bs-target="#topUpPointModal" onclick="">충전</button>
 								</div>
 								
 							</div>
@@ -239,6 +245,11 @@
 					
 				</div>
 			</div>
+			
+			<!-- 포인트 충전 -->
+			<%@include file="../modal/topUpPointModal.jsp" %>
+			
+			
 		</main>
 		
 		<%@include file="../common/footer.jsp" %>

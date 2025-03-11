@@ -75,6 +75,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	updatePaginationState();
 
+	// 가이드 찜 
+	document.querySelectorAll(".favorite_btn").forEach(button => {
+	    button.addEventListener("click", function(event) {
+	        event.stopPropagation();
+	        event.preventDefault(); 
+	        
+	        this.classList.toggle("active");
+	    });
+	});
+
 	
 	
 	

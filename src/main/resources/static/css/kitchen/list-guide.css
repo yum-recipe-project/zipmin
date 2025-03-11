@@ -115,6 +115,7 @@
     background-size: cover;
     border: none;
     cursor: pointer;
+    z-index: 999;
 }
 
 #container .content .guide_content .guide_list .guide_item .guide_details .guide_top .favorite_btn.active {

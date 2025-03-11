@@ -48,7 +48,13 @@
 					<div class="recipe_util">
 						<p class="total">23개</p>
 						<div class="sort_wrap">
-							<button class="btn_sort follow_filter">팔로우만 보기</button>
+							<div class="follower_btn">
+								<button class="btn_sort">팔로우만 보기</button>
+								<label class="toggle-switch follow_filter">
+								    <input type="checkbox">
+								    <span class="slider"></span>
+								</label>
+							</div>
 							<div class="recipe_sort">
 								<button class="btn_sort active">추천순</button>
 								<button class="btn_sort">최신순</button>

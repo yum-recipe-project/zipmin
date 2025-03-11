@@ -82,8 +82,14 @@
 
 #container .content .recipe_content .sort_wrap {
 	display: flex;
-	gap: 25px;
+	gap: 30px;
 }
+#container .content .recipe_content .follower_btn {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+}
+
 #container .content .recipe_content .sort_wrap .recipe_sort {
 	display: flex;
 	gap: 16px;
@@ -97,7 +103,7 @@
     content: "";
     position: absolute;
     top: 50%;
-    right: -10px;
+    right: -15px;
     width: 2px;
     height: 12px;
     background-color: var(--txt-color-500);
@@ -106,6 +112,60 @@
 #container .content .recipe_content .recipe_util .follow_filter.active {
     color: var(--txt-color-600);
 }
+
+
+/* 팔로워 버튼 */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+/* 슬라이더 내부 원 */
+.slider::before {
+    content: "";
+    position: absolute;
+    height: 14px;
+    width: 14px; 
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.toggle-switch input:checked + .slider {
+    background-color: var(--point-color2);
+}
+
+.toggle-switch input:checked + .slider::before {
+    transform: translateX(20px);
+}
+
+
+
+
+
+
 
 
 

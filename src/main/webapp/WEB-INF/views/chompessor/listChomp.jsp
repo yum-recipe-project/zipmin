@@ -23,13 +23,13 @@
 							<span>전체</span>
 						</a>
 						<a class="btn_tab" href="">
-							<span>아이스크림</span>
+							<span>투표</span>
 						</a>
 						<a class="btn_tab" href="">
-							<span>과자</span>
+							<span>정보</span>
 						</a>
 						<a class="btn_tab" href="">
-							<span>음료</span>
+							<span>이벤트</span>
 						</a>
 					</div>
 				</div>

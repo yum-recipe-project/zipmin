@@ -291,9 +291,10 @@
 						<table class="ingredient_list">
 						    <thead>
 						        <tr>
-						            <th width="452px">재료</th>
+						            <th width="330px">재료</th>
 						            <th width="216px">용량</th>
 						            <th width="216px">소비기한</th>
+						            <th width="122px">종류</th>
 						            <th width="60px"></th>
 						        </tr>
 						    </thead>
@@ -302,6 +303,7 @@
 						            <td>마라탕 소스</td>
 						            <td>100g</td>
 						            <td>2025.01.02</td>
+						            <td>육류</td>
 						            <td>
 						            	<button class="delete_btn">
 						            		<img src="/images/fridge/close.png">
@@ -312,6 +314,7 @@
 						            <td>상하이 목장 치즈</td>
 						            <td>10ea</td>
 						            <td>2025.01.02</td>
+						            <td>채소류</td>
 						             <td>
 						            	<button class="delete_btn">
 						            		<img src="/images/fridge/close.png">
@@ -322,6 +325,7 @@
 						            <td>제로콜라</td>
 						            <td>2L</td>
 						            <td>2025.01.02</td>
+						            <td>소스류</td>
 						             <td>
 						            	<button class="delete_btn">
 						            		<img src="/images/fridge/close.png">

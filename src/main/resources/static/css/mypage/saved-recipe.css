@@ -135,14 +135,14 @@
 #container .content .recipe_wrap .recipe_top .favorite_btn {
     width: 17px;
     height: 17px;
-    background-image: url('/images/recipe/star_empty.png');
+    background-image: url('/images/recipe/star_full.png');
     background-color: #fff;
     background-size: cover;
     border: none;
     cursor: pointer;
 }
 #container .content .recipe_wrap .recipe_top .favorite_btn.active {
-    background-image: url('/images/recipe/star_full.png');
+    background-image: url('/images/recipe/star_empty.png');
 }
 
 

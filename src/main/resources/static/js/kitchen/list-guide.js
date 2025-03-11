@@ -3,7 +3,9 @@
  */
 document.addEventListener('DOMContentLoaded', function() {
 	
-	// 페이지네이션 클릭
+	/**
+	 * 페이지네이션 
+	 */
 	document.querySelectorAll('.pagination .page').forEach(page => {
 	    page.addEventListener('click', function(e) {
 	        e.preventDefault(); 
@@ -21,7 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	    });
 	});
 
-	// prev/next 버튼 클릭 이벤트
+	/**
+	 * 페이지네이션 - rev/next 버튼 클릭 
+	 */
 	document.querySelector('.pagination .prev').addEventListener('click', function(e) {
 	    e.preventDefault();
 	    
@@ -36,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 	    updatePaginationState();
 	});
-
+	
 	document.querySelector('.pagination .next').addEventListener('click', function(e) {
 	    e.preventDefault();
 
@@ -52,7 +56,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	    updatePaginationState();
 	});
 
-	// prev/next 버튼 비활성화 상태 업데이트 함수
+	/**
+	 * 페이지네이션 - prev/next 버튼 비활성화 상태 업데이트 함수
+	 */
 	function updatePaginationState() {
 	    const pages = document.querySelectorAll('.pagination .page');
 	    const prevButton = document.querySelector('.pagination .prev');
@@ -75,7 +81,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	updatePaginationState();
 
-	// 가이드 찜 
+	/**
+	 * 가이드 찜
+	 */
 	document.querySelectorAll(".favorite_btn").forEach(button => {
 	    button.addEventListener("click", function(event) {
 	        event.stopPropagation();
@@ -84,13 +92,21 @@ document.addEventListener('DOMContentLoaded', function() {
 	        this.classList.toggle("active");
 	    });
 	});
+	
+	
+	/**
+	 * 카테고리 선택 
+	 */	
+	const tabs = document.querySelectorAll(".btn_tab");
 
-	
-	
-	
-	
-	
-	
+	tabs.forEach(tab => {
+	    tab.addEventListener("click", function(event) {
+	        event.preventDefault();
 
+	        document.querySelector(".btn_tab.active")?.classList.remove("active");
+
+	        this.classList.add("active");
+	    });
+	});
 
 });

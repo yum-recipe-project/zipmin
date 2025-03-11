@@ -37,8 +37,8 @@
 						<!-- 게시글 진행상태 -->
 						<ul class="recipe_tap">
 							<li class="all active">전체</li>
-							<li class="completed">작성완료</li>
-							<li class="temporary">임시저장</li>
+							<li class="latest ">최신순</li>
+							<li class="like">추천순</li>
 						</ul>
 					</div>
 					
@@ -207,12 +207,12 @@
 					    	</ul>
 					    </div>
 					    
-					    <div class="recipe_content completed">
-					        <p>작성완료 게시글 내용</p>
+					    <div class="recipe_content latest">
+					        <p>최신순 게시글 내용</p>
 					    </div>
 					    
-					    <div class="recipe_content temporary">
-					        <p>임시저장 게시글 내용</p>
+					    <div class="recipe_content like">
+					        <p>추천순 게시글 내용</p>
 					    </div>
 					    
 					</div>

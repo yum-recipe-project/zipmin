@@ -33,8 +33,8 @@
 								</button>
 								
 								<div class="follow_txt">
-									<span>팔로워</span>
-									<span>팔로잉</span>
+									<a href="/mypage/follower.do">팔로워</a>
+									<a href="/mypage/following.do">팔로잉</a>
 								</div>
 								
 							</div>

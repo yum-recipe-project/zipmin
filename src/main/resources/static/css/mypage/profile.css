@@ -78,13 +78,13 @@
 	gap: 11px;
 }
 
-#container .content .profile_wrap .info_wrap .info_inner .profile .follow_txt span {
+#container .content .profile_wrap .info_wrap .info_inner .profile .follow_txt a {
 	position: relative;
 	color: var(--point-color1);
 	font-size: 12px;
 }
 
-#container .content .profile_wrap .info_wrap .info_inner .profile .follow_txt span:first-child::after {
+#container .content .profile_wrap .info_wrap .info_inner .profile .follow_txt a:first-child::after {
 	content: "";
     position: absolute;
     top: 50%;

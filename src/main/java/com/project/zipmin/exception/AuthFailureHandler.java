@@ -34,24 +34,26 @@ public class AuthFailureHandler implements AuthenticationFailureHandler {
 		}
 		// 인증 요구가 거부됐을 때의 예외
 		else if (exception instanceof AuthenticationCredentialsNotFoundException) {
-			
+			System.err.println("에러남");
 		}
 		// 인증 거부 - 잠긴 계정
 		else if (exception instanceof LockedException) {
-			
+			System.err.println("에러남");
 		}
 		// 인증 거부 - 계정 비활성화
 		else if (exception instanceof DisabledException) {
-			
+			System.err.println("에러남");
 		}
 		// 인증 거부 - 계정 유효기간 만료
 		else if (exception instanceof AccountExpiredException) {
-			
+			System.err.println("에러남");
 		}
 		// 인증 거부 - 비밀번호 유효기간 만료
 		else if (exception instanceof CredentialsExpiredException) {
-			
+			System.err.println("에러남");
 		}
+		
+		request.getRequestDispatcher("/user/login.do").forward(request, response);
 	}
 	
 	// 로그인 실패 횟수 카운트

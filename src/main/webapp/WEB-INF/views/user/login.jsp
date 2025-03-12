@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="s" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -20,6 +21,10 @@
 							<h2>통합로그인</h2>
 						</div>
 					</div>
+					
+					<s:authorize access="hasRole('ADMIN')">
+						로그인 아이디 : <s:authentication property="name" />
+					</s:authorize>
 					
 					<!--  폼 -->
 					<form method="post">

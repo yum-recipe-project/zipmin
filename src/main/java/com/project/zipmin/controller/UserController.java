@@ -24,15 +24,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping("/users")
 @Tag(name = "Example Controller", description = "This is an example controller")
 public class UserController {
 	
 	@Autowired
-	UserService memberDAO;
+	UserService userDAO;
 
 	// 사용자 목록 조회 (관리자)
-	@GetMapping("")
+	@GetMapping("/users")
 	@Operation(summary = "사용자 목록 조회", description = "모든 사용자의 목록을 조회하는 메서드입니다.",
 		parameters = {
 				@Parameter(in = ParameterIn.HEADER, name = "test", description = "테스트", required = true, example = "테스트임")
@@ -41,11 +40,13 @@ public class UserController {
 			@ApiResponse(responseCode = "200", description = "조회 성공")
 	})
 	public List<UserDTO> listMember() {
-		return null;
+		List<UserDTO> userList = userDAO.getUserList();
+		System.err.println(userList);
+		return userList;
 	}
 	
 	// 특정 사용자 조회
-	@GetMapping("/{userId}")
+	@GetMapping("/users/{userId}")
 	public UserDTO viewMember(@PathVariable("userId") String id) {
 		// 프로필 넣말
 		return null;
@@ -54,7 +55,7 @@ public class UserController {
 	
 	
 	// 사용자 생성
-	@PostMapping("")
+	@PostMapping("/users")
 	public int addMember() {
 		return 0;
 	}
@@ -62,7 +63,7 @@ public class UserController {
 	
 	
 	// 사용자 정보 수정
-	@PutMapping("/{userId}")
+	@PutMapping("/users/{userId}")
 	public int editMember(@PathVariable("userId") String id) {
 		return 0;
 	}
@@ -70,19 +71,23 @@ public class UserController {
 	
 	
 	// 사용자 삭제
-	@DeleteMapping("/{userId}")
+	@DeleteMapping("/users/{userId}")
 	public int deleteMember(@PathVariable("userId") String id) {
 		return 0;
 	}
 	
 	
+	@PostMapping("/login")
+	public int login() {
+		return 0;
+	}
 	
 	
 	// ==============
 	
 	
 	// 팔로워 목록
-	@GetMapping("/{userId}/followers")
+	@GetMapping("/users/{userId}/followers")
 	public List<UserDTO> listFollowers() {
 		return null;
 	}
@@ -90,7 +95,7 @@ public class UserController {
 	
 	
 	// 팔로잉 목록
-	@GetMapping("/{userId}/following")
+	@GetMapping("/users/{userId}/following")
 	public List<UserDTO> listFollowing() {
 		return null;
 	}
@@ -98,7 +103,7 @@ public class UserController {
 	
 	
 	// 로그인 한 사용자가 특정 사용자를 팔로우하고 있는지 확인
-	@GetMapping("/{userId}/following/{targetId}")
+	@GetMapping("/users/{userId}/following/{targetId}")
 	public boolean checkUserFollow() {
 		return false;
 	}
@@ -107,7 +112,7 @@ public class UserController {
 	
 	
 	// 로그인 한 사용자의 레시피 좋아요 여부
-	@GetMapping("/{userId}/likes/{tablename}/{recodenum}")
+	@GetMapping("/users/{userId}/likes/{tablename}/{recodenum}")
 	public boolean checkUserLike(
 	        @PathVariable("userId") String userId,
 	        @PathVariable("tablename") String tablename,
@@ -119,7 +124,7 @@ public class UserController {
 	
 	
 	// 좋아요 및 팔로우
-	@PostMapping("/{userId}/likes/{tablename}/{recodenum}")
+	@PostMapping("/users/{userId}/likes/{tablename}/{recodenum}")
 	public int like() {
 		return 0;
 	}

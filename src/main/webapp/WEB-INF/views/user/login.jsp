@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="s" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -21,14 +22,18 @@
 						</div>
 					</div>
 					
+					<s:authorize access="hasRole('ADMIN')">
+						로그인 아이디 : <s:authentication property="name" />
+					</s:authorize>
+					
 					<!--  폼 -->
-					<form>
+					<form method="post">
 						<div class="id_field">
-							<input type="text" id="idInput" name="" value="" placeholder="아이디">
+							<input type="text" id="idInput" name="id" value="" placeholder="아이디">
 							<p id="idHint">아이디를 입력해주세요.</p>
 						</div>
 						<div class="password_field">
-							<input type="password" id="passwordInput" name="" value="" placeholder="비밀번호">
+							<input type="password" id="passwordInput" name="password" value="" placeholder="비밀번호">
 							<p id="passwordHint">비밀번호를 입력해주세요.</p>
 						</div>
 						<h6 class="alert">

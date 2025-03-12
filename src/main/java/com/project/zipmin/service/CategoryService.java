@@ -20,5 +20,4 @@ public interface CategoryService {
 	
 	// 카테고리 삭제
 	public int deleteCategory(int category_idx);
-	
 }

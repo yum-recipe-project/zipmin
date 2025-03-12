@@ -1,0 +1,118 @@
+@charset "UTF-8";
+
+#container .content {
+	margin: 0px auto;
+	padding: 0 108px;
+	width: 1160px;
+	padding-bottom: 80px;
+}
+
+
+
+/* 포럼 */
+#container .content .forum_wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	margin-top: 40px;
+	margin-bottom: 80px;
+}
+
+/* 포럼 (헤더) */
+#container .content .forum_wrap .forum_header span {
+	color: var(--txt-color-500);
+	font-weight: 400;
+	line-height: 1.4;
+	letter-spacing: -0.02em;
+	font-size: 14px;
+}
+
+#container .content .forum_wrap .forum_header h2 {
+	margin-top: 8px;
+	font-weight: 700;
+	line-height: 1.5;
+	letter-spacing: -0.03em;
+	font-size: 32px;
+}
+
+/* 포럼 (헤더 - 정보) */
+#container .content .forum_wrap .forum_header .forum_info {
+	margin-top: 8px;
+	display: flex;
+	gap: 4px;
+	align-items: center;
+}
+
+#container .content .forum_wrap .forum_header .forum_info .period {
+	background: #000;
+	border-radius: 30px;
+	padding: 4px 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-right: 8px;
+}
+
+#container .content .forum_wrap .forum_header .forum_info .period span {
+	white-space: pre-wrap;
+	font-size: 12px;
+	color: #FFF;
+	line-height: 16px;
+}
+
+/* 포럼 (내용) */
+#container .forum_checkbox_wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+#container .forum_checkbox_wrap input[type='checkbox'] + label {
+	display: flex;
+	width: 100%;
+	border-radius: 4px;
+	padding: 16px 8px 16px 16px;
+	border: 1px solid var(--line-color2);
+	letter-spacing: -0.4px;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: -0.4px;
+}
+
+#container .forum_checkbox_wrap input[type='checkbox'].disable + label {
+	color: #B1B3B5;
+}
+
+#container .forum_checkbox_wrap input[type='checkbox']:checked + label {
+	border: 1px solid var(--point-color2);
+	background: #F3F8FF;
+}
+
+#container .forum_checkbox_wrap input[type='checkbox'] + label::before {
+	content: '';
+	width: 18px;
+	height: 18px;
+	background: url(/images/chompessor/check.png);
+	background-size: cover;
+	vertical-align: middle;
+	border: none;
+}
+
+#container .forum_checkbox_wrap input[type='checkbox']:checked + label::after {
+	content: '';
+	position: absolute;
+	left: 16px;
+	top: 50%;
+	transform: translateY(-55%);
+	width:18px;
+	height: 18px;
+	border: none;
+	background: url('/images/chompessor/check_blue.png') no-repeat center / 100%;
+}
+
+/* 포럼 (내용 - 버튼) */
+#container .forum_content .btn_wrap {
+	margin-top: 16px;
+	margin-left: auto;
+}
+

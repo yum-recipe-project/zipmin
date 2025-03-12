@@ -1,0 +1,227 @@
+@charset "UTF-8";
+
+#container .content {
+	margin: 0px auto;
+	padding: 0 108px;
+	width: 1160px;
+}
+
+
+
+/* 냉장고 헤더 */
+#container .content .fridge_wrap .fridge_header {
+	margin: 0px auto;
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	box-sizing: border-box;
+	padding: 40px 0;
+}
+
+#container .content .fridge_wrap .fridge_header h2 {
+	font-weight: 700;
+	line-height: 1.5;
+	letter-spacing: -0.03em;
+	font-size: 32px;
+}
+
+
+
+/* 냉장고 */
+#container .content .fridge_wrap .fridge_content .fridge {
+	width: 100%;
+}
+
+#container .content .fridge_wrap .fridge_content .fridge .ingredient_swiper {
+	display: flex;
+	gap: 30px;
+	margin-bottom: 20px;
+}
+#container .content .fridge_wrap .fridge_content .fridge .category,
+#container .content .fridge_wrap .fridge_content .fridge .ingredient {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	align-items: center;
+}
+
+#container .content .fridge_wrap .fridge_content .fridge .ingredient {
+	gap: 0;
+}
+
+#container .content .fridge_wrap .fridge_content .fridge .category .ingredient_img,
+#container .content .fridge_wrap .fridge_content .fridge .ingredient .ingredient_img {
+	background: #f1f6fd;
+	height: 136px;
+	width: 136px;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid var(--line-color3);
+}
+#container .content .fridge_wrap .fridge_content .fridge .ingredient .ingredient_img {
+	background: none;
+	margin-bottom: 10px;
+}
+
+#container .content .fridge_wrap .fridge_content .fridge .category .ingredient_img img,
+#container .content .fridge_wrap .fridge_content .fridge .ingredient .ingredient_img img {
+	height: 70px;
+	width: 70px;
+}
+
+#container .content .fridge_wrap .fridge_content .fridge .category span {
+	font-size: 20px;
+	font-weight: 700;
+	color: var(--txt-color-600);
+}
+
+#container .content .fridge_wrap .fridge_content .fridge .ingredient span {
+	font-size: 14px;
+	line-height: 1.2;
+}
+#container .content .fridge_wrap .fridge_content .fridge .ingredient p {
+	font-size: 12px;	
+	font-weight: 300;
+}
+
+
+.swiper {
+    flex: 1;
+}
+.swiper-slide {
+	height: 180px;
+	width: 136px;
+}
+
+
+/* 냉장고 (버튼) */
+.btn_primary {
+	width: 100%;
+	margin-top: 30px;
+	margin-bottom: 20px;
+}
+
+
+
+/* 냉장고 (재료 표) */
+#container .content .fridge_wrap .fridge_content .ingredient_list thead th {
+	text-align: left;
+	background: #F9F9F9;
+	padding: 16px;
+	height: 50px;
+	border-bottom: 1px solid var(--line-color2);
+	font-size: 14px;
+}
+
+#container .content .fridge_wrap .fridge_content .ingredient_list tbody tr {
+	height: 50px;
+	border-bottom: 1px solid var(--line-color2);
+	font-size: 14px;
+}
+
+#container .content .fridge_wrap .fridge_content .ingredient_list tbody tr td {
+	padding: 16px;
+}
+
+#container .content .fridge_wrap .fridge_content .ingredient_list .delete_btn {
+	background: none;
+	border: none;
+	width:25px;
+	height: 25px;
+}
+
+
+
+
+/* 냉장고 파먹기 */
+#container .content .clear_wrap {
+	margin: 80px 0;
+}
+#container .content .clear_wrap .clear_header {
+	margin: 0px auto;
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	box-sizing: border-box;
+	padding: 40px 0;
+}
+
+#container .content .clear_wrap .clear_header h2 {
+	font-weight: 700;
+	line-height: 1.5;
+	letter-spacing: -0.03em;
+	font-size: 32px;
+}
+
+
+
+/* 냉장고 파먹기 (레시피 추천) */
+#container .content .clear_wrap .clear_content .clear_recipe {
+	padding: 14px;
+	width: 100%;
+	height: auto;  
+	background: #F4F8FE;
+	border-radius: 4px;
+}
+
+#container .content .clear_wrap .clear_content .clear_recipe .pick {
+	font-size: 16px;
+	line-height: 26px;
+	letter-spacing: -0.4px;
+	font-weight: 700;
+	margin-bottom: 16px;
+}
+
+#container .content .clear_wrap .clear_content .clear_recipe ul {
+	display: flex;
+	flex-wrap: wrap;  
+	padding: 0;  
+	margin: 0;  
+	gap: 13px; 
+	list-style: none;
+}
+
+#container .content .clear_wrap .clear_content .clear_recipe li {
+	width: calc(50% - 6.5px);  
+	padding: 0;
+}
+
+#container .content .clear_wrap .clear_content .clear_recipe .recipe {
+	padding: 15px;
+	display: flex;
+	background: #fff;
+	border: 1px solid var(--line-color2);
+	border-radius: 4px;
+	width: 100%;  
+	height: 50px;
+	align-items: center;
+	gap: 10px;
+}
+
+#container .content .clear_wrap .clear_content .clear_recipe .recipe span {
+	font-weight: 700;
+}
+
+#container .content .clear_wrap .clear_content .clear_recipe .recipe .flag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 24px;
+    padding: 0 8px;
+    background: #FF4032;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #fff;
+    line-height: 0;
+    letter-spacing: -.2px;
+}
+
+
+
+
+    
+

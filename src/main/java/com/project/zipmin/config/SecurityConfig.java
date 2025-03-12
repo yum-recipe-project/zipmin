@@ -1,5 +1,6 @@
 package com.project.zipmin.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,6 +24,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 	
+	@Autowired
+	public AuthFailureHandler authFailureHandler;
+	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf((crsf) -> crsf.disable())
@@ -43,7 +47,7 @@ public class SecurityConfig {
 				// .loginProcessingUrl("")
 				.successHandler(new SavedRequestAwareAuthenticationSuccessHandler())
 				// .defaultSuccessUrl("/", false)
-				// .failureHandler(AuthFailureHandler)
+				.failureHandler(authFailureHandler)
 				.usernameParameter("id")
 				.passwordParameter("password")
 				.permitAll());

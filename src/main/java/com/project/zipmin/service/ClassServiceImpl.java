@@ -3,6 +3,6 @@ package com.project.zipmin.service;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface IClassService {
+public class ClassServiceImpl implements ClassService {
 
 }

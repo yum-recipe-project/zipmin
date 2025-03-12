@@ -1,11 +1,9 @@
-package com.project.zipmin.service.impl;
+package com.project.zipmin.service;
 
 import org.springframework.stereotype.Service;
 
-import com.project.zipmin.service.ILikeService;
-
 @Service
-public class LikeServiceImpl implements ILikeService {
+public class LikeServiceImpl implements LikeService {
 
 	@Override
 	public int selectLikeCountByTable(String tablename, int recodenum) {

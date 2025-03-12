@@ -1,4 +1,4 @@
-package com.project.zipmin.service.impl;
+package com.project.zipmin.service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -8,10 +8,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.dto.ReviewDTO;
-import com.project.zipmin.service.IReviewService;
 
 @Service
-public class ReviewServiceImpl implements IReviewService {
+public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public List<ReviewDTO> selectReviewListByRecipeIdxSortNew(int recipeIdx) {

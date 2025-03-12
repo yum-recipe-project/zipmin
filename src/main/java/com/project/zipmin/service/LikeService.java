@@ -3,7 +3,7 @@ package com.project.zipmin.service;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface ILikeService {
+public interface LikeService {
 	
 	// 테이블 이름과 일련번호를 이용해 좋아요 수 조회
 	public int selectLikeCountByTable(String tablename, int recodenum);

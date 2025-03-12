@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.zipmin.dto.ClassDTO;
 import com.project.zipmin.dto.FundDTO;
 import com.project.zipmin.dto.UserDTO;
-import com.project.zipmin.service.IUserService;
+import com.project.zipmin.service.UserService;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 	
 	@Autowired
-	IUserService memberDAO;
+	UserService memberDAO;
 
 	// 사용자 목록 조회 (관리자)
 	@GetMapping("")

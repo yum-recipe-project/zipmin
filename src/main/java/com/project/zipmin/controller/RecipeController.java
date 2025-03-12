@@ -18,14 +18,14 @@ import com.project.zipmin.dto.RecipeDTO;
 import com.project.zipmin.dto.ReviewDTO;
 import com.project.zipmin.dto.RecipeStepDTO;
 import com.project.zipmin.dto.UserDTO;
-import com.project.zipmin.service.ICategoryService;
-import com.project.zipmin.service.ICommentService;
-import com.project.zipmin.service.IIngredientService;
-import com.project.zipmin.service.ILikeService;
-import com.project.zipmin.service.IRecipeService;
-import com.project.zipmin.service.IReportService;
-import com.project.zipmin.service.IReviewService;
-import com.project.zipmin.service.IUserService;
+import com.project.zipmin.service.CategoryService;
+import com.project.zipmin.service.CommentService;
+import com.project.zipmin.service.IngredientService;
+import com.project.zipmin.service.LikeService;
+import com.project.zipmin.service.RecipeService;
+import com.project.zipmin.service.ReportService;
+import com.project.zipmin.service.ReviewService;
+import com.project.zipmin.service.UserService;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -36,21 +36,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class RecipeController {
 	
 	@Autowired
-	IRecipeService recipeDAO;
+	RecipeService recipeDAO;
 	@Autowired
-	ICategoryService categoryDAO;
+	CategoryService categoryDAO;
 	@Autowired
-	IUserService userDAO;
+	UserService userDAO;
 	@Autowired
-	ILikeService likeDAO;
+	LikeService likeDAO;
 	@Autowired
-	IReportService reportDAO;
+	ReportService reportDAO;
 	@Autowired
-	IIngredientService ingredientDAO;
+	IngredientService ingredientDAO;
 	@Autowired
-	IReviewService reviewDAO;
+	ReviewService reviewDAO;
 	@Autowired
-	ICommentService commentDAO;
+	CommentService commentDAO;
 	
 	
 	
@@ -74,8 +74,8 @@ public class RecipeController {
 		recipeDTO.setCategoryList(categoryList);
 		
 		// 작성자 조회
-		UserDTO userDTO = userDAO.selectUser(recipeDTO.getUserId());
-		recipeDTO.setMember(userDTO);
+		// UserDTO userDTO = userDAO.selectUser(recipeDTO.getUserId());
+		// recipeDTO.setMember(userDTO);
 		
 		// 재료 목록 조회
 		List<RecipeIngredientDTO> ingredientList = ingredientDAO.selectIngredientListByRecipeIdx(recipeIdx);

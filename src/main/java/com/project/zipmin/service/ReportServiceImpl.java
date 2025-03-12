@@ -1,11 +1,9 @@
-package com.project.zipmin.service.impl;
+package com.project.zipmin.service;
 
 import org.springframework.stereotype.Service;
 
-import com.project.zipmin.service.IReportService;
-
 @Service
-public class ReportServiceImpl implements IReportService {
+public class ReportServiceImpl implements ReportService {
 
 	@Override
 	public int selectReportCountByTable(String tablename, int recodenum) {

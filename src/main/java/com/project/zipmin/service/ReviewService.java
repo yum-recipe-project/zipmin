@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.project.zipmin.dto.ReviewDTO;
 
 @Service
-public interface IReviewService {
+public interface ReviewService {
 	
 	// 레시피 일련번호를 이용해 리뷰 목록 조회 (최신순)
 	public List<ReviewDTO> selectReviewListByRecipeIdxSortNew(int recipeIdx);

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.project.zipmin.dto.RecipeCategoryDTO;
 
 @Service
-public interface ICategoryService {
+public interface CategoryService {
 	
 	// 레시피 일련번호를 이용해 레시피에 해당하는 카테고리 목록 조회
 	public List<RecipeCategoryDTO> selectCategoryListByRecipeIdx(int recipeIdx);

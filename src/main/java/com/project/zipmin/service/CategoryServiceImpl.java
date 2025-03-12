@@ -1,4 +1,4 @@
-package com.project.zipmin.service.impl;
+package com.project.zipmin.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,10 +6,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.dto.RecipeCategoryDTO;
-import com.project.zipmin.service.ICategoryService;
 
 @Service
-public class CategoryServiceImpl implements ICategoryService {
+public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public List<RecipeCategoryDTO> selectCategoryListByRecipeIdx(int recipeIdx) {

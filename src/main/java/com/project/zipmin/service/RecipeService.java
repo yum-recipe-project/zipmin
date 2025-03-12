@@ -8,7 +8,7 @@ import com.project.zipmin.dto.RecipeDTO;
 import com.project.zipmin.dto.RecipeStepDTO;
 
 @Service
-public interface IRecipeService {
+public interface RecipeService {
 	
 	// 레시피 목록 조회 (추천순)
 	public List<RecipeDTO> selectRecipeListSortLike();

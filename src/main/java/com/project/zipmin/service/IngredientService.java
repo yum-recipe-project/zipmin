@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.project.zipmin.dto.RecipeIngredientDTO;
 
 @Service
-public interface IIngredientService {
+public interface IngredientService {
 	
 	// 아이디를 이용해 재료 목록 조회
 	public List<RecipeIngredientDTO> selectIngredientListByMemberId(String id);

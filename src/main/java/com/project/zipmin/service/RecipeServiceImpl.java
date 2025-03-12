@@ -1,4 +1,4 @@
-package com.project.zipmin.service.impl;
+package com.project.zipmin.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,10 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.project.zipmin.dto.RecipeDTO;
 import com.project.zipmin.dto.RecipeStepDTO;
-import com.project.zipmin.service.IRecipeService;
 
 @Service
-public class RecipeServiceImpl implements IRecipeService {
+public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	public List<RecipeDTO> selectRecipeListSortLike() {

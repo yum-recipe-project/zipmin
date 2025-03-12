@@ -3,7 +3,7 @@ package com.project.zipmin.service;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface IReportService {
+public interface ReportService {
 	
 	// 테이블 이름과 일련번호를 이용해 신고 수 조회
 	public int selectReportCountByTable(String tablename, int recodenum);

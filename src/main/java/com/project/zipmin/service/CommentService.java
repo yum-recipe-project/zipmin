@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.project.zipmin.dto.CommentDTO;
 
 @Service
-public interface ICommentService {
+public interface CommentService {
 	
 	// 테이블 이름과 일련번호를 이용해 댓글 목록 조회 (최신순)
 	public List<CommentDTO> selectCommentListByTableSortAsc(String tablename, int recodenum);

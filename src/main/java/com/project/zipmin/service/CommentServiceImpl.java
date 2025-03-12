@@ -1,4 +1,4 @@
-package com.project.zipmin.service.impl;
+package com.project.zipmin.service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,10 +7,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.dto.CommentDTO;
-import com.project.zipmin.service.ICommentService;
 
 @Service
-public class CommentServiceImpl implements ICommentService {
+public class CommentServiceImpl implements CommentService {
 
 	@Override
 	public List<CommentDTO> selectCommentListByTableSortAsc(String tablename, int recodenum) {

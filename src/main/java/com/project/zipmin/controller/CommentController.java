@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.dto.CommentDTO;
-import com.project.zipmin.service.ICommentService;
+import com.project.zipmin.service.CommentService;
 
 //NOTE: 테스트용 컨트롤러입니다.
 @RestController
 public class CommentController {
 
- private final ICommentService commentService;
+ private final CommentService commentService;
 
- public CommentController(ICommentService commentService) {
+ public CommentController(CommentService commentService) {
      this.commentService = commentService;
  }
 

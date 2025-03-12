@@ -5,13 +5,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.zipmin.service.ILikeService;
+import com.project.zipmin.service.LikeService;
 
 @RestController
 @RequestMapping("/likes")
 public class LikeController {
 	
-	ILikeService likeDAO;
+	LikeService likeDAO;
 	
 	// 좋아요 수
 	@GetMapping("/count")

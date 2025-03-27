@@ -11,6 +11,7 @@ public class ZipMinApplication {
 		SpringApplication.run(ZipMinApplication.class, args);
 		
 		String password = PasswordEncoderFactories.createDelegatingPasswordEncoder().encode("1234");
+		System.out.println(password);
 	}
 
 }

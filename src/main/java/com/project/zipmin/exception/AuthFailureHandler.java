@@ -60,7 +60,4 @@ public class AuthFailureHandler implements AuthenticationFailureHandler {
 	public void countLoginFailure(String id) {
 		// 틀린 횟수 업데이트하고 일정 횟수 이상이면 계정 잠금처리
 	}
-	
-	
-
 }

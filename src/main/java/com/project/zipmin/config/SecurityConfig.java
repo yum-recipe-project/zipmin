@@ -39,14 +39,13 @@ public class SecurityConfig {
 					.requestMatchers("/kitchen/**").permitAll()
 					.requestMatchers("/chompessor/**").permitAll()
 					.requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**").permitAll()
-					.requestMatchers("/users/**").permitAll()
 					.anyRequest().authenticated()
 				);
 		http.formLogin((formLogin) -> formLogin
 				.loginPage("/user/login.do")
 				// .loginProcessingUrl("")
 				.defaultSuccessUrl("/", false)
-				.failureHandler(authFailureHandler)
+				// .failureHandler(authFailureHandler)
 				.usernameParameter("id")
 				.passwordParameter("password")
 				.permitAll());

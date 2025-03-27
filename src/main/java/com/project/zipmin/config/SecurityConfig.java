@@ -50,7 +50,7 @@ public class SecurityConfig {
 				.defaultSuccessUrl("/", false)
 				.failureHandler(authFailureHandler) 
 				.usernameParameter("id")
-				.passwordParameter("password")
+				.passwordParameter("password") 
 				.permitAll());
 		http.logout((logout) -> logout
 				// .logoutUrl("")

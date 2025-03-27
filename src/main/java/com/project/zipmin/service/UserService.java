@@ -2,8 +2,11 @@ package com.project.zipmin.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.project.zipmin.dto.UserDTO;
 
+@Service
 public interface UserService {
 
     // 모든 회원 조회

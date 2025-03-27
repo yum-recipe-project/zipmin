@@ -38,6 +38,9 @@ public class SecurityConfig {
 					.requestMatchers("/recipe/**").permitAll()
 					.requestMatchers("/kitchen/**").permitAll()
 					.requestMatchers("/chompessor/**").permitAll()
+					.requestMatchers("/cooking/**").permitAll()
+					.requestMatchers("/fridge/**").permitAll()
+					.requestMatchers("/mypage/**").permitAll()
 					.requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**").permitAll()
 					.anyRequest().authenticated()
 				);
@@ -45,7 +48,7 @@ public class SecurityConfig {
 				.loginPage("/user/login.do")
 				// .loginProcessingUrl("")
 				.defaultSuccessUrl("/", false)
-				// .failureHandler(authFailureHandler)
+				.failureHandler(authFailureHandler)
 				.usernameParameter("id")
 				.passwordParameter("password")
 				.permitAll());

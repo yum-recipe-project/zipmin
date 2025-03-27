@@ -24,7 +24,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@Tag(name = "Example Controller", description = "This is an example controller")
+//@Tag(name = "Example Controller", description = "This is an example controller")
 public class UserController {
 	
 	@Autowired

@@ -48,9 +48,9 @@ public class SecurityConfig {
 				.loginPage("/user/login.do")
 				// .loginProcessingUrl("")
 				.defaultSuccessUrl("/", false)
-				.failureHandler(authFailureHandler)
+				.failureHandler(authFailureHandler) 
 				.usernameParameter("id")
-				.passwordParameter("password")
+				.passwordParameter("password") 
 				.permitAll());
 		http.logout((logout) -> logout
 				// .logoutUrl("")

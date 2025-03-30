@@ -2,6 +2,7 @@ package com.project.zipmin.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,14 +14,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.dto.ChompDTO;
 import com.project.zipmin.dto.CommentDTO;
+// import com.project.zipmin.service.ChompService;
 import com.project.zipmin.dto.ChompVoteDTO;
 
 @RestController
 public class ChompessorController {
+	
+	// @Autowired
+	// ChompService chompService;
 
 	// 쩝쩝박사 목록 조회
 	@GetMapping("/chomp")
 	public List<ChompDTO> listChomp() {
+		// List<ChompDTO> chompList = chompService.getChompList();
+		// System.err.println(chompList);
 		return null;
 	}
 	

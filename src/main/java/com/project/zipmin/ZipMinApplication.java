@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 // import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 
 @SpringBootApplication
+
 public class ZipMinApplication {
 
 	public static void main(String[] args) {

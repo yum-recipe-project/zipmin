@@ -8,27 +8,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.dto.ChompDTO;
-import com.project.zipmin.dto.CommentDTO;
-// import com.project.zipmin.service.ChompService;
 import com.project.zipmin.dto.ChompVoteDTO;
+import com.project.zipmin.dto.CommentDTO;
+import com.project.zipmin.service.ChompService;
 
 @RestController
 public class ChompessorController {
 	
-	// @Autowired
-	// ChompService chompService;
+	@Autowired
+	ChompService chompService;
 
 	// 쩝쩝박사 목록 조회
 	@GetMapping("/chomp")
 	public List<ChompDTO> listChomp() {
-		// List<ChompDTO> chompList = chompService.getChompList();
-		// System.err.println(chompList);
-		return null;
+		List<ChompDTO> chompList = chompService.getChompList();
+		return chompList;
 	}
 	
 	

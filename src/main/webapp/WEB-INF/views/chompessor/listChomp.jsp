@@ -5,11 +5,9 @@
 	<head>
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/chompessor/list-chomp.css">
-		<link rel="stylesheet" href="/css/common/pagination.css">
 		<script src="/js/chompessor/list-chomp.js"></script>
-		<script src="/js/common/pagination.js"></script>
 	</head>
-	
+
 	<body>
 		<%@include file="../common/header.jsp" %>
 		
@@ -48,7 +46,7 @@
 					
 					<!-- 목록 -->
 					<c:if test="${ true }">
-						<ul class="forum_list">
+						<ul class="forum_list" id="chomp">
 							<%-- <c:foreach> --%>
 								<li class="forum">
 									<a href="/chompessor/viewVote.do">
@@ -57,40 +55,9 @@
 										</div>
 										<div class="forum_info">
 											<p class="type">투표</p>
-											<h5>당신의 녹차 아이스크림에 투표하세요</h5>
+											<h5 class="title" data-id="1">당신의 녹차 아이스크림에 투표하세요</h5>
 											<div class="info">
 												<p class="ing_flag">모집중</p>
-												<p class="date">2025.03.04 - 2025.04.03</p>
-											</div>
-										</div>
-									</a>
-								</li>
-								
-								<li class="forum">
-									<a href="/chompessor/viewMegazine.do">
-										<div class="forum_thumbnail">
-											<img src="/images/common/test.png">
-										</div>
-										<div class="forum_info">
-											<p class="type">정보</p>
-											<h5>당신의 녹차 아이스크림에 투표하세요</h5>
-											<div class="info">
-												<p class="end_flag">마감</p>
-												<p class="date">2025.03.04 - 2025.04.03</p>
-											</div>
-										</div>
-									</a>
-								</li>
-								<li class="forum">
-									<a href="/chompessor/viewEvent.do">
-										<div class="forum_thumbnail">
-											<img src="/images/common/test.png">
-										</div>
-										<div class="forum_info">
-											<p class="type">이벤트</p>
-											<h5>당신의 녹차 아이스크림에 투표하세요</h5>
-											<div class="info">
-												<p class="end_flag">마감</p>
 												<p class="date">2025.03.04 - 2025.04.03</p>
 											</div>
 										</div>

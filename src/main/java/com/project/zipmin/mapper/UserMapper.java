@@ -10,8 +10,6 @@ import com.project.zipmin.entity.User;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-	// UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
-	
 	UserDTO userToUserDTO(User user);
 	User userDTOToUser(UserDTO userDTO);
 	List<UserDTO> userListToUserDTOList(List<User> userList);

@@ -17,16 +17,16 @@
 				<div class="forum_header">
 					<h2>쩝쩝박사</h2>
 					<div class="tab">
-						<a class="btn_tab active" href="">
+						<a class="btn_tab active" data-category="all" href="">
 							<span>전체</span>
 						</a>
-						<a class="btn_tab" href="">
+						<a class="btn_tab" data-category="vote" href="">
 							<span>투표</span>
 						</a>
-						<a class="btn_tab" href="">
-							<span>정보</span>
+						<a class="btn_tab" data-category="megazine" href="">
+							<span>매거진</span>
 						</a>
-						<a class="btn_tab" href="">
+						<a class="btn_tab" data-category="event" href="">
 							<span>이벤트</span>
 						</a>
 					</div>

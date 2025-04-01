@@ -257,6 +257,10 @@
 				<button onclick="location.href='/mypage/profile.do';">프로필</button>
 				<br/><br/>
 				
+				<h2>관리자페이지 테스트</h2>
+				<button onclick="location.href='/admin.do';">ㄱㄹㅈ</button>
+				<br/><br/>
+				
 			</div>
 		</main>
 		

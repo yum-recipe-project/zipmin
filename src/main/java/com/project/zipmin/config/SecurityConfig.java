@@ -42,6 +42,7 @@ public class SecurityConfig {
 					.requestMatchers("/cooking/**").permitAll()
 					.requestMatchers("/fridge/**").permitAll()
 					.requestMatchers("/mypage/**").permitAll()
+					.requestMatchers("/admin/**").permitAll()
 					.requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**").permitAll()
 					.anyRequest().authenticated()
 				);

@@ -24,7 +24,6 @@ public class ChompServiceImpl implements ChompService {
 	@Override
 	public List<ChompDTO> getChompList() {
 		List<Chomp> chompList = chompRepository.findAll();
-		System.err.println(chompList);
 		return chompMapper.chompListToChompDTOList(chompList);
 	}
 	

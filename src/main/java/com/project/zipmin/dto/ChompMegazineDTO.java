@@ -13,5 +13,5 @@ public class ChompMegazineDTO {
 	private int id;
 	private Date postdate;
 	private String content;
-	private int chomp_id;
+	private int chompId;
 }

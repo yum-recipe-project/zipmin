@@ -29,5 +29,9 @@ public class Chomp {
 	private String title;
 	
 	@OneToOne(mappedBy = "chomp", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private ChompVote chompVote;
+	@OneToOne(mappedBy = "chomp", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private ChompMegazine chompMegazine;
+	@OneToOne(mappedBy = "chomp", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private ChompEvent chompEvent;
 }

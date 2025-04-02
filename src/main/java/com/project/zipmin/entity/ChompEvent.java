@@ -1,9 +1,14 @@
 package com.project.zipmin.entity;
 
+import java.util.Date;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -23,8 +28,12 @@ public class ChompEvent {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_chomp_event_id")
 	@SequenceGenerator(name = "seq_chomp_event_id", sequenceName = "SEQ_CHOMP_EVENT_ID", allocationSize = 1)
 	private int id;
+	private Date opendate;
+	private Date closedate;
+	private String content;
 	
-	// 여기에 내용 추가되어야 함
-	
-	private int chomp_id;
+	// private int chomp_id;
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "CHOMP_ID")
+	private Chomp chomp;
 }

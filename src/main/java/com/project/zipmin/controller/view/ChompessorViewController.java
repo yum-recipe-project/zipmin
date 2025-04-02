@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.project.zipmin.service.ChompService;
-import com.project.zipmin.service.ChompVoteService;
 
 @Controller
 public class ChompessorViewController {
@@ -13,8 +12,6 @@ public class ChompessorViewController {
 	@Autowired
 	ChompService chompService;
 	
-	@Autowired
-	ChompVoteService chompVoteService;
 
 	@GetMapping("/chompessor/listChomp.do")
 	public String listForum() {
@@ -23,7 +20,7 @@ public class ChompessorViewController {
 	
 	@GetMapping("/chompessor/viewVote.do")
 	public String viewVote() {
-		System.err.println(chompVoteService.getVoteById(1));
+		System.err.println(chompService.getVoteById(1));
 		return "chompessor/viewVote";
 	}
 	

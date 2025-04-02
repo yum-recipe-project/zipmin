@@ -17,20 +17,18 @@
 				<div class="megazine_wrap">
 					<!-- 매거진 헤더 -->
 					<div class="megazine_header">
-						<span>아이스크림</span>
-						<h2>녹차아이스크림 4종 비교</h2>
+						<span class="megazine_category"></span>
+						<h2 class="megazine_title"></h2>
 						<div class="megazine_writer">
 							<img src="/images/common/test.png">
 							<span><b>집밥의민족</b></span>
 							<span> ・ </span>
-							<span>2025.02.10</span>
+							<span class="megazine_postdate"></span>
 						</div>
 					</div>
 					
 					<!-- 매거진 내용 -->
-					<p class="megazine_content">
-						녹차아이스크림 최고!
-					</p>
+					<p class="megazine_content"></p>
 					
 					<!-- 목록 버튼 -->
 					<div class="list_btn">

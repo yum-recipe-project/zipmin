@@ -1,9 +1,11 @@
 package com.project.zipmin.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -20,9 +22,12 @@ import lombok.NoArgsConstructor;
 @Table(name = "CHOMP")
 public class Chomp {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_chomp_id")
+	@GeneratedValue(generator = "seq_chomp_id")
 	@SequenceGenerator(name = "seq_chomp_id", sequenceName = "SEQ_CHOMP_ID", allocationSize = 1)
 	private int id;
 	private String category;
 	private String title;
+	
+	@OneToOne(mappedBy = "chomp", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private ChompMegazine chompMegazine;
 }

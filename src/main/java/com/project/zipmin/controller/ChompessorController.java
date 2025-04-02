@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.dto.ChompDTO;
+import com.project.zipmin.dto.ChompMegazineDTO;
 import com.project.zipmin.dto.ChompVoteDTO;
 import com.project.zipmin.dto.CommentDTO;
 import com.project.zipmin.service.ChompService;
@@ -186,9 +187,10 @@ public class ChompessorController {
 	
 	// 특정 매거진 조회
 	@GetMapping("/megazines/{megazineId}")
-	public ChompVoteDTO viewMegazine(
+	public ChompMegazineDTO viewMegazine(
 			@PathVariable("megazineId") int megazineId) {
-		return null;
+		ChompMegazineDTO chompMegazineDTO = chompService.getMegazineById(megazineId);
+		return chompMegazineDTO;
 	}
 
 	// 새 매거진 등록 (관리자)

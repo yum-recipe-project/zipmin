@@ -3,9 +3,13 @@ package com.project.zipmin.entity;
 import java.util.Date;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -13,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
@@ -27,5 +32,8 @@ public class ChompMegazine {
 	private int id;
 	private Date postdate;
 	private String content;
-	private int chomp_id;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "CHOMP_ID")
+	private Chomp chomp;
 }

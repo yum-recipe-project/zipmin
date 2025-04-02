@@ -28,7 +28,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class UserController {
 	
 	@Autowired
-	UserService userDAO;
+	UserService userService;
 
 	// 사용자 목록 조회 (관리자)
 	@GetMapping("/users")
@@ -40,7 +40,7 @@ public class UserController {
 			@ApiResponse(responseCode = "200", description = "조회 성공")
 	})
 	public List<UserDTO> listMember() {
-		List<UserDTO> userList = userDAO.getUserList();
+		List<UserDTO> userList = userService.getUserList();
 		System.err.println(userList);
 		return userList;
 	}

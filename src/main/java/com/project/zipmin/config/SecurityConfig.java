@@ -37,11 +37,13 @@ public class SecurityConfig {
 					.requestMatchers("/user/**").permitAll()
 					.requestMatchers("/recipe/**").permitAll()
 					.requestMatchers("/kitchen/**").permitAll()
+					.requestMatchers("/chomp/**").permitAll()
 					.requestMatchers("/chompessor/**").permitAll()
 					.requestMatchers("/cooking/**").permitAll()
 					.requestMatchers("/fridge/**").permitAll()
 					.requestMatchers("/mypage/**").permitAll()
-					.requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**").permitAll()
+					.requestMatchers("/admin/**").permitAll()
+					.requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**", "assets/**").permitAll()
 					.anyRequest().authenticated()
 				);
 		http.formLogin((formLogin) -> formLogin

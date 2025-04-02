@@ -43,7 +43,7 @@ public class SecurityConfig {
 					.requestMatchers("/fridge/**").permitAll()
 					.requestMatchers("/mypage/**").permitAll()
 					.requestMatchers("/admin/**").permitAll()
-					.requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**").permitAll()
+					.requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**", "assets/**").permitAll()
 					.anyRequest().authenticated()
 				);
 		http.formLogin((formLogin) -> formLogin

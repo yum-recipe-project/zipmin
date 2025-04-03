@@ -35,7 +35,6 @@ public class ChompessorViewController {
 	
 	@GetMapping("/chompessor/viewMegazine.do")
 	public String viewMegazine() {
-		System.err.println("댓글 목록 : " + commentService.getCommentListByTablenameAndRecodenumOrderByIdAsc("chomp_megazine", 1));
 		return "chompessor/viewMegazine";
 	}
 	

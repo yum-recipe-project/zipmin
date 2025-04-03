@@ -15,6 +15,9 @@ public interface CommentService {
 	// 테이블 이름과 일련번호를 이용해 댓글 목록 조회 (최신순)
 	public List<CommentDTO> getCommentListByTablenameAndRecodenumOrderByIdDesc(String tablename, int recodenum);
 	
+	// 테이블 이름과 일련번호를 이용해 댓글 목록 조회 (인기순)
+	public List<CommentDTO> getCommentListByTablenameAndRecodenumOrderByLikecount(String tablename, int recodenum);
+	
 	// 테이블 이름과 일련번호를 이용해 댓글 수 조회
 	public int getCommentCountByTable(String tablename, int recodenum);
 	

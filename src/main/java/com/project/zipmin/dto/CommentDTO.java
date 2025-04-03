@@ -9,17 +9,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor //NOTE: 테스트용
+@AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CommentDTO {
 	private int id;
-	// private int commId;
+	private int commId;
 	private Date postdate;
 	private String content;
 	private String tablename;
 	private int recodenum;
-	// private int userId;
+	private String userId;
 	
-	private UserDTO userDTO;
-	private CommentDTO commentDTO;
+	private String nickname;
+	private long likecount;
 }

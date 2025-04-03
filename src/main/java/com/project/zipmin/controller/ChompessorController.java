@@ -223,13 +223,17 @@ public class ChompessorController {
 	@GetMapping("/megazines/{megazineId}/comments")
 	public List<CommentDTO> listMegazineComment(
 			@PathVariable int megazineId,
-			@RequestParam(name = "sort", defaultValue = "new") String sort) {
+			@RequestParam String sort) {
 		List<CommentDTO> commentList = new ArrayList<CommentDTO>();
 		if (sort.equals("new")) {
-			 commentList = commentService.getCommentListByTablenameAndRecodenumOrderByIdDesc("chomp_megazine", megazineId);
+			commentList = commentService.getCommentListByTablenameAndRecodenumOrderByIdDesc("chomp_megazine", megazineId);
+			System.err.println(commentList);
 		}
 		else if (sort.equals("old")) {
 			commentList = commentService.getCommentListByTablenameAndRecodenumOrderByIdAsc("chomp_megazine", megazineId);
+		}
+		else if (sort.equals("hot")) {
+			commentList = commentService.getCommentListByTablenameAndRecodenumOrderByLikecount("chomp_megazine", megazineId);
 		}
 		return commentList;
 	}

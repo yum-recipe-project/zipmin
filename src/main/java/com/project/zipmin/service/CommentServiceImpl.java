@@ -8,11 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.dto.CommentDTO;
+import com.project.zipmin.dto.LikeDTO;
 import com.project.zipmin.dto.UserDTO;
 import com.project.zipmin.entity.Comment;
+import com.project.zipmin.entity.Like;
 import com.project.zipmin.mapper.CommentMapper;
 import com.project.zipmin.mapper.UserMapper;
 import com.project.zipmin.repository.CommentRepository;
+import com.project.zipmin.repository.LikeRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +25,9 @@ public class CommentServiceImpl implements CommentService {
 	
 	@Autowired
 	private CommentRepository commentRepository;
+	@Autowired
+	private LikeRepository likeRepository;
+
 	
 	private final CommentMapper commentMapper;
 	private final UserMapper userMapper;
@@ -32,10 +38,10 @@ public class CommentServiceImpl implements CommentService {
 		List<CommentDTO> commentDTOList = new ArrayList<CommentDTO>();
 		for (Comment comment : commentList) {
 			CommentDTO commentDTO = commentMapper.commentToCommentDTO(comment);
-			CommentDTO originCommentDTO = commentMapper.commentToCommentDTO(comment.getComment());
-			UserDTO userDTO = userMapper.userToUserDTO(comment.getUser());
-			commentDTO.setCommentDTO(originCommentDTO);
-			commentDTO.setUserDTO(userDTO);
+			commentDTO.setCommId(comment.getComment().getId());
+			commentDTO.setUserId(comment.getUser().getId());
+			commentDTO.setNickname(comment.getUser().getNickname());
+			commentDTO.setLikecount(likeRepository.countByTablenameAndRecodenum("comments", comment.getId()));
 			commentDTOList.add(commentDTO);
 		}
 	    return commentDTOList;
@@ -47,14 +53,31 @@ public class CommentServiceImpl implements CommentService {
 		List<CommentDTO> commentDTOList = new ArrayList<CommentDTO>();
 		for (Comment comment : commentList) {
 			CommentDTO commentDTO = commentMapper.commentToCommentDTO(comment);
-			CommentDTO originCommentDTO = commentMapper.commentToCommentDTO(comment.getComment());
-			UserDTO userDTO = userMapper.userToUserDTO(comment.getUser());
-			commentDTO.setCommentDTO(originCommentDTO);
-			commentDTO.setUserDTO(userDTO);
+			commentDTO.setCommId(comment.getComment().getId());
+			commentDTO.setUserId(comment.getUser().getId());
+			commentDTO.setNickname(comment.getUser().getNickname());
+			commentDTO.setLikecount(likeRepository.countByTablenameAndRecodenum("comments", comment.getId()));
 			commentDTOList.add(commentDTO);
 		}
 	    return commentDTOList;
 	}
+
+	@Override
+	public List<CommentDTO> getCommentListByTablenameAndRecodenumOrderByLikecount(String tablename, int recodenum) {
+		List<Comment> commentList = commentRepository.findAllByTablenameAndRecodenumOrderByLikecount(tablename, recodenum);
+		List<CommentDTO> commentDTOList = new ArrayList<CommentDTO>();
+		for (Comment comment : commentList) {
+			CommentDTO commentDTO = commentMapper.commentToCommentDTO(comment);
+			commentDTO.setCommId(comment.getComment().getId());
+			commentDTO.setUserId(comment.getUser().getId());
+			commentDTO.setNickname(comment.getUser().getNickname());
+			commentDTO.setLikecount(likeRepository.countByTablenameAndRecodenum("comments", comment.getId()));
+			commentDTOList.add(commentDTO);
+		}
+		System.err.println(commentDTOList);
+	    return commentDTOList;
+	}
+	
 
 	@Override
 	public int getCommentCountByTable(String tablename, int recodenum) {

@@ -1,5 +1,6 @@
 package com.project.zipmin.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,15 @@ import com.project.zipmin.dto.ChompMegazineDTO;
 import com.project.zipmin.dto.ChompVoteDTO;
 import com.project.zipmin.dto.CommentDTO;
 import com.project.zipmin.service.ChompService;
+import com.project.zipmin.service.CommentService;
 
 @RestController
 public class ChompessorController {
 	
 	@Autowired
 	ChompService chompService;
+	@Autowired
+	CommentService commentService;
 
 	// 쩝쩝박사 목록 조회
 	@GetMapping("/chomp")
@@ -218,9 +222,16 @@ public class ChompessorController {
 	// 특정 매거진의 댓글 목록 조회
 	@GetMapping("/megazines/{megazineId}/comments")
 	public List<CommentDTO> listMegazineComment(
-			@PathVariable("megazineId") int megazineId,
+			@PathVariable int megazineId,
 			@RequestParam(name = "sort", defaultValue = "new") String sort) {
-		return null;
+		List<CommentDTO> commentList = new ArrayList<CommentDTO>();
+		if (sort.equals("new")) {
+			 commentList = commentService.getCommentListByTablenameAndRecodenumOrderByIdDesc("chomp_megazine", megazineId);
+		}
+		else if (sort.equals("old")) {
+			commentList = commentService.getCommentListByTablenameAndRecodenumOrderByIdAsc("chomp_megazine", megazineId);
+		}
+		return commentList;
 	}
 	
 	// 특정 매거진에 댓글 작성

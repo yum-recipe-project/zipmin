@@ -5,12 +5,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.project.zipmin.service.ChompService;
+import com.project.zipmin.service.CommentService;
 
 @Controller
 public class ChompessorViewController {
 	
 	@Autowired
 	ChompService chompService;
+	@Autowired
+	CommentService commentService;
 	
 
 	@GetMapping("/chompessor/listChomp.do")
@@ -32,6 +35,7 @@ public class ChompessorViewController {
 	
 	@GetMapping("/chompessor/viewMegazine.do")
 	public String viewMegazine() {
+		System.err.println("댓글 목록 : " + commentService.getCommentListByTablenameAndRecodenumOrderByIdAsc("chomp_megazine", 1));
 		return "chompessor/viewMegazine";
 	}
 	

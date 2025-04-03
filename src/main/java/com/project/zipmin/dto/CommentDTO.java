@@ -13,10 +13,13 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CommentDTO {
 	private int id;
-	private int commId;
+	// private int commId;
 	private Date postdate;
 	private String content;
 	private String tablename;
 	private int recodenum;
-	private int userId;
+	// private int userId;
+	
+	private UserDTO userDTO;
+	private CommentDTO commentDTO;
 }

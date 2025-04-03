@@ -1,6 +1,9 @@
 /**
  * 댓글 정렬 탭 메뉴 클릭 시 탭 메뉴를 활성화하는 함수
+ * 
+ * ** 각 페이지마다 구현 필요 **
  */
+/*
 document.addEventListener('DOMContentLoaded', function() {
 	const tabList = document.querySelectorAll('.comment_order button');
 	tabList.forEach(tabI => {
@@ -11,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	    });
 	});
 });
+*/
 
 
 

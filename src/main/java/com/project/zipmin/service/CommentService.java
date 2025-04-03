@@ -9,14 +9,14 @@ import com.project.zipmin.dto.CommentDTO;
 @Service
 public interface CommentService {
 	
-	// 테이블 이름과 일련번호를 이용해 댓글 목록 조회 (최신순)
-	public List<CommentDTO> selectCommentListByTableSortAsc(String tablename, int recodenum);
-	
 	// 테이블 이름과 일련번호를 이용해 댓글 목록 조회 (오래된순)
-	public List<CommentDTO> selectCommentListByTableSortDesc(String tablename, int recodenum);
+	public List<CommentDTO> getCommentListByTablenameAndRecodenumOrderByIdAsc(String tablename, int recodenum);
+	
+	// 테이블 이름과 일련번호를 이용해 댓글 목록 조회 (최신순)
+	public List<CommentDTO> getCommentListByTablenameAndRecodenumOrderByIdDesc(String tablename, int recodenum);
 	
 	// 테이블 이름과 일련번호를 이용해 댓글 수 조회
-	public int selectCommentCountByTable(String tablename, int recodenum);
+	public int getCommentCountByTable(String tablename, int recodenum);
 	
 	// 사용자 아이디를 이용해 댓글 목록 조회
 	public List<CommentDTO> selectCommentListByMemberId(String id);

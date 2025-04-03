@@ -47,6 +47,7 @@
 		<ul class="comment_list">
 			<!-- 댓글을 돌면서 original idx랑 comment idx랑 일치하면 -->
 			<%-- <c:foreach> --%>
+<%-- 			
 				<c:if test="${ true }">
 					<li class="comment">
 						<!-- 댓글 헤더 -->
@@ -89,7 +90,7 @@
 				<!-- 대댓글 -->
 				<ul class="subcomment_list">
 					<!-- 댓글 테이블을 돌면서 orginal idx랑 comment idx랑 다르고 (=대댓글이고) && 이 댓글에 해당하는 대댓글이면 -->
-					<%-- <c:forEach> --%>
+					<c:forEach>
 						<c:if test="${ true }">
 							<li class="subcomment">
 								<img class="subcomment_arrow" src="/images/chompessor/arrow_right.png">
@@ -128,8 +129,8 @@
 								</div>
 							</li>
 						</c:if>
-					<%-- </c:forEach> --%>
-				</ul>
+					</c:forEach>
+				</ul> --%>
 			<%-- </c:foreach> --%>
 		</ul>
 	</c:if>

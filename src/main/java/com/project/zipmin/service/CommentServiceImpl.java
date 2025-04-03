@@ -4,38 +4,60 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.dto.CommentDTO;
+import com.project.zipmin.dto.UserDTO;
+import com.project.zipmin.entity.Comment;
+import com.project.zipmin.mapper.CommentMapper;
+import com.project.zipmin.mapper.UserMapper;
+import com.project.zipmin.repository.CommentRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
+	
+	@Autowired
+	private CommentRepository commentRepository;
+	
+	private final CommentMapper commentMapper;
+	private final UserMapper userMapper;
 
 	@Override
-	public List<CommentDTO> selectCommentListByTableSortAsc(String tablename, int recodenum) {
-		// NOTE: 테스트용 코드입니다.
-		List<CommentDTO> comments = new ArrayList<>();
-
-		String table = "comments";
-		int recodenumT = 123;
-
-		comments.add(new CommentDTO(1, 1, new Date(), "첫 번째 댓글", table, recodenumT, 1001));
-		comments.add(new CommentDTO(2, 1, new Date(), "첫 번째 댓글의 대댓글", table, recodenumT, 1002));
-		comments.add(new CommentDTO(3, 1, new Date(), "첫 번째 댓글의 또 다른 대댓글", table, recodenumT, 1003));
-		comments.add(new CommentDTO(4, 4, new Date(), "두 번째 댓글", table, recodenumT, 1004));
-		comments.add(new CommentDTO(5, 4, new Date(), "두 번째 댓글의 대댓글", table, recodenumT, 1005));
-	    
-	    return comments;
+	public List<CommentDTO> getCommentListByTablenameAndRecodenumOrderByIdAsc(String tablename, int recodenum) {
+		List<Comment> commentList = commentRepository.findAllByTablenameAndRecodenumOrderByIdAsc(tablename, recodenum);
+		List<CommentDTO> commentDTOList = new ArrayList<CommentDTO>();
+		for (Comment comment : commentList) {
+			CommentDTO commentDTO = commentMapper.commentToCommentDTO(comment);
+			CommentDTO originCommentDTO = commentMapper.commentToCommentDTO(comment.getComment());
+			UserDTO userDTO = userMapper.userToUserDTO(comment.getUser());
+			commentDTO.setCommentDTO(originCommentDTO);
+			commentDTO.setUserDTO(userDTO);
+			commentDTOList.add(commentDTO);
+		}
+	    return commentDTOList;
 	}
 
 	@Override
-	public List<CommentDTO> selectCommentListByTableSortDesc(String tablename, int recodenum) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<CommentDTO> getCommentListByTablenameAndRecodenumOrderByIdDesc(String tablename, int recodenum) {
+		List<Comment> commentList = commentRepository.findAllByTablenameAndRecodenumOrderByIdDesc(tablename, recodenum);
+		List<CommentDTO> commentDTOList = new ArrayList<CommentDTO>();
+		for (Comment comment : commentList) {
+			CommentDTO commentDTO = commentMapper.commentToCommentDTO(comment);
+			CommentDTO originCommentDTO = commentMapper.commentToCommentDTO(comment.getComment());
+			UserDTO userDTO = userMapper.userToUserDTO(comment.getUser());
+			commentDTO.setCommentDTO(originCommentDTO);
+			commentDTO.setUserDTO(userDTO);
+			commentDTOList.add(commentDTO);
+		}
+	    return commentDTOList;
 	}
 
 	@Override
-	public int selectCommentCountByTable(String tablename, int recodenum) {
+	public int getCommentCountByTable(String tablename, int recodenum) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

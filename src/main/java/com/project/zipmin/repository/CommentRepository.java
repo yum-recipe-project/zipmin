@@ -30,7 +30,6 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
 		@Param("recodenum") int recodenum
 	);
 
-
 	@Query("SELECT c FROM Comment c " +
 		       "LEFT JOIN FETCH c.user u " +
 		       "LEFT JOIN FETCH c.comment " +

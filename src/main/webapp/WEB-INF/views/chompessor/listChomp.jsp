@@ -48,21 +48,14 @@
 					<c:if test="${ true }">
 						<ul class="forum_list" id="chomp"></ul>
 					</c:if>
-				
 				</div>
-			
-				<div class="pagination_wrap">
-					<div class="pagination">
-					    <ul>
-					        <li><a href="#" class="prev"><img src="/images/common/chevron_left.png"></a></li>
-					        <li><a href="#" class="page active">1</a></li>
-					        <li><a href="#" class="page">2</a></li>
-					        <li><a href="#" class="page">3</a></li>
-					        <li><a href="#" class="page">4</a></li>
-					        <li><a href="#" class="page">5</a></li>
-					        <li><a href="#" class="next"><img src="/images/common/chevron_right.png"></a></li>
-					    </ul>
-					</div>
+				
+				<!-- 더보기 버튼 -->
+				<div class="more_wrap">
+					<button class="btn_more">
+						<span>더보기</span>
+						<img src="/images/mypage/arrow_down.png">
+					</button>
 				</div>
 				
 				

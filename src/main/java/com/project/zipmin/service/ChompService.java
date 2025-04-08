@@ -17,7 +17,6 @@ public interface ChompService {
 	
 	
 	// 모든 투표 게시물 조회
-	
 	public ChompVoteDTO getVoteById(int id);
 	
 	// 특정 투표 게시물 조회

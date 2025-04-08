@@ -1,6 +1,5 @@
 package com.project.zipmin.service;
 
-import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,7 +13,6 @@ import com.project.zipmin.dto.ChompMegazineDTO;
 import com.project.zipmin.dto.ChompVoteDTO;
 import com.project.zipmin.entity.Chomp;
 import com.project.zipmin.entity.ChompMegazine;
-import com.project.zipmin.entity.ChompVote;
 import com.project.zipmin.mapper.ChompEventMapper;
 import com.project.zipmin.mapper.ChompMapper;
 import com.project.zipmin.mapper.ChompMegazineMapper;

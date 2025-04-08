@@ -49,7 +49,6 @@ public class SecurityConfig {
 				);
 		http.formLogin((formLogin) -> formLogin
 				.loginPage("/user/login.do")
-				// .loginProcessingUrl("")
 				.defaultSuccessUrl("/", false)
 				.failureHandler(authFailureHandler) 
 				.usernameParameter("id")

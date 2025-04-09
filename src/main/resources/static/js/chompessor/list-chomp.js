@@ -1,12 +1,12 @@
 /**
  * 전역 변수 선언
- * AllDataList:
+ * allChompList:
  * selectTab: 선택된 탭
  * selectSort: 선택된 정렬 기준
  * page: 현재 페이지 번호
  * size: 한번에 가져올 데이터 개수
  */
-let AllDataList = [];
+let allChompList = [];
 let selectTab = "all";
 let selectSort = "all";
 let page = 0;
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	})
 		.then(response => response.json())
 		.then(dataList => {
-			AllDataList = dataList;
+			allChompList = dataList;
 			page = 0;
 			renderChompDataList();
 		})
@@ -76,8 +76,8 @@ function renderChompDataList() {
 
 	// 필터 적용
 	let filteredList = selectTab === "all"
-		? AllDataList
-		: AllDataList.filter(chomp => chomp.category === categoryMap[selectTab]);
+		? allChompList
+		: allChompList.filter(chomp => chomp.category === categoryMap[selectTab]);
 
 	filteredList = selectSort === "all"
 		? filteredList

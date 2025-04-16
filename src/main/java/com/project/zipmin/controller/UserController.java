@@ -57,6 +57,7 @@ public class UserController {
 	// 사용자 생성
 	@PostMapping("/users")
 	public int addMember() {
+		
 		return 0;
 	}
 	
@@ -75,12 +76,14 @@ public class UserController {
 	public int deleteMember(@PathVariable("userId") String id) {
 		return 0;
 	}
+
 	
-	
-	@PostMapping("/login")
-	public int login() {
-		return 0;
-	}
+	// 시큐리티에서는 필요 없을 듯
+//	@PostMapping("/login")
+//	public int login() {
+//		
+//		return 0;
+//	}
 	
 	
 	// ==============

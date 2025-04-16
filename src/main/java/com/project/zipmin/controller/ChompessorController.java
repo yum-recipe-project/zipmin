@@ -1,26 +1,36 @@
 package com.project.zipmin.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.dto.ChompDTO;
+import com.project.zipmin.dto.ChompMegazineDTO;
 import com.project.zipmin.dto.ChompVoteDTO;
-import com.project.zipmin.dto.CommentDTO;
+import com.project.zipmin.dto.CommentRequestDTO;
+import com.project.zipmin.dto.CommentResponseDTO;
 import com.project.zipmin.service.ChompService;
+import com.project.zipmin.service.CommentService;
 
 @RestController
 public class ChompessorController {
 	
 	@Autowired
 	ChompService chompService;
+	@Autowired
+	CommentService commentService;
 
 	// 쩝쩝박사 목록 조회
 	@GetMapping("/chomp")
@@ -92,7 +102,7 @@ public class ChompessorController {
 
 	// 특정 투표의 댓글 목록 조회
 	@GetMapping("/votes/{voteId}/comments")
-	public List<CommentDTO> listVoteComment(
+	public List<CommentResponseDTO> listVoteComment(
 			@PathVariable("voteId") int voteId,
 			@RequestParam(name = "sort", defaultValue = "new") String sort) {
 		return null;
@@ -186,9 +196,10 @@ public class ChompessorController {
 	
 	// 특정 매거진 조회
 	@GetMapping("/megazines/{megazineId}")
-	public ChompVoteDTO viewMegazine(
+	public ChompMegazineDTO viewMegazine(
 			@PathVariable("megazineId") int megazineId) {
-		return null;
+		ChompMegazineDTO chompMegazineDTO = chompService.getMegazineById(megazineId);
+		return chompMegazineDTO;
 	}
 
 	// 새 매거진 등록 (관리자)
@@ -211,21 +222,40 @@ public class ChompessorController {
 		return 0;
 	}
 	
-	
-	
 	// 특정 매거진의 댓글 목록 조회
 	@GetMapping("/megazines/{megazineId}/comments")
-	public List<CommentDTO> listMegazineComment(
-			@PathVariable("megazineId") int megazineId,
-			@RequestParam(name = "sort", defaultValue = "new") String sort) {
-		return null;
+	public List<CommentResponseDTO> listMegazineComment(
+			@PathVariable int megazineId,
+			@RequestParam String sort) {
+		List<CommentResponseDTO> commentList = new ArrayList<CommentResponseDTO>();
+		if (sort.equals("new")) {
+			commentList = commentService.getCommentListByTablenameAndRecodenumOrderByIdDesc("chomp_megazine", megazineId);
+		}
+		else if (sort.equals("old")) {
+			commentList = commentService.getCommentListByTablenameAndRecodenumOrderByIdAsc("chomp_megazine", megazineId);
+		}
+		else if (sort.equals("hot")) {
+			commentList = commentService.getCommentListByTablenameAndRecodenumOrderByLikecount("chomp_megazine", megazineId);
+		}
+		return commentList;
 	}
 	
 	// 특정 매거진에 댓글 작성
 	@PostMapping("/megazines/{megazineId}/comments")
-	public int writeMegazineComment(
-			@PathVariable("megazineId") int megazineId) {
-		return 0;
+	public ResponseEntity<Map<String, Object>> writeMegazineComment(
+	        @PathVariable int megazineId,
+	        @RequestBody CommentRequestDTO commentDTO) {
+		
+		commentDTO.setCommId(1);
+		commentDTO.setUserId("harim");
+		System.err.println(commentDTO);
+		commentService.createComment(commentDTO);
+		
+		// String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("result", "success");
+	    return ResponseEntity.ok(result);
 	}
 	
 	// 특정 매거진의 특정 댓글 수정

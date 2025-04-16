@@ -7,16 +7,21 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor //NOTE: 테스트용
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class CommentDTO {
+public class CommentResponseDTO {
 	private int id;
 	private int commId;
 	private Date postdate;
 	private String content;
 	private String tablename;
 	private int recodenum;
-	private int userId;
+	private String userId;
+	
+	private String nickname;
+	private long likecount;
 }

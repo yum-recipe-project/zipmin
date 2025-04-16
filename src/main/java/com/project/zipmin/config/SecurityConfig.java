@@ -43,12 +43,12 @@ public class SecurityConfig {
 					.requestMatchers("/fridge/**").permitAll()
 					.requestMatchers("/mypage/**").permitAll()
 					.requestMatchers("/admin/**").permitAll()
+					.requestMatchers("/megazines/**").permitAll()
 					.requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**", "assets/**").permitAll()
 					.anyRequest().authenticated()
 				);
 		http.formLogin((formLogin) -> formLogin
 				.loginPage("/user/login.do")
-				// .loginProcessingUrl("")
 				.defaultSuccessUrl("/", false)
 				.failureHandler(authFailureHandler) 
 				.usernameParameter("id")

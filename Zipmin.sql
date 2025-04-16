@@ -6,6 +6,8 @@
 
 
 -- 테이블과 시퀀스 일괄 삭제
+drop table chomp_event;
+drop sequence seq_chomp_event_id;
 drop table chomp_megazine;
 drop sequence seq_chomp_megazine_id;
 drop table chomp_vote_record;
@@ -373,6 +375,10 @@ create sequence seq_chomp_id
     nomaxvalue
     nocycle
     nocache;
+insert into chomp values (1, '투표', '당신의 녹차 아이스크림에 투표하세요');
+insert into chomp values (2, '매거진', '녹차 아이스크림 4종 비교');
+insert into chomp values (3, '이벤트', '3월 한정! 후원 포인트 이체 수수료 무료');
+insert into chomp values (4, '투표', '가장 맛있는 딸기 아이스크림');
 commit;
 
 
@@ -396,6 +402,8 @@ create sequence seq_chomp_vote_id
     nomaxvalue
     nocycle
     nocache;
+insert into chomp_vote values (1, '25/03/31', '25/05/05', 1);
+insert into chomp_vote values (2, '25/01/01', '25/04/01', 4);
 commit;
 
 
@@ -470,17 +478,33 @@ create sequence seq_chomp_megazine_id
     nomaxvalue
     nocycle
     nocache;
+insert into chomp_megazine values (1, sysdate, '녹차아이스크림 최고!', 2);
 commit;
 
 
 
 -- CHOMP_EVENT 테이블
-
-
-
-
-
-
+-- drop table chomp_event;
+-- drop sequence seq_chomp_event_id;
+create table chomp_event (
+    id number primary key,
+    opendate date not null,
+    closedate date not null,
+    content varchar2(1000) not null,
+    chomp_id number not null
+);
+alter table chomp_event
+    add constraint const_chomp_event_chomp foreign key(chomp_id)
+    references chomp(id) on delete cascade;
+create sequence seq_chomp_event_id
+    increment by 1
+    start with 1
+    minvalue 1
+    nomaxvalue
+    nocycle
+    nocache;
+insert into chomp_event values (1, '25/01/01', '25/04/01', '3월 기간 한정', 3);
+commit;
 
 
 

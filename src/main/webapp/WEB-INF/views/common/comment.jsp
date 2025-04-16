@@ -9,9 +9,9 @@
 			<span>7</span>
 		</div>
 		<div class="comment_order">
-			<button class="btn_sort_small active">최신순</button>
-			<button class="btn_sort_small">오래된순</button>
-			<button class="btn_sort_small">인기순</button>
+			<button class="btn_sort_small active" data-sort="new">최신순</button>
+			<button class="btn_sort_small" data-sort="old">오래된순</button>
+			<button class="btn_sort_small" data-sort="hot">인기순</button>
 		</div>
 	</div>
 	
@@ -26,19 +26,17 @@
 		</c:if>
 		<!-- 로그인 한 경우 -->
 		<c:if test="${ true }">
-			<form>
-				<div class="login_user">
-					<img src="/images/common/test.png">
-					<span>아잠만</span>
-				</div>
-				<div class="comment_input">
-					<textarea id="writeCommentContent" rows="2" maxlength="400" placeholder="욕설, 비방, 허위 정보 및 부적절한 댓글은 사전 경고 없이 삭제될 수 있습니다."></textarea>
-					<span>400</span>
-				</div>
-				<div class="write_btn">
-					<button class="btn_primary disable" type="submit" class="disable" disabled>작성하기</button>
-				</div>
-			</form>
+			<div class="login_user">
+				<img src="/images/common/test.png">
+				<span>아잠만</span>
+			</div>
+			<div class="comment_input">
+				<textarea id="writeCommentContent" rows="2" maxlength="400" placeholder="욕설, 비방, 허위 정보 및 부적절한 댓글은 사전 경고 없이 삭제될 수 있습니다."></textarea>
+				<span>400</span>
+			</div>
+			<div class="write_btn">
+				<button class="btn_primary disable" type="submit" class="disable" disabled>작성하기</button>
+			</div>
 		</c:if>
 	</form>
 	
@@ -47,6 +45,7 @@
 		<ul class="comment_list">
 			<!-- 댓글을 돌면서 original idx랑 comment idx랑 일치하면 -->
 			<%-- <c:foreach> --%>
+<%-- 			
 				<c:if test="${ true }">
 					<li class="comment">
 						<!-- 댓글 헤더 -->
@@ -89,7 +88,7 @@
 				<!-- 대댓글 -->
 				<ul class="subcomment_list">
 					<!-- 댓글 테이블을 돌면서 orginal idx랑 comment idx랑 다르고 (=대댓글이고) && 이 댓글에 해당하는 대댓글이면 -->
-					<%-- <c:forEach> --%>
+					<c:forEach>
 						<c:if test="${ true }">
 							<li class="subcomment">
 								<img class="subcomment_arrow" src="/images/chompessor/arrow_right.png">
@@ -128,8 +127,8 @@
 								</div>
 							</li>
 						</c:if>
-					<%-- </c:forEach> --%>
-				</ul>
+					</c:forEach>
+				</ul> --%>
 			<%-- </c:foreach> --%>
 		</ul>
 	</c:if>

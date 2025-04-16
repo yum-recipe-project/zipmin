@@ -27,4 +27,6 @@ public class User {
 	private int revenue;
 	private String auth;
 	private int enable;
+	
+	
 }

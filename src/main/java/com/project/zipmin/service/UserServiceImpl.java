@@ -27,8 +27,12 @@ public class UserServiceImpl implements UserService {
 		List<User> userList = userRepository.findAll();
 		return userMapper.userListToUserDTOList(userList);
 	}
-	
 
+	@Override
+	public User joinUser(UserDTO userDTO) {
+		User user = userMapper.userDTOToUser(userDTO);
+		return userRepository.save(user);
+	}
 
 
 }

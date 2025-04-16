@@ -14,4 +14,6 @@ public class ChompVoteDTO {
 	private Date opendate;
 	private Date closedate;
 	private int chompId;
+	
+	private String status;
 }

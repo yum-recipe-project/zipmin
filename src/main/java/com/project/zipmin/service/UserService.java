@@ -5,12 +5,14 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.dto.UserDTO;
+import com.project.zipmin.entity.User;
 
 @Service
 public interface UserService {
 
     // 모든 회원 조회
     public List<UserDTO> getUserList();
+    
 
     // 특정 회원의 팔로워 목록 조회
     // List<UserDTO> getFollowerList(String userId);
@@ -22,7 +24,7 @@ public interface UserService {
     // UserDTO getUserById(String userId);
 
     // 회원가입 (새로운 회원 추가)
-    // UserDTO registerUser(UserDTO userDTO);
+    User joinUser(UserDTO userDTO);
 
     // 회원 정보 업데이트
     // UserDTO updateUserAccount(UserDTO userDTO);

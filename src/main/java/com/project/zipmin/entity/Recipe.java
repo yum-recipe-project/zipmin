@@ -19,14 +19,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Entity
-@Table(name = "LIKES")
-public class Like {
+@Table(name = "RECIPE")
+public class Recipe {
 	@Id
-	@GeneratedValue(generator = "seq_likes_id")
-	@SequenceGenerator(name = "seq_likes_id", sequenceName = "SEQ_LIKES_ID", allocationSize = 1)
+	@GeneratedValue(generator = "seq_recipe_id")
+	@SequenceGenerator(name = "seq_recipe_id", sequenceName = "SEQ_RECIPE_ID", allocationSize = 1)
 	private int id;
-	private String tablename;
-	private int recodenum;
+	private String imageUrl;
+	private String title;
+	private String introduce;
+	private String cooklevel;
+	private String cooktime;
+	private String spicy;
+	private String portion;
+	private String tip;
+	private String youtubeUrl;
 	
 	// private String userId;
 	@ManyToOne(fetch = FetchType.LAZY)

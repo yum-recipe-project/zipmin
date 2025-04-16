@@ -159,3 +159,42 @@ function renderChompMegazineCommentDataList() {
 		btnMore.style.display = "block";
 	}
 }
+
+
+
+/**
+ * 댓글을 작성하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function () {
+	document.getElementById("writeCommentForm").addEventListener("submit", function (event) {
+		event.preventDefault();
+		const params = new URLSearchParams(window.location.search);
+		const megazineId = params.get('megazineId');
+		
+		const commentData = {
+			content: document.getElementById("writeCommentContent").value.trim(),
+			tablename: "chomp_megazine",
+			recodenum: Number(megazineId),
+		};
+
+		fetch(`http://localhost:8586/megazines/${megazineId}/comments`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(commentData)
+		})
+		.then((response) => response.json())
+		.then(result => {
+			console.log("결과: ", result);
+			// location.reload();
+		})
+		.catch(error => console.log(error));
+	});
+});
+
+
+
+
+
+

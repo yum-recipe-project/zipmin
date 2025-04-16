@@ -4,12 +4,17 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 
-import com.project.zipmin.dto.CommentDTO;
+import com.project.zipmin.dto.CommentRequestDTO;
+import com.project.zipmin.dto.CommentResponseDTO;
 import com.project.zipmin.entity.Comment;
 
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
-	CommentDTO commentToCommentDTO(Comment comment);
-	Comment commentDTOToComment(CommentDTO commentDTO);
-	List<CommentDTO> commentListToCommentDTOList(List<Comment> commentList);
+	CommentResponseDTO commentToCommentResponseDTO(Comment comment);
+	Comment commentResponseDTOToComment(CommentResponseDTO commentDTO);
+	List<CommentResponseDTO> commentListToCommentResponseDTOList(List<Comment> commentList);
+	
+	CommentRequestDTO commentToCommentRequestDTO(Comment comment);
+	Comment commentRequestDTOToComment(CommentRequestDTO commentDTO);
+	List<CommentRequestDTO> commentListToCommentRequestDTOList(List<Comment> commentList);
 }

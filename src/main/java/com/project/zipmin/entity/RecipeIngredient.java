@@ -1,14 +1,11 @@
 package com.project.zipmin.entity;
 
-import java.util.Date;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -22,16 +19,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Entity
-@Table(name = "CHOMP_MEGAZINE")
-public class ChompMegazine {
+@Table(name = "RECIPE_INGREDIENT")
+public class RecipeIngredient {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_chomp_megazine_id")
-	@SequenceGenerator(name = "seq_chomp_megazine_id", sequenceName = "SEQ_CHOMP_MEGAZINE_ID", allocationSize = 1)
+	@GeneratedValue(generator = "seq_recipe_ingredient_id")
+	@SequenceGenerator(name = "seq_recipe_ingredient_id", sequenceName = "SEQ_RECIPE_INGREDIENT_ID", allocationSize = 1)
 	private int id;
-	private Date postdate;
-	private String content;
+	private String name;
+	private int amount;
+	private String unit;
+	private String note;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "CHOMP_ID")
-	private Chomp chomp;
+	// private String recipeId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "RECIPE_ID")
+	private Recipe recipe;
 }

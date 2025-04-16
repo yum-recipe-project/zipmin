@@ -26,19 +26,17 @@
 		</c:if>
 		<!-- 로그인 한 경우 -->
 		<c:if test="${ true }">
-			<form>
-				<div class="login_user">
-					<img src="/images/common/test.png">
-					<span>아잠만</span>
-				</div>
-				<div class="comment_input">
-					<textarea id="writeCommentContent" rows="2" maxlength="400" placeholder="욕설, 비방, 허위 정보 및 부적절한 댓글은 사전 경고 없이 삭제될 수 있습니다."></textarea>
-					<span>400</span>
-				</div>
-				<div class="write_btn">
-					<button class="btn_primary disable" type="submit" class="disable" disabled>작성하기</button>
-				</div>
-			</form>
+			<div class="login_user">
+				<img src="/images/common/test.png">
+				<span>아잠만</span>
+			</div>
+			<div class="comment_input">
+				<textarea id="writeCommentContent" rows="2" maxlength="400" placeholder="욕설, 비방, 허위 정보 및 부적절한 댓글은 사전 경고 없이 삭제될 수 있습니다."></textarea>
+				<span>400</span>
+			</div>
+			<div class="write_btn">
+				<button class="btn_primary disable" type="submit" class="disable" disabled>작성하기</button>
+			</div>
 		</c:if>
 	</form>
 	

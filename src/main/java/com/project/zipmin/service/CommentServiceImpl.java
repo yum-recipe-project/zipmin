@@ -7,7 +7,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.project.zipmin.dto.CommentDTO;
+import com.project.zipmin.dto.CommentRequestDTO;
+import com.project.zipmin.dto.CommentResponseDTO;
 import com.project.zipmin.dto.LikeDTO;
 import com.project.zipmin.dto.UserDTO;
 import com.project.zipmin.entity.Comment;
@@ -33,11 +34,11 @@ public class CommentServiceImpl implements CommentService {
 	private final UserMapper userMapper;
 
 	@Override
-	public List<CommentDTO> getCommentListByTablenameAndRecodenumOrderByIdAsc(String tablename, int recodenum) {
+	public List<CommentResponseDTO> getCommentListByTablenameAndRecodenumOrderByIdAsc(String tablename, int recodenum) {
 		List<Comment> commentList = commentRepository.findAllByTablenameAndRecodenumOrderByIdAsc(tablename, recodenum);
-		List<CommentDTO> commentDTOList = new ArrayList<CommentDTO>();
+		List<CommentResponseDTO> commentDTOList = new ArrayList<CommentResponseDTO>();
 		for (Comment comment : commentList) {
-			CommentDTO commentDTO = commentMapper.commentToCommentDTO(comment);
+			CommentResponseDTO commentDTO = commentMapper.commentToCommentResponseDTO(comment);
 			commentDTO.setCommId(comment.getComment().getId());
 			commentDTO.setUserId(comment.getUser().getId());
 			commentDTO.setNickname(comment.getUser().getNickname());
@@ -48,11 +49,11 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public List<CommentDTO> getCommentListByTablenameAndRecodenumOrderByIdDesc(String tablename, int recodenum) {
+	public List<CommentResponseDTO> getCommentListByTablenameAndRecodenumOrderByIdDesc(String tablename, int recodenum) {
 		List<Comment> commentList = commentRepository.findAllByTablenameAndRecodenumOrderByIdDesc(tablename, recodenum);
-		List<CommentDTO> commentDTOList = new ArrayList<CommentDTO>();
+		List<CommentResponseDTO> commentDTOList = new ArrayList<CommentResponseDTO>();
 		for (Comment comment : commentList) {
-			CommentDTO commentDTO = commentMapper.commentToCommentDTO(comment);
+			CommentResponseDTO commentDTO = commentMapper.commentToCommentResponseDTO(comment);
 			commentDTO.setCommId(comment.getComment().getId());
 			commentDTO.setUserId(comment.getUser().getId());
 			commentDTO.setNickname(comment.getUser().getNickname());
@@ -63,11 +64,11 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public List<CommentDTO> getCommentListByTablenameAndRecodenumOrderByLikecount(String tablename, int recodenum) {
+	public List<CommentResponseDTO> getCommentListByTablenameAndRecodenumOrderByLikecount(String tablename, int recodenum) {
 		List<Comment> commentList = commentRepository.findAllByTablenameAndRecodenumOrderByLikecount(tablename, recodenum);
-		List<CommentDTO> commentDTOList = new ArrayList<CommentDTO>();
+		List<CommentResponseDTO> commentDTOList = new ArrayList<CommentResponseDTO>();
 		for (Comment comment : commentList) {
-			CommentDTO commentDTO = commentMapper.commentToCommentDTO(comment);
+			CommentResponseDTO commentDTO = commentMapper.commentToCommentResponseDTO(comment);
 			commentDTO.setCommId(comment.getComment().getId());
 			commentDTO.setUserId(comment.getUser().getId());
 			commentDTO.setNickname(comment.getUser().getNickname());
@@ -77,54 +78,58 @@ public class CommentServiceImpl implements CommentService {
 		System.err.println(commentDTOList);
 	    return commentDTOList;
 	}
+
+	@Override
+	public int countCommentsByTableNameAndRecordNum(String tablename, int recordnum) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<CommentResponseDTO> getCommentListByUserId(String userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int countCommentsByUserId(String userId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public CommentResponseDTO getCommentById(int commentId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int createComment(CommentRequestDTO commentDTO) {
+		System.err.println("commentDTO = " + commentDTO);
+		Comment comment = commentMapper.commentRequestDTOToComment(commentDTO);
+		System.err.println("comment = " + comment);
+		commentRepository.save(comment);
+		return 0;
+	}
+
+	@Override
+	public int updateComment(CommentRequestDTO commentDTO) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int deleteCommentById(int commentId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int deleteCommentListByTablenameAndRecodenum(String tablename, int recodenum) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 
-	@Override
-	public int getCommentCountByTable(String tablename, int recodenum) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public List<CommentDTO> selectCommentListByMemberId(String id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int selectCommentCountByMemberId(String id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public CommentDTO selectComment(int commIdx) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int insertComment(CommentDTO commentDTO) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateComment(CommentDTO commentDTO) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int deleteComment(int commIdx) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int deleteCommentListByTable(String tablename, int recodenum) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 }

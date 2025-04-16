@@ -11,5 +11,5 @@ import com.project.zipmin.entity.ChompEvent;
 public interface ChompEventMapper {
 	ChompEventDTO chompEventToChompEventDTO(ChompEvent chompEvent);
 	ChompEvent chompEventDTOToChompEvent(ChompEventDTO chompEventDTO);
-	List<ChompEventDTO> chompEventListTChompEventDTOList(List<ChompEvent> chompEventList);
+	List<ChompEventDTO> chompEventListToChompEventDTOList(List<ChompEvent> chompEventList);
 }

@@ -3,7 +3,7 @@ package com.project.zipmin.dto;
 import lombok.Data;
 
 @Data
-public class UserAccount {
+public class UserAccountDTO {
 	private int id;
 	private String bank;
 	private String accountnum;

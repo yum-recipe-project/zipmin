@@ -15,20 +15,10 @@
 #container .comment_header .comment_count {
 	display: flex;
 	align-items: center;
-}
-
-#container .comment_header .comment_count span {
 	font-weight: 500;
 	line-height: 1.5;
 	letter-spacing: -0.025em;
 	font-size: 16px;
-}
-
-#container .comment_header .comment_count span + span {
-	font-weight: 400;
-	color: var(--txt-color-500);
-	font-size: 12px;
-	margin-left: 8px;
 }
 
 /* 댓글 헤더 (정렬 순서) */

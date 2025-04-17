@@ -4,10 +4,7 @@
 <div class="comment_wrap">
 	<!-- 댓글 헤더 -->
 	<div class="comment_header">
-		<div class="comment_count">
-			<span>댓글</span>
-			<span>7</span>
-		</div>
+		<div class="comment_count"></div>
 		<div class="comment_order">
 			<button class="btn_sort_small active" data-sort="new">최신순</button>
 			<button class="btn_sort_small" data-sort="old">오래된순</button>

@@ -172,7 +172,7 @@ function renderChompData(data) {
 
 		return `
 			<li class="forum">
-				<a href="/chompessor/viewEvent.do">
+				<a href="/chompessor/viewEvent.do?eventId=${data.chomp_event_dto.id}">
 					<div class="forum_thumbnail"><img src="/images/common/test.png"></div>
 					<div class="forum_info">
 						<p class="type">이벤트</p>

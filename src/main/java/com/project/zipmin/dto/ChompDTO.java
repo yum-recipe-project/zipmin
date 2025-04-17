@@ -15,5 +15,5 @@ public class ChompDTO {
 	
 	private ChompVoteDTO chompVoteDTO;
 	private ChompMegazineDTO chompMegazineDTO;
-	private ChompEventDTO chompEventDTO;
+	private ChompEventResponseDTO chompEventDTO;
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.dto.ChompDTO;
+import com.project.zipmin.dto.ChompEventResponseDTO;
 import com.project.zipmin.dto.ChompMegazineDTO;
 import com.project.zipmin.dto.ChompVoteDTO;
 import com.project.zipmin.dto.CommentRequestDTO;
@@ -333,6 +334,38 @@ public class ChompessorController {
 			@PathVariable("megazineId") int megazineId,
 			@PathVariable("commId") int commId) {
 		return false;
+	}
+	
+	
+	
+	
+	
+	// 특정 이벤트 조회
+	@GetMapping("/events/{eventId}")
+	public ChompEventResponseDTO viewEvent(
+			@PathVariable int eventId) {
+		ChompEventResponseDTO chompEventDTO = chompService.getEventById(eventId);
+		int count = commentService.countCommentByTableNameAndRecordNum("chomp_event", eventId);
+		chompEventDTO.setCommentCount(count);
+		return chompEventDTO;
+	}
+	
+	// 특정 이벤트의 댓글 목록 조회
+	@GetMapping("/events/{eventId}/comments")
+	public List<CommentResponseDTO> listEventComment(
+			@PathVariable int eventId,
+			@RequestParam String sort) {
+		List<CommentResponseDTO> commentList = new ArrayList<CommentResponseDTO>();
+		if (sort.equals("new")) {
+			commentList = commentService.getCommentListByTablenameAndRecodenumOrderByIdDesc("chomp_event", eventId);
+		}
+		else if (sort.equals("old")) {
+			commentList = commentService.getCommentListByTablenameAndRecodenumOrderByIdAsc("chomp_event", eventId);
+		}
+		else if (sort.equals("hot")) {
+			commentList = commentService.getCommentListByTablenameAndRecodenumOrderByLikecount("chomp_event", eventId);
+		}
+		return commentList;
 	}
 
 }

@@ -8,10 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.dto.ChompDTO;
-import com.project.zipmin.dto.ChompEventDTO;
+import com.project.zipmin.dto.ChompEventResponseDTO;
 import com.project.zipmin.dto.ChompMegazineDTO;
 import com.project.zipmin.dto.ChompVoteDTO;
 import com.project.zipmin.entity.Chomp;
+import com.project.zipmin.entity.ChompEvent;
 import com.project.zipmin.entity.ChompMegazine;
 import com.project.zipmin.mapper.ChompEventMapper;
 import com.project.zipmin.mapper.ChompMapper;
@@ -61,7 +62,7 @@ public class ChompServiceImpl implements ChompService {
 				}	
 			}
 			ChompMegazineDTO chompMegazineDTO = chompMegazineMapper.chompMegazineToChompMegazineDTO(chomp.getChompMegazine());
-			ChompEventDTO chompEventDTO = chompEventMapper.chompEventToChompEventDTO(chomp.getChompEvent());
+			ChompEventResponseDTO chompEventDTO = chompEventMapper.chompEventToChompEventDTO(chomp.getChompEvent());
 			if (chompEventDTO != null) {
 				if (today.after(chompEventDTO.getOpendate()) && today.before(chompEventDTO.getClosedate())) {
 					chompEventDTO.setStatus("open");
@@ -78,23 +79,8 @@ public class ChompServiceImpl implements ChompService {
 		return chompDTOList;
 	}
 
-
-
 	@Override
 	public ChompVoteDTO getVoteById(int id) {
-//		ChompVote chompVote = chompVoteRepository.findById(id).orElseThrow();
-//		System.err.println(chompVote);
-//		if (chompVote.isPresent()) {
-//	        return chompVoteMapper.chompVoteToChompVoteDTO(chompVote.get());
-//	    }
-//		else {
-//	        return null;
-//	    }
-		return null;
-	}
-
-	@Override
-	public ChompVoteDTO getVoteByChompId(int chompId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -107,4 +93,15 @@ public class ChompServiceImpl implements ChompService {
 		chompMegazineDTO.setChompDTO(chompDTO);
 		return chompMegazineDTO;
 	}
+
+	@Override
+	public ChompEventResponseDTO getEventById(int id) {
+		ChompEvent chompEvent = chompEventRepository.findById(id).orElseThrow();
+		ChompEventResponseDTO chompEventDTO = chompEventMapper.chompEventToChompEventDTO(chompEvent);
+		ChompDTO chompDTO = chompMapper.chompToChompDTO(chompEvent.getChomp());
+		chompEventDTO.setChompDTO(chompDTO);
+		return chompEventDTO;
+	}
+	
+	
 }

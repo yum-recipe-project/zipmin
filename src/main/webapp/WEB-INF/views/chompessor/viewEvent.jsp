@@ -21,33 +21,25 @@
 					<!-- 이벤트 헤더 -->
 					<div class="event_header">
 						<span>이벤트</span>
-						<h2>3월 한정! 후원 포인트 이체 수수료 무료</h2>
+						<h2 class="event_title"></h2>
 						<div class="event_info">
 							<div class="period">
-								<span>2025.03.01 - 2024.03.31</span>
+								<span class="event_date"></span>
 							</div>
-							<span>댓글</span>
-							<span>235개</span>
+							<span class="comment_count"></span>
 						</div>
 					</div>
 					
 					<!-- 이벤트 내용 -->
-					<p class="event_content">
-						3월 기간 한정<br/>
-						후원포인트 이체 수수료 무료 이벤트 🎉<br/>
-						기간 한정으로 드리는 파격 혜택!<br/>
-						지금 후원받은 포인트를 이체하시면<br/>
-						이체 수수료가 무료!<br/>
-					</p>
+					<p class="event_content"></p>
+					
 					<!-- 이벤트 이미지 -->
 					<img src="/images/common/test.png">
-					
 					
 					<!-- 목록 버튼 -->
 					<div class="list_btn">
 						<button class="btn_outline" onclick="location.href='/chompessor/listChomp.do'">목록으로</button>
 					</div>
-					
 				</div>
 				
 				<!-- 댓글 -->

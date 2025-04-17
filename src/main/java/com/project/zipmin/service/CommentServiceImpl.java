@@ -80,9 +80,8 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public int countCommentsByTableNameAndRecordNum(String tablename, int recordnum) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int countCommentByTableNameAndRecordNum(String tablename, int recordnum) {
+		return commentRepository.countByTablenameAndRecodenum(tablename, recordnum);
 	}
 
 	@Override
@@ -92,7 +91,7 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public int countCommentsByUserId(String userId) {
+	public int countCommentByUserId(String userId) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

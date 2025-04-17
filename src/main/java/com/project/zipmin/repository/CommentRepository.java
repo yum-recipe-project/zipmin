@@ -38,4 +38,11 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
 	List<Comment> findAllByTablenameAndRecodenumOrderByLikecount(
 	    @Param("tablename") String tablename,
 	    @Param("recodenum") int recodenum);
+	
+	@Query("SELECT COUNT(c) FROM Comment c " +
+				"WHERE c.tablename = :tablename AND c.recodenum = :recodenum")
+	int countByTablenameAndRecodenum(
+		@Param("tablename") String tablename,
+		@Param("recodenum") int recodenum);
+
 }

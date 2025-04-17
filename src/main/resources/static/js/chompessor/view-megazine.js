@@ -12,8 +12,7 @@ const size = 10;
  * 
  */
 document.addEventListener('DOMContentLoaded', function () {
-	const params = new URLSearchParams(window.location.search);
-	const megazineId = params.get('megazineId');
+	const megazineId = new URLSearchParams(window.location.search).get('megazineId');
 
 	// 매거진 정보 불러오기
 	fetch(`http://localhost:8586/megazines/${megazineId}`, {
@@ -21,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	})
 	.then(response => response.json())
 	.then(data => {
-		document.querySelector(".megazine_category").innerText = data.chomp_dto.category;
 		document.querySelector(".megazine_title").innerText = data.chomp_dto.title;
 		document.querySelector(".megazine_content").innerText = data.content;
 		const date = new Date(data.postdate);
@@ -31,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	.catch(error => console.log(error));
 
 	// 댓글 데이터 최초 불러오기
-	loadAndRenderComments(megazineId);
+	loadChompMegazineCommentList(megazineId);
 
 	// 정렬 탭 클릭
 	document.querySelectorAll('.comment_order button').forEach(tab => {
@@ -42,14 +40,14 @@ document.addEventListener('DOMContentLoaded', function () {
 			selectSort = this.getAttribute("data-sort");
 			page = 0;
 			document.querySelector(".comment_list").innerHTML = "";
-			loadAndRenderComments(megazineId);
+			loadChompMegazineCommentList(megazineId);
 		});
 	});
 
 	// 더보기 버튼
 	document.querySelector(".btn_more").addEventListener("click", function () {
 		page++;
-		renderChompMegazineCommentDataList();
+		showChompMegazineCommentList();
 	});
 });
 
@@ -57,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
 /**
  * 
  */
-function loadAndRenderComments(megazineId) {
+function loadChompMegazineCommentList(megazineId) {
 	fetch(`http://localhost:8586/megazines/${megazineId}/comments?sort=${selectSort}`, {
 		method: "GET"
 	})
@@ -65,7 +63,7 @@ function loadAndRenderComments(megazineId) {
 	.then(dataList => {
 		allCommentList = dataList;
 		page = 0;
-		renderChompMegazineCommentDataList();
+		showChompMegazineCommentList();
 	})
 	.catch(error => console.log(error));
 }
@@ -74,7 +72,7 @@ function loadAndRenderComments(megazineId) {
 /**
  * 현재 페이지 기준으로 댓글 목록 렌더링
  */
-function renderChompMegazineCommentDataList() {
+function showChompMegazineCommentList() {
 	const start = 0;
 	const end = (page + 1) * size;
 	const pagedList = allCommentList.slice(start, end);

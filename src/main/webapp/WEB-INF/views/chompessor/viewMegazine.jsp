@@ -17,7 +17,8 @@
 				<div class="megazine_wrap">
 					<!-- 매거진 헤더 -->
 					<div class="megazine_header">
-						<span class="megazine_category"></span>
+						<!-- <span class="megazine_category"></span> -->
+						<span>매거진</span>
 						<h2 class="megazine_title"></h2>
 						<div class="megazine_writer">
 							<img src="/images/common/test.png">

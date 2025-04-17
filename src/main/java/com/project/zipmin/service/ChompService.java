@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.dto.ChompDTO;
+import com.project.zipmin.dto.ChompEventResponseDTO;
 import com.project.zipmin.dto.ChompMegazineDTO;
 import com.project.zipmin.dto.ChompVoteDTO;
 
@@ -16,16 +17,13 @@ public interface ChompService {
 	
 	
 	
-	// 모든 투표 게시물 조회
-	public ChompVoteDTO getVoteById(int id);
-	
+
 	// 특정 투표 게시물 조회
-	public ChompVoteDTO getVoteByChompId(int chompId);
-	
-	
-	
-	
-	
+	public ChompVoteDTO getVoteById(int id);
+
 	// 매거진 상세 조회
 	public ChompMegazineDTO getMegazineById(int id);
+	
+	// 이벤트 상세 조회
+	public ChompEventResponseDTO getEventById(int id);
 }

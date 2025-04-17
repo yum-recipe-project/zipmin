@@ -20,13 +20,13 @@ public interface CommentService {
 	public List<CommentResponseDTO> getCommentListByTablenameAndRecodenumOrderByLikecount(String tablename, int recodenum);
 	
 	// 테이블 이름과 일련번호를 이용해 댓글 수 조회
-	public int countCommentsByTableNameAndRecordNum(String tablename, int recordnum);
+	public int countCommentByTableNameAndRecordNum(String tablename, int recordnum);
 	
 	// 사용자 아이디를 이용해 댓글 목록 조회
 	public List<CommentResponseDTO> getCommentListByUserId(String userId);
 	
 	// 사용자 아이디를 이용해 댓글 수 조회
-	public int countCommentsByUserId(String userId);
+	public int countCommentByUserId(String userId);
 	
 	// 댓글 조회
 	public CommentResponseDTO getCommentById(int commentId);

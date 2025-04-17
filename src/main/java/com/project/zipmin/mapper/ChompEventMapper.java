@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 
-import com.project.zipmin.dto.ChompEventDTO;
+import com.project.zipmin.dto.ChompEventResponseDTO;
 import com.project.zipmin.entity.ChompEvent;
 
 @Mapper(componentModel = "spring")
 public interface ChompEventMapper {
-	ChompEventDTO chompEventToChompEventDTO(ChompEvent chompEvent);
-	ChompEvent chompEventDTOToChompEvent(ChompEventDTO chompEventDTO);
-	List<ChompEventDTO> chompEventListTChompEventDTOList(List<ChompEvent> chompEventList);
+	ChompEventResponseDTO chompEventToChompEventDTO(ChompEvent chompEvent);
+	ChompEvent chompEventDTOToChompEvent(ChompEventResponseDTO chompEventDTO);
+	List<ChompEventResponseDTO> chompEventListTChompEventDTOList(List<ChompEvent> chompEventList);
 }

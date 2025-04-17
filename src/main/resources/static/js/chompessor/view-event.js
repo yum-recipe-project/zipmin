@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			document.querySelectorAll('.comment_order button').forEach(btn => btn.classList.remove('active'));
 			this.classList.add('active');
 			selectSort = this.getAttribute("data-sort");
-			page = o;
+			page = 0;
 			document.querySelector(".comment_list").innerHTML = "";
 			loadChompEventCommentList(eventId);
 		});

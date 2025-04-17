@@ -10,11 +10,12 @@ import lombok.ToString;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ChompMegazineDTO {
+public class ChompMegazineResponseDTO {
 	private int id;
 	private Date postdate;
 	private String content;
 	// private int chompId;
 	
 	private ChompDTO chompDTO;
+	private int commentCount;
 }

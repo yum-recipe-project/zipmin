@@ -9,7 +9,7 @@ import com.project.zipmin.entity.ChompEvent;
 
 @Mapper(componentModel = "spring")
 public interface ChompEventMapper {
-	ChompEventResponseDTO chompEventToChompEventDTO(ChompEvent chompEvent);
-	ChompEvent chompEventDTOToChompEvent(ChompEventResponseDTO chompEventDTO);
-	List<ChompEventResponseDTO> chompEventListTChompEventDTOList(List<ChompEvent> chompEventList);
+	ChompEventResponseDTO chompEventToChompEventResponseDTO(ChompEvent chompEvent);
+	ChompEvent chompEventResponseDTOToChompEvent(ChompEventResponseDTO chompEventDTO);
+	List<ChompEventResponseDTO> chompEventListTChompEventResponseDTOList(List<ChompEvent> chompEventList);
 }

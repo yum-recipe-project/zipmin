@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.zipmin.dto.ChompDTO;
 import com.project.zipmin.dto.ChompEventResponseDTO;
-import com.project.zipmin.dto.ChompMegazineDTO;
+import com.project.zipmin.dto.ChompMegazineResponseDTO;
 import com.project.zipmin.dto.ChompVoteDTO;
 
 @Service
@@ -22,7 +22,7 @@ public interface ChompService {
 	public ChompVoteDTO getVoteById(int id);
 
 	// 매거진 상세 조회
-	public ChompMegazineDTO getMegazineById(int id);
+	public ChompMegazineResponseDTO getMegazineById(int id);
 	
 	// 이벤트 상세 조회
 	public ChompEventResponseDTO getEventById(int id);

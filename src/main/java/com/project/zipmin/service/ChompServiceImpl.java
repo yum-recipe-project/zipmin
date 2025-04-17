@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.zipmin.dto.ChompDTO;
 import com.project.zipmin.dto.ChompEventResponseDTO;
-import com.project.zipmin.dto.ChompMegazineDTO;
+import com.project.zipmin.dto.ChompMegazineResponseDTO;
 import com.project.zipmin.dto.ChompVoteDTO;
 import com.project.zipmin.entity.Chomp;
 import com.project.zipmin.entity.ChompEvent;
@@ -61,8 +61,8 @@ public class ChompServiceImpl implements ChompService {
 					chompVoteDTO.setStatus("close");
 				}	
 			}
-			ChompMegazineDTO chompMegazineDTO = chompMegazineMapper.chompMegazineToChompMegazineDTO(chomp.getChompMegazine());
-			ChompEventResponseDTO chompEventDTO = chompEventMapper.chompEventToChompEventDTO(chomp.getChompEvent());
+			ChompMegazineResponseDTO chompMegazineDTO = chompMegazineMapper.chompMegazineToChompMegazineResponseDTO(chomp.getChompMegazine());
+			ChompEventResponseDTO chompEventDTO = chompEventMapper.chompEventToChompEventResponseDTO(chomp.getChompEvent());
 			if (chompEventDTO != null) {
 				if (today.after(chompEventDTO.getOpendate()) && today.before(chompEventDTO.getClosedate())) {
 					chompEventDTO.setStatus("open");
@@ -86,9 +86,9 @@ public class ChompServiceImpl implements ChompService {
 	}
 	
 	@Override
-	public ChompMegazineDTO getMegazineById(int id) {
+	public ChompMegazineResponseDTO getMegazineById(int id) {
 		ChompMegazine chompMegazine = chompMegazineRepository.findById(id).orElseThrow();
-		ChompMegazineDTO chompMegazineDTO = chompMegazineMapper.chompMegazineToChompMegazineDTO(chompMegazine);
+		ChompMegazineResponseDTO chompMegazineDTO = chompMegazineMapper.chompMegazineToChompMegazineResponseDTO(chompMegazine);
 		ChompDTO chompDTO = chompMapper.chompToChompDTO(chompMegazine.getChomp());
 		chompMegazineDTO.setChompDTO(chompDTO);
 		return chompMegazineDTO;
@@ -97,7 +97,7 @@ public class ChompServiceImpl implements ChompService {
 	@Override
 	public ChompEventResponseDTO getEventById(int id) {
 		ChompEvent chompEvent = chompEventRepository.findById(id).orElseThrow();
-		ChompEventResponseDTO chompEventDTO = chompEventMapper.chompEventToChompEventDTO(chompEvent);
+		ChompEventResponseDTO chompEventDTO = chompEventMapper.chompEventToChompEventResponseDTO(chompEvent);
 		ChompDTO chompDTO = chompMapper.chompToChompDTO(chompEvent.getChomp());
 		chompEventDTO.setChompDTO(chompDTO);
 		return chompEventDTO;

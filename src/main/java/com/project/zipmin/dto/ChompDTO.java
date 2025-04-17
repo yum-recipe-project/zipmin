@@ -14,6 +14,6 @@ public class ChompDTO {
 	private String title;
 	
 	private ChompVoteDTO chompVoteDTO;
-	private ChompMegazineDTO chompMegazineDTO;
+	private ChompMegazineResponseDTO chompMegazineDTO;
 	private ChompEventResponseDTO chompEventDTO;
 }

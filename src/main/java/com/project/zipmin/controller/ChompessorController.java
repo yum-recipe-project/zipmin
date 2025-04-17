@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.dto.ChompDTO;
 import com.project.zipmin.dto.ChompEventResponseDTO;
-import com.project.zipmin.dto.ChompMegazineDTO;
+import com.project.zipmin.dto.ChompMegazineResponseDTO;
 import com.project.zipmin.dto.ChompVoteDTO;
 import com.project.zipmin.dto.CommentRequestDTO;
 import com.project.zipmin.dto.CommentResponseDTO;
@@ -197,9 +197,11 @@ public class ChompessorController {
 	
 	// 특정 매거진 조회
 	@GetMapping("/megazines/{megazineId}")
-	public ChompMegazineDTO viewMegazine(
+	public ChompMegazineResponseDTO viewMegazine(
 			@PathVariable("megazineId") int megazineId) {
-		ChompMegazineDTO chompMegazineDTO = chompService.getMegazineById(megazineId);
+		ChompMegazineResponseDTO chompMegazineDTO = chompService.getMegazineById(megazineId);
+		int count = commentService.countCommentByTableNameAndRecordNum("chomp_megazine", megazineId);
+		chompMegazineDTO.setCommentCount(count);
 		return chompMegazineDTO;
 	}
 

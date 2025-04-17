@@ -25,6 +25,9 @@ document.addEventListener('DOMContentLoaded', function () {
 		const date = new Date(data.postdate);
 		const formatDate = `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일`;
 		document.querySelector(".megazine_postdate").innerText = formatDate;
+		document.querySelectorAll(".comment_count").forEach(count => {
+			count.innerText = `댓글 ${data.comment_count}`;
+		});
 	})
 	.catch(error => console.log(error));
 

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,10 @@ import com.project.zipmin.dto.CommentRequestDTO;
 import com.project.zipmin.dto.CommentResponseDTO;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 
 @RestController
 public class ChompessorController {
@@ -46,7 +51,7 @@ public class ChompessorController {
 	@GetMapping("/votes/{voteId}")
 	public ChompVoteResponseDTO viewVote(@PathVariable int voteId) {
 		ChompVoteResponseDTO chompVoteDTO = chompService.getVoteById(voteId);
-		int count = commentService.countCommentByTableNameAndRecordNum("chomp_vote", voteId);
+		int count = commentService.countCommentByTableNameAndRecordnum("chomp_vote", voteId);
 		chompVoteDTO.setCommentCount(count);
 		return chompVoteDTO;
 	}
@@ -209,7 +214,7 @@ public class ChompessorController {
 	@GetMapping("/megazines/{megazineId}")
 	public ChompMegazineResponseDTO viewMegazine(@PathVariable int megazineId) {
 		ChompMegazineResponseDTO chompMegazineDTO = chompService.getMegazineById(megazineId);
-		int count = commentService.countCommentByTableNameAndRecordNum("chomp_megazine", megazineId);
+		int count = commentService.countCommentByTableNameAndRecordnum("chomp_megazine", megazineId);
 		chompMegazineDTO.setCommentCount(count);
 		return chompMegazineDTO;
 	}
@@ -254,17 +259,14 @@ public class ChompessorController {
 	
 	// 특정 매거진에 댓글 작성
 	@PostMapping("/megazines/{megazineId}/comments")
-	public ResponseEntity<Map<String, Object>> writeMegazineComment(
-	        @PathVariable int megazineId,
-	        @RequestBody CommentRequestDTO commentDTO) {
-		
+	public ResponseEntity<Map<String, Object>> writeMegazineComment(@PathVariable int megazineId, @RequestBody CommentRequestDTO commentDTO) {
 		commentDTO.setCommId(1);
-		commentDTO.setUserId("harim");
-		System.err.println(commentDTO);
-		commentService.createComment(commentDTO);
 		
 		// String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-		
+		commentDTO.setUserId("harim"); // 
+		System.err.println(commentDTO);
+		commentService.createComment(commentDTO);
+
 		Map<String, Object> result = new HashMap<>();
 		result.put("result", "success");
 	    return ResponseEntity.ok(result);
@@ -279,12 +281,11 @@ public class ChompessorController {
 	}
 	
 	// 특정 매거진의 특정 댓글 삭제
-	@DeleteMapping("/megazines/{megazineId}/comments/{commId}")
-	public int deleteMegazineComment(
-			@PathVariable("megazineId") int megazineId,
-			@PathVariable("commId") int commId) {
-		return 0;
-	}
+//	@DeleteMapping("/megazines/{megazineId}/comments/{commId}")
+//	public ResponseEntity<Object> deleteMegazineComment(@PathVariable int megazineId, @PathVariable int commId) {
+//		commentService.deleteCommentById(commId);
+//	    return ResponseEntity.noContent().build(); // 204 No Content
+//	}
 	
 	// 특정 매거진의 특정 댓글 좋아요
 	@PostMapping("/megazines/{megazineId}/comments/{commId}/likes")
@@ -356,7 +357,7 @@ public class ChompessorController {
 	public ChompEventResponseDTO viewEvent(
 			@PathVariable int eventId) {
 		ChompEventResponseDTO chompEventDTO = chompService.getEventById(eventId);
-		int count = commentService.countCommentByTableNameAndRecordNum("chomp_event", eventId);
+		int count = commentService.countCommentByTableNameAndRecordnum("chomp_event", eventId);
 		chompEventDTO.setCommentCount(count);
 		return chompEventDTO;
 	}

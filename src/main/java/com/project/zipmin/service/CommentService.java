@@ -20,7 +20,7 @@ public interface CommentService {
 	public List<CommentResponseDTO> getCommentListByTablenameAndRecodenumOrderByLikecount(String tablename, int recodenum);
 	
 	// 테이블 이름과 일련번호를 이용해 댓글 수 조회
-	public int countCommentByTableNameAndRecordNum(String tablename, int recordnum);
+	public int countCommentByTableNameAndRecordnum(String tablename, int recordnum);
 	
 	// 사용자 아이디를 이용해 댓글 목록 조회
 	public List<CommentResponseDTO> getCommentListByUserId(String userId);
@@ -38,7 +38,7 @@ public interface CommentService {
 	public int updateComment(CommentRequestDTO commentDTO);
 	
 	// 댓글 삭제
-	public int deleteCommentById(int commentId);
+	public void deleteCommentById(int commentId);
 	
 	// 테이블 이름과 일련번호를 이용해 댓글 목록 삭제
 	public int deleteCommentListByTablenameAndRecodenum(String tablename, int recodenum);

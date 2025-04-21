@@ -13,6 +13,7 @@ import com.project.zipmin.dto.LikeDTO;
 import com.project.zipmin.dto.UserDTO;
 import com.project.zipmin.entity.Comment;
 import com.project.zipmin.entity.Like;
+import com.project.zipmin.exception.CommentNotFoundException;
 import com.project.zipmin.mapper.CommentMapper;
 import com.project.zipmin.mapper.UserMapper;
 import com.project.zipmin.repository.CommentRepository;
@@ -79,7 +80,7 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public int countCommentByTableNameAndRecordNum(String tablename, int recordnum) {
+	public int countCommentByTableNameAndRecordnum(String tablename, int recordnum) {
 		return commentRepository.countByTablenameAndRecodenum(tablename, recordnum);
 	}
 
@@ -114,18 +115,26 @@ public class CommentServiceImpl implements CommentService {
 		return 0;
 	}
 
-	@Override
-	public int deleteCommentById(int commentId) {
-		// TODO Auto-generated method stub
-		return 0;
+	public void deleteCommentById(int commentId) {
+	    Comment comment = commentRepository.findById(commentId)
+	        .orElseThrow(() -> new CommentNotFoundException("댓글이 존재하지 않습니다."));
+//	    if (comment.isDeleted()) {
+//	        throw new InvalidCommentContentException("이미 삭제된 댓글입니다.");
+//	    }
+//	    if (comment.getUserId() != userId) {
+//	        throw new NoPermissionException("댓글 삭제 권한이 없습니다.");
+//	    }
+	    commentRepository.delete(comment);
 	}
+
+
 
 	@Override
 	public int deleteCommentListByTablenameAndRecodenum(String tablename, int recodenum) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 
 
 }

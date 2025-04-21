@@ -126,7 +126,7 @@ function showChompVoteCommentList() {
 			const formatReplydate = `${replydate.getFullYear()}년 ${String(replydate.getMonth() + 1).padStart(2, '0')}월 ${String(replydate.getDate()).padStart(2, '0')}일`;
 
 			return `
-				<li class="subcomment">
+			<li class="subcomment" data-comment-id="${reply.id}" data-subcomment-id="${origin.id}">
 					<img class="subcomment_arrow" src="/images/chompessor/arrow_right.png">
 					<div class="subcomment_inner">
 						<div class="subcomment_info">
@@ -138,7 +138,7 @@ function showChompVoteCommentList() {
 							<div class="subcomment_action">
 								<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportCommentModal">신고</a>
 								<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editCommentModal">수정</a>
-								<a href="">삭제</a>
+								<a href="javascript:deleteChompVoteComment(${reply.id});">삭제</a>
 							</div>
 						</div>
 						<p class="subcomment_content">${reply.content}</p>
@@ -154,7 +154,7 @@ function showChompVoteCommentList() {
 		}).join("");
 
 		return `
-			<li class="comment">
+			<li class="comment" data-comment-id="${origin.id}">
 				<div class="comment_info">
 					<div class="comment_writer">
 						<img src="/images/common/test.png">
@@ -164,7 +164,7 @@ function showChompVoteCommentList() {
 					<div class="comment_action">
 						<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportCommentModal">신고</a>
 						<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editCommentModal">수정</a>
-						<a href="">삭제</a>
+						<a href="javascript:deleteChompVoteComment(${origin.id});">삭제</a>
 					</div>
 				</div>
 				<p class="comment_content">${origin.content}</p>
@@ -195,6 +195,48 @@ function showChompVoteCommentList() {
 
 
 
+/**
+ * 댓글을 삭제하는 함수
+ * 
+ * @param {Integer} commId - 댓글 일련번호
+ */
+function deleteChompVoteComment(commId) {
+	if (confirm("댓글을 삭제하시겠습니까?")) {
+		fetch(`http://localhost:8586/comments/${commId}`, {
+			method: "DELETE"
+		})
+		.then(async (response) => {
+			const message = await response.text();
+			switch (response.status) {
+				case 204:
+					alert("댓글이 삭제되었습니다.");
+					const comment = document.querySelector(`[data-comment-id='${commId}']`);
+					if (comment) {
+						comment.remove();
+					}
+					const subcomments = document.querySelectorAll(`[data-subcomment-id='${commId}']`);
+					subcomments.forEach(subcomment => subcomment.remove());
+					break;
+				case 400:
+					alert(message); // 잘못된 요청입니다.
+					break;
+				case 403:
+					alert(message); // 권한이 없습니다.
+					break;
+				case 404:
+					alert(message); // 댓글을 찾을 수 없습니다.
+					break;
+				case 409:
+					alert(message); // 중복된 요청입니다.
+					break;
+				default:
+					alert(message);
+					break;
+			}
+		})
+		.catch(error => console.log(error));
+	}
+}
 
 
 

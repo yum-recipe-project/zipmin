@@ -98,7 +98,7 @@ function showChompEventCommentList() {
 			const formatReplydate = `${replydate.getFullYear()}년 ${String(replydate.getMonth() + 1).padStart(2, '0')}월 ${String(replydate.getDate()).padStart(2, '0')}일`;
 
 			return `
-				<li class="subcomment">
+				<li class="subcomment" data-comment-id="${reply.id}" data-subcomment-id="${origin.id}">
 					<img class="subcomment_arrow" src="/images/chompessor/arrow_right.png">
 					<div class="subcomment_inner">
 						<div class="subcomment_info">
@@ -110,7 +110,7 @@ function showChompEventCommentList() {
 							<div class="subcomment_action">
 								<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportCommentModal">신고</a>
 								<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editCommentModal">수정</a>
-								<a href="">삭제</a>
+								<a href="javascript:deleteChompEventComment(${reply.id});">삭제</a>
 							</div>
 						</div>
 						<p class="subcomment_content">${reply.content}</p>
@@ -126,7 +126,7 @@ function showChompEventCommentList() {
 		}).join("");
 
 		return `
-			<li class="comment">
+			<li class="comment" data-comment-id="${origin.id}">
 				<div class="comment_info">
 					<div class="comment_writer">
 						<img src="/images/common/test.png">
@@ -136,7 +136,7 @@ function showChompEventCommentList() {
 					<div class="comment_action">
 						<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportCommentModal">신고</a>
 						<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editCommentModal">수정</a>
-						<a href="">삭제</a>
+						<a href="javascript:deleteChompEventComment(${origin.id});">삭제</a>
 					</div>
 				</div>
 				<p class="comment_content">${origin.content}</p>
@@ -174,7 +174,7 @@ function showChompEventCommentList() {
  * 
  * @param {Integer} commId - 댓글 일련번호
  */
-function deleteChompMegazineComment(commId) {
+function deleteChompEventComment(commId) {
 	if (confirm("댓글을 삭제하시겠습니까?")) {
 		fetch(`http://localhost:8586/comments/${commId}`, {
 			method: "DELETE"
@@ -188,6 +188,8 @@ function deleteChompMegazineComment(commId) {
 					if (comment) {
 						comment.remove();
 					}
+					const subcomments = document.querySelectorAll(`[data-subcomment-id='${commId}']`);
+					subcomments.forEach(subcomment => subcomment.remove());
 					break;
 				case 400:
 					alert(message); // 잘못된 요청입니다.
@@ -209,7 +211,6 @@ function deleteChompMegazineComment(commId) {
 		.catch(error => console.log(error));
 	}
 }
-
 
 
 

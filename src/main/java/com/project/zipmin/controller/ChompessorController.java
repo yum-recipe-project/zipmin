@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.zipmin.dto.ChompDTO;
+import com.project.zipmin.dto.ChompResponseDTO;
 import com.project.zipmin.dto.ChompEventResponseDTO;
 import com.project.zipmin.dto.ChompMegazineResponseDTO;
-import com.project.zipmin.dto.ChompVoteDTO;
+import com.project.zipmin.dto.ChompVoteResponseDTO;
 import com.project.zipmin.dto.CommentRequestDTO;
 import com.project.zipmin.dto.CommentResponseDTO;
 import com.project.zipmin.service.ChompService;
@@ -35,8 +35,8 @@ public class ChompessorController {
 
 	// 쩝쩝박사 목록 조회
 	@GetMapping("/chomp")
-	public List<ChompDTO> listChomp() {
-		List<ChompDTO> chompList = chompService.getChompList();
+	public List<ChompResponseDTO> listChomp() {
+		List<ChompResponseDTO> chompList = chompService.getChompList();
 		return chompList;
 	}
 	
@@ -44,9 +44,11 @@ public class ChompessorController {
 	
 	// 특정 투표 조회
 	@GetMapping("/votes/{voteId}")
-	public ChompVoteDTO viewVote(
-			@PathVariable("voteId") int voteId) {
-		return null;
+	public ChompVoteResponseDTO viewVote(@PathVariable int voteId) {
+		ChompVoteResponseDTO chompVoteDTO = chompService.getVoteById(voteId);
+		int count = commentService.countCommentByTableNameAndRecordNum("chomp_vote", voteId);
+		chompVoteDTO.setCommentCount(count);
+		return chompVoteDTO;
 	}
 
 	// 새 투표 등록 (관리자)
@@ -103,10 +105,18 @@ public class ChompessorController {
 
 	// 특정 투표의 댓글 목록 조회
 	@GetMapping("/votes/{voteId}/comments")
-	public List<CommentResponseDTO> listVoteComment(
-			@PathVariable("voteId") int voteId,
-			@RequestParam(name = "sort", defaultValue = "new") String sort) {
-		return null;
+	public List<CommentResponseDTO> listVoteComment(@PathVariable int voteId, @RequestParam String sort) {
+		List<CommentResponseDTO> commentList = new ArrayList<CommentResponseDTO>();
+		if (sort.equals("new")) {
+			commentList = commentService.getCommentListByTablenameAndRecodenumOrderByIdDesc("chomp_vote", voteId);
+		}
+		else if (sort.equals("old")) {
+			commentList = commentService.getCommentListByTablenameAndRecodenumOrderByIdAsc("chomp_vote", voteId);
+		}
+		else if (sort.equals("hot")) {
+			commentList = commentService.getCommentListByTablenameAndRecodenumOrderByLikecount("chomp_vote", voteId);
+		}
+		return commentList;
 	}
 	
 	// 특정 투표에 댓글 작성
@@ -197,8 +207,7 @@ public class ChompessorController {
 	
 	// 특정 매거진 조회
 	@GetMapping("/megazines/{megazineId}")
-	public ChompMegazineResponseDTO viewMegazine(
-			@PathVariable("megazineId") int megazineId) {
+	public ChompMegazineResponseDTO viewMegazine(@PathVariable int megazineId) {
 		ChompMegazineResponseDTO chompMegazineDTO = chompService.getMegazineById(megazineId);
 		int count = commentService.countCommentByTableNameAndRecordNum("chomp_megazine", megazineId);
 		chompMegazineDTO.setCommentCount(count);

@@ -16,6 +16,6 @@ public class ChompMegazineResponseDTO {
 	private String content;
 	// private int chompId;
 	
-	private ChompDTO chompDTO;
+	private ChompResponseDTO chompDTO;
 	private int commentCount;
 }

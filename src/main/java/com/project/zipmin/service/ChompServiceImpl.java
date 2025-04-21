@@ -7,13 +7,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.project.zipmin.dto.ChompDTO;
+import com.project.zipmin.dto.ChompResponseDTO;
 import com.project.zipmin.dto.ChompEventResponseDTO;
 import com.project.zipmin.dto.ChompMegazineResponseDTO;
-import com.project.zipmin.dto.ChompVoteDTO;
+import com.project.zipmin.dto.ChompVoteResponseDTO;
 import com.project.zipmin.entity.Chomp;
 import com.project.zipmin.entity.ChompEvent;
 import com.project.zipmin.entity.ChompMegazine;
+import com.project.zipmin.entity.ChompVote;
 import com.project.zipmin.mapper.ChompEventMapper;
 import com.project.zipmin.mapper.ChompMapper;
 import com.project.zipmin.mapper.ChompMegazineMapper;
@@ -45,14 +46,14 @@ public class ChompServiceImpl implements ChompService {
 	private final ChompEventMapper chompEventMapper;
 
 	@Override
-	public List<ChompDTO> getChompList() {
+	public List<ChompResponseDTO> getChompList() {
 		Date today = new Date();
 		
 		List<Chomp> chompList = chompRepository.findAll();
-		List<ChompDTO> chompDTOList = new ArrayList<ChompDTO>();
+		List<ChompResponseDTO> chompDTOList = new ArrayList<ChompResponseDTO>();
 		for (Chomp chomp : chompList) {
-			ChompDTO chompDTO = chompMapper.chompToChompDTO(chomp);
-			ChompVoteDTO chompVoteDTO = chompVoteMapper.chompVoteToChompVoteDTO(chomp.getChompVote());
+			ChompResponseDTO chompDTO = chompMapper.chompToChompResponseDTO(chomp);
+			ChompVoteResponseDTO chompVoteDTO = chompVoteMapper.chompVoteToChompVoteResponseDTO(chomp.getChompVote());
 			if (chompVoteDTO != null) {
 				if (today.after(chompVoteDTO.getOpendate()) && today.before(chompVoteDTO.getClosedate())) {
 					chompVoteDTO.setStatus("open");
@@ -80,16 +81,19 @@ public class ChompServiceImpl implements ChompService {
 	}
 
 	@Override
-	public ChompVoteDTO getVoteById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+	public ChompVoteResponseDTO getVoteById(int id) {
+		ChompVote chompVote = chompVoteRepository.findById(id).orElseThrow();
+		ChompVoteResponseDTO chompVoteDTO = chompVoteMapper.chompVoteToChompVoteResponseDTO(chompVote);
+		ChompResponseDTO chompDTO = chompMapper.chompToChompResponseDTO(chompVote.getChomp());
+		chompVoteDTO.setChompDTO(chompDTO);
+		return chompVoteDTO;
 	}
 	
 	@Override
 	public ChompMegazineResponseDTO getMegazineById(int id) {
 		ChompMegazine chompMegazine = chompMegazineRepository.findById(id).orElseThrow();
 		ChompMegazineResponseDTO chompMegazineDTO = chompMegazineMapper.chompMegazineToChompMegazineResponseDTO(chompMegazine);
-		ChompDTO chompDTO = chompMapper.chompToChompDTO(chompMegazine.getChomp());
+		ChompResponseDTO chompDTO = chompMapper.chompToChompResponseDTO(chompMegazine.getChomp());
 		chompMegazineDTO.setChompDTO(chompDTO);
 		return chompMegazineDTO;
 	}
@@ -98,7 +102,7 @@ public class ChompServiceImpl implements ChompService {
 	public ChompEventResponseDTO getEventById(int id) {
 		ChompEvent chompEvent = chompEventRepository.findById(id).orElseThrow();
 		ChompEventResponseDTO chompEventDTO = chompEventMapper.chompEventToChompEventResponseDTO(chompEvent);
-		ChompDTO chompDTO = chompMapper.chompToChompDTO(chompEvent.getChomp());
+		ChompResponseDTO chompDTO = chompMapper.chompToChompResponseDTO(chompEvent.getChomp());
 		chompEventDTO.setChompDTO(chompDTO);
 		return chompEventDTO;
 	}

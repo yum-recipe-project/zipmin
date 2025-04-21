@@ -21,17 +21,16 @@
 				<div class="vote_wrap">
 					<!-- 투표 헤더 -->
 					<div class="vote_header">
-						<span>아이스크림</span>
-						<h2>당신의 녹차 아이스크림에 투표하세요</h2>
+						<span>투표</span>
+						<h2 class="vote_title"></h2>
 						<div class="vote_info">
 							<div class="period">
-								<span>2025.01.03 - 2024.02.11</span>
+								<span class="vote_date"></span>
 							</div>
 							<span>참여</span>
 							<span>26</span>
 							<span> ・ </span>
-							<span>댓글</span>
-							<span>235개</span>
+							<span class="comment_count"></span>
 						</div>
 					</div>
 					

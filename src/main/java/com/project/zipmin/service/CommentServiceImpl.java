@@ -75,7 +75,6 @@ public class CommentServiceImpl implements CommentService {
 			commentDTO.setLikecount(likeRepository.countByTablenameAndRecodenum("comments", comment.getId()));
 			commentDTOList.add(commentDTO);
 		}
-		System.err.println(commentDTOList);
 	    return commentDTOList;
 	}
 
@@ -104,9 +103,7 @@ public class CommentServiceImpl implements CommentService {
 
 	@Override
 	public int createComment(CommentRequestDTO commentDTO) {
-		System.err.println("commentDTO = " + commentDTO);
 		Comment comment = commentMapper.commentRequestDTOToComment(commentDTO);
-		System.err.println("comment = " + comment);
 		commentRepository.save(comment);
 		return 0;
 	}

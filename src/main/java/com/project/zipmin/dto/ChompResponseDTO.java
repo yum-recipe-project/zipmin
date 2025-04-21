@@ -8,12 +8,12 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ChompDTO {
+public class ChompResponseDTO {
 	private int id;
 	private String category;
 	private String title;
 	
-	private ChompVoteDTO chompVoteDTO;
+	private ChompVoteResponseDTO chompVoteDTO;
 	private ChompMegazineResponseDTO chompMegazineDTO;
 	private ChompEventResponseDTO chompEventDTO;
 }

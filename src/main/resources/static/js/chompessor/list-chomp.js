@@ -128,7 +128,7 @@ function renderChompData(data) {
 
 		return `
 			<li class="forum">
-				<a href="/chompessor/viewVote.do">
+				<a href="/chompessor/viewVote.do?voteId=${data.chomp_vote_dto.id}">
 					<div class="forum_thumbnail"><img src="/images/common/test.png"></div>
 					<div class="forum_info">
 						<p class="type">투표</p>

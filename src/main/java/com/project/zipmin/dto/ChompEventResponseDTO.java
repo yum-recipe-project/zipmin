@@ -17,6 +17,6 @@ public class ChompEventResponseDTO {
 	private int chompId;
 	
 	private String status;
-	private ChompDTO chompDTO;
+	private ChompResponseDTO chompDTO;
 	private int  commentCount;
 }

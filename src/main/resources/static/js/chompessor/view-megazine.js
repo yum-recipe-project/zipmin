@@ -94,7 +94,7 @@ function showChompMegazineCommentList(megazineId) {
 			const formatReplydate = `${replydate.getFullYear()}년 ${String(replydate.getMonth() + 1).padStart(2, '0')}월 ${String(replydate.getDate()).padStart(2, '0')}일`;
 
 			return `
-				<li class="subcomment">
+				<li class="subcomment" data-comment-id="${reply.id}">
 					<img class="subcomment_arrow" src="/images/chompessor/arrow_right.png">
 					<div class="subcomment_inner">
 						<div class="subcomment_info">
@@ -106,7 +106,7 @@ function showChompMegazineCommentList(megazineId) {
 							<div class="subcomment_action">
 								<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportCommentModal">신고</a>
 								<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editCommentModal">수정</a>
-								<a href="">삭제</a>
+								<a href="javascript:deleteChompMegazineComment(${reply.id});">삭제</a>
 							</div>
 						</div>
 						<p class="subcomment_content">${reply.content}</p>

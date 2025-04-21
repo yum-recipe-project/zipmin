@@ -169,9 +169,46 @@ function showChompEventCommentList() {
 
 
 
-
-
-
+/**
+ * 댓글을 삭제하는 함수
+ * 
+ * @param {Integer} commId - 댓글 일련번호
+ */
+function deleteChompMegazineComment(commId) {
+	if (confirm("댓글을 삭제하시겠습니까?")) {
+		fetch(`http://localhost:8586/comments/${commId}`, {
+			method: "DELETE"
+		})
+		.then(async (response) => {
+			const message = await response.text();
+			switch (response.status) {
+				case 204:
+					alert("댓글이 삭제되었습니다.");
+					const comment = document.querySelector(`[data-comment-id='${commId}']`);
+					if (comment) {
+						comment.remove();
+					}
+					break;
+				case 400:
+					alert(message); // 잘못된 요청입니다.
+					break;
+				case 403:
+					alert(message); // 권한이 없습니다.
+					break;
+				case 404:
+					alert(message); // 댓글을 찾을 수 없습니다.
+					break;
+				case 409:
+					alert(message); // 중복된 요청입니다.
+					break;
+				default:
+					alert(message);
+					break;
+			}
+		})
+		.catch(error => console.log(error));
+	}
+}
 
 
 

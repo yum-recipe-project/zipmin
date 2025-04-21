@@ -94,7 +94,7 @@ function showChompMegazineCommentList(megazineId) {
 			const formatReplydate = `${replydate.getFullYear()}년 ${String(replydate.getMonth() + 1).padStart(2, '0')}월 ${String(replydate.getDate()).padStart(2, '0')}일`;
 
 			return `
-				<li class="subcomment" data-comment-id="${reply.id}">
+				<li class="subcomment" data-comment-id="${reply.id}" data-subcomment-id="${origin.id}">
 					<img class="subcomment_arrow" src="/images/chompessor/arrow_right.png">
 					<div class="subcomment_inner">
 						<div class="subcomment_info">
@@ -216,6 +216,8 @@ function deleteChompMegazineComment(commId) {
 					if (comment) {
 						comment.remove();
 					}
+					const subcomments = document.querySelectorAll(`[data-subcomment-id='${commId}']`);
+					subcomments.forEach(subcomment => subcomment.remove());
 					break;
 				case 400:
 					alert(message); // 잘못된 요청입니다.

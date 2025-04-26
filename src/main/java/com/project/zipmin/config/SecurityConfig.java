@@ -102,7 +102,7 @@ public class SecurityConfig {
 				.requestMatchers("/mypage/**").permitAll()
 				.requestMatchers("/admin/**").permitAll()
 				.requestMatchers("/megazines/**").permitAll()
-				.requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**", "assets/**").permitAll()
+				.requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**", "/assets/**").permitAll()
 				.anyRequest().authenticated()
 			);
 		

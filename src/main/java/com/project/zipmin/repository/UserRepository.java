@@ -7,5 +7,5 @@ import com.project.zipmin.entity.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
-
+	
 }

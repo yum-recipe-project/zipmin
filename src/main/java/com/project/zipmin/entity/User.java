@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Builder
 @Entity
 @Table(name = "USERS")
@@ -27,6 +27,4 @@ public class User {
 	private int revenue;
 	private String auth;
 	private int enable;
-	
-	
 }

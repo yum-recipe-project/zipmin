@@ -1,4 +1,4 @@
-package com.project.zipmin.exception;
+package com.project.zipmin.handler;
 
 import java.io.IOException;
 

@@ -21,7 +21,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
-import com.project.zipmin.exception.AuthFailureHandler;
+import com.project.zipmin.handler.AuthFailureHandler;
+import com.project.zipmin.handler.AuthSuccessHandler;
+import com.project.zipmin.util.JWTFilter;
+import com.project.zipmin.util.JWTUtil;
 
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,8 +35,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 	
-	@Autowired
-	public AuthFailureHandler authFailureHandler;
+	private final JWTUtil jwtUtil;
+	private final AuthFailureHandler authFailureHandler;
+	private final AuthSuccessHandler authSuccessHandler;
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -66,7 +70,7 @@ public class SecurityConfig {
 		// csrf 비활성화
 		http.csrf((crsf) -> crsf.disable());
 		
-		// Form 로그인 방식 비활성화
+		// Form 로그인 방식 비활성화 (일단 비활성화 하고)
 		http.formLogin((auth) -> auth.disable());
 		/* http.formLogin((formLogin) -> formLogin
 				.loginPage("/user/login.do")
@@ -76,16 +80,16 @@ public class SecurityConfig {
 				.passwordParameter("password") 
 				.permitAll()); */
 		
-		// HTTP Basic 인증 방식 비활성화 (매 요청마다 id와 pwd를 보내는 방식으로 인증하는 httpBasic을 사용하지 않겠다는 것)
+		// HTTP Basic 인증 방식 비활성화 (매 요청마다 id와 pwd를 보내는 방식으로 인증하는 httpBasic을 사용하지 않겠다는 의미)
 		http.httpBasic((auth) -> auth.disable());
 		
 		// JWT Filter (JWT인증을 사용할 수 있도록 addfilterBefore를 통해 JWTFilter를 UsernamePasswordAuthenticationFilter 전에 실행하도록 위치 지정)
-		// http.addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 		
-		// oauth2 (수정 필요)
+		// oauth2
 		http.oauth2Login(oauth2 -> oauth2
-				.successHandler(null) // 이거 수정 필요
-				.userInfoEndpoint(UserInfoEndpointConfig -> UserInfoEndpointConfig.userService(null))
+				.successHandler(authSuccessHandler)
+				.userInfoEndpoint(UserInfoEndpointConfig -> UserInfoEndpointConfig.userService(customOAuth2UserService))
 			);
 		
 		// 경로별 인가 작업
@@ -111,27 +115,22 @@ public class SecurityConfig {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			);
 		
-//		http.logout((logout) -> logout
-//				// .logoutUrl("")
-//				// .logoutSuccessUrl("/")
-//				.permitAll());
-		
 		return http.build();
 	}
 	
-	@Autowired
-	private DataSource dataSource;
-	
-	@Autowired
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.jdbcAuthentication()
-			.dataSource(dataSource)
-			.usersByUsernameQuery("SELECT id, password, enable FROM users WHERE id = ?")
-			.authoritiesByUsernameQuery("SELECT id, auth FROM users WHERE id = ?")
-			.passwordEncoder(new BCryptPasswordEncoder());
-	}
-	
-	public PasswordEncoder passwordEncoder() {
-		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-	}
+//	@Autowired
+//	private DataSource dataSource;
+//	
+//	@Autowired
+//	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//		auth.jdbcAuthentication()
+//			.dataSource(dataSource)
+//			.usersByUsernameQuery("SELECT id, password, enable FROM users WHERE id = ?")
+//			.authoritiesByUsernameQuery("SELECT id, auth FROM users WHERE id = ?")
+//			.passwordEncoder(new BCryptPasswordEncoder());
+//	}
+//	
+//	public PasswordEncoder passwordEncoder() {
+//		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+//	}
 }

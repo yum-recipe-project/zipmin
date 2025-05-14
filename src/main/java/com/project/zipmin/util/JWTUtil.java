@@ -16,7 +16,7 @@ public class JWTUtil {
 	
 	private SecretKey secretKey;
 	
-	// application.properties에 있는 평문 secret key를 가져와 HS256으로 초기화
+	// application.properties의 평문 secretkey를 HS256으로 초기화
 	public JWTUtil(@Value("${spring.jwt.secret}") String secret) {
 		this.secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
 	}
@@ -31,12 +31,12 @@ public class JWTUtil {
 		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
 	}
 	
-	// Token 유효 확인
+	// 토큰 유효 확인
 	public Boolean isExpired(String token) {
 		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
 	}
 
-	// 토큰 종류 확인 (Access 혹은 Refresh)
+	// 토큰 종류 확인 (access/refresh)
 	public String getCategory(String token) {
 		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("category", String.class);
 	}

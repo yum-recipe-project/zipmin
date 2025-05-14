@@ -23,6 +23,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import com.project.zipmin.handler.AuthFailureHandler;
 import com.project.zipmin.handler.AuthSuccessHandler;
+import com.project.zipmin.service.CustomOAuth2UserService;
 import com.project.zipmin.util.JWTFilter;
 import com.project.zipmin.util.JWTUtil;
 
@@ -38,6 +39,7 @@ public class SecurityConfig {
 	private final JWTUtil jwtUtil;
 	private final AuthFailureHandler authFailureHandler;
 	private final AuthSuccessHandler authSuccessHandler;
+	private final CustomOAuth2UserService customOAuth2UserService;
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

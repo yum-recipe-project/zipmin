@@ -1,4 +1,4 @@
-package com.project.zipmin.util;
+package com.project.zipmin.jwt;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,5 +36,9 @@ public class CustomOAuth2User implements OAuth2User {
 	@Override
 	public String getName() {
 		return userDTO.getName();
+	}
+	
+	public String getId() {
+		return userDTO.getId();
 	}
 }

@@ -1,22 +1,23 @@
-package com.project.zipmin.util;
+package com.project.zipmin.jwt;
 
 import java.util.Map;
 
-public class NaverResponse implements OAuth2Response {
-	private final Map<String, Object> attribute;
+public class GoogleResponse implements OAuth2Response {
 	
-	public NaverResponse(Map<String, Object> attribute) {
-		this.attribute = (Map<String, Object>) attribute.get("response");
+	private final Map<String, Object> attribute;
+
+	public GoogleResponse(Map<String, Object> attribute) {
+		this.attribute = attribute;
 	}
 	
 	@Override
 	public String getProvider() {
-		return "naver";
+		return "google";
 	}
 	
 	@Override
 	public String getProviderId() {
-		return attribute.get("id").toString();
+		return attribute.get("sub").toString();
 	}
 	
 	@Override
@@ -33,4 +34,5 @@ public class NaverResponse implements OAuth2Response {
 	public String getAvatar() {
 		return null;
 	}
+
 }

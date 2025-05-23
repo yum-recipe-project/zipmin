@@ -1,4 +1,4 @@
-package com.project.zipmin.util;
+package com.project.zipmin.jwt;
 
 import java.util.Map;
 

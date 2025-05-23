@@ -23,9 +23,9 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import com.project.zipmin.handler.AuthFailureHandler;
 import com.project.zipmin.handler.AuthSuccessHandler;
-import com.project.zipmin.service.CustomOAuth2UserService;
-import com.project.zipmin.util.JWTFilter;
-import com.project.zipmin.util.JWTUtil;
+import com.project.zipmin.jwt.CustomOAuth2UserService;
+import com.project.zipmin.jwt.JWTFilter;
+import com.project.zipmin.jwt.JWTUtil;
 
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletRequest;

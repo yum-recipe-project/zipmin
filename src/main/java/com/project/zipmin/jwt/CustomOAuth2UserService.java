@@ -1,4 +1,4 @@
-package com.project.zipmin.service;
+package com.project.zipmin.jwt;
 
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -9,14 +9,12 @@ import org.springframework.stereotype.Service;
 import com.project.zipmin.dto.UserDTO;
 import com.project.zipmin.entity.User;
 import com.project.zipmin.repository.UserRepository;
-import com.project.zipmin.util.CustomOAuth2User;
-import com.project.zipmin.util.GoogleResponse;
-import com.project.zipmin.util.KakaoResponse;
-import com.project.zipmin.util.NaverResponse;
-import com.project.zipmin.util.OAuth2Response;
 
 import lombok.RequiredArgsConstructor;
 
+/*
+ * 구글, 네이버, 카카오의 리소스 서버에서 제공한 사용자 정보 중 필요한 정보를 취득하고 가공 및 저장하는 기능
+ */
 @Service
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
@@ -47,10 +45,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		else {
 			return null;
 		}
-		
-		// 사용자명을 제공자_회원아이디 형식으로 만들어 저장 (이 값은 redis에서도 key로 쓰일 예정)
-		// String username = oAuth2Response.getProvider() + "_" + oAuth2Response.getProviderId();
-		// 아이디를 제공자_회원아이디 형식으로 만들어 저장 (이 값은 redis에서도 key로 쓰일 예정)
+
+		// 아이디를 제공자_회원아이디 형식으로 만들어 저장 (이 값은 redis에서도 key로 사용)
 		String id = oAuth2Response.getProvider() + "_" + oAuth2Response.getProviderId();
 		
 		// 넘어온 회원정보가 이미 테이블에 존재하는지 확인
@@ -96,12 +92,5 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			return new CustomOAuth2User(userDTO);
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
 	
 }

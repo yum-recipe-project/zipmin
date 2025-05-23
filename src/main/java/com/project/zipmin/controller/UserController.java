@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.zipmin.dto.ClassDTO;
 import com.project.zipmin.dto.FundDTO;
 import com.project.zipmin.dto.UserDTO;
-import com.project.zipmin.service.RedisService;
+import com.project.zipmin.jwt.JWTUtil;
+import com.project.zipmin.jwt.RedisService;
 import com.project.zipmin.service.UserService;
-import com.project.zipmin.util.JWTUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -99,51 +99,51 @@ public class UserController {
 //	}
 	
 	
-	
-	@PostMapping("/logout")
-	public void logout(HttpServletRequest request, HttpServletResponse response) {
-		// 1. 쿠키가 있는지 확인
-		Cookie[] cookies = request.getCookies();
-		if (cookies == null) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			return;
-		}
-		
-		// 2. Cookie 내부에 RefreshToken이 있는지 확인
-		Optional<Cookie> refreshCookie = Arrays.stream(cookies)
-				.filter(cookie -> "refresh".equals(cookie.getName()))
-				.findFirst();
-		if (refreshCookie.isPresent()) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			return;
-		}
-		
-		// 3. RefreshToken의 값이 존재하는지 확인
-		String refreshToken = refreshCookie.get().getValue();
-		if (refreshToken == null || refreshToken.isEmpty()) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			return;
-		}
-		
-		// 4. 존재한다면 해당 RefreshToken으로 부터 사용자명(username) 추출
-		String key = jwtUtil.getUsername(refreshToken);
-		
-		// 5. 사용자명을 키로 Redis에 존재하는 키의 값을 확인
-		if (redisService.getValues(key) == null) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			return;
-		}
-		
-		// 6. 있다면 Redis에서 삭제
-		redisService.deleteValues(key);
-		
-		// 7. 클라이언트측 refresh 쿠키를 null로 변경하여 200 상태와 함께 응답
-		Cookie cookie = new Cookie("refresh", null);
-		cookie.setMaxAge(0);
-		cookie.setPath("/");
-		response.setStatus(HttpServletResponse.SC_OK);
-		response.addCookie(cookie);
-	}
+//	
+//	@PostMapping("/logout")
+//	public void logout(HttpServletRequest request, HttpServletResponse response) {
+//		// 1. 쿠키가 있는지 확인
+//		Cookie[] cookies = request.getCookies();
+//		if (cookies == null) {
+//			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//			return;
+//		}
+//		
+//		// 2. Cookie 내부에 RefreshToken이 있는지 확인
+//		Optional<Cookie> refreshCookie = Arrays.stream(cookies)
+//				.filter(cookie -> "refresh".equals(cookie.getName()))
+//				.findFirst();
+//		if (refreshCookie.isPresent()) {
+//			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//			return;
+//		}
+//		
+//		// 3. RefreshToken의 값이 존재하는지 확인
+//		String refreshToken = refreshCookie.get().getValue();
+//		if (refreshToken == null || refreshToken.isEmpty()) {
+//			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//			return;
+//		}
+//		
+//		// 4. 존재한다면 해당 RefreshToken으로 부터 사용자명(username) 추출
+//		String key = jwtUtil.getId(refreshToken);
+//		
+//		// 5. 사용자명을 키로 Redis에 존재하는 키의 값을 확인
+//		if (redisService.getValues(key) == null) {
+//			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//			return;
+//		}
+//		
+//		// 6. 있다면 Redis에서 삭제
+//		redisService.deleteValues(key);
+//		
+//		// 7. 클라이언트측 refresh 쿠키를 null로 변경하여 200 상태와 함께 응답
+//		Cookie cookie = new Cookie("refresh", null);
+//		cookie.setMaxAge(0);
+//		cookie.setPath("/");
+//		response.setStatus(HttpServletResponse.SC_OK);
+//		response.addCookie(cookie);
+//	}
 	
 	
 	// 팔로워 목록

@@ -1,4 +1,4 @@
-package com.project.zipmin.util;
+package com.project.zipmin.jwt;
 
 public interface OAuth2Response {
 	// 제공자

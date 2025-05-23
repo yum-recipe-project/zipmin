@@ -1,4 +1,4 @@
-package com.project.zipmin.util;
+package com.project.zipmin.jwt;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,6 +17,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
+/*
+ * 사용자 요청이 들어왔을 때 JWT 토큰이 유효한지 확인하는 기능을 담당
+ */
 @RequiredArgsConstructor
 public class JWTFilter extends OncePerRequestFilter {
 	
@@ -24,14 +27,14 @@ public class JWTFilter extends OncePerRequestFilter {
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-		
+		// access 토큰
 		String accessToken = request.getHeader("access");
 		if (accessToken == null) {
 			filterChain.doFilter(request, response);
 			return;
 		}
 		
-		// Bearer 제거 (OAuth2를 이용했다고 명시적으로 붙여주는 타입인데 JWT를 검증하거나 정보를 추출 시 제거해주어야 함)
+		// JWT 검증 시 OAuth2를 이용했다고 명시적으로 붙여주는 타입인 Bearer 접두사 제거 필요
 		String originToken = accessToken.substring(7);
 		
 		// 유효한지 확인 후 클라이언트로 상태 코드 응답
@@ -39,21 +42,21 @@ public class JWTFilter extends OncePerRequestFilter {
 			if (jwtUtil.isExpired(originToken)) {
 				PrintWriter writer = response.getWriter();
 				writer.println("Access Token Expired");
-				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 error
 				return;
 			}
 		}
 		catch (ExpiredJwtException e) {
 			PrintWriter writer = response.getWriter();
 			writer.println("Access Token Expired");
-			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 error
 			return;
 		}
 		
-		// 토큰 종류 확인 (Access 혹은 Refresh)
+		// 토큰 종류 확인
 		String category = jwtUtil.getCategory(originToken);
 		
-		// JWTFilter는 요청에 대해 AccessToken만 취급하므로 access인지 확인
+		// JWTFilter는 요청에 대해 access 토큰만 취급하므로 access인지 확인
 		if (!"access".equals(category)) {
 			PrintWriter writer = response.getWriter();
 			writer.println("Invalid Access Token");
@@ -62,11 +65,11 @@ public class JWTFilter extends OncePerRequestFilter {
 		}
 		
 		// JWT에서 사용자 정보 추출
-		String name = jwtUtil.getUsername(originToken);
+		String id = jwtUtil.getId(originToken);
 		String role = jwtUtil.getRole(originToken);
 		
 		UserDTO userDTO = new UserDTO();
-		userDTO.setName(name);
+		userDTO.setId(id);
 		userDTO.setAuth(role);
 		
 		CustomOAuth2User customOAuth2User = new CustomOAuth2User(userDTO);

@@ -1,4 +1,4 @@
-package com.project.zipmin.service;
+package com.project.zipmin.jwt;
 
 import java.time.Duration;
 
@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+/*
+ * Redis에 추가, 삭제, 조회, 수정 등의 기능을 담당
+ */
 @Service
 @Slf4j
 @RequiredArgsConstructor

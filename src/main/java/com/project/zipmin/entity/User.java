@@ -17,7 +17,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "USERS")
 public class User {
 	@Id
-	private String id;
+	private int id;
+	private String username;
 	private String password;
 	private String name;
 	private String nickname;
@@ -25,6 +26,6 @@ public class User {
 	private String avatar;
 	private int point;
 	private int revenue;
-	private String auth;
+	private String role;
 	private int enable;
 }

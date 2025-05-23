@@ -24,8 +24,8 @@ public class JWTUtil {
 	}
 	
 	// 사용자명 추출
-	public String getId(String token) {
-		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("id", String.class);
+	public String getUsername(String token) {
+		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("username", String.class);
 	}
 	
 	// 권한 추출
@@ -37,7 +37,7 @@ public class JWTUtil {
 	public Boolean isExpired(String token) {
 		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
 	}
-
+	
 	// 토큰 종류 확인
 	public String getCategory(String token) {
 		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("category", String.class);

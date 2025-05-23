@@ -27,14 +27,14 @@ drop sequence seq_likes_id;
 drop table review;
 drop sequence seq_review_id;
 drop table comments;
-drop table seq_comments_id;
+drop sequence seq_comments_id;
 drop table guide;
 drop sequence seq_guide_id;
 
 drop table recipe_step;
 drop sequence seq_recipe_step_id;
 drop table recipe_ingredient;
-drop table sequence seq_recipe_ingredient_id;
+drop sequence seq_recipe_ingredient_id;
 drop table recipe_category;
 drop sequence seq_recipe_category_id;
 drop table recipe;
@@ -49,7 +49,7 @@ drop table users;
 -- USERS 테이블
 -- drop table users;
 create table users (
-    id varchar2(15) primary key,
+    id varchar2(100) primary key,
     password varchar2(200) not null,
     name varchar2(30) not null,
     nickname varchar2(100) not null,
@@ -60,8 +60,11 @@ create table users (
     auth varchar2(15) not null,
     enable number(1) default 1
 );
-INSERT INTO users VALUES ('harim', '$2a$10$//.68hv55MI4V28Xv87MKe/i3fFMuun6XnDcomuMXDfHC6RPYLSGy', '정하림', '아잠만', 'qazwsx9445@naver.com', null, 100, 200, 'ROLE_USER', 1);
-INSERT INTO users VALUES ('dayeoung', '$2a$10$//.68hv55MI4V28Xv87MKe/i3fFMuun6XnDcomuMXDfHC6RPYLSGy', '부다영', '김뿌영', 'dyboo1347@gmail.com', null, 100, 200, 'ROLE_USER', 1);
+insert into users values ('harim', '$2a$10$//.68hv55MI4V28Xv87MKe/i3fFMuun6XnDcomuMXDfHC6RPYLSGy', '정하림', '아잠만', 'qazwsx9445@naver.com', null, 100, 200, 'ROLE_USER', 1);
+insert into users values ('dayeoung', '$2a$10$//.68hv55MI4V28Xv87MKe/i3fFMuun6XnDcomuMXDfHC6RPYLSGy', '부다영', '김뿌영', 'dyboo1347@gmail.com', null, 100, 200, 'ROLE_USER', 1);
+insert into users values ('user1', '$2a$10$//.68hv55MI4V28Xv87MKe/i3fFMuun6XnDcomuMXDfHC6RPYLSGy', '사용자1', '사용자1', 'user1@gmail.com', null, 100, 200, 'ROLE_USER', 1);
+insert into users values ('user2', '$2a$10$//.68hv55MI4V28Xv87MKe/i3fFMuun6XnDcomuMXDfHC6RPYLSGy', '사용자2', '사용자2', 'user2@gmail.com', null, 100, 200, 'ROLE_USER', 1);
+insert into users values ('user3', '$2a$10$//.68hv55MI4V28Xv87MKe/i3fFMuun6XnDcomuMXDfHC6RPYLSGy', '사용자2', '사용자2', 'user2@gmail.com', null, 100, 200, 'ROLE_USER', 1);
 commit;
 
 
@@ -152,7 +155,7 @@ commit;
 
 -- RECIPE_INGREDIENT 테이블
 -- drop table recipe_ingredient;
--- drop table sequence seq_recipe_ingredient_id;
+-- drop sequence seq_recipe_ingredient_id;
 create table recipe_ingredient (
     id number primary key,
     name varchar2(50) not null,
@@ -224,7 +227,7 @@ commit;
 
 -- COMMENT 테이블
 -- drop table comments;
--- drop table seq_comments_id;
+-- drop sequence seq_comments_id;
 create table comments (
     id number primary key,
     comm_id number not null,
@@ -247,6 +250,22 @@ create sequence seq_comments_id
     nomaxvalue
     nocycle
     nocache;
+insert into comments values (1, 1, sysdate, '녹차 아이스크림은 배스킨라빈스가 최고입니다', 'chomp_megazine', 1, 'harim');
+insert into comments values (2, 1, sysdate, '나뚜르가 최곤데 뭘 모르시네요', 'chomp_megazine', 1, 'dayeoung');
+insert into comments values (3, 1, sysdate, '그렇다는 증거 있나요?', 'chomp_megazine', 1, 'harim');
+insert into comments values (4, 4, sysdate, '녹차 아이스크림 불매합니다', 'chomp_megazine', 1, 'harim');
+insert into comments values (5, 5, sysdate, '녹차아이스크림 맛있겠다..', 'chomp_megazine', 1, 'harim');
+insert into comments values (6, 6, sysdate, '녹차아이스크림 맛있겠다..', 'chomp_megazine', 1, 'harim');
+insert into comments values (7, 7, sysdate, '녹차아이스크림 맛있겠다..', 'chomp_megazine', 1, 'harim');
+insert into comments values (8, 8, sysdate, '녹차아이스크림 맛있겠다..', 'chomp_megazine', 1, 'harim');
+insert into comments values (9, 9, sysdate, '녹차아이스크림 맛있겠다..', 'chomp_megazine', 1, 'harim');
+insert into comments values (10, 10, sysdate, '녹차아이스크림 맛있겠다..', 'chomp_megazine', 1, 'harim');
+insert into comments values (11, 11, sysdate, '녹차아이스크림 맛있겠다..', 'chomp_megazine', 1, 'harim');
+insert into comments values (12, 12, sysdate, '녹차아이스크림 맛있겠다..', 'chomp_megazine', 1, 'harim');
+insert into comments values (13, 13, sysdate, '녹차아이스크림 맛있겠다..', 'chomp_megazine', 1, 'harim');
+insert into comments values (14, 14, sysdate, '저도 이벤트 참여할래요!', 'chomp_event', 1, 'harim');
+insert into comments values (15, 15, sysdate, '이벤트 참여합니다', 'chomp_event', 1, 'dayeoung');
+insert into comments values (16, 16, sysdate, '역시 배스킨라빈스네요', 'chomp_vote', 1, 'harim');
 commit;
 
 
@@ -298,6 +317,13 @@ create sequence seq_likes_id
     nomaxvalue
     nocycle
     nocache;
+insert into likes values (1, 'harim', 'comments', 1);
+insert into likes values (2, 'dayeoung', 'comments', 1);
+insert into likes values (3, 'harim', 'comments', 4);
+insert into likes values (4, 'dayeoung', 'comments', 4);
+insert into likes values (5, 'user1', 'comments', 4);
+insert into likes values (6, 'user2', 'comments', 4);
+insert into likes values (7, 'user3', 'comments', 4);
 commit;
 
 
@@ -379,6 +405,14 @@ insert into chomp values (1, '투표', '당신의 녹차 아이스크림에 투�
 insert into chomp values (2, '매거진', '녹차 아이스크림 4종 비교');
 insert into chomp values (3, '이벤트', '3월 한정! 후원 포인트 이체 수수료 무료');
 insert into chomp values (4, '투표', '가장 맛있는 딸기 아이스크림');
+insert into chomp values (5, '매거진', '여름을 강타한 녹차 아이스크림 트렌드');
+insert into chomp values (6, '매거진', '녹차 아이스크림 4종 비교 분석');
+insert into chomp values (7, '매거진', '디저트로 즐기는 녹차의 매력');
+insert into chomp values (8, '매거진', '비건 녹차 아이스크림의 부상');
+insert into chomp values (9, '매거진', '당신의 최애 아이스크림은?');
+insert into chomp values (10, '매거진', '편의점 녹차 아이스크림 맛집 리스트');
+insert into chomp values (11, '매거진', '에디터가 뽑은 신상 아이스크림 TOP3');
+insert into chomp values (12, '매거진', '프리미엄 녹차 아이스크림 열풍');
 commit;
 
 
@@ -479,6 +513,14 @@ create sequence seq_chomp_megazine_id
     nocycle
     nocache;
 insert into chomp_megazine values (1, sysdate, '녹차아이스크림 최고!', 2);
+insert into chomp_megazine values (2, sysdate, '이번 여름, 진한 녹차 아이스크림이 다시 인기몰이 중입니다. 성분과 맛 비교를 통해 당신의 입맛에 맞는 제품을 찾아보세요.', 5);
+insert into chomp_megazine values (3, sysdate, '녹차의 깊은 풍미를 살린 브랜드 A의 아이스크림, 깔끔한 마무리가 인상적인 브랜드 B 등 4가지 제품을 비교해봤습니다.', 6);
+insert into chomp_megazine values (4, sysdate, '더운 날씨에 잘 어울리는 매거진 특집! 녹차 디저트 레시피와 함께하는 아이스크림 추천도 놓치지 마세요.', 7);
+insert into chomp_megazine values (5, sysdate, '비건 아이스크림 시장 확대 속에서 녹차 맛도 새로운 스타일로 출시되고 있습니다. 소비자 반응은?', 8);
+insert into chomp_megazine values (6, sysdate, '당신의 냉동고에 들어갈 최고의 아이스크림은? 독자 투표와 함께하는 매거진 기획.', 9);
+insert into chomp_megazine values (7, sysdate, '편의점에서 쉽게 만날 수 있는 녹차 아이스크림 3종, 가격과 맛 비교 분석!', 10);
+insert into chomp_megazine values (8, sysdate, 'SNS에서 화제인 신상 아이스크림을 매거진 에디터들이 직접 먹어보고 평가했습니다.', 11);
+insert into chomp_megazine values (9, sysdate, '냉동 스낵 시장의 다크호스, 프리미엄 녹차 아이스크림이 인기인 이유는?', 12);
 commit;
 
 

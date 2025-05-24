@@ -2,157 +2,157 @@
  * 회원가입 폼 입력 검증 함수
  */
 document.addEventListener("DOMContentLoaded", function () {
+	
     const form = document.querySelector("form");
-    const nameInput = document.getElementById("nameInput");
-    const nameHint = document.getElementById("nameHint");
-    const phoneInput = document.getElementById("phoneInput");
-    const phoneHint = document.getElementById("phoneHint");
-    const usernameInput = document.getElementById("usernameInput");
-    const usernameHint = document.getElementById("usernameHint");
-    const passwordInput = document.getElementById("passwordInput");
-    const passwordInputCheck = document.getElementById("passwordInputCheck");
-    const passwordHint = document.getElementById("passwordHint");
-    const passwordHintCheck = document.getElementById("passwordHintCheck");
-	const nicknameInput = document.getElementById("nicknameInput");
-	const nicknameHint = document.getElementById("nicknameHint");
-	const emailInput = document.getElementById("emailInput");
-	const emailHint = document.getElementById("emailHint");
+	const nameHint = document.querySelector(".id_field p");
+    const phoneHint = document.querySelector(".phone_field p");
+    const usernameHint = document.querySelector(".username_field p");
+    const passwordHint = document.querySelector(".password_field p:nth-of-type(1)");
+    const passwordHintCheck = document.querySelector(".password_field p:nth-of-type(2)");
+	const nicknameHint = document.querySelector(".nickname_field p");
+	const emailHint = document.querySelector(".email_field p");
 
 	// 이름 실시간 검사
-	nameInput.addEventListener("input", function() {
-		if (nameInput.value.trim() === "") {
-			nameInput.classList.add("danger");
+	form.name.addEventListener("input", function() {
+		if (form.name.value.trim() === "") {
+			form.name.classList.add("danger");
 			nameHint.style.display = "block";
 		}
 		else {
-			nameInput.classList.remove("danger");
+			form.name.classList.remove("danger");
 			nameHint.style.display = "none";
 		}
 	});
 
 	// 휴대폰 번호 실시간 검사
-	phoneInput.addEventListener("input", function() {
-		if (phoneInput.value.trim() === "") {
-			phoneInput.classList.add("danger");
+	form.tel.addEventListener("input", function() {
+		if (form.tel.value.trim() === "") {
+			form.tel.classList.add("danger");
 			phoneHint.style.display = "block";
 		}
 		else {
-			phoneInput.classList.remove("danger");
+			form.tel.classList.remove("danger");
 			phoneHint.style.display = "none";
 		}
 	});
 
 	// 아이디 실시간 검사
-	usernameInput.addEventListener("input", function() {
-		if (usernameInput.value.trim() === "") {
-			usernameInput.classList.add("danger");
+	form.username.addEventListener("input", function() {
+		if (form.username.value.trim() === "") {
+			form.username.classList.add("danger");
 			usernameHint.style.display = "block";
 		}
 		else {
-			usernameInput.classList.remove("danger");
+			form.username.classList.remove("danger");
 			usernameHint.style.display = "none";
 		}
 	});
 	
 	// 비밀번호 실시간 검사
-	passwordInput.addEventListener("input", function() {
-		if (passwordInput.value.trim() === "") {
-			passwordInput.classList.add("danger");
+	form.password1.addEventListener("input", function() {
+		if (form.password1.value.trim() === "") {
+			form.password1.classList.add("danger");
 			passwordHint.style.display = "block";
 		}
 		else {
-			passwordInput.classList.remove("danger");
+			form.password1.classList.remove("danger");
 			passwordHint.style.display = "none";
 		}
 	});
 	
 	// 비밀번호 재입력 실시간 검사
-	passwordInputCheck.addEventListener("input", function() {
-		if (passwordInputCheck.value.trim() === "") {
-			passwordInputCheck.classList.add("danger");
+	form.password2.addEventListener("input", function() {
+		if (form.password2.value.trim() === "") {
+			form.password2.classList.add("danger");
 			passwordHintCheck.style.display = "block";
 		}
 		else {
-			passwordInputCheck.classList.remove("danger");
+			form.password2.classList.remove("danger");
 			passwordHintCheck.style.display = "none";
 		}
 	});
 	
 	// 닉네임 실시간 검사
-	nicknameInput.addEventListener("input", function() {
-		if (nicknameInput.value.trim() === "") {
-			nicknameInput.classList.add("danger");
+	form.nickname.addEventListener("input", function() {
+		if (form.nickname.value.trim() === "") {
+			form.nickname.classList.add("danger");
 			nicknameHint.style.display = "block";
 		}
 		else {
-			nicknameInput.classList.remove("danger");
+			form.nickname.classList.remove("danger");
 			nicknameHint.style.display = "none";
 		}
 	});
 	
 	// 이메일 실시간 검사
-	emailInput.addEventListener("input", function() {
-		if (emailInput.value.trim() === "") {
-			emailInput.classList.add("danger");
+	form.email.addEventListener("input", function() {
+		if (form.email.value.trim() === "") {
+			form.email.classList.add("danger");
 			emailHint.style.display = "block";
 		}
 		else {
-			emailInput.classList.remove("danger");
+			form.email.classList.remove("danger");
 			emailHint.style.display = "none";
 		}
 	});
 	
     // 폼 제출 시 최종 검사
     form.addEventListener("submit", function (event) {
-		if (emailInput.value.trim() === "") {
+		
+		// 아이디 중복 검사
+		// event.preventDefault();
+		
+		
+		
+		if (form.email.value.trim() === "") {
 			event.preventDefault();
-			emailInput.classList.add("danger");
+			form.email.classList.add("danger");
 			emailHint.style.display = "block";
-			emailInput.focus();
+			form.email.focus();
 		}
 		
-		if (nicknameInput.value.trim() === "") {
+		if (form.nickname.value.trim() === "") {
 			event.preventDefault();
-			nicknameInput.classList.add("danger");
+			form.nickname.classList.add("danger");
 			nicknameHint.style.display = "block";
-			nicknameInput.focus();
+			form.nickname.focus();
 		}
 		
-		if (passwordInputCheck.value.trim() === "") {
+		if (form.password2.value.trim() === "") {
 			event.preventDefault();
-			passwordInputCheck.classList.add("danger");
-			if (passwordInput.value.trim() !== "") {
+			form.password2.classList.add("danger");
+			if (form.password1.value.trim() !== "") {
 				passwordHintCheck.style.display = "block";
 			}
-			passwordInputCheck.focus();
+			form.password2.focus();
 		}
 		
-		if (passwordInput.value.trim() === "") {
+		if (form.password1.value.trim() === "") {
 			event.preventDefault();
-			passwordInput.classList.add("danger");
+			form.password1.classList.add("danger");
 			passwordHint.style.display = "block";
-			passwordInput.focus();
+			form.password1.focus();
 		}
 		
-		if (usernameInput.value.trim() === "") {
+		if (form.username.value.trim() === "") {
 			event.preventDefault();
-			usernameInput.classList.add("danger");
+			form.username.classList.add("danger");
 			usernameHint.style.display = "block";
-			usernameInput.focus();
+			form.username.focus();
 		}
 		
-		if (phoneInput.value.trim() === "") {
+		if (form.tel.value.trim() === "") {
 			event.preventDefault();
-			phoneInput.classList.add("danger");
+			form.tel.classList.add("danger");
 			phoneHint.style.display = "block";
-			phoneInput.focus();
+			form.tel.focus();
 		}
 		
-		if (nameInput.value.trim() === "") {
+		if (form.name.value.trim() === "") {
 			event.preventDefault();
-			nameInput.classList.add("danger");
+			form.name.classList.add("danger");
 			nameHint.style.display = "block";
-			nameInput.focus();
+			form.name.focus();
 		}
     });
 });
@@ -165,17 +165,18 @@ document.addEventListener("DOMContentLoaded", function () {
  * 회원가입을 하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	document.getElementById("joinUserForm").addEventListener("submit", function (event) {
+	const form = document.querySelector("form");
+	
+	form.addEventListener("submit", function(event) {
 		event.preventDefault();
-		
+				
 		const data = {
-			name: document.getElementById("nameInput").value.trim(),
-			phone: document.getElementById("phoneInput").value.trim(),
-			username: document.getElementById("usernameInput").value.trim(),
-			password: document.getElementById("passwordInput").value.trim(),
-			nickname: document.getElementById("nicknameInput").value.trim(),
-			tel: document.getElementById("phoneInput").value.trim(),
-			email: document.getElementById("emailInput").value.trim()
+			name: form.name.value.trim(),
+			username: form.username.value.trim(),
+			password: form.password1.value.trim(),
+			nickname: form.nickname.value.trim(),
+			tel: form.tel.value.trim(),
+			email: form.email.value.trim()
 		};
 		
 		fetch(`${API_BASE_URL}/users`, {
@@ -192,7 +193,36 @@ document.addEventListener('DOMContentLoaded', function() {
 			window.location.href = "/user/join/complete.do";
 		})
 		.catch(error => console.log(error));
-	});
+	})
 });
+
+
+
+/**
+ * 랜덤으로 생성한 닉네임을 표시하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	document.querySelector(".nickname_field button").addEventListener("click", function(event) {
+		event.preventDefault();
+		const nickname = randomNickname();
+		document.querySelector("form").nickname.value = nickname;
+	});
+	
+})
+
+
+
+// 랜덤 닉네임 생성 함수
+function randomNickname() {
+	const first = ["촉촉한", "파닥파닥", "싱싱한", "상큼한", "야망있는", "살금살금", "제멋대로", "거친 파도 속", "신출귀몰한", "야생의", "시들시들한", "트렌디한", "철푸덕", "새콤달콤한", "수줍어하는", "카리스마있는", "졸렬한", "배고픈", "비열한","뒷 골목의", "불타는", "노란머리","버섯머리", "버석한", "기괴한", "더조은","용의주도한", "괴로운", "비염걸린", "눈물 흘리는", "코찔찔이", "꼬들한", "소극적인", "화끈한"];	
+	const last = ["열대어", "팽이버섯", "오리", "야자수", "숙주나물", "수박", "도둑", "어부", "헌터", "뽀야미", "파수꾼", "대주주", "알부자", "사천왕", "수족 냉증", "불주먹", "물주먹", "스나이퍼", "파스타", "수면핑", "농구공", "바다의 왕자", "아기돼지", "김치볶음밥", "파인애플", "지하철", "꼬질이"];
+	const nickname = first[Math.floor(Math.random() * first.length)] + " " + last[Math.floor(Math.random() * last.length)];
+	return nickname;
+}
+
+
+
+
+
 
 

@@ -1,5 +1,6 @@
 package com.project.zipmin.controller;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -21,8 +22,11 @@ import com.project.zipmin.dto.ClassDTO;
 import com.project.zipmin.dto.FundDTO;
 import com.project.zipmin.dto.UserDTO;
 import com.project.zipmin.dto.UserRequestDto;
+import com.project.zipmin.dto.UserResponseDto;
+import com.project.zipmin.entity.User;
 import com.project.zipmin.jwt.JWTUtil;
 import com.project.zipmin.jwt.RedisService;
+import com.project.zipmin.mapper.UserMapper;
 import com.project.zipmin.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,6 +50,7 @@ public class UserController {
 	
 	private final JWTUtil jwtUtil;
 	private final RedisService redisService;
+	private final UserMapper userMapper;
 	
 
 	// 사용자 목록 조회 (관리자)
@@ -74,14 +79,12 @@ public class UserController {
 	
 	// 사용자 생성 (회원가입)
 	@PostMapping("/users")
-	public ResponseEntity<Map<String, Object>> addMember(@RequestBody UserRequestDto userDto) {
-		System.err.println(userDto);
-		userService.joinUser(userDto);
+	public ResponseEntity<UserResponseDto> addMember(@RequestBody UserRequestDto requestDto) {
+		User user = userService.joinUser(requestDto);
 		
-		// 응답 좀 더 간단하게 하는 방법 찾아보기
-		Map<String, Object> result = new HashMap<>();
-		result.put("result", "success");
-	    return ResponseEntity.ok(result);
+		UserResponseDto responseDto = userMapper.toResponseDto(user);
+		URI location = URI.create("/users/" + user.getId());
+		return ResponseEntity.created(location).body(responseDto);
 	}
 	
 	

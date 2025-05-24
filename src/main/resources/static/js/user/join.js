@@ -168,8 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById("joinUserForm").addEventListener("submit", function (event) {
 		event.preventDefault();
 		
-		const userData = {
-			// 이름 휴대폰번호 // 아이디 비밀번호 닉네임 이메일
+		const data = {
 			name: document.getElementById("nameInput").value.trim(),
 			phone: document.getElementById("phoneInput").value.trim(),
 			username: document.getElementById("usernameInput").value.trim(),
@@ -184,21 +183,16 @@ document.addEventListener('DOMContentLoaded', function() {
 			headers: {
 				"Content-Type": "application/json"
 			},
-			body: JSON.stringify(userData)
+			body: JSON.stringify(data)
 		})
 		.then((response) => response.json())
 		.then(result => {
 			console.log("결과 : ", result);
-			// 그 다음에 로그인 성공 페이지로 이동해야함
+			sessionStorage.setItem("user", JSON.stringify(result));
+			window.location.href = "/user/join/complete.do";
 		})
 		.catch(error => console.log(error));
 	});
 });
-
-
-
-
-
-
 
 

@@ -20,5 +20,5 @@ public class CommentRequestDTO {
 	private String content;
 	private String tablename;
 	private int recodenum;
-	private String userId;
+	private int userId;
 }

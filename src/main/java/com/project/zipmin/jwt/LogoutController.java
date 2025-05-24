@@ -38,15 +38,15 @@ public class LogoutController {
 			return;
 		}
 		
-		// 존재한다면 해당 RefreshToken으로부터 id 추출
+		// 존재한다면 해당 RefreshToken으로부터 사용자명(username) 추출
 		String refreshToken = refreshCookie.get().getValue();
 		if (refreshToken == null || refreshToken.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
 		
-		// id를 key로 Redis에 존재하는 키의 값을 확인
-		String key = jwtUtil.getId(refreshToken);
+		// 사용자명을 key로 Redis에 존재하는 키의 값을 확인
+		String key = jwtUtil.getUsername(refreshToken);
 		if (redisService.getValues(key) == null) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return;

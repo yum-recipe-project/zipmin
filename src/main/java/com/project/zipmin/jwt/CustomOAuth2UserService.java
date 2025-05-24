@@ -46,31 +46,31 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			return null;
 		}
 
-		// 아이디를 제공자_회원아이디 형식으로 만들어 저장 (이 값은 redis에서도 key로 사용)
-		String id = oAuth2Response.getProvider() + "_" + oAuth2Response.getProviderId();
+		// 사용자명을 제공자_회원아이디 형식으로 만들어 저장 (이 값은 redis에서도 key로 사용)
+		String username = oAuth2Response.getProvider() + "_" + oAuth2Response.getProviderId();
 		
 		// 넘어온 회원정보가 이미 테이블에 존재하는지 확인
-		User userData = userRepository.findById(id).orElse(null);
+		User userData = userRepository.findByUsername(username);
 		
 		// 존재하지 않는다면 회원정보를 저장하고 CustomOAuth2User 반환
 		if (userData == null) {
 			User user = new User();
-			user.setId(id);
+			user.setUsername(username);
 			user.setName(oAuth2Response.getName());
 			user.setNickname(oAuth2Response.getName());
 			user.setEmail(oAuth2Response.getEmail());
 			user.setAvatar(oAuth2Response.getAvatar());
-			user.setAuth("ROLE_USER");
+			user.setRole("ROLE_USER");
 			
 			userRepository.save(user);
 			
 			UserDTO userDTO = new UserDTO();
-			userDTO.setId(id);
+			userDTO.setUsername(username);
 			userDTO.setName(oAuth2Response.getName());
 			userDTO.setNickname(oAuth2Response.getName());
 			userDTO.setEmail(oAuth2Response.getEmail());
 			userDTO.setAvatar(oAuth2Response.getAvatar());
-			userDTO.setAuth("ROLE_USER");
+			userDTO.setRole("ROLE_USER");
 			
 			return new CustomOAuth2User(userDTO);
 		}
@@ -78,16 +78,20 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		else {
 			userData.setName(oAuth2Response.getName());
 			userData.setEmail(oAuth2Response.getEmail());
+			userData.setAvatar(oAuth2Response.getAvatar());
 			
 			userRepository.save(userData);
 			
 			UserDTO userDTO = new UserDTO();
-			userDTO.setId(userData.getId());
+			// userDTO.setId(userData.getId());
+			userDTO.setUsername(username);
 			userDTO.setName(userData.getName());
 			userDTO.setNickname(userData.getNickname());
 			userDTO.setEmail(userData.getEmail());
 			userDTO.setAvatar(userData.getAvatar());
-			userDTO.setAuth("ROLE_USER");
+			userDTO.setRole("ROLE_USER");
+			
+			System.err.println(userDTO);
 			
 			return new CustomOAuth2User(userDTO);
 		}

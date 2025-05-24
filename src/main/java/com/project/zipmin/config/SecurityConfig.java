@@ -1,5 +1,6 @@
 package com.project.zipmin.config;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 import javax.sql.DataSource;
@@ -37,9 +38,13 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 	
 	private final JWTUtil jwtUtil;
-	private final AuthFailureHandler authFailureHandler;
 	private final AuthSuccessHandler authSuccessHandler;
 	private final CustomOAuth2UserService customOAuth2UserService;
+	
+//	@Bean
+//	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+//		return new BCryptPasswordEncoder();
+//	}
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -62,8 +67,9 @@ public class SecurityConfig {
 				configuration.setMaxAge(3600L);
 				
 				// 브라우저가 접근할 수 있도록 특정 응답 헤더를 노출 (여기서는 "Set-Cookie"와 "Authorization")
-				configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
-				configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+				// configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
+				// configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+				configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization", "access"));
 				
 				return configuration;
 			}
@@ -72,17 +78,10 @@ public class SecurityConfig {
 		// csrf 비활성화
 		http.csrf((crsf) -> crsf.disable());
 		
-		// Form 로그인 방식 비활성화 (일단 비활성화 하고)
+		// Form 로그인 방식 비활성화
 		http.formLogin((auth) -> auth.disable());
-		/* http.formLogin((formLogin) -> formLogin
-				.loginPage("/user/login.do")
-				.defaultSuccessUrl("/", false)
-				.failureHandler(authFailureHandler) 
-				.usernameParameter("id")
-				.passwordParameter("password") 
-				.permitAll()); */
 		
-		// HTTP Basic 인증 방식 비활성화 (매 요청마다 id와 pwd를 보내는 방식으로 인증하는 httpBasic을 사용하지 않겠다는 의미)
+		// HTTP Basic 인증 방식 비활성화
 		http.httpBasic((auth) -> auth.disable());
 		
 		// JWT Filter (JWT인증을 사용할 수 있도록 addfilterBefore를 통해 JWTFilter를 UsernamePasswordAuthenticationFilter 전에 실행하도록 위치 지정)
@@ -99,10 +98,11 @@ public class SecurityConfig {
 				.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
 				.requestMatchers("/").permitAll()
 				.requestMatchers("/user/**").permitAll()
+				.requestMatchers("/users/**").permitAll()
 				.requestMatchers("/recipe/**").permitAll()
 				.requestMatchers("/kitchen/**").permitAll()
 				.requestMatchers("/chomp/**").permitAll()
-				.requestMatchers("/chompessor/**").permitAll()
+				.requestMatchers("/chompessor/**").hasRole("USER")
 				.requestMatchers("/cooking/**").permitAll()
 				.requestMatchers("/fridge/**").permitAll()
 				.requestMatchers("/mypage/**").permitAll()

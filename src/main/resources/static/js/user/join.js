@@ -7,8 +7,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const nameHint = document.getElementById("nameHint");
     const phoneInput = document.getElementById("phoneInput");
     const phoneHint = document.getElementById("phoneHint");
-    const idInput = document.getElementById("idInput");
-    const idHint = document.getElementById("idHint");
+    const usernameInput = document.getElementById("usernameInput");
+    const usernameHint = document.getElementById("usernameHint");
     const passwordInput = document.getElementById("passwordInput");
     const passwordInputCheck = document.getElementById("passwordInputCheck");
     const passwordHint = document.getElementById("passwordHint");
@@ -43,14 +43,14 @@ document.addEventListener("DOMContentLoaded", function () {
 	});
 
 	// 아이디 실시간 검사
-	idInput.addEventListener("input", function() {
-		if (idInput.value.trim() === "") {
-			idInput.classList.add("danger");
-			idHint.style.display = "block";
+	usernameInput.addEventListener("input", function() {
+		if (usernameInput.value.trim() === "") {
+			usernameInput.classList.add("danger");
+			usernameHint.style.display = "block";
 		}
 		else {
-			idInput.classList.remove("danger");
-			idHint.style.display = "none";
+			usernameInput.classList.remove("danger");
+			usernameHint.style.display = "none";
 		}
 	});
 	
@@ -134,11 +134,11 @@ document.addEventListener("DOMContentLoaded", function () {
 			passwordInput.focus();
 		}
 		
-		if (idInput.value.trim() === "") {
+		if (usernameInput.value.trim() === "") {
 			event.preventDefault();
-			idInput.classList.add("danger");
-			idHint.style.display = "block";
-			idInput.focus();
+			usernameInput.classList.add("danger");
+			usernameHint.style.display = "block";
+			usernameInput.focus();
 		}
 		
 		if (phoneInput.value.trim() === "") {
@@ -156,3 +156,49 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
     });
 });
+
+
+
+
+
+/**
+ * 회원가입을 하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	document.getElementById("joinUserForm").addEventListener("submit", function (event) {
+		event.preventDefault();
+		
+		const userData = {
+			// 이름 휴대폰번호 // 아이디 비밀번호 닉네임 이메일
+			name: document.getElementById("nameInput").value.trim(),
+			phone: document.getElementById("phoneInput").value.trim(),
+			username: document.getElementById("usernameInput").value.trim(),
+			password: document.getElementById("passwordInput").value.trim(),
+			nickname: document.getElementById("nicknameInput").value.trim(),
+			tel: document.getElementById("phoneInput").value.trim(),
+			email: document.getElementById("emailInput").value.trim()
+		};
+		
+		fetch(`${API_BASE_URL}/users`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(userData)
+		})
+		.then((response) => response.json())
+		.then(result => {
+			console.log("결과 : ", result);
+			// 그 다음에 로그인 성공 페이지로 이동해야함
+		})
+		.catch(error => console.log(error));
+	});
+});
+
+
+
+
+
+
+
+

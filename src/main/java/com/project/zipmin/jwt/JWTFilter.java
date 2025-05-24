@@ -2,6 +2,7 @@ package com.project.zipmin.jwt;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collections;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,29 +27,39 @@ public class JWTFilter extends OncePerRequestFilter {
 	private final JWTUtil jwtUtil;
 	
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {	
 		// access 토큰
-		String accessToken = request.getHeader("access");
-		if (accessToken == null) {
-			filterChain.doFilter(request, response);
-			return;
+//		String accessToken = request.getHeader("access");
+//		
+//		if (accessToken == null) {
+//			filterChain.doFilter(request, response);
+//			return;
+//		}
+		
+		String bearer = request.getHeader("Authorization");
+
+		if (bearer == null || !bearer.startsWith("Bearer ")) {
+		    // System.err.println("JWTFilter) Authorization 헤더 없음 또는 잘못된 형식");
+		    filterChain.doFilter(request, response);
+		    return;
 		}
+		String originToken = bearer.substring(7);
 		
 		// JWT 검증 시 OAuth2를 이용했다고 명시적으로 붙여주는 타입인 Bearer 접두사 제거 필요
-		String originToken = accessToken.substring(7);
+		// String originToken = accessToken.substring(7);
 		
 		// 유효한지 확인 후 클라이언트로 상태 코드 응답
 		try {
 			if (jwtUtil.isExpired(originToken)) {
 				PrintWriter writer = response.getWriter();
-				writer.println("Access Token Expired");
+				writer.println("access token expired");
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 error
 				return;
 			}
 		}
 		catch (ExpiredJwtException e) {
 			PrintWriter writer = response.getWriter();
-			writer.println("Access Token Expired");
+			writer.println("access token expired");
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 error
 			return;
 		}
@@ -59,24 +70,28 @@ public class JWTFilter extends OncePerRequestFilter {
 		// JWTFilter는 요청에 대해 access 토큰만 취급하므로 access인지 확인
 		if (!"access".equals(category)) {
 			PrintWriter writer = response.getWriter();
-			writer.println("Invalid Access Token");
+			writer.println("invalid access token");
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			return;
 		}
 		
 		// JWT에서 사용자 정보 추출
-		String id = jwtUtil.getId(originToken);
+		String username = jwtUtil.getUsername(originToken);
 		String role = jwtUtil.getRole(originToken);
 		
 		UserDTO userDTO = new UserDTO();
-		userDTO.setId(id);
-		userDTO.setAuth(role);
+		userDTO.setUsername(username);
+		userDTO.setRole(role);
 		
 		CustomOAuth2User customOAuth2User = new CustomOAuth2User(userDTO);
 		
 		Authentication authentication = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		
+		// 로그 출력해보기
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		System.err.println("JWT Filter) 권한: " + auth.getAuthorities());
+
 		filterChain.doFilter(request, response);
 	}
 

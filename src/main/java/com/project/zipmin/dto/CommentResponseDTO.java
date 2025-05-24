@@ -20,7 +20,7 @@ public class CommentResponseDTO {
 	private String content;
 	private String tablename;
 	private int recodenum;
-	private String userId;
+	private int userId;
 	
 	private String nickname;
 	private long likecount;

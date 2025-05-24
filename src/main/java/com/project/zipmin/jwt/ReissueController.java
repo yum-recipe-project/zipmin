@@ -43,41 +43,41 @@ public class ReissueController {
 		// 검증 시작
 		// refreshToken이 없는 경우
 		if (refresh == null) {
-			return new ResponseEntity<>("Refresh Token Null", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("refresh token null", HttpStatus.BAD_REQUEST);
 		}
 		
 		// 유효기간 확인
 		try {
 			if (jwtUtil.isExpired(refresh)) {
-				return new ResponseEntity<>("Refresh Token Expired", HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<>("refresh token expired", HttpStatus.BAD_REQUEST);
 			}
 		}
 		catch (ExpiredJwtException e) {
-			return new ResponseEntity<>("Refresh Token Expired", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("refresh token expired", HttpStatus.BAD_REQUEST);
 		}
 		
 		// 토큰이 refresh인지 확인
 		String category = jwtUtil.getCategory(refresh);
 		if (!category.equals("refresh")) {
-			return new ResponseEntity<>("Invalid Refresh Token", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
 		}
 		
 		// 새로운 토큰을 만들기 위한 준비
-		String id = jwtUtil.getId(refresh);
-		String auth = jwtUtil.getRole(refresh);
+		String username = jwtUtil.getUsername(refresh);
+		String role = jwtUtil.getRole(refresh);
 		
 		// Redis 내에 존재하는 refreshToken인지 확인
-		String redisRefreshToken = redisService.getValues(id);
+		String redisRefreshToken = redisService.getValues(username);
 		if (redisService.checkExistsValue(redisRefreshToken)) {
 			return new ResponseEntity<>("no exists in redis refresh token", HttpStatus.BAD_REQUEST);
 		}
 		
 		// 새로운 JWT Token 생성
-		String newAccessToken = jwtUtil.createJwt("access", id, auth, 600000L);
-		String newRefreshToken = jwtUtil.createJwt("refresh", id, auth, 86400000L);
+		String newAccessToken = jwtUtil.createJwt("access", username, role, 600000L);
+		String newRefreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L);
 		
 		// update refreshToken to Redis
-		redisService.setValues(id, newRefreshToken, Duration.ofMillis(86400000L));
+		redisService.setValues(username, newRefreshToken, Duration.ofMillis(86400000L));
 		
 		// 응답
 		response.setHeader("access", "Bearer " + newAccessToken);

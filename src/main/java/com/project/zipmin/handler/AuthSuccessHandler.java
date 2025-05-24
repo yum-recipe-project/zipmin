@@ -1,5 +1,6 @@
 package com.project.zipmin.handler;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Iterator;
@@ -32,7 +33,7 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 		CustomOAuth2User customUserDetail = (CustomOAuth2User) authentication.getPrincipal();
 		
-		String id = customUserDetail.getId();
+		String username = customUserDetail.getUsername();
 		
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
@@ -40,16 +41,29 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 		String role = auth.getAuthority();
 		
 		// access 토큰과 refresh 토큰 생성
-		String accessToken = jwtUtil.createJwt("access", id, role, 60000L);
-		String refreshToken = jwtUtil.createJwt("refresh", id, role, 86400000L);
+		String accessToken = jwtUtil.createJwt("access", username, role, 60000L);
+		String refreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L);
 		
-		// redis에 insert (key = id / value = refreshToken)
-		redisService.setValues(id, refreshToken, Duration.ofMillis(86400000L));
+		// redis에 insert (key = username / value = refreshToken)
+		redisService.setValues(username, refreshToken, Duration.ofMillis(86400000L));
+		
+		String redisToken = redisService.getValues(username);
+		System.err.println("AuthSuccessHandler) Redis 저장된 RefreshToken: " + redisToken);
 		
 		// 응답
-		response.setHeader("accesss", "Bearer " + accessToken);
+		// response.setHeader("access", "Bearer " + accessToken);
+		response.setHeader("Authorization", "Bearer " + accessToken);
 		response.addCookie(createCookie("refresh", refreshToken));
 		response.setStatus(HttpStatus.OK.value());
+		// **** 로그인 성공시 redirect ****
+		try {
+			response.sendRedirect("http://localhost:8586/");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		System.err.println("AuthSuccessHandler) access token : " + accessToken);
+		System.err.println("AuthSuccessHandler) refresh token : " + refreshToken);
 	}
 	
 	private Cookie createCookie(String key, String value) {

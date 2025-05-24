@@ -13,6 +13,7 @@ public class UserDTO {
 	private String password;
 	private String name;
 	private String nickname;
+	private String tel;
 	private String email;
 	private String avatar;
 	private int point;

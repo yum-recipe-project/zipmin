@@ -16,7 +16,7 @@
 				<div class="join_wrap">
 					<div>
 						<h3>회원 정보를 입력 후, 가입을 완료해주세요</h3>
-						<form>
+						<form id="joinUserForm">
 							<!-- 기본 정보 -->
 							<div class="basic_info">
 								<h3>기본정보</h3>
@@ -37,8 +37,8 @@
 								<h3>회원정보</h3>
 								<div class="id_field">
 									<label>아이디</label>
-									<input type="text" id="idInput" name="" value="" placeholder="영문 혹은 영문+숫자, 4~20자">
-									<p id="idHint">아이디를 입력해주세요.</p>
+									<input type="text" id="usernameInput" name="" value="" placeholder="영문 혹은 영문+숫자, 4~20자">
+									<p id="usernameHint">아이디를 입력해주세요.</p>
 								</div>
 								<div class="password_field">
 									<label>비밀번호</label>

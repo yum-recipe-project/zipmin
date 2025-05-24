@@ -1,21 +1,26 @@
 package com.project.zipmin.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.dto.ClassDTO;
 import com.project.zipmin.dto.FundDTO;
 import com.project.zipmin.dto.UserDTO;
+import com.project.zipmin.dto.UserRequestDto;
 import com.project.zipmin.jwt.JWTUtil;
 import com.project.zipmin.jwt.RedisService;
 import com.project.zipmin.service.UserService;
@@ -67,11 +72,16 @@ public class UserController {
 	
 	
 	
-	// 사용자 생성
+	// 사용자 생성 (회원가입)
 	@PostMapping("/users")
-	public int addMember() {
+	public ResponseEntity<Map<String, Object>> addMember(@RequestBody UserRequestDto userDto) {
+		System.err.println(userDto);
+		userService.joinUser(userDto);
 		
-		return 0;
+		// 응답 좀 더 간단하게 하는 방법 찾아보기
+		Map<String, Object> result = new HashMap<>();
+		result.put("result", "success");
+	    return ResponseEntity.ok(result);
 	}
 	
 	

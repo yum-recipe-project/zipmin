@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.dto.UserDTO;
+import com.project.zipmin.dto.UserRequestDto;
 import com.project.zipmin.entity.User;
 
 @Service
@@ -24,7 +25,7 @@ public interface UserService {
     // UserDTO getUserById(String userId);
 
     // 회원가입 (새로운 회원 추가)
-    User joinUser(UserDTO userDTO);
+    User joinUser(UserRequestDto userDTO);
 
     // 회원 정보 업데이트
     // UserDTO updateUserAccount(UserDTO userDTO);

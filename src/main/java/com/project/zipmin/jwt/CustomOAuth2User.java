@@ -27,7 +27,7 @@ public class CustomOAuth2User implements OAuth2User {
 		collection.add(new GrantedAuthority() {
 			@Override
 			public String getAuthority() {
-				return userDTO.getAuth();
+				return userDTO.getRole();
 			}
 		});
 		return collection;
@@ -38,7 +38,7 @@ public class CustomOAuth2User implements OAuth2User {
 		return userDTO.getName();
 	}
 	
-	public String getId() {
-		return userDTO.getId();
+	public String getUsername() {
+		return userDTO.getUsername();
 	}
 }

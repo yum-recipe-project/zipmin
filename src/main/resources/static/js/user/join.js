@@ -6,22 +6,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	// 이름 실시간 검사
 	form.name.addEventListener("input", function() {
-		const isNameEmpty = form.name.value.trim() === "";
-		form.name.classList.toggle("danger", isNameEmpty);
+		const isNameEmpty = this.value.trim() === "";
+		this.classList.toggle("danger", isNameEmpty);
 		document.querySelector(".name_field p").style.display = isNameEmpty ? "block" : "none";
 	});
 
 	// 휴대폰 번호 실시간 검사
 	form.tel.addEventListener("input", function() {
-		const isTelEmpty = form.tel.value.trim() === "";
-		form.tel.classList.toggle("danger", isTelEmpty);
+		let tel = this.value.replace(/[^0-9]/g, "");
+		if (tel.length <= 3) {
+			this.value = tel;
+		} else if (tel.length <= 7) {
+			this.value = tel.slice(0, 3) + "-" + tel.slice(3);
+		} else {
+			this.value = tel.slice(0, 3) + "-" + tel.slice(3, 7) + "-" + tel.slice(7, 11);
+		}
+		const isTelEmpty = this.value.trim() === "";
+		this.classList.toggle("danger", isTelEmpty);
 		document.querySelector(".tel_field p").style.display = isTelEmpty ? "block" : "none";
 	});
 
 	// 아이디 실시간 검사
 	form.username.addEventListener("input", function() {
-		const isUsernameEmpty = form.username.value.trim() === "";
-		form.username.classList.toggle("danger", isUsernameEmpty);
+		const isUsernameEmpty = this.value.trim() === "";
+		this.classList.toggle("danger", isUsernameEmpty);
 		if (window.getComputedStyle(document.querySelector(".username_field p:nth-of-type(2)")).display === "none") {
 			document.querySelector(".username_field p:nth-of-type(1)").style.display = isUsernameEmpty ? "block" : "none";
 		}
@@ -38,9 +46,9 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 	});
 	form.username.addEventListener("blur", function() {
-		if (!/^(?=.*[a-zA-Z])[a-zA-Z0-9]{4,20}$/.test(form.username.value)) {
+		if (!/^(?=.*[a-zA-Z])[a-zA-Z0-9]{4,20}$/.test(this.value)) {
 			if (window.getComputedStyle(document.querySelector(".username_field p:nth-of-type(1)")).display === "none") {
-				form.username.classList.add("danger");
+				this.classList.add("danger");
 				document.querySelector(".username_field p:nth-of-type(2)").style.display = "block";
 			}
 		}
@@ -52,9 +60,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	// 비밀번호 실시간 검사
 	form.password1.addEventListener("input", function() {
-		const isPassword1Empty = form.password1.value.trim() === "";
+		const isPassword1Empty = this.value.trim() === "";
 		const isPassword2Empty = form.password2.value.trim() === "";
-		form.password1.classList.toggle("danger", isPassword1Empty);
+		this.classList.toggle("danger", isPassword1Empty);
 		document.querySelector(".password_field p:nth-of-type(1)").style.display = isPassword1Empty ? "block" : "none";
 		if (form.password2.classList.contains("danger")) {
 			document.querySelector(".password_field p:nth-of-type(2)").style.display = !isPassword1Empty && isPassword2Empty ? "block" : "none";	
@@ -64,22 +72,22 @@ document.addEventListener("DOMContentLoaded", function () {
 	// 비밀번호 재입력 실시간 검사
 	form.password2.addEventListener("input", function() {
 		const isPassword1Empty = form.password1.value.trim() === "";
-		const isPassword2Empty = form.password2.value.trim() === "";
-		form.password2.classList.toggle("danger", isPassword2Empty);
+		const isPassword2Empty = this.value.trim() === "";
+		this.classList.toggle("danger", isPassword2Empty);
 		document.querySelector(".password_field p:nth-of-type(2)").style.display = !isPassword1Empty && isPassword2Empty ? "block" : "none";
 	});
 	
 	// 닉네임 실시간 검사
 	form.nickname.addEventListener("input", function() {
-		const isNicknameEmpty = form.nickname.value.trim() === "";
-		form.nickname.classList.toggle("danger", isNicknameEmpty);
+		const isNicknameEmpty = this.value.trim() === "";
+		this.classList.toggle("danger", isNicknameEmpty);
 		document.querySelector(".nickname_field p").style.display = isNicknameEmpty ? "block" : "none";
 	});
 	
 	// 이메일 실시간 검사
 	form.email.addEventListener("input", function() {
-		const isEmailEmpty = form.email.value.trim() === "";
-		form.email.classList.toggle("danger", isEmailEmpty);
+		const isEmailEmpty = this.value.trim() === "";
+		this.classList.toggle("danger", isEmailEmpty);
 		document.querySelector(".email_field p").style.display = isEmailEmpty ? "block" : "none";
 	});
 });

@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.dto.ClassDTO;
 import com.project.zipmin.dto.FundDTO;
 import com.project.zipmin.dto.UserDTO;
@@ -32,7 +36,6 @@ import com.project.zipmin.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
@@ -54,19 +57,19 @@ public class UserController {
 	
 
 	// 사용자 목록 조회 (관리자)
-	@GetMapping("/users")
-	@Operation(summary = "사용자 목록 조회", description = "모든 사용자의 목록을 조회하는 메서드입니다.",
-		parameters = {
-				@Parameter(in = ParameterIn.HEADER, name = "test", description = "테스트", required = true, example = "테스트임")
-		})
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "조회 성공")
-	})
-	public List<UserDTO> listMember() {
-		List<UserDTO> userList = userService.getUserList();
-		System.err.println(userList);
-		return userList;
-	}
+//	@GetMapping("/users")
+//	@Operation(summary = "사용자 목록 조회", description = "모든 사용자의 목록을 조회하는 메서드입니다.",
+//		parameters = {
+//				@Parameter(in = ParameterIn.HEADER, name = "test", description = "테스트", required = true, example = "테스트임")
+//		})
+//	@ApiResponses(value = {
+//			@ApiResponse(responseCode = "200", description = "조회 성공")
+//	})
+//	public List<UserDTO> listMember() {
+//		List<UserDTO> userList = userService.getUserList();
+//		System.err.println(userList);
+//		return userList;
+//	}
 	
 	// 특정 사용자 조회
 	@GetMapping("/users/{userId}")
@@ -81,10 +84,29 @@ public class UserController {
 	@PostMapping("/users")
 	public ResponseEntity<UserResponseDto> addMember(@RequestBody UserRequestDto requestDto) {
 		User user = userService.joinUser(requestDto);
-		
 		UserResponseDto responseDto = userMapper.toResponseDto(user);
 		URI location = URI.create("/users/" + user.getId());
 		return ResponseEntity.created(location).body(responseDto);
+	}
+	
+	
+	
+	// 아이디 중복확인
+	@GetMapping("/users/check-username")
+	public ResponseEntity<?> checkUsername(@RequestParam String username) {
+		System.err.println("UserController) username = " + username);
+        if (username == null || username.trim().isEmpty()) {
+        	throw new ApiException("INVALID_PARAM", "아이디는 필수 입력값입니다.");
+        }
+
+        boolean exists = userService.isUsernameDuplicated(username);
+        if (exists) {
+        	return ResponseEntity.status(HttpStatus.CONFLICT)
+        			.body(ApiResponse.of("USERNAME_DUPLICATED", "이미 사용 중인 아이디입니다.", Map.of("available", false)));
+        }
+        
+        return ResponseEntity.status(HttpStatus.OK)
+        		.body(ApiResponse.success(Map.of("available", true)));
 	}
 	
 	

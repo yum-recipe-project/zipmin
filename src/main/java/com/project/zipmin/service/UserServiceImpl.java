@@ -40,5 +40,12 @@ public class UserServiceImpl implements UserService {
 		return userRepository.save(user);
 	}
 
+	@Override
+	public boolean isUsernameDuplicated(String username) {
+		return userRepository.existsByUsername(username);
+	}
+	
+	
+
 
 }

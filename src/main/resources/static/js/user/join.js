@@ -25,24 +25,18 @@ document.addEventListener("DOMContentLoaded", function () {
 		this.classList.toggle("danger", isTelEmpty);
 		document.querySelector(".tel_field p").style.display = isTelEmpty ? "block" : "none";
 	});
-
+	
 	// 아이디 실시간 검사
 	form.username.addEventListener("input", function() {
 		const isUsernameEmpty = this.value.trim() === "";
+		document.querySelector(".username_field p:nth-of-type(3)").style.display = "none";
+		document.querySelector(".username_field p:nth-of-type(4)").style.display = "none";
 		this.classList.toggle("danger", isUsernameEmpty);
 		if (window.getComputedStyle(document.querySelector(".username_field p:nth-of-type(2)")).display === "none") {
 			document.querySelector(".username_field p:nth-of-type(1)").style.display = isUsernameEmpty ? "block" : "none";
 		}
 		if (/^(?=.*[a-zA-Z])[a-zA-Z0-9]{4,20}$/.test(form.username.value)) {
-			if (window.getComputedStyle(document.querySelector(".username_field p:nth-of-type(2)")).display === "block") {
-				document.querySelector(".username_field p:nth-of-type(3)").style.display = "block";
-			}
 			document.querySelector(".username_field p:nth-of-type(2)").style.display = "none";
-		}
-		if (window.getComputedStyle(document.querySelector(".username_field p:nth-of-type(3)")).display === "block") {
-			if (!/^(?=.*[a-zA-Z])[a-zA-Z0-9]{4,20}$/.test(form.username.value)) {
-				document.querySelector(".username_field p:nth-of-type(3)").style.display = "none";
-			}
 		}
 	});
 	form.username.addEventListener("blur", function() {
@@ -51,10 +45,6 @@ document.addEventListener("DOMContentLoaded", function () {
 				this.classList.add("danger");
 				document.querySelector(".username_field p:nth-of-type(2)").style.display = "block";
 			}
-		}
-		else {
-			// 중복검사도 추가할 것
-			document.querySelector(".username_field p:nth-of-type(3)").style.display = "block";
 		}
 	});
 
@@ -91,8 +81,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		document.querySelector(".email_field p").style.display = isEmailEmpty ? "block" : "none";
 	});
 });
-
-
 
 
 
@@ -141,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			form.username.focus();
 			isValid = false;
 		}
-		if (/^(?=.*[a-zA-Z])[a-zA-Z0-9]{4,20}$/.test(form.username.value)) {
+		if (!/^(?=.*[a-zA-Z])[a-zA-Z0-9]{4,20}$/.test(form.username.value)) {
 			form.username.classList.add("danger");
 			document.querySelector(".username_field p:nth-of-type(2)").style.display = "block";
 			form.username.focus();
@@ -160,6 +148,14 @@ document.addEventListener('DOMContentLoaded', function() {
 			document.querySelector(".name_field p").style.display = "block";
 			form.name.focus();
 			isValid = false;
+		}
+		
+		if (isValid) {
+			if (window.getComputedStyle(document.querySelector(".username_field p:nth-of-type(4)")).display === "none") {
+				alert("아이디 중복 여부를 확인해주세요.");
+				form.username.focus();
+				isValid = false;
+			}
 		}
 		
 		if (isValid) {
@@ -213,6 +209,46 @@ function randomNickname() {
 	const nickname = first[Math.floor(Math.random() * first.length)] + " " + last[Math.floor(Math.random() * last.length)];
 	return nickname;
 }
+
+
+
+/**
+ * 아이디 중복을 확인하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	document.querySelector(".username_field button").addEventListener("click", function(event) {
+		event.preventDefault();
+		const username = document.querySelector('input[name="username"]').value.trim();
+		if (username === "") {
+			if (window.getComputedStyle(document.querySelector(".username_field p:nth-of-type(2)")).display === "none") {
+				document.querySelector("form").username.classList.add("danger");
+				document.querySelector(".username_field p:nth-of-type(1)").style.display = "block";
+			}
+			return;
+		}
+		else if (!/^(?=.*[a-zA-Z])[a-zA-Z0-9]{4,20}$/.test(username)) {
+			return;
+		}
+		
+		fetch(`${API_BASE_URL}/users/check-username?username=${username}`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json"
+			}
+		})
+		.then((response) => response.json())
+		.then(result => {
+			if (result.code === "SUCCESS" && result.data?.available === true) {
+				document.querySelector(".username_field p:nth-of-type(4)").style.display = "block";
+			}
+			else if (result.code === "USERNAME_DUPLICATED") {
+				document.querySelector("form").username.classList.add("danger");
+				document.querySelector(".username_field p:nth-of-type(3)").style.display = "block";
+			}
+		})
+		.catch(error => console.log(error));
+	});
+});
 
 
 

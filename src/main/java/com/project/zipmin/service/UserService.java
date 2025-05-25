@@ -25,7 +25,10 @@ public interface UserService {
     // UserDTO getUserById(String userId);
 
     // 회원가입 (새로운 회원 추가)
-    User joinUser(UserRequestDto userDTO);
+    public User joinUser(UserRequestDto userDTO);
+    
+    // 사용자 아이디 중복 확인
+    public boolean isUsernameDuplicated(String username);
 
     // 회원 정보 업데이트
     // UserDTO updateUserAccount(UserDTO userDTO);

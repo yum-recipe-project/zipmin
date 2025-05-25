@@ -36,10 +36,17 @@
 							<div class="member_info">
 								<h3>회원정보</h3>
 								<div class="username_field">
-									<label>아이디</label>
+									<div class="username_label">
+										<label>아이디</label>
+										<button type="submit" onclick="javascript:void(0);">
+											<span>중복 확인</span>
+											<img src="/images/user/refresh.png">
+										</button>										
+									</div>
 									<input type="text" name="username" maxlength="20" value="" placeholder="영문 혹은 영문+숫자, 4~20자">
 									<p>아이디를 입력해주세요.</p>
 									<p>아이디는 4~20자의 영문 또는 숫자로 입력해주세요.</p>
+									<p>이미 사용 중인 아이디입니다.</p>
 									<p>사용가능한 아이디입니다.</p>
 								</div>
 								<div class="password_field">

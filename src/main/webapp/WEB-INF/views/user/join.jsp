@@ -25,7 +25,7 @@
 									<input type="text" name="name" value="" placeholder="이름 입력">
 									<p id="nameHint">이름을 입력해주세요.</p>
 								</div>
-								<div class="phone_field">
+								<div class="tel_field">
 									<label>휴대폰 번호</label>
 									<input type="text" name="tel" value="" placeholder="- 없이 휴대폰 번호 입력">
 									<p>휴대폰 번호를 입력해주세요.</p>
@@ -35,7 +35,7 @@
 							<!-- 회원 정보 -->
 							<div class="member_info">
 								<h3>회원정보</h3>
-								<div class="id_field">
+								<div class="username_field">
 									<label>아이디</label>
 									<input type="text" name="username" value="" placeholder="영문 혹은 영문+숫자, 4~20자">
 									<p>아이디를 입력해주세요.</p>
@@ -74,7 +74,6 @@
 							
 							<!-- 다음 버튼 -->
 							<button type="submit" class="btn_primary_wide">다음</button>
-							<a href="/user/join/complete.do">다음</a>
 						</form>
 					</div>
 				</div>

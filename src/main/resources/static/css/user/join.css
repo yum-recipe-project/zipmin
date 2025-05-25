@@ -101,11 +101,11 @@
 }
 
 /* 기본 정보 (휴대폰 번호) */
-#container .join_wrap .basic_info .phone_field {
+#container .join_wrap .basic_info .tel_field {
 	margin-top: 24px;
 }
 
-#container .join_wrap .basic_info .phone_field label {
+#container .join_wrap .basic_info .tel_field label {
 	font-weight: 500;
 	display: block;
 	margin-bottom: 4px;
@@ -115,7 +115,7 @@
 	color: var(--txt-color-600);
 }
 
-#container .join_wrap .basic_info .phone_field input {
+#container .join_wrap .basic_info .tel_field input {
 	appearance: none;
 	padding: 11px 0px 13px 12px;
 	width: 100%;
@@ -131,7 +131,7 @@
 	outline: none;
 }
 
-#container .join_wrap .basic_info .phone_field input.danger {
+#container .join_wrap .basic_info .tel_field input.danger {
 	appearance: none;
 	padding: 11px 32px 13px 12px;
 	width: 100%;
@@ -147,7 +147,7 @@
 	background: rgb(254, 245, 245);
 }
 
-#container .join_wrap .basic_info .phone_field p {
+#container .join_wrap .basic_info .tel_field p {
 	display: none;
 	margin-top: 4px;
 	font-size: 12px;
@@ -172,7 +172,7 @@
 }
 
 /* 회원정보 (아이디) */
-#container .join_wrap .member_info .id_field label {
+#container .join_wrap .member_info .username_field label {
 	font-weight: 500;
 	display: block;
 	margin-bottom: 4px;
@@ -182,7 +182,7 @@
 	color: var(--txt-color-600);
 }
 
-#container .join_wrap .member_info .id_field input {
+#container .join_wrap .member_info .username_field input {
 	appearance: none;
 	padding: 11px 0px 13px 12px;
 	width: 100%;
@@ -198,7 +198,7 @@
 	outline: none;
 }
 
-#container .join_wrap .member_info .id_field input.danger {
+#container .join_wrap .member_info .username_field input.danger {
 	appearance: none;
 	padding: 11px 32px 13px 12px;
 	width: 100%;
@@ -214,7 +214,7 @@
 	background: rgb(254, 245, 245);
 }
 
-#container .join_wrap .member_info .id_field p {
+#container .join_wrap .member_info .username_field p {
 	display: none;
 	margin-top: 4px;
 	font-size: 12px;

@@ -223,6 +223,10 @@
 	color: #F45452;
 }
 
+#container .join_wrap .member_info .username_field p:nth-of-type(3) {
+	color: var(--point-color2);
+}
+
 /* 회원정보 (비밀번호) */
 #container .join_wrap .member_info .password_field {
 	margin-top: 24px;
@@ -295,6 +299,7 @@
 
 #container .join_wrap .member_info .nickname_field .nickname_label {
 	display: flex;
+	align-items: center;
 	justify-content: space-between;
 }
 
@@ -310,7 +315,8 @@
 
 #container .join_wrap .member_info .nickname_field .nickname_label button {
 	display: flex;
-	gap: 4px;
+	padding: 4px;
+	gap: 3px;
 	align-items: center;
 	border: none;
 	background: none;
@@ -319,7 +325,7 @@
 #container .join_wrap .member_info .nickname_field .nickname_label button span {
 	color: var(--point-color2);
 	font-size: 14px;
-	font-weight: 400;
+	font-weight: 600;
 	line-height: 1.4;
 	letter-spacing: -0.02em;
 	

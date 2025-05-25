@@ -27,7 +27,7 @@
 								</div>
 								<div class="tel_field">
 									<label>휴대폰 번호</label>
-									<input type="text" name="tel" value="" placeholder="- 없이 휴대폰 번호 입력">
+									<input type="tel" name="tel" value="" placeholder="- 없이 휴대폰 번호 입력">
 									<p>휴대폰 번호를 입력해주세요.</p>
 								</div>
 							</div>
@@ -37,8 +37,10 @@
 								<h3>회원정보</h3>
 								<div class="username_field">
 									<label>아이디</label>
-									<input type="text" name="username" value="" placeholder="영문 혹은 영문+숫자, 4~20자">
+									<input type="text" name="username" maxlength="20" value="" placeholder="영문 혹은 영문+숫자, 4~20자">
 									<p>아이디를 입력해주세요.</p>
+									<p>아이디는 4~20자의 영문 또는 숫자로 입력해주세요.</p>
+									<p>사용가능한 아이디입니다.</p>
 								</div>
 								<div class="password_field">
 									<label>비밀번호</label>

@@ -22,9 +22,34 @@ document.addEventListener("DOMContentLoaded", function () {
 	form.username.addEventListener("input", function() {
 		const isUsernameEmpty = form.username.value.trim() === "";
 		form.username.classList.toggle("danger", isUsernameEmpty);
-		document.querySelector(".username_field p").style.display = isUsernameEmpty ? "block" : "none";
+		if (window.getComputedStyle(document.querySelector(".username_field p:nth-of-type(2)")).display === "none") {
+			document.querySelector(".username_field p:nth-of-type(1)").style.display = isUsernameEmpty ? "block" : "none";
+		}
+		if (/^(?=.*[a-zA-Z])[a-zA-Z0-9]{4,20}$/.test(form.username.value)) {
+			if (window.getComputedStyle(document.querySelector(".username_field p:nth-of-type(2)")).display === "block") {
+				document.querySelector(".username_field p:nth-of-type(3)").style.display = "block";
+			}
+			document.querySelector(".username_field p:nth-of-type(2)").style.display = "none";
+		}
+		if (window.getComputedStyle(document.querySelector(".username_field p:nth-of-type(3)")).display === "block") {
+			if (!/^(?=.*[a-zA-Z])[a-zA-Z0-9]{4,20}$/.test(form.username.value)) {
+				document.querySelector(".username_field p:nth-of-type(3)").style.display = "none";
+			}
+		}
 	});
-	
+	form.username.addEventListener("blur", function() {
+		if (!/^(?=.*[a-zA-Z])[a-zA-Z0-9]{4,20}$/.test(form.username.value)) {
+			if (window.getComputedStyle(document.querySelector(".username_field p:nth-of-type(1)")).display === "none") {
+				form.username.classList.add("danger");
+				document.querySelector(".username_field p:nth-of-type(2)").style.display = "block";
+			}
+		}
+		else {
+			// 중복검사도 추가할 것
+			document.querySelector(".username_field p:nth-of-type(3)").style.display = "block";
+		}
+	});
+
 	// 비밀번호 실시간 검사
 	form.password1.addEventListener("input", function() {
 		const isPassword1Empty = form.password1.value.trim() === "";
@@ -57,64 +82,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		form.email.classList.toggle("danger", isEmailEmpty);
 		document.querySelector(".email_field p").style.display = isEmailEmpty ? "block" : "none";
 	});
-	
-    // 폼 제출 시 최종 검사
-    form.addEventListener("submit", function (event) {
-		
-		// 아이디 중복 검사
-		// event.preventDefault();
-		
-		if (form.email.value.trim() === "") {
-			event.preventDefault();
-			form.email.classList.add("danger");
-			querySelector(".email_field p").style.display = "block";
-			form.email.focus();
-		}
-		
-		if (form.nickname.value.trim() === "") {
-			event.preventDefault();
-			form.nickname.classList.add("danger");
-			querySelector(".nickname_field p").style.display = "block";
-			form.nickname.focus();
-		}
-		
-		if (form.password2.value.trim() === "") {
-			event.preventDefault();
-			form.password2.classList.add("danger");
-			if (form.password1.value.trim() !== "") {
-				document.querySelector(".password_field p:nth-of-type(2)").style.display = "block";
-			}
-			form.password2.focus();
-		}
-		
-		if (form.password1.value.trim() === "") {
-			event.preventDefault();
-			form.password1.classList.add("danger");
-			document.querySelector(".password_field p:nth-of-type(1)").style.display = "block";
-			form.password1.focus();
-		}
-		
-		if (form.username.value.trim() === "") {
-			event.preventDefault();
-			form.username.classList.add("danger");
-			querySelector(".username_field p").style.display = "block";
-			form.username.focus();
-		}
-		
-		if (form.tel.value.trim() === "") {
-			event.preventDefault();
-			form.tel.classList.add("danger");
-			querySelector(".tel_field p").style.display = "block";
-			form.tel.focus();
-		}
-		
-		if (form.name.value.trim() === "") {
-			event.preventDefault();
-			form.name.classList.add("danger");
-			querySelector(".name_field p").style.display = "block";
-			form.name.focus();
-		}
-    });
 });
 
 
@@ -126,34 +93,94 @@ document.addEventListener("DOMContentLoaded", function () {
  */
 document.addEventListener('DOMContentLoaded', function() {
 	const form = document.querySelector("form");
-	
-	form.addEventListener("submit", function(event) {
+	form.addEventListener("submit", function (event) {
 		event.preventDefault();
-				
-		const data = {
-			name: form.name.value.trim(),
-			username: form.username.value.trim(),
-			password: form.password1.value.trim(),
-			nickname: form.nickname.value.trim(),
-			tel: form.tel.value.trim(),
-			email: form.email.value.trim()
-		};
+		let isValid = true;
 		
-		fetch(`${API_BASE_URL}/users`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify(data)
-		})
-		.then((response) => response.json())
-		.then(result => {
-			console.log("결과 : ", result);
-			sessionStorage.setItem("user", JSON.stringify(result));
-			window.location.href = "/user/join/complete.do";
-		})
-		.catch(error => console.log(error));
-	})
+		if (form.email.value.trim() === "") {
+			form.email.classList.add("danger");
+			document.querySelector(".email_field p").style.display = "block";
+			form.email.focus();
+			isValid = false;
+		}
+		
+		if (form.nickname.value.trim() === "") {
+			form.nickname.classList.add("danger");
+			document.querySelector(".nickname_field p").style.display = "block";
+			form.nickname.focus();
+			isValid = false;
+		}
+		
+		if (form.password2.value.trim() === "") {
+			form.password2.classList.add("danger");
+			if (form.password1.value.trim() !== "") {
+				document.querySelector(".password_field p:nth-of-type(2)").style.display = "block";
+			}
+			form.password2.focus();
+			isValid = false;
+		}
+
+		if (form.password1.value.trim() === "") {
+			form.password1.classList.add("danger");
+			document.querySelector(".password_field p:nth-of-type(1)").style.display = "block";
+			form.password1.focus();
+			isValid = false;
+		}
+		
+		if (form.username.value.trim() === "") {
+			form.username.classList.add("danger");
+			document.querySelector(".username_field p:nth-of-type(1)").style.display = "block";
+			form.username.focus();
+			isValid = false;
+		}
+		if (/^(?=.*[a-zA-Z])[a-zA-Z0-9]{4,20}$/.test(form.username.value)) {
+			form.username.classList.add("danger");
+			document.querySelector(".username_field p:nth-of-type(2)").style.display = "block";
+			form.username.focus();
+			isValid = false;
+		}
+		
+		if (form.tel.value.trim() === "") {
+			form.tel.classList.add("danger");
+			document.querySelector(".tel_field p").style.display = "block";
+			form.tel.focus();
+			isValid = false;
+		}
+		
+		if (form.name.value.trim() === "") {
+			form.name.classList.add("danger");
+			document.querySelector(".name_field p").style.display = "block";
+			form.name.focus();
+			isValid = false;
+		}
+		
+		if (isValid) {
+			const data = {
+				name: form.name.value.trim(),
+				username: form.username.value.trim(),
+				password: form.password1.value.trim(),
+				nickname: form.nickname.value.trim(),
+				tel: form.tel.value.trim(),
+				email: form.email.value.trim()
+			};
+			
+			fetch(`${API_BASE_URL}/users`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(data)
+			})
+			.then((response) => response.json())
+			.then(result => {
+				console.log("결과 : ", result);
+				sessionStorage.setItem("user", JSON.stringify(result));
+				window.location.href = "/user/join/complete.do";
+			})
+			.catch(error => console.log(error));
+		}
+		
+    });
 });
 
 
@@ -178,8 +205,6 @@ function randomNickname() {
 	const nickname = first[Math.floor(Math.random() * first.length)] + " " + last[Math.floor(Math.random() * last.length)];
 	return nickname;
 }
-
-
 
 
 

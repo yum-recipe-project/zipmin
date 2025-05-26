@@ -3,6 +3,7 @@ package com.project.zipmin.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.dto.UserDTO;
@@ -33,10 +34,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User joinUser(UserRequestDto userDto) {
 		User user = userMapper.toEntity(userDto);
+		user.setPassword(PasswordEncoderFactories.createDelegatingPasswordEncoder().encode(userDto.getPassword()));
 		user.setRole("ROLE_USER");
 		user.setEnable(1);
-		// 여기에 존재하는 아이디인지 여부 추가해야 할듯
-		// https://yessm621.github.io/spring/GeneralAndSocialLogin/
 		return userRepository.save(user);
 	}
 

@@ -29,14 +29,12 @@ document.addEventListener("DOMContentLoaded", function () {
 	// 아이디 실시간 검사
 	form.username.addEventListener("input", function() {
 		const isUsernameEmpty = this.value.trim() === "";
+		document.querySelector(".username_field p:nth-of-type(2)").style.display = "none";
 		document.querySelector(".username_field p:nth-of-type(3)").style.display = "none";
 		document.querySelector(".username_field p:nth-of-type(4)").style.display = "none";
 		this.classList.toggle("danger", isUsernameEmpty);
 		if (window.getComputedStyle(document.querySelector(".username_field p:nth-of-type(2)")).display === "none") {
 			document.querySelector(".username_field p:nth-of-type(1)").style.display = isUsernameEmpty ? "block" : "none";
-		}
-		if (/^(?=.*[a-zA-Z])[a-zA-Z0-9]{4,20}$/.test(form.username.value)) {
-			document.querySelector(".username_field p:nth-of-type(2)").style.display = "none";
 		}
 	});
 	form.username.addEventListener("blur", function() {
@@ -50,22 +48,66 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	// 비밀번호 실시간 검사
 	form.password1.addEventListener("input", function() {
-		const isPassword1Empty = this.value.trim() === "";
+		const isPassword1Empty = form.password1.value.trim() === "";
 		const isPassword2Empty = form.password2.value.trim() === "";
+		if (!form.password2.classList.contains("danger")) {
+			document.querySelector(".password_field p:nth-of-type(2)").style.display = "none";
+		}
 		this.classList.toggle("danger", isPassword1Empty);
-		document.querySelector(".password_field p:nth-of-type(1)").style.display = isPassword1Empty ? "block" : "none";
-		if (form.password2.classList.contains("danger")) {
-			document.querySelector(".password_field p:nth-of-type(2)").style.display = !isPassword1Empty && isPassword2Empty ? "block" : "none";	
+		document.querySelector(".password_field p:nth-of-type(1)").style.display = isPassword1Empty || (isPassword2Empty && form.password2.classList.contains("danger")) ? "block" : "none";
+		if (window.getComputedStyle(document.querySelector(".password_field p:nth-of-type(1)")).display === "block") {
+			document.querySelector(".password_field p:nth-of-type(2)").style.display = "none";
+		}
+	});
+	form.password1.addEventListener("blur", function() {
+		const isPassword1Empty = form.password1.value.trim() === "";
+		const isPassword2Empty = form.password2.value.trim() === "";
+		const isPassword1Valid = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{10,}$|^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-])[a-zA-Z\d!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]{8,}$/.test(form.password1.value);
+		const isPasswordAccord = form.password1.value.trim() === form.password2.value.trim();
+		if (isPassword1Empty) {
+			this.classList.add("danger");
+			document.querySelector(".password_field p:nth-of-type(1)").style.display = "block";
+		}
+		else if (!isPassword1Valid) {
+			this.classList.add("danger");
+			document.querySelector(".password_field p:nth-of-type(2)").style.display = "block";
+		}
+		else if (!isPasswordAccord && !isPassword2Empty) {
+			this.classList.add("danger");
+			document.querySelector(".password_field p:nth-of-type(2)").style.display = "block";
+		}
+	});
+	form.password2.addEventListener("input", function() {
+		const isPassword1Empty = form.password1.value.trim() === "";
+		const isPassword2Empty = form.password2.value.trim() === "";
+		if (!form.password1.classList.contains("danger")) {
+			document.querySelector(".password_field p:nth-of-type(2)").style.display = "none";
+		}
+		this.classList.toggle("danger", isPassword2Empty);
+		document.querySelector(".password_field p:nth-of-type(1)").style.display = isPassword2Empty || (isPassword1Empty && form.password1.classList.contains("danger")) ? "block" : "none";
+		if (window.getComputedStyle(document.querySelector(".password_field p:nth-of-type(1)")).display === "block") {
+			document.querySelector(".password_field p:nth-of-type(2)").style.display = "none";
+		}
+	});
+	form.password2.addEventListener("blur", function() {
+		const isPassword1Empty = form.password1.value.trim() === "";
+		const isPassword2Empty = form.password2.value.trim() === "";
+		const isPassword2Valid = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{10,}$|^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-])[a-zA-Z\d!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]{8,}$/.test(form.password2.value);
+		const isPasswordAccord = form.password1.value.trim() === form.password2.value.trim();
+		if (isPassword2Empty) {
+			this.classList.add("danger");
+			document.querySelector(".password_field p:nth-of-type(1)").style.display = "block";
+		}
+		else if (!isPassword2Valid) {
+			this.classList.add("danger");
+			document.querySelector(".password_field p:nth-of-type(2)").style.display = "block";
+		}
+		else if (!isPasswordAccord && !isPassword1Empty) {
+			this.classList.add("danger");
+			document.querySelector(".password_field p:nth-of-type(2)").style.display = "block";
 		}
 	});
 	
-	// 비밀번호 재입력 실시간 검사
-	form.password2.addEventListener("input", function() {
-		const isPassword1Empty = form.password1.value.trim() === "";
-		const isPassword2Empty = this.value.trim() === "";
-		this.classList.toggle("danger", isPassword2Empty);
-		document.querySelector(".password_field p:nth-of-type(2)").style.display = !isPassword1Empty && isPassword2Empty ? "block" : "none";
-	});
 	
 	// 닉네임 실시간 검사
 	form.nickname.addEventListener("input", function() {
@@ -115,10 +157,36 @@ document.addEventListener('DOMContentLoaded', function() {
 			form.password2.focus();
 			isValid = false;
 		}
+		else if (!/^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{10,}$|^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-])[a-zA-Z\d!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]{8,}$/.test(form.password2.value)) {
+			form.password2.classList.add("danger");
+			document.querySelector(".password_field p:nth-of-type(2)").style.display = "block";
+			form.password2.focus();
+			isValid = false;
+		}
+		else if (form.password1.value.trim() !== form.password2.value.trim()) {
+			form.password1.classList.add("danger");
+			form.password2.classList.add("danger");
+			document.querySelector(".password_field p:nth-of-type(3)").style.display = "block";
+			form.password1.focus();
+			isValid = false;
+		}
 
 		if (form.password1.value.trim() === "") {
 			form.password1.classList.add("danger");
 			document.querySelector(".password_field p:nth-of-type(1)").style.display = "block";
+			form.password1.focus();
+			isValid = false;
+		}
+		else if (!/^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{10,}$|^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-])[a-zA-Z\d!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]{8,}$/.test(form.password1.value)) {
+			form.password2.classList.add("danger");
+			document.querySelector(".password_field p:nth-of-type(2)").style.display = "block";
+			form.password2.focus();
+			isValid = false;
+		}
+		else if (form.password1.value.trim() !== form.password2.value.trim()) {
+			form.password1.classList.add("danger");
+			form.password2.classList.add("danger");
+			document.querySelector(".password_field p:nth-of-type(3)").style.display = "block";
 			form.password1.focus();
 			isValid = false;
 		}
@@ -129,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			form.username.focus();
 			isValid = false;
 		}
-		if (!/^(?=.*[a-zA-Z])[a-zA-Z0-9]{4,20}$/.test(form.username.value)) {
+		else if (!/^(?=.*[a-zA-Z])[a-zA-Z0-9]{4,20}$/.test(form.username.value)) {
 			form.username.classList.add("danger");
 			document.querySelector(".username_field p:nth-of-type(2)").style.display = "block";
 			form.username.focus();

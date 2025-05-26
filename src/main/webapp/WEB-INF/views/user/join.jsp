@@ -45,17 +45,17 @@
 									</div>
 									<input type="text" name="username" maxlength="20" value="" placeholder="영문 혹은 영문+숫자, 4~20자">
 									<p>아이디를 입력해주세요.</p>
-									<p>아이디는 4~20자의 영문 또는 숫자로 입력해주세요.</p>
+									<p>아이디는 4~20자의 영문 또는 영문+숫자로 입력해주세요.</p>
 									<p>이미 사용 중인 아이디입니다.</p>
 									<p>사용가능한 아이디입니다.</p>
 								</div>
 								<div class="password_field">
 									<label>비밀번호</label>
 									<label class="sub_label">영문+숫자 10자 이상 또는 영문+숫자+특수기호 8자 이상</label>
-									<input type="password" name="password1" value="" placeholder="비밀번호">
-									<input type="password" name="password2" value="" placeholder="비밀번호 재입력">
+									<input type="password" name="password1" value="" maxlength="20" placeholder="비밀번호">
+									<input type="password" name="password2" value="" maxlength="20" placeholder="비밀번호 재입력">
 									<p>비밀번호를 입력해주세요.</p>
-									<p>비밀번호 확인을 위해 한번 더 입력해주세요.</p>
+									<p>비밀번호가 올바르지 않습니다.</p>
 								</div>
 								<div class="nickname_field">
 									<div class="nickname_label">

@@ -22,15 +22,11 @@
 						</div>
 					</div>
 					
-					<s:authorize access="hasRole('ADMIN')">
-						로그인 아이디 : <s:authentication property="name" />
-					</s:authorize>
-					
-					<!--  폼 -->
-					<form method="post">
-						<div class="id_field">
-							<input type="text" id="idInput" name="id" value="" placeholder="아이디">
-							<p id="idHint">아이디를 입력해주세요.</p>
+					<!-- 자체 로그인 -->
+					<form>
+						<div class="username_field">
+							<input type="text" name="username" value="" placeholder="아이디">
+							<p>아이디를 입력해주세요.</p>
 						</div>
 						<div class="password_field">
 							<input type="password" id="passwordInput" name="password" value="" placeholder="비밀번호">

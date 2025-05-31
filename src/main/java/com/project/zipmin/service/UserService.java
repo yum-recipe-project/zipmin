@@ -2,17 +2,19 @@ package com.project.zipmin.service;
 
 import java.util.List;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.project.zipmin.dto.UserDTO;
-import com.project.zipmin.dto.UserRequestDto;
+import com.project.zipmin.dto.UserDto;
+import com.project.zipmin.dto.UserJoinDto;
 import com.project.zipmin.entity.User;
 
 @Service
 public interface UserService {
 
     // 모든 회원 조회
-    public List<UserDTO> getUserList();
+    public List<UserDto> getUserList();
     
 
     // 특정 회원의 팔로워 목록 조회
@@ -25,7 +27,7 @@ public interface UserService {
     // UserDTO getUserById(String userId);
 
     // 회원가입 (새로운 회원 추가)
-    public User joinUser(UserRequestDto userDTO);
+    public User joinUser(UserJoinDto userDTO);
     
     // 사용자 아이디 중복 확인
     public boolean isUsernameDuplicated(String username);

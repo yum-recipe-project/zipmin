@@ -5,10 +5,14 @@ import java.util.Collections;
 
 import javax.sql.DataSource;
 
+import org.springdoc.api.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jmx.support.ObjectNameManager;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer.UserInfoEndpointConfig;
@@ -19,17 +23,24 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.zipmin.api.ApiResponse;
+import com.project.zipmin.filter.CustomLoginFilter;
+import com.project.zipmin.filter.JwtFilter;
 import com.project.zipmin.handler.AuthFailureHandler;
-import com.project.zipmin.handler.AuthSuccessHandler;
-import com.project.zipmin.jwt.CustomOAuth2UserService;
-import com.project.zipmin.jwt.JWTFilter;
-import com.project.zipmin.jwt.JWTUtil;
+import com.project.zipmin.handler.CustomOAuthSuccessHandler;
+import com.project.zipmin.repository.UserRepository;
+import com.project.zipmin.service.CustomOAuth2UserService;
+import com.project.zipmin.service.ReissueService;
+import com.project.zipmin.util.JwtUtil;
 
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -37,14 +48,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 	
-	private final JWTUtil jwtUtil;
-	private final AuthSuccessHandler authSuccessHandler;
+	private final JwtUtil jwtUtil;
+	private final CustomOAuthSuccessHandler customOAuthSuccessHandler;
 	private final CustomOAuth2UserService customOAuth2UserService;
+	private final AuthenticationConfiguration authenticationConfiguration;
+	private final ObjectMapper objectMapper;
 	
-//	@Bean
-//	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-//		return new BCryptPasswordEncoder();
-//	}
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+		return configuration.getAuthenticationManager();
+	}
+	
+	@Bean
+	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -65,11 +83,8 @@ public class SecurityConfig {
 				configuration.setAllowedHeaders(Collections.singletonList("*"));
 				// 최대 우효기간 설정
 				configuration.setMaxAge(3600L);
-				
-				// 브라우저가 접근할 수 있도록 특정 응답 헤더를 노출 (여기서는 "Set-Cookie"와 "Authorization")
-				// configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
-				// configuration.setExposedHeaders(Collections.singletonList("Authorization"));
-				configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization", "access"));
+				// 브라우저가 접근할 수 있도록 특정 응답 헤더를 노출
+				configuration.setExposedHeaders(Collections.singletonList("access"));
 				
 				return configuration;
 			}
@@ -85,12 +100,28 @@ public class SecurityConfig {
 		http.httpBasic((auth) -> auth.disable());
 		
 		// JWT Filter (JWT인증을 사용할 수 있도록 addfilterBefore를 통해 JWTFilter를 UsernamePasswordAuthenticationFilter 전에 실행하도록 위치 지정)
-		http.addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+		
+		// http.addFilterBefore(new CustomLogoutFilter(jwtUtil, reissueService, userRepository), LogoutFilter.class);
+		
+		http.exceptionHandling((exception) -> 
+		exception
+				.authenticationEntryPoint((request, response, authException) -> {
+					response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+					response.setContentType("application/json");
+					response.setCharacterEncoding("utf-8");
+					response.getWriter().write(objectMapper.writeValueAsString(ApiResponse.error("TOKEN_EXCEPTION", "유효하지 않은 인증입니다.")));
+				}
+			)
+		);
+		
+		// 기본 로그인 필터인 UsernamePasswordAuthenticationFilter 자리에 커스텀 로그인 필터를 대체하거나 삽입
+		http.addFilterAt(new CustomLoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, objectMapper), UsernamePasswordAuthenticationFilter.class);
 		
 		// oauth2
 		http.oauth2Login(oauth2 -> oauth2
-				.successHandler(authSuccessHandler)
 				.userInfoEndpoint(UserInfoEndpointConfig -> UserInfoEndpointConfig.userService(customOAuth2UserService))
+				.successHandler(customOAuthSuccessHandler)
 			);
 		
 		// 경로별 인가 작업
@@ -119,20 +150,4 @@ public class SecurityConfig {
 		
 		return http.build();
 	}
-	
-//	@Autowired
-//	private DataSource dataSource;
-//	
-//	@Autowired
-//	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.jdbcAuthentication()
-//			.dataSource(dataSource)
-//			.usersByUsernameQuery("SELECT id, password, enable FROM users WHERE id = ?")
-//			.authoritiesByUsernameQuery("SELECT id, auth FROM users WHERE id = ?")
-//			.passwordEncoder(new BCryptPasswordEncoder());
-//	}
-//	
-//	public PasswordEncoder passwordEncoder() {
-//		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-//	}
 }

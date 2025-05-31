@@ -25,7 +25,7 @@ public class RecipeDTO {
 	
 	// 추가 컬럼
 	private List<RecipeCategoryDTO> categoryList;
-	private UserDTO member;
+	private UserDto member;
 	private List<RecipeIngredientDTO> ingredientList;
 	private List<RecipeStepDTO> stepList;
 	private Integer followerCount;

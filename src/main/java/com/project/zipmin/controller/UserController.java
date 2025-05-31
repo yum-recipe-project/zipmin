@@ -24,14 +24,13 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.dto.ClassDTO;
 import com.project.zipmin.dto.FundDTO;
-import com.project.zipmin.dto.UserDTO;
-import com.project.zipmin.dto.UserRequestDto;
+import com.project.zipmin.dto.UserDto;
+import com.project.zipmin.dto.UserJoinDto;
 import com.project.zipmin.dto.UserResponseDto;
 import com.project.zipmin.entity.User;
-import com.project.zipmin.jwt.JWTUtil;
-import com.project.zipmin.jwt.RedisService;
 import com.project.zipmin.mapper.UserMapper;
 import com.project.zipmin.service.UserService;
+import com.project.zipmin.util.JwtUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -48,12 +47,8 @@ import lombok.RequiredArgsConstructor;
 //@Tag(name = "Example Controller", description = "This is an example controller")
 public class UserController {
 	
-	@Autowired
-	UserService userService;
-	
-	private final JWTUtil jwtUtil;
-	private final RedisService redisService;
 	private final UserMapper userMapper;
+	private final UserService userService;
 	
 
 	// 사용자 목록 조회 (관리자)
@@ -73,7 +68,7 @@ public class UserController {
 	
 	// 특정 사용자 조회
 	@GetMapping("/users/{userId}")
-	public UserDTO viewMember(@PathVariable("userId") String id) {
+	public UserDto viewMember(@PathVariable("userId") String id) {
 		// 프로필 넣말
 		return null;
 	}
@@ -82,11 +77,12 @@ public class UserController {
 	
 	// 사용자 생성 (회원가입)
 	@PostMapping("/users")
-	public ResponseEntity<UserResponseDto> addMember(@RequestBody UserRequestDto requestDto) {
-		User user = userService.joinUser(requestDto);
+	public ResponseEntity<?> addUser(@RequestBody UserJoinDto userJoinDto) {
+		User user = userService.joinUser(userJoinDto);
 		UserResponseDto responseDto = userMapper.toResponseDto(user);
-		URI location = URI.create("/users/" + user.getId());
-		return ResponseEntity.created(location).body(responseDto);
+		
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(ApiResponse.of("SIGN_UP_SUCCESS", "회원가입이 완료되었습니다.", responseDto));
 	}
 	
 	
@@ -126,64 +122,10 @@ public class UserController {
 	}
 
 	
-	// 시큐리티에서는 필요 없을 듯
-//	@PostMapping("/login")
-//	public int login() {
-//		
-//		return 0;
-//	}
-	
-	
-//	
-//	@PostMapping("/logout")
-//	public void logout(HttpServletRequest request, HttpServletResponse response) {
-//		// 1. 쿠키가 있는지 확인
-//		Cookie[] cookies = request.getCookies();
-//		if (cookies == null) {
-//			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//			return;
-//		}
-//		
-//		// 2. Cookie 내부에 RefreshToken이 있는지 확인
-//		Optional<Cookie> refreshCookie = Arrays.stream(cookies)
-//				.filter(cookie -> "refresh".equals(cookie.getName()))
-//				.findFirst();
-//		if (refreshCookie.isPresent()) {
-//			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//			return;
-//		}
-//		
-//		// 3. RefreshToken의 값이 존재하는지 확인
-//		String refreshToken = refreshCookie.get().getValue();
-//		if (refreshToken == null || refreshToken.isEmpty()) {
-//			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//			return;
-//		}
-//		
-//		// 4. 존재한다면 해당 RefreshToken으로 부터 사용자명(username) 추출
-//		String key = jwtUtil.getId(refreshToken);
-//		
-//		// 5. 사용자명을 키로 Redis에 존재하는 키의 값을 확인
-//		if (redisService.getValues(key) == null) {
-//			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//			return;
-//		}
-//		
-//		// 6. 있다면 Redis에서 삭제
-//		redisService.deleteValues(key);
-//		
-//		// 7. 클라이언트측 refresh 쿠키를 null로 변경하여 200 상태와 함께 응답
-//		Cookie cookie = new Cookie("refresh", null);
-//		cookie.setMaxAge(0);
-//		cookie.setPath("/");
-//		response.setStatus(HttpServletResponse.SC_OK);
-//		response.addCookie(cookie);
-//	}
-	
 	
 	// 팔로워 목록
 	@GetMapping("/users/{userId}/followers")
-	public List<UserDTO> listFollowers() {
+	public List<UserDto> listFollowers() {
 		return null;
 	}
 	
@@ -191,7 +133,7 @@ public class UserController {
 	
 	// 팔로잉 목록
 	@GetMapping("/users/{userId}/following")
-	public List<UserDTO> listFollowing() {
+	public List<UserDto> listFollowing() {
 		return null;
 	}
 	

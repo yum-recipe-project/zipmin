@@ -1,6 +1,12 @@
 package com.project.zipmin.entity;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
@@ -17,6 +23,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "USERS")
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class User {
 	@Id
 	@GeneratedValue(generator = "seq_user_id")
@@ -31,6 +38,48 @@ public class User {
 	private String avatar;
 	private int point;
 	private int revenue;
-	private String role;
+	@Enumerated(EnumType.STRING)
+	private Role role;
 	private int enable;
+	
+	private String provider;
+	@Column(name = "PROVIDER_ID")
+	private String providerId;
+	private String refresh;
+	private String expiration;
+	
+	// 정적 팩토리 메서드
+	public static User createUser(String username, Role role) {
+        User user = new User();
+        user.username = username;
+        user.role = role;
+        return user;
+    }
+	public static User createUser(String username, String password, Role role) {
+		User user = new User();
+		user.username = username;
+		user.password = password;
+		user.role = role;
+		return user;
+	}
+	public static User createUser(String email, String name, Role role, String provider, String providerId) {
+		User user = new User();
+		user.username = email;
+		user.name = name;
+		user.role = role;
+		user.provider = provider;
+		user.providerId = providerId;
+		return user;
+	}
+	
+	// dirty checking 사용
+	public void updateUser(String email, String name) {
+		this.username = email;
+		this.name = name;
+	}
+	
+	public void updateRefresh(String refresh, String expiration) {
+		this.refresh = refresh;
+		this.expiration = expiration;
+	}
 }

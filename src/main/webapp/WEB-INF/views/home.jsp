@@ -3,30 +3,6 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
-	<script>
-	// 서버가 응답한 헤더에서 Authorization 꺼내기 (단, fetch로 직접 요청한 경우만 가능)
-	fetch("/get-token", { method: "GET" })
-		.then((res) => {
-			const token = res.headers.get("Authorization");
-			if (token) {
-				localStorage.setItem("accessToken", token);
-				}
-			});
-	
-	// 이후 요청에 토큰 붙이기
-	function getUserData() {
-		const token = localStorage.getItem("accessToken");
-		fetch("/chompessor/test", {
-			method: "GET",
-			headers: {
-				Authorization: token
-				}
-		})
-		.then((res) => res.json())
-		.then((data) => console.log("응답:", data));
-	}
-	</script>
-
 	<head>
 		<meta charset="UTF-8">
 		<title>집밥의 민족</title>

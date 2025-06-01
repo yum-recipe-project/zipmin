@@ -72,6 +72,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			.then(result => {
 				console.log("결과 : ",result);
 				if (result.code === "SUCCESS") {
+					alert(result.data.accessToken);
+					localStorage.setItem("accessToken", result.data.accessToken);
 					window.location.href = "/";
 				}
 				else if (result.code === "ACCESS_DENIED_EXCEPTION") {
@@ -85,8 +87,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	})
 });
-
-
 
 
 

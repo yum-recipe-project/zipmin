@@ -36,17 +36,18 @@ public class User {
 	private String tel;
 	private String email;
 	private String avatar;
-	private int point;
-	private int revenue;
+	
 	@Enumerated(EnumType.STRING)
 	private Role role;
-	private int enable;
-	
 	private String provider;
 	@Column(name = "PROVIDER_ID")
 	private String providerId;
 	private String refresh;
 	private String expiration;
+	private int enable;
+	
+	private int point;
+	private int revenue;
 	
 	// 정적 팩토리 메서드
 	public static User createUser(String username, Role role) {
@@ -62,19 +63,22 @@ public class User {
 		user.role = role;
 		return user;
 	}
-	public static User createUser(String email, String name, Role role, String provider, String providerId) {
+	public static User createUser(String username, String name, String nickname, String email, Role role, String provider, String providerId) {
 		User user = new User();
-		user.username = email;
+		user.username = username;
 		user.name = name;
+		user.nickname = nickname;
+		user.email = email;
 		user.role = role;
 		user.provider = provider;
 		user.providerId = providerId;
+		user.enable = 1;
 		return user;
 	}
 	
 	// dirty checking 사용
-	public void updateUser(String email, String name) {
-		this.username = email;
+	public void updateUser(String username, String name) {
+		this.username = username;
 		this.name = name;
 	}
 	

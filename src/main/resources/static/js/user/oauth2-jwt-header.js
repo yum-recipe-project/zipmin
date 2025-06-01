@@ -12,12 +12,11 @@ document.addEventListener('DOMContentLoaded', function() {
 	.then((response) => {
 		console.log(response);
 		const token = response.headers.get("Authorization");
-		
 		if (token && token.startsWith("Bearer ")) {
 			localStorage.setItem("accessToken", token);
-			localStorage.setItem("name", name);
 			window.location.href = "/";
-		} else {
+		}
+		else {
 			alert("토큰 발급 실패");
 		}
 	})

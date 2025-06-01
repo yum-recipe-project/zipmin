@@ -33,14 +33,15 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 		CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 		String username = customOAuth2User.getUsername();
 		String name = customOAuth2User.getName();
+		String nickname = customOAuth2User.getNickname();
 		
 		// 권한 정보 추출
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		String role = authorities.iterator().next().getAuthority();
 		
 		// JWT 토큰 생성
-		String access = jwtUtil.createJwt("access", username, role, 60 * 60 * 60L);
-		String refresh = jwtUtil.createJwt("refresh", username, role, 86400_000L);
+		String access = jwtUtil.createJwt("access", username, nickname, role, 60 * 60 * 60L);
+		String refresh = jwtUtil.createJwt("refresh", username, nickname, role, 86400_000L);
 		
 		// refresh 토큰 저장 (DB or Redis)
 		reissureService.addRefresh(username, refresh, 86400_000L);

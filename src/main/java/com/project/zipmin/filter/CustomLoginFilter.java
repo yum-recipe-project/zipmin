@@ -19,6 +19,7 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.dto.CustomUserDetails;
 import com.project.zipmin.dto.TokenDto;
+import com.project.zipmin.service.ReissueService;
 import com.project.zipmin.util.CookieUtil;
 import com.project.zipmin.util.JwtUtil;
 
@@ -40,6 +41,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 	private final AuthenticationManager authenticationManager;
 	private final JwtUtil jwtUtil;
 	private final ObjectMapper objectMapper;
+	// private final ReissueService reissureService;
 	
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
@@ -63,6 +65,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 		
 		String username = customUserDetails.getUsername();
+		String nickname = customUserDetails.getNickname();
 		
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
@@ -70,11 +73,14 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		String role = auth.getAuthority();
 		
 		// JWT 발급
-		String accessToken = jwtUtil.createJwt("access", username, role, 60 * 60 * 60L);
-		String refreshToken = jwtUtil.createJwt("refresh", username, role, 86400_000L);
+		String access = jwtUtil.createJwt("access", username, nickname, role, 60 * 60 * 60L);
+		String refresh = jwtUtil.createJwt("refresh", username, nickname, role, 86400_000L);
 		
-		TokenDto tokenDto = TokenDto.toDto(accessToken);
-		response.addCookie(CookieUtil.createCookie("refresh", refreshToken, 86_400));
+		// refresh 토큰 저장 (DB or Redis)
+		// reissureService.addRefresh(username, refresh, 86400_000L);
+		
+		TokenDto tokenDto = TokenDto.toDto(access);
+		response.addCookie(CookieUtil.createCookie("refresh", refresh, 86_400));
 		response.setContentType("application/json");
 		response.setCharacterEncoding("utf-8");
 		response.getWriter().write(objectMapper.writeValueAsString(ApiResponse.success(tokenDto)));
@@ -87,7 +93,6 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		response.setCharacterEncoding("utf-8");
 		response.getWriter().write(objectMapper.writeValueAsString(ApiResponse.error("ACCESS_DENIED_EXCEPTION", "인증되지 않은 사용자입니다.")));
 	}
-	
 	
 	@Data
 	private static class LoginDto {

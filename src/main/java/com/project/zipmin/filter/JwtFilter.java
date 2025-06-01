@@ -25,6 +25,10 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * JWT 필터 - 클라이언트 요청 시 JWT의 유효성 검사 및 인증 객체 생성
+ * 
+ * - Access Token이 유효한지 확인하는 필터이다.
+ * - 헤더에 있는 Access Token을 가져와 유효성을 검증한다.
+ * - Access Token이 유효하면 토큰의 username, nickname, role을 가져와 User를 생성하고 이를 CustomUserDetails에 넣어준다.
  */
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
@@ -68,12 +72,13 @@ public class JwtFilter extends OncePerRequestFilter {
 		
 		// JWT에서 사용자 정보 추출
 		String username = jwtUtil.getUsername(accessToken);
+		String nickname = jwtUtil.getNickname(accessToken);
 		String role = jwtUtil.getRole(accessToken);
 		
 		System.err.println("JWTFiler) role = " + role);
 		
 		// 사용자 객체 생성 및 인증 설정
-		User user = User.createUser(username, Role.valueOf(role));
+		User user = User.createUser(username, nickname, Role.valueOf(role));
 		CustomUserDetails customUserDetails = new CustomUserDetails(user);
 		Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(authToken);

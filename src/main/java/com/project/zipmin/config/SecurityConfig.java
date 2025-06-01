@@ -30,6 +30,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.filter.CustomLoginFilter;
+import com.project.zipmin.filter.CustomLogoutFilter;
 import com.project.zipmin.filter.JwtFilter;
 import com.project.zipmin.handler.AuthFailureHandler;
 import com.project.zipmin.handler.CustomOAuthSuccessHandler;
@@ -53,6 +54,8 @@ public class SecurityConfig {
 	private final CustomOAuth2UserService customOAuth2UserService;
 	private final AuthenticationConfiguration authenticationConfiguration;
 	private final ObjectMapper objectMapper;
+	private final ReissueService reissueService;
+	private final UserRepository userRepository;
 	
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
@@ -74,7 +77,7 @@ public class SecurityConfig {
 				CorsConfiguration configuration = new CorsConfiguration();
 				
 				// 모든 출처에서 요청 허용 (http://localhost:3000와 깉이 주소로 허용 가능)
-				configuration.setAllowedOrigins(Collections.singletonList("*"));
+				configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8586"));
 				// HTTP 메소드 (GET, POST 등 모든 요청)의 요청을 허용
 				configuration.setAllowedMethods(Collections.singletonList("*"));
 				// 인증 정보 (쿠키, 인증 토큰 등)의 전송을 허용
@@ -102,7 +105,7 @@ public class SecurityConfig {
 		// JWT Filter (JWT인증을 사용할 수 있도록 addfilterBefore를 통해 JWTFilter를 UsernamePasswordAuthenticationFilter 전에 실행하도록 위치 지정)
 		http.addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 		
-		// http.addFilterBefore(new CustomLogoutFilter(jwtUtil, reissueService, userRepository), LogoutFilter.class);
+		http.addFilterBefore(new CustomLogoutFilter(jwtUtil, reissueService, userRepository), LogoutFilter.class);
 		
 		http.exceptionHandling((exception) -> 
 		exception
@@ -128,7 +131,7 @@ public class SecurityConfig {
 		http.authorizeHttpRequests((auth) -> auth
 				.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
 				.requestMatchers("/").permitAll()
-				.requestMatchers("/", "/login", "/oauth2-jwt-header", "/reissue").permitAll()
+				.requestMatchers("/", "/login", "/logout", "/oauth2-jwt-header", "/reissue").permitAll()
 				.requestMatchers("/user/**").permitAll()
 				.requestMatchers("/users/**").permitAll()
 				.requestMatchers("/recipe/**").permitAll()

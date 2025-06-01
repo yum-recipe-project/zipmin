@@ -48,10 +48,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		
 		// 존재하지 않는다면 회원정보를 저장하고 CustomOAuth2User 반환
 		if (existData == null) {
-			// 나중에 닉네임, 이메일도 추가할 것
-			User user = User.createUser(oAuth2Response.getEmail(), oAuth2Response.getName(), Role.USER, oAuth2Response.getProvider(), oAuth2Response.getProviderId());
-			
-			userRepository.save(user);		
+			User user = User.createUser(username, oAuth2Response.getName(), oAuth2Response.getName(), oAuth2Response.getEmail(), Role.USER, oAuth2Response.getProvider(), oAuth2Response.getProviderId());
+						
+			userRepository.save(user);
 			
 			UserDto userDTO = new UserDto();
 			userDTO.setUsername(username);
@@ -65,7 +64,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		// 회원정보가 존재한다면 조회된 데이터로 반환
 		else {
 			existData.updateUser(oAuth2Response.getEmail(), oAuth2Response.getName());
-			// userRepository.save(existData);
 			
 			UserDto userDto = new UserDto();
 			userDto.setUsername(username);

@@ -28,6 +28,3 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
-
-

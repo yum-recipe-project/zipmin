@@ -21,3 +21,79 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+
+
+/**
+ * 로그인 시 헤더에 정보 표시 (수정 필요 *************8)
+ */
+/*
+document.addEventListener('DOMContentLoaded', function() {
+	const token = localStorage.getItem("accessToken");
+	
+	if (token) {
+		try {
+			const payload = parseJwt(token);
+			const now = Math.floor(Date.now() / 1000);
+			
+			if (payload.exp > now) {
+				document.querySelector(".logout_state").style.display = "none";
+				document.querySelector(".login_state").style.display = "flex";
+				document.querySelector(".user_name").innerText = payload.nickname;
+			}
+			else {
+				// 만료된 경우 access 재발급 시도
+				fetch(`${API_BASE_URL}/reissue`, {
+					method: "POST",
+					credentials: "include"
+				})
+				.then(response => response.json())
+				.then(result => {
+					if (result.code === "SUCCESS") {
+						payload = parseJwt(result.data.accessToken);
+						localStorage.setItem("accessToken", result.data.accessToken);
+						document.querySelector(".logout_state").style.display = "none";
+						document.querySelector(".login_state").style.display = "flex";
+						document.querySelector(".user_name").innerText = payload.nickname;
+					}
+					else {
+						localStorage.removeItem("accessToken");
+						location.href = "/login";
+					}
+				})
+				.catch(error => console.log(error));
+			}
+		}
+		catch(e) {
+			localStorage.removeItem("accessToken");
+		}
+	}
+})
+*/
+
+
+
+/**
+ * 로그아웃
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	document.getElementById("logout").addEventListener("click", function() {
+		fetch(`${API_BASE_URL}/logout`, {
+			method: "POST",
+			credentials: "include"
+		})
+		.then((response) => {
+			alert(response);
+			if (response.ok) {
+				alert("실행됨");
+				// localStorage.removeItem("accessToken");
+				alert("이동");
+				// window.location.href = `${API_BASE_URL}/user/login.do`;
+			}
+			else {
+				alert("로그아웃 실패");
+			}
+		})
+		.catch(error => console.log(error));
+	});
+});

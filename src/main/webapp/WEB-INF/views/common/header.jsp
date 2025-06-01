@@ -15,22 +15,20 @@
 			<!-- 유틸 메뉴 -->
 			<div class="util_menu">
 				<!-- 비로그인 상태 -->
-				<c:if test="${ true }">
-					<a href="/user/login.do">로그인</a>
-					<div class="divider"></div>
-					<a href="/user/join.do">회원가입</a>
-				</c:if>
+				<a href="/user/login.do">로그인</a>
+				<div class="divider"></div>
+				<a href="/user/join.do">회원가입</a>
 				<!-- 로그인 상태 -->
-				<c:if test="${ true }">
-					<a class="account" href="/mypage.do">
-						<img src="/images/common/account.png">
-						정하림님
-					</a>
-					<div class="divider"></div>
-					<a href="/fridge/viewMemo.do">장보기메모</a>
-					<div class="divider"></div>
-					<a href="/recipe/writeRecipe.do">레시피 작성</a>
-				</c:if>
+				<a class="account" href="/mypage.do">
+					<img src="/images/common/account.png">
+					<span class="user_name"></span>
+				</a>
+				<div class="divider"></div>
+				<a href="/fridge/viewMemo.do">장보기메모</a>
+				<div class="divider"></div>
+				<a href="/recipe/writeRecipe.do">레시피 작성</a>
+				<div class="divider"></div>
+				<a href="" id="logout">로그아웃</a>
 			</div>
 		</div>
 	</div>

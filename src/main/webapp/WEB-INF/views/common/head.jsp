@@ -24,3 +24,4 @@
 <script src="/js/common/pagination.js"></script>
 <script src="/js/common/comment.js"></script>
 <script src="/js/common/review.js"></script>
+<script src="/js/common/jwt.js"></script>

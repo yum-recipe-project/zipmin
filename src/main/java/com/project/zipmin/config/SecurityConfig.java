@@ -128,6 +128,7 @@ public class SecurityConfig {
 		http.authorizeHttpRequests((auth) -> auth
 				.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
 				.requestMatchers("/").permitAll()
+				.requestMatchers("/", "/login", "/oauth2-jwt-header", "/reissue").permitAll()
 				.requestMatchers("/user/**").permitAll()
 				.requestMatchers("/users/**").permitAll()
 				.requestMatchers("/recipe/**").permitAll()

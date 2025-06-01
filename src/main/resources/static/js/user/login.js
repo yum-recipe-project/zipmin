@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 /**
- * 로그인을 하는 함수
+ * 일반 로그인을 하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
 	const form = document.querySelector("form");
@@ -72,8 +72,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			.then(result => {
 				console.log("결과 : ",result);
 				if (result.code === "SUCCESS") {
-					// 저장도 해야함 그리고 인증 토큰 어떻게 저장되는지도 확인 필요
-					alert("로그인 성공");
 					window.location.href = "/";
 				}
 				else if (result.code === "ACCESS_DENIED_EXCEPTION") {
@@ -87,6 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	})
 });
+
 
 
 

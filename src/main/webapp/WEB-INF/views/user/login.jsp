@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%-- <%@ taglib uri="http://www.springframework.org/security/tags" prefix="s" %> --%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -59,9 +58,16 @@
 							집밥의민족 신규가입하고<br/><span>다양한 레시피</span> 만나보세요!
 						</div>
 						<div class="image">
-							<img src="/images/user/naver.png">
-							<img src="/images/user/kakao.png">
+							<!-- 사진 변경 필요!!!!!!! css 변경 필요!!!! -->
+							<a href="/oauth2/authorization/google">
+							  <img src="/images/user/kakao.png" alt="구글 로그인">
+							</a>
+							<a href="/oauth2/authorization/naver">
+							  <img src="/images/user/naver.png" alt="네이버 로그인">
+							</a>
 						</div>
+						
+						
 					</div>
 					
 					<!-- 출처 -->

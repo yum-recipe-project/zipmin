@@ -136,8 +136,10 @@ public class SecurityConfig {
 				.requestMatchers("/users/**").permitAll()
 				.requestMatchers("/recipe/**").permitAll()
 				.requestMatchers("/kitchen/**").permitAll()
-				.requestMatchers("/chomp/**").permitAll()
-				.requestMatchers("/chompessor/**").hasRole("USER")
+				
+				.requestMatchers("/chompessor/**").permitAll()
+				.requestMatchers("/chomp/**").hasRole("USER")
+				
 				.requestMatchers("/cooking/**").permitAll()
 				.requestMatchers("/fridge/**").permitAll()
 				.requestMatchers("/mypage/**").permitAll()

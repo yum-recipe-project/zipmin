@@ -20,7 +20,10 @@ const size = 10;
 document.addEventListener('DOMContentLoaded', function () {
 	// 데이터 불러오기
 	fetch('http://localhost:8586/chomp', {
-		method: "GET"
+		method: "GET",
+		headers: {
+			"Authorization": "Bearer " + localStorage.getItem("accessToken")
+		}
 	})
 		.then(response => response.json())
 		.then(dataList => {

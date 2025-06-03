@@ -47,11 +47,11 @@ public class UserServiceImpl implements UserService {
 		
 		User user = userMapper.toEntity(userJoinDto);
 		user.setPassword(passwordEncoder.encode(userJoinDto.getPassword()));
-		user.setRole(Role.USER);
+		user.setRole(Role.ROLE_USER);
 		
 		Boolean exists = userRepository.existsByUsername(userJoinDto.getUsername());
 		if (exists) {
-			throw new ApiException("USERNAME_DUPLICATED", "이미 사용 중인 아이디입니다.");
+			throw new ApiException("USERNAME_DUPLICATED", "중복된 아이디입니다.");
 		}
 		
 		return userRepository.save(user);

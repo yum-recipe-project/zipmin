@@ -41,6 +41,8 @@ public class JwtFilter extends OncePerRequestFilter {
 		// Authorization 헤더에서 토큰 추출
 		String authrization = request.getHeader("Authorization");
 		
+		System.err.println("JWTFilter) Autorization : " + authrization);		
+		
 		// 헤더가 없거나 Bearer 토큰이 아닌 경우 다음 필터로 이동
 		if (authrization == null || !authrization.startsWith("Bearer ")) {
 			filterChain.doFilter(request, response);
@@ -74,8 +76,6 @@ public class JwtFilter extends OncePerRequestFilter {
 		String username = jwtUtil.getUsername(accessToken);
 		String nickname = jwtUtil.getNickname(accessToken);
 		String role = jwtUtil.getRole(accessToken);
-		
-		System.err.println("JWTFiler) role = " + role);
 		
 		// 사용자 객체 생성 및 인증 설정
 		User user = User.createUser(username, nickname, Role.valueOf(role));

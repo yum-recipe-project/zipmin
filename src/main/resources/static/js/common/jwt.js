@@ -11,6 +11,33 @@ function parseJwt(token) {
 }
 
 
+
+/**
+ * 로그인 여부를 확인하는 함수
+ */
+function isLoggedIn() {
+	return !!localStorage.getItem("accessToken");
+}
+
+
+
+/**
+ * 토큰 만료 여부를 확인하는 함수
+ */
+function isTokenExpired(token) {
+	const payload = parseJwt(token);
+	const now = Math.floor(Date.now() / 1000);
+	return payload.exp < now;
+}
+
+
+
+
+
+
+
+
+
 /**
  * 수정 필요 !!!!!!!!!!!!!!!!!!!
  */

@@ -25,51 +25,52 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /**
- * 로그인 시 헤더에 정보 표시 (수정 필요 *************8)
+ * 헤더에 로그인한 사용자의 정보를 표시하는 함수
  */
-/*
 document.addEventListener('DOMContentLoaded', function() {
 	const token = localStorage.getItem("accessToken");
 	
-	if (token) {
-		try {
-			const payload = parseJwt(token);
-			const now = Math.floor(Date.now() / 1000);
-			
-			if (payload.exp > now) {
-				document.querySelector(".logout_state").style.display = "none";
-				document.querySelector(".login_state").style.display = "flex";
-				document.querySelector(".user_name").innerText = payload.nickname;
-			}
-			else {
-				// 만료된 경우 access 재발급 시도
-				fetch(`${API_BASE_URL}/reissue`, {
-					method: "POST",
-					credentials: "include"
-				})
-				.then(response => response.json())
-				.then(result => {
-					if (result.code === "SUCCESS") {
-						payload = parseJwt(result.data.accessToken);
-						localStorage.setItem("accessToken", result.data.accessToken);
-						document.querySelector(".logout_state").style.display = "none";
-						document.querySelector(".login_state").style.display = "flex";
-						document.querySelector(".user_name").innerText = payload.nickname;
-					}
-					else {
-						localStorage.removeItem("accessToken");
-						location.href = "/login";
-					}
-				})
-				.catch(error => console.log(error));
-			}
-		}
-		catch(e) {
-			localStorage.removeItem("accessToken");
-		}
+	// 비로그인 상태
+	if (!token) {
+		document.querySelector(".logout_state").style.display = "flex";
+		document.querySelector(".login_state").style.display = "none";
+		return;
 	}
-})
-*/
+	
+	if (token) {
+		
+		// 토큰 만료로 재발급 시도
+		if (isTokenExpired(token)) {
+			fetch(`${API_BASE_URL}/reissue`, {
+				method: "POST",
+				credentials: "include"
+			})
+			.then(response => response.json())
+			.then(result => {
+				if (result.code === "SUCCESS") {
+					localStorage.setItem("accessToken", result.data.accessToken);
+					const payload = parseJwt(token);
+					document.querySelector(".logout_state").style.display = "none";
+					document.querySelector(".login_state").style.display = "flex";
+					document.querySelector(".user_name").innerText = payload.nickname;
+				}
+				else {
+					// 비회원으로 간주
+					localStorage.removeItem("accessToken");
+					return;
+				}
+			})
+			.catch(error => console.log(error));
+			return;
+		}
+		
+		// 유효한 토큰이면 사용자 정보 표시
+		const payload = parseJwt(token);
+		document.querySelector(".logout_state").style.display = "none";
+		document.querySelector(".login_state").style.display = "flex";
+		document.querySelector(".user_name").innerText = payload.nickname;
+	}
+});
 
 
 
@@ -87,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		.then((data) => {
 			if (data.code === "SUCCESS") {
 				localStorage.removeItem("accessToken");
-				window.location.href = `${API_BASE_URL}/user/login.do`;
+				window.location.href = "/";
 			}
 			else {
 				alert("로그아웃 실패");

@@ -15,20 +15,24 @@
 			<!-- 유틸 메뉴 -->
 			<div class="util_menu">
 				<!-- 비로그인 상태 -->
-				<a href="/user/login.do">로그인</a>
-				<div class="divider"></div>
-				<a href="/user/join.do">회원가입</a>
+				<div class="logout_state">
+					<a href="/user/login.do">로그인</a>
+					<div class="divider"></div>
+					<a href="/user/join.do">회원가입</a>
+				</div>
 				<!-- 로그인 상태 -->
-				<a class="account" href="/mypage.do">
-					<img src="/images/common/account.png">
-					<span class="user_name"></span>
-				</a>
-				<div class="divider"></div>
-				<a href="/fridge/viewMemo.do">장보기메모</a>
-				<div class="divider"></div>
-				<a href="/recipe/writeRecipe.do">레시피 작성</a>
-				<div class="divider"></div>
-				<a href="" id="logout">로그아웃</a>
+				<div class="login_state">
+					<a class="account" href="/mypage.do">
+						<img src="/images/common/account.png">
+						<span class="user_name"></span>
+					</a>
+					<div class="divider"></div>
+					<a href="/fridge/viewMemo.do">장보기메모</a>
+					<div class="divider"></div>
+					<a href="/recipe/writeRecipe.do">레시피 작성</a>
+					<div class="divider"></div>
+					<a href="" id="logout">로그아웃</a>
+				</div>
 			</div>
 		</div>
 	</div>

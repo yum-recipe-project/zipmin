@@ -105,7 +105,7 @@ public class SecurityConfig {
 		// JWT Filter (JWT인증을 사용할 수 있도록 addfilterBefore를 통해 JWTFilter를 UsernamePasswordAuthenticationFilter 전에 실행하도록 위치 지정)
 		http.addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 		
-		http.addFilterBefore(new CustomLogoutFilter(jwtUtil, reissueService, userRepository), LogoutFilter.class);
+		http.addFilterBefore(new CustomLogoutFilter(jwtUtil, reissueService, userRepository, objectMapper), LogoutFilter.class);
 		
 		http.exceptionHandling((exception) -> 
 		exception

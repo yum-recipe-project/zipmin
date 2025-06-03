@@ -4,7 +4,9 @@ import java.io.IOException;
 
 import org.springframework.web.filter.GenericFilterBean;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.controller.ReissueController;
 import com.project.zipmin.dto.UserResponseDto;
 import com.project.zipmin.repository.UserRepository;
@@ -28,6 +30,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
 	private final JwtUtil jwtUtil;
 	private final ReissueService reissueService;
 	private final UserRepository userRepository;
+	private final ObjectMapper objectMapper;
 	
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -80,10 +83,11 @@ public class CustomLogoutFilter extends GenericFilterBean {
 		reissueService.addRefresh(username, null, 0L);
 		Cookie cookie = CookieUtil.deleteCookie("refresh");
 		
-		System.err.println("CustomLogoutFilter 실행");
-		
 		response.addCookie(cookie);
 		response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("utf-8");
+        response.getWriter().write(objectMapper.writeValueAsString(ApiResponse.success("로그아웃에 성공했습니다.")));
 	}
 	
 }

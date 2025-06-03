@@ -70,9 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			})
 			.then((response) => response.json())
 			.then(result => {
-				console.log("결과 : ",result);
 				if (result.code === "SUCCESS") {
-					alert(result.data.accessToken);
 					localStorage.setItem("accessToken", result.data.accessToken);
 					window.location.href = "/";
 				}

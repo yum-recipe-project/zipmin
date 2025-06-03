@@ -83,9 +83,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			method: "POST",
 			credentials: "include"
 		})
-		.then((response) => {
-			alert(response);
-			if (response.ok) {
+		.then(response => response.json())
+		.then((data) => {
+			if (data.code === "SUCCESS") {
 				localStorage.removeItem("accessToken");
 				window.location.href = `${API_BASE_URL}/user/login.do`;
 			}

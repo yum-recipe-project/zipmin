@@ -80,6 +80,8 @@ public class CustomLogoutFilter extends GenericFilterBean {
 		reissueService.addRefresh(username, null, 0L);
 		Cookie cookie = CookieUtil.deleteCookie("refresh");
 		
+		System.err.println("CustomLogoutFilter 실행");
+		
 		response.addCookie(cookie);
 		response.setStatus(HttpServletResponse.SC_OK);
 	}

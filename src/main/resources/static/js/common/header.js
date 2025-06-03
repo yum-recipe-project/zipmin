@@ -77,7 +77,8 @@ document.addEventListener('DOMContentLoaded', function() {
  * 로그아웃
  */
 document.addEventListener('DOMContentLoaded', function() {
-	document.getElementById("logout").addEventListener("click", function() {
+	document.getElementById("logout").addEventListener("click", function(event) {
+		event.preventDefault();
 		fetch(`${API_BASE_URL}/logout`, {
 			method: "POST",
 			credentials: "include"
@@ -85,10 +86,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		.then((response) => {
 			alert(response);
 			if (response.ok) {
-				alert("실행됨");
-				// localStorage.removeItem("accessToken");
-				alert("이동");
-				// window.location.href = `${API_BASE_URL}/user/login.do`;
+				localStorage.removeItem("accessToken");
+				window.location.href = `${API_BASE_URL}/user/login.do`;
 			}
 			else {
 				alert("로그아웃 실패");

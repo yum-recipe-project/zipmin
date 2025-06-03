@@ -119,7 +119,7 @@ public class SecurityConfig {
 		);
 		
 		// 기본 로그인 필터인 UsernamePasswordAuthenticationFilter 자리에 커스텀 로그인 필터를 대체하거나 삽입
-		http.addFilterAt(new CustomLoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, objectMapper), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterAt(new CustomLoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, objectMapper, reissueService), UsernamePasswordAuthenticationFilter.class);
 		
 		// oauth2
 		http.oauth2Login(oauth2 -> oauth2

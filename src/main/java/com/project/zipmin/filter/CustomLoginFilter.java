@@ -41,7 +41,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 	private final AuthenticationManager authenticationManager;
 	private final JwtUtil jwtUtil;
 	private final ObjectMapper objectMapper;
-	// private final ReissueService reissureService;
+	private final ReissueService reissueService;
 	
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
@@ -77,7 +77,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		String refresh = jwtUtil.createJwt("refresh", username, nickname, role, 86400_000L);
 		
 		// refresh 토큰 저장 (DB or Redis)
-		// reissureService.addRefresh(username, refresh, 86400_000L);
+		reissueService.addRefresh(username, refresh, 86400_000L);
 		
 		TokenDto tokenDto = TokenDto.toDto(access);
 		response.addCookie(CookieUtil.createCookie("refresh", refresh, 86_400));

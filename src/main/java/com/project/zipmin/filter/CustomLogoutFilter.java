@@ -78,9 +78,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
 		}
 		
 		reissueService.addRefresh(username, null, 0L);
-		
-		Cookie cookie = CookieUtil.createCookie("refresh", null, 0);
-		
+		Cookie cookie = CookieUtil.deleteCookie("refresh");
 		
 		response.addCookie(cookie);
 		response.setStatus(HttpServletResponse.SC_OK);

@@ -94,6 +94,98 @@ document.addEventListener('DOMContentLoaded', function() {
 /**
  * 
  */
+document.addEventListener('DOMContentLoaded', function() {
+	
+	// 기본 정보 수정
+	document.getElementById('edit-basic-info-btn').addEventListener('click', function(event) {
+		event.preventDefault();
+		
+		const icon = document.querySelector('#edit-basic-info-btn img');
+		const label = document.querySelector('#edit-basic-info-btn a');
+		const isEdit = label.innerText === '취소';
+		
+		label.innerText = isEdit ? '수정' : '취소';
+		icon.src = isEdit ? '/images/user/modify_member.png' : '/images/user/cancel_modify.png';
+
+		document.querySelector('input[name="name"]').style.display = isEdit ? 'none' : 'block';
+		document.querySelector('input[name="nickname"]').style.display = isEdit ? 'none' : 'block';
+		document.querySelector('input[name="tel"]').style.display = isEdit ? 'none' : 'block';
+		document.querySelector('.name_field .name').style.display = isEdit ? 'block' : 'none';
+		document.querySelector('.nickname_field .nickname').style.display = isEdit ? 'block' : 'none';
+		document.querySelector('.tel_field .tel').style.display = isEdit ? 'block' : 'none';
+	});
+	
+	// 이메일 정보 수정
+	document.getElementById('edit-email-info-btn').addEventListener('click', function(event) {
+		event.preventDefault();
+		
+		const icon = document.querySelector('#edit-email-info-btn img');
+		const label = document.querySelector('#edit-email-info-btn a');
+		const isEdit = label.innerText === '취소';
+		
+		label.innerText = isEdit ? '수정' : '취소';
+		icon.src = isEdit ? '/images/user/modify_member.png' : '/images/user/cancel_modify.png';
+
+		document.querySelector('input[name="email"]').style.display = isEdit ? 'none' : 'block';
+		document.querySelector('.email_field .email').style.display = isEdit ? 'block' : 'none';
+	});
+});
+
+
+
+/**
+ * 정보 수정 폼을 실시간으로 검증하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const basicInfoForm = document.getElementById('basic-info-form');
+	const emailInfoForm = document.getElementById('email-info-form');
+	
+	
+	// 이름 실시간 검사
+	basicInfoForm.name.addEventListener('input', function() {
+		const isNameEmpty = this.value.trim() === "";
+		this.classList.toggle('danger', isNameEmpty);
+		document.querySelector('.name_field .name_hint').style.display = isNameEmpty ? 'block' : 'none';
+	});
+	
+	// 닉네임 실시간 검사
+	basicInfoForm.nickname.addEventListener('input', function() {
+		const isNicknameEmpty = this.value.trim() === "";
+		this.classList.toggle('danger', isNicknameEmpty);
+		document.querySelector('.nickname_field .nickname_hint').style.display = isNicknameEmpty ? 'block' : 'none';
+	});
+	
+	// 휴대폰 번호 실시간 검사
+	basicInfoForm.tel.addEventListener('input', function() {
+		let tel = this.value.replace(/[^0-9]/g, "");
+		if (tel.length <= 3) {
+			this.value = tel;
+		}
+		else if (tel.length <= 7) {
+			this.value = tel.slice(0, 3) + "-" + tel.slice(3);
+		}
+		else {
+			this.value = tel.slice(0, 3) + "-" + tel.slice(3, 7) + "-" + tel.slice(7, 11);
+		}
+		const isTelEmpty = this.value.trim() === "";
+		this.classList.toggle('danger', isTelEmpty);
+		document.querySelector('.tel_field .tel_hint').style.display = isTelEmpty ? 'block' : 'none';
+	});
+	
+	// 이메일 실시간 검사
+	emailInfoForm.email.addEventListener('input', function() {
+		const isEmailEmpty = this.value.trim() === "";
+		this.classList.toggle('danger', isEmailEmpty);
+		document.querySelector('.email_field .email_hint').style.display = isEmailEmpty ? 'block' : 'none';
+	});
+});
+
+
+
+
+/**
+ * 
+ */
 /*
 document.addEventListener("DOMContentLoaded", function () {
 	
@@ -148,15 +240,6 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 });
 */
-
-
-
-/**
- * 폼값을 실시간으로 검증하는 함수
- */
-document.addEventListener('DOMContentLoaded', function() {
-	
-});
 
 
 

@@ -32,15 +32,15 @@
 						<div class="info_title">
 							<h3>기본정보</h3>
 							<div class="edit_btn_wrap" id="edit-basic-info-btn">
-								<img id="edit-basic-info-icon" class="edit_btn" src="/images/user/edit_user.png">
-								<a href="#" id="basicState">수정</a>
+								<img class="edit_btn" src="/images/user/edit_user.png">
+								<a href="#">수정</a>
 							</div>
 						</div>
 						
 						<form id="basic-info-form">
 							<div class="name_field">
 								<label>이름</label>
-								<p class="name"></p>
+								<p class="name">하하</p>
 								<input type="text" name="name" value="" placeholder="이름 입력">
 								<p class="name_hint">이름을 입력해주세요</p>
 							</div>
@@ -68,8 +68,8 @@
 							<div class="info_title">
 								<h3>이메일</h3>
 								<div class="edit_btn_wrap" id="edit-email-info-btn">
-									<img id="edit-email-info-icon" class="edit_btn" src="/images/user/edit_user.png">
-									<a href="#" id="emailState">수정</a>
+									<img class="edit_btn" src="/images/user/edit_user.png">
+									<a href="#">수정</a>
 								</div>
 							</div>
 														

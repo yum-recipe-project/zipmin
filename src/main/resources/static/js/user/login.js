@@ -36,10 +36,26 @@ document.addEventListener("DOMContentLoaded", function () {
  */
 document.addEventListener('DOMContentLoaded', function() {
 	const form = document.querySelector("form");
+	
+	// 저장한 아이디 표시
+	const savedUsername = localStorage.getItem('savedUsername');
+	if (savedUsername) {
+		const parsed = JSON.parse(savedUsername);
+		const now = Date.now();
+		
+		if (now < parsed.exp) {
+			form.username.value = parsed.username;
+			document.getElementById('save-id').checked = true;
+		}
+		else {
+			localStorage.removeItem('savedUsername');
+		}
+	}
+	
+	// 로그인 폼 이벤트 발생
 	form.addEventListener("submit", function(event) {
 		event.preventDefault();
 		let isValid = true;
-		
 		// 폼 제출 시 최종 검사
 		if (form.password.value.trim() === "") {
 			form.password.classList.add("danger");
@@ -55,13 +71,14 @@ document.addEventListener('DOMContentLoaded', function() {
 			isValid = false;
 		}
 		
+		// 로그인
 		if (isValid) {
 			const data = {
 				username : form.username.value.trim(),
 				password : form.password.value.trim()
 			};
 			
-			fetch(`${API_BASE_URL}/login`, {
+			fetch("/login", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
@@ -72,6 +89,16 @@ document.addEventListener('DOMContentLoaded', function() {
 			.then(result => {
 				if (result.code === "SUCCESS") {
 					localStorage.setItem("accessToken", result.data.accessToken);
+					// 아이디 저장
+					if (document.getElementById('save-id').checked) {
+						localStorage.setItem('savedUsername', JSON.stringify({
+							username: form.username.value.trim(),
+							exp: Date.now() + 24 * 60 * 60 * 1000
+						}));
+					}
+					else {
+						localStorage.removeItem('savedUsername');
+					}
 					window.location.href = "/";
 				}
 				else if (result.code === "ACCESS_DENIED_EXCEPTION") {

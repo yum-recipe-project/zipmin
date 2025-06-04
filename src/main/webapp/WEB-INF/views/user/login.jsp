@@ -28,8 +28,8 @@
 							<p>아이디를 입력해주세요.</p>
 						</div>
 						<div class="password_field">
-							<input type="password" id="passwordInput" name="password" value="" placeholder="비밀번호">
-							<p id="passwordHint">비밀번호를 입력해주세요.</p>
+							<input type="password" name="password" value="" placeholder="비밀번호">
+							<p>비밀번호를 입력해주세요.</p>
 						</div>
 						<h6 class="alert">
 							<img src="/images/user/alert.png">
@@ -39,8 +39,8 @@
 							<!-- 아이디 저장 -->
 							<div class="save_id">
 								<div class="checkbox_wrap">
-									<input type="checkbox" id="saveId" name="" value="">
-									<label for="saveId">아이디 저장</label>
+									<input type="checkbox" id="save-id" value="">
+									<label for="save-id">아이디 저장</label>
 								</div>
 							</div>
 							<!-- 비밀번호 찾기 및 회원가입 -->

@@ -55,9 +55,13 @@ public class UserController {
 	
 	// 특정 사용자 조회
 	@GetMapping("/users/{userId}")
-	public UserDto viewMember(@PathVariable("userId") String id) {
-		// 프로필 넣말
-		return null;
+	public ResponseEntity<?> viewMember(@PathVariable("userId") int id) {
+		UserResponseDto userResponseDto = userService.getUserById(id);
+		
+		System.err.println("UserController) UserResponseDto : " + userResponseDto);
+		
+		return ResponseEntity.status(UserSuccessCode.USER_PROFILE_FETCH_SUCCESS.getStatus())
+					.body(ApiResponse.success(UserSuccessCode.USER_PROFILE_FETCH_SUCCESS, userResponseDto));
 	}
 	
 	
@@ -65,12 +69,12 @@ public class UserController {
 	// 사용자 생성 (회원가입)
 	@PostMapping("/users")
 	public ResponseEntity<?> addUser(@RequestBody UserJoinDto userJoinDto) {
-		System.err.println("UserController) userJoinDto : " + userJoinDto);
-		
+
+		// 변경하는 거 서비스로 이동
 		User user = userService.joinUser(userJoinDto);
 		UserResponseDto responseDto = userMapper.toResponseDto(user);
 
-		return ResponseEntity.status(HttpStatus.OK)
+		return ResponseEntity.status(UserSuccessCode.USER_SIGNUP_SUCCESS.getStatus())
 					.body(ApiResponse.success(UserSuccessCode.USER_SIGNUP_SUCCESS, responseDto));
 	}
 	

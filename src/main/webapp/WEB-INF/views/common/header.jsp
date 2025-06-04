@@ -49,7 +49,7 @@
 				<ul>
 					<li><a href="/recipe/listRecipe.do">레시피</a></li>
 					<li><a href="/kitchen/listGuide.do">키친가이드</a></li>
-					<li><a id="chompessor" href="/chompessor/listChomp.do">쩝쩝박사</a></li>
+					<li><a href="/chompessor/listChomp.do">쩝쩝박사</a></li>
 					<li><a href="/cooking/listClass.do">쿠킹클래스</a></li>
 					<li><a href="/fridge/viewFridge.do">나의 냉장고</a></li>
 				</ul>

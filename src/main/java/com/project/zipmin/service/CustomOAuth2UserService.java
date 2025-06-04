@@ -49,10 +49,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		// 존재하지 않는다면 회원정보를 저장하고 CustomOAuth2User 반환
 		if (existData == null) {
 			User user = User.createUser(username, oAuth2Response.getName(), oAuth2Response.getName(), oAuth2Response.getEmail(), Role.ROLE_USER, oAuth2Response.getProvider(), oAuth2Response.getProviderId());
-						
-			userRepository.save(user);
+
+			user = userRepository.save(user);
 			
 			UserDto userDTO = new UserDto();
+			userDTO.setId(user.getId());
 			userDTO.setUsername(username);
 			userDTO.setName(oAuth2Response.getName());
 			userDTO.setNickname(oAuth2Response.getName());
@@ -66,6 +67,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			existData.updateUser(oAuth2Response.getEmail(), oAuth2Response.getName());
 			
 			UserDto userDto = new UserDto();
+			userDto.setId(existData.getId());
 			userDto.setUsername(username);
 			userDto.setName(existData.getName());
 			userDto.setNickname(existData.getNickname());

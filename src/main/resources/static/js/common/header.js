@@ -25,63 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /**
- * 메뉴를 이동하는 함수 (접근 권한 설정)
- */
-document.addEventListener('DOMContentLoaded', function() {
-	document.getElementById("chompessor").addEventListener("click", async (event) => {
-		event.preventDefault();
-		
-		if (!isLoggedIn()) {
-			alert("로그인 후 이용 가능합니다.");
-			window.location.href = "/user/login.do";
-			return;
-		}
-		
-		const token = localStorage.getItem("accessToken");
-		try {
-			const response = await fetch("/auth/check", {
-				method: "GET",
-				headers: {
-					"Authorization": "Bearer " + token
-				}
-			});
-			
-			const result = await response.json();
-			// 인증 성공
-			if (result.code === "AUTH_TOKEN_INVALID") {
-				window.location.href ="/chompessor/listChomp.do";
-			}
-			// 토큰 만료시 재발급 시도
-			else if (isTokenExpired(token)) {
-				const reissueResponse = await fetch("/reissue", {
-					method: "POST",
-					credentials: "include"
-				});
-				const result = await reissueResponse.json();
-				if (result.code === "AUTH_TOKEN_REISSUE_SUCCESS") {
-					localStorage.setItem("accessToken", result.data.accessToken);
-					window.location.href ="/chompessor/listChomp.do";
-				}
-				else {
-					
-				}
-			}
-			// 재로그인 필요
-			else {
-				localStorage.removeItem("accessToken");
-				alert("세션이 만료되었습니다. 다시 로그인 해주세요.");
-				window.location.href = "/user/login.do";
-			}
-		}
-		catch (error) {
-			console.log(error);
-		}
-	});
-});
-
-
-
-/**
  * 헤더에 로그인한 사용자의 정보를 표시하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {

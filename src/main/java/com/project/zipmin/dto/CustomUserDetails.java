@@ -28,6 +28,10 @@ public class CustomUserDetails implements UserDetails {
 		return collection;
 	}
 	
+	public int getId() {
+		return user.getId();
+	}
+	
 	@Override
 	public String getUsername() {
 		return user.getUsername();

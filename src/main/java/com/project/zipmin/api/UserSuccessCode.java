@@ -20,6 +20,7 @@ public enum UserSuccessCode implements Code {
 	USER_FIND_PASSWORD_SUCCESS(HttpStatus.OK, "임시 비밀번호를 발급하였습니다."),
 	
 	// 회원 정보
+	USER_PROFILE_FETCH_SUCCESS(HttpStatus.OK, "회원 정보를 조회했습니다."),
 	USER_PROFILE_UPDATE_SUCCESS(HttpStatus.OK, "회원 정보가 수정되었습니다."),
 	USER_DELETE_SUCCESS(HttpStatus.OK, "회원 탈퇴가 완료되었습니다.");
 	

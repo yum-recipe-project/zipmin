@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		document.getElementById("nickname").innerText = result.data.nickname;
 		document.getElementById("tel").innerText = result.data.tel;
 		document.getElementById("email").innerText = result.data.email;
-		// sessionStorage.removeItem("user");
+		sessionStorage.removeItem("user");
 	}
 	else {
 		alert("잘못된 접근입니다");

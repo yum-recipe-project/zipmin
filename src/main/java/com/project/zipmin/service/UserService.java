@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.project.zipmin.dto.FindUsernameRequestDto;
 import com.project.zipmin.dto.UserDto;
 import com.project.zipmin.dto.UserJoinDto;
+import com.project.zipmin.dto.UserResponseDto;
 import com.project.zipmin.entity.User;
 
 @Service
@@ -25,7 +26,7 @@ public interface UserService {
     // List<UserDTO> getFollowingList(String userId);
 
     // 아이디를 이용해 특정 회원 조회
-    // UserDTO getUserById(String userId);
+    UserResponseDto getUserById(int userId);
 
     // 회원가입 (새로운 회원 추가)
     public User joinUser(UserJoinDto userDTO);

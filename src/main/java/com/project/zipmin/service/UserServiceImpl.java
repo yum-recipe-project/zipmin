@@ -16,6 +16,7 @@ import com.project.zipmin.dto.CustomUserDetails;
 import com.project.zipmin.dto.FindUsernameRequestDto;
 import com.project.zipmin.dto.UserDto;
 import com.project.zipmin.dto.UserJoinDto;
+import com.project.zipmin.dto.UserResponseDto;
 import com.project.zipmin.entity.User;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.mapper.ChompMapper;
@@ -42,6 +43,18 @@ public class UserServiceImpl implements UserService {
 	
 	
 	
+	
+
+	@Override
+	public UserResponseDto getUserById(int userId) {
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+		
+		System.err.println("UserServiceImpl) user " + user);
+		UserResponseDto responseDto = userMapper.toResponseDto(user);
+		System.err.println("UserServiceImpl userResponseDto = " + responseDto);
+		return userMapper.toResponseDto(user);
+	}
 	
 	
 	
@@ -91,7 +104,13 @@ public class UserServiceImpl implements UserService {
 		
 		return user.getUsername();
 	}
-	
+
+
+
+
+
+
+
 	
 
 

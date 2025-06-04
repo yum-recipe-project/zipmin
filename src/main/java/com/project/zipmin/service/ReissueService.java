@@ -34,8 +34,12 @@ public class ReissueService {
 	 * - 새로운 access/refresh token 발급 및 쿠키에 저장
 	 */
 	public TokenDto reissue(HttpServletRequest request, HttpServletResponse response) {
+		
+		System.err.println("ReissueService) 0");
 		String refresh = null;
 		Cookie[] cookies = request.getCookies();
+		
+		System.err.println("ReissueService) 1");
 		
 		// 쿠키에서 refresh token 추출
 		for (Cookie cookie : cookies) {
@@ -44,9 +48,13 @@ public class ReissueService {
 			}
 		}
 		
+		System.err.println("ReissueService) 2");
+		
 		if (refresh == null) {
 			throw new ApiException(AuthErrorCode.AUTH_REFRESH_TOKEN_MISSING);
 		}
+		
+		System.err.println("ReissueService) 3");
 		
 		// 만료 여부 확인
 		try {
@@ -56,16 +64,23 @@ public class ReissueService {
 			throw new ApiException(AuthErrorCode.AUTH_REFRESH_TOKEN_EXPIRED);
 		}
 		
+		System.err.println("ReissueService) 4");
+		
 		// 토큰 타입 확인
 		String category = jwtUtil.getCategory(refresh);
 		if (!category.equals("refresh")) {
 			throw new ApiException(AuthErrorCode.AUTH_REFRESH_TOKEN_EXPIRED);
 		}
 		
+		System.err.println("ReissueService) 5");
+		
 		// 사용자 정보 추출
+		int id = jwtUtil.getId(refresh);
 		String username = jwtUtil.getUsername(refresh);
 		String nickname = jwtUtil.getNickname(refresh);
 		String role = jwtUtil.getRole(refresh);
+		
+		System.err.println("ReissueService) 6");
 		
 		// DB의 refresh token과 일치 여부 확인
 		String refreshToken = userRepository.findByUsername(username).getRefresh();
@@ -73,9 +88,13 @@ public class ReissueService {
 			throw new ApiException(AuthErrorCode.AUTH_TOKEN_INVALID);
 		}
 		
+		System.err.println("ReissueService) 7");
+		
 		// 새로운 토큰 생성
-		String newAccess = jwtUtil.createJwt("access", username, nickname, role, 600_000L);
-		String newRefresh = jwtUtil.createJwt("refresh", username,  nickname, role, 86400_000L);
+		String newAccess = jwtUtil.createJwt("access", id, username, nickname, role, 600_000L);
+		String newRefresh = jwtUtil.createJwt("refresh", id, username,  nickname, role, 86400_000L);
+		
+		System.err.println("ReissueService) 8");
 		
 		// DB에 새로운 refresh 저장
 		addRefresh(username, newRefresh, 84600_000L);

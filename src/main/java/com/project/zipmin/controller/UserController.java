@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,11 +19,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.dto.ClassDTO;
+import com.project.zipmin.dto.FindUsernameRequestDto;
 import com.project.zipmin.dto.FundDTO;
 import com.project.zipmin.dto.UserDto;
 import com.project.zipmin.dto.UserJoinDto;
@@ -90,7 +93,6 @@ public class UserController {
 	// 아이디 중복확인
 	@GetMapping("/users/check-username")
 	public ResponseEntity<?> checkUsername(@RequestParam String username) {
-		System.err.println("UserController) username = " + username);
         if (username == null || username.trim().isEmpty()) {
         	throw new ApiException("INVALID_PARAM", "아이디는 필수 입력값입니다.");
         }
@@ -98,11 +100,27 @@ public class UserController {
         boolean exists = userService.isUsernameDuplicated(username);
         if (exists) {
         	return ResponseEntity.status(HttpStatus.CONFLICT)
-        			.body(ApiResponse.of("USERNAME_DUPLICATED", "이미 사용 중인 아이디입니다.", Map.of("available", false)));
+        			.body(ApiResponse.error("USERNAME_DUPLICATED", "이미 사용 중인 아이디입니다."));
         }
         
         return ResponseEntity.status(HttpStatus.OK)
-        		.body(ApiResponse.success(Map.of("available", true)));
+        		.body(ApiResponse.success(null));
+	}
+	
+	
+	// 아이디 찾기
+	@PostMapping("/users/username")
+	public ResponseEntity<?> findUsername(@RequestBody FindUsernameRequestDto findUsernameRequestDto) {
+		
+		String username = userService.findUsername(findUsernameRequestDto);
+		
+		if (username == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(ApiResponse.error("NOT_FOUND_USERNAME", "아이디가 없습니다."));
+		}
+		
+		return ResponseEntity.status(HttpStatus.OK)
+					.body(ApiResponse.success(Map.of("username", username)));
 	}
 	
 	

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.dto.CustomUserDetails;
+import com.project.zipmin.dto.FindUsernameRequestDto;
 import com.project.zipmin.dto.UserDto;
 import com.project.zipmin.dto.UserJoinDto;
 import com.project.zipmin.entity.User;
@@ -66,6 +67,26 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean isUsernameDuplicated(String username) {
 		return userRepository.existsByUsername(username);
+	}
+
+
+
+
+
+
+
+	@Override
+	public String findUsername(FindUsernameRequestDto findUsernameRequestDto) {
+		
+		String name = findUsernameRequestDto.getName();
+		String tel = findUsernameRequestDto.getTel();
+		User user = userRepository.findByNameAndTel(name, tel);
+		
+		if (user == null) {
+			return null;
+		}
+		
+		return user.getUsername();
 	}
 	
 	

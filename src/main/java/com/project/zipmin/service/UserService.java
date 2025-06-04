@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.project.zipmin.dto.FindUsernameRequestDto;
 import com.project.zipmin.dto.UserDto;
 import com.project.zipmin.dto.UserJoinDto;
 import com.project.zipmin.entity.User;
@@ -40,4 +41,7 @@ public interface UserService {
 
     // 회원 탈퇴 (삭제)
     // boolean deleteUserById(String userId);
+    
+    // 아이디 찾기
+    public String findUsername(FindUsernameRequestDto findUsernameRequestDto);
 }

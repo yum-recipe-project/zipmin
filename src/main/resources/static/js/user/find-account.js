@@ -1,95 +1,64 @@
 /**
- * 폼 입력 검증 함수
+ * 폼 입력을 실시간으로 검증하는 함수
  */
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector("form");
-    const nameInput = document.getElementById("nameInput");
-    const nameHint = document.getElementById("nameHint");
-    const phoneInput = document.getElementById("phoneInput");
-    const phoneHint = document.getElementById("phoneHint");
-    const idInput = document.getElementById("idInput");
-    const idHint = document.getElementById("idHint");
-    const emailInput = document.getElementById("emailInput");
-    const emailHint = document.getElementById("emailHint");
 	
 	// 이름 실시간 검사
-	nameInput.addEventListener("input", function() {
-		if (nameInput.value.trim() === "") {
-			nameInput.classList.add("danger");
-			nameHint.style.display = "block";
-		}
-		else {
-			nameInput.classList.remove("danger");
-			nameHint.style.display = "none";
-		}
+	form.name.addEventListener('input', function() {
+		const isNameEmpty = this.value.trim() === "";
+		this.classList.toggle("danger", isNameEmpty);
+		document.querySelector(".name_field p").style.display = isNameEmpty ? "block" : "none";
 	});
 	
 	// 휴대폰 번호 실시간 검사
-	phoneInput.addEventListener("input", function() {
-		if (phoneInput.value.trim() === "") {
-			phoneInput.classList.add("danger");
-			phoneHint.style.display = "block";
+	form.tel.addEventListener('input', function() {
+		let tel = this.value.replace(/[^0-9]/g, "");
+		if (tel.length <= 3) {
+			this.value = tel;
+		}
+		else if (tel.length <= 7) {
+			this.value = tel.slice(0, 3) + "-" + tel.slice(3);
 		}
 		else {
-			phoneInput.classList.remove("danger");
-			phoneHint.style.display = "none";
+			this.value = tel.slice(0, 3) + "-" + tel.slice(3, 7) + "-" + tel.slice(7, 11);
 		}
+		const isTelEmpty = this.value.trim() === "";
+		this.classList.toggle("danger", isTelEmpty);
+		document.querySelector(".tel_field p").style.display = isTelEmpty ? "block" : "none";
+	});
+	
+	
+	// 휴대폰 번호 실시간 검사
+	form.tel.addEventListener("input", function() {
+		let tel = this.value.replace(/[^0-9]/g, "");
+		if (tel.length <= 3) {
+			this.value = tel;
+		}
+		else if (tel.length <= 7) {
+			this.value = tel.slice(0, 3) + "-" + tel.slice(3);
+		}
+		else {
+			this.value = tel.slice(0, 3) + "-" + tel.slice(3, 7) + "-" + tel.slice(7, 11);
+		}
+		const isTelEmpty = this.value.trim() === "";
+		this.classList.toggle("danger", isTelEmpty);
+		document.querySelector(".tel_field p").style.display = isTelEmpty ? "block" : "none";
 	});
 	
 	// 아이디 실시간 검사
-	idInput.addEventListener("input", function() {
-		if (idInput.value.trim() === "") {
-			idInput.classList.add("danger");
-			idHint.style.display = "block";
-		}
-		else {
-			idInput.classList.remove("danger");
-			idHint.style.display = "none";
-		}
+	form.username.addEventListener('input', function() {
+		const isUsernameEmpty = this.value.trim() === "";
+		this.classList.toggle("danger", isUsernameEmpty);
+		document.querySelector(".username_field p").style.display = isUsernameEmpty ? "block" : "none";
 	});
 	
 	// 이메일 실시간 검사
-	emailInput.addEventListener("input", function() {
-		if (emailInput.value.trim() === "") {
-			emailInput.classList.add("danger");
-			emailHint.style.display = "block";
-		}
-		else {
-			emailInput.classList.remove("danger");
-			emailHint.style.display = "none";
-		}
+	form.email.addEventListener("input", function() {
+		const isEmailEmpty = this.value.trim() === "";
+		this.classList.toggle("danger", isEmailEmpty);
+		document.querySelector(".email_field p").style.display = isEmailEmpty ? "block" : "none";
 	});
-	
-    // 폼 제출 시 최종 검사
-    form.addEventListener("submit", function (event) {
-		if (phoneInput.value.trim() === "") {
-			event.preventDefault();
-			phoneInput.classList.add("danger");
-			phoneHint.style.display = "block";
-			phoneInput.focus();
-		}
-		
-		if (nameInput.value.trim() === "") {
-			event.preventDefault();
-			nameInput.classList.add("danger");
-			nameHint.style.display = "block";
-			nameInput.focus();
-		}
-		
-		if (idInput.value.trim() === "") {
-			event.preventDefault();
-			idInput.classList.add("danger");
-			idHint.style.display = "block";
-			idInput.focus();
-		}
-		
-		if (emailInput.value.trim() === "") {
-			event.preventDefault();
-			emailInput.classList.add("danger");
-			emailHint.style.display = "block";
-			emailInput.focus();
-		}
-    });
 });
 
 
@@ -97,44 +66,101 @@ document.addEventListener("DOMContentLoaded", function () {
 /**
  * 탭 메뉴 클릭 시 탭 메뉴를 활성화하고 해당하는 내용을 표시하는 함수
  */
-document.addEventListener('DOMContentLoaded', function() {
-    const tabItems = document.querySelectorAll('.tab_button button');
-    const contentItems = document.querySelectorAll('.tab_content');
+document.addEventListener('DOMContentLoaded', function() {	
+    const buttons = document.querySelectorAll('.tab_button button');
+	const findUsernameForm = document.getElementById('find-username-form');
+	const findPasswordForm = document.getElementById('find-password-form');
+	const forms = [findUsernameForm, findPasswordForm];
 
-    // URL에서 mode 파라미터 추출
-    const urlParams = new URLSearchParams(window.location.search);
-    const mode = urlParams.get('mode');
+    // URL 파라미터 확인
+    const mode = new URLSearchParams(window.location.search).get('mode');
 
     // 기본 활성화할 탭 인덱스 설정
-    let activeIndex = 0;
-    if (mode === 'password' && tabItems.length > 1) {
-        activeIndex = 1;
-    }
+	let activeIndex = (mode === 'password') ? 1 : 0;
+	
+	buttons.forEach((button, index) => {
+		button.addEventListener('click', function(event) {
+			event.preventDefault();
+			
+			buttons.forEach(btn => btn.classList.remove('active'));
+			this.classList.add('active');
+			
+			forms.forEach(form => form.style.display = 'none');
+			forms[index].style.display = 'block';
+		});
+	});
 
-    // 탭 클릭 이벤트 설정
-    tabItems.forEach((item, index) => {
-        item.addEventListener("click", function(event) {
-            event.preventDefault();
-            
-            tabItems.forEach(button => button.classList.remove('active'));
-            this.classList.add('active');
-            
-            contentItems.forEach(content => content.style.display = 'none');
-            contentItems[index].style.display = 'block';
-        });
-    });
+    // 초기 탭 활성화
+    buttons.forEach(button => button.classList.remove('active'));
+    forms.forEach(content => content.style.display = 'none');
 
-    // 선택된 탭 활성화
-    tabItems.forEach(button => button.classList.remove('active'));
-    contentItems.forEach(content => content.style.display = 'none');
-
-    tabItems[activeIndex].classList.add('active');
-    contentItems[activeIndex].style.display = 'block';
+    buttons[activeIndex].classList.add('active');
+    forms[activeIndex].style.display = 'block';
 });
 
 
 
+/**
+ * 아이디를 찾는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const findUsernameForm = document.getElementById('find-username-form');
+	findUsernameForm.addEventListener('submit', function(event) {
+		event.preventDefault();
+		let isValid = true;
+		
+		// 폼 전송 시 폼값 검사
+		if (findUsernameForm.tel.value.trim() === '') {
+			findUsernameForm.tel.classList.add('danger');
+			document.querySelector('.tel_field p').style.display = 'block';
+			findUsernameForm.tel.focus();
+			isValid = false;
+		}
+		if (findUsernameForm.name.value.trim() === '') {
+			findUsernameForm.name.classList.add('danger');
+			document.querySelector('.name_field p').style.display = 'block';
+			findUsernameForm.name.focus();
+			isValid = false;
+		}
+		
+		// 아이디를 찾는 API 호출
+		if (isValid) {
+			const data = {
+				name: findUsernameForm.name.value.trim(),
+				tel: findUsernameForm.tel.value.trim()
+			}
+			fetch("/users/username", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(data)
+			})
+			.then(response => response.json())
+			.then(result => {
+				console.log(result);
+				if (result.code === 'SUCCESS') {
+					sessionStorage.setItem("username", result.data.username);
+					window.location.href = "/user/findAccount/idResult.do";
+				}
+				else if (result.code === 'NOT_FOUND_USERNAME') {
+					alert("이름과 전화번호를 정확히 입력해주세요.");
+					// 이후에 여러 동작들 만들기
+					findUsernameForm.name.value = '';
+					findUsernameForm.tel.value = '';
+					findUsernameForm.name.focus();
+				}
+			})
+			.catch(error => console.log(error));
+		}
+	});
+});
 
+
+
+/**
+ * 비밀번호를 찾는 함수
+ */
 
 
 

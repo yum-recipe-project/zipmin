@@ -16,9 +16,11 @@ document.addEventListener("DOMContentLoaded", function () {
 		let tel = this.value.replace(/[^0-9]/g, "");
 		if (tel.length <= 3) {
 			this.value = tel;
-		} else if (tel.length <= 7) {
+		}
+		else if (tel.length <= 7) {
 			this.value = tel.slice(0, 3) + "-" + tel.slice(3);
-		} else {
+		}
+		else {
 			this.value = tel.slice(0, 3) + "-" + tel.slice(3, 7) + "-" + tel.slice(7, 11);
 		}
 		const isTelEmpty = this.value.trim() === "";
@@ -245,7 +247,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			})
 			.then((response) => response.json())
 			.then(result => {
-				console.log("결과 : ", result);
 				sessionStorage.setItem("user", JSON.stringify(result));
 				window.location.href = "/user/join/complete.do";
 			})
@@ -298,7 +299,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			return;
 		}
 		
-		fetch(`${API_BASE_URL}/users/check-username?username=${username}`, {
+		fetch(`/users/check-username?username=${username}`, {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json"
@@ -306,7 +307,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		})
 		.then((response) => response.json())
 		.then(result => {
-			if (result.code === "SUCCESS" && result.data?.available === true) {
+			if (result.code === "SUCCESS") {
 				document.querySelector(".username_field p:nth-of-type(4)").style.display = "block";
 			}
 			else if (result.code === "USERNAME_DUPLICATED") {

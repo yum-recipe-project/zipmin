@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /**
- * 
+ * 회원 정보를 수정 및 취소 동작하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
 	
@@ -102,11 +102,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 		const icon = document.querySelector('#edit-basic-info-btn img');
 		const label = document.querySelector('#edit-basic-info-btn a');
+		const button = document.getElementById('submit-basic-info-btn');
 		const isEdit = label.innerText === '취소';
 		
 		label.innerText = isEdit ? '수정' : '취소';
 		icon.src = isEdit ? '/images/user/modify_member.png' : '/images/user/cancel_modify.png';
-
+		button.style.display = !isEdit ? 'block' : 'none';
+		
 		document.querySelector('input[name="name"]').style.display = isEdit ? 'none' : 'block';
 		document.querySelector('input[name="nickname"]').style.display = isEdit ? 'none' : 'block';
 		document.querySelector('input[name="tel"]').style.display = isEdit ? 'none' : 'block';
@@ -121,11 +123,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 		const icon = document.querySelector('#edit-email-info-btn img');
 		const label = document.querySelector('#edit-email-info-btn a');
+		const button = document.getElementById('submit-email-info-btn');
 		const isEdit = label.innerText === '취소';
 		
 		label.innerText = isEdit ? '수정' : '취소';
 		icon.src = isEdit ? '/images/user/modify_member.png' : '/images/user/cancel_modify.png';
-
+		button.style.display = !isEdit ? 'block' : 'none';
+		
 		document.querySelector('input[name="email"]').style.display = isEdit ? 'none' : 'block';
 		document.querySelector('.email_field .email').style.display = isEdit ? 'block' : 'none';
 	});
@@ -182,78 +186,113 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
-/**
- * 
- */
-/*
-document.addEventListener("DOMContentLoaded", function () {
-	
-	// 이메일 수정 
-    const emailModifyBtn = document.getElementById("emailModifyBtn");
-    const emailText = document.getElementById("emailText");
-    const modifyEmail = document.getElementById("modifyEmail");
-    const emailState = document.getElementById("emailState");
-    const emailIcon = document.getElementById("emailIcon");
-
-    if (emailModifyBtn && emailText && modifyEmail) {
-        emailModifyBtn.addEventListener("click", function (event) {
-            event.preventDefault(); 
-
-            // 이메일 수정 상태 전환
-            emailText.classList.toggle("hidden");
-            modifyEmail.classList.toggle("hidden");
-
-            if (emailText.classList.contains("hidden")) {
-                emailState.textContent = "취소";
-                emailIcon.src = "/images/user/cancel_modify.png";
-            } else {
-                emailState.textContent = "수정";
-                emailIcon.src = "/images/user/modify_member.png"; 
-            }
-        });
-    }
-	
-	// 기본정보 수정
-	const basicModifyBtn = document.getElementById("basicModifyBtn");
-	const basicState = document.getElementById("basicState");
-	const basicIcon = document.getElementById("basicIcon");
-	const basicInfo = document.getElementById("basicInfo");
-	const modifyBasicInfo = document.getElementById("modifyBasicInfo");
-
-	if (basicModifyBtn && basicState && basicIcon && basicInfo && modifyBasicInfo) {
-		basicModifyBtn.addEventListener("click", function (event) {
-			event.preventDefault(); // 기본 동작 방지
-
-			// 기본정보 상태 전환
-			basicInfo.classList.toggle("hidden");
-			modifyBasicInfo.classList.toggle("hidden");
-
-			if (basicInfo.classList.contains("hidden")) {
-				basicState.textContent = "취소";
-				basicIcon.src = "/images/user/cancel_modify.png"; // 취소 아이콘
-			} else {
-				basicState.textContent = "수정";
-				basicIcon.src = "/images/user/modify_member.png"; // 수정 아이콘
-			}
-		});
-	}
-});
-*/
-
-
-
 /**
  * 회원 정보를 수정하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
+	// 기본 정보를 수정
+	const basicInfoForm = document.getElementById('basic-info-form');
+	basicInfoForm.addEventListener('submit', function(event) {
+		event.preventDefault();
+		let isValid = true;
+		
+		if (basicInfoForm.tel.value.trim() === '') {
+			basicInfoForm.tel.classList.add('danger');
+			document.querySelector('.tel_field .tel_hint').style.display = 'block';
+			basicInfoForm.tel.focus();
+			isValid = false;
+		}
+		
+		if (basicInfoForm.nickname.value.trim() === '') {
+			basicInfoForm.nickname.classList.add('danger');
+			document.querySelector('.nickname_field .nickname_hint').style.display = 'block';
+			basicInfoForm.nickname.focus();
+			isValid = false;
+		}
+		
+		if (basicInfoForm.name.value.trim() === '') {
+			basicInfoForm.name.classList.add('danger');
+			document.querySelector('.name_field .name_hint').style.display = 'block';
+			basicInfoForm.name.focus();
+			isValid = false;
+		}
+		
+		if (isValid) {
+			const token = localStorage.getItem('accessToken');
+			const payload = parseJwt(token);
+				
+			const data = {
+				name: basicInfoForm.name.value.trim(),
+				nickname: basicInfoForm.nickname.value.trim(),
+				tel: basicInfoForm.tel.value.trim()
+			};
+			
+			fetch(`/users/${payload.id}`, {
+				method: 'PUT',
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(data)
+			})
+			.then(response => response.json())
+			.then(result => {
+				console.log(result);
+				if (result.code === 'USER_PROFILE_UPDATE_SUCCESS') {
+					location.reload();
+				}
+			})
+			.catch(error => console.log(error));
+		}
+		
+	});
 	
+	// 이메일 정보를 수정
+	const emailInfoForm = document.getElementById('email-info-form');
+	emailInfoForm.addEventListener('submit', function(event) {
+		event.preventDefault();
+		let isValid = true;
+
+		if (emailInfoForm.email.value.trim() === '') {
+			emailInfoForm.email.classList.add('danger');
+			document.querySelector('.email_field .email_hint').style.display = 'block';
+			emailInfoForm.email.focus();
+			isValid = false;
+		}
+
+		if (isValid) {
+			const token = localStorage.getItem('accessToken');
+			const payload = parseJwt(token);
+				
+			const data = {
+				email: emailInfoForm.email.value.trim()
+			};
+			
+			fetch(`/users/${payload.id}`, {
+				method: 'PUT',
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(data)
+			})
+			.then(response => response.json())
+			.then(result => {
+				console.log(result);
+				if (result.code === 'USER_PROFILE_UPDATE_SUCCESS') {
+					location.reload();
+				}
+			})
+			.catch(error => console.log(error));
+		}
+		
+	});
 });
 
 
 
 
-
+/**
+ * 회원을 탈퇴하는 함수
+ */
 
 
 

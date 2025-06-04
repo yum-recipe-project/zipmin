@@ -17,6 +17,7 @@ import com.project.zipmin.dto.FindUsernameRequestDto;
 import com.project.zipmin.dto.UserDto;
 import com.project.zipmin.dto.UserJoinDto;
 import com.project.zipmin.dto.UserResponseDto;
+import com.project.zipmin.dto.UserUpdateRequestDto;
 import com.project.zipmin.entity.User;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.mapper.ChompMapper;
@@ -49,10 +50,6 @@ public class UserServiceImpl implements UserService {
 	public UserResponseDto getUserById(int userId) {
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
-		
-		System.err.println("UserServiceImpl) user " + user);
-		UserResponseDto responseDto = userMapper.toResponseDto(user);
-		System.err.println("UserServiceImpl userResponseDto = " + responseDto);
 		return userMapper.toResponseDto(user);
 	}
 	
@@ -103,6 +100,34 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		return user.getUsername();
+	}
+
+
+
+
+
+
+	@Override
+	public UserResponseDto updateUser(int userId, UserUpdateRequestDto userDto) {
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+		System.err.println(userDto);
+		if (userDto.getEmail() != null) {
+			user.setEmail(userDto.getEmail());
+		}
+		if (userDto.getName() != null) {
+			user.setName(userDto.getName());
+		}
+		if (userDto.getNickname() != null) {
+			System.err.println("실행");
+			user.setNickname(userDto.getNickname());
+		}
+		if (userDto.getTel() != null) {
+			user.setTel(userDto.getTel());
+		}
+		user = userRepository.save(user);
+		
+		return userMapper.toResponseDto(user);
 	}
 
 

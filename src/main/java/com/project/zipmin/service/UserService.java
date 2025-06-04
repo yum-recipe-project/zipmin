@@ -10,6 +10,7 @@ import com.project.zipmin.dto.FindUsernameRequestDto;
 import com.project.zipmin.dto.UserDto;
 import com.project.zipmin.dto.UserJoinDto;
 import com.project.zipmin.dto.UserResponseDto;
+import com.project.zipmin.dto.UserUpdateRequestDto;
 import com.project.zipmin.entity.User;
 
 @Service
@@ -26,7 +27,7 @@ public interface UserService {
     // List<UserDTO> getFollowingList(String userId);
 
     // 아이디를 이용해 특정 회원 조회
-    UserResponseDto getUserById(int userId);
+    public UserResponseDto getUserById(int userId);
 
     // 회원가입 (새로운 회원 추가)
     public User joinUser(UserJoinDto userDTO);
@@ -35,7 +36,7 @@ public interface UserService {
     public boolean isUsernameDuplicated(String username);
 
     // 회원 정보 업데이트
-    // UserDTO updateUserAccount(UserDTO userDTO);
+    public UserResponseDto updateUser(int userId, UserUpdateRequestDto userUpdateRequestDto);
 
     // 비밀번호 변경
     // boolean changePassword(String userId, String newPassword);

@@ -56,7 +56,7 @@
 								<input type="text" name="tel" value="" placeholder="- 없이 휴대폰 번호 입력">
 								<p class="tel_hint">휴대폰 번호를 입력해주세요</p>
 							</div>
-							<div class="email_btn_wrap">
+							<div id="submit-basic-info-btn">
 								<button type="submit" class="btn_primary_wide">저장</button>
 							</div>
 						</form>
@@ -85,7 +85,7 @@
 									<img src="/images/user/error.png">
 									<p>이메일로 비밀번호 변경 링크 등이 발송됩니다. 개인정보 보호를 위해 정확한 메일 정보를 입력해주세요.</p>
 								</div>
-								<div class="email_btn_wrap">
+								<div id="submit-email-info-btn">
 									<button type="submit" class="btn_primary_wide">저장</button>
 								</div>
 							</form>

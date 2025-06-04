@@ -316,6 +316,14 @@
 }
 
 
+#submit-basic-info-btn {
+	display: none;
+}
+#submit-email-info-btn {
+	display: none;
+}
+
+
 
 
 /* 버튼 */

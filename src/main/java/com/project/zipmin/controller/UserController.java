@@ -24,6 +24,7 @@ import com.project.zipmin.dto.FundDTO;
 import com.project.zipmin.dto.UserDto;
 import com.project.zipmin.dto.UserJoinDto;
 import com.project.zipmin.dto.UserResponseDto;
+import com.project.zipmin.dto.UserUpdateRequestDto;
 import com.project.zipmin.entity.User;
 import com.project.zipmin.mapper.UserMapper;
 import com.project.zipmin.service.UserService;
@@ -58,8 +59,6 @@ public class UserController {
 	public ResponseEntity<?> viewMember(@PathVariable("userId") int id) {
 		UserResponseDto userResponseDto = userService.getUserById(id);
 		
-		System.err.println("UserController) UserResponseDto : " + userResponseDto);
-		
 		return ResponseEntity.status(UserSuccessCode.USER_PROFILE_FETCH_SUCCESS.getStatus())
 					.body(ApiResponse.success(UserSuccessCode.USER_PROFILE_FETCH_SUCCESS, userResponseDto));
 	}
@@ -69,6 +68,8 @@ public class UserController {
 	// 사용자 생성 (회원가입)
 	@PostMapping("/users")
 	public ResponseEntity<?> addUser(@RequestBody UserJoinDto userJoinDto) {
+		
+		// 이거 수정해야함!!!! user 반환받는게 아니라 dto 반환 받아야 함!!!
 
 		// 변경하는 거 서비스로 이동
 		User user = userService.joinUser(userJoinDto);
@@ -112,7 +113,7 @@ public class UserController {
 			throw new ApiException(UserErrorCode.USER_NOT_FOUND);
 		}
 		
-		return ResponseEntity.status(HttpStatus.OK)
+		return ResponseEntity.status(UserSuccessCode.USER_FIND_USERNAME_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_FIND_USERNAME_SUCCESS, Map.of("username", username)));
 	}
 	
@@ -120,8 +121,12 @@ public class UserController {
 	
 	// 사용자 정보 수정
 	@PutMapping("/users/{userId}")
-	public int editMember(@PathVariable("userId") String id) {
-		return 0;
+	public ResponseEntity<?>  editMember(@PathVariable("userId") int id, @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
+
+		UserResponseDto userResponseDto = userService.updateUser(id, userUpdateRequestDto);
+
+		return ResponseEntity.status(UserSuccessCode.USER_PROFILE_UPDATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_PROFILE_UPDATE_SUCCESS, userResponseDto));
 	}
 	
 	

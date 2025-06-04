@@ -1,15 +1,9 @@
 package com.project.zipmin.controller;
 
-import java.net.URI;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,13 +11,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
+import com.project.zipmin.api.UserErrorCode;
+import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.dto.ClassDTO;
 import com.project.zipmin.dto.FindUsernameRequestDto;
 import com.project.zipmin.dto.FundDTO;
@@ -33,16 +27,6 @@ import com.project.zipmin.dto.UserResponseDto;
 import com.project.zipmin.entity.User;
 import com.project.zipmin.mapper.UserMapper;
 import com.project.zipmin.service.UserService;
-import com.project.zipmin.util.JwtUtil;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -81,11 +65,13 @@ public class UserController {
 	// 사용자 생성 (회원가입)
 	@PostMapping("/users")
 	public ResponseEntity<?> addUser(@RequestBody UserJoinDto userJoinDto) {
+		System.err.println("UserController) userJoinDto : " + userJoinDto);
+		
 		User user = userService.joinUser(userJoinDto);
 		UserResponseDto responseDto = userMapper.toResponseDto(user);
-		
+
 		return ResponseEntity.status(HttpStatus.OK)
-				.body(ApiResponse.of("SIGN_UP_SUCCESS", "회원가입이 완료되었습니다.", responseDto));
+					.body(ApiResponse.success(UserSuccessCode.USER_SIGNUP_SUCCESS, responseDto));
 	}
 	
 	
@@ -93,19 +79,23 @@ public class UserController {
 	// 아이디 중복확인
 	@GetMapping("/users/check-username")
 	public ResponseEntity<?> checkUsername(@RequestParam String username) {
+		
+		// 입력값이 올바르지 않습니다.
         if (username == null || username.trim().isEmpty()) {
-        	throw new ApiException("INVALID_PARAM", "아이디는 필수 입력값입니다.");
+        	throw new ApiException(UserErrorCode.USER_INVALID_PARAM);
         }
 
+        // 이미 사용 중인 아이디입니다.
         boolean exists = userService.isUsernameDuplicated(username);
         if (exists) {
-        	return ResponseEntity.status(HttpStatus.CONFLICT)
-        			.body(ApiResponse.error("USERNAME_DUPLICATED", "이미 사용 중인 아이디입니다."));
+        	throw new ApiException(UserErrorCode.USER_USERNAME_DUPLICATED);
         }
-        
-        return ResponseEntity.status(HttpStatus.OK)
-        		.body(ApiResponse.success(null));
+
+        // 사용 가능한 아이디입니다.
+        return ResponseEntity.status(UserSuccessCode.USER_USERNAME_AVAILABLE.getStatus())
+        		.body(ApiResponse.success(UserSuccessCode.USER_USERNAME_AVAILABLE, null));
 	}
+	
 	
 	
 	// 아이디 찾기
@@ -115,12 +105,11 @@ public class UserController {
 		String username = userService.findUsername(findUsernameRequestDto);
 		
 		if (username == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body(ApiResponse.error("NOT_FOUND_USERNAME", "아이디가 없습니다."));
+			throw new ApiException(UserErrorCode.USER_NOT_FOUND);
 		}
 		
 		return ResponseEntity.status(HttpStatus.OK)
-					.body(ApiResponse.success(Map.of("username", username)));
+				.body(ApiResponse.success(UserSuccessCode.USER_FIND_USERNAME_SUCCESS, Map.of("username", username)));
 	}
 	
 	

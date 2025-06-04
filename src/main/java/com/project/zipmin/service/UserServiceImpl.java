@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.AuthErrorCode;
+import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.dto.CustomUserDetails;
 import com.project.zipmin.dto.FindUsernameRequestDto;
 import com.project.zipmin.dto.UserDto;
@@ -51,8 +53,9 @@ public class UserServiceImpl implements UserService {
 		user.setRole(Role.ROLE_USER);
 		
 		Boolean exists = userRepository.existsByUsername(userJoinDto.getUsername());
+		System.err.println(exists);
 		if (exists) {
-			throw new ApiException("USERNAME_DUPLICATED", "중복된 아이디입니다.");
+			throw new ApiException(UserErrorCode.USER_USERNAME_DUPLICATED);
 		}
 		
 		return userRepository.save(user);

@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			this.value = tel.slice(0, 3) + "-" + tel.slice(3, 7) + "-" + tel.slice(7, 11);
 		}
 		const isTelEmpty = this.value.trim() === "";
-		this.classList.toggle("danger", isTelEmpty);
+		this. classList.toggle("danger", isTelEmpty);
 		document.querySelector(".tel_field p").style.display = isTelEmpty ? "block" : "none";
 	});
 	
@@ -139,11 +139,11 @@ document.addEventListener('DOMContentLoaded', function() {
 			.then(response => response.json())
 			.then(result => {
 				console.log(result);
-				if (result.code === 'SUCCESS') {
+				if (result.code === 'USER_FIND_USERNAME_SUCCESS') {
 					sessionStorage.setItem("username", result.data.username);
 					window.location.href = "/user/findAccount/idResult.do";
 				}
-				else if (result.code === 'NOT_FOUND_USERNAME') {
+				else if (result.code === 'USER_NOT_FOUND') {
 					alert("이름과 전화번호를 정확히 입력해주세요.");
 					// 이후에 여러 동작들 만들기
 					findUsernameForm.name.value = '';

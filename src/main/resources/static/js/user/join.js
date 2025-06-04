@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				email: form.email.value.trim()
 			};
 			
-			fetch(`${API_BASE_URL}/users`, {
+			fetch("/users", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
@@ -247,8 +247,13 @@ document.addEventListener('DOMContentLoaded', function() {
 			})
 			.then((response) => response.json())
 			.then(result => {
-				sessionStorage.setItem("user", JSON.stringify(result));
-				window.location.href = "/user/join/complete.do";
+				if (result.code === 'USER_SIGNUP_SUCCESS') {
+					sessionStorage.setItem("user", JSON.stringify(result));
+					window.location.href = "/user/join/complete.do";
+				}
+				else {
+					alert("회원가입에 실패했습니다.");
+				}
 			})
 			.catch(error => console.log(error));
 		}
@@ -307,10 +312,16 @@ document.addEventListener('DOMContentLoaded', function() {
 		})
 		.then((response) => response.json())
 		.then(result => {
-			if (result.code === "SUCCESS") {
+			if (result.code === 'USER_USERNAME_AVAILABLE') {
 				document.querySelector(".username_field p:nth-of-type(4)").style.display = "block";
 			}
-			else if (result.code === "USERNAME_DUPLICATED") {
+			// 입력값이 올바르지 않습니다.
+			else if (result.code === 'USER_INVALID_PARAM') {
+				document.querySelector("form").username.classList.add("danger");
+				document.querySelector(".username_field p:nth-of-type(3)").style.display = "block";
+			}
+			// 이미 사용 중인 아이디입니다.
+			else if (result.code === 'USER_USERNAME_DUPLICATED') {
 				document.querySelector("form").username.classList.add("danger");
 				document.querySelector(".username_field p:nth-of-type(3)").style.display = "block";
 			}

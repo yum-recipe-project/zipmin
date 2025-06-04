@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 		const token = localStorage.getItem("accessToken");
 		try {
-			const response = await fetch(`${API_BASE_URL}/auth/check`, {
+			const response = await fetch("/auth/check", {
 				method: "GET",
 				headers: {
 					"Authorization": "Bearer " + token
@@ -48,17 +48,17 @@ document.addEventListener('DOMContentLoaded', function() {
 			
 			const result = await response.json();
 			// 인증 성공
-			if (result.code === "SUCCESS") {
+			if (result.code === "AUTH_TOKEN_INVALID") {
 				window.location.href ="/chompessor/listChomp.do";
 			}
 			// 토큰 만료시 재발급 시도
 			else if (isTokenExpired(token)) {
-				const reissueResponse = await fetch(`${API_BASE_URL}/reissue`, {
+				const reissueResponse = await fetch("/reissue", {
 					method: "POST",
 					credentials: "include"
 				});
 				const result = await reissueResponse.json();
-				if (result.code === "SUCCESS") {
+				if (result.code === "AUTH_TOKEN_REISSUE_SUCCESS") {
 					localStorage.setItem("accessToken", result.data.accessToken);
 					window.location.href ="/chompessor/listChomp.do";
 				}
@@ -98,13 +98,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 		// 토큰 만료시 재발급 시도
 		if (isTokenExpired(token)) {
-			fetch(`${API_BASE_URL}/reissue`, {
+			fetch("/reissue", {
 				method: "POST",
 				credentials: "include"
 			})
 			.then(response => response.json())
 			.then(result => {
-				if (result.code === "SUCCESS") {
+				if (result.code === "AUTH_TOKEN_REISSUE_SUCCESS") {
 					localStorage.setItem("accessToken", result.data.accessToken);
 					const payload = parseJwt(token);
 					document.querySelector(".logout_state").style.display = "none";
@@ -137,15 +137,27 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById("logout").addEventListener("click", function(event) {
 		event.preventDefault();
-		fetch(`${API_BASE_URL}/logout`, {
+		fetch("/logout", {
 			method: "POST",
 			credentials: "include"
 		})
 		.then(response => response.json())
 		.then((data) => {
-			if (data.code === "SUCCESS") {
+			if (data.code === "USER_LOGOUT_SUCCESS") {
 				localStorage.removeItem("accessToken");
 				window.location.href = "/";
+			}
+			else if (data.code === "AUTH_REFRESH_TOKEN_MISSING") {
+				alert("로그아웃 실패");
+			}
+			else if (data.code === "AUTH_REFRESH_TOKEN_EXPIRED") {
+				alert("로그아웃 실패");
+			}
+			else if (data.code === "AUTH_REFRESH_TOKEN_INVALID") {
+				alert("로그아웃 실패");
+			}
+			else if (data.code === "USER_NOT_FOUND") {
+				alert("로그아웃 실패");
 			}
 			else {
 				alert("로그아웃 실패");

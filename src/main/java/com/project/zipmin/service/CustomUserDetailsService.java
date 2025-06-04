@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.dto.CustomUserDetails;
 import com.project.zipmin.entity.User;
 import com.project.zipmin.repository.UserRepository;
@@ -24,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		User user = userRepository.findByUsername(username);
 		
 		if (user == null) {
-			throw new ApiException("USERNAME_NOT_FOUND", "아이디를 찾을 수 없습니다.");
+			throw new ApiException(UserErrorCode.USER_NOT_FOUND);
 		}
 		
 		return new CustomUserDetails(user);

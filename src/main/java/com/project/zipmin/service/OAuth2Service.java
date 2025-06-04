@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
+import com.project.zipmin.api.AuthErrorCode;
+import com.project.zipmin.api.AuthSuccessCode;
 import com.project.zipmin.util.CookieUtil;
 
 import jakarta.servlet.http.Cookie;
@@ -23,7 +25,7 @@ public class OAuth2Service {
 		
 		// 쿠키가 존재하지 않으면 예외 발생
 		if (cookies == null) {
-			throw new ApiException("TOKEN_EXCEPTION", "쿠키가 존재하지 않습니다.");
+			throw new ApiException(AuthErrorCode.AUTH_COOKIE_MISSING);
 		}
 		
 		// 쿠키에서 Authorization(access token) 추출
@@ -35,7 +37,7 @@ public class OAuth2Service {
 		
 		// access token이 없으면 예외 발생
 		if (access == null) {
-			throw new ApiException("TOKEN_EXCEPTION", "토큰이 없습니다.");
+			throw new ApiException(AuthErrorCode.AUTH_TOKEN_MISSING);
 		}
 		
 		// 기존 쿠키 삭제 (maxAge 0)
@@ -45,6 +47,6 @@ public class OAuth2Service {
 		// 상태 코드 200 설정 및 응답
 		response.setStatus(HttpServletResponse.SC_OK);
 		
-		return ResponseEntity.ok(ApiResponse.success(null));
+		return ResponseEntity.ok(ApiResponse.success(AuthSuccessCode.AUTH_VALID_TOKEN, null));
 	}
 }

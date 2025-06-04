@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			})
 			.then((response) => response.json())
 			.then(result => {
-				if (result.code === "SUCCESS") {
+				if (result.code === "USER_LOGIN_SUCCESS") {
 					localStorage.setItem("accessToken", result.data.accessToken);
 					// 아이디 저장
 					if (document.getElementById('save-id').checked) {
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					}
 					window.location.href = "/";
 				}
-				else if (result.code === "ACCESS_DENIED_EXCEPTION") {
+				else if (result.code === "AUTH_UNAUTHORIZED") {
 					form.username.value = "";
 					form.password.value = "";
 					form.username.focus();

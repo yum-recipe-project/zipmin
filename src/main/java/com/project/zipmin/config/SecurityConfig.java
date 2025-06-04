@@ -29,6 +29,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.zipmin.api.ApiResponse;
+import com.project.zipmin.api.AuthErrorCode;
+import com.project.zipmin.api.ErrorCode;
 import com.project.zipmin.filter.CustomLoginFilter;
 import com.project.zipmin.filter.CustomLogoutFilter;
 import com.project.zipmin.filter.JwtFilter;
@@ -113,7 +115,7 @@ public class SecurityConfig {
 					response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 					response.setContentType("application/json");
 					response.setCharacterEncoding("utf-8");
-					response.getWriter().write(objectMapper.writeValueAsString(ApiResponse.error("TOKEN_EXCEPTION", "유효하지 않은 인증입니다.")));
+					response.getWriter().write(objectMapper.writeValueAsString(ApiResponse.error(AuthErrorCode.AUTH_TOKEN_INVALID)));
 				}
 			)
 		);
@@ -142,7 +144,10 @@ public class SecurityConfig {
 				
 				.requestMatchers("/cooking/**").permitAll()
 				.requestMatchers("/fridge/**").permitAll()
+				
+				.requestMatchers("/mypage.do").permitAll()
 				.requestMatchers("/mypage/**").permitAll()
+				
 				.requestMatchers("/admin/**").permitAll()
 				.requestMatchers("/megazines/**").permitAll()
 				.requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**", "/assets/**").permitAll()

@@ -7,6 +7,9 @@ import org.springframework.web.filter.GenericFilterBean;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
+import com.project.zipmin.api.AuthErrorCode;
+import com.project.zipmin.api.UserErrorCode;
+import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.controller.ReissueController;
 import com.project.zipmin.dto.UserResponseDto;
 import com.project.zipmin.repository.UserRepository;
@@ -58,26 +61,30 @@ public class CustomLogoutFilter extends GenericFilterBean {
 			}
 		}
 		
+		// 리프레시 토큰이 없습니다.
 		if (refresh == null) {
-			throw new ApiException("TOKEN_EXCEPTION", "Refresh Token이 없습니다.");
+			throw new ApiException(AuthErrorCode.AUTH_REFRESH_TOKEN_MISSING);
 		}
 		
+		// 리프레시 토큰이 만료되었습니다.
 		try {
 			jwtUtil.isExpired(refresh);
 		}
 		catch (ExpiredJwtException e) {
-			throw new ApiException("TOKEN_EXCEPTION", "Refresh Token이 만료되었습니다.");
+			throw new ApiException(AuthErrorCode.AUTH_REFRESH_TOKEN_EXPIRED);
 		}
 		
+		// 리프레시 토큰이 아닙니다.
 		String category = jwtUtil.getCategory(refresh);
 		if (!category.equals("refresh")) {
-			throw new ApiException("TOKEN_EXCEPTION", "Refresh Token이 아닙니다.");
+			throw new ApiException(AuthErrorCode.AUTH_REFRESH_TOKEN_INVALID);
 		}
 		
+		// 사용자가 존재하지 않습니다.
 		String username = jwtUtil.getUsername(refresh);
 		Boolean isExist = userRepository.existsByUsername(username);
 		if (!isExist) {
-			throw new ApiException("NOT_FOUND_EXCEPTION", "시용자가 존재하지 않습니다");
+			throw new ApiException(UserErrorCode.USER_NOT_FOUND);
 		}
 		
 		reissueService.addRefresh(username, null, 0L);
@@ -87,7 +94,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
 		response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
-        response.getWriter().write(objectMapper.writeValueAsString(ApiResponse.success("로그아웃에 성공했습니다.")));
+        response.getWriter().write(objectMapper.writeValueAsString(ApiResponse.success(UserSuccessCode.USER_LOGOUT_SUCCESS, null)));
 	}
 	
 }

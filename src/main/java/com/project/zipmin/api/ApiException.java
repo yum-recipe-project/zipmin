@@ -1,14 +1,16 @@
 package com.project.zipmin.api;
 
+import org.springframework.http.HttpStatus;
+
 public class ApiException extends RuntimeException {
-	private final String code;
+	private final Code code;
 	
-	public ApiException(String code, String message) {
-		super(message);
+	public ApiException(Code code) {
+		super(code.getMessage());
 		this.code = code;
 	}
 	
-	public String getCode() {
+	public Code getCode() {
 		return code;
 	}
 }

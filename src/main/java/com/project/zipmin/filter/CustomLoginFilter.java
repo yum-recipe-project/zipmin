@@ -17,6 +17,10 @@ import org.springframework.util.StreamUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
+import com.project.zipmin.api.AuthErrorCode;
+import com.project.zipmin.api.AuthSuccessCode;
+import com.project.zipmin.api.ErrorCode;
+import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.dto.CustomUserDetails;
 import com.project.zipmin.dto.TokenDto;
 import com.project.zipmin.service.ReissueService;
@@ -49,8 +53,9 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		try {
 			loginDto = objectMapper.readValue(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), LoginDto.class);
 		}
+		// 엑세스가 거부되었습니다.
 		catch (IOException e) {
-			throw new ApiException("ACCESS_DENINED", "엑세스가 거부되었습니다.");
+			throw new ApiException(ErrorCode.FORBIDDEN);
 		}
 		
 		String username = loginDto.getUsername();
@@ -83,7 +88,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		response.addCookie(CookieUtil.createCookie("refresh", refresh, 86_400));
 		response.setContentType("application/json");
 		response.setCharacterEncoding("utf-8");
-		response.getWriter().write(objectMapper.writeValueAsString(ApiResponse.success(tokenDto)));
+		response.getWriter().write(objectMapper.writeValueAsString(ApiResponse.success(UserSuccessCode.USER_LOGIN_SUCCESS, tokenDto)));
 	}
 	
 	@Override
@@ -91,7 +96,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("utf-8");
-		response.getWriter().write(objectMapper.writeValueAsString(ApiResponse.error("ACCESS_DENIED_EXCEPTION", "인증되지 않은 사용자입니다.")));
+		response.getWriter().write(objectMapper.writeValueAsString(ApiResponse.error(AuthErrorCode.AUTH_UNAUTHORIZED)));
 	}
 	
 	@Data

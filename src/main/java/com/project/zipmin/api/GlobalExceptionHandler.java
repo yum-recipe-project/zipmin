@@ -10,14 +10,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<ApiResponse<?>> handleApiException(ApiException e) {
-        return ResponseEntity.badRequest()
-                .body(ApiResponse.error(e.getCode(), e.getMessage()));
+    	Code code = e.getCode();
+        return ResponseEntity.status(code.getStatus())
+        		.body(ApiResponse.error(code));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<?>> handleUnexpected(Exception e) {
-    	e.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApiResponse.error("INTERNAL_SERVER_ERROR", "알 수 없는 오류가 발생했습니다."));
+        return ResponseEntity.status(ErrorCode.INTERNAL_SERVER_ERROR.getStatus())
+                .body(ApiResponse.error(ErrorCode.INTERNAL_SERVER_ERROR));
     }
 }

@@ -5,6 +5,7 @@ import java.sql.Date;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.AuthErrorCode;
 import com.project.zipmin.dto.TokenDto;
 import com.project.zipmin.entity.User;
 import com.project.zipmin.repository.UserRepository;
@@ -44,7 +45,7 @@ public class ReissueService {
 		}
 		
 		if (refresh == null) {
-			throw new ApiException("TOKEN_EXCEPTION", "Refresh Token이 없습니다.");
+			throw new ApiException(AuthErrorCode.AUTH_REFRESH_TOKEN_MISSING);
 		}
 		
 		// 만료 여부 확인
@@ -52,13 +53,13 @@ public class ReissueService {
 			jwtUtil.isExpired(refresh);
 		}
 		catch (ExpiredJwtException e) {
-			throw new ApiException("TOKEN_EXCEPTION", "Refresh Token이 만료되었습니다.");
+			throw new ApiException(AuthErrorCode.AUTH_REFRESH_TOKEN_EXPIRED);
 		}
 		
 		// 토큰 타입 확인
 		String category = jwtUtil.getCategory(refresh);
 		if (!category.equals("refresh")) {
-			throw new ApiException("TOKEN_EXCEPTION", "Refresh Token이 아닙니다.");
+			throw new ApiException(AuthErrorCode.AUTH_REFRESH_TOKEN_EXPIRED);
 		}
 		
 		// 사용자 정보 추출
@@ -69,7 +70,7 @@ public class ReissueService {
 		// DB의 refresh token과 일치 여부 확인
 		String refreshToken = userRepository.findByUsername(username).getRefresh();
 		if (!refreshToken.equals(refresh)) {
-			throw new ApiException("TOKEN_EXCEPTION", "올바른 Refresh Token이 아닙니다.");
+			throw new ApiException(AuthErrorCode.AUTH_TOKEN_INVALID);
 		}
 		
 		// 새로운 토큰 생성

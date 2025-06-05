@@ -23,7 +23,6 @@ public class ReissueController {
 	public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
 		TokenDto token = reissueService.reissue(request, response);
 		
-		System.err.println("ReissueController) token = " + token);
 		return ResponseEntity.status(AuthSuccessCode.AUTH_TOKEN_REISSUE_SUCCESS.getStatus())
 				.body(ApiResponse.success(AuthSuccessCode.AUTH_TOKEN_REISSUE_SUCCESS, token));
 	}

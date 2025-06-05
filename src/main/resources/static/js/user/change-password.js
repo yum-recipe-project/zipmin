@@ -1,4 +1,24 @@
 /**
+ * 비밀번호 검증을 확인하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const isPasswordVerified = sessionStorage.getItem('passwordVerified') === 'true';
+	if (!isPasswordVerified) {
+		sessionStorage.setItem('path', window.location.pathname);
+		location.href = '/user/verifyPassword.do';
+	}
+	sessionStorage.removeItem('passwordVerified');
+});
+
+
+
+
+
+
+
+
+
+/**
  * 비밀번호 변경 폼 입력 검증 함수
  */
 document.addEventListener("DOMContentLoaded", function () {

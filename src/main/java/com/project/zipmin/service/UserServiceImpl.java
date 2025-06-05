@@ -14,8 +14,9 @@ import com.project.zipmin.api.AuthErrorCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.dto.CustomUserDetails;
 import com.project.zipmin.dto.FindUsernameRequestDto;
+import com.project.zipmin.dto.PasswordVerifyRequestDto;
 import com.project.zipmin.dto.UserDto;
-import com.project.zipmin.dto.UserJoinDto;
+import com.project.zipmin.dto.UserJoinRequestDto;
 import com.project.zipmin.dto.UserResponseDto;
 import com.project.zipmin.dto.UserUpdateRequestDto;
 import com.project.zipmin.entity.User;
@@ -48,18 +49,21 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserResponseDto getUserById(int userId) {
+		
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+		
 		return userMapper.toResponseDto(user);
 	}
 	
 	
 	
 	@Override
-	public UserResponseDto joinUser(UserJoinDto userJoinDto) {
+	public UserResponseDto joinUser(UserJoinRequestDto userJoinDto) {
 		
 		User user = userMapper.toEntity(userJoinDto);
 		user.setPassword(passwordEncoder.encode(userJoinDto.getPassword()));
+		
 		user.setRole(Role.ROLE_USER);
 		
 		Boolean exists = userRepository.existsByUsername(userJoinDto.getUsername());
@@ -109,9 +113,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserResponseDto updateUser(int userId, UserUpdateRequestDto userDto) {
+		
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
-		System.err.println(userDto);
+		
 		if (userDto.getEmail() != null) {
 			user.setEmail(userDto.getEmail());
 		}
@@ -130,10 +135,23 @@ public class UserServiceImpl implements UserService {
 		return userMapper.toResponseDto(user);
 	}
 
+	
+	
+	@Override
+	public void verifyPassword(PasswordVerifyRequestDto passwordVerifyRequestDto) {
+				
+		User user = userRepository.findById(passwordVerifyRequestDto.getId())
+				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+		
+		if (!passwordEncoder.matches(passwordVerifyRequestDto.getPassword(), user.getPassword())) {
+			throw new ApiException(UserErrorCode.USER_PASSWORD_NOT_MATCH);
+		}
+	}
 
 
 
 
+	
 
 	@Override
 	public void deleteUserById(int userId) {
@@ -142,6 +160,11 @@ public class UserServiceImpl implements UserService {
 		
 		userRepository.deleteById(userId);
 	}
+
+
+
+
+
 
 
 

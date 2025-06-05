@@ -59,6 +59,21 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
 /**
+ * 비밀번호 검증을 확인하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const isPasswordVerified = sessionStorage.getItem('passwordVerified') === 'true';
+	if (!isPasswordVerified) {
+		sessionStorage.setItem('path', window.location.pathname);
+		location.href = '/user/verifyPassword.do';
+	}
+	sessionStorage.removeItem('passwordVerified');
+});
+
+
+
+
+/**
  * 회원 정보를 조회하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {

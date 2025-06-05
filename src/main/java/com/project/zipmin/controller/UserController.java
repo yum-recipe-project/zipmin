@@ -21,8 +21,9 @@ import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.dto.ClassDTO;
 import com.project.zipmin.dto.FindUsernameRequestDto;
 import com.project.zipmin.dto.FundDTO;
+import com.project.zipmin.dto.PasswordVerifyRequestDto;
 import com.project.zipmin.dto.UserDto;
-import com.project.zipmin.dto.UserJoinDto;
+import com.project.zipmin.dto.UserJoinRequestDto;
 import com.project.zipmin.dto.UserResponseDto;
 import com.project.zipmin.dto.UserUpdateRequestDto;
 import com.project.zipmin.entity.User;
@@ -66,9 +67,9 @@ public class UserController {
 	
 	// 사용자 생성 (회원가입)
 	@PostMapping("/users")
-	public ResponseEntity<?> addUser(@RequestBody UserJoinDto userJoinDto) {
+	public ResponseEntity<?> addUser(@RequestBody UserJoinRequestDto userJoinRequestDto) {
 		
-		UserResponseDto userResponseDto  = userService.joinUser(userJoinDto);
+		UserResponseDto userResponseDto  = userService.joinUser(userJoinRequestDto);
 
 		return ResponseEntity.status(UserSuccessCode.USER_SIGNUP_SUCCESS.getStatus())
 					.body(ApiResponse.success(UserSuccessCode.USER_SIGNUP_SUCCESS, userResponseDto));
@@ -94,6 +95,27 @@ public class UserController {
         // 사용 가능한 아이디입니다.
         return ResponseEntity.status(UserSuccessCode.USER_USERNAME_AVAILABLE.getStatus())
         		.body(ApiResponse.success(UserSuccessCode.USER_USERNAME_AVAILABLE, null));
+	}
+	
+	
+	
+	// 비밀번호 검증
+	@PostMapping("/users/verify-password")
+	public ResponseEntity<?> verifyPassword(@RequestBody PasswordVerifyRequestDto passwordVerifyRequestDto) {
+		
+		System.err.println(passwordVerifyRequestDto);
+		
+		// 입력값이 올바르지 않습니다.
+		if (passwordVerifyRequestDto == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_PARAM);
+		}
+		
+		userService.verifyPassword(passwordVerifyRequestDto);
+		
+		System.err.println("탈출함");
+		
+		return ResponseEntity.status(UserSuccessCode.USER_PASSWORD_VERIFY_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_PASSWORD_VERIFY_SUCCESS, null));
 	}
 	
 	

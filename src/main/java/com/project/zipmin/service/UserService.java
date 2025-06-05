@@ -7,8 +7,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.dto.FindUsernameRequestDto;
+import com.project.zipmin.dto.PasswordVerifyRequestDto;
 import com.project.zipmin.dto.UserDto;
-import com.project.zipmin.dto.UserJoinDto;
+import com.project.zipmin.dto.UserJoinRequestDto;
 import com.project.zipmin.dto.UserResponseDto;
 import com.project.zipmin.dto.UserUpdateRequestDto;
 import com.project.zipmin.entity.User;
@@ -30,7 +31,7 @@ public interface UserService {
     public UserResponseDto getUserById(int userId);
 
     // 회원가입 (새로운 회원 추가)
-    public UserResponseDto joinUser(UserJoinDto userDTO);
+    public UserResponseDto joinUser(UserJoinRequestDto userDTO);
     
     // 사용자 아이디 중복 확인
     public boolean isUsernameDuplicated(String username);
@@ -43,6 +44,9 @@ public interface UserService {
 
     // 회원 탈퇴 (삭제)
     public void deleteUserById(int userId);
+    
+    // 비밀번호 검증
+    public void verifyPassword(PasswordVerifyRequestDto passwordVerifyRequestDto);
     
     // 아이디 찾기
     public String findUsername(FindUsernameRequestDto findUsernameRequestDto);

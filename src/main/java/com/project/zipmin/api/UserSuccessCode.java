@@ -22,7 +22,10 @@ public enum UserSuccessCode implements Code {
 	// 회원 정보
 	USER_PROFILE_FETCH_SUCCESS(HttpStatus.OK, "회원 정보를 조회했습니다."),
 	USER_PROFILE_UPDATE_SUCCESS(HttpStatus.OK, "회원 정보가 수정되었습니다."),
-	USER_DELETE_SUCCESS(HttpStatus.OK, "회원 탈퇴가 완료되었습니다.");
+	USER_DELETE_SUCCESS(HttpStatus.OK, "회원 탈퇴가 완료되었습니다."),
+	
+	// 회원 인증
+	USER_PASSWORD_VERIFY_SUCCESS(HttpStatus.OK, "비밀번호 검증에 성공했습니다.");
 	
 	private final HttpStatus status;
 	private final String message;

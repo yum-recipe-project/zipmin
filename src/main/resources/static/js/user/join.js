@@ -305,10 +305,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 		
 		fetch(`/users/check-username?username=${username}`, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json"
-			}
+			method: "GET"
 		})
 		.then((response) => response.json())
 		.then(result => {

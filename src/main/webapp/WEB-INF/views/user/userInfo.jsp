@@ -91,6 +91,11 @@
 							</form>
 						</div>
 						
+						<!-- 마이페이지 버튼 -->
+						<div class="btn_wrap">
+							<button onclick="location.href='/mypage.do'" type="button" class="btn_primary_wide">마이페이지로 이동</button>
+						</div>
+						
 						<!-- 회원탈퇴 버튼 -->
 						<div class="btn_wrap">
 							<button id="user_delete_btn" type="submit" class="btn_outline">탈퇴하기</button>

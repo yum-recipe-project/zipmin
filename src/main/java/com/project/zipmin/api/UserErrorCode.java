@@ -22,6 +22,7 @@ public enum UserErrorCode implements Code {
 	// 인증
 	USER_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증이 필요합니다."),
 	USER_FORBIDDEN(HttpStatus.FORBIDDEN, "해당 작업에 대한 권한이 없습니다."),
+	USER_PASSWORD_NOT_MATCH(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다."),
 	
 	// 그 외
 	USER_INVALID_PARAM(HttpStatus.BAD_REQUEST, "입력값이 올바르지 않습니다.");

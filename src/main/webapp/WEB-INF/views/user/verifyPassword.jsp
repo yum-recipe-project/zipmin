@@ -23,9 +23,13 @@
 					<form>
 						<div class="password_field">
 							<label>비밀번호</label>
-							<input type="text" id="passwordInput" name="" value="" placeholder="비밀번호 입력">
-							<p id="passwordHint">비밀번호를 입력해주세요.</p>
+							<input type="password" name="password" value="" placeholder="비밀번호 입력">
+							<p>비밀번호를 입력해주세요.</p>
 						</div>
+						<h6 class="alert">
+							<img src="/images/user/alert.png">
+							비밀번호가 일치하지 않습니다.
+						</h6>
 						<button type="submit" class="btn_primary_wide">확인</button>
 						<span class="forgot_password">
 							<a href="/user/findAccount.do?mode=password">비밀번호를 잊으셨나요?</a>

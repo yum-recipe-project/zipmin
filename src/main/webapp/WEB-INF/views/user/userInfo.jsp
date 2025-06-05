@@ -93,7 +93,7 @@
 						
 						<!-- 회원탈퇴 버튼 -->
 						<div class="btn_wrap">
-							<button type="submit" class="btn_outline">탈퇴하기</button>
+							<button id="user_delete_btn" type="submit" class="btn_outline">탈퇴하기</button>
 						</div>
 					</div>
 					

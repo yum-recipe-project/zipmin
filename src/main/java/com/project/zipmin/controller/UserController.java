@@ -35,7 +35,6 @@ import lombok.RequiredArgsConstructor;
 //@Tag(name = "Example Controller", description = "This is an example controller")
 public class UserController {
 	
-	private final UserMapper userMapper;
 	private final UserService userService;
 	
 
@@ -69,14 +68,10 @@ public class UserController {
 	@PostMapping("/users")
 	public ResponseEntity<?> addUser(@RequestBody UserJoinDto userJoinDto) {
 		
-		// 이거 수정해야함!!!! user 반환받는게 아니라 dto 반환 받아야 함!!!
-
-		// 변경하는 거 서비스로 이동
-		User user = userService.joinUser(userJoinDto);
-		UserResponseDto responseDto = userMapper.toResponseDto(user);
+		UserResponseDto userResponseDto  = userService.joinUser(userJoinDto);
 
 		return ResponseEntity.status(UserSuccessCode.USER_SIGNUP_SUCCESS.getStatus())
-					.body(ApiResponse.success(UserSuccessCode.USER_SIGNUP_SUCCESS, responseDto));
+					.body(ApiResponse.success(UserSuccessCode.USER_SIGNUP_SUCCESS, userResponseDto));
 	}
 	
 	
@@ -133,8 +128,11 @@ public class UserController {
 	
 	// 사용자 삭제
 	@DeleteMapping("/users/{userId}")
-	public int deleteMember(@PathVariable("userId") String id) {
-		return 0;
+	public ResponseEntity<?> deleteMember(@PathVariable("userId") int id) {
+		userService.deleteUserById(id);
+		
+		return ResponseEntity.status(UserSuccessCode.USER_DELETE_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_DELETE_SUCCESS, null));
 	}
 
 	

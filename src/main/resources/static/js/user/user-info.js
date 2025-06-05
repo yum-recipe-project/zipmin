@@ -190,6 +190,7 @@ document.addEventListener('DOMContentLoaded', function() {
  * 회원 정보를 수정하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
+	
 	// 기본 정보를 수정
 	const basicInfoForm = document.getElementById('basic-info-form');
 	basicInfoForm.addEventListener('submit', function(event) {
@@ -262,17 +263,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		if (isValid) {
 			const token = localStorage.getItem('accessToken');
 			const payload = parseJwt(token);
-				
-			const data = {
-				email: emailInfoForm.email.value.trim()
-			};
 			
 			fetch(`/users/${payload.id}`, {
-				method: 'PUT',
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify(data)
+				method: 'PUT'
 			})
 			.then(response => response.json())
 			.then(result => {
@@ -293,8 +286,37 @@ document.addEventListener('DOMContentLoaded', function() {
 /**
  * 회원을 탈퇴하는 함수
  */
-
-
+document.addEventListener('DOMContentLoaded', function() {
+	document.getElementById('user_delete_btn').addEventListener('click', function() {
+		
+		if (confirm('정말로 탈퇴하시겠습니까?')) {
+			if (confirm('이 동작은 되돌릴 수 없습니다. 정말로 탈퇴하시겠습니까?')) {
+				const token = localStorage.getItem('accessToken');
+				const payload = parseJwt(token);
+				
+				fetch(`/users/${payload.id}`, {
+					method: 'DELETE',
+					headers: {
+						"Content-Type": "application/json"
+					}
+				})
+				.then(response => response.json())
+				.then(result => {
+					console.log(result);
+					if (result.code === 'USER_DELETE_SUCCESS') {
+						localStorage.removeItem("accessToken");
+						alert('회원을 탈퇴했습니다.');
+						location.href = '/';
+					}
+					else {
+						alert('회원 탈퇴에 실패했습니다.');
+					}
+				})
+				.catch(error => console.log(error));
+			}
+		}
+	}) 
+});
 
 
 

@@ -56,19 +56,19 @@ public class UserServiceImpl implements UserService {
 	
 	
 	@Override
-	public User joinUser(UserJoinDto userJoinDto) {
+	public UserResponseDto joinUser(UserJoinDto userJoinDto) {
 		
 		User user = userMapper.toEntity(userJoinDto);
 		user.setPassword(passwordEncoder.encode(userJoinDto.getPassword()));
 		user.setRole(Role.ROLE_USER);
 		
 		Boolean exists = userRepository.existsByUsername(userJoinDto.getUsername());
-		System.err.println(exists);
 		if (exists) {
 			throw new ApiException(UserErrorCode.USER_USERNAME_DUPLICATED);
 		}
+		user = userRepository.save(user);
 		
-		return userRepository.save(user);
+		return userMapper.toResponseDto(user);
 	}
 	
 	
@@ -128,6 +128,19 @@ public class UserServiceImpl implements UserService {
 		user = userRepository.save(user);
 		
 		return userMapper.toResponseDto(user);
+	}
+
+
+
+
+
+
+	@Override
+	public void deleteUserById(int userId) {
+		
+		// 여기에 아이디 없는거같은거 에러처리 추가하기
+		
+		userRepository.deleteById(userId);
 	}
 
 

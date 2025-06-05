@@ -30,7 +30,7 @@ public interface UserService {
     public UserResponseDto getUserById(int userId);
 
     // 회원가입 (새로운 회원 추가)
-    public User joinUser(UserJoinDto userDTO);
+    public UserResponseDto joinUser(UserJoinDto userDTO);
     
     // 사용자 아이디 중복 확인
     public boolean isUsernameDuplicated(String username);
@@ -42,7 +42,7 @@ public interface UserService {
     // boolean changePassword(String userId, String newPassword);
 
     // 회원 탈퇴 (삭제)
-    // boolean deleteUserById(String userId);
+    public void deleteUserById(int userId);
     
     // 아이디 찾기
     public String findUsername(FindUsernameRequestDto findUsernameRequestDto);

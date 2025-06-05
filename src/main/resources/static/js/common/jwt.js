@@ -35,3 +35,40 @@ function isTokenExpired(token) {
 /**
  * 토큰을 재발급하는 함수
  */
+async function reissueJwt() {
+	const token = localStorage.getItem('accessToken');
+	
+	if (!token) {
+		return null;
+	}
+
+	if (isTokenExpired(token)) {
+		const response = await fetch("/reissue", {
+			method: "POST",
+			credentials: "include"
+		});
+		
+		const result = await response.json();
+		
+		if (result.code === 'AUTH_TOKEN_REISSUE_SUCCESS') {
+			localStorage.setItem('accessToken', result.data.accessToken);
+			return result.data.accessToken;
+		}
+	}
+	else {
+		localStorage.removeItem('accessToken');
+		alert('세션이 만료되었습니다. 다시 로그인 해주세요.');
+		return null;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+

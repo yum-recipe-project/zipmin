@@ -19,19 +19,19 @@
 						<form>
 							<div class="old_password_field">
 								<label>현재 비밀번호</label>
-								<input type="text" id="oldPasswordInput" name="" value="" placeholder="현재 비밀번호 입력">
-								<p id="oldPasswordHint">비밀번호를 입력해주세요.</p>
+								<input type="password" name="oldPassword" value="" placeholder="현재 비밀번호 입력">
+								<p>비밀번호를 입력해주세요.</p>
 							</div>
 							<div class="new_password_field">
 								<label>새 비밀번호</label>
 								<label class="sub_label">영문+숫자 10자 이상 또는 영문+숫자+특수기호 8자 이상</label>
-								<input type="password" id="newPasswordInput" name="" value="" placeholder="비밀번호 입력">
-								<p id="newPasswordHint">비밀번호를 입력해주세요.</p>
+								<input type="password" name="newPassword" value="" placeholder="비밀번호 입력">
+								<p>비밀번호를 입력해주세요.</p>
 							</div>
 							<div class="check_password_field">
-								<label>현재 비밀번호</label>
-								<input type="password" id="checkPasswordInput" name="" value="" placeholder="현재 비밀번호 입력">
-								<p id="checkPasswordHint">비밀번호를 입력해주세요.</p>
+								<label>비밀번호 확인</label>
+								<input type="password" name="checkPassword" value="" placeholder="현재 비밀번호 입력">
+								<p>비밀번호를 입력해주세요.</p>
 							</div>
 							<div class="notice">
 								<p>・&nbsp;&nbsp;원활한 이용을 위해 안전한 비밀번호로 설정해 주세요.</p>
@@ -42,11 +42,10 @@
 							<button type="submit" class="btn_primary_wide">다음</button>
 						</form>
 					</div>
-					
-					<!-- 하단 정보 -->
-					<div class="buttom_info">
-						<p class="copy">© Yum Recipe Project</p>
-					</div>
+				</div>
+				<!-- 하단 정보 -->
+				<div class="buttom_info">
+					<p class="copy">© Yum Recipe Project</p>
 				</div>
 			</div>
 		</main>

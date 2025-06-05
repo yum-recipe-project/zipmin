@@ -56,12 +56,17 @@ create table users (
     password varchar2(200),
     name varchar2(30) not null,
     nickname varchar2(100) not null,
+    tel varchar2(15),
     email varchar2(50) not null,
     avatar varchar2(200),
     point number default 0,
     revenue number default 9,
     role varchar2(15) not null,
-    enable number(1) default 1
+    enable number(1) default 1,
+    provider varchar2(100),
+    provider_id varchar2(100),
+    refresh varchar2(1000),
+    expiration varchar2(100)
 );
 create sequence seq_user_id
     increment by 1
@@ -70,12 +75,12 @@ create sequence seq_user_id
     nomaxvalue
     nocycle
     nocache;
-
-insert into users values (seq_user_id.NEXTVAL, 'harim', '$2a$10$//.68hv55MI4V28Xv87MKe/i3fFMuun6XnDcomuMXDfHC6RPYLSGy', '정하림', '아잠만', 'qazwsx9445@naver.com', null, 100, 200, 'ROLE_USER', 1);
-insert into users values (seq_user_id.NEXTVAL, 'dayeoung', '$2a$10$//.68hv55MI4V28Xv87MKe/i3fFMuun6XnDcomuMXDfHC6RPYLSGy', '부다영', '김뿌영', 'dyboo1347@gmail.com', null, 100, 200, 'ROLE_USER', 1);
-insert into users values (seq_user_id.NEXTVAL, 'user1', '$2a$10$//.68hv55MI4V28Xv87MKe/i3fFMuun6XnDcomuMXDfHC6RPYLSGy', '사용자1', '사용자1', 'user1@gmail.com', null, 100, 200, 'ROLE_USER', 1);
-insert into users values (seq_user_id.NEXTVAL, 'user2', '$2a$10$//.68hv55MI4V28Xv87MKe/i3fFMuun6XnDcomuMXDfHC6RPYLSGy', '사용자2', '사용자2', 'user2@gmail.com', null, 100, 200, 'ROLE_USER', 1);
-insert into users values (seq_user_id.NEXTVAL, 'user3', '$2a$10$//.68hv55MI4V28Xv87MKe/i3fFMuun6XnDcomuMXDfHC6RPYLSGy', '사용자2', '사용자2', 'user2@gmail.com', null, 100, 200, 'ROLE_USER', 1);
+    
+insert into users values (seq_user_id.NEXTVAL, 'harim', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '정하림', '아잠만', '010-0000-0000', 'qazwsx9445@naver.com', null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'dayeoung', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '부다영', '김뿌영', '010-0000-0000', 'dyboo1347@gmail.com', null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user1', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자1', '사용자1', '010-0000-0000', 'user1@gmail.com', null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user2', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자2', '사용자2', '010-0000-0000', 'user2@gmail.com', null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user3', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자2', '사용자2', '010-0000-0000', 'user2@gmail.com', null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
 commit;
 
 

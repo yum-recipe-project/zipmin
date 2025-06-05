@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			.then(result => {
 				if (result.code === 'USER_SIGNUP_SUCCESS') {
 					sessionStorage.setItem("user", JSON.stringify(result));
-					window.location.href = "/user/join/complete.do";
+			 		window.location.href = "/user/join/complete.do";
 				}
 				else {
 					alert("회원가입에 실패했습니다.");

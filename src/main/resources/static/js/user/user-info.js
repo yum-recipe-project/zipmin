@@ -67,7 +67,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		sessionStorage.setItem('path', window.location.pathname);
 		location.href = '/user/verifyPassword.do';
 	}
-	sessionStorage.removeItem('passwordVerified');
 });
 
 

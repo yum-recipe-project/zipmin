@@ -8,6 +8,7 @@
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/user/join-complete.css">
+		<script src="/js/user/join-complete.js"></script>
 	</head>
 	
 	<body>
@@ -24,15 +25,15 @@
 							<h3>회원 정보</h3>
 							<dl>
 								<dt>아이디</dt>
-								<dd>jhrchicken</dd>
+								<dd id="username"></dd>
 								<dt>이름</dt>
-								<dd>정하림</dd>
+								<dd id="name"></dd>
 								<dt>닉네임</dt>
-								<dd>아잠만</dd>
+								<dd id="nickname"></dd>
 								<dt>휴대폰번호</dt>
-								<dd>010-0000-0000</dd>
+								<dd id="tel"></dd>
 								<dt>이메일</dt>
-								<dd>aaa@naver.com</dd>
+								<dd id="email"></dd>
 							</dl>
 						</div>
 						

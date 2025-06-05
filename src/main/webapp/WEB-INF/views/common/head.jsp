@@ -19,7 +19,9 @@
 <script src="/js/common/jquery-ui.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 <script src="/js/common/ui-common.js"></script>
-<script src="/js/common/header.js"></script>
+<script src="/js/common/config.js"></script>
+<script src="/js/common/header.js" defer></script>
 <script src="/js/common/pagination.js"></script>
 <script src="/js/common/comment.js"></script>
 <script src="/js/common/review.js"></script>
+<script src="/js/common/jwt.js"></script>

@@ -101,11 +101,11 @@
 }
 
 /* 기본 정보 (휴대폰 번호) */
-#container .join_wrap .basic_info .phone_field {
+#container .join_wrap .basic_info .tel_field {
 	margin-top: 24px;
 }
 
-#container .join_wrap .basic_info .phone_field label {
+#container .join_wrap .basic_info .tel_field label {
 	font-weight: 500;
 	display: block;
 	margin-bottom: 4px;
@@ -115,7 +115,7 @@
 	color: var(--txt-color-600);
 }
 
-#container .join_wrap .basic_info .phone_field input {
+#container .join_wrap .basic_info .tel_field input {
 	appearance: none;
 	padding: 11px 0px 13px 12px;
 	width: 100%;
@@ -131,7 +131,7 @@
 	outline: none;
 }
 
-#container .join_wrap .basic_info .phone_field input.danger {
+#container .join_wrap .basic_info .tel_field input.danger {
 	appearance: none;
 	padding: 11px 32px 13px 12px;
 	width: 100%;
@@ -147,7 +147,7 @@
 	background: rgb(254, 245, 245);
 }
 
-#container .join_wrap .basic_info .phone_field p {
+#container .join_wrap .basic_info .tel_field p {
 	display: none;
 	margin-top: 4px;
 	font-size: 12px;
@@ -172,7 +172,13 @@
 }
 
 /* 회원정보 (아이디) */
-#container .join_wrap .member_info .id_field label {
+#container .join_wrap .member_info .username_field .username_label {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+#container .join_wrap .member_info .username_field .username_label label {
 	font-weight: 500;
 	display: block;
 	margin-bottom: 4px;
@@ -182,7 +188,30 @@
 	color: var(--txt-color-600);
 }
 
-#container .join_wrap .member_info .id_field input {
+#container .join_wrap .member_info .username_field .username_label button {
+	display: flex;
+	padding: 4px;
+	gap: 3px;
+	align-items: center;
+	border: none;
+	background: none;
+}
+
+#container .join_wrap .member_info .username_field .username_label button span {
+	color: var(--point-color2);
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.4;
+	letter-spacing: -0.02em;
+	
+}
+
+#container .join_wrap .member_info .username_field .username_label button img {
+	width: 18px;
+	height: 18px;
+}
+
+#container .join_wrap .member_info .username_field input {
 	appearance: none;
 	padding: 11px 0px 13px 12px;
 	width: 100%;
@@ -198,7 +227,7 @@
 	outline: none;
 }
 
-#container .join_wrap .member_info .id_field input.danger {
+#container .join_wrap .member_info .username_field input.danger {
 	appearance: none;
 	padding: 11px 32px 13px 12px;
 	width: 100%;
@@ -214,7 +243,7 @@
 	background: rgb(254, 245, 245);
 }
 
-#container .join_wrap .member_info .id_field p {
+#container .join_wrap .member_info .username_field p {
 	display: none;
 	margin-top: 4px;
 	font-size: 12px;
@@ -223,11 +252,16 @@
 	color: #F45452;
 }
 
+#container .join_wrap .member_info .username_field p:nth-of-type(4) {
+	color: var(--point-color2);
+}
+
+
+
 /* 회원정보 (비밀번호) */
 #container .join_wrap .member_info .password_field {
 	margin-top: 24px;
 }
-
 
 #container .join_wrap .member_info .password_field label {
 	font-weight: 500;
@@ -295,6 +329,7 @@
 
 #container .join_wrap .member_info .nickname_field .nickname_label {
 	display: flex;
+	align-items: center;
 	justify-content: space-between;
 }
 
@@ -310,7 +345,8 @@
 
 #container .join_wrap .member_info .nickname_field .nickname_label button {
 	display: flex;
-	gap: 4px;
+	padding: 4px;
+	gap: 3px;
 	align-items: center;
 	border: none;
 	background: none;
@@ -319,7 +355,7 @@
 #container .join_wrap .member_info .nickname_field .nickname_label button span {
 	color: var(--point-color2);
 	font-size: 14px;
-	font-weight: 400;
+	font-weight: 600;
 	line-height: 1.4;
 	letter-spacing: -0.02em;
 	

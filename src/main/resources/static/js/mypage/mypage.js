@@ -1,3 +1,63 @@
+/**
+ * 접근 권한을 설정하는 함수
+ */
+document.addEventListener('DOMContentLoaded', async function() {
+	if (!isLoggedIn()) {
+		alert('로그인 후 이용 가능합니다.');
+		window.location.href = '/user/login.do';
+		return;
+	}
+	
+	const token = localStorage.getItem('accessToken');
+	try {
+		const response = await fetch("/auth/check", {
+			method: "GET",
+			headers: {
+				"Authorization": "Bearer " + token
+			}
+		});
+		
+		const result = await response.json();
+		// 인증 성공 및 정상 접근
+		if (result.code === "AUTH_TOKEN_INVALID") {
+			return;
+		}
+		// 토큰 만료시 재발급 시도
+		else if (isTokenExpired(token)) {
+			const reissueResponse = await fetch("/reissue", {
+				method: "POST",
+				credentials: "include"
+			});
+			const reissueResult = await reissueResponse.json();
+			if (reissueResult.code === 'AUTH_TOKEN_REISSUE_SUCCESS') {
+				localStorage.setItem('accessToken', reissueResult.data.accessToken);
+				return;
+			}
+		}
+		// 인증 실패 또는 재발급 실패 시 재로그인 필요
+		else {
+			localStorage.removeItem("accessToken");
+			alert('세션이 만료되었습니다. 다시 로그인 해주세요.');
+			window.location.href = '/user/login.do';
+		}
+	}
+	catch (error) {
+		alert('문제가 발생했습니다.');
+		console.log(error);
+		window.location.href = '/user/login.do';
+	}
+});
+
+
+
+
+
+
+
+
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
 	
 	// 닉네임 수정 

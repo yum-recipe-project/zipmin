@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.project.zipmin.dto.CommentRequestDTO;
 import com.project.zipmin.dto.CommentResponseDTO;
 import com.project.zipmin.dto.LikeDTO;
-import com.project.zipmin.dto.UserDTO;
+import com.project.zipmin.dto.UserDto;
 import com.project.zipmin.entity.Comment;
 import com.project.zipmin.entity.Like;
 import com.project.zipmin.mapper.CommentMapper;

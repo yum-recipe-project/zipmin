@@ -37,6 +37,18 @@
 	align-items: center;
 }
 
+#header .header_top .inner .logout_state {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+#header .header_top .inner .login_state {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+
 #header .header_top .inner .util_menu .divider {
 	width: 1px;
 	height: 13px;

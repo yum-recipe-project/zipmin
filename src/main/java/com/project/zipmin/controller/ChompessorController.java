@@ -247,7 +247,7 @@ public class ChompessorController {
 	        @RequestBody CommentRequestDTO commentDTO) {
 		
 		commentDTO.setCommId(1);
-		commentDTO.setUserId("harim");
+		commentDTO.setUserId(1);
 		System.err.println(commentDTO);
 		commentService.createComment(commentDTO);
 		

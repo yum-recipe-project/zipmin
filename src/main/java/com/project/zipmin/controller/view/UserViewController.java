@@ -59,4 +59,9 @@ public class UserViewController {
 		return "user/viewMemberInfo";
 	}
 	
+	@GetMapping("/oauth2-jwt-header")
+	public String oAuth2JwtHeader() {
+		return "user/oauth2JwtHeader";
+	}
+	
 }

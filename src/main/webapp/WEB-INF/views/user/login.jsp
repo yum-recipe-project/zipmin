@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%-- <%@ taglib uri="http://www.springframework.org/security/tags" prefix="s" %> --%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -22,19 +21,15 @@
 						</div>
 					</div>
 					
-					<s:authorize access="hasRole('ADMIN')">
-						로그인 아이디 : <s:authentication property="name" />
-					</s:authorize>
-					
-					<!--  폼 -->
-					<form method="post">
-						<div class="id_field">
-							<input type="text" id="idInput" name="id" value="" placeholder="아이디">
-							<p id="idHint">아이디를 입력해주세요.</p>
+					<!-- 자체 로그인 -->
+					<form>
+						<div class="username_field">
+							<input type="text" name="username" value="" placeholder="아이디">
+							<p>아이디를 입력해주세요.</p>
 						</div>
 						<div class="password_field">
-							<input type="password" id="passwordInput" name="password" value="" placeholder="비밀번호">
-							<p id="passwordHint">비밀번호를 입력해주세요.</p>
+							<input type="password" name="password" value="" placeholder="비밀번호">
+							<p>비밀번호를 입력해주세요.</p>
 						</div>
 						<h6 class="alert">
 							<img src="/images/user/alert.png">
@@ -44,8 +39,8 @@
 							<!-- 아이디 저장 -->
 							<div class="save_id">
 								<div class="checkbox_wrap">
-									<input type="checkbox" id="saveId" name="" value="">
-									<label for="saveId">아이디 저장</label>
+									<input type="checkbox" id="save-id" value="">
+									<label for="save-id">아이디 저장</label>
 								</div>
 							</div>
 							<!-- 비밀번호 찾기 및 회원가입 -->
@@ -63,9 +58,16 @@
 							집밥의민족 신규가입하고<br/><span>다양한 레시피</span> 만나보세요!
 						</div>
 						<div class="image">
-							<img src="/images/user/naver.png">
-							<img src="/images/user/kakao.png">
+							<!-- 사진 변경 필요!!!!!!! css 변경 필요!!!! -->
+							<a href="/oauth2/authorization/google">
+							  <img src="/images/user/kakao.png" alt="구글 로그인">
+							</a>
+							<a href="/oauth2/authorization/naver">
+							  <img src="/images/user/naver.png" alt="네이버 로그인">
+							</a>
 						</div>
+						
+						
 					</div>
 					
 					<!-- 출처 -->

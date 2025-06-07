@@ -2,10 +2,9 @@
  * axios 인스턴스를 생성
  */
 const api = axios.create({
-	baseURL: '/',
+	baseURL: 'http://localhost:8586',
 	withCredentials: true
 });
-
 
 
 
@@ -62,9 +61,9 @@ async function reissueJwt() {
 	}
 
 	if (isTokenExpired(token)) {
-		const response = await fetch("/reissue", {
-			method: "POST",
-			credentials: "include"
+		const response = await fetch('/reissue', {
+			method: 'POST',
+			credentials: 'include'
 		});
 		
 		const result = await response.json();
@@ -90,7 +89,6 @@ let refreshQueue = []; // 재발급 기다리는 요청들
  * 요청 전 액세스 토큰의 만료 여부를 확인하고 필요시 자동 재발급하는 요청 인터셉터
  */
 api.interceptors.request.use(async (config) => {
-	alert('인터셉터 실행');
 	const token = localStorage.getItem('accessToken');
 	
 	// 토큰이 없다면 그냥 요청 보냄 (로그인 안 된 사용자일 수 있음)
@@ -100,7 +98,6 @@ api.interceptors.request.use(async (config) => {
 	
 	// 토큰이 존재하고 만료되었는지 검사
 	if (isTokenExpired(token)) {
-		alert('재발급');
 		// 이미 재발급 중이 아니라면 재발급 시도
 		if (!isRefreshing) {
 			isRefreshing = true;
@@ -145,6 +142,7 @@ api.interceptors.response.use(
 	// 응답이 정상일 경우 그대로 전달
 	(response) => response,
 	(error) => {
+		alert(JSON.stringify(error.response));
 		// 응답이 401 Unathorized인 경우
 		if (error.response?.status === 401) {
 			redirectToLogin();

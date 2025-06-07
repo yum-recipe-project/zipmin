@@ -44,10 +44,23 @@ document.addEventListener('DOMContentLoaded', async function() {
 		setLoginState(true, payload.nickname);
 	}
 	catch (error) {
-		alert(error.response?.status, error);
+		alert('출력 ', error.response?.status, error);
 		localStorage.removeItem('accessToken');
 		setLoginState(false);
 	}
+	
+	/*
+	axios({
+		url: '/auth/check',
+		method: 'GET',
+		headers: {
+			'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+		},
+		// validateStatus: null
+	})
+	.then(res => console.log('axios 성공:', res.data))
+	.catch(err => console.error('axios 에러:', err));
+	*/
 });
 
 

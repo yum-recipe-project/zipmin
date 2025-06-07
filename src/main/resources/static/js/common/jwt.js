@@ -1,14 +1,4 @@
 /**
- * axios 인스턴스를 생성
- */
-const api = axios.create({
-	baseURL: 'http://localhost:8586',
-	withCredentials: true
-});
-
-
-
-/**
  * 토큰을 디코딩하는 함수
  * 
  * @param {string} token - JWT access token
@@ -80,6 +70,16 @@ async function reissueJwt() {
 
 
 
+/**
+ * axios 인스턴스를 생성
+ */
+const instance = axios.create({
+	baseURL: 'http://localhost:8586',
+	withCredentials: true
+});
+
+
+
 let isRefreshing = false; // 재발급 중인지 여부
 let refreshQueue = []; // 재발급 기다리는 요청들
 
@@ -88,7 +88,7 @@ let refreshQueue = []; // 재발급 기다리는 요청들
 /**
  * 요청 전 액세스 토큰의 만료 여부를 확인하고 필요시 자동 재발급하는 요청 인터셉터
  */
-api.interceptors.request.use(async (config) => {
+instance.interceptors.request.use(async (config) => {
 	const token = localStorage.getItem('accessToken');
 	
 	// 토큰이 없다면 그냥 요청 보냄 (로그인 안 된 사용자일 수 있음)
@@ -138,7 +138,7 @@ api.interceptors.request.use(async (config) => {
 /**
  * 401 오류(인증 실패) 발생 시 로그아웃 처리하는 응답 인터셉터
  */
-api.interceptors.response.use(
+instance.interceptors.response.use(
 	// 응답이 정상일 경우 그대로 전달
 	(response) => response,
 	(error) => {

@@ -48,19 +48,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 		localStorage.removeItem('accessToken');
 		setLoginState(false);
 	}
-	
-	/*
-	axios({
-		url: '/auth/check',
-		method: 'GET',
-		headers: {
-			'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
-		},
-		// validateStatus: null
-	})
-	.then(res => console.log('axios 성공:', res.data))
-	.catch(err => console.error('axios 에러:', err));
-	*/
 });
 
 

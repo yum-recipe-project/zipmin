@@ -27,50 +27,51 @@ document.addEventListener('DOMContentLoaded', function() {
 /**
  * 헤더에 로그인한 사용자의 정보를 표시하는 함수
  */
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
 	const token = localStorage.getItem("accessToken");
 	
 	// 비로그인 상태
 	if (!token) {
-		document.querySelector(".logout_state").style.display = "flex";
-		document.querySelector(".login_state").style.display = "none";
+		setLoginState(false);
 		return;
 	}
 	
-	if (token) {
+	try {
+		await api.get('/auth/check');
 		
-		// 토큰 만료시 재발급 시도
-		if (isTokenExpired(token)) {
-			fetch("/reissue", {
-				method: "POST",
-				credentials: "include"
-			})
-			.then(response => response.json())
-			.then(result => {
-				if (result.code === "AUTH_TOKEN_REISSUE_SUCCESS") {
-					localStorage.setItem("accessToken", result.data.accessToken);
-					const payload = parseJwt(token);
-					document.querySelector(".logout_state").style.display = "none";
-					document.querySelector(".login_state").style.display = "flex";
-					document.querySelector(".user_name").innerText = `${payload.nickname}님`;
-				}
-				else {
-					// 비회원으로 간주
-					localStorage.removeItem("accessToken");
-					return;
-				}
-			})
-			.catch(error => console.log(error));
-			return;
-		}
-		
-		// 유효한 토큰이면 사용자 정보 표시
-		const payload = parseJwt(token);
-		document.querySelector(".logout_state").style.display = "none";
-		document.querySelector(".login_state").style.display = "flex";
-		document.querySelector(".user_name").innerText = `${payload.nickname}님`;
+		const newToken = localStorage.getItem('accessToken');
+		const payload = parseJwt(newToken);
+		setLoginState(true, payload.nickname);
+	}
+	catch (error) {
+		alert(error.response?.status, error);
+		localStorage.removeItem('accessToken');
+		setLoginState(false);
 	}
 });
+
+
+/**
+ * 로그인 상태에 따라 헤더 표시를 변경하는 함수
+ * 
+ * @param {boolean} isLoggedIn - 로그인 여부
+ * @param {String} nickname - 사용자 닉네임
+ */
+function setLoginState(isLoggedIn, nickname = '') {
+	const logoutState = document.querySelector(".logout_state");
+	const loginState = document.querySelector(".login_state");
+	const userName = document.querySelector(".user_name");
+	
+	if (isLoggedIn) {
+		logoutState.style.display = "none";
+		loginState.style.display = "flex";
+		userName.innerText = `${nickname}님`;
+	} else {
+		logoutState.style.display = "flex";
+		loginState.style.display = "none";
+		userName.innerText = "";
+	}
+}
 
 
 
@@ -80,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById("logout").addEventListener("click", function(event) {
 		event.preventDefault();
+		
 		fetch("/logout", {
 			method: "POST",
 			credentials: "include"

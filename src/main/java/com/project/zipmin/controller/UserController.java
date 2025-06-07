@@ -112,8 +112,6 @@ public class UserController {
 		
 		userService.verifyPassword(passwordVerifyRequestDto);
 		
-		System.err.println("탈출함");
-		
 		return ResponseEntity.status(UserSuccessCode.USER_PASSWORD_VERIFY_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_PASSWORD_VERIFY_SUCCESS, null));
 	}

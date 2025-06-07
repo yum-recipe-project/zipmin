@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			fetch('/users/verify-password', {
 				method: 'POST',
 				headers: {
-					"Content-Type": "application/json"
+					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify(data)
 			})

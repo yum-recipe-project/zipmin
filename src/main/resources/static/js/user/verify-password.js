@@ -1,4 +1,23 @@
 /**
+ * 접근 권한을 설정하는 함수
+ */
+document.addEventListener('DOMContentLoaded', async function() {
+	if (!isLoggedIn()) {
+		redirectToLogin();
+	}
+
+	try {
+		await instance.get('/dummy');
+	}
+	catch (error) {
+		alert('비밀번호 검증 ' + error.message);
+		redirectToLogin();
+	}
+});
+
+
+
+/**
  * 비밀번호 입력 폼을 실시간으로 검증하는 함수
  */
 document.addEventListener("DOMContentLoaded", function () {

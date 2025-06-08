@@ -41,30 +41,34 @@ function isTokenExpired(token) {
 /**
  * 토큰을 재발급하는 함수
  * 
- * @returns {Promise<string|null>} - 새 access token 또는 null
+ * @returns {Promise<string>} - 새 access token
+ * @throws {Error} - 재발급 실패 시 에러 발생
  */
 async function reissueJwt() {
 	const token = localStorage.getItem('accessToken');
-	
-	if (!token) {
-		return null;
+
+	if (!isTokenExpired(token)) {
+		throw new Error('토큰 재발급 실패');
 	}
 
-	if (isTokenExpired(token)) {
+	try {
 		const response = await fetch('/reissue', {
 			method: 'POST',
 			credentials: 'include'
 		});
-		
+
 		const result = await response.json();
-		
+
 		if (result.code === 'AUTH_TOKEN_REISSUE_SUCCESS') {
 			localStorage.setItem('accessToken', result.data.accessToken);
 			return result.data.accessToken;
 		}
+		else {
+			throw new Error(result.code);
+		}
 	}
-	else {
-		throw new Error('토큰 재발급 실패');
+	catch (error) {
+		throw error;
 	}
 }
 
@@ -90,14 +94,17 @@ let refreshQueue = []; // 재발급 기다리는 요청들
  */
 instance.interceptors.request.use(async (config) => {
 	const token = localStorage.getItem('accessToken');
+	alert('토큰' + token);
 	
-	// 토큰이 없다면 그냥 요청 보냄 (로그인 안 된 사용자일 수 있음)
+	// 토큰이 없으면 요청 전송
 	if (!token) {
-		return config;
+		alert('토큰이 없습니다');
+		return;
 	}
 	
-	// 토큰이 존재하고 만료되었는지 검사
+	// 토큰이 만료되었는지 검사
 	if (isTokenExpired(token)) {
+		alert('만료됨 재발급 필요');
 		// 이미 재발급 중이 아니라면 재발급 시도
 		if (!isRefreshing) {
 			isRefreshing = true;
@@ -105,13 +112,14 @@ instance.interceptors.request.use(async (config) => {
 			try {
 				// 새로운 access token 요청
 				const newToken = await reissueJwt();
-				
+								
 				// 재발급을 기다리던 요청들에 새 토큰 전달
 				refreshQueue.forEach(callback => callback(newToken));
 				refreshQueue = [];
 			}
 			// 로그인 실패시 로그인 페이지로 이동
 			catch (error) {
+				alert('실패');
 				redirectToLogin();
 			}
 			finally {
@@ -128,7 +136,8 @@ instance.interceptors.request.use(async (config) => {
 		});
 	}
 	
-	// 토큰이 아직 유효하다면 헤더에 붙여서 요청
+	alert('유효함');
+	// 토큰이 아직 유효하다면 헤더에 붙여서 요청 전송
 	config.headers.Authorization = `Bearer ${token}`;
 	return config;
 });
@@ -142,12 +151,7 @@ instance.interceptors.response.use(
 	// 응답이 정상일 경우 그대로 전달
 	(response) => response,
 	(error) => {
-		alert(JSON.stringify(error.response));
-		// 응답이 401 Unathorized인 경우
-		if (error.response?.status === 401) {
-			redirectToLogin();
-		}
-		// 그 외 에러는 그대로 토스
+		alert('인스턴스 에러 발생');
 		return Promise.reject(error);
 	}
 );
@@ -159,12 +163,9 @@ instance.interceptors.response.use(
  */
 function redirectToLogin() {
 	localStorage.removeItem('accessToken');
-	alert('세션이 만료되었습니다. 다시 로그인 해주세요.');
+	alert('로그인 후 이용 가능합니다.');
 	window.location.href = '/login.do';
 }
-
-
-
 
 
 

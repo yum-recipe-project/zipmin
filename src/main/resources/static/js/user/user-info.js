@@ -3,25 +3,15 @@
  */
 document.addEventListener('DOMContentLoaded', async function() {
 	if (!isLoggedIn()) {
-		alert('로그인 후 이용 가능합니다.');
-		window.location.href = '/user/login.do';
-		return;
-	}
-	
-	try {
-		// api.js의 axios 인스턴스 사용
-		const response = await api.get('auth/check');
-		const result = await response.json();
-		
-		// 인증 실패 및 잘못된 접근
-		if (result.code !== "AUTH_TOKEN_INVALID") {
 			redirectToLogin();
-			return;
-		}
-		
-		alert('정상 접근 허용됨');
+	}
+
+	try {
+		await instance.get('/dummy');
 	}
 	catch (error) {
+		alert('유저 인포 에러');
+		alert(error.message);
 		redirectToLogin();
 	}
 });
@@ -31,6 +21,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 /**
  * 비밀번호 검증을 확인하는 함수
  */
+/*
 document.addEventListener('DOMContentLoaded', function() {
 	const isPasswordVerified = sessionStorage.getItem('passwordVerified') === 'true';
 	if (!isPasswordVerified) {
@@ -38,13 +29,14 @@ document.addEventListener('DOMContentLoaded', function() {
 		location.href = '/user/verifyPassword.do';
 	}
 });
-
+*/
 
 
 
 /**
  * 회원 정보를 조회하는 함수
  */
+/*
 document.addEventListener('DOMContentLoaded', function() {
 	const token = localStorage.getItem('accessToken');
 	const payload = parseJwt(token);
@@ -72,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	})
 	.catch(error => console.log(error));
 });
-
+*/
 
 
 /**
@@ -173,6 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
 /**
  * 회원 정보를 수정하는 함수
  */
+/*
 document.addEventListener('DOMContentLoaded', function() {
 	
 	// 기본 정보를 수정
@@ -263,13 +256,14 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 	});
 });
-
+*/
 
 
 
 /**
  * 회원을 탈퇴하는 함수
  */
+/*
 document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById('user_delete_btn').addEventListener('click', function() {
 		
@@ -299,7 +293,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	}) 
 });
 
-
+*/
 
 
 

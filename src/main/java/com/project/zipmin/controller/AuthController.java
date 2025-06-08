@@ -20,8 +20,6 @@ public class AuthController {
 	public ResponseEntity<?> checkAuth(HttpServletRequest request) {
 		String token = request.getHeader("Authorization");
 		
-		System.err.println("AuthController) token = " + token);
-		
 		if (token == null || !token.startsWith("Bearer ")) {
 			throw new ApiException(AuthErrorCode.AUTH_TOKEN_MISSING);
         }

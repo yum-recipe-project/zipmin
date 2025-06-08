@@ -25,15 +25,15 @@
 							<h3>회원 정보</h3>
 							<dl>
 								<dt>아이디</dt>
-								<dd id="username"></dd>
+								<dd id="username">정보 없음</dd>
 								<dt>이름</dt>
-								<dd id="name"></dd>
+								<dd id="name">정보 없음</dd>
 								<dt>닉네임</dt>
-								<dd id="nickname"></dd>
+								<dd id="nickname">정보 없음</dd>
 								<dt>휴대폰번호</dt>
-								<dd id="tel"></dd>
+								<dd id="tel">정보 없음</dd>
 								<dt>이메일</dt>
-								<dd id="email"></dd>
+								<dd id="email">정보 없음</dd>
 							</dl>
 						</div>
 						

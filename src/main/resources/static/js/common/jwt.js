@@ -94,17 +94,14 @@ let refreshQueue = []; // 재발급 기다리는 요청들
  */
 instance.interceptors.request.use(async (config) => {
 	const token = localStorage.getItem('accessToken');
-	alert('토큰' + token);
 	
 	// 토큰이 없으면 요청 전송
 	if (!token) {
-		alert('토큰이 없습니다');
-		return;
+		return config;
 	}
 	
 	// 토큰이 만료되었는지 검사
 	if (isTokenExpired(token)) {
-		alert('만료됨 재발급 필요');
 		// 이미 재발급 중이 아니라면 재발급 시도
 		if (!isRefreshing) {
 			isRefreshing = true;
@@ -119,7 +116,6 @@ instance.interceptors.request.use(async (config) => {
 			}
 			// 로그인 실패시 로그인 페이지로 이동
 			catch (error) {
-				alert('실패');
 				redirectToLogin();
 			}
 			finally {
@@ -136,7 +132,6 @@ instance.interceptors.request.use(async (config) => {
 		});
 	}
 	
-	alert('유효함');
 	// 토큰이 아직 유효하다면 헤더에 붙여서 요청 전송
 	config.headers.Authorization = `Bearer ${token}`;
 	return config;
@@ -151,7 +146,6 @@ instance.interceptors.response.use(
 	// 응답이 정상일 경우 그대로 전달
 	(response) => response,
 	(error) => {
-		alert('인스턴스 에러 발생');
 		return Promise.reject(error);
 	}
 );

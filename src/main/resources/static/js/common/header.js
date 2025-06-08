@@ -32,22 +32,17 @@ document.addEventListener('DOMContentLoaded', async function() {
 		setLoginState(false);
 		return;
 	}
-	
+		
 	try {
 		await instance.get('/dummy');
 		
 		const token = localStorage.getItem('accessToken');
 		const payload = parseJwt(token);
 		
-		if (document.querySelector(".logout_state")) {
-			setLoginState(true, payload.nickname);
-		}
+		setLoginState(true, payload.nickname);
 	}
 	catch (error) {
-		alert(error.message);
-		if (document.querySelector(".logout_state")) {
-			setLoginState(false);
-		}
+		setLoginState(false);
 	}
 });
 
@@ -78,61 +73,40 @@ function setLoginState(isLoggedIn, nickname = '') {
 
 
 /**
- * 로그아웃
+ * 로그아웃을 하는 함수
  */
-
-document.addEventListener('DOMContentLoaded', async function() {
-	const token = localStorage.getItem("accessToken");
-	
-	// 비로그인 상태
-	if (!token) {
-		setLoginState(false);
-		return;
-	}
-	
-	try {
-		await instance.get('/auth/check');
-		
-		const newToken = localStorage.getItem('accessToken');
-		const payload = parseJwt(newToken);
-		setLoginState(true, payload.nickname);
-	}
-	catch (error) {
-		localStorage.removeItem('accessToken');
-		setLoginState(false);
-	}
-});
-
-
 document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById("logout").addEventListener("click", async function(event) {
 		event.preventDefault();
 		
+		if (!isLoggedIn()) {
+			redirectToLogin();
+		}
+		
 		try {
-			await instance.get('/auth/check');
-			
 			const response = await instance.post('/logout');
 			
 			if (response.data.code === "USER_LOGOUT_SUCCESS") {
 				localStorage.removeItem("accessToken");
 				window.location.href = "/";
 			}
-			else if (response.data.code === "AUTH_REFRESH_TOKEN_MISSING") {
+		}
+		catch (error) {
+			if (error.response?.data?.code === "AUTH_REFRESH_TOKEN_MISSING") {
 				alert("로그아웃 실패");
 			}
-			else if (response.data.code === "AUTH_REFRESH_TOKEN_EXPIRED") {
+			else if (error.response?.data?.code === "AUTH_REFRESH_TOKEN_EXPIRED") {
 				alert("로그아웃 실패");
 			}
-			else if (response.data.code === "AUTH_REFRESH_TOKEN_INVALID") {
+			else if (error.response?.data?.code === "AUTH_REFRESH_TOKEN_INVALID") {
 				alert("로그아웃 실패");
 			}
-			else if (response.data.code === "USER_NOT_FOUND") {
+			else if (error.response?.data?.code === "USER_NOT_FOUND") {
 				alert("로그아웃 실패");
 			}
 			else {
 				alert("로그아웃 실패");
 			}
 		}
-		catch {error => console.log(error)}
 	});
 });

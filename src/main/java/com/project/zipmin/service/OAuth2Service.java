@@ -47,6 +47,7 @@ public class OAuth2Service {
 		// 상태 코드 200 설정 및 응답
 		response.setStatus(HttpServletResponse.SC_OK);
 		
-		return ResponseEntity.ok(ApiResponse.success(AuthSuccessCode.AUTH_VALID_TOKEN, null));
+		return ResponseEntity.status(AuthSuccessCode.AUTH_VALID_TOKEN.getStatus())
+				.body(ApiResponse.success(AuthSuccessCode.AUTH_VALID_TOKEN, null));
 	}
 }

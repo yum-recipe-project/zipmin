@@ -103,8 +103,6 @@ public class UserController {
 	@PostMapping("/users/verify-password")
 	public ResponseEntity<?> verifyPassword(@RequestBody PasswordVerifyRequestDto passwordVerifyRequestDto) {
 		
-		System.err.println(passwordVerifyRequestDto);
-		
 		// 입력값이 올바르지 않습니다.
 		if (passwordVerifyRequestDto == null) {
 			throw new ApiException(UserErrorCode.USER_INVALID_PARAM);

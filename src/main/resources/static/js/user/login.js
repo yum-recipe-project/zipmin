@@ -1,30 +1,30 @@
 /**
  * 폼 입력 검증 함수
  */
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.querySelector("form");
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
 	
 	// 아이디 실시간 검사
-	form.username.addEventListener("input", function() {
-		if (form.username.value.trim() === "") {
-			form.username.classList.add("danger");
-			document.querySelector(".username_field p").style.display = "block";
+	form.username.addEventListener('input', function() {
+		if (form.username.value.trim() === '') {
+			form.username.classList.add('danger');
+			document.querySelector('.username_field p').style.display = 'block';
 		}
 		else {
-			form.username.classList.remove("danger");
-			document.querySelector(".username_field p").style.display = "none";
+			form.username.classList.remove('danger');
+			document.querySelector('.username_field p').style.display = 'none';
 		}
 	});
 	
 	// 비밀번호 실시간 검사
-	form.password.addEventListener("input", function() {
-		if (form.password.value.trim() === "") {
-			form.password.classList.add("danger");
-			document.querySelector(".password_field p").style.display = "block";
+	form.password.addEventListener('input', function() {
+		if (form.password.value.trim() === '') {
+			form.password.classList.add('danger');
+			document.querySelector('.password_field p').style.display = 'block';
 		}
 		else {
-			form.password.classList.remove("danger");
-			document.querySelector(".password_field p").style.display = "none";
+			form.password.classList.remove('danger');
+			document.querySelector('.password_field p').style.display = 'none';
 		}
 	});
 });
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
  * 일반 로그인을 하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	const form = document.querySelector("form");
+	const form = document.querySelector('form');
 	
 	// 저장한 아이디 표시
 	const savedUsername = localStorage.getItem('savedUsername');
@@ -53,20 +53,20 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 	
 	// 로그인 폼 이벤트 발생
-	form.addEventListener("submit", function(event) {
+	form.addEventListener('submit', async function(event) {
 		event.preventDefault();
 		let isValid = true;
 		// 폼 제출 시 최종 검사
-		if (form.password.value.trim() === "") {
-			form.password.classList.add("danger");
-			document.querySelector(".password_field p").style.display = "block";
+		if (form.password.value.trim() === '') {
+			form.password.classList.add('danger');
+			document.querySelector('.password_field p').style.display = 'block';
 			form.password.focus();
 			isValid = false;
 		}
 		
-		if (form.username.value.trim() === "") {
-			form.username.classList.add("danger");
-			document.querySelector(".username_field p").style.display = "block";
+		if (form.username.value.trim() === '') {
+			form.username.classList.add('danger');
+			document.querySelector('.username_field p').style.display = 'block';
 			form.username.focus();
 			isValid = false;
 		}
@@ -78,17 +78,19 @@ document.addEventListener('DOMContentLoaded', function() {
 				password : form.password.value.trim()
 			};
 			
-			fetch("/login", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify(data)
-			})
-			.then((response) => response.json())
-			.then(result => {
-				if (result.code === "USER_LOGIN_SUCCESS") {
-					localStorage.setItem("accessToken", result.data.accessToken);
+			try {
+				const response = await fetch('/login', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(data)
+				});
+				
+				const result = await response.json();
+				
+				if (result.code === 'USER_LOGIN_SUCCESS') {
+					localStorage.setItem('accessToken', result.data.accessToken);
 					// 아이디 저장
 					if (document.getElementById('save-id').checked) {
 						localStorage.setItem('savedUsername', JSON.stringify({
@@ -99,16 +101,18 @@ document.addEventListener('DOMContentLoaded', function() {
 					else {
 						localStorage.removeItem('savedUsername');
 					}
-					window.location.href = "/";
+					window.location.href = '/';
 				}
-				else if (result.code === "AUTH_UNAUTHORIZED") {
-					form.username.value = "";
-					form.password.value = "";
+				else if (result.code === 'AUTH_UNAUTHORIZED') {
+					form.username.value = '';
+					form.password.value = '';
 					form.username.focus();
-					document.querySelector(".alert").style.display = "flex";
+					document.querySelector('.alert').style.display = 'flex';
 				}
-			})
-			.catch(error => console.log(error));
+			}
+			catch (error) {
+				console.log(error);
+			}
 		}
 	})
 });

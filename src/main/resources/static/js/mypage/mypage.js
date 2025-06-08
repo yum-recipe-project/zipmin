@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 		await instance.get('/dummy');
 	}
 	catch (error) {
-		alert(error.message);
 		redirectToLogin();
 	}
 });

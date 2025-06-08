@@ -2,7 +2,9 @@
  * 회원가입 정보를 표시하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
+	
 	const user = sessionStorage.getItem("user");
+	
 	if (user) {
 		document.getElementById("username").innerText = result.data.username;
 		document.getElementById("name").innerText = result.data.name;

@@ -9,6 +9,7 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UserUpdateRequestDto {
 	private int id;
+	private String password;
 	private String username;
 	private String name;
 	private String nickname;

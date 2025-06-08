@@ -117,6 +117,9 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
 		
+		if (userDto.getPassword() != null) {
+			user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		}
 		if (userDto.getEmail() != null) {
 			user.setEmail(userDto.getEmail());
 		}
@@ -124,7 +127,6 @@ public class UserServiceImpl implements UserService {
 			user.setName(userDto.getName());
 		}
 		if (userDto.getNickname() != null) {
-			System.err.println("실행");
 			user.setNickname(userDto.getNickname());
 		}
 		if (userDto.getTel() != null) {

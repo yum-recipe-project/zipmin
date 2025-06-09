@@ -9,11 +9,10 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ChompEventDTO {
+public class VoteResponseDTO {
 	private int id;
 	private Date opendate;
 	private Date closedate;
-	private String content;
 	private int chompId;
 	
 	private String status;

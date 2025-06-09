@@ -15,7 +15,7 @@ public enum UserErrorCode implements Code {
 	USER_EMAIL_DUPLICATED(HttpStatus.CONFLICT, "이미 등록된 이메일입니다."),
 	
 	// 로그인
-	USER_PASSWORD_INVALID(HttpStatus.UNAUTHORIZED, "비밀번호가 올바르지 않습니다."),
+	USER_PASSWORD_INVALID(HttpStatus.BAD_REQUEST, "비밀번호가 올바르지 않습니다."),
 	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 사용자를 찾을 수 없습니다."),
 	USER_PASSWORD_RESET_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "임시 비밀번호 발급에 실패했습니다."),
 	

@@ -54,6 +54,9 @@ public class UserController {
 //		return userList;
 //	}
 	
+	
+	
+	
 	// 특정 사용자 조회
 	@GetMapping("/users/{userId}")
 	public ResponseEntity<?> viewMember(@PathVariable("userId") int id) {
@@ -103,16 +106,12 @@ public class UserController {
 	@PostMapping("/users/verify-password")
 	public ResponseEntity<?> verifyPassword(@RequestBody PasswordVerifyRequestDto passwordVerifyRequestDto) {
 		
-		System.err.println(passwordVerifyRequestDto);
-		
 		// 입력값이 올바르지 않습니다.
 		if (passwordVerifyRequestDto == null) {
 			throw new ApiException(UserErrorCode.USER_INVALID_PARAM);
 		}
 		
 		userService.verifyPassword(passwordVerifyRequestDto);
-		
-		System.err.println("탈출함");
 		
 		return ResponseEntity.status(UserSuccessCode.USER_PASSWORD_VERIFY_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_PASSWORD_VERIFY_SUCCESS, null));

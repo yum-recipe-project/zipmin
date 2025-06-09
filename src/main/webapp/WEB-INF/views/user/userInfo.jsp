@@ -23,7 +23,7 @@
 					<div class="account_info">
 						<h3>아이디</h3>
 						<div class="username_field">
-							<p class="username"></p>
+							<p class="username">정보 없음</p>
 						</div>
 					</div>
 					
@@ -40,19 +40,19 @@
 						<form id="basic-info-form">
 							<div class="name_field">
 								<label>이름</label>
-								<p class="name">하하</p>
+								<p class="name">정보 없음</p>
 								<input type="text" name="name" value="" placeholder="이름 입력">
 								<p class="name_hint">이름을 입력해주세요</p>
 							</div>
 							<div class="nickname_field">
 								<label>닉네임</label>
-								<p class="nickname"></p>
+								<p class="nickname">정보 없음</p>
 								<input type="text" name="nickname" value="" placeholder="닉네임 입력">
 								<p class="nickname_hint">닉네임을 입력해주세요</p>
 							</div>
 							<div class="tel_field">
 								<label>휴대폰 번호</label>
-								<p class="tel"></p>
+								<p class="tel">정보 없음</p>
 								<input type="text" name="tel" value="" placeholder="- 없이 휴대폰 번호 입력">
 								<p class="tel_hint">휴대폰 번호를 입력해주세요</p>
 							</div>
@@ -77,7 +77,7 @@
 							<form id="email-info-form">
 								<div class="email_field">
 									<label>이메일</label>
-									<p class="email"></p>
+									<p class="email">정보 없음</p>
 									<input type="email" name="email" value="" placeholder="이메일 입력">
 									<p class="email_hint">이메일을 입력해주세요.</p>
 								</div>

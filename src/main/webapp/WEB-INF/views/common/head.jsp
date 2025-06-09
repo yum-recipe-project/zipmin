@@ -18,6 +18,7 @@
 <script src="/js/common/jquery-3.7.1.min.js"></script>
 <script src="/js/common/jquery-ui.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="/js/common/ui-common.js"></script>
 <script src="/js/common/config.js"></script>
 <script src="/js/common/header.js" defer></script>

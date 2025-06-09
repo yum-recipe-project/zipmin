@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.zipmin.dto.ChompDTO;
-import com.project.zipmin.dto.ChompMegazineDTO;
-import com.project.zipmin.dto.ChompVoteDTO;
+import com.project.zipmin.dto.ChompResponseDTO;
+import com.project.zipmin.api.ApiResponse;
+import com.project.zipmin.api.ChompSuccessCode;
+import com.project.zipmin.dto.MegazineResponseDTO;
+import com.project.zipmin.dto.VoteResponseDTO;
 import com.project.zipmin.dto.CommentRequestDTO;
 import com.project.zipmin.dto.CommentResponseDTO;
 import com.project.zipmin.service.ChompService;
@@ -32,18 +37,24 @@ public class ChompessorController {
 	@Autowired
 	CommentService commentService;
 
+	
+	
 	// 쩝쩝박사 목록 조회
 	@GetMapping("/chomp")
-	public List<ChompDTO> listChomp() {
-		List<ChompDTO> chompList = chompService.getChompList();
-		return chompList;
+	public ResponseEntity<?> listChomp(@RequestParam String category, @RequestParam int page, @RequestParam int size) {
+		
+		Pageable pageable = PageRequest.of(page, size);
+		Page<ChompResponseDTO> chompPage = chompService.getChompList(category, pageable);
+
+		return ResponseEntity.status(ChompSuccessCode.CHOMP_LIST_FETCH_SUCCESS.getStatus())
+				.body(ApiResponse.success(ChompSuccessCode.CHOMP_LIST_FETCH_SUCCESS, chompPage));
 	}
 	
 	
 	
 	// 특정 투표 조회
 	@GetMapping("/votes/{voteId}")
-	public ChompVoteDTO viewVote(
+	public VoteResponseDTO viewVote(
 			@PathVariable("voteId") int voteId) {
 		return null;
 	}
@@ -196,9 +207,9 @@ public class ChompessorController {
 	
 	// 특정 매거진 조회
 	@GetMapping("/megazines/{megazineId}")
-	public ChompMegazineDTO viewMegazine(
+	public MegazineResponseDTO viewMegazine(
 			@PathVariable("megazineId") int megazineId) {
-		ChompMegazineDTO chompMegazineDTO = chompService.getMegazineById(megazineId);
+		MegazineResponseDTO chompMegazineDTO = chompService.getMegazineById(megazineId);
 		return chompMegazineDTO;
 	}
 

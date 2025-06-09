@@ -1,63 +1,63 @@
 /**
  * 폼 입력을 실시간으로 검증하는 함수
  */
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.querySelector("form");
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
 	
 	// 이름 실시간 검사
 	form.name.addEventListener('input', function() {
-		const isNameEmpty = this.value.trim() === "";
-		this.classList.toggle("danger", isNameEmpty);
-		document.querySelector(".name_field p").style.display = isNameEmpty ? "block" : "none";
+		const isNameEmpty = this.value.trim() === '';
+		this.classList.toggle('danger', isNameEmpty);
+		document.querySelector('.name_field p').style.display = isNameEmpty ? 'block' : 'none';
 	});
 	
 	// 휴대폰 번호 실시간 검사
 	form.tel.addEventListener('input', function() {
-		let tel = this.value.replace(/[^0-9]/g, "");
+		let tel = this.value.replace(/[^0-9]/g, '');
 		if (tel.length <= 3) {
 			this.value = tel;
 		}
 		else if (tel.length <= 7) {
-			this.value = tel.slice(0, 3) + "-" + tel.slice(3);
+			this.value = tel.slice(0, 3) + '-' + tel.slice(3);
 		}
 		else {
-			this.value = tel.slice(0, 3) + "-" + tel.slice(3, 7) + "-" + tel.slice(7, 11);
+			this.value = tel.slice(0, 3) + '-' + tel.slice(3, 7) + '-' + tel.slice(7, 11);
 		}
-		const isTelEmpty = this.value.trim() === "";
-		this. classList.toggle("danger", isTelEmpty);
-		document.querySelector(".tel_field p").style.display = isTelEmpty ? "block" : "none";
+		const isTelEmpty = this.value.trim() === '';
+		this. classList.toggle('danger', isTelEmpty);
+		document.querySelector('.tel_field p').style.display = isTelEmpty ? 'block' : 'none';
 	});
 	
 	
 	// 휴대폰 번호 실시간 검사
-	form.tel.addEventListener("input", function() {
-		let tel = this.value.replace(/[^0-9]/g, "");
+	form.tel.addEventListener('input', function() {
+		let tel = this.value.replace(/[^0-9]/g, '');
 		if (tel.length <= 3) {
 			this.value = tel;
 		}
 		else if (tel.length <= 7) {
-			this.value = tel.slice(0, 3) + "-" + tel.slice(3);
+			this.value = tel.slice(0, 3) + '-' + tel.slice(3);
 		}
 		else {
-			this.value = tel.slice(0, 3) + "-" + tel.slice(3, 7) + "-" + tel.slice(7, 11);
+			this.value = tel.slice(0, 3) + '-' + tel.slice(3, 7) + '-' + tel.slice(7, 11);
 		}
-		const isTelEmpty = this.value.trim() === "";
-		this.classList.toggle("danger", isTelEmpty);
-		document.querySelector(".tel_field p").style.display = isTelEmpty ? "block" : "none";
+		const isTelEmpty = this.value.trim() === '';
+		this.classList.toggle('danger', isTelEmpty);
+		document.querySelector('.tel_field p').style.display = isTelEmpty ? 'block' : 'none';
 	});
 	
 	// 아이디 실시간 검사
 	form.username.addEventListener('input', function() {
-		const isUsernameEmpty = this.value.trim() === "";
-		this.classList.toggle("danger", isUsernameEmpty);
-		document.querySelector(".username_field p").style.display = isUsernameEmpty ? "block" : "none";
+		const isUsernameEmpty = this.value.trim() === '';
+		this.classList.toggle('danger', isUsernameEmpty);
+		document.querySelector('.username_field p').style.display = isUsernameEmpty ? 'block' : 'none';
 	});
 	
 	// 이메일 실시간 검사
-	form.email.addEventListener("input", function() {
-		const isEmailEmpty = this.value.trim() === "";
-		this.classList.toggle("danger", isEmailEmpty);
-		document.querySelector(".email_field p").style.display = isEmailEmpty ? "block" : "none";
+	form.email.addEventListener('input', function() {
+		const isEmailEmpty = this.value.trim() === '';
+		this.classList.toggle('danger', isEmailEmpty);
+		document.querySelector('.email_field p').style.display = isEmailEmpty ? 'block' : 'none';
 	});
 });
 
@@ -129,10 +129,10 @@ document.addEventListener('DOMContentLoaded', function() {
 				name: findUsernameForm.name.value.trim(),
 				tel: findUsernameForm.tel.value.trim()
 			}
-			fetch("/users/username", {
-				method: "POST",
+			fetch('/users/username', {
+				method: 'POST',
 				headers: {
-					"Content-Type": "application/json"
+					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify(data)
 			})
@@ -140,11 +140,11 @@ document.addEventListener('DOMContentLoaded', function() {
 			.then(result => {
 				console.log(result);
 				if (result.code === 'USER_FIND_USERNAME_SUCCESS') {
-					sessionStorage.setItem("username", result.data.username);
-					window.location.href = "/user/findAccount/idResult.do";
+					sessionStorage.setItem('username', result.data.username);
+					window.location.href = '/user/findAccount/idResult.do';
 				}
 				else if (result.code === 'USER_NOT_FOUND') {
-					alert("이름과 전화번호를 정확히 입력해주세요.");
+					alert('이름과 전화번호를 정확히 입력해주세요.');
 					// 이후에 여러 동작들 만들기
 					findUsernameForm.name.value = '';
 					findUsernameForm.tel.value = '';

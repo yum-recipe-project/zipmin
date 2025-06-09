@@ -31,7 +31,6 @@ public class ChompVote {
 	private Date opendate;
 	private Date closedate;
 	
-	// private int chomp_id;
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CHOMP_ID")
 	private Chomp chomp;

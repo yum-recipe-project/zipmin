@@ -20,18 +20,20 @@
 							<div class="old_password_field">
 								<label>현재 비밀번호</label>
 								<input type="password" name="oldPassword" value="" placeholder="현재 비밀번호 입력">
-								<p>비밀번호를 입력해주세요.</p>
+								<p>현재 비밀번호를 입력해주세요.</p>
+								<p>현재 비밀번호가 일치하지 않습니다.</p>
 							</div>
 							<div class="new_password_field">
 								<label>새 비밀번호</label>
 								<label class="sub_label">영문+숫자 10자 이상 또는 영문+숫자+특수기호 8자 이상</label>
 								<input type="password" name="newPassword" value="" placeholder="비밀번호 입력">
-								<p>비밀번호를 입력해주세요.</p>
+								<p>새 비밀번호를 입력해주세요.</p>
 							</div>
 							<div class="check_password_field">
 								<label>비밀번호 확인</label>
 								<input type="password" name="checkPassword" value="" placeholder="현재 비밀번호 입력">
-								<p>비밀번호를 입력해주세요.</p>
+								<p>비밀번호 확인을 입력해주세요.</p>
+								<p>비밀번호가 일치하지 않습니다.</p>
 							</div>
 							<div class="notice">
 								<p>・&nbsp;&nbsp;원활한 이용을 위해 안전한 비밀번호로 설정해 주세요.</p>
@@ -39,7 +41,7 @@
 							</div>
 							
 							<!-- 버튼 -->
-							<button type="submit" class="btn_primary_wide">다음</button>
+							<button type="submit" class="btn_primary_wide">변경하기</button>
 						</form>
 					</div>
 				</div>

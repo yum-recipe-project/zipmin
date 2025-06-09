@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.AuthErrorCode;
+import com.project.zipmin.api.AuthSuccessCode;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -19,14 +20,11 @@ public class AuthController {
 	public ResponseEntity<?> checkAuth(HttpServletRequest request) {
 		String token = request.getHeader("Authorization");
 		
-		System.err.println("AuthController) token = " + token);
-		
 		if (token == null || !token.startsWith("Bearer ")) {
 			throw new ApiException(AuthErrorCode.AUTH_TOKEN_MISSING);
         }
-
-        return ResponseEntity.status(AuthErrorCode.AUTH_TOKEN_INVALID.getStatus())
-        			.body(ApiResponse.success(AuthErrorCode.AUTH_TOKEN_INVALID, null));
+        
+        return ResponseEntity.status(AuthSuccessCode.AUTH_VALID_TOKEN.getStatus())
+        			.body(ApiResponse.success(AuthSuccessCode.AUTH_VALID_TOKEN, null));
     }
 }
-

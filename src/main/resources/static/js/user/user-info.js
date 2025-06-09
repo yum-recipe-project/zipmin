@@ -1,60 +1,18 @@
 /**
  * 접근 권한을 설정하는 함수
  */
-/*
 document.addEventListener('DOMContentLoaded', async function() {
 	if (!isLoggedIn()) {
-		alert('로그인 후 이용 가능합니다.');
-		window.location.href = '/user/login.do';
-		return;
+		redirectToLogin();
 	}
-	
-	alert("로그인은 되어있음");
-	const token = localStorage.getItem('accessToken');
+
 	try {
-		const response = await fetch("/auth/check", {
-			method: "GET",
-			headers: {
-				"Authorization": "Bearer " + token
-			}
-		});
-		
-		alert("실행할거임");
-		const result = await response.json();
-		alert(result.code);
-		// 인증 성공 및 정상 접근
-		if (result.code === "AUTH_TOKEN_INVALID") {
-			alert("정상접근");
-			return;
-		}
-		// 토큰 만료시 재발급 시도
-		else if (isTokenExpired(token)) {
-			const reissueResponse = await fetch("/reissue", {
-				method: "POST",
-				credentials: "include"
-			});
-			const reissueResult = await reissueResponse.json();
-			alert(reissueResult);
-			if (reissueResult.code === 'AUTH_TOKEN_REISSUE_SUCCESS') {
-				localStorage.setItem('accessToken', reissueResult.data.accessToken);
-				alert(성공);
-				return;
-			}
-		}
-		// 인증 실패 또는 재발급 실패 시 재로그인 필요
-		else {
-			localStorage.removeItem("accessToken");
-			alert('세션이 만료되었습니다. 다시 로그인 해주세요.');
-			window.location.href = '/user/login.do';
-		}
+		await instance.get('/dummy');
 	}
 	catch (error) {
-		alert('문제가 발생했습니다.');
 		console.log(error);
-		window.location.href = '/user/login.do';
 	}
 });
-*/
 
 
 
@@ -71,38 +29,36 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
 /**
  * 회원 정보를 조회하는 함수
  */
-document.addEventListener('DOMContentLoaded', function() {
-	const token = localStorage.getItem('accessToken');
-	const payload = parseJwt(token);
-	
-	fetch(`/users/${payload.id}`, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json'
-		}
-	})
-	.then(response => response.json())
-	.then(result => {
-		if (result.code === 'USER_PROFILE_FETCH_SUCCESS') {
-			document.querySelector('.username_field .username').innerText = result.data.username;
-			document.querySelector('.name_field .name').innerText = result.data.name;
-			document.querySelector('.nickname_field .nickname').innerText = result.data.nickname;
-			document.querySelector('.tel_field .tel').innerText = result.data.tel;
-			document.querySelector('.email_field .email').innerText = result.data.email;
-			
-			document.querySelector('input[name="name"]').value = result.data.name;
-			document.querySelector('input[name="nickname"]').value = result.data.nickname;
-			document.querySelector('input[name="tel"]').value = result.data.tel;
-			document.querySelector('input[name="email"]').value = result.data.email;
-		}
-	})
-	.catch(error => console.log(error));
-});
+document.addEventListener('DOMContentLoaded', async function() {
+	if (!isLoggedIn()) {
+		redirectToLogin();
+	}
 
+	try {
+		const token = localStorage.getItem('accessToken');
+		const payload = parseJwt(token);
+		
+		const response = await instance.get(`/users/${payload.id}`);
+		if (response.data.code === 'USER_PROFILE_FETCH_SUCCESS') {
+			document.querySelector('.username_field .username').innerText = response.data.data.username;
+			document.querySelector('.name_field .name').innerText = response.data.data.name;
+			document.querySelector('.nickname_field .nickname').innerText = response.data.data.nickname;
+			document.querySelector('.tel_field .tel').innerText = response.data.data.tel;
+			document.querySelector('.email_field .email').innerText = response.data.data.email;
+			
+			document.querySelector('input[name="name"]').value = response.data.data.name;
+			document.querySelector('input[name="nickname"]').value = response.data.data.nickname;
+			document.querySelector('input[name="tel"]').value = response.data.data.tel;
+			document.querySelector('input[name="email"]').value = response.data.data.email;
+		}
+	}
+	catch (error) {
+		console.log(error);
+	}
+});
 
 
 /**
@@ -158,41 +114,40 @@ document.addEventListener('DOMContentLoaded', function() {
 	const basicInfoForm = document.getElementById('basic-info-form');
 	const emailInfoForm = document.getElementById('email-info-form');
 	
-	
 	// 이름 실시간 검사
 	basicInfoForm.name.addEventListener('input', function() {
-		const isNameEmpty = this.value.trim() === "";
+		const isNameEmpty = this.value.trim() === '';
 		this.classList.toggle('danger', isNameEmpty);
 		document.querySelector('.name_field .name_hint').style.display = isNameEmpty ? 'block' : 'none';
 	});
 	
 	// 닉네임 실시간 검사
 	basicInfoForm.nickname.addEventListener('input', function() {
-		const isNicknameEmpty = this.value.trim() === "";
+		const isNicknameEmpty = this.value.trim() === '';
 		this.classList.toggle('danger', isNicknameEmpty);
 		document.querySelector('.nickname_field .nickname_hint').style.display = isNicknameEmpty ? 'block' : 'none';
 	});
 	
 	// 휴대폰 번호 실시간 검사
 	basicInfoForm.tel.addEventListener('input', function() {
-		let tel = this.value.replace(/[^0-9]/g, "");
+		let tel = this.value.replace(/[^0-9]/g, '');
 		if (tel.length <= 3) {
 			this.value = tel;
 		}
 		else if (tel.length <= 7) {
-			this.value = tel.slice(0, 3) + "-" + tel.slice(3);
+			this.value = tel.slice(0, 3) + '-' + tel.slice(3);
 		}
 		else {
-			this.value = tel.slice(0, 3) + "-" + tel.slice(3, 7) + "-" + tel.slice(7, 11);
+			this.value = tel.slice(0, 3) + '-' + tel.slice(3, 7) + "-" + tel.slice(7, 11);
 		}
-		const isTelEmpty = this.value.trim() === "";
+		const isTelEmpty = this.value.trim() === '';
 		this.classList.toggle('danger', isTelEmpty);
 		document.querySelector('.tel_field .tel_hint').style.display = isTelEmpty ? 'block' : 'none';
 	});
 	
 	// 이메일 실시간 검사
 	emailInfoForm.email.addEventListener('input', function() {
-		const isEmailEmpty = this.value.trim() === "";
+		const isEmailEmpty = this.value.trim() === '';
 		this.classList.toggle('danger', isEmailEmpty);
 		document.querySelector('.email_field .email_hint').style.display = isEmailEmpty ? 'block' : 'none';
 	});
@@ -207,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 	// 기본 정보를 수정
 	const basicInfoForm = document.getElementById('basic-info-form');
-	basicInfoForm.addEventListener('submit', function(event) {
+	basicInfoForm.addEventListener('submit', async function(event) {
 		event.preventDefault();
 		let isValid = true;
 		
@@ -242,28 +197,22 @@ document.addEventListener('DOMContentLoaded', function() {
 				tel: basicInfoForm.tel.value.trim()
 			};
 			
-			fetch(`/users/${payload.id}`, {
-				method: 'PUT',
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify(data)
-			})
-			.then(response => response.json())
-			.then(result => {
-				console.log(result);
-				if (result.code === 'USER_PROFILE_UPDATE_SUCCESS') {
+			try {
+				const response = await instance.put(`/users/${payload.id}`, data);
+				
+				if (response.data.code === 'USER_PROFILE_UPDATE_SUCCESS') {
 					location.reload();
 				}
-			})
-			.catch(error => console.log(error));
+			}
+			catch(error) {
+				console.log(error);
+			}
 		}
-		
 	});
 	
 	// 이메일 정보를 수정
 	const emailInfoForm = document.getElementById('email-info-form');
-	emailInfoForm.addEventListener('submit', function(event) {
+	emailInfoForm.addEventListener('submit', async function(event) {
 		event.preventDefault();
 		let isValid = true;
 
@@ -278,17 +227,20 @@ document.addEventListener('DOMContentLoaded', function() {
 			const token = localStorage.getItem('accessToken');
 			const payload = parseJwt(token);
 			
-			fetch(`/users/${payload.id}`, {
-				method: 'PUT'
-			})
-			.then(response => response.json())
-			.then(result => {
-				console.log(result);
-				if (result.code === 'USER_PROFILE_UPDATE_SUCCESS') {
+			const data = {
+				email: emailInfoForm.email.value.trim()
+			}
+			
+			try {
+				const response = await instance.put(`/users/${payload.id}`, data);
+				
+				if (response.data.code === 'USER_PROFILE_UPDATE_SUCCESS') {
 					location.reload();
 				}
-			})
-			.catch(error => console.log(error));
+			}
+			catch (error) {
+				console.log(error);
+			}
 		}
 		
 	});
@@ -296,43 +248,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
 /**
  * 회원을 탈퇴하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	document.getElementById('user_delete_btn').addEventListener('click', function() {
+	document.getElementById('user_delete_btn').addEventListener('click', async function() {
 		
 		if (confirm('정말로 탈퇴하시겠습니까?')) {
 			if (confirm('이 동작은 되돌릴 수 없습니다. 정말로 탈퇴하시겠습니까?')) {
 				const token = localStorage.getItem('accessToken');
 				const payload = parseJwt(token);
 				
-				fetch(`/users/${payload.id}`, {
-					method: 'DELETE',
-					headers: {
-						"Content-Type": "application/json"
-					}
-				})
-				.then(response => response.json())
-				.then(result => {
-					console.log(result);
-					if (result.code === 'USER_DELETE_SUCCESS') {
-						localStorage.removeItem("accessToken");
+				try {
+					const response = await instance.delete(`/users/${payload.id}`);
+					
+					if (response.data.code === 'USER_DELETE_SUCCESS') {
+						localStorage.removeItem('accessToken');
 						alert('회원을 탈퇴했습니다.');
 						location.href = '/';
 					}
-					else {
-						alert('회원 탈퇴에 실패했습니다.');
-					}
-				})
-				.catch(error => console.log(error));
+				}
+				catch (error) {
+					alert('회원 탈퇴에 실패했습니다.');
+					console.log(error);
+				}
 			}
 		}
 	}) 
 });
-
-
 
 
 

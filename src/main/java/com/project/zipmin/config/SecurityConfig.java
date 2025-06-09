@@ -81,7 +81,8 @@ public class SecurityConfig {
 				// 모든 출처에서 요청 허용 (http://localhost:3000와 깉이 주소로 허용 가능)
 				configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8586"));
 				// HTTP 메소드 (GET, POST 등 모든 요청)의 요청을 허용
-				configuration.setAllowedMethods(Collections.singletonList("*"));
+				// configuration.setAllowedMethods(Collections.singletonList("*"));
+				configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 				// 인증 정보 (쿠키, 인증 토큰 등)의 전송을 허용
 				configuration.setAllowCredentials(true);
 				// 모든 HTTP 헤더의 요청을 허용
@@ -89,7 +90,8 @@ public class SecurityConfig {
 				// 최대 우효기간 설정
 				configuration.setMaxAge(3600L);
 				// 브라우저가 접근할 수 있도록 특정 응답 헤더를 노출
-				configuration.setExposedHeaders(Collections.singletonList("access"));
+				// configuration.setExposedHeaders(Collections.singletonList("access"));
+				configuration.setExposedHeaders(Arrays.asList("Authorization", "Set-Cookie"));
 				
 				return configuration;
 			}
@@ -140,7 +142,7 @@ public class SecurityConfig {
 				.requestMatchers("/kitchen/**").permitAll()
 				
 				.requestMatchers("/chompessor/**").permitAll()
-				.requestMatchers("/chomp/**").hasRole("USER")
+				.requestMatchers("/chomp/**").permitAll()
 				
 				.requestMatchers("/cooking/**").permitAll()
 				.requestMatchers("/fridge/**").permitAll()

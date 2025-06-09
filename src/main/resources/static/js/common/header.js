@@ -27,85 +27,86 @@ document.addEventListener('DOMContentLoaded', function() {
 /**
  * 헤더에 로그인한 사용자의 정보를 표시하는 함수
  */
-document.addEventListener('DOMContentLoaded', function() {
-	const token = localStorage.getItem("accessToken");
-	
-	// 비로그인 상태
-	if (!token) {
-		document.querySelector(".logout_state").style.display = "flex";
-		document.querySelector(".login_state").style.display = "none";
+document.addEventListener('DOMContentLoaded', async function() {
+	if (!isLoggedIn()) {
+		setLoginState(false);
 		return;
 	}
-	
-	if (token) {
 		
-		// 토큰 만료시 재발급 시도
-		if (isTokenExpired(token)) {
-			fetch("/reissue", {
-				method: "POST",
-				credentials: "include"
-			})
-			.then(response => response.json())
-			.then(result => {
-				if (result.code === "AUTH_TOKEN_REISSUE_SUCCESS") {
-					localStorage.setItem("accessToken", result.data.accessToken);
-					const payload = parseJwt(token);
-					document.querySelector(".logout_state").style.display = "none";
-					document.querySelector(".login_state").style.display = "flex";
-					document.querySelector(".user_name").innerText = `${payload.nickname}님`;
-				}
-				else {
-					// 비회원으로 간주
-					localStorage.removeItem("accessToken");
-					return;
-				}
-			})
-			.catch(error => console.log(error));
-			return;
-		}
+	try {
+		await instance.get('/dummy');
 		
-		// 유효한 토큰이면 사용자 정보 표시
+		const token = localStorage.getItem('accessToken');
 		const payload = parseJwt(token);
-		document.querySelector(".logout_state").style.display = "none";
-		document.querySelector(".login_state").style.display = "flex";
-		document.querySelector(".user_name").innerText = `${payload.nickname}님`;
+		
+		setLoginState(true, payload.nickname);
+	}
+	catch (error) {
+		setLoginState(false);
 	}
 });
 
 
 
 /**
- * 로그아웃
+ * 로그인 상태에 따라 헤더 표시를 변경하는 함수
+ * 
+ * @param {boolean} isLoggedIn - 로그인 여부
+ * @param {String} nickname - 사용자 닉네임
+ */
+function setLoginState(isLoggedIn, nickname = '') {
+	const logoutState = document.querySelector(".logout_state");
+	const loginState = document.querySelector(".login_state");
+	const userName = document.querySelector(".user_name");
+	
+	if (isLoggedIn) {
+		logoutState.style.display = "none";
+		loginState.style.display = "flex";
+		userName.innerText = `${nickname}님`;
+	} else {
+		logoutState.style.display = "flex";
+		loginState.style.display = "none";
+		userName.innerText = "";
+	}
+}
+
+
+
+/**
+ * 로그아웃을 하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	document.getElementById("logout").addEventListener("click", function(event) {
+	document.getElementById("logout").addEventListener("click", async function(event) {
 		event.preventDefault();
-		fetch("/logout", {
-			method: "POST",
-			credentials: "include"
-		})
-		.then(response => response.json())
-		.then((data) => {
-			if (data.code === "USER_LOGOUT_SUCCESS") {
+		
+		if (!isLoggedIn()) {
+			redirectToLogin();
+		}
+		
+		try {
+			const response = await instance.post('/logout');
+			
+			if (response.data.code === "USER_LOGOUT_SUCCESS") {
 				localStorage.removeItem("accessToken");
 				window.location.href = "/";
 			}
-			else if (data.code === "AUTH_REFRESH_TOKEN_MISSING") {
+		}
+		catch (error) {
+			if (error.response?.data?.code === "AUTH_REFRESH_TOKEN_MISSING") {
 				alert("로그아웃 실패");
 			}
-			else if (data.code === "AUTH_REFRESH_TOKEN_EXPIRED") {
+			else if (error.response?.data?.code === "AUTH_REFRESH_TOKEN_EXPIRED") {
 				alert("로그아웃 실패");
 			}
-			else if (data.code === "AUTH_REFRESH_TOKEN_INVALID") {
+			else if (error.response?.data?.code === "AUTH_REFRESH_TOKEN_INVALID") {
 				alert("로그아웃 실패");
 			}
-			else if (data.code === "USER_NOT_FOUND") {
+			else if (error.response?.data?.code === "USER_NOT_FOUND") {
 				alert("로그아웃 실패");
 			}
 			else {
 				alert("로그아웃 실패");
 			}
-		})
-		.catch(error => console.log(error));
+		}
 	});
 });

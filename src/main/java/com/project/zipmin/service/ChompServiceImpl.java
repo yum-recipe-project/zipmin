@@ -5,12 +5,15 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.project.zipmin.dto.ChompDTO;
-import com.project.zipmin.dto.ChompEventDTO;
-import com.project.zipmin.dto.ChompMegazineDTO;
-import com.project.zipmin.dto.ChompVoteDTO;
+import com.project.zipmin.dto.ChompResponseDTO;
+import com.project.zipmin.dto.EventResponseDTO;
+import com.project.zipmin.dto.MegazineResponseDTO;
+import com.project.zipmin.dto.VoteResponseDTO;
 import com.project.zipmin.entity.Chomp;
 import com.project.zipmin.entity.ChompMegazine;
 import com.project.zipmin.mapper.ChompEventMapper;
@@ -42,46 +45,61 @@ public class ChompServiceImpl implements ChompService {
 	private final ChompVoteMapper chompVoteMapper;
 	private final ChompMegazineMapper chompMegazineMapper;
 	private final ChompEventMapper chompEventMapper;
-
+	
+	
+	
 	@Override
-	public List<ChompDTO> getChompList() {
-		Date today = new Date();
+	public Page<ChompResponseDTO> getChompList(String category, Pageable pageable) {
 		
-		List<Chomp> chompList = chompRepository.findAll();
-		List<ChompDTO> chompDTOList = new ArrayList<ChompDTO>();
-		for (Chomp chomp : chompList) {
-			ChompDTO chompDTO = chompMapper.chompToChompDTO(chomp);
-			ChompVoteDTO chompVoteDTO = chompVoteMapper.chompVoteToChompVoteDTO(chomp.getChompVote());
-			if (chompVoteDTO != null) {
-				if (today.after(chompVoteDTO.getOpendate()) && today.before(chompVoteDTO.getClosedate())) {
-					chompVoteDTO.setStatus("open");
+		Page<Chomp> chompPage;
+		
+		if ("all".equals(category)) {
+			chompPage = chompRepository.findAll(pageable);
+		}
+		else {
+			chompPage = chompRepository.findByCategory(category, pageable);
+		}
+		
+		Date today = new Date();
+		List<ChompResponseDTO> chompDtoList = new ArrayList<ChompResponseDTO>();
+		for (Chomp chomp : chompPage) {
+			ChompResponseDTO chompDTO = chompMapper.toResponseDto(chomp);
+			// 투표
+			VoteResponseDTO voteDto = chompVoteMapper.chompVoteToChompVoteDTO(chomp.getChompVote());
+			if (voteDto != null) {
+				if (today.after(voteDto.getOpendate()) && today.before(voteDto.getClosedate())) {
+					voteDto.setStatus("open");
 				}
 				else {
-					chompVoteDTO.setStatus("close");
+					voteDto.setStatus("close");
 				}	
 			}
-			ChompMegazineDTO chompMegazineDTO = chompMegazineMapper.chompMegazineToChompMegazineDTO(chomp.getChompMegazine());
-			ChompEventDTO chompEventDTO = chompEventMapper.chompEventToChompEventDTO(chomp.getChompEvent());
-			if (chompEventDTO != null) {
-				if (today.after(chompEventDTO.getOpendate()) && today.before(chompEventDTO.getClosedate())) {
-					chompEventDTO.setStatus("open");
+			// 매거진
+			MegazineResponseDTO megazineDto = chompMegazineMapper.chompMegazineToChompMegazineDTO(chomp.getChompMegazine());
+			// 이벤트
+			EventResponseDTO eventDto = chompEventMapper.chompEventToChompEventDTO(chomp.getChompEvent());
+			if (eventDto != null) {
+				if (today.after(eventDto.getOpendate()) && today.before(eventDto.getClosedate())) {
+					eventDto.setStatus("open");
 				}
 				else {
-					chompEventDTO.setStatus("close");
+					eventDto.setStatus("close");
 				}
 			}
-			chompDTO.setChompVoteDTO(chompVoteDTO);
-			chompDTO.setChompMegazineDTO(chompMegazineDTO);
-			chompDTO.setChompEventDTO(chompEventDTO);
-			chompDTOList.add(chompDTO);
+			
+			chompDTO.setChompVoteDTO(voteDto);
+			chompDTO.setChompMegazineDTO(megazineDto);
+			chompDTO.setChompEventDTO(eventDto);
+			chompDtoList.add(chompDTO);
 		}
-		return chompDTOList;
+		
+		return new PageImpl<>(chompDtoList, pageable, chompPage.getTotalElements());
 	}
 
 
 
 	@Override
-	public ChompVoteDTO getVoteById(int id) {
+	public VoteResponseDTO getVoteById(int id) {
 //		ChompVote chompVote = chompVoteRepository.findById(id).orElseThrow();
 //		System.err.println(chompVote);
 //		if (chompVote.isPresent()) {
@@ -94,16 +112,16 @@ public class ChompServiceImpl implements ChompService {
 	}
 
 	@Override
-	public ChompVoteDTO getVoteByChompId(int chompId) {
+	public VoteResponseDTO getVoteByChompId(int chompId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
-	public ChompMegazineDTO getMegazineById(int id) {
+	public MegazineResponseDTO getMegazineById(int id) {
 		ChompMegazine chompMegazine = chompMegazineRepository.findById(id).orElseThrow();
-		ChompMegazineDTO chompMegazineDTO = chompMegazineMapper.chompMegazineToChompMegazineDTO(chompMegazine);
-		ChompDTO chompDTO = chompMapper.chompToChompDTO(chompMegazine.getChomp());
+		MegazineResponseDTO chompMegazineDTO = chompMegazineMapper.chompMegazineToChompMegazineDTO(chompMegazine);
+		ChompResponseDTO chompDTO = chompMapper.toResponseDto(chompMegazine.getChomp());
 		chompMegazineDTO.setChompDTO(chompDTO);
 		return chompMegazineDTO;
 	}

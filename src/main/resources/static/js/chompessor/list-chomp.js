@@ -15,15 +15,22 @@ const size = 10;
 
 
 /**
+ * tab 조작하는 함수 따로 빼기
+ */
+
+
+
+
+
+
+
+/**
  * 
  */
 document.addEventListener('DOMContentLoaded', function () {
 	// 데이터 불러오기
-	fetch('http://localhost:8586/chomp', {
-		method: "GET",
-		headers: {
-			"Authorization": "Bearer " + localStorage.getItem("accessToken")
-		}
+	fetch(`http://localhost:8586/chomp?category=${selectTab}&status=${selectSort}`, {
+		method: 'GET'
 	})
 		.then(response => response.json())
 		.then(dataList => {

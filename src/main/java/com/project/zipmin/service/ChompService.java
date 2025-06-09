@@ -2,9 +2,11 @@ package com.project.zipmin.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.project.zipmin.dto.ChompDTO;
+import com.project.zipmin.dto.ChompResponseDTO;
 import com.project.zipmin.dto.ChompMegazineDTO;
 import com.project.zipmin.dto.ChompVoteDTO;
 
@@ -12,7 +14,9 @@ import com.project.zipmin.dto.ChompVoteDTO;
 public interface ChompService {
 	
 	// 모든 쩝쩝박사 게시물 조회
-	public List<ChompDTO> getChompList();
+	public List<ChompResponseDTO> getChompList();
+	
+	public Page<ChompResponseDTO> getChompListByCategoryAndStatus(String category, String status, Pageable pageable);
 	
 	
 	

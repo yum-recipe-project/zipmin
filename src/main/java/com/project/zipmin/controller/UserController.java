@@ -54,6 +54,9 @@ public class UserController {
 //		return userList;
 //	}
 	
+	
+	
+	
 	// 특정 사용자 조회
 	@GetMapping("/users/{userId}")
 	public ResponseEntity<?> viewMember(@PathVariable("userId") int id) {

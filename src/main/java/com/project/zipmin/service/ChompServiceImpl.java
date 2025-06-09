@@ -5,9 +5,12 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.project.zipmin.dto.ChompDTO;
+import com.project.zipmin.dto.ChompResponseDTO;
 import com.project.zipmin.dto.ChompEventDTO;
 import com.project.zipmin.dto.ChompMegazineDTO;
 import com.project.zipmin.dto.ChompVoteDTO;
@@ -44,38 +47,56 @@ public class ChompServiceImpl implements ChompService {
 	private final ChompEventMapper chompEventMapper;
 
 	@Override
-	public List<ChompDTO> getChompList() {
-		Date today = new Date();
+	public List<ChompResponseDTO> getChompList() {
+//		Date today = new Date();
+//		
+//		List<Chomp> chompList = chompRepository.findAll();
+//		List<ChompResponseDTO> chompDTOList = new ArrayList<ChompResponseDTO>();
+//		for (Chomp chomp : chompList) {
+//			ChompResponseDTO chompDTO = chompMapper.chompToChompDTO(chomp);
+//			ChompVoteDTO chompVoteDTO = chompVoteMapper.chompVoteToChompVoteDTO(chomp.getChompVote());
+//			if (chompVoteDTO != null) {
+//				if (today.after(chompVoteDTO.getOpendate()) && today.before(chompVoteDTO.getClosedate())) {
+//					chompVoteDTO.setStatus("open");
+//				}
+//				else {
+//					chompVoteDTO.setStatus("close");
+//				}	
+//			}
+//			ChompMegazineDTO chompMegazineDTO = chompMegazineMapper.chompMegazineToChompMegazineDTO(chomp.getChompMegazine());
+//			ChompEventDTO chompEventDTO = chompEventMapper.chompEventToChompEventDTO(chomp.getChompEvent());
+//			if (chompEventDTO != null) {
+//				if (today.after(chompEventDTO.getOpendate()) && today.before(chompEventDTO.getClosedate())) {
+//					chompEventDTO.setStatus("open");
+//				}
+//				else {
+//					chompEventDTO.setStatus("close");
+//				}
+//			}
+//			chompDTO.setChompVoteDTO(chompVoteDTO);
+//			chompDTO.setChompMegazineDTO(chompMegazineDTO);
+//			chompDTO.setChompEventDTO(chompEventDTO);
+//			chompDTOList.add(chompDTO);
+//		}
+//		return chompDTOList;
 		
-		List<Chomp> chompList = chompRepository.findAll();
-		List<ChompDTO> chompDTOList = new ArrayList<ChompDTO>();
-		for (Chomp chomp : chompList) {
-			ChompDTO chompDTO = chompMapper.chompToChompDTO(chomp);
-			ChompVoteDTO chompVoteDTO = chompVoteMapper.chompVoteToChompVoteDTO(chomp.getChompVote());
-			if (chompVoteDTO != null) {
-				if (today.after(chompVoteDTO.getOpendate()) && today.before(chompVoteDTO.getClosedate())) {
-					chompVoteDTO.setStatus("open");
-				}
-				else {
-					chompVoteDTO.setStatus("close");
-				}	
-			}
-			ChompMegazineDTO chompMegazineDTO = chompMegazineMapper.chompMegazineToChompMegazineDTO(chomp.getChompMegazine());
-			ChompEventDTO chompEventDTO = chompEventMapper.chompEventToChompEventDTO(chomp.getChompEvent());
-			if (chompEventDTO != null) {
-				if (today.after(chompEventDTO.getOpendate()) && today.before(chompEventDTO.getClosedate())) {
-					chompEventDTO.setStatus("open");
-				}
-				else {
-					chompEventDTO.setStatus("close");
-				}
-			}
-			chompDTO.setChompVoteDTO(chompVoteDTO);
-			chompDTO.setChompMegazineDTO(chompMegazineDTO);
-			chompDTO.setChompEventDTO(chompEventDTO);
-			chompDTOList.add(chompDTO);
+		return null;
+	}
+	
+	
+	
+
+	@Override
+	public Page<ChompResponseDTO> getChompListByCategoryAndStatus(String category, String status, Pageable pageable) {
+		
+		Page<Chomp> chompPage = chompRepository.findByCategoryAndStatus(category, status, pageable);
+		
+		List<ChompResponseDTO> chompDtoList = new ArrayList<ChompResponseDTO>();
+		for (Chomp chomp : chompPage) {
+			chompDtoList.add(chompMapper.toResponseDto(chomp));
 		}
-		return chompDTOList;
+		
+		return new PageImpl<>(chompDtoList, pageable, chompPage.getTotalElements());
 	}
 
 
@@ -103,7 +124,7 @@ public class ChompServiceImpl implements ChompService {
 	public ChompMegazineDTO getMegazineById(int id) {
 		ChompMegazine chompMegazine = chompMegazineRepository.findById(id).orElseThrow();
 		ChompMegazineDTO chompMegazineDTO = chompMegazineMapper.chompMegazineToChompMegazineDTO(chompMegazine);
-		ChompDTO chompDTO = chompMapper.chompToChompDTO(chompMegazine.getChomp());
+		ChompResponseDTO chompDTO = chompMapper.toResponseDto(chompMegazine.getChomp());
 		chompMegazineDTO.setChompDTO(chompDTO);
 		return chompMegazineDTO;
 	}

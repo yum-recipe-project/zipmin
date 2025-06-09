@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.zipmin.dto.ChompResponseDTO;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.ChompSuccessCode;
-import com.project.zipmin.dto.ChompMegazineDTO;
-import com.project.zipmin.dto.ChompVoteDTO;
+import com.project.zipmin.dto.MegazineResponseDTO;
+import com.project.zipmin.dto.VoteResponseDTO;
 import com.project.zipmin.dto.CommentRequestDTO;
 import com.project.zipmin.dto.CommentResponseDTO;
 import com.project.zipmin.service.ChompService;
@@ -41,12 +41,11 @@ public class ChompessorController {
 	
 	// 쩝쩝박사 목록 조회
 	@GetMapping("/chomp")
-	public ResponseEntity<?> listChomp(@RequestParam String category, @RequestParam String status) {
+	public ResponseEntity<?> listChomp(@RequestParam String category, @RequestParam int page, @RequestParam int size) {
 		
-		Pageable pageable = PageRequest.of(0, 10);
+		Pageable pageable = PageRequest.of(page, size);
+		Page<ChompResponseDTO> chompPage = chompService.getChompList(category, pageable);
 
-		Page<ChompResponseDTO> chompPage = chompService.getChompListByCategoryAndStatus(category, status, pageable);
-		
 		return ResponseEntity.status(ChompSuccessCode.CHOMP_LIST_FETCH_SUCCESS.getStatus())
 				.body(ApiResponse.success(ChompSuccessCode.CHOMP_LIST_FETCH_SUCCESS, chompPage));
 	}
@@ -55,7 +54,7 @@ public class ChompessorController {
 	
 	// 특정 투표 조회
 	@GetMapping("/votes/{voteId}")
-	public ChompVoteDTO viewVote(
+	public VoteResponseDTO viewVote(
 			@PathVariable("voteId") int voteId) {
 		return null;
 	}
@@ -208,9 +207,9 @@ public class ChompessorController {
 	
 	// 특정 매거진 조회
 	@GetMapping("/megazines/{megazineId}")
-	public ChompMegazineDTO viewMegazine(
+	public MegazineResponseDTO viewMegazine(
 			@PathVariable("megazineId") int megazineId) {
-		ChompMegazineDTO chompMegazineDTO = chompService.getMegazineById(megazineId);
+		MegazineResponseDTO chompMegazineDTO = chompService.getMegazineById(megazineId);
 		return chompMegazineDTO;
 	}
 

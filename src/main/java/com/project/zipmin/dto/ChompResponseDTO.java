@@ -13,7 +13,7 @@ public class ChompResponseDTO {
 	private String category;
 	private String title;
 	
-	private ChompVoteDTO chompVoteDTO;
-	private ChompMegazineDTO chompMegazineDTO;
-	private ChompEventDTO chompEventDTO;
+	private VoteResponseDTO chompVoteDTO;
+	private MegazineResponseDTO chompMegazineDTO;
+	private EventResponseDTO chompEventDTO;
 }

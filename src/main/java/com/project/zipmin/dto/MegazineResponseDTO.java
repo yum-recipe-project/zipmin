@@ -6,14 +6,15 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ChompVoteDTO {
+public class MegazineResponseDTO {
 	private int id;
-	private Date opendate;
-	private Date closedate;
-	private int chompId;
+	private Date postdate;
+	private String content;
+	// private int chompId;
 	
-	private String status;
+	private ChompResponseDTO chompDTO;
 }

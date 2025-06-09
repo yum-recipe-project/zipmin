@@ -1,75 +1,62 @@
 /**
  * 전역 변수 선언
- * allChompList:
- * selectTab: 선택된 탭
- * selectSort: 선택된 정렬 기준
- * page: 현재 페이지 번호
- * size: 한번에 가져올 데이터 개수
  */
-let allChompList = [];
-let selectTab = "all";
-let selectSort = "all";
-let page = 0;
-const size = 10;
+let category = 'all';
+let totalPages = 0;
+let page = 0; // 현재 페이지 번호
+const size = 10; // 한번에 가져올 데이터 개수
+let chompList = [];
 
 
 
 /**
- * tab 조작하는 함수 따로 빼기
+ * 카테고리 클릭 시 데이터를 가져오는 함수
  */
-
-
-
-
-
-
-
-/**
- * 
- */
-document.addEventListener('DOMContentLoaded', function () {
-	// 데이터 불러오기
-	fetch(`http://localhost:8586/chomp?category=${selectTab}&status=${selectSort}`, {
-		method: 'GET'
-	})
-		.then(response => response.json())
-		.then(dataList => {
-			allChompList = dataList;
-			page = 0;
-			renderChompDataList();
-		})
-		.catch(error => console.error(error));
-
-	// 카테고리 탭 클릭
+document.addEventListener('DOMContentLoaded', function() {
 	document.querySelectorAll(".btn_tab").forEach(tab => {
-		tab.addEventListener("click", function (e) {
-			e.preventDefault();
+		tab.addEventListener("click", function (event) {
+			event.preventDefault();
 			document.querySelector(".btn_tab.active")?.classList.remove("active");
 			this.classList.add("active");
-			selectTab = this.getAttribute("data-tab");
+			
+			category = this.getAttribute("data-tab");
 			page = 0;
-			renderChompDataList();
+			
+			chompList = [];
+			
+			fetchChompList(page);
 		});
 	});
 
-	// 정렬 기준 필터 클릭
-	document.querySelectorAll(".btn_sort").forEach(sort => {
-		sort.addEventListener("click", function (e) {
-			e.preventDefault();
-			document.querySelector(".btn_sort.active")?.classList.remove("active");
-			this.classList.add("active");
-			selectSort = this.getAttribute("data-sort");
-			page = 0;
-			renderChompDataList();
-		});
-	});
-
-	// 더보기 버튼
-	document.querySelector(".btn_more").addEventListener("click", function () {
-		page++;
-		renderChompDataList();
-	});
+	// 초기 실행
+	fetchChompList(page);
 });
+
+
+
+/**
+ * 쩝쩝박사 목록 데이터를 가져오는 함수
+ */
+function fetchChompList(num) {
+	fetch(`/chomp?category=${category}&page=${num}&size=${size}`, {
+		method: 'GET'
+	})
+	.then(response => response.json())
+	.then(result => {
+		const data = result.data;
+		if (!data) return;
+		
+		console.log(data);
+		
+		page = data.number;
+		totalPages = data.totalPages;
+		chompList = data.content;
+		
+		renderChompDataList();
+		renderPagination();
+	})
+	.catch(error => console.error(error));
+}
 
 
 
@@ -77,46 +64,8 @@ document.addEventListener('DOMContentLoaded', function () {
  * 카테고리에 일치하는 목록을 렌더링 하는 함수
  */
 function renderChompDataList() {
-	const categoryMap = {
-		vote: "투표",
-		megazine: "매거진",
-		event: "이벤트",
-		all: "전체"
-	};
-
-	// 필터 적용
-	let filteredList = selectTab === "all"
-		? allChompList
-		: allChompList.filter(chomp => chomp.category === categoryMap[selectTab]);
-
-	filteredList = selectSort === "all"
-		? filteredList
-		: filteredList.filter(chomp => {
-			if (chomp.category === "투표") {
-				return chomp.chomp_vote_dto?.status === selectSort;
-			}
-			if (chomp.category === "이벤트") {
-				return chomp.chomp_event_dto?.status === selectSort;
-			}
-			return true;
-		});
-
-	// 페이징 처리
-	const start = 0;
-	const end = (page + 1) * size;
-	const currentList = filteredList.slice(start, end);
-
-	// 렌더링
-	const html = currentList.map(data => renderChompData(data)).join("");
+	const html = chompList.map(data => renderChompData(data)).join("");
 	document.getElementById("chomp").innerHTML = html;
-
-	// 더보기 버튼 제어
-	const btnMore = document.querySelector(".btn_more");
-	if (end >= filteredList.length) {
-		btnMore.style.display = "none";
-	} else {
-		btnMore.style.display = "block";
-	}
 }
 
 
@@ -127,7 +76,7 @@ function renderChompDataList() {
 function renderChompData(data) {
 	const today = new Date();
 
-	if (data.category === '투표') {
+	if (data.category === 'vote') {
 		const opendate = new Date(data.chomp_vote_dto.opendate);
 		const closedate = new Date(data.chomp_vote_dto.closedate);
 		const status = (today >= opendate && today <= closedate)
@@ -152,7 +101,7 @@ function renderChompData(data) {
 			</li>`;
 	}
 
-	if (data.category === '매거진') {
+	if (data.category === 'megazine') {
 		const postdate = new Date(data.chomp_megazine_dto.postdate);
 		const formatDate = `${postdate.getFullYear()}년 ${postdate.getMonth() + 1}월 ${postdate.getDate()}일`;
 
@@ -171,7 +120,7 @@ function renderChompData(data) {
 			</li>`;
 	}
 
-	if (data.category === '이벤트') {
+	if (data.category === 'event') {
 		const opendate = new Date(data.chomp_event_dto.opendate);
 		const closedate = new Date(data.chomp_event_dto.closedate);
 		const status = (today >= opendate && today <= closedate)
@@ -195,4 +144,46 @@ function renderChompData(data) {
 				</a>
 			</li>`;
 	}
+}
+
+function renderPagination() {
+	const pagination = document.querySelector('.pagination ul');
+	
+	// 이전 버튼
+	pagination.innerHTML += `
+		<li>
+			<a href="#" class="prev" data-page="${page - 1}" ${page === 0 ? 'style="pointer-events:none;opacity:0;"' : ''}>
+				<img src="/images/common/chevron_left.png">
+			</a>
+		</li>
+	`;
+
+	// 페이지 번호
+	for (let i = 0; i < totalPages; i++) {
+		pagination.innerHTML += `
+			<li>
+				<a href="#" class="page ${i === page ? 'active' : ''}" data-page="${i}">${i + 1}</a>
+			</li>
+		`;
+	}
+
+	// 다음 버튼
+	pagination.innerHTML += `
+		<li>
+			<a href="#" class="next" data-page="${page + 1}" ${page === totalPages - 1 ? 'style="pointer-events:none;opacity:0;"' : ''}>
+				<img src="/images/common/chevron_right.png">
+			</a>
+		</li>
+	`;
+
+	// 바인딩
+	document.querySelectorAll(".pagination a").forEach(link => {
+		link.addEventListener('click', function (e) {
+			e.preventDefault();
+			const newPage = parseInt(this.getAttribute("data-page"));
+			if (!isNaN(newPage) && newPage >= 0 && newPage < totalPages && newPage !== page) {
+				fetchChompList(newPage);
+			}
+		});
+	});
 }

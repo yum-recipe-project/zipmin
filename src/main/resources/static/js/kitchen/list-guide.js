@@ -1,7 +1,77 @@
+
 /**
- * 
+ * 전역 변수 선언
  */
+let category = 'all';
+let totalPages = 0;
+let page = 0; // 현재 페이지 번호
+const size = 5; // 한번에 가져올 데이터 개수
+let guideList = [];
+
 document.addEventListener('DOMContentLoaded', function() {
+	
+	// 키친가이드 목록 가져옴
+	fetchGuideList(page);
+	
+
+	/**
+	 * 키친가이드 목록 데이터를 가져오는 함수
+	 */
+	function fetchGuideList(num) {
+	    fetch(`/guides?category=${category}&page=${num}&size=${size}`, {
+	        method: 'GET'
+	    })
+	    .then(response => response.json())
+	    .then(result => {
+	        const data = result.data;
+	        if (!data || !data.content) return;
+
+	        console.log(data); // 콘솔 출력
+
+	        const guideList = document.querySelector('.guide_list');
+
+	        data.content.forEach(item => {
+	            const li = document.createElement('li');
+	            li.innerHTML = `
+	                <a href="/kitchen/viewGuide.do?id=${item.id}">
+	                    <div class="guide_item">
+	                        <div class="guide_details">
+	                            <div class="guide_top">
+	                                <span>${item.subtitle}</span>
+	                                <button class="favorite_btn"></button>
+	                            </div>
+	                            <span>${item.title}</span>
+	                            <div class="info">
+	                                <p>스크랩 ${item.scrapCount || 0}</p>
+	                                <p>${formatDate(item.postdate)}</p>
+	                            </div>
+	                            <div class="writer">
+	                                ${item.writerImage ?
+	                                    `<img src="${item.writerImage}">` :
+	                                    `<span class="profile_img"></span>`}
+	                                <p>${item.writerNickname || '작성자'}</p>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </a>
+	            `;
+	            guideList.appendChild(li);
+	        });
+	    })
+	    .catch(error => console.error(error));
+	}
+
+	// 날짜 포맷 함수 (yyyy.mm.dd 형태로)
+	function formatDate(isoString) {
+	    const date = new Date(isoString);
+	    const yyyy = date.getFullYear();
+	    const mm = String(date.getMonth() + 1).padStart(2, '0');
+	    const dd = String(date.getDate()).padStart(2, '0');
+	    return `${yyyy}.${mm}.${dd}`;
+	}
+
+
+
 	
 	/**
 	 * 페이지네이션 

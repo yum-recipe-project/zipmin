@@ -2,6 +2,11 @@ package com.project.zipmin.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,21 +16,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.zipmin.api.ApiResponse;
+import com.project.zipmin.api.KitchenSuccessCode;
 import com.project.zipmin.dto.CommentResponseDTO;
 import com.project.zipmin.dto.GuideDTO;
+import com.project.zipmin.service.KitchenService;
 
 @RestController
 @RequestMapping("/guides")
 public class KitchenController {
 	
+	@Autowired
+	KitchenService kitchenService;
+	
 
 	// 가이드 목록 조회
+//	@GetMapping("")
+//	public List<GuideDTO> listGuide() {
+//		return null;
+//	}
 	@GetMapping("")
-	public List<GuideDTO> listGuide() {
-		return null;
+	public ResponseEntity<?> listGuide(
+		    @RequestParam(name = "category") String category,
+		    @RequestParam(name = "page") int page,
+		    @RequestParam(name = "size") int size
+		) {
+		Pageable pageable = PageRequest.of(page, size);
+        Page<GuideDTO> guidePage = kitchenService.getGuideList(category, pageable);
+        
+        return ResponseEntity.status(KitchenSuccessCode.KITCHEN_LIST_FETCH_SUCCESS.getStatus())
+                .body(ApiResponse.success(KitchenSuccessCode.KITCHEN_LIST_FETCH_SUCCESS, guidePage));
 	}
 	
 	
+
 	
 	// 특정 가이드 조회
 	@GetMapping("/{guideId}")

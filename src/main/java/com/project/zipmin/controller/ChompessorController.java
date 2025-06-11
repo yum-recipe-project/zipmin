@@ -24,7 +24,7 @@ import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.ChompSuccessCode;
 import com.project.zipmin.dto.MegazineResponseDTO;
 import com.project.zipmin.dto.VoteResponseDTO;
-import com.project.zipmin.dto.CommentRequestDTO;
+import com.project.zipmin.dto.CommentRequestDto;
 import com.project.zipmin.dto.CommentResponseDTO;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
@@ -232,30 +232,12 @@ public class ChompessorController {
 			@PathVariable("megazineId") int megazineId) {
 		return 0;
 	}
-	
-	// 특정 매거진의 댓글 목록 조회
-	@GetMapping("/megazines/{megazineId}/comments")
-	public List<CommentResponseDTO> listMegazineComment(
-			@PathVariable int megazineId,
-			@RequestParam String sort) {
-		List<CommentResponseDTO> commentList = new ArrayList<CommentResponseDTO>();
-		if (sort.equals("new")) {
-			commentList = commentService.getCommentListByTablenameAndRecodenumOrderByIdDesc("chomp_megazine", megazineId);
-		}
-		else if (sort.equals("old")) {
-			commentList = commentService.getCommentListByTablenameAndRecodenumOrderByIdAsc("chomp_megazine", megazineId);
-		}
-		else if (sort.equals("hot")) {
-			commentList = commentService.getCommentListByTablenameAndRecodenumOrderByLikecount("chomp_megazine", megazineId);
-		}
-		return commentList;
-	}
-	
+
 	// 특정 매거진에 댓글 작성
 	@PostMapping("/megazines/{megazineId}/comments")
-	public ResponseEntity<Map<String, Object>> writeMegazineComment(
+	public ResponseEntity<Map<String, Object>> writeComment(
 	        @PathVariable int megazineId,
-	        @RequestBody CommentRequestDTO commentDTO) {
+	        @RequestBody CommentRequestDto commentDTO) {
 		
 		commentDTO.setCommId(1);
 		commentDTO.setUserId(1);

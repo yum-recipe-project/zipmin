@@ -17,16 +17,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	// 매거진 정보 불러오기
 	fetch(`http://localhost:8586/megazines/${megazineId}`, {
-		method: "GET"
+		method: 'GET'
 	})
 	.then(response => response.json())
 	.then(data => {
-		document.querySelector(".megazine_category").innerText = data.chomp_dto.category;
-		document.querySelector(".megazine_title").innerText = data.chomp_dto.title;
-		document.querySelector(".megazine_content").innerText = data.content;
+		document.querySelector('.megazine_title').innerText = data.chomp_dto.title;
+		document.querySelector('.megazine_content').innerText = data.content;
 		const date = new Date(data.postdate);
 		const formatDate = `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일`;
-		document.querySelector(".megazine_postdate").innerText = formatDate;
+		document.querySelector('.megazine_postdate').innerText = formatDate;
 	})
 	.catch(error => console.log(error));
 
@@ -35,19 +34,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	// 정렬 탭 클릭
 	document.querySelectorAll('.comment_order button').forEach(tab => {
-		tab.addEventListener("click", function (event) {
+		tab.addEventListener('click', function (event) {
 			event.preventDefault();
 			document.querySelectorAll('.comment_order button').forEach(btn => btn.classList.remove('active'));
 			this.classList.add('active');
-			selectSort = this.getAttribute("data-sort");
+			selectSort = this.getAttribute('data-sort');
 			page = 0;
-			document.querySelector(".comment_list").innerHTML = "";
+			document.querySelector('.comment_list').innerHTML = '';
 			loadAndRenderComments(megazineId);
 		});
 	});
 
 	// 더보기 버튼
-	document.querySelector(".btn_more").addEventListener("click", function () {
+	document.querySelector('.btn_more').addEventListener('click', function () {
 		page++;
 		renderChompMegazineCommentDataList();
 	});
@@ -58,8 +57,17 @@ document.addEventListener('DOMContentLoaded', function () {
  * 
  */
 function loadAndRenderComments(megazineId) {
-	fetch(`http://localhost:8586/megazines/${megazineId}/comments?sort=${selectSort}`, {
-		method: "GET"
+	
+	const data = {
+		sort : selectSort,
+		page : page,
+		size : size
+	};
+	
+	const param = new URLSearchParams(data).toString();
+	
+	fetch(`http://localhost:8586/megazines/${megazineId}/comments?${param}`, {
+		method: 'GET'
 	})
 	.then(response => response.json())
 	.then(dataList => {
@@ -69,6 +77,7 @@ function loadAndRenderComments(megazineId) {
 	})
 	.catch(error => console.log(error));
 }
+
 
 
 /**
@@ -166,30 +175,37 @@ function renderChompMegazineCommentDataList() {
  * 댓글을 작성하는 함수
  */
 document.addEventListener('DOMContentLoaded', function () {
-	document.getElementById("writeCommentForm").addEventListener("submit", function (event) {
+	document.getElementById('writeCommentForm').addEventListener("submit", function (event) {
 		event.preventDefault();
-		const params = new URLSearchParams(window.location.search);
-		const megazineId = params.get('megazineId');
 		
-		const commentData = {
-			content: document.getElementById("writeCommentContent").value.trim(),
-			tablename: "chomp_megazine",
-			recodenum: Number(megazineId),
-		};
-
-		fetch(`http://localhost:8586/megazines/${megazineId}/comments`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify(commentData)
-		})
-		.then((response) => response.json())
-		.then(result => {
-			console.log("결과: ", result);
-			// location.reload();
-		})
-		.catch(error => console.log(error));
+		if (!isLoggedIn()) {
+			redirectToLogin();
+		}
+		
+		try {
+			const token = localStorage.getItem('accessToken');
+			const payload = parseJwt(token);
+			
+			console.log(payload.id);
+			
+			const params = new URLSearchParams(window.location.search);
+			const megazineId = params.get('megazineId');
+			
+			const data = {
+				content: document.getElementById("writeCommentContent").value.trim(),
+				tablename: 'chomp_megazine',
+				recodenum: Number(megazineId),
+				user_id: payload.id
+			};
+			
+			const response = instance.post(`http://localhost:8586/comments`, data);
+			
+			console.log(response);
+			
+		}
+		catch (error) {
+			console.log(error);
+		}
 	});
 });
 

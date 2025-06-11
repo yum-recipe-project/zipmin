@@ -260,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				const payload = parseJwt(token);
 				
 				try {
-					const response = await instance.delete(`/users/${payload.id}`);
+					const response = await instance(`/users/${payload.id}`);
 					
 					if (response.data.code === 'USER_DELETE_SUCCESS') {
 						localStorage.removeItem('accessToken');

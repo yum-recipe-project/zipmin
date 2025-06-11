@@ -146,8 +146,12 @@ function renderChompData(data) {
 	}
 }
 
+
+
+
 function renderPagination() {
 	const pagination = document.querySelector('.pagination ul');
+	pagination.innerHTML= '';
 	
 	// 이전 버튼
 	pagination.innerHTML += `

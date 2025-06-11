@@ -5,9 +5,14 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.project.zipmin.dto.CommentRequestDTO;
+import com.project.zipmin.dto.CommentReadRequestDto;
+import com.project.zipmin.dto.CommentReadResponseDto;
+import com.project.zipmin.dto.CommentRequestDto;
 import com.project.zipmin.dto.CommentResponseDTO;
 import com.project.zipmin.dto.LikeDTO;
 import com.project.zipmin.dto.UserDto;
@@ -29,55 +34,69 @@ public class CommentServiceImpl implements CommentService {
 	@Autowired
 	private LikeRepository likeRepository;
 
-	
 	private final CommentMapper commentMapper;
-	private final UserMapper userMapper;
-
+	
 	@Override
-	public List<CommentResponseDTO> getCommentListByTablenameAndRecodenumOrderByIdAsc(String tablename, int recodenum) {
-		List<Comment> commentList = commentRepository.findAllByTablenameAndRecodenumOrderByIdAsc(tablename, recodenum);
-		List<CommentResponseDTO> commentDTOList = new ArrayList<CommentResponseDTO>();
-		for (Comment comment : commentList) {
-			CommentResponseDTO commentDTO = commentMapper.commentToCommentResponseDTO(comment);
+	public Page<CommentReadResponseDto> getCommentPageByTablenameAndRecodenumOrderByIdAsc(String tablename, int recodenum, Pageable pageable) {
+		
+		Page<Comment> commentPage = commentRepository.findByTablenameAndRecodenumOrderByIdAsc(tablename, recodenum, pageable);
+
+		List<CommentReadResponseDto> commentDtoList = new ArrayList<CommentReadResponseDto>();
+		for (Comment comment : commentPage) {
+			CommentReadResponseDto commentDTO = commentMapper.toResponseDto(comment);
 			commentDTO.setCommId(comment.getComment().getId());
 			commentDTO.setUserId(comment.getUser().getId());
 			commentDTO.setNickname(comment.getUser().getNickname());
 			commentDTO.setLikecount(likeRepository.countByTablenameAndRecodenum("comments", comment.getId()));
-			commentDTOList.add(commentDTO);
+			commentDtoList.add(commentDTO);
 		}
-	    return commentDTOList;
+	    return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
 	}
 
+	
+	
 	@Override
-	public List<CommentResponseDTO> getCommentListByTablenameAndRecodenumOrderByIdDesc(String tablename, int recodenum) {
-		List<Comment> commentList = commentRepository.findAllByTablenameAndRecodenumOrderByIdDesc(tablename, recodenum);
-		List<CommentResponseDTO> commentDTOList = new ArrayList<CommentResponseDTO>();
-		for (Comment comment : commentList) {
-			CommentResponseDTO commentDTO = commentMapper.commentToCommentResponseDTO(comment);
+	public Page<CommentReadResponseDto> getCommentPageByTablenameAndRecodenumOrderByIdDesc(String tablename, int recodenum, Pageable pageable) {
+		
+		Page<Comment> commentPage = commentRepository.findByTablenameAndRecodenumOrderByIdDesc(tablename, recodenum, pageable);
+
+		List<CommentReadResponseDto> commentDtoList = new ArrayList<CommentReadResponseDto>();
+		for (Comment comment : commentPage) {
+			CommentReadResponseDto commentDTO = commentMapper.toResponseDto(comment);
 			commentDTO.setCommId(comment.getComment().getId());
 			commentDTO.setUserId(comment.getUser().getId());
 			commentDTO.setNickname(comment.getUser().getNickname());
 			commentDTO.setLikecount(likeRepository.countByTablenameAndRecodenum("comments", comment.getId()));
-			commentDTOList.add(commentDTO);
+			commentDtoList.add(commentDTO);
 		}
-	    return commentDTOList;
+	    return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
 	}
 
+	
+	
 	@Override
-	public List<CommentResponseDTO> getCommentListByTablenameAndRecodenumOrderByLikecount(String tablename, int recodenum) {
-		List<Comment> commentList = commentRepository.findAllByTablenameAndRecodenumOrderByLikecount(tablename, recodenum);
-		List<CommentResponseDTO> commentDTOList = new ArrayList<CommentResponseDTO>();
-		for (Comment comment : commentList) {
-			CommentResponseDTO commentDTO = commentMapper.commentToCommentResponseDTO(comment);
+	public Page<CommentReadResponseDto> getCommentPageByTablenameAndRecodenumOrderByLikecount(String tablename, int recodenum, Pageable pageable) {
+		
+		Page<Comment> commentPage = commentRepository.findByTablenameAndRecodenumOrderByLikecount(tablename, recodenum, pageable);
+
+		List<CommentReadResponseDto> commentDtoList = new ArrayList<CommentReadResponseDto>();
+		for (Comment comment : commentPage) {
+			CommentReadResponseDto commentDTO = commentMapper.toResponseDto(comment);
 			commentDTO.setCommId(comment.getComment().getId());
 			commentDTO.setUserId(comment.getUser().getId());
 			commentDTO.setNickname(comment.getUser().getNickname());
 			commentDTO.setLikecount(likeRepository.countByTablenameAndRecodenum("comments", comment.getId()));
-			commentDTOList.add(commentDTO);
+			commentDtoList.add(commentDTO);
 		}
-		System.err.println(commentDTOList);
-	    return commentDTOList;
+	    return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
 	}
+	
+	
+	
+	
+	
+	
+	
 
 	@Override
 	public int countCommentsByTableNameAndRecordNum(String tablename, int recordnum) {
@@ -104,16 +123,23 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public int createComment(CommentRequestDTO commentDTO) {
-		System.err.println("commentDTO = " + commentDTO);
-		Comment comment = commentMapper.commentRequestDTOToComment(commentDTO);
-		System.err.println("comment = " + comment);
-		commentRepository.save(comment);
-		return 0;
+	public void createComment(CommentRequestDto commentDto) {
+		System.err.println("comment service 실행");
+		Comment comment = commentMapper.commentRequestDTOToComment(commentDto);
+		System.err.println("변환");
+		
+		// 기본 저장
+		comment = commentRepository.save(comment);
+		
+	    // 부모가 없는 루트 댓글일 경우 셀프 참조
+	    if (comment.getComment() == null) {
+	    	comment.setComment(comment);
+	        commentRepository.save(comment);
+	    }
 	}
 
 	@Override
-	public int updateComment(CommentRequestDTO commentDTO) {
+	public int updateComment(CommentRequestDto commentDTO) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

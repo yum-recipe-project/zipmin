@@ -92,3 +92,34 @@ document.addEventListener('DOMContentLoaded', function() {
 		writeSubcommentButton.classList.toggle("disabled", isWriteSubcommentContentEmpty);
     });
 });
+
+
+
+/**
+ * 로그인 여부에 따라 댓글 작성폼을 다르게 표시하는 함수
+ */
+document.addEventListener('DOMContentLoaded', async function() {
+	if (!isLoggedIn()) {
+		document.getElementById('logout_state').style.display = 'block';
+		document.getElementById('login_state').style.display = 'none';
+	}
+	
+	try {
+		await instance.get('/dummy');
+		
+		const token = localStorage.getItem('accessToken');
+		const payload = parseJwt(token);
+		
+		document.getElementById('logout_state').style.display = 'none';
+		document.getElementById('login_state').style.display = 'block';
+		
+		document.querySelector('.login_user span').innerText = payload.nickname;
+	}
+	catch (error) {
+		setLoginState(false);
+	}
+});
+
+
+
+

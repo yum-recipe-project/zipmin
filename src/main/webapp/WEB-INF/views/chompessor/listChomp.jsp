@@ -61,15 +61,7 @@
 				<!-- 페이지네이션 -->
 				<div class="pagination_wrap">
 					<div class="pagination">
-					    <ul>
-					        <li><a href="#" class="prev"><img src="/images/common/chevron_left.png"></a></li>
-					        <li><a href="#" class="page active">1</a></li>
-					        <li><a href="#" class="page">2</a></li>
-					        <li><a href="#" class="page">3</a></li>
-					        <li><a href="#" class="page">4</a></li>
-					        <li><a href="#" class="page">5</a></li>
-					        <li><a href="#" class="next"><img src="/images/common/chevron_right.png"></a></li>
-					    </ul>
+					    <ul></ul>
 					</div>
 				</div>
 			</div>

@@ -18,17 +18,17 @@
 	<!-- 댓글 작성 -->
 	<form id="writeCommentForm" class="comment_write">
 		<!-- 로그인 하지 않은 경우 -->
-		<c:if test="${ false }">
-			<a href="/member/login.do">
+		<div id="logout_state">
+			<a href="/user/login.do">
 				<span>댓글 작성을 위해 로그인을 해주세요.</span>
 				<span>400</span>
 			</a>
-		</c:if>
+		</div>
 		<!-- 로그인 한 경우 -->
-		<c:if test="${ true }">
+		<div id="login_state">
 			<div class="login_user">
 				<img src="/images/common/test.png">
-				<span>아잠만</span>
+				<span></span>
 			</div>
 			<div class="comment_input">
 				<textarea id="writeCommentContent" rows="2" maxlength="400" placeholder="욕설, 비방, 허위 정보 및 부적절한 댓글은 사전 경고 없이 삭제될 수 있습니다."></textarea>
@@ -37,7 +37,7 @@
 			<div class="write_btn">
 				<button class="btn_primary disable" type="submit" class="disable" disabled>작성하기</button>
 			</div>
-		</c:if>
+		</div>
 	</form>
 	
 	<!-- 댓글 목록 -->

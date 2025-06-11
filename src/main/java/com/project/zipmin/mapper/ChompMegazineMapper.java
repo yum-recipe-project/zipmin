@@ -10,6 +10,10 @@ import com.project.zipmin.entity.ChompMegazine;
 @Mapper(componentModel = "spring")
 public interface ChompMegazineMapper {
 	MegazineResponseDTO chompMegazineToChompMegazineDTO(ChompMegazine chompMegazine);
-	ChompMegazine chompMegazineDTOToChompMegazine(MegazineResponseDTO chompMegazineDTO);
+	ChompMegazine toEntity(MegazineResponseDTO chompMegazineDTO);
 	List<MegazineResponseDTO> chompMegazineListTChompMegazineDTOList(List<ChompMegazine> chompMegazineList);
+	
+	
+	
+
 }

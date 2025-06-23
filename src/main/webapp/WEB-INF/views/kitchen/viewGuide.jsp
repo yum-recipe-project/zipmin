@@ -27,7 +27,7 @@
 							<span><b>관리자</b></span>
 							<span> ・ </span>
 							<span>저장</span>
-							<span>26</span>
+							<span class="scrap">26</span>
 							<span> ・ </span>
 							<span class="post_date"></span>
 						</div>

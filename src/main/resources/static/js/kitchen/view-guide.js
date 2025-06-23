@@ -23,10 +23,10 @@ function fetchGuideDetail(guideId) {
     fetch(`/guides/${guideId}`)
         .then(res => res.json())
         .then(result => {
-            const guide = result.data;
-            if (!guide) return;
+            const response = result.data;
+			if (!response || !response.guide) return;
 
-            renderGuide(guide);
+            renderGuide(response.guide, response.likecount);
         })
         .catch(console.error);
 }
@@ -35,11 +35,16 @@ function fetchGuideDetail(guideId) {
  * 가이드 상세 데이터 UI 렌더링 함수
  * @param {Object} guide - 가이드 객체
  */
-function renderGuide(guide) {
+function renderGuide(guide, likeCount) {
 	document.querySelector('.subtitle').textContent = guide.subtitle || '';
 	document.querySelector('.title').textContent = guide.title || '';
 	document.querySelector('.post_date').textContent = formatDate(guide.postdate);
 	document.querySelector('.guide_content').textContent = guide.content || '';
+	document.querySelector('.scrap').textContent = (likeCount != null) ? likeCount : '0'; // 데이터가 없을 경우 스크랩 수가 0
+
+	
+	console.log("likeCount: " + likeCount);
+	
 }
 
 /**

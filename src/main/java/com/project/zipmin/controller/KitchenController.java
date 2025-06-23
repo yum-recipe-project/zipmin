@@ -20,7 +20,9 @@ import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.KitchenSuccessCode;
 import com.project.zipmin.dto.CommentResponseDTO;
 import com.project.zipmin.dto.GuideDTO;
+import com.project.zipmin.dto.GuideResponseDTO;
 import com.project.zipmin.service.KitchenService;
+import com.project.zipmin.service.LikeService;
 
 @RestController
 @RequestMapping("/guides")
@@ -28,6 +30,9 @@ public class KitchenController {
 	
 	@Autowired
 	KitchenService kitchenService;
+	
+	@Autowired
+	LikeService likeService;
 	
 
 	// 가이드 목록 조회
@@ -48,18 +53,15 @@ public class KitchenController {
 
 	
 	// 특정 가이드 조회
-//	@GetMapping("/{guideId}")
-//	public GuideDTO viewGuide(@PathVariable("guideId") int guideId) {
-//		return null;
-//	}
-	
-	// 특정 가이드 조회
 	@GetMapping("/{guideId}")
 	public ResponseEntity<?> viewGuide(@PathVariable("guideId") int guideId) {
 	    GuideDTO guide = kitchenService.getGuideById(guideId);
+	    int likeCount = likeService.selectLikeCountByTable("guide", guideId);
+	    
+	    GuideResponseDTO response = new GuideResponseDTO(guide, likeCount);
 	    
 	    return ResponseEntity.status(KitchenSuccessCode.KITCHEN_DETAIL_FETCH_SUCCESS.getStatus())
-	            .body(ApiResponse.success(KitchenSuccessCode.KITCHEN_DETAIL_FETCH_SUCCESS, guide));
+	            .body(ApiResponse.success(KitchenSuccessCode.KITCHEN_DETAIL_FETCH_SUCCESS, response));
 	}
 
 	

@@ -20,8 +20,8 @@
 				<div class="guide_wrap">
 					<!-- 가이드 헤더 -->
 					<div class="guide_header">
-						<span>제주 바다향을 담은</span>
-						<h2>뿔 소라 손질법</h2>
+						<span class="subtitle"></span>
+						<h2 class="title"></h2>
 						<div class="guide_writer">
 							<img src="/images/common/test.png">
 							<span><b>관리자</b></span>
@@ -29,7 +29,7 @@
 							<span>저장</span>
 							<span>26</span>
 							<span> ・ </span>
-							<span>2025.02.10</span>
+							<span class="post_date"></span>
 						</div>
 						<div class="btn_wrap">
 							<button class="btn_tool" onclick="">
@@ -39,17 +39,7 @@
 					</div>
 					
 					<!-- 가이드 내용 -->
-					<p class="guide_content">
-						뿔소라는 양식이 불가능해<br/>
-						오직 자연산으로만 채취 가능한데요.<br/>
-						제주 해녀들이 직접 잡은 자연산 뿔소라!<br/>
-						귀한 만큼 손질법을 제대로 알고 먹어야<br/>
-						더 맛있게 즐길 수 있겠죠?<br/><br/>
-						1. 포크나 젓가락으로 뿔소라 살을 콕 집어 돌려 뺀 후 껍질을 떼주세요.<br/>
-						2. 몸통을 감싼 얇은 살과 내장을 제거해 주세요.<br/>
-						3. 검은 부분을 눌러 이빨과 침샘을 제거해 주세요<br/><br/>
-						그럼 끝입니다~
-					</p>
+					<p class="guide_content"></p>
 					
 					<!-- 목록 버튼 -->
 					<div class="list_btn">

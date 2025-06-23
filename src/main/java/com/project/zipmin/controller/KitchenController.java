@@ -48,10 +48,20 @@ public class KitchenController {
 
 	
 	// 특정 가이드 조회
+//	@GetMapping("/{guideId}")
+//	public GuideDTO viewGuide(@PathVariable("guideId") int guideId) {
+//		return null;
+//	}
+	
+	// 특정 가이드 조회
 	@GetMapping("/{guideId}")
-	public GuideDTO viewGuide(@PathVariable("guideId") int guideId) {
-		return null;
+	public ResponseEntity<?> viewGuide(@PathVariable("guideId") int guideId) {
+	    GuideDTO guide = kitchenService.getGuideById(guideId);
+	    
+	    return ResponseEntity.status(KitchenSuccessCode.KITCHEN_DETAIL_FETCH_SUCCESS.getStatus())
+	            .body(ApiResponse.success(KitchenSuccessCode.KITCHEN_DETAIL_FETCH_SUCCESS, guide));
 	}
+
 	
 	
 	

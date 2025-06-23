@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum KitchenSuccessCode implements Code {
 	
-	KITCHEN_LIST_FETCH_SUCCESS(HttpStatus.OK, "키친가이드 게시판 목록이 조회되었습니다.");
+	KITCHEN_LIST_FETCH_SUCCESS(HttpStatus.OK, "키친가이드 게시판 목록이 조회되었습니다."),
+	KITCHEN_DETAIL_FETCH_SUCCESS(HttpStatus.OK, "키친가이드 상세 정보가 조회되었습니다.");
+	
 	
 	private final HttpStatus status;
 	private final String message;

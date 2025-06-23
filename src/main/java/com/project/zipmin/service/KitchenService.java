@@ -12,4 +12,7 @@ public interface KitchenService {
 	// 모든 키친가이드 게시물 조회	
 	public Page<GuideDTO> getGuideList(String category, Pageable pageable);
 	
+	// 특정 가이드 상세 조회
+    GuideDTO getGuideById(int guideId);
+    
 }

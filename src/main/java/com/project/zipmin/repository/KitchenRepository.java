@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @Repository
-public interface GuideRepository extends JpaRepository<Guide, Integer> {
+public interface KitchenRepository extends JpaRepository<Guide, Integer> {
 	Page<Guide> findAll(Pageable pageable);
 	Page<Guide> findByCategory(String category, Pageable pageable);
 }

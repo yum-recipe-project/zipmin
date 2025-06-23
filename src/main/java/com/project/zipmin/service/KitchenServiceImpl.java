@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.project.zipmin.dto.GuideDTO;
 import com.project.zipmin.entity.Guide;
 import com.project.zipmin.mapper.GuideMapper;
-import com.project.zipmin.repository.GuideRepository;
+import com.project.zipmin.repository.KitchenRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class KitchenServiceImpl implements KitchenService {
 	
 	@Autowired
-	private final GuideRepository guideRepository;
+	private final KitchenRepository guideRepository;
 	@Autowired
 	private final GuideMapper guideMapper;
 	

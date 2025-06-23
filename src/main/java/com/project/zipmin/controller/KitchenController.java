@@ -31,10 +31,6 @@ public class KitchenController {
 	
 
 	// 가이드 목록 조회
-//	@GetMapping("")
-//	public List<GuideDTO> listGuide() {
-//		return null;
-//	}
 	@GetMapping("")
 	public ResponseEntity<?> listGuide(
 		    @RequestParam(name = "category") String category,

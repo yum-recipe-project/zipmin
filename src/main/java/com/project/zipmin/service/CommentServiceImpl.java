@@ -1,7 +1,6 @@
 package com.project.zipmin.service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,16 +9,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.project.zipmin.dto.CommentReadRequestDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.CommentRequestDto;
 import com.project.zipmin.dto.CommentResponseDTO;
-import com.project.zipmin.dto.LikeDTO;
-import com.project.zipmin.dto.UserDto;
 import com.project.zipmin.entity.Comment;
-import com.project.zipmin.entity.Like;
 import com.project.zipmin.mapper.CommentMapper;
-import com.project.zipmin.mapper.UserMapper;
 import com.project.zipmin.repository.CommentRepository;
 import com.project.zipmin.repository.LikeRepository;
 
@@ -59,7 +53,7 @@ public class CommentServiceImpl implements CommentService {
 	public Page<CommentReadResponseDto> getCommentPageByTablenameAndRecodenumOrderByIdDesc(String tablename, int recodenum, Pageable pageable) {
 		
 		Page<Comment> commentPage = commentRepository.findByTablenameAndRecodenumOrderByIdDesc(tablename, recodenum, pageable);
-
+		
 		List<CommentReadResponseDto> commentDtoList = new ArrayList<CommentReadResponseDto>();
 		for (Comment comment : commentPage) {
 			CommentReadResponseDto commentDTO = commentMapper.toResponseDto(comment);

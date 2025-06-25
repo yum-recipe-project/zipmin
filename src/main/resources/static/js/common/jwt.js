@@ -77,8 +77,11 @@ async function reissueJwt() {
 /**
  * axios 인스턴스를 생성
  */
+const baseURL = location.hostname === 'localhost'
+  ? 'http://localhost:8586'
+  : 'http://ec2-43-202-4-20.ap-northeast-2.compute.amazonaws.com:8586';
 const instance = axios.create({
-	baseURL: 'http://localhost:8586',
+	baseURL: baseURL,
 	withCredentials: true
 });
 

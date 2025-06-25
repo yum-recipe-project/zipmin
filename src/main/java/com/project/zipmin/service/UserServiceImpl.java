@@ -63,7 +63,6 @@ public class UserServiceImpl implements UserService {
 		
 		User user = userMapper.toEntity(userJoinDto);
 		user.setPassword(passwordEncoder.encode(userJoinDto.getPassword()));
-		
 		user.setRole(Role.ROLE_USER);
 		
 		Boolean exists = userRepository.existsByUsername(userJoinDto.getUsername());

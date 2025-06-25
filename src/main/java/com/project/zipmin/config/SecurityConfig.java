@@ -2,6 +2,7 @@ package com.project.zipmin.config;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -78,8 +79,12 @@ public class SecurityConfig {
 			public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
 				CorsConfiguration configuration = new CorsConfiguration();
 				
-				// 모든 출처에서 요청 허용 (http://localhost:3000와 깉이 주소로 허용 가능)
-				configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8586"));
+				// 모든 출처에서 요청 허용 (http://localhost:3000와 같이 주소로 허용 가능)
+				configuration.setAllowedOrigins(List.of(
+					    "http://localhost:8586",
+					    "http://ec2-43-202-4-20.ap-northeast-2.compute.amazonaws.com:8586"
+					)
+				);
 				// HTTP 메소드 (GET, POST 등 모든 요청)의 요청을 허용
 				// configuration.setAllowedMethods(Collections.singletonList("*"));
 				configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
@@ -143,6 +148,8 @@ public class SecurityConfig {
 				
 				.requestMatchers("/chompessor/**").permitAll()
 				.requestMatchers("/chomp/**").permitAll()
+				
+				.requestMatchers("/comments", "/comments/**").permitAll()
 				
 				.requestMatchers("/cooking/**").permitAll()
 				.requestMatchers("/fridge/**").permitAll()

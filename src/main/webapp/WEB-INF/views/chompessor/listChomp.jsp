@@ -5,7 +5,9 @@
 	<head>
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/chompessor/list-chomp.css">
+		<link rel="stylesheet" href="/css/common/pagination.css">
 		<script src="/js/chompessor/list-chomp.js"></script>
+		<script src="/js/common/pagination.js"></script>
 	</head>
 
 	<body>

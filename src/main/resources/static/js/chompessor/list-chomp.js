@@ -38,7 +38,14 @@ document.addEventListener('DOMContentLoaded', function() {
  * 쩝쩝박사 목록 데이터를 가져오는 함수
  */
 function fetchChompList(num) {
-	fetch(`/chomp?category=${category}&page=${num}&size=${size}`, {
+	
+	const parameters = new URLSearchParams({
+		category : category,
+		page : num,
+		size : size
+	}).toString();
+	
+	fetch(`/chomp?${parameters}`, {
 		method: 'GET'
 	})
 	.then(response => response.json())
@@ -52,7 +59,7 @@ function fetchChompList(num) {
 		totalPages = data.totalPages;
 		chompList = data.content;
 		
-		renderChompDataList();
+		renderChompList();
 		renderPagination();
 	})
 	.catch(error => console.error(error));
@@ -63,8 +70,8 @@ function fetchChompList(num) {
 /**
  * 카테고리에 일치하는 목록을 렌더링 하는 함수
  */
-function renderChompDataList() {
-	const html = chompList.map(data => renderChompData(data)).join("");
+function renderChompList() {
+	const html = chompList.map(data => getChompHTML(data)).join("");
 	document.getElementById("chomp").innerHTML = html;
 }
 
@@ -73,7 +80,7 @@ function renderChompDataList() {
 /**
  * 개별 데이터를 렌더링하는 함수
  */
-function renderChompData(data) {
+function getChompHTML(data) {
 	const today = new Date();
 
 	if (data.category === 'vote') {
@@ -107,7 +114,7 @@ function renderChompData(data) {
 
 		return `
 			<li class="forum">
-				<a href="/chompessor/viewMegazine.do?megazineId=${data.chomp_megazine_dto.id}">
+				<a href="/chompessor/viewMegazine.do?id=${data.chomp_megazine_dto.id}">
 					<div class="forum_thumbnail"><img src="/images/common/test.png"></div>
 					<div class="forum_info">
 						<p class="type">매거진</p>

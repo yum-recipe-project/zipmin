@@ -11,15 +11,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.CommentSuccessCode;
-import com.project.zipmin.dto.CommentReadRequestDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.service.CommentService;
-
-import jakarta.websocket.server.PathParam;
 
 @RestController
 public class CommentController {
@@ -30,19 +28,19 @@ public class CommentController {
 	
 	
 	@GetMapping("/comments")
-	public ResponseEntity<?> readComment(@PathVariable int megazineId, @PathVariable String sort, @PathVariable int page, @PathVariable int size) {
+	public ResponseEntity<?> readComment(@RequestParam String tablename, @RequestParam int recodenum, @RequestParam String sort, @RequestParam int page, @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
 		Page<CommentReadResponseDto> commentPage = null;
 		
 		if (sort.equals("new")) {
-			commentPage = commentService.getCommentPageByTablenameAndRecodenumOrderByIdDesc("chomp_megazine", megazineId, pageable);
+			commentPage = commentService.getCommentPageByTablenameAndRecodenumOrderByIdDesc(tablename, recodenum, pageable);
 		}
 		else if (sort.equals("old")) {
-			commentPage = commentService.getCommentPageByTablenameAndRecodenumOrderByIdAsc("chomp_megazine", megazineId, pageable);
+			commentPage = commentService.getCommentPageByTablenameAndRecodenumOrderByIdAsc(tablename, recodenum, pageable);
 		}
 		else if (sort.equals("hot")) {
-			commentPage = commentService.getCommentPageByTablenameAndRecodenumOrderByLikecount("chomp_megazine", megazineId, pageable);
+			commentPage = commentService.getCommentPageByTablenameAndRecodenumOrderByLikecount(tablename, recodenum, pageable);
 		}
 		
 		System.err.println("controller = " + commentPage.getContent());

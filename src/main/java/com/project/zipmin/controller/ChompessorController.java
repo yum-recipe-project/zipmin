@@ -1,6 +1,5 @@
 package com.project.zipmin.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -205,13 +204,18 @@ public class ChompessorController {
 	
 	
 	
+	
 	// 특정 매거진 조회
-	@GetMapping("/megazines/{megazineId}")
-	public MegazineResponseDTO viewMegazine(
-			@PathVariable("megazineId") int megazineId) {
-		MegazineResponseDTO chompMegazineDTO = chompService.getMegazineById(megazineId);
+	@GetMapping("/megazines/{id}")
+	public MegazineResponseDTO viewMegazine(@PathVariable int id) {
+		MegazineResponseDTO chompMegazineDTO = chompService.getMegazineById(id);
 		return chompMegazineDTO;
 	}
+	
+	
+	
+	
+	
 
 	// 새 매거진 등록 (관리자)
 	@PostMapping("/megazines")

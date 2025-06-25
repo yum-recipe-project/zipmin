@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 
-import com.project.zipmin.dto.CommentReadRequestDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.CommentRequestDto;
 import com.project.zipmin.dto.CommentResponseDTO;
@@ -27,9 +26,9 @@ public interface CommentMapper {
 	
 	
 	
-	Comment toEntity(CommentReadRequestDto commentDto);
-	CommentReadRequestDto toRequestDto(Comment comment);
-	List<CommentReadRequestDto> toRequestDtoList(List<Comment> commentList);
+//	Comment toEntity(CommentReadRequestDto commentDto);
+//	CommentReadRequestDto toRequestDto(Comment comment);
+//	List<CommentReadRequestDto> toRequestDtoList(List<Comment> commentList);
 	
 	Comment toEntity(CommentReadResponseDto commentDto);
 	CommentReadResponseDto toResponseDto(Comment comment);

@@ -45,6 +45,7 @@ function fetchChompList(num) {
 		size : size
 	}).toString();
 	
+	// 
 	fetch(`/chomp?${parameters}`, {
 		method: 'GET'
 	})
@@ -52,8 +53,6 @@ function fetchChompList(num) {
 	.then(result => {
 		const data = result.data;
 		if (!data) return;
-		
-		console.log(data);
 		
 		page = data.number;
 		totalPages = data.totalPages;
@@ -94,7 +93,7 @@ function getChompHTML(data) {
 
 		return `
 			<li class="forum">
-				<a href="/chompessor/viewVote.do">
+				<a href="/chompessor/viewVote.do?id=${data.chomp_vote_dto.id}">
 					<div class="forum_thumbnail"><img src="/images/common/test.png"></div>
 					<div class="forum_info">
 						<p class="type">투표</p>
@@ -138,7 +137,7 @@ function getChompHTML(data) {
 
 		return `
 			<li class="forum">
-				<a href="/chompessor/viewEvent.do">
+				<a href="/chompessor/viewEvent.do?id=${data.chomp_event_dto.id}">
 					<div class="forum_thumbnail"><img src="/images/common/test.png"></div>
 					<div class="forum_info">
 						<p class="type">이벤트</p>

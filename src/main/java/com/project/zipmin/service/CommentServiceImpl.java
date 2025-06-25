@@ -25,11 +25,15 @@ public class CommentServiceImpl implements CommentService {
 	
 	@Autowired
 	private CommentRepository commentRepository;
+	
 	@Autowired
-	private LikeRepository likeRepository;
+	private LikeService likeService;
 
 	private final CommentMapper commentMapper;
 	
+	
+	
+	// 테이블 이름과 일련번호를 이용해 댓글 목록 조회 (오래된순)
 	@Override
 	public Page<CommentReadResponseDto> getCommentPageByTablenameAndRecodenumOrderByIdAsc(String tablename, int recodenum, Pageable pageable) {
 		
@@ -41,7 +45,7 @@ public class CommentServiceImpl implements CommentService {
 			commentDTO.setCommId(comment.getComment().getId());
 			commentDTO.setUserId(comment.getUser().getId());
 			commentDTO.setNickname(comment.getUser().getNickname());
-			commentDTO.setLikecount(likeRepository.countByTablenameAndRecodenum("comments", comment.getId()));
+			commentDTO.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
 			commentDtoList.add(commentDTO);
 		}
 	    return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
@@ -49,6 +53,7 @@ public class CommentServiceImpl implements CommentService {
 
 	
 	
+	// 테이블 이름과 일련번호를 이용해 댓글 목록 조회 (최신순)
 	@Override
 	public Page<CommentReadResponseDto> getCommentPageByTablenameAndRecodenumOrderByIdDesc(String tablename, int recodenum, Pageable pageable) {
 		
@@ -60,7 +65,7 @@ public class CommentServiceImpl implements CommentService {
 			commentDTO.setCommId(comment.getComment().getId());
 			commentDTO.setUserId(comment.getUser().getId());
 			commentDTO.setNickname(comment.getUser().getNickname());
-			commentDTO.setLikecount(likeRepository.countByTablenameAndRecodenum("comments", comment.getId()));
+			commentDTO.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
 			commentDtoList.add(commentDTO);
 		}
 	    return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
@@ -68,6 +73,7 @@ public class CommentServiceImpl implements CommentService {
 
 	
 	
+	// 테이블 이름과 일련번호를 이용해 댓글 목록 조회 (인기순)
 	@Override
 	public Page<CommentReadResponseDto> getCommentPageByTablenameAndRecodenumOrderByLikecount(String tablename, int recodenum, Pageable pageable) {
 		
@@ -79,23 +85,10 @@ public class CommentServiceImpl implements CommentService {
 			commentDTO.setCommId(comment.getComment().getId());
 			commentDTO.setUserId(comment.getUser().getId());
 			commentDTO.setNickname(comment.getUser().getNickname());
-			commentDTO.setLikecount(likeRepository.countByTablenameAndRecodenum("comments", comment.getId()));
+			commentDTO.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
 			commentDtoList.add(commentDTO);
 		}
 	    return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
-	}
-	
-	
-	
-	
-	
-	
-	
-
-	@Override
-	public int countCommentsByTableNameAndRecordNum(String tablename, int recordnum) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override

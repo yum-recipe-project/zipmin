@@ -110,14 +110,6 @@ public class ChompessorController {
 	
 
 
-	// 특정 투표의 댓글 목록 조회
-	@GetMapping("/votes/{voteId}/comments")
-	public List<CommentResponseDTO> listVoteComment(
-			@PathVariable("voteId") int voteId,
-			@RequestParam(name = "sort", defaultValue = "new") String sort) {
-		return null;
-	}
-	
 	// 특정 투표에 댓글 작성
 	@PostMapping("/votes/{voteId}/comments")
 	public int writeVoteComment(
@@ -141,22 +133,6 @@ public class ChompessorController {
 		return 0;
 	}
 
-	// 특정 투표의 특정 댓글 좋아요
-	@PostMapping("/votes/{voteId}/comments/{commId}/likes")
-	public int likeVoteComment(
-			@PathVariable("voteId") int voteId,
-			@PathVariable("commId") int commId) {
-		return 0;
-	}
-	
-	// 특정 투표의 특정 댓글 좋아요 취소
-	@DeleteMapping("/votes/{voteId}/comments/{commId}/likes")
-	public int unlikeVoteComment(
-			@PathVariable("voteId") int voteId,
-			@PathVariable("commId") int commId) {
-		return 0;
-	}
-
 	// 특정 투표의 특정 댓글 좋아요 개수
 	@GetMapping("/votes/{voteId}/comments/{commId}/likes/count")
 	public int countLikeVoteComment(
@@ -167,16 +143,6 @@ public class ChompessorController {
 		return 0;
 	}
 
-	// 특정 투표의 특정 댓글 좋아요 여부 확인
-	@GetMapping("/votes/{voteId}/comments/{commId}/likes/status")
-	public boolean checkLikeVoteComment(
-			@PathVariable("voteId") int voteId,
-			@PathVariable("commId") int commId) {
-		// 이 함수를 사용 안하고 초기에 목록 가져올 때 개수 한 번에 가져올 수도 있음
-		// 근데 그렇게 하면 사용자가 좋아요 하거나 취소할 때마다 전체 목록을 다시 가져와야 하므로
-		// 이 함수를 부분적으로 사용할수도..
-		return false;
-	}
 
 	// 특정 투표의 특정 댓글 신고
 	@PostMapping("/votes/{voteId}/comments/{commId}/reports")
@@ -245,7 +211,7 @@ public class ChompessorController {
 		
 		commentDTO.setCommId(1);
 		commentDTO.setUserId(1);
-		System.err.println(commentDTO);
+		
 		commentService.createComment(commentDTO);
 		
 		// String userId = SecurityContextHolder.getContext().getAuthentication().getName();

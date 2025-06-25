@@ -145,6 +145,8 @@ function fetchCommentList(tablename) {
 
 		page = data.number + 1;
 		totalPages = data.totalPages;
+		
+		document.querySelector('.comment_count span:last-of-type').innerText = data.totalElements;
 
 		// 더보기 버튼 제어
 		const btnMore = document.querySelector('.btn_more');
@@ -247,4 +249,50 @@ function getCommentHTML(comment) {
 		<ul class="subcomment_list">${subcommentListHTML}</ul>`;
 }
 
+
+
+
+
+
+
+
+/**
+ * 댓글을 작성하는 함수
+ */
+/*
+document.addEventListener('DOMContentLoaded', function () {
+	document.getElementById('writeCommentForm').addEventListener("submit", function (event) {
+		event.preventDefault();
+		
+		if (!isLoggedIn()) {
+			redirectToLogin();
+		}
+		
+		try {
+			const token = localStorage.getItem('accessToken');
+			const payload = parseJwt(token);
+			
+			console.log(payload.id);
+			
+			const params = new URLSearchParams(window.location.search);
+			const megazineId = params.get('megazineId');
+			
+			const data = {
+				content: document.getElementById("writeCommentContent").value.trim(),
+				tablename: 'chomp_megazine',
+				recodenum: Number(megazineId),
+				user_id: payload.id
+			};
+			
+			const response = instance.post(`http://localhost:8586/comments`, data);
+			
+			console.log(response);
+			
+		}
+		catch (error) {
+			console.log(error);
+		}
+	});
+});
+*/
 

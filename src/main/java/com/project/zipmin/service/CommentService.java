@@ -21,10 +21,7 @@ public interface CommentService {
 	
 	// 테이블 이름과 일련번호를 이용해 댓글 목록 조회 (인기순)
 	public Page<CommentReadResponseDto> getCommentPageByTablenameAndRecodenumOrderByLikecount(String tablename, int recodenum, Pageable pageable);
-	
-	// 테이블 이름과 일련번호를 이용해 댓글 수 조회
-	public int countCommentsByTableNameAndRecordNum(String tablename, int recordnum);
-	
+		
 	// 사용자 아이디를 이용해 댓글 목록 조회
 	public List<CommentResponseDTO> getCommentListByUserId(String userId);
 	

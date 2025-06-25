@@ -13,13 +13,13 @@ public class LikeController {
 	
 	LikeService likeDAO;
 	
-	// 좋아요 수
-	@GetMapping("/count")
-	public int getLikeCount(
-			@RequestParam(name = "tablename") String tablename,
-			@RequestParam(name = "recodenum") int recodenum) {
-		
-		return likeDAO.selectLikeCountByTable(tablename, recodenum);
-	}
+//	// 좋아요 수
+//	@GetMapping("/count")
+//	public int getLikeCount(
+//			@RequestParam(name = "tablename") String tablename,
+//			@RequestParam(name = "recodenum") int recodenum) {
+//		
+//		return likeDAO.selectLikeCountByTable(tablename, recodenum);
+//	}
 
 }

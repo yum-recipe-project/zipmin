@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +27,7 @@ public class CommentController {
 	CommentService commentService;
 	
 	
-	
+	// 댓글 목록 조회
 	@GetMapping("/comments")
 	public ResponseEntity<?> readComment(@RequestParam String tablename, @RequestParam int recodenum, @RequestParam String sort, @RequestParam int page, @RequestParam int size) {
 		
@@ -42,8 +43,6 @@ public class CommentController {
 		else if (sort.equals("hot")) {
 			commentPage = commentService.getCommentPageByTablenameAndRecodenumOrderByLikecount(tablename, recodenum, pageable);
 		}
-		
-		System.err.println("controller = " + commentPage.getContent());
 		
 		return ResponseEntity.status(CommentSuccessCode.COMMENT_READ_SUCCESS.getStatus())
         		.body(ApiResponse.success(CommentSuccessCode.COMMENT_READ_SUCCESS, commentPage));
@@ -62,6 +61,31 @@ public class CommentController {
 //		
 //		return null;
 //	}
+	
+	
+	// 특정 댓글 좋아요
+	@GetMapping("/comments/{id}/likes")
+	public ResponseEntity<?> likeComment(@PathVariable int id) {
+		
+		return null;
+	}
+	
+	// 특정 댓글 좋아요 취소
+	@PostMapping("/comments/{id}/likes")
+	public ResponseEntity<?> unlikeComment(@PathVariable int id) {
+		return null;
+	}
+	
+	// 특정 댓글 좋아요 여부 확인
+	@GetMapping("/comments/{id}/likes/status")
+	public ResponseEntity<?> checkCommentStatus(@PathVariable int id) {
+		return null;
+	}
+	
+	
+	
+	
+	
 }
 
 

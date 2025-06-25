@@ -6,7 +6,7 @@
 	<div class="comment_header">
 		<div class="comment_count">
 			<span>댓글</span>
-			<span>7</span>
+			<span></span>
 		</div>
 		<div class="comment_order">
 			<button class="btn_sort_small active" data-sort="new">최신순</button>

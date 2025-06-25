@@ -215,7 +215,7 @@
 
 /* 더보기 버튼 */
 .btn_more {
-    display: flex;
+    display: none;
     gap: 5px;
     align-items: center;
 	text-align: center;

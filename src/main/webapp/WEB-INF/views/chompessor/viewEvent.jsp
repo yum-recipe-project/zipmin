@@ -9,7 +9,11 @@
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/chompessor/view-event.css">
+		<link rel="stylesheet" href="/css/common/comment.css">
+		<link rel="stylesheet" href="/css/common/review.css">
 		<script src="/js/chompessor/view-event.js"></script>
+		<script src="/js/common/comment.js"></script>
+		<script src="/js/common/review.js"></script>
 	</head>
 	
 	<body>

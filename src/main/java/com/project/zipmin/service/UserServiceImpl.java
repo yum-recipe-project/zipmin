@@ -41,8 +41,6 @@ public class UserServiceImpl implements UserService {
 //		return userMapper.userListToUserDTOList(userList);
 		return null;
 	}
-
-	
 	
 	
 	

@@ -23,7 +23,6 @@ public class ChompessorViewController {
 	
 	@GetMapping("/chompessor/viewVote.do")
 	public String viewVote() {
-		System.err.println(chompService.getVoteById(1));
 		return "chompessor/viewVote";
 	}
 	

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.project.zipmin.entity.ChompEvent;
 
 @Repository
-public interface ChompEventRepository extends JpaRepository<ChompEvent, Integer> {
+public interface EventRepository extends JpaRepository<ChompEvent, Integer> {
 
 }

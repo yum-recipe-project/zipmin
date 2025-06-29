@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.project.zipmin.entity.ChompVote;
 
 @Repository
-public interface ChompVoteRepository extends JpaRepository<ChompVote, Integer> {
+public interface VoteRepository extends JpaRepository<ChompVote, Integer> {
 	
 }

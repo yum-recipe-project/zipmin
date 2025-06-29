@@ -136,8 +136,8 @@ public class UserController {
 	
 	
 	// 사용자 정보 수정
-	@PutMapping("/users/{userId}")
-	public ResponseEntity<?>  editMember(@PathVariable("userId") int id, @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
+	@PutMapping("/users/{id}")
+	public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
 
 		UserResponseDto userResponseDto = userService.updateUser(id, userUpdateRequestDto);
 
@@ -148,8 +148,8 @@ public class UserController {
 	
 	
 	// 사용자 삭제
-	@DeleteMapping("/users/{userId}")
-	public ResponseEntity<?> deleteMember(@PathVariable("userId") int id) {
+	@DeleteMapping("/users/{id}")
+	public ResponseEntity<?> deleteMember(@PathVariable int id) {
 		userService.deleteUserById(id);
 		
 		return ResponseEntity.status(UserSuccessCode.USER_DELETE_SUCCESS.getStatus())

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.project.zipmin.entity.ChompMegazine;
 
 @Repository
-public interface ChompMegazineRepository extends JpaRepository<ChompMegazine, Integer> {
+public interface MegazineRepository extends JpaRepository<ChompMegazine, Integer> {
 	
 	@Query("SELECT m FROM ChompMegazine m JOIN FETCH m.chomp c WHERE m.id = :id")
 	Optional<ChompMegazine> findById(@Param("id") int id);

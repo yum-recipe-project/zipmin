@@ -1,24 +1,28 @@
 /**
  * 쩝쩝박사의 매거진 상세 데이터를 가져오는 함수
  */
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
 	
 	const params = new URLSearchParams(window.location.search);
 	const id = params.get('id');
 	
 	// 매거진 정보 조회
-	fetch(`/megazines/${id}`, {
-		method: 'GET'
-	})
-	.then(response => response.json())
-	.then(data => {
-		document.querySelector('.megazine_title').innerText = data.chomp_dto.title;
-		document.querySelector('.megazine_content').innerText = data.content;
-		const date = new Date(data.postdate);
-		const formatDate = `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일`;
-		document.querySelector('.megazine_postdate').innerText = formatDate;
-	})
-	.catch(error => console.log(error));
+	try {
+		const response = await fetch(`/megazines/${id}`);
+		const result = await response.json();
+		
+		if (result.code === 'CHOMP_MEGAZINE_FETCH_SUCCESS') {
+			document.querySelector('.megazine_title').innerText = result.data.chomp_dto.title;
+			document.querySelector('.megazine_content').innerText = result.data.content;
+			const date = new Date(result.data.postdate);
+			const formatDate = `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일`;
+			document.querySelector('.megazine_postdate').innerText = formatDate;
+		}
+		// 에러 추가
+	}
+	catch(error) {
+		console.log(error);
+	}
 });
 
 

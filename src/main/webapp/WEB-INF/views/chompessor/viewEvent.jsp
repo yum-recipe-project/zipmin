@@ -25,7 +25,7 @@
 					<!-- 이벤트 헤더 -->
 					<div class="event_header">
 						<span>이벤트</span>
-						<h2>3월 한정! 후원 포인트 이체 수수료 무료</h2>
+						<h2 class="event_title"></h2>
 						<div class="event_info">
 							<div class="period">
 								<span>2025.03.01 - 2024.03.31</span>

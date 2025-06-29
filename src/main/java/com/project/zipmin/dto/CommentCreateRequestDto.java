@@ -10,10 +10,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class CommentResponseDTO {
+public class CommentCreateRequestDto {
 	private int id;
 	private int commId;
 	private Date postdate;
@@ -21,8 +21,4 @@ public class CommentResponseDTO {
 	private String tablename;
 	private int recodenum;
 	private int userId;
-	
-	private String nickname;
-	private long likecount;
-	private boolean likestatus;
 }

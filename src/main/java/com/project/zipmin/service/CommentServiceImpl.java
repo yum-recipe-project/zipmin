@@ -9,13 +9,16 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.CommentErrorCode;
+import com.project.zipmin.dto.CommentCreateRequestDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
-import com.project.zipmin.dto.CommentRequestDto;
-import com.project.zipmin.dto.CommentResponseDTO;
+import com.project.zipmin.dto.CommentUpdateRequestDto;
+import com.project.zipmin.dto.CommentUpdateResponseDto;
+import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.entity.Comment;
 import com.project.zipmin.mapper.CommentMapper;
 import com.project.zipmin.repository.CommentRepository;
-import com.project.zipmin.repository.LikeRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,7 +36,7 @@ public class CommentServiceImpl implements CommentService {
 	
 	
 	
-	// 테이블 이름과 일련번호를 이용해 댓글 목록 조회 (오래된순)
+	// 댓글 목록 조회 (오래된순)
 	@Override
 	public Page<CommentReadResponseDto> getCommentPageByTablenameAndRecodenumOrderByIdAsc(String tablename, int recodenum, Pageable pageable) {
 		
@@ -41,7 +44,7 @@ public class CommentServiceImpl implements CommentService {
 
 		List<CommentReadResponseDto> commentDtoList = new ArrayList<CommentReadResponseDto>();
 		for (Comment comment : commentPage) {
-			CommentReadResponseDto commentDTO = commentMapper.toResponseDto(comment);
+			CommentReadResponseDto commentDTO = commentMapper.toReadResponseDto(comment);
 			commentDTO.setCommId(comment.getComment().getId());
 			commentDTO.setUserId(comment.getUser().getId());
 			commentDTO.setNickname(comment.getUser().getNickname());
@@ -53,7 +56,7 @@ public class CommentServiceImpl implements CommentService {
 
 	
 	
-	// 테이블 이름과 일련번호를 이용해 댓글 목록 조회 (최신순)
+	// 댓글 목록 조회 (최신순)
 	@Override
 	public Page<CommentReadResponseDto> getCommentPageByTablenameAndRecodenumOrderByIdDesc(String tablename, int recodenum, Pageable pageable) {
 		
@@ -61,7 +64,7 @@ public class CommentServiceImpl implements CommentService {
 		
 		List<CommentReadResponseDto> commentDtoList = new ArrayList<CommentReadResponseDto>();
 		for (Comment comment : commentPage) {
-			CommentReadResponseDto commentDTO = commentMapper.toResponseDto(comment);
+			CommentReadResponseDto commentDTO = commentMapper.toReadResponseDto(comment);
 			commentDTO.setCommId(comment.getComment().getId());
 			commentDTO.setUserId(comment.getUser().getId());
 			commentDTO.setNickname(comment.getUser().getNickname());
@@ -73,7 +76,7 @@ public class CommentServiceImpl implements CommentService {
 
 	
 	
-	// 테이블 이름과 일련번호를 이용해 댓글 목록 조회 (인기순)
+	// 댓글 목록 조회 (인기순)
 	@Override
 	public Page<CommentReadResponseDto> getCommentPageByTablenameAndRecodenumOrderByLikecount(String tablename, int recodenum, Pageable pageable) {
 		
@@ -81,7 +84,7 @@ public class CommentServiceImpl implements CommentService {
 
 		List<CommentReadResponseDto> commentDtoList = new ArrayList<CommentReadResponseDto>();
 		for (Comment comment : commentPage) {
-			CommentReadResponseDto commentDTO = commentMapper.toResponseDto(comment);
+			CommentReadResponseDto commentDTO = commentMapper.toReadResponseDto(comment);
 			commentDTO.setCommId(comment.getComment().getId());
 			commentDTO.setUserId(comment.getUser().getId());
 			commentDTO.setNickname(comment.getUser().getNickname());
@@ -89,12 +92,6 @@ public class CommentServiceImpl implements CommentService {
 			commentDtoList.add(commentDTO);
 		}
 	    return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
-	}
-
-	@Override
-	public List<CommentResponseDTO> getCommentListByUserId(String userId) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -104,15 +101,9 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public CommentResponseDTO getCommentById(int commentId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void createComment(CommentRequestDto commentDto) {
+	public void createComment(CommentCreateRequestDto commentDto) {
 		System.err.println("comment service 실행");
-		Comment comment = commentMapper.commentRequestDTOToComment(commentDto);
+		Comment comment = commentMapper.toEntity(commentDto);
 		System.err.println("변환");
 		
 		// 기본 저장
@@ -125,12 +116,24 @@ public class CommentServiceImpl implements CommentService {
 	    }
 	}
 
+	
+	
+	
+	// 댓글 수정
 	@Override
-	public int updateComment(CommentRequestDto commentDTO) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public CommentUpdateResponseDto updateComment(int id, CommentUpdateRequestDto commentDto) {
 
+		Comment comment = commentRepository.findById(id)
+				.orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
+		
+		comment.setContent(commentDto.getContent());
+		comment = commentRepository.save(comment);
+		
+		return commentMapper.toUpdateResponseDto(comment);
+	}
+	
+	
+	
 	@Override
 	public int deleteCommentById(int commentId) {
 		// TODO Auto-generated method stub
@@ -142,7 +145,27 @@ public class CommentServiceImpl implements CommentService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
 
+
+
+	@Override
+	public void likeComment(LikeCreateRequestDto likeDto) {
+		likeService.addLike(likeDto);
+	}
+
+
+
+	@Override
+	public void unlikeComment(int id) {
+		likeService.removeLike(id);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

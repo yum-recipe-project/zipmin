@@ -10,20 +10,26 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.project.zipmin.dto.ChompResponseDTO;
-import com.project.zipmin.dto.EventResponseDTO;
-import com.project.zipmin.dto.MegazineResponseDTO;
-import com.project.zipmin.dto.VoteResponseDTO;
+import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.EventErrorCode;
+import com.project.zipmin.api.MegazineErrorCode;
+import com.project.zipmin.api.VoteErrorCode;
+import com.project.zipmin.dto.ChompReadResponseDto;
+import com.project.zipmin.dto.EventReadResponseDto;
+import com.project.zipmin.dto.MegazineReadResponseDto;
+import com.project.zipmin.dto.VoteReadResponseDto;
 import com.project.zipmin.entity.Chomp;
+import com.project.zipmin.entity.ChompEvent;
 import com.project.zipmin.entity.ChompMegazine;
-import com.project.zipmin.mapper.ChompEventMapper;
+import com.project.zipmin.entity.ChompVote;
+import com.project.zipmin.mapper.EventMapper;
 import com.project.zipmin.mapper.ChompMapper;
-import com.project.zipmin.mapper.ChompMegazineMapper;
-import com.project.zipmin.mapper.ChompVoteMapper;
-import com.project.zipmin.repository.ChompEventRepository;
-import com.project.zipmin.repository.ChompMegazineRepository;
+import com.project.zipmin.mapper.MegazineMapper;
+import com.project.zipmin.mapper.VoteMapper;
+import com.project.zipmin.repository.EventRepository;
+import com.project.zipmin.repository.MegazineRepository;
 import com.project.zipmin.repository.ChompRepository;
-import com.project.zipmin.repository.ChompVoteRepository;
+import com.project.zipmin.repository.VoteRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,95 +40,112 @@ public class ChompServiceImpl implements ChompService {
 	@Autowired
 	private ChompRepository chompRepository;
 	@Autowired
-	private ChompVoteRepository chompVoteRepository;
+	private VoteRepository voteRepository;
 	@Autowired
-	private ChompMegazineRepository chompMegazineRepository;
+	private MegazineRepository megazineRepository;
 	@Autowired
-	private ChompEventRepository chompEventRepository;
+	private EventRepository eventRepository;
 	
 	
 	private final ChompMapper chompMapper;
-	private final ChompVoteMapper chompVoteMapper;
-	private final ChompMegazineMapper chompMegazineMapper;
-	private final ChompEventMapper chompEventMapper;
+	private final VoteMapper voteMapper;
+	private final MegazineMapper megazineMapper;
+	private final EventMapper eventMapper;
 	
 	
 	
+	// 쩝쩝박사의 게시물 목록을 조회하는 함수
 	@Override
-	public Page<ChompResponseDTO> getChompList(String category, Pageable pageable) {
+	public Page<ChompReadResponseDto> getChompList(String category, Pageable pageable) {
 		
-		Page<Chomp> chompPage;
+		Page<Chomp> chompPage = "all".equals(category) ? chompRepository.findAll(pageable) : chompRepository.findByCategory(category, pageable);
+		List<ChompReadResponseDto> chompDtoList = new ArrayList<ChompReadResponseDto>();
 		
-		if ("all".equals(category)) {
-			chompPage = chompRepository.findAll(pageable);
-		}
-		else {
-			chompPage = chompRepository.findByCategory(category, pageable);
-		}
-		
-		Date today = new Date();
-		List<ChompResponseDTO> chompDtoList = new ArrayList<ChompResponseDTO>();
 		for (Chomp chomp : chompPage) {
-			ChompResponseDTO chompDTO = chompMapper.toResponseDto(chomp);
+			ChompReadResponseDto chompDto = chompMapper.toReadResponseDto(chomp);
+			
 			// 투표
-			VoteResponseDTO voteDto = chompVoteMapper.chompVoteToChompVoteDTO(chomp.getChompVote());
+			VoteReadResponseDto voteDto = voteMapper.toReadResponseDto(chomp.getChompVote());
 			if (voteDto != null) {
-				if (today.after(voteDto.getOpendate()) && today.before(voteDto.getClosedate())) {
-					voteDto.setStatus("open");
-				}
-				else {
-					voteDto.setStatus("close");
-				}	
-			}
-			// 매거진
-			MegazineResponseDTO megazineDto = chompMegazineMapper.chompMegazineToChompMegazineDTO(chomp.getChompMegazine());
-			// 이벤트
-			EventResponseDTO eventDto = chompEventMapper.chompEventToChompEventDTO(chomp.getChompEvent());
-			if (eventDto != null) {
-				if (today.after(eventDto.getOpendate()) && today.before(eventDto.getClosedate())) {
-					eventDto.setStatus("open");
-				}
-				else {
-					eventDto.setStatus("close");
-				}
+				voteDto.setStatus(getStatus(voteDto.getOpendate(), voteDto.getClosedate()));
+	            chompDto.setVoteDto(voteDto);
 			}
 			
-			chompDTO.setChompVoteDTO(voteDto);
-			chompDTO.setChompMegazineDTO(megazineDto);
-			chompDTO.setChompEventDTO(eventDto);
-			chompDtoList.add(chompDTO);
+			// 매거진
+			MegazineReadResponseDto megazineDto = megazineMapper.toReadResponseDto(chomp.getChompMegazine());
+			chompDto.setMegazineDto(megazineDto);
+			
+			// 이벤트
+			EventReadResponseDto eventDto = eventMapper.toReadResponseDto(chomp.getChompEvent());
+			if (eventDto != null) {
+				eventDto.setStatus(getStatus(eventDto.getOpendate(), eventDto.getClosedate()));
+				chompDto.setEventDto(eventDto);
+			}
+			
+			chompDtoList.add(chompDto);
 		}
 		
 		return new PageImpl<>(chompDtoList, pageable, chompPage.getTotalElements());
 	}
-
-
-
-	@Override
-	public VoteResponseDTO getVoteById(int id) {
-//		ChompVote chompVote = chompVoteRepository.findById(id).orElseThrow();
-//		System.err.println(chompVote);
-//		if (chompVote.isPresent()) {
-//	        return chompVoteMapper.chompVoteToChompVoteDTO(chompVote.get());
-//	    }
-//		else {
-//	        return null;
-//	    }
-		return null;
-	}
-
-	@Override
-	public VoteResponseDTO getVoteByChompId(int chompId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
+	
+	
+	// 현재 날짜를 기준으로 진행중/진행종료 여부를 판별하는 함수
+	private String getStatus(Date opendate, Date closedate) {
+		Date today = new Date();
+	    return (today.after(opendate) && today.before(closedate)) ? "open" : "close";
+	}
+
+	
+	
+	// 투표의 상세 내용을 조회하는 함수
 	@Override
-	public MegazineResponseDTO getMegazineById(int id) {
-		ChompMegazine chompMegazine = chompMegazineRepository.findById(id).orElseThrow();
-		MegazineResponseDTO chompMegazineDTO = chompMegazineMapper.chompMegazineToChompMegazineDTO(chompMegazine);
-		ChompResponseDTO chompDTO = chompMapper.toResponseDto(chompMegazine.getChomp());
-		chompMegazineDTO.setChompDTO(chompDTO);
-		return chompMegazineDTO;
+	public VoteReadResponseDto getVoteById(int id) {
+		
+		ChompVote chompVote = voteRepository.findById(id)
+				.orElseThrow(() -> new ApiException(VoteErrorCode.VOTE_NOT_FOUND));
+		
+		VoteReadResponseDto voteDto = voteMapper.toReadResponseDto(chompVote);
+		
+		ChompReadResponseDto chompDto = chompMapper.toReadResponseDto(chompVote.getChomp());
+		voteDto.setChompDto(chompDto);
+		
+		// 여기에 투표 결과 등등 추가
+		
+		return voteDto;
+	}
+
+	
+	
+	// 매거진의 상세 내용을 조회하는 함수
+	@Override
+	public MegazineReadResponseDto getMegazineById(int id) {
+		
+		ChompMegazine chompMegazine = megazineRepository.findById(id)
+				.orElseThrow(() -> new ApiException(MegazineErrorCode.MEGAZINE_NOT_FOUND));
+		
+		MegazineReadResponseDto megazineDto = megazineMapper.toReadResponseDto(chompMegazine);
+		
+		ChompReadResponseDto chompDto = chompMapper.toReadResponseDto(chompMegazine.getChomp());
+		megazineDto.setChompDto(chompDto);
+		
+		return megazineDto;
+	}
+
+
+	
+	// 이벤트의 상세 내용을 조회하는 함수
+	@Override
+	public EventReadResponseDto getEventById(int id) {
+	
+		ChompEvent chompEvent = eventRepository.findById(id)
+				.orElseThrow(() -> new ApiException(EventErrorCode.EVENT_NOT_FOUND));
+		
+		EventReadResponseDto eventDto = eventMapper.toReadResponseDto(chompEvent);
+		
+		ChompReadResponseDto chompDto = chompMapper.toReadResponseDto(chompEvent.getChomp());
+		eventDto.setChompDto(chompDto);
+		
+		return eventDto;
 	}
 }

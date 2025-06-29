@@ -1,9 +1,5 @@
 package com.project.zipmin.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,17 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.zipmin.dto.ChompResponseDTO;
+import com.project.zipmin.dto.ChompReadResponseDto;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.ChompSuccessCode;
-import com.project.zipmin.dto.MegazineResponseDTO;
-import com.project.zipmin.dto.VoteResponseDTO;
-import com.project.zipmin.dto.CommentRequestDto;
-import com.project.zipmin.dto.CommentResponseDTO;
+import com.project.zipmin.dto.MegazineReadResponseDto;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
 
@@ -43,7 +35,7 @@ public class ChompessorController {
 	public ResponseEntity<?> listChomp(@RequestParam String category, @RequestParam int page, @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<ChompResponseDTO> chompPage = chompService.getChompList(category, pageable);
+		Page<ChompReadResponseDto> chompPage = chompService.getChompList(category, pageable);
 
 		return ResponseEntity.status(ChompSuccessCode.CHOMP_LIST_FETCH_SUCCESS.getStatus())
 				.body(ApiResponse.success(ChompSuccessCode.CHOMP_LIST_FETCH_SUCCESS, chompPage));
@@ -52,11 +44,13 @@ public class ChompessorController {
 	
 	
 	// 특정 투표 조회
-	@GetMapping("/votes/{voteId}")
-	public VoteResponseDTO viewVote(
-			@PathVariable("voteId") int voteId) {
+	@GetMapping("/votes/{id}")
+	public ResponseEntity<?> viewVote(@PathVariable int id) {
 		return null;
 	}
+	
+	
+	
 
 	// 새 투표 등록 (관리자)
 	@PostMapping("/votes")
@@ -110,74 +104,17 @@ public class ChompessorController {
 	
 
 
-	// 특정 투표에 댓글 작성
-	@PostMapping("/votes/{voteId}/comments")
-	public int writeVoteComment(
-			@PathVariable("voteId") int voteId) {
-		return 0;
-	}
-	
-	// 특정 투표의 특정 댓글 수정
-	@PutMapping("/votes/{voteId}/comments/{commId}")
-	public int editVoteComment(
-			@PathVariable("voteId") int voteId,
-			@PathVariable("commId") int commId) {
-		return 0;
-	}
-	
-	// 특정 투표의 특정 댓글 삭제
-	@DeleteMapping("/votes/{voteId}/comments/{commId}")
-	public int deleteVoteComment(
-			@PathVariable("voteId") int voteId,
-			@PathVariable("commId") int commId) {
-		return 0;
-	}
-
-	// 특정 투표의 특정 댓글 좋아요 개수
-	@GetMapping("/votes/{voteId}/comments/{commId}/likes/count")
-	public int countLikeVoteComment(
-			@PathVariable("voteId") int voteId,
-			@PathVariable("commId") int commId) {
-		// 초기에 목록 가져올 때 좋아요 개수 한 번에 가져오고
-		// 좋아요 혹은 좋아요 취소 했을 때 부분적으로 가져올 가능성도 있음
-		return 0;
-	}
-
-
-	// 특정 투표의 특정 댓글 신고
-	@PostMapping("/votes/{voteId}/comments/{commId}/reports")
-	public int reportVoteComment(
-			@PathVariable("voteId") int voteId,
-			@PathVariable("commId") int commId) {
-		return 0;
-	}
-
-	// 특정 투표의 특정 댓글 신고 개수 (관리자)
-	@GetMapping("/votes/{voteId}/comments/{commId}/reports/count")
-	public int countReportVoteComment(
-			@PathVariable("voteId") int voteId,
-			@PathVariable("commId") int commId) {
-		return 0;
-	}
-
-	// 특정 투표의 특정 댓글 신고 여부
-	@GetMapping("/votes/{voteId}/comments/{commId}/reports/status")
-	public boolean checkReportVoteComment(
-			@PathVariable("voteId") int voteId,
-			@PathVariable("commId") int commId) {
-		return false;
-	}
-	
 	
 	
 	
 	// 특정 매거진 조회
 	@GetMapping("/megazines/{id}")
-	public MegazineResponseDTO viewMegazine(@PathVariable int id) {
-		MegazineResponseDTO chompMegazineDTO = chompService.getMegazineById(id);
-		return chompMegazineDTO;
+	public ResponseEntity<?> readMegazine(@PathVariable int id) {
+		MegazineReadResponseDto megazineDto = chompService.getMegazineById(id);
+		
+		return ResponseEntity.status(ChompSuccessCode.CHOMP_MEGAZINE_FETCH_SUCCESS.getStatus())
+				.body(ApiResponse.success(ChompSuccessCode.CHOMP_MEGAZINE_FETCH_SUCCESS, megazineDto));	
 	}
-	
 	
 	
 	
@@ -185,117 +122,37 @@ public class ChompessorController {
 
 	// 새 매거진 등록 (관리자)
 	@PostMapping("/megazines")
-	public int writeMegazines() {
-		return 0;
+	public ResponseEntity<?> writeMegazines() {
+		return null;
 	}
 
+	
+	
 	// 특정 매거진 수정 (관리자)
-	@PutMapping("/megazines/{megazineId}")
-	public int editMegazine(
-			@PathVariable("megazineId") int megazineId) {
-		return 0;
+	@PutMapping("/megazines/{id}")
+	public ResponseEntity<?> editMegazine(@PathVariable int id) {
+		return null;
 	}
 
+	
+	
 	// 특정 매거진 삭제 (관리자)
-	@DeleteMapping("/megazines/{megazineId}")
-	public int deleteMegazine(
-			@PathVariable("megazineId") int megazineId) {
-		return 0;
+	@DeleteMapping("/megazines/{id}")
+	public ResponseEntity<?> deleteMegazine(@PathVariable int id) {
+		return null;
 	}
-
-	// 특정 매거진에 댓글 작성
-	@PostMapping("/megazines/{megazineId}/comments")
-	public ResponseEntity<Map<String, Object>> writeComment(
-	        @PathVariable int megazineId,
-	        @RequestBody CommentRequestDto commentDTO) {
+	
+	
+	
+	
+	// 특정 이벤트 조회
+	@GetMapping("/events/{id}")
+	public ResponseEntity<?> readEvent(@PathVariable int id) {
+		System.err.println("ChompessorController - id = " + id);
 		
-		commentDTO.setCommId(1);
-		commentDTO.setUserId(1);
 		
-		commentService.createComment(commentDTO);
 		
-		// String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-		
-		Map<String, Object> result = new HashMap<>();
-		result.put("result", "success");
-	    return ResponseEntity.ok(result);
-	}
-	
-	// 특정 매거진의 특정 댓글 수정
-	@PutMapping("/megazines/{megazineId}/comments/{commId}")
-	public int editmegazineComment(
-			@PathVariable("megazineId") int megazineId,
-			@PathVariable("commId") int commId) {
-		return 0;
-	}
-	
-	// 특정 매거진의 특정 댓글 삭제
-	@DeleteMapping("/megazines/{megazineId}/comments/{commId}")
-	public int deleteMegazineComment(
-			@PathVariable("megazineId") int megazineId,
-			@PathVariable("commId") int commId) {
-		return 0;
-	}
-	
-	// 특정 매거진의 특정 댓글 좋아요
-	@PostMapping("/megazines/{megazineId}/comments/{commId}/likes")
-	public int likeMegazineComment(
-			@PathVariable("megazineId") int megazineId,
-			@PathVariable("commId") int commId) {
-		return 0;
-	}
-	
-	// 특정 매거진의 특정 댓글 좋아요 취소
-	@DeleteMapping("/megazines/{megazineId}/comments/{commId}/likes")
-	public int unlikeMegazineComment(
-			@PathVariable("megazineId") int megazineId,
-			@PathVariable("commId") int commId) {
-		return 0;
-	}
-
-	// 특정 매거진의 특정 댓글 좋아요 개수
-	@GetMapping("/megazines/{megazineId}/comments/{commId}/likes/count")
-	public int countLikeMegazineComment(
-			@PathVariable("megazineId") int megazineId,
-			@PathVariable("commId") int commId) {
-		// 초기에 목록 가져올 때 좋아요 개수 한 번에 가져오고
-		// 좋아요 혹은 좋아요 취소 했을 때 부분적으로 가져올 가능성도 있음
-		return 0;
-	}
-
-	// 특정 매거진의 특정 댓글 좋아요 여부 확인
-	@GetMapping("/megazines/{megazineId}/comments/{commId}/likes/status")
-	public boolean checkLikeMegazineComment(
-			@PathVariable("megazineId") int megazineId,
-			@PathVariable("commId") int commId) {
-		// 이 함수를 사용 안하고 초기에 목록 가져올 때 개수 한 번에 가져올 수도 있음
-		// 근데 그렇게 하면 사용자가 좋아요 하거나 취소할 때마다 전체 목록을 다시 가져와야 하므로
-		// 이 함수를 부분적으로 사용할수도..
-		return false;
-	}
-	
-	// 특정 매거진의 특정 댓글 신고
-	@PostMapping("/megazines/{megazineId}/comments/{commId}/reports")
-	public int reportMegazineComment(
-			@PathVariable("megazineId") int megazineId,
-			@PathVariable("commId") int commId) {
-		return 0;
-	}
-
-	// 특정 매거진의 특정 댓글 신고 개수 (관리자)
-	@GetMapping("/megazines/{megazineId}/comments/{commId}/reports/count")
-	public int countReportMegazineComment(
-			@PathVariable("megazineId") int megazineId,
-			@PathVariable("commId") int commId) {
-		return 0;
-	}
-
-	// 특정 매거진의 특정 댓글 신고 여부
-	@GetMapping("/megazines/{megazineId}/comments/{commId}/reports/status")
-	public boolean checkReportMegazineComment(
-			@PathVariable("megazineId") int megazineId,
-			@PathVariable("commId") int commId) {
-		return false;
+		return null;
 	}
 
 }

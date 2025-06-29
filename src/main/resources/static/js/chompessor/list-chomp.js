@@ -83,8 +83,8 @@ function getChompHTML(data) {
 	const today = new Date();
 
 	if (data.category === 'vote') {
-		const opendate = new Date(data.chomp_vote_dto.opendate);
-		const closedate = new Date(data.chomp_vote_dto.closedate);
+		const opendate = new Date(data.vote_dto.opendate);
+		const closedate = new Date(data.vote_dto.closedate);
 		const status = (today >= opendate && today <= closedate)
 			? '<p class="ing_flag">투표중</p>'
 			: '<p class="end_flag">투표 종료</p>';
@@ -93,7 +93,7 @@ function getChompHTML(data) {
 
 		return `
 			<li class="forum">
-				<a href="/chompessor/viewVote.do?id=${data.chomp_vote_dto.id}">
+				<a href="/chompessor/viewVote.do?id=${data.vote_dto.id}">
 					<div class="forum_thumbnail"><img src="/images/common/test.png"></div>
 					<div class="forum_info">
 						<p class="type">투표</p>
@@ -108,12 +108,12 @@ function getChompHTML(data) {
 	}
 
 	if (data.category === 'megazine') {
-		const postdate = new Date(data.chomp_megazine_dto.postdate);
+		const postdate = new Date(data.megazine_dto.postdate);
 		const formatDate = `${postdate.getFullYear()}년 ${postdate.getMonth() + 1}월 ${postdate.getDate()}일`;
 
 		return `
 			<li class="forum">
-				<a href="/chompessor/viewMegazine.do?id=${data.chomp_megazine_dto.id}">
+				<a href="/chompessor/viewMegazine.do?id=${data.megazine_dto.id}">
 					<div class="forum_thumbnail"><img src="/images/common/test.png"></div>
 					<div class="forum_info">
 						<p class="type">매거진</p>
@@ -127,8 +127,8 @@ function getChompHTML(data) {
 	}
 
 	if (data.category === 'event') {
-		const opendate = new Date(data.chomp_event_dto.opendate);
-		const closedate = new Date(data.chomp_event_dto.closedate);
+		const opendate = new Date(data.event_dto.opendate);
+		const closedate = new Date(data.event_dto.closedate);
 		const status = (today >= opendate && today <= closedate)
 			? '<p class="ing_flag">행사 진행중</p>'
 			: '<p class="end_flag">행사 종료</p>';
@@ -137,7 +137,7 @@ function getChompHTML(data) {
 
 		return `
 			<li class="forum">
-				<a href="/chompessor/viewEvent.do?id=${data.chomp_event_dto.id}">
+				<a href="/chompessor/viewEvent.do?id=${data.event_dto.id}">
 					<div class="forum_thumbnail"><img src="/images/common/test.png"></div>
 					<div class="forum_info">
 						<p class="type">이벤트</p>

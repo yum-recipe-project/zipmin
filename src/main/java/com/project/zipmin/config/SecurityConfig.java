@@ -148,6 +148,7 @@ public class SecurityConfig {
 				
 				.requestMatchers("/chompessor/**").permitAll()
 				.requestMatchers("/chomp/**").permitAll()
+				.requestMatchers("/votes", "/votes/**", "/megazines", "/megazines/**", "events", "/events/**").permitAll()
 				
 				.requestMatchers("/comments", "/comments/**").permitAll()
 				
@@ -158,7 +159,6 @@ public class SecurityConfig {
 				.requestMatchers("/mypage/**").permitAll()
 				
 				.requestMatchers("/admin/**").permitAll()
-				.requestMatchers("/megazines/**").permitAll()
 				.requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**", "/assets/**").permitAll()
 				.anyRequest().authenticated()
 			);

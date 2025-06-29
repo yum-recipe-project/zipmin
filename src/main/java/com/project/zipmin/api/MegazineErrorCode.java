@@ -7,11 +7,9 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum ChompSuccessCode implements Code {
+public enum MegazineErrorCode implements Code {
 	
-	CHOMP_LIST_FETCH_SUCCESS(HttpStatus.OK, "쩝쩝박사 게시판 목록이 조회되었습니다."),
-	CHOMP_MEGAZINE_FETCH_SUCCESS(HttpStatus.OK, "매거진 상세가 조회되었습니다.");
-	
+	MEGAZINE_NOT_FOUND(HttpStatus.NOT_FOUND, "매거진이 존재하지 않습니다.");
 	
 	private final HttpStatus status;
 	private final String message;
@@ -20,5 +18,4 @@ public enum ChompSuccessCode implements Code {
 	public String getCode() {
 		return this.name();
 	}
-
 }

@@ -12,11 +12,11 @@ import lombok.Data;
 public class EventReadResponseDto {
 	
 	private int id;
+	private String title;
 	private Date opendate;
 	private Date closedate;
 	private String content;
 	
 	private String status;
-	private ChompReadResponseDto chompDto;
 	
 }

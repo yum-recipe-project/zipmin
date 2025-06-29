@@ -22,16 +22,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Entity
-@Table(name = "CHOMP_MEGAZINE")
-public class ChompMegazine {
+@Table(name = "MEGAZINE")
+public class Megazine {
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_chomp_megazine_id")
-	@SequenceGenerator(name = "seq_chomp_megazine_id", sequenceName = "SEQ_CHOMP_MEGAZINE_ID", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_megazine_id")
+	@SequenceGenerator(name = "seq_megazine_id", sequenceName = "SEQ_MEGAZINE_ID", allocationSize = 1)
 	private int id;
+	
+	private String title;
 	private Date postdate;
 	private String content;
 	
+	// private int chomp_id;
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CHOMP_ID")
 	private Chomp chomp;
+	
 }

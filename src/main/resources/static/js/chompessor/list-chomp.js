@@ -97,7 +97,7 @@ function getChompHTML(data) {
 					<div class="forum_thumbnail"><img src="/images/common/test.png"></div>
 					<div class="forum_info">
 						<p class="type">투표</p>
-						<h5>${data.title}</h5>
+						<h5>${data.vote_dto.title}</h5>
 						<div class="info">
 							${status}
 							<p class="date">${formatOpendate} - ${formatClosedate}</p>
@@ -117,7 +117,7 @@ function getChompHTML(data) {
 					<div class="forum_thumbnail"><img src="/images/common/test.png"></div>
 					<div class="forum_info">
 						<p class="type">매거진</p>
-						<h5>${data.title}</h5>
+						<h5>${data.megazine_dto.title}</h5>
 						<div class="info">
 							<p class="date">${formatDate}</p>
 						</div>
@@ -141,7 +141,7 @@ function getChompHTML(data) {
 					<div class="forum_thumbnail"><img src="/images/common/test.png"></div>
 					<div class="forum_info">
 						<p class="type">이벤트</p>
-						<h5>${data.title}</h5>
+						<h5>${data.event_dto.title}</h5>
 						<div class="info">
 							${status}
 							<p class="date">${formatOpendate} - ${formatClosedate}</p>

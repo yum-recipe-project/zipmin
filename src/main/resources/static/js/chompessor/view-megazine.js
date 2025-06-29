@@ -11,17 +11,26 @@ document.addEventListener('DOMContentLoaded', async function() {
 		const response = await fetch(`/megazines/${id}`);
 		const result = await response.json();
 		
-		if (result.code === 'CHOMP_MEGAZINE_FETCH_SUCCESS') {
-			document.querySelector('.megazine_title').innerText = result.data.chomp_dto.title;
+		console.log(result);
+		
+		if (result.code === 'MEGAZINE_READ_SUCCESS') {
+			document.querySelector('.megazine_title').innerText = result.data.title;
 			document.querySelector('.megazine_content').innerText = result.data.content;
 			const date = new Date(result.data.postdate);
 			const formatDate = `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일`;
 			document.querySelector('.megazine_postdate').innerText = formatDate;
 		}
-		// 에러 추가
+		else if (result.code === 'MEGAZINE_NOT_FOUND') {
+			alert(result.message);
+			location.href = '/chompessor/listChomp.do';
+		}
+		else {
+			alert(result.message);
+			location.href = '/chompessor/listChomp.do';
+		}
 	}
 	catch(error) {
-		console.log(error);
+		console.log('서버 요청 중 오류 발생');
 	}
 });
 

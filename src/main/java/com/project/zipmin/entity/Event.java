@@ -22,12 +22,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Entity
-@Table(name = "CHOMP_EVENT")
-public class ChompEvent {
+@Table(name = "EVENT")
+public class Event {
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_chomp_event_id")
-	@SequenceGenerator(name = "seq_chomp_event_id", sequenceName = "SEQ_CHOMP_EVENT_ID", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_event_id")
+	@SequenceGenerator(name = "seq_event_id", sequenceName = "SEQ_EVENT_ID", allocationSize = 1)
 	private int id;
+	
+	private String title;
 	private Date opendate;
 	private Date closedate;
 	private String content;
@@ -36,4 +39,5 @@ public class ChompEvent {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CHOMP_ID")
 	private Chomp chomp;
+	
 }

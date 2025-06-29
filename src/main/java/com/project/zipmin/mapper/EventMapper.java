@@ -5,12 +5,12 @@ import java.util.List;
 import org.mapstruct.Mapper;
 
 import com.project.zipmin.dto.EventReadResponseDto;
-import com.project.zipmin.entity.ChompEvent;
+import com.project.zipmin.entity.Event;
 
 @Mapper(componentModel = "spring")
 public interface EventMapper {
 	
 	// Read
-	ChompEvent toEntity(EventReadResponseDto chompEventDTO);
-	EventReadResponseDto toReadResponseDto(ChompEvent chompEvent);
+	Event toEntity(EventReadResponseDto chompEventDTO);
+	EventReadResponseDto toReadResponseDto(Event chompEvent);
 }

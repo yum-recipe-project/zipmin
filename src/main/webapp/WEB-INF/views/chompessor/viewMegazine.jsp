@@ -8,10 +8,8 @@
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/chompessor/view-megazine.css">
 		<link rel="stylesheet" href="/css/common/comment.css">
-		<link rel="stylesheet" href="/css/common/review.css">
 		<script src="/js/chompessor/view-megazine.js"></script>
 		<script src="/js/common/comment.js"></script>
-		<script src="/js/common/review.js"></script>
 	</head>
 	
 	<body>

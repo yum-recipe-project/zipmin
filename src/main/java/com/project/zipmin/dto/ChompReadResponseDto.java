@@ -12,7 +12,6 @@ public class ChompReadResponseDto {
 	
 	private int id;
 	private String category;
-	private String title;
 	
 	private VoteReadResponseDto voteDto;
 	private MegazineReadResponseDto megazineDto;

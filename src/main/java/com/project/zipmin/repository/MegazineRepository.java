@@ -7,11 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.project.zipmin.entity.ChompMegazine;
+import com.project.zipmin.entity.Megazine;
 
 @Repository
-public interface MegazineRepository extends JpaRepository<ChompMegazine, Integer> {
+public interface MegazineRepository extends JpaRepository<Megazine, Integer> {
 	
-	@Query("SELECT m FROM ChompMegazine m JOIN FETCH m.chomp c WHERE m.id = :id")
-	Optional<ChompMegazine> findById(@Param("id") int id);
+	Optional<Megazine> findById(@Param("id") int id);
+	Optional<Megazine> findByChompId(int chompId);
+	
 }

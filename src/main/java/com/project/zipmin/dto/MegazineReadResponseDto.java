@@ -2,6 +2,7 @@ package com.project.zipmin.dto;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -13,9 +14,8 @@ import lombok.ToString;
 public class MegazineReadResponseDto {
 	
 	private int id;
+	private String title;
 	private Date postdate;
 	private String content;
-	
-	private ChompReadResponseDto chompDto;
 	
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import org.mapstruct.Mapper;
 
 import com.project.zipmin.dto.MegazineReadResponseDto;
-import com.project.zipmin.entity.ChompMegazine;
+import com.project.zipmin.entity.Megazine;
 
 @Mapper(componentModel = "spring")
 public interface MegazineMapper {
@@ -15,8 +15,8 @@ public interface MegazineMapper {
 	
 	
 	// Read
-	ChompMegazine toEntity(MegazineReadResponseDto megazineDto);
-	MegazineReadResponseDto toReadResponseDto(ChompMegazine chompMegazine);
+	Megazine toEntity(MegazineReadResponseDto megazineDto);
+	MegazineReadResponseDto toReadResponseDto(Megazine chompMegazine);
 	
 	
 	

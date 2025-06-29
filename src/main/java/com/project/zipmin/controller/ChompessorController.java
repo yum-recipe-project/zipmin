@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.dto.ChompReadResponseDto;
+import com.project.zipmin.dto.EventReadResponseDto;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.ChompSuccessCode;
+import com.project.zipmin.api.EventSuccessCode;
+import com.project.zipmin.api.MegazineSuccessCode;
 import com.project.zipmin.dto.MegazineReadResponseDto;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
@@ -35,10 +38,10 @@ public class ChompessorController {
 	public ResponseEntity<?> listChomp(@RequestParam String category, @RequestParam int page, @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<ChompReadResponseDto> chompPage = chompService.getChompList(category, pageable);
+		Page<ChompReadResponseDto> chompPage = chompService.readChompPage(category, pageable);
 
-		return ResponseEntity.status(ChompSuccessCode.CHOMP_LIST_FETCH_SUCCESS.getStatus())
-				.body(ApiResponse.success(ChompSuccessCode.CHOMP_LIST_FETCH_SUCCESS, chompPage));
+		return ResponseEntity.status(ChompSuccessCode.CHOMP_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(ChompSuccessCode.CHOMP_READ_LIST_SUCCESS, chompPage));
 	}
 	
 	
@@ -110,13 +113,11 @@ public class ChompessorController {
 	// 특정 매거진 조회
 	@GetMapping("/megazines/{id}")
 	public ResponseEntity<?> readMegazine(@PathVariable int id) {
-		MegazineReadResponseDto megazineDto = chompService.getMegazineById(id);
+		MegazineReadResponseDto megazineDto = chompService.readMegazineById(id);
 		
-		return ResponseEntity.status(ChompSuccessCode.CHOMP_MEGAZINE_FETCH_SUCCESS.getStatus())
-				.body(ApiResponse.success(ChompSuccessCode.CHOMP_MEGAZINE_FETCH_SUCCESS, megazineDto));	
+		return ResponseEntity.status(MegazineSuccessCode.MEGAZINE_READ_SUCCESS.getStatus())
+				.body(ApiResponse.success(MegazineSuccessCode.MEGAZINE_READ_SUCCESS, megazineDto));	
 	}
-	
-	
 	
 	
 
@@ -148,11 +149,10 @@ public class ChompessorController {
 	// 특정 이벤트 조회
 	@GetMapping("/events/{id}")
 	public ResponseEntity<?> readEvent(@PathVariable int id) {
-		System.err.println("ChompessorController - id = " + id);
+		EventReadResponseDto eventDto = chompService.readEventById(id);
 		
-		
-		
-		return null;
+		return ResponseEntity.status(EventSuccessCode.EVENT_READ_SUCCESS.getStatus())
+				.body(ApiResponse.success(EventSuccessCode.EVENT_READ_SUCCESS, eventDto));
 	}
 
 }

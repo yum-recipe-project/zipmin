@@ -12,10 +12,10 @@ import lombok.Data;
 public class VoteReadResponseDto {
 	
 	private int id;
+	private String title;
 	private Date opendate;
 	private Date closedate;
 	
 	private String status;
-	private ChompReadResponseDto chompDto;
 	
 }

@@ -9,11 +9,18 @@ document.addEventListener('DOMContentLoaded', async function() {
 	// 투표 정보 조회
 	try {
 		const response = await fetch(`/events/${id}`);
-		const data = await response.json();
+		const result = await response.json();
 		
-		console.log(data);
+		console.log(result);
 		
-		document.querySelector('.event_title').innerText = '하';
+		if (result.code === 'EVENT_READ_SUCCESS') {
+			document.querySelector('.event_title').innerText = result.data.title;
+			document.querySelector('.event_content').innerText = result.data.content;
+			const opendate = new Date(result.data.opendate);
+			const closedate = new Date(result.data.closedate);
+			const formatDate = `${opendate.getFullYear()}년 ${String(opendate.getMonth() + 1).padStart(2, '0')}월 ${String(opendate.getDate()).padStart(2, '0')}일 - ${closedate.getFullYear()}년 ${String(closedate.getMonth() + 1).padStart(2, '0')}월 ${String(closedate.getDate()).padStart(2, '0')}일`;
+			document.querySelector('.event_postdate').innerText = formatDate;
+		}
 		
 	}
 	catch(error) {

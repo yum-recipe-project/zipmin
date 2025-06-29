@@ -9,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ChompSuccessCode implements Code {
 	
-	CHOMP_LIST_FETCH_SUCCESS(HttpStatus.OK, "쩝쩝박사 게시판 목록이 조회되었습니다."),
-	CHOMP_MEGAZINE_FETCH_SUCCESS(HttpStatus.OK, "매거진 상세가 조회되었습니다.");
-	
+	CHOMP_READ_LIST_SUCCESS(HttpStatus.OK, "매거진 목록 조회 성공");	
 	
 	private final HttpStatus status;
 	private final String message;

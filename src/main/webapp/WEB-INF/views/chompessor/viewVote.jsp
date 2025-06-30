@@ -10,10 +10,8 @@
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/chompessor/view-vote.css">
 		<link rel="stylesheet" href="/css/common/comment.css">
-		<link rel="stylesheet" href="/css/common/review.css">
 		<script src="/js/chompessor/view-vote.js"></script>
 		<script src="/js/common/comment.js"></script>
-		<script src="/js/common/review.js"></script>
 	</head>
 	
 	<body>
@@ -25,41 +23,19 @@
 					<!-- 투표 헤더 -->
 					<div class="vote_header">
 						<span>아이스크림</span>
-						<h2>당신의 녹차 아이스크림에 투표하세요</h2>
+						<h2 class="vote_title"></h2>
 						<div class="vote_info">
 							<div class="period">
-								<span>2025.01.03 - 2024.02.11</span>
+								<span class="vote_postdate"></span>
 							</div>
 							<span>참여</span>
-							<span>26</span>
-							<span> ・ </span>
-							<span>댓글</span>
-							<span>235개</span>
+							<span class="vote_total"></span>
 						</div>
 					</div>
 					
 					<!-- 투표 내용 -->
 					<form name="" class="vote_form">
-						<ul>
-							<li>
-								<div class="vote_checkbox_wrap">
-									<input class="checkbox_group" type="checkbox" id="vote1">
-									<label for="vote1">배스킨라빈스 녹차 아이스크림</label>
-								</div>
-							</li>
-							<li>
-								<div class="vote_checkbox_wrap">
-									<input class="checkbox_group" type="checkbox" id="vote2">
-									<label for="vote2">하겐다즈 녹차 아이스크림</label>
-								</div>
-							</li>
-							<li>
-								<div class="vote_checkbox_wrap">
-									<input class="checkbox_group" type="checkbox" id="vote3">
-									<label for="vote3">나뚜르 녹차 아이스크림</label>
-								</div>
-							</li>
-						</ul>
+						<ul class="choice_list"></ul>
 						<div class="btn_wrap">
 							<button class="btn_outline" onclick="location.href='/chompessor/listChomp.do';">목록으로</button>
 							<button class="btn_primary" type="submit" onclick="">투표하기</button>
@@ -68,29 +44,7 @@
 					
 					<!-- 투표 결과 -->
 					<div class="vote_result">
-						<ul>
-							<li>
-								<div class="vote_option_wrap">
-									<h5>베스킨라빈스 녹차 아이스크림</h5>
-									<span>138명</span>
-									<h3>66.3%</h3>
-								</div>
-							</li>
-							<li>
-								<div class="vote_option_wrap select">
-									<h5><img src="/images/chompessor/check_blue.png">하겐다즈 녹차 아이스크림</h5>
-									<span>138명</span>
-									<h3>66.3%</h3>
-								</div>
-							</li>
-							<li>
-								<div class="vote_option_wrap">
-									<h5>나뚜르 녹차 아이스크림</h5>
-									<span>138명</span>
-									<h3>66.3%</h3>
-								</div>
-							</li>
-						</ul>
+						<ul class="record_list"></ul>
 						<div class="btn_wrap">
 							<button class="btn_outline" onclick="location.href='/chompessor/listChomp.do';">목록으로</button>
 							<button class="btn_primary" type="submit" onclick="">다시 투표하기</button>

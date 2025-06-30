@@ -1,5 +1,12 @@
 package com.project.zipmin.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,10 +26,21 @@ import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.ChompSuccessCode;
 import com.project.zipmin.api.EventSuccessCode;
 import com.project.zipmin.api.MegazineSuccessCode;
+import com.project.zipmin.api.VoteSuccessCode;
 import com.project.zipmin.dto.MegazineReadResponseDto;
+import com.project.zipmin.dto.VoteReadResponseDto;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
+import com.project.zipmin.swagger.ChompReadListSuccessResponse;
+import com.project.zipmin.swagger.EventNotFoundResponse;
+import com.project.zipmin.swagger.EventReadSuccessResponse;
+import com.project.zipmin.swagger.InternalServerErrorResponse;
+import com.project.zipmin.swagger.MegazineNotFoundResponse;
+import com.project.zipmin.swagger.MegazineReadSuccessResponse;
+import com.project.zipmin.swagger.VoteNotFoundResponse;
+import com.project.zipmin.swagger.VoteReadSuccessResponse;
 
+@Tag(name = "Chompessor API", description = "쩝쩝박사 관련 API")
 @RestController
 public class ChompessorController {
 	
@@ -34,8 +52,29 @@ public class ChompessorController {
 	
 	
 	// 쩝쩝박사 목록 조회
+	@Operation(
+	    summary = "쩝쩝박사 목록 조회",
+	    description = "카테고리 및 페이지 정보를 기반으로 쩝쩝박사 목록을 조회합니다."
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "쩝쩝박사 목록 조회 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ChompReadListSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
 	@GetMapping("/chomp")
-	public ResponseEntity<?> listChomp(@RequestParam String category, @RequestParam int page, @RequestParam int size) {
+	public ResponseEntity<?> listChomp(
+			@Parameter(description = "카테고리", example = "all") @RequestParam String category,
+		    @Parameter(description = "페이지 번호", example = "0") @RequestParam int page,
+		    @Parameter(description = "페이지 크기", example = "10") @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
 		Page<ChompReadResponseDto> chompPage = chompService.readChompPage(category, pageable);
@@ -46,12 +85,38 @@ public class ChompessorController {
 	
 	
 	
-	// 특정 투표 조회
+	// 투표 상세 조회
+	@Operation(
+	    summary = "투표 상세 조회",
+	    description = "ID를 기준으로 투표의 상세 정보를 조회합니다."
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "투표 조회 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteReadSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 투표를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
 	@GetMapping("/votes/{id}")
-	public ResponseEntity<?> viewVote(@PathVariable int id) {
-		return null;
+	public ResponseEntity<?> readVote(@Parameter(description = "조회할 투표의 ID", required = true, example = "1") @PathVariable int id) {
+		VoteReadResponseDto voteDto = chompService.readVoteById(id);
+		
+		return ResponseEntity.status(VoteSuccessCode.VOTE_READ_SUCCESS.getStatus())
+				.body(ApiResponse.success(VoteSuccessCode.VOTE_READ_SUCCESS, voteDto));
 	}
-	
 	
 	
 
@@ -111,8 +176,32 @@ public class ChompessorController {
 	
 	
 	// 특정 매거진 조회
+	@Operation(
+	    summary = "매거진 상세 조회",
+	    description = "ID를 기준으로 매거진의 상세 정보를 조회합니다."
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "매거진 조회 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineReadSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 매거진을 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
 	@GetMapping("/megazines/{id}")
-	public ResponseEntity<?> readMegazine(@PathVariable int id) {
+	public ResponseEntity<?> readMegazine(@Parameter(description = "조회할 매거진의 ID", required = true, example = "1") @PathVariable int id) {
 		MegazineReadResponseDto megazineDto = chompService.readMegazineById(id);
 		
 		return ResponseEntity.status(MegazineSuccessCode.MEGAZINE_READ_SUCCESS.getStatus())
@@ -147,8 +236,32 @@ public class ChompessorController {
 	
 	
 	// 특정 이벤트 조회
+	@Operation(
+	    summary = "이벤트 상세 조회",
+	    description = "ID를 기준으로 이벤트의 상세 정보를 조회합니다."
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "이벤트 조회 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventReadSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 이벤트를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
 	@GetMapping("/events/{id}")
-	public ResponseEntity<?> readEvent(@PathVariable int id) {
+	public ResponseEntity<?> readEvent(@Parameter(description = "조회할 이벤트의 ID", required = true, example = "1") @PathVariable int id) {
 		EventReadResponseDto eventDto = chompService.readEventById(id);
 		
 		return ResponseEntity.status(EventSuccessCode.EVENT_READ_SUCCESS.getStatus())

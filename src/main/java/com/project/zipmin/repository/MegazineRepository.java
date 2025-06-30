@@ -12,7 +12,7 @@ import com.project.zipmin.entity.Megazine;
 @Repository
 public interface MegazineRepository extends JpaRepository<Megazine, Integer> {
 	
-	Optional<Megazine> findById(@Param("id") int id);
+	Optional<Megazine> findById(int id);
 	Optional<Megazine> findByChompId(int chompId);
 	
 }

@@ -1,12 +1,12 @@
 /**
- * 쩝쩝박사의 이벤트 상세 데이터를 가져오는 함수
+ * 이벤트의 상세 데이터를 가져오는 함수
  */
 document.addEventListener('DOMContentLoaded', async function() {
 	
 	const params = new URLSearchParams(window.location.search);
 	const id = params.get('id');
 	
-	// 투표 정보 조회
+	// 이벤트 정보 조회
 	try {
 		const response = await fetch(`/events/${id}`);
 		const result = await response.json();
@@ -21,7 +21,14 @@ document.addEventListener('DOMContentLoaded', async function() {
 			const formatDate = `${opendate.getFullYear()}년 ${String(opendate.getMonth() + 1).padStart(2, '0')}월 ${String(opendate.getDate()).padStart(2, '0')}일 - ${closedate.getFullYear()}년 ${String(closedate.getMonth() + 1).padStart(2, '0')}월 ${String(closedate.getDate()).padStart(2, '0')}일`;
 			document.querySelector('.event_postdate').innerText = formatDate;
 		}
-		
+		else if (result.code === 'EVENT_NOT_FOUND') {
+			alert(result.message);
+			location.href = '/chompessor/listChomp.do';
+		}
+		else {
+			alert(result.message);
+			location.href = '/chompessor/listChomp.do';
+		}
 	}
 	catch(error) {
 		console.log(error);

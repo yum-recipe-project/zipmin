@@ -147,8 +147,7 @@ public class SecurityConfig {
 				.requestMatchers("/kitchen/**").permitAll()
 				
 				.requestMatchers("/chompessor/**").permitAll()
-				.requestMatchers("/chomp/**").permitAll()
-				.requestMatchers("/votes", "/votes/**", "/megazines", "/megazines/**", "events", "/events/**").permitAll()
+				.requestMatchers("/chomp", "/chomp/**", "/votes", "/votes/**", "/megazines", "/megazines/**", "events", "/events/**").permitAll()
 				
 				.requestMatchers("/comments", "/comments/**").permitAll()
 				
@@ -160,6 +159,11 @@ public class SecurityConfig {
 				
 				.requestMatchers("/admin/**").permitAll()
 				.requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**", "/assets/**").permitAll()
+				
+				// Swagger 관련 경로 모두 허용
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**"
+                ).permitAll()
+				
 				.anyRequest().authenticated()
 			);
 		

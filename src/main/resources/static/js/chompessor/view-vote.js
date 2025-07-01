@@ -56,57 +56,70 @@ document.addEventListener('DOMContentLoaded', async function() {
 /**
  * 투표의 선택지를 보여주는 함수
  * 
- * @param {*} choices - 선택지
+ * @param {Array} choice - 각 선택지와 투표 수 및 비율 정보가 담긴 객체 배열
  */
 function showChoice(choices) {
+
 	document.querySelector('.vote_form').style.display = 'block';
 	document.querySelector('.vote_result').style.display = 'none';
-	
 	document.querySelector('.choice_list').innerHTML = '';
 
 	choices.forEach((choice, index) => {
-		document.querySelector('.choice_list').innerHTML += `
-			<li>
-				<div class="vote_checkbox_wrap">
-					<input class="checkbox_group" type="checkbox" id="vote${index + 1}" value="${choice.id}">
-					<label for="vote${index + 1}">${choice.choice}</label>
-				</div>
-			</li>
-		`;
+		const li = document.createElement('li');
+
+		const wrap = document.createElement('div');
+		wrap.classList.add('vote_checkbox_wrap');
+
+		const checkbox = document.createElement('input');
+		checkbox.type = 'checkbox';
+		checkbox.classList.add('checkbox_group');
+		checkbox.id = `vote${index + 1}`;
+		checkbox.value = choice.id;
+
+		const label = document.createElement('label');
+		label.setAttribute('for', `vote${index + 1}`);
+		label.textContent = choice.choice;
+
+		wrap.appendChild(checkbox);
+		wrap.appendChild(label);
+		li.appendChild(wrap);
+		document.querySelector('.choice_list').appendChild(li);
 	});
 }
 
 
 
 /**
- * !!!!!!!!! 수정 필요 !!!!!!!!!!!!
+ * 하나의 체크박스만 선택 가능하도록 제어하는 함수
  */
-/*
-function showRecord(choices, choiceId) {
-	document.querySelector('.vote_form').style.display = 'none';
-	document.querySelector('.vote_result').style.display = 'block';
-	
-	const listElement = document.querySelector('.record_list');
-	listElement.innerHTML = '';
-
-	choices.forEach(choice => {
-		const isChoiced = choice.id === choiceId;
-		const icon = isChoiced ? `<img src="/images/chompessor/check_blue.png">` : '';
-		const choicedClass = isChoiced ? 'select' : '';
-
-		listElement.innerHTML += `
-			<li>
-				<div class="vote_option_wrap ${choicedClass}">
-					<h5>${icon}${choice.choice}</h5>
-					<span>${choice.count}명</span>
-					<h3>${choice.rate}%</h3>
-				</div>
-			</li>
-		`;
+document.addEventListener('DOMContentLoaded', function() {
+	document.querySelector('.choice_list').addEventListener('change', function (e) {
+		if (e.target.classList.contains('checkbox_group')) {
+			if (e.target.checked) {
+				document.querySelectorAll('.checkbox_group').forEach((cb) => {
+					if (cb !== e.target) {
+						cb.disabled = true;
+						cb.classList.add('disable');
+					}
+				});
+			} else {
+				document.querySelectorAll('.checkbox_group').forEach((cb) => {
+					cb.disabled = false;
+					cb.classList.remove('disable');
+				});
+			}
+		}
 	});
-}
-*/
+});
 
+
+
+/**
+ * 투표의 결과를 보여주는 함수
+ * 
+ * @param {Array} choices - 각 선택지와 투표 수 및 비율 정보가 담긴 객체 배열
+ * @param {number} choiceId - 사용자가 선택한 선택지의 ID
+ */
 function showRecord(choices, choiceId) {
 	document.querySelector('.vote_form').style.display = 'none';
 	document.querySelector('.vote_result').style.display = 'block';
@@ -118,15 +131,14 @@ function showRecord(choices, choiceId) {
 		const isChoiced = choice.id === choiceId;
 
 		const li = document.createElement('li');
+		
 		const wrap = document.createElement('div');
 		wrap.classList.add('vote_option_wrap');
 		if (isChoiced) {
 			wrap.classList.add('select');
 		}
-		
 		wrap.style.setProperty('--bar-width', `${choice.rate}%`);
 
-		// 텍스트들
 		const h5 = document.createElement('h5');
 		if (isChoiced) {
 			const icon = document.createElement('img');
@@ -152,31 +164,78 @@ function showRecord(choices, choiceId) {
 
 
 
+// 로그인 안했을 때 버튼을 disable 하거나 로그인 링크로 변경
+
+
 /**
- * 투표
+ * 투표하는 함수
  */
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener('DOMContentLoaded', function() {
+
+	const form = document.getElementById('vote_form');
 	
-	document.querySelectorAll(".checkbox_group").forEach((checkbox) => {
-		checkbox.addEventListener("change", function() {
-			// 체크되면 모든 체크박스를 disabled 처리
-			if (this.checked) {
-				document.querySelectorAll(".checkbox_group").forEach((cb) => {
-					if (cb !== this) {
-						cb.disabled = true;
-						cb.classList.add("disable");
-					}
-				});
+	form.addEventListener('submit', async function(event) {
+		event.preventDefault();
+		alert('클릭');
+		
+		const params = new URLSearchParams(window.location.search);
+		const voteId = params.get('id');
+		// 로그인 안했을 때 토큰 읽으면 안되니까 이거 처리해야 함
+		const token = localStorage.getItem('accessToken');
+		const payload = parseJwt(token);
+		
+		const checked = document.querySelector('.checkbox_group:checked');
+
+		if (!checked) {
+			alert('선택지를 선택해주세요.');
+			return;
+		}
+
+		const data = {
+			id: payload.id,
+			vote_id: voteId,
+			choice_id: checked.value
+		};
+		
+		console.log(data);
+		
+		try {
+			const response = await instance.post(`/votes/${voteId}/records`, data);
+			
+			if (response.data.code === 'USER_PROFILE_UPDATE_SUCCESS') {
+				alert('비밀번호가 변경되었습니다.');
+				location.href = '/mypage.do';
 			}
-			// 하나도 체크되지 않으면 다시 활성화
+		}
+		catch (error) {
+			// 서버가 에러 응답을 내려준 경우
+			/*
+			if (error.response) {
+				const code = error.response.data.code;
+
+				if (code === 'VOTE_DUPLICATE') {
+					alert('이미 투표하셨습니다.');
+				}
+				else if (code === 'AUTH_TOKEN_INVALID') {
+					alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
+					location.href = '/login.do';
+				}
+				else {
+					alert('알 수 없는 오류가 발생했습니다.');
+					console.error(code);
+				}
+			}
+			// 서버가 아예 응답하지 않거나 네트워크 오류일 경우
 			else {
-				document.querySelectorAll(".checkbox_group").forEach((cb) => {
-					cb.disabled = false;
-					cb.classList.remove("disable");
-				});
+				alert('서버와의 연결에 실패했습니다.');
+				console.error(error);
 			}
-		});
+			console.log(error);
+			*/
+			
+		}
 	});
+	
 });
 
 

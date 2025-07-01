@@ -34,11 +34,11 @@
 					</div>
 					
 					<!-- 투표 내용 -->
-					<form name="" class="vote_form">
+					<form id="vote_form" class="vote_form">
 						<ul class="choice_list"></ul>
 						<div class="btn_wrap">
 							<button class="btn_outline" onclick="location.href='/chompessor/listChomp.do';">목록으로</button>
-							<button class="btn_primary" type="submit" onclick="">투표하기</button>
+							<button class="btn_primary" type="submit">투표하기</button>
 						</div>
 					</form>
 					

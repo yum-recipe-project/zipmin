@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,6 +30,8 @@ import com.project.zipmin.api.MegazineSuccessCode;
 import com.project.zipmin.api.VoteSuccessCode;
 import com.project.zipmin.dto.MegazineReadResponseDto;
 import com.project.zipmin.dto.VoteReadResponseDto;
+import com.project.zipmin.dto.VoteRecordCreateRequestDto;
+import com.project.zipmin.entity.VoteRecord;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.swagger.ChompReadListSuccessResponse;
@@ -144,17 +147,27 @@ public class ChompessorController {
 	
 	// 사용자의 투표 내용을 조회하면서 전체 결과 조회
 	@GetMapping("/votes/{voteId}/records")
-	public Object viewVoteResult (
-			@PathVariable("voteId") int voteId) {
-		return null;
-	}
+//	public Object viewVoteResult (
+//			@PathVariable("voteId") int voteId) {
+//		return null;
+//	}
+	
+	
 	
 	// 사용자의 특정 투표 참여
 	@PostMapping("/votes/{voteId}/records")
-	public int castVote(
-			@PathVariable("voteId") int voteIdx) {
-		return 0;
+	public ResponseEntity<?> castVote(@PathVariable int voteId, @RequestBody VoteRecordCreateRequestDto voteDto) {
+		
+		System.err.println("chomp controller - voteId : " + voteId + " voteDto : " + voteDto);
+		
+		return ResponseEntity.status(VoteSuccessCode.VOTE_RECORD_SUCCESS.getStatus())
+				.body(ApiResponse.success(VoteSuccessCode.VOTE_RECORD_SUCCESS, null));
 	}
+	
+	
+	
+	
+	
 	
 	// 사용자의 특정 투표 취소
 	@DeleteMapping("/votes/{voteId}/records")

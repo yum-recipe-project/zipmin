@@ -194,4 +194,16 @@ public class ChompService {
 		
 		return eventDto;
 	}
+	
+	
+	
+	// 투표하는 함수
+	public void createVoteRecord() {
+		
+		
+		
+		
+		
+		
+	}
 }

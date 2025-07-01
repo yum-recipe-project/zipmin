@@ -164,9 +164,6 @@ function showRecord(choices, choiceId) {
 
 
 
-// 로그인 안했을 때 버튼을 disable 하거나 로그인 링크로 변경
-
-
 /**
  * 투표하는 함수
  */
@@ -176,66 +173,55 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 	form.addEventListener('submit', async function(event) {
 		event.preventDefault();
-		alert('클릭');
 		
 		const params = new URLSearchParams(window.location.search);
 		const voteId = params.get('id');
-		// 로그인 안했을 때 토큰 읽으면 안되니까 이거 처리해야 함
 		const token = localStorage.getItem('accessToken');
-		const payload = parseJwt(token);
 		
-		const checked = document.querySelector('.checkbox_group:checked');
-
-		if (!checked) {
-			alert('선택지를 선택해주세요.');
-			return;
-		}
-
-		const data = {
-			id: payload.id,
-			vote_id: voteId,
-			choice_id: checked.value
-		};
-		
-		console.log(data);
-		
-		try {
-			const response = await instance.post(`/votes/${voteId}/records`, data);
+		if (token) {
+			const payload = parseJwt(token);
+			const checked = document.querySelector('.checkbox_group:checked');
 			
-			if (response.data.code === 'USER_PROFILE_UPDATE_SUCCESS') {
-				alert('비밀번호가 변경되었습니다.');
-				location.href = '/mypage.do';
+			if (!checked) {
+				alert('항목을 선택해주세요.');
+				return;
 			}
-		}
-		catch (error) {
-			// 서버가 에러 응답을 내려준 경우
-			/*
-			if (error.response) {
-				const code = error.response.data.code;
-
-				if (code === 'VOTE_DUPLICATE') {
-					alert('이미 투표하셨습니다.');
+	
+			const data = {
+				user_id: payload.id,
+				vote_id: voteId,
+				choice_id: checked.value
+			};
+			
+			try {
+				const response = await instance.post(`/votes/${voteId}/records`, data);
+				
+				if (response.data.code === 'VOTE_RECORD_SUCCESS') {
+					location.reload();
 				}
-				else if (code === 'AUTH_TOKEN_INVALID') {
-					alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
-					location.href = '/login.do';
+			}
+			catch (error) {
+				const code = error?.response?.data?.code;
+
+				if (code === 'VOTE_RECORD_INVALID_INPUT') {
+					alert(result.message);
+				}
+				else if (code === 'VOTE_RECORD_DUPLICATE') {
+					alert(result.message);
+				}
+				else if (code === 'VOTE_RECORD_CREATE_FAIL') {
+					alert(result.message);
 				}
 				else {
-					alert('알 수 없는 오류가 발생했습니다.');
-					console.error(code);
+					console.log('서버 요청 중 오류 발생');
 				}
 			}
-			// 서버가 아예 응답하지 않거나 네트워크 오류일 경우
-			else {
-				alert('서버와의 연결에 실패했습니다.');
-				console.error(error);
-			}
-			console.log(error);
-			*/
-			
+		}
+		else {
+			alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
+			location.href = '/user/login.do';
 		}
 	});
-	
 });
 
 

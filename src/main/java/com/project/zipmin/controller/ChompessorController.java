@@ -31,7 +31,7 @@ import com.project.zipmin.api.VoteSuccessCode;
 import com.project.zipmin.dto.MegazineReadResponseDto;
 import com.project.zipmin.dto.VoteReadResponseDto;
 import com.project.zipmin.dto.VoteRecordCreateRequestDto;
-import com.project.zipmin.entity.VoteRecord;
+import com.project.zipmin.dto.VoteRecordCreateResponseDto;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.swagger.ChompReadListSuccessResponse;
@@ -42,6 +42,10 @@ import com.project.zipmin.swagger.MegazineNotFoundResponse;
 import com.project.zipmin.swagger.MegazineReadSuccessResponse;
 import com.project.zipmin.swagger.VoteNotFoundResponse;
 import com.project.zipmin.swagger.VoteReadSuccessResponse;
+import com.project.zipmin.swagger.VoteRecordCreateFailResponse;
+import com.project.zipmin.swagger.VoteRecordCreateSuccessResponse;
+import com.project.zipmin.swagger.VoteRecordDuplicateResponse;
+import com.project.zipmin.swagger.VoteRecordInvalidInputResponse;
 
 @Tag(name = "Chompessor API", description = "쩝쩝박사 관련 API")
 @RestController
@@ -145,27 +149,56 @@ public class ChompessorController {
 	
 	
 	
-	// 사용자의 투표 내용을 조회하면서 전체 결과 조회
-	@GetMapping("/votes/{voteId}/records")
-//	public Object viewVoteResult (
-//			@PathVariable("voteId") int voteId) {
-//		return null;
-//	}
 	
-	
-	
-	// 사용자의 특정 투표 참여
+	// 투표 참여
+	@Operation(
+	    summary = "투표 참여",
+	    description = "로그인 한 사용자가 투표에 참여합니다."
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "투표 기록 작성 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteRecordCreateSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "투표 기록 작성 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteRecordCreateFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteRecordInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "409",
+				description = "투표 중복 참여 시도",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteRecordDuplicateResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
 	@PostMapping("/votes/{voteId}/records")
-	public ResponseEntity<?> castVote(@PathVariable int voteId, @RequestBody VoteRecordCreateRequestDto voteDto) {
+	public ResponseEntity<?> castVote(
+			@Parameter(description = "참여할 투표의 ID", required = true, example = "1") @PathVariable int voteId,
+			@Parameter(description = "투표 참여 요청 정보", required = true) @RequestBody VoteRecordCreateRequestDto recordRequestDto) {
 		
-		System.err.println("chomp controller - voteId : " + voteId + " voteDto : " + voteDto);
+		// 여기에 인증 여부랑 로그인 사용자와 투표자의 일치 여부 검사 추가할 것
+		
+		VoteRecordCreateResponseDto recordResponseDto = chompService.createVoteRecord(recordRequestDto);
 		
 		return ResponseEntity.status(VoteSuccessCode.VOTE_RECORD_SUCCESS.getStatus())
-				.body(ApiResponse.success(VoteSuccessCode.VOTE_RECORD_SUCCESS, null));
-	}
-	
-	
-	
+				.body(ApiResponse.success(VoteSuccessCode.VOTE_RECORD_SUCCESS, recordResponseDto));
+	}	
 	
 	
 	

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.EventErrorCode;
 import com.project.zipmin.api.MegazineErrorCode;
-import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.ChompReadResponseDto;
 import com.project.zipmin.dto.EventReadResponseDto;
@@ -25,11 +25,11 @@ import com.project.zipmin.dto.MegazineReadResponseDto;
 import com.project.zipmin.dto.UserResponseDto;
 import com.project.zipmin.dto.VoteChoiceReadResponseDto;
 import com.project.zipmin.dto.VoteReadResponseDto;
-import com.project.zipmin.dto.VoteRecordReadResponseDto;
+import com.project.zipmin.dto.VoteRecordCreateRequestDto;
+import com.project.zipmin.dto.VoteRecordCreateResponseDto;
 import com.project.zipmin.entity.Chomp;
 import com.project.zipmin.entity.Event;
 import com.project.zipmin.entity.Megazine;
-import com.project.zipmin.entity.User;
 import com.project.zipmin.entity.Vote;
 import com.project.zipmin.entity.VoteChoice;
 import com.project.zipmin.entity.VoteRecord;
@@ -38,6 +38,7 @@ import com.project.zipmin.mapper.ChompMapper;
 import com.project.zipmin.mapper.MegazineMapper;
 import com.project.zipmin.mapper.VoteChoiceMapper;
 import com.project.zipmin.mapper.VoteMapper;
+import com.project.zipmin.mapper.VoteRecordMapper;
 import com.project.zipmin.repository.EventRepository;
 import com.project.zipmin.repository.MegazineRepository;
 import com.project.zipmin.repository.VoteChoiceRepository;
@@ -71,6 +72,7 @@ public class ChompService {
 	private final ChompMapper chompMapper;
 	private final VoteMapper voteMapper;
 	private final VoteChoiceMapper choiceMapper;
+	private final VoteRecordMapper recordMapper;
 	private final MegazineMapper megazineMapper;
 	private final EventMapper eventMapper;
 	
@@ -198,12 +200,26 @@ public class ChompService {
 	
 	
 	// 투표하는 함수
-	public void createVoteRecord() {
-		
-		
-		
-		
-		
-		
+	public VoteRecordCreateResponseDto createVoteRecord(VoteRecordCreateRequestDto recordDto) {
+			    
+		// 입력값 검증
+	    if (recordDto == null || recordDto.getUserId() == 0 || recordDto.getVoteId() == 0 || recordDto.getChoiceId() == 0) {
+	    	throw new ApiException(VoteErrorCode.VOTE_RECORD_INVALID_INPUT);
+	    }
+	    
+	    // 중복 투표 검사
+	    if (recordRepository.existsByUserIdAndVoteId(recordDto.getUserId(), recordDto.getVoteId())) {
+	    	throw new ApiException(VoteErrorCode.VOTE_RECORD_DUPLICATE);
+	    }
+	    
+	    // 투표 기록 저장
+	    VoteRecord record = recordMapper.toEntity(recordDto);
+	    try {
+	    	record = recordRepository.save(record);
+	    	return recordMapper.toCreateResponseDto(record);
+	    }
+	    catch (DataIntegrityViolationException e) {
+	    	throw new ApiException(VoteErrorCode.VOTE_RECORD_CREATE_FAIL);
+	    }
 	}
 }

@@ -14,4 +14,6 @@ public interface VoteRecordRepository extends JpaRepository<VoteRecord, Integer>
 	
 	long countByChoiceId(int choiceId);
 	long countByVoteId(int voteId);
+	
+	boolean existsByUserIdAndVoteId(int userId, int voteId);
 }

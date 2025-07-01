@@ -14,7 +14,8 @@ public enum VoteSuccessCode implements Code {
 	VOTE_READ_SUCCESS(HttpStatus.OK, "투표 조회 성공"),
 	VOTE_UPDATE_SUCCESS(HttpStatus.OK, "투표 수정 성공"),
 	VOTE_DELETE_SUCCESS(HttpStatus.OK, "투표 삭제 성공"),
-	VOTE_RECORD_SUCCESS(HttpStatus.OK, "투표 기록 작성 성공");
+	VOTE_RECORD_CREATE_SUCCESS(HttpStatus.CREATED, "투표 기록 작성 성공"),
+	VOTE_RECORD_DELETE_SUCCESS(HttpStatus.OK, "투표 기록 삭제 성공");
 	
 	private final HttpStatus status;
 	private final String message;

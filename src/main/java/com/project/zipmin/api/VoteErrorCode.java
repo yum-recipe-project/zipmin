@@ -24,7 +24,9 @@ public enum VoteErrorCode implements Code {
 	VOTE_READ_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "투표 조회 실패"),
 	VOTE_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "투표 수정 실패"),
 	VOTE_DELETE_FAIL(HttpStatus.BAD_REQUEST, "투표 삭제 실패"),
+	VOTE_RECORD_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 투표 기록을 찾을 수 없음"),
 	VOTE_RECORD_CREATE_FAIL(HttpStatus.BAD_REQUEST, "투표 기록 작성 실패"),
+	VOTE_RECORD_DELETE_FAIL(HttpStatus.BAD_REQUEST, "투표 기록 삭제 실패"),
 	
 	// 비즈니스 로직
 	// VOTE_PATICIPATE_NOT_ALLOWED(HttpStatus.FORBIDDEN, "기간 외 참여 시도"),

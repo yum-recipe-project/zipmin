@@ -47,7 +47,7 @@
 						<ul class="record_list"></ul>
 						<div class="btn_wrap">
 							<button class="btn_outline" onclick="location.href='/chompessor/listChomp.do';">목록으로</button>
-							<button class="btn_primary" type="submit" onclick="">다시 투표하기</button>
+							<button class="btn_primary" type="button" onclick="cancelVote();">다시 투표하기</button>
 						</div>
 					</div>
 				</div>

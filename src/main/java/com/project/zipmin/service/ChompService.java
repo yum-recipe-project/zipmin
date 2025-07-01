@@ -27,6 +27,7 @@ import com.project.zipmin.dto.VoteChoiceReadResponseDto;
 import com.project.zipmin.dto.VoteReadResponseDto;
 import com.project.zipmin.dto.VoteRecordCreateRequestDto;
 import com.project.zipmin.dto.VoteRecordCreateResponseDto;
+import com.project.zipmin.dto.VoteRecordDeleteRequestDto;
 import com.project.zipmin.entity.Chomp;
 import com.project.zipmin.entity.Event;
 import com.project.zipmin.entity.Megazine;
@@ -49,6 +50,7 @@ import com.project.zipmin.repository.VoteRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ChompService {
 	
@@ -127,7 +129,6 @@ public class ChompService {
 	
 	
 	// 투표의 상세 내용을 조회하는 함수
-	@Transactional
 	public VoteReadResponseDto readVoteById(int id) {
 		
 		Vote vote = voteRepository.findById(id)
@@ -201,7 +202,7 @@ public class ChompService {
 	
 	// 투표하는 함수
 	public VoteRecordCreateResponseDto createVoteRecord(VoteRecordCreateRequestDto recordDto) {
-			    
+		
 		// 입력값 검증
 	    if (recordDto == null || recordDto.getUserId() == 0 || recordDto.getVoteId() == 0 || recordDto.getChoiceId() == 0) {
 	    	throw new ApiException(VoteErrorCode.VOTE_RECORD_INVALID_INPUT);
@@ -212,6 +213,9 @@ public class ChompService {
 	    	throw new ApiException(VoteErrorCode.VOTE_RECORD_DUPLICATE);
 	    }
 	    
+	    // 투표 기간 검사
+	    
+	    
 	    // 투표 기록 저장
 	    VoteRecord record = recordMapper.toEntity(recordDto);
 	    try {
@@ -220,6 +224,32 @@ public class ChompService {
 	    }
 	    catch (DataIntegrityViolationException e) {
 	    	throw new ApiException(VoteErrorCode.VOTE_RECORD_CREATE_FAIL);
+	    }
+	}
+	
+	
+	
+	// 투표를 취소하는 함수
+	public void deleteVoteRecord(VoteRecordDeleteRequestDto recordDto) {
+		
+		// 입력값 검증 (수정 필요 @Valid)
+	    if (recordDto.getUserId() == 0 || recordDto.getVoteId() == 0) {
+	    	throw new ApiException(VoteErrorCode.VOTE_RECORD_INVALID_INPUT);
+	    }
+		
+		if (!recordRepository.existsByUserIdAndVoteId(recordDto.getUserId(), recordDto.getVoteId())) {
+	        throw new ApiException(VoteErrorCode.VOTE_RECORD_NOT_FOUND);
+	    }
+		
+		// 투표 기간 검사
+		
+		
+		// 투표 기록 삭제
+		try {
+	        recordRepository.deleteByUserIdAndVoteId(recordDto.getUserId(), recordDto.getVoteId());
+	    }
+		catch (Exception e) {
+	        throw new ApiException(VoteErrorCode.VOTE_RECORD_DELETE_FAIL);
 	    }
 	}
 }

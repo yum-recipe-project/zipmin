@@ -174,8 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	form.addEventListener('submit', async function(event) {
 		event.preventDefault();
 		
-		const params = new URLSearchParams(window.location.search);
-		const voteId = params.get('id');
+		const voteId = new URLSearchParams(window.location.search).get('id');
 		const token = localStorage.getItem('accessToken');
 		
 		if (token) {
@@ -196,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			try {
 				const response = await instance.post(`/votes/${voteId}/records`, data);
 				
-				if (response.data.code === 'VOTE_RECORD_SUCCESS') {
+				if (response.data.code === 'VOTE_RECORD_CREATE_SUCCESS') {
 					location.reload();
 				}
 			}
@@ -223,6 +222,45 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	});
 });
+
+
+
+/**
+ * 투표를 취소하는 함수
+ */
+async function cancelVote() {
+	
+	const voteId = new URLSearchParams(window.location.search).get('id');
+	const token = localStorage.getItem('accessToken');
+	
+	if (token) {
+		const payload = parseJwt(token);
+		const userId = payload.id;
+		
+		const data = {
+			user_id: Number(userId),
+			vote_id: Number(voteId)
+		};
+		
+		try {
+			const response = await instance.delete(`/votes/${voteId}/records`, {
+				data : data
+			});
+			
+			if (response.data.code === 'VOTE_RECORD_DELETE_SUCCESS') {
+	            location.reload();
+	        }
+		}
+		catch (error) {
+			
+		}
+	}
+	else {
+		alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
+		location.href = '/user/login.do';
+	}
+}
+
 
 
 

@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,29 +25,39 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.dto.ChompReadResponseDto;
 import com.project.zipmin.dto.EventReadResponseDto;
+import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.ChompSuccessCode;
 import com.project.zipmin.api.EventSuccessCode;
 import com.project.zipmin.api.MegazineSuccessCode;
+import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.api.VoteSuccessCode;
 import com.project.zipmin.dto.MegazineReadResponseDto;
 import com.project.zipmin.dto.VoteReadResponseDto;
 import com.project.zipmin.dto.VoteRecordCreateRequestDto;
 import com.project.zipmin.dto.VoteRecordCreateResponseDto;
+import com.project.zipmin.dto.VoteRecordDeleteRequestDto;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
+import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.ChompReadListSuccessResponse;
 import com.project.zipmin.swagger.EventNotFoundResponse;
 import com.project.zipmin.swagger.EventReadSuccessResponse;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.MegazineNotFoundResponse;
 import com.project.zipmin.swagger.MegazineReadSuccessResponse;
+import com.project.zipmin.swagger.UserNotFoundResponse;
+import com.project.zipmin.swagger.VoteForbiddenResponse;
 import com.project.zipmin.swagger.VoteNotFoundResponse;
 import com.project.zipmin.swagger.VoteReadSuccessResponse;
 import com.project.zipmin.swagger.VoteRecordCreateFailResponse;
 import com.project.zipmin.swagger.VoteRecordCreateSuccessResponse;
+import com.project.zipmin.swagger.VoteRecordDeleteFailResponse;
+import com.project.zipmin.swagger.VoteRecordDeleteSuccessResponse;
 import com.project.zipmin.swagger.VoteRecordDuplicateResponse;
 import com.project.zipmin.swagger.VoteRecordInvalidInputResponse;
+import com.project.zipmin.swagger.VoteRecordNotFoundResponse;
+import com.project.zipmin.swagger.VoteUnauthorizedAccessResponse;
 
 @Tag(name = "Chompessor API", description = "쩝쩝박사 관련 API")
 @RestController
@@ -53,6 +65,8 @@ public class ChompessorController {
 	
 	@Autowired
 	ChompService chompService;
+	@Autowired
+	UserService userService;
 	@Autowired
 	CommentService commentService;
 
@@ -149,7 +163,6 @@ public class ChompessorController {
 	
 	
 	
-	
 	// 투표 참여
 	@Operation(
 	    summary = "투표 참여",
@@ -157,7 +170,7 @@ public class ChompessorController {
 	)
 	@ApiResponses(value = {
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "200",
+				responseCode = "201",
 				description = "투표 기록 작성 성공",
 				content = @Content(
 						mediaType = "application/json",
@@ -174,6 +187,24 @@ public class ChompessorController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = VoteRecordInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인 되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteUnauthorizedAccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "권한 없는 사용자의 접근",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "409",
 				description = "투표 중복 참여 시도",
@@ -192,22 +223,113 @@ public class ChompessorController {
 			@Parameter(description = "참여할 투표의 ID", required = true, example = "1") @PathVariable int voteId,
 			@Parameter(description = "투표 참여 요청 정보", required = true) @RequestBody VoteRecordCreateRequestDto recordRequestDto) {
 		
-		// 여기에 인증 여부랑 로그인 사용자와 투표자의 일치 여부 검사 추가할 것
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 사용자 ID 추출
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		int userId = userService.readUserByUsername(username).getId();
+
+		// 권한 없는 사용자의 접근
+		if (userId != recordRequestDto.getUserId()) {
+		    throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+		}
 		
 		VoteRecordCreateResponseDto recordResponseDto = chompService.createVoteRecord(recordRequestDto);
 		
-		return ResponseEntity.status(VoteSuccessCode.VOTE_RECORD_SUCCESS.getStatus())
-				.body(ApiResponse.success(VoteSuccessCode.VOTE_RECORD_SUCCESS, recordResponseDto));
+		return ResponseEntity.status(VoteSuccessCode.VOTE_RECORD_CREATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(VoteSuccessCode.VOTE_RECORD_CREATE_SUCCESS, recordResponseDto));
 	}	
 	
 	
 	
-	// 사용자의 특정 투표 취소
+	// 투표 참여 취소
+	@Operation(
+	    summary = "투표 참여 취소",
+	    description = "로그인 한 사용자가 투표에 참여합니다."
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "투표 기록 삭제 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteRecordDeleteSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "투표 기록 삭제 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteRecordDeleteFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteRecordInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인 되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteUnauthorizedAccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "권한 없는 사용자의 접근",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 투표 기록을 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteRecordNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
 	@DeleteMapping("/votes/{voteId}/records")
-	public int cancelVote(
-			@PathVariable("voteId") int voteId) {
-		return 0;
+	public ResponseEntity<?> cancelVote(@PathVariable int voteId, @RequestBody VoteRecordDeleteRequestDto recordDto) {
+		
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 사용자 ID 추출
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		int userId = userService.readUserByUsername(username).getId();
+
+		// 권한 없는 사용자의 접근
+		if (userId != recordDto.getUserId()) {
+		    throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+		}
+		
+		chompService.deleteVoteRecord(recordDto);
+		
+		return ResponseEntity.status(VoteSuccessCode.VOTE_RECORD_DELETE_SUCCESS.getStatus())
+				.body(ApiResponse.success(VoteSuccessCode.VOTE_RECORD_DELETE_SUCCESS, null));
 	}
+	
+	
+	
+	
+	
+	
 	
 	// 사용자의 특정 투표 여부 확인
 	@GetMapping("/votes/{voteId}/status")

@@ -37,6 +37,8 @@ import com.project.zipmin.api.MegazineSuccessCode;
 import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.api.VoteSuccessCode;
 import com.project.zipmin.dto.MegazineReadResponseDto;
+import com.project.zipmin.dto.MegazineUpdateRequestDto;
+import com.project.zipmin.dto.MegazineUpdateResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.VoteReadResponseDto;
 import com.project.zipmin.dto.VoteRecordCreateRequestDto;
@@ -417,10 +419,24 @@ public class ChompessorController {
 	
 	// 특정 매거진 수정 (관리자)
 	@PutMapping("/megazines/{id}")
-	public ResponseEntity<?> editMegazine(@PathVariable int id) {
+	public ResponseEntity<?> editMegazine(@PathVariable int id, @RequestBody MegazineUpdateRequestDto megazineRequestDto) {
+		
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(MegazineErrorCode.MEGAZINE_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 권한 없는 사용자의 접근 (괸리자 권한)
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
+		    throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+		}
+		
+		MegazineUpdateResponseDto megazineResponseDto = chompService.updateMegazine(megazineRequestDto);
 		
 		return ResponseEntity.status(MegazineSuccessCode.MEGAZINE_UPDATE_SUCCESS.getStatus())
-				.body(ApiResponse.success(MegazineSuccessCode.MEGAZINE_UPDATE_SUCCESS, null));
+				.body(ApiResponse.success(MegazineSuccessCode.MEGAZINE_UPDATE_SUCCESS, megazineResponseDto));
 	}
 
 	

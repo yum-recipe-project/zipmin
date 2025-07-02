@@ -76,14 +76,13 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', async function() {
 	
 	data = {
-		title: '테스트입니다',
-		postdate: new Date(),
-		content: '테스트 본문입니다.\n줄바꿈을 해보아요',
-		user_id: 1
+		id: 10,
+		title: '수정 테스트입니다!',
+		content: '테스트 본문입니다.\n줄바꿈을 해보아요\n수정할게요.',
 	};
 	
 	try {
-		// const response = await instance.post(`/megazines`, data);
+		// const response = await instance.put(`/megazines/10`, data);
 	}
 	catch (error) {
 		 console.log(error);

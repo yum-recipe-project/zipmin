@@ -28,6 +28,7 @@ import com.project.zipmin.dto.MegazineCreateRequestDto;
 import com.project.zipmin.dto.MegazineCreateResponseDto;
 import com.project.zipmin.dto.MegazineReadResponseDto;
 import com.project.zipmin.dto.MegazineUpdateRequestDto;
+import com.project.zipmin.dto.MegazineUpdateResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.VoteChoiceReadResponseDto;
 import com.project.zipmin.dto.VoteReadResponseDto;
@@ -281,10 +282,29 @@ public class ChompService {
 	
 	
 	// 매거진을 수정하는 함수
-	public void updateMegazine(MegazineUpdateRequestDto megazineRequestDto) {
+	public MegazineUpdateResponseDto updateMegazine(MegazineUpdateRequestDto megazineRequestDto) {
 		
+		// 입력값 검증
+		if (megazineRequestDto == null || megazineRequestDto.getId() == 0 || megazineRequestDto.getContent() == null || megazineRequestDto.getTitle() == null) {
+			throw new ApiException(MegazineErrorCode.MEGAZINE_INVALID_INPUT);
+		}
 		
+		// 매거진 존재 여부 판단
+		Megazine megazine = megazineRepository.findById(megazineRequestDto.getId())
+				.orElseThrow(() -> new ApiException(MegazineErrorCode.MEGAZINE_NOT_FOUND));
 		
+		// 필요한 필드만 수정
+		megazine.setTitle(megazineRequestDto.getTitle());
+		megazine.setContent(megazineRequestDto.getContent());
+		
+		// 매거진 수정
+		try {
+			megazine = megazineRepository.save(megazine);
+			return megazineMapper.toUpdateResponseDto(megazine);
+		}
+		catch (Exception e) {
+			throw new ApiException(MegazineErrorCode.MEGAZINE_UPDATE_FAIL);
+		}
 	}
 	
 	

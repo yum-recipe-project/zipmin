@@ -319,6 +319,7 @@ public class ChompService {
 	    	throw new ApiException(VoteErrorCode.VOTE_RECORD_INVALID_INPUT);
 	    }
 		
+	    // 투표 기록 존재 여부 판단
 		if (!recordRepository.existsByUserIdAndVoteId(recordDto.getUserId(), recordDto.getVoteId())) {
 	        throw new ApiException(VoteErrorCode.VOTE_RECORD_NOT_FOUND);
 	    }
@@ -343,4 +344,36 @@ public class ChompService {
 	    }
 	}
 	
+	
+	
+	
+	// 매거진을 삭제하는 함수
+	public void deleteMegazine(int id) {
+		
+		// 입력값 검증
+		if (id < 0) {
+			throw new ApiException(MegazineErrorCode.MEGAZINE_INVALID_INPUT);
+		}
+		
+		// 매거진 존재 여부 판단
+		Megazine megazine = megazineRepository.findById(id)
+				.orElseThrow(() -> new ApiException(MegazineErrorCode.MEGAZINE_NOT_FOUND));
+		
+		// 매거진 삭제
+		try {
+			megazineRepository.deleteById(id);
+		}
+		catch (Exception e) {
+			throw new ApiException(MegazineErrorCode.MEGAZINE_DELETE_FAIL);
+		}
+		
+		// 쩝쩝박사 게시물 삭제
+		try {
+			chompRepository.deleteById(megazine.getChomp().getId());
+		}
+		catch (Exception e) {
+			throw new ApiException(ChompErrorCode.CHOMP_NOT_FOUND);
+		}
+	}
+
 }

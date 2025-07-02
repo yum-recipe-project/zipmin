@@ -414,7 +414,7 @@ public class ChompessorController {
 		return ResponseEntity.status(MegazineSuccessCode.MEGAZINE_CREATE_SUCCESS.getStatus())
 				.body(ApiResponse.success(MegazineSuccessCode.MEGAZINE_CREATE_SUCCESS, megazineResponseDto));
 	}
-
+	
 	
 	
 	// 특정 매거진 수정 (관리자)
@@ -444,9 +444,23 @@ public class ChompessorController {
 	// 특정 매거진 삭제 (관리자)
 	@DeleteMapping("/megazines/{id}")
 	public ResponseEntity<?> deleteMegazine(@PathVariable int id) {
+		
+		// 인증 여부 확인 (비로그인)
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+//		    throw new ApiException(MegazineErrorCode.MEGAZINE_UNAUTHORIZED_ACCESS);
+//		}
+		
+		// 권한 없는 사용자의 접근 (괸리자 권한)
+//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
+//		    throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+//		}
+		
+		chompService.deleteMegazine(id);
+		
 		return null;
 	}
-	
 	
 	
 	

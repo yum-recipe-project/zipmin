@@ -30,7 +30,10 @@ import com.project.zipmin.dto.MegazineReadResponseDto;
 import com.project.zipmin.dto.MegazineUpdateRequestDto;
 import com.project.zipmin.dto.MegazineUpdateResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
+import com.project.zipmin.dto.VoteChoiceCreateRequestDto;
 import com.project.zipmin.dto.VoteChoiceReadResponseDto;
+import com.project.zipmin.dto.VoteCreateRequestDto;
+import com.project.zipmin.dto.VoteCreateResponseDto;
 import com.project.zipmin.dto.VoteReadResponseDto;
 import com.project.zipmin.dto.VoteRecordCreateRequestDto;
 import com.project.zipmin.dto.VoteRecordCreateResponseDto;
@@ -87,6 +90,62 @@ public class ChompService {
 	
 	
 	
+	// 투표를 작성하는 함수
+	public VoteCreateResponseDto createVote(VoteCreateRequestDto voteRequestDto) {
+		
+		ChompCreateRequestDto chompRequestDto = new ChompCreateRequestDto();
+		chompRequestDto.setCategory("vote");
+		
+		// 쩝쩝박사 생성
+		Chomp chomp = chompMapper.toEntity(chompRequestDto);
+		ChompCreateResponseDto chompResponseDto = new ChompCreateResponseDto();
+		try {
+			chomp = chompRepository.save(chomp);
+			chompResponseDto = chompMapper.toCreateResponseDto(chomp);
+		}
+		catch (Exception e) {
+			throw new ApiException(ChompErrorCode.CHOMP_CREATE_FAIL);
+		}
+
+		// 입력값 검증
+	    if (voteRequestDto == null || voteRequestDto.getTitle() == null || voteRequestDto.getOpendate() == null || voteRequestDto.getClosedate() == null || voteRequestDto.getChoices() == null || voteRequestDto.getUserId() == 0) {
+	    	throw new ApiException(VoteErrorCode.VOTE_INVALID_INPUT);
+	    }
+	    for (VoteChoiceCreateRequestDto choiceDto : voteRequestDto.getChoices()) {
+	    	if (choiceDto.getChoice() == null) {
+	    		throw new ApiException(VoteErrorCode.VOTE_CHOICE_INVALID_INPUT);
+	    	}
+	    }
+	    
+	    // 기간 검증
+	    if (voteRequestDto.getOpendate().after(voteRequestDto.getClosedate())) {
+	    	throw new ApiException(VoteErrorCode.VOTE_INVALID_PERIOD);
+	    }
+		
+	    // 투표 생성
+	    voteRequestDto.setChompId(chompResponseDto.getId());
+	    Vote vote = voteMapper.toEntity(voteRequestDto);
+	    try {
+	    	vote = voteRepository.save(vote);
+    		for (VoteChoiceCreateRequestDto choiceDto : voteRequestDto.getChoices()) {
+    			choiceDto.setVoteId(vote.getId());
+    			VoteChoice choice = choiceMapper.toEntity(choiceDto);
+    			
+    			try {
+    				choiceRepository.save(choice);
+		    	}
+		    	catch (Exception e) {
+					throw new ApiException(VoteErrorCode.VOTE_CHOICE_CREATE_FAIL);
+		    	}
+    		}
+	    	return voteMapper.toCreateResponseDto(vote);
+	    }
+	    catch (Exception e) {
+	    	throw new ApiException(VoteErrorCode.VOTE_CREATE_FAIL);
+		}
+	}
+	
+	
 	
 	// 매거진을 작성하는 함수
 	public MegazineCreateResponseDto createMegazine(MegazineCreateRequestDto megazineRequestDto) {
@@ -133,13 +192,15 @@ public class ChompService {
 		
 		List<ChompReadResponseDto> chompDtoList = new ArrayList<>();
 		
+		Date today = new Date();
 		for (Chomp chomp : chompPage) {
 			ChompReadResponseDto chompDto = chompMapper.toReadResponseDto(chomp);
 			
 			// 투표
 			voteRepository.findByChompId(chompDto.getId()).ifPresent(vote -> {
 				VoteReadResponseDto voteDto = voteMapper.toReadResponseDto(vote);
-				voteDto.setStatus(getStatus(voteDto.getOpendate(), voteDto.getClosedate()));
+				String status = (today.after(voteDto.getOpendate()) && today.before(voteDto.getClosedate())) ? "open" : "close";
+				voteDto.setStatus(status);
 				chompDto.setVoteDto(voteDto);
 			});
 			
@@ -152,7 +213,8 @@ public class ChompService {
 			// 이벤트
 			eventRepository.findByChompId(chomp.getId()).ifPresent(event -> {
 				EventReadResponseDto eventDto = eventMapper.toReadResponseDto(event);
-				eventDto.setStatus(getStatus(eventDto.getOpendate(), eventDto.getClosedate()));
+				String status = (today.after(eventDto.getOpendate()) && today.before(eventDto.getClosedate())) ? "open" : "close";
+				eventDto.setStatus(status);
 				chompDto.setEventDto(eventDto);
 			});
 			
@@ -160,14 +222,6 @@ public class ChompService {
 		}
 		
 		return new PageImpl<>(chompDtoList, pageable, chompPage.getTotalElements());
-	}
-	
-	
-	
-	// 현재 날짜를 기준으로 진행중/진행종료 여부를 판별하는 함수
-	private String getStatus(Date opendate, Date closedate) {
-		Date today = new Date();
-	    return (today.after(opendate) && today.before(closedate)) ? "open" : "close";
 	}
 
 	
@@ -281,6 +335,11 @@ public class ChompService {
 	
 	
 	
+	
+	
+	
+	
+	
 	// 매거진을 수정하는 함수
 	public MegazineUpdateResponseDto updateMegazine(MegazineUpdateRequestDto megazineRequestDto) {
 		
@@ -342,6 +401,18 @@ public class ChompService {
 		catch (Exception e) {
 	        throw new ApiException(VoteErrorCode.VOTE_RECORD_DELETE_FAIL);
 	    }
+	}
+	
+	
+	
+	
+	// 투표를 삭제하는 함수
+	public void deleteVote(int id) {
+		
+		if (id < 0) {
+			throw new ApiException(VoteErrorCode.VOTE_INVALID_INPUT);
+		}
+		
 	}
 	
 	

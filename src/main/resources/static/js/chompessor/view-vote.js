@@ -1,4 +1,30 @@
 /**
+ * 투표 생성 테스트
+ */
+document.addEventListener('DOMContentLoaded', async function () {
+	const data = {
+		title: "올 여름 가장 맛있는 아이스크림은?",
+		opendate: "2025-07-02T10:00:00",
+		closedate: "2025-07-10T23:59:59",
+		user_id : 1,
+		choices: [
+			{ choice: "말차 아이스크림" },
+			{ choice: "초코 아이스크림" },
+			{ choice: "바닐라 아이스크림" }
+		]
+	};
+
+	try {
+		const response = await instance.post('/votes', data);
+		
+	}
+	catch (error) {
+	}
+});
+
+
+
+/**
  * 투표의 상세 데이터를 가져오는 함수
  */
 document.addEventListener('DOMContentLoaded', async function() {

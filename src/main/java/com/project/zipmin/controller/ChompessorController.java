@@ -39,6 +39,8 @@ import com.project.zipmin.api.VoteSuccessCode;
 import com.project.zipmin.dto.MegazineReadResponseDto;
 import com.project.zipmin.dto.MegazineUpdateRequestDto;
 import com.project.zipmin.dto.MegazineUpdateResponseDto;
+import com.project.zipmin.dto.VoteCreateRequestDto;
+import com.project.zipmin.dto.VoteCreateResponseDto;
 import com.project.zipmin.dto.VoteReadResponseDto;
 import com.project.zipmin.dto.VoteRecordCreateRequestDto;
 import com.project.zipmin.dto.VoteRecordCreateResponseDto;
@@ -163,22 +165,48 @@ public class ChompessorController {
 
 	// 새 투표 등록 (관리자)
 	@PostMapping("/votes")
-	public int writeVote() {
-		return 0;
+	public ResponseEntity<?> writeVote(@RequestBody VoteCreateRequestDto voteRequestDto) {
+		
+		// 인증 여부 확인 (비로그인)
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+//		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
+//		}
+		
+		// 권한 없는 사용자의 접근 (괸리자 권한)
+//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
+//		    throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+//		}
+		
+		VoteCreateResponseDto voteResponseDto = chompService.createVote(voteRequestDto);
+		
+		return ResponseEntity.status(VoteSuccessCode.VOTE_CREATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(VoteSuccessCode.VOTE_CREATE_SUCCESS, voteResponseDto));
 	}
 
-	// 특정 투표 수정 (관리자)
-	@PutMapping("/votes/{voteId}")
-	public int editVote(
-			@PathVariable("voteId") int voteId) {
-		return 0;
+	
+	
+	
+	
+	
+	// 투표 수정 (관리자)
+	@PutMapping("/votes/{id}")
+	public ResponseEntity<?> editVote(
+			@PathVariable int id) {
+		return null;
 	}
 
-	// 특정 투표 삭제 (관리자)
-	@DeleteMapping("/votes/{voteId}")
-	public int deleteVote(
-			@PathVariable("voteId") int voteId) {
-		return 0;
+	
+	
+	
+	
+	
+	// 투표 삭제 (관리자)
+	@DeleteMapping("/votes/{id}")
+	public ResponseEntity<?> deleteVote(
+			@PathVariable int id) {
+		return null;
 	}
 	
 	
@@ -261,12 +289,9 @@ public class ChompessorController {
 		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 사용자 ID 추출
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		int userId = userService.readUserByUsername(username).getId();
-
 		// 권한 없는 사용자의 접근
-		if (userId != recordRequestDto.getUserId()) {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (userService.readUserByUsername(username).getId() != recordRequestDto.getUserId()) {
 		    throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
 		}
 		

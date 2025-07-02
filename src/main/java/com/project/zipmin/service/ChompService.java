@@ -372,7 +372,7 @@ public class ChompService {
 			chompRepository.deleteById(megazine.getChomp().getId());
 		}
 		catch (Exception e) {
-			throw new ApiException(ChompErrorCode.CHOMP_NOT_FOUND);
+			throw new ApiException(ChompErrorCode.CHOMP_DELETE_FAIL);
 		}
 	}
 

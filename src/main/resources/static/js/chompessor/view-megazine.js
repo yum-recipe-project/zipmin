@@ -66,22 +66,3 @@ document.addEventListener('DOMContentLoaded', function() {
 		fetchCommentList('chomp_megazine');
 	});
 });
-
-
-
-
-/**
- * 매거진 작성
- */
-document.addEventListener('DOMContentLoaded', async function() {
-	
-
-	
-	try {
-		const response = await instance.delete(`/megazines/9`);
-	}
-	catch (error) {
-		 console.log(error);
-	}
-	
-});

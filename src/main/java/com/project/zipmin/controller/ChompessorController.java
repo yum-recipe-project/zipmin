@@ -12,11 +12,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -39,7 +39,6 @@ import com.project.zipmin.api.VoteSuccessCode;
 import com.project.zipmin.dto.MegazineReadResponseDto;
 import com.project.zipmin.dto.MegazineUpdateRequestDto;
 import com.project.zipmin.dto.MegazineUpdateResponseDto;
-import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.VoteReadResponseDto;
 import com.project.zipmin.dto.VoteRecordCreateRequestDto;
 import com.project.zipmin.dto.VoteRecordCreateResponseDto;
@@ -48,12 +47,23 @@ import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.UserService;
+import com.project.zipmin.swagger.ChompCreateFailResponse;
+import com.project.zipmin.swagger.ChompDeleteFailResponse;
 import com.project.zipmin.swagger.ChompReadListSuccessResponse;
 import com.project.zipmin.swagger.EventNotFoundResponse;
 import com.project.zipmin.swagger.EventReadSuccessResponse;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
+import com.project.zipmin.swagger.MegazineCreateFailResponse;
+import com.project.zipmin.swagger.MegazineCreateSuccessResponse;
+import com.project.zipmin.swagger.MegazineDeleteFailResponse;
+import com.project.zipmin.swagger.MegazineDeleteSuccessResponse;
+import com.project.zipmin.swagger.MegazineForbiddenResponse;
+import com.project.zipmin.swagger.MegazineInvalidInputResponse;
 import com.project.zipmin.swagger.MegazineNotFoundResponse;
 import com.project.zipmin.swagger.MegazineReadSuccessResponse;
+import com.project.zipmin.swagger.MegazineUnauthorizedAccessResponse;
+import com.project.zipmin.swagger.MegazineUpdateFailResponse;
+import com.project.zipmin.swagger.MegazineUpdateSuccessResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
 import com.project.zipmin.swagger.VoteAlreadyEndedResponse;
 import com.project.zipmin.swagger.VoteForbiddenResponse;
@@ -394,8 +404,57 @@ public class ChompessorController {
 	
 	
 	// 새 매거진 작성 (관리자)
+	@Operation(
+	    summary = "매거진 작성",
+	    description = "매거진을 작성합니다."
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "매거진 작성 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineCreateSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "쩝쩝박사 게시물 작성 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ChompCreateFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "매거진 작성 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineCreateFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인 되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineUnauthorizedAccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "권한 없는 사용자의 접근",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
 	@PostMapping("/megazines")
-	public ResponseEntity<?> writeMegazines(@RequestBody MegazineCreateRequestDto megazineRequestDto) {
+	public ResponseEntity<?> writeMegazines(
+			@Parameter(description = "매거진 작성 요청 정보", required = true)  @RequestBody MegazineCreateRequestDto megazineRequestDto) {
 		
 		// 인증 여부 확인 (비로그인)
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -418,8 +477,58 @@ public class ChompessorController {
 	
 	
 	// 특정 매거진 수정 (관리자)
-	@PutMapping("/megazines/{id}")
-	public ResponseEntity<?> editMegazine(@PathVariable int id, @RequestBody MegazineUpdateRequestDto megazineRequestDto) {
+	@Operation(
+	    summary = "매거진 수정",
+	    description = "매거진을 수정합니다."
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "매거진 수정 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineUpdateSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "매거진 수정 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineUpdateFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인 되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineUnauthorizedAccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "권한 없는 사용자의 접근",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 매거진을 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
+	@PatchMapping("/megazines/{id}")
+	public ResponseEntity<?> editMegazine(
+			@Parameter(description = "수정할 매거진의 ID", required = true, example = "1") @PathVariable int id,
+			@Parameter(description = "매거진 수정 요청 정보", required = true) @RequestBody MegazineUpdateRequestDto megazineRequestDto) {
 		
 		// 인증 여부 확인 (비로그인)
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -442,24 +551,80 @@ public class ChompessorController {
 	
 	
 	// 특정 매거진 삭제 (관리자)
+	@Operation(
+	    summary = "매거진 삭제",
+	    description = "매거진을 삭제합니다."
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "매거진 삭제 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineDeleteSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "매거진 삭제 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineDeleteFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "쩝쩝박사 게시물 삭제 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ChompDeleteFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인 되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineUnauthorizedAccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "권한 없는 사용자의 접근",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 매거진을 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
 	@DeleteMapping("/megazines/{id}")
-	public ResponseEntity<?> deleteMegazine(@PathVariable int id) {
+	public ResponseEntity<?> deleteMegazine(
+			@Parameter(description = "삭제할 매거진의 ID", required = true, example = "1") @PathVariable int id) {
 		
 		// 인증 여부 확인 (비로그인)
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-//		    throw new ApiException(MegazineErrorCode.MEGAZINE_UNAUTHORIZED_ACCESS);
-//		}
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(MegazineErrorCode.MEGAZINE_UNAUTHORIZED_ACCESS);
+		}
 		
 		// 권한 없는 사용자의 접근 (괸리자 권한)
-//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-//		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
-//		    throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
-//		}
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
+		    throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+		}
 		
 		chompService.deleteMegazine(id);
 		
-		return null;
+		return ResponseEntity.status(MegazineSuccessCode.MEGAZINE_DELETE_SUCCESS.getStatus())
+				.body(ApiResponse.success(MegazineSuccessCode.MEGAZINE_DELETE_SUCCESS, null));
 	}
 	
 	

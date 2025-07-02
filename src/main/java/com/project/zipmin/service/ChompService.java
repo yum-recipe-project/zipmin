@@ -413,6 +413,33 @@ public class ChompService {
 			throw new ApiException(VoteErrorCode.VOTE_INVALID_INPUT);
 		}
 		
+		// 투표 존재 여부 판단
+		Vote vote = voteRepository.findById(id)
+				.orElseThrow(() -> new ApiException(VoteErrorCode.VOTE_NOT_FOUND));
+		
+		// 투표 옵션 삭제
+		try {
+			choiceRepository.deleteAllByVoteId(id);
+		}
+		catch (Exception e) {
+			throw new ApiException(VoteErrorCode.VOTE_CHOICE_DELETE_FAIL);
+		}
+		
+		// 투표 삭제
+		try {
+			voteRepository.deleteById(id);
+		}
+		catch (Exception e) {
+			throw new ApiException(VoteErrorCode.VOTE_DELETE_FAIL);
+		}
+		
+		// 쩝쩝박사 게시물 삭제
+		try {
+			chompRepository.deleteById(vote.getChomp().getId());
+		}
+		catch (Exception e) {
+			throw new ApiException(ChompErrorCode.CHOMP_DELETE_FAIL);
+		}
 	}
 	
 	

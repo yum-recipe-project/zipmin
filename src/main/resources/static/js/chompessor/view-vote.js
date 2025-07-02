@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 	};
 
 	try {
-		const response = await instance.post('/votes', data);
+		//const response = await instance.delete('/votes/2');
 		
 	}
 	catch (error) {

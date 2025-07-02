@@ -206,7 +206,23 @@ public class ChompessorController {
 	@DeleteMapping("/votes/{id}")
 	public ResponseEntity<?> deleteVote(
 			@PathVariable int id) {
-		return null;
+		
+		// 인증 여부 확인 (비로그인)
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+//		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
+//		}
+		
+		// 권한 없는 사용자의 접근 (괸리자 권한)
+//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
+//		    throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+//		}
+		
+		chompService.deleteVote(id);
+		
+		return ResponseEntity.status(VoteSuccessCode.VOTE_DELETE_SUCCESS.getStatus())
+				.body(ApiResponse.success(VoteSuccessCode.VOTE_DELETE_SUCCESS, null));
 	}
 	
 	

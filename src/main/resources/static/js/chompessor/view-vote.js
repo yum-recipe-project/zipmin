@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 		
 		if (result.code === 'VOTE_READ_SUCCESS') {
 			document.querySelector('.vote_title').innerText = result.data.title;
+			const now = new Date();
 			const opendate = new Date(result.data.opendate);
 			const closedate = new Date(result.data.closedate);
 			const formatDate = `${opendate.getFullYear()}년 ${String(opendate.getMonth() + 1).padStart(2, '0')}월 ${String(opendate.getDate()).padStart(2, '0')}일 - ${closedate.getFullYear()}년 ${String(closedate.getMonth() + 1).padStart(2, '0')}월 ${String(closedate.getDate()).padStart(2, '0')}일`;
@@ -35,6 +36,11 @@ document.addEventListener('DOMContentLoaded', async function() {
 			// 사용자 투표 완료
 			if (result.data.voted) {
 				showRecord(result.data.choice_list, result.data.choice_id);
+			}
+			// 투표 종료
+			else if (now < opendate || now > closedate) {
+				showRecord(result.data.choice_list, result.data.choice_id);
+				document.getElementById('revoteBtn').style.display = 'none';
 			}
 			// 비로그인 상태 혹은 투표 미완료
 			else {
@@ -202,13 +208,31 @@ document.addEventListener('DOMContentLoaded', function() {
 			catch (error) {
 				const code = error?.response?.data?.code;
 
-				if (code === 'VOTE_RECORD_INVALID_INPUT') {
+				if (code === 'VOTE_RECORD_CREATE_FAIL') {
 					alert(result.message);
 				}
-				else if (code === 'VOTE_RECORD_DUPLICATE') {
+				else if (code === 'VOTE_RECORD_INVALID_INPUT') {
 					alert(result.message);
 				}
-				else if (code === 'VOTE_RECORD_CREATE_FAIL') {
+				else if (code === 'VOTE_UNAUTHORIZED_ACCESS') {
+					alert(result.message);
+				}
+				else if (code === 'VOTE_FORBIDDEN') {
+					alert(result.message);
+				}
+				else if (code === 'VOTE_NOT_STARTED') {
+					alert(result.message);
+				}
+				else if (code === 'VOTE_ALREADY_ENDED') {
+					alert(result.message);
+				}
+				else if (code === 'USER_NOT_FOUND') {
+					alert(result.message);
+				}
+				else if (code === 'USER_RECORD_DUPLICATE') {
+					alert(result.message);
+				}
+				else if (code === 'INTERNAL_SERVER_ERROR') {
 					alert(result.message);
 				}
 				else {
@@ -217,8 +241,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 		}
 		else {
-			alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
-			location.href = '/user/login.do';
+			if (confirm('로그인이 필요합니다. 로그인 페이지로 이동합니다.')) {
+				location.href = '/user/login.do';
+			}
 		}
 	});
 });
@@ -252,12 +277,44 @@ async function cancelVote() {
 	        }
 		}
 		catch (error) {
+			const code = error?.response?.data?.code;
 			
+			if (code === 'VOTE_RECORD_DELETE_FAIL') {
+				alert(result.message);
+			}
+			else if (code === 'VOTE_RECORD_INVALID_INPUT') {
+				alert(result.message);
+			}
+			else if (code === 'VOTE_UNAUTHORIZED_ACCESS') {
+				alert(result.message);
+			}
+			else if (code === 'VOTE_FORBIDDEN') {
+				alert(result.message);
+			}
+			else if (code === 'VOTE_NOT_STARTED') {
+				alert(result.message);
+			}
+			else if (code === 'VOTE_ALREADY_ENDED') {
+				alert(result.message);
+			}
+			else if (code === 'USER_NOT_FOUND') {
+				alert(result.message);
+			}
+			else if (code === 'VOTE_RECORD_NONT_FOUND') {
+				alert(result.message);
+			}
+			else if (code === 'INTERNAL_SERVER_ERROR') {
+				alert(result.message);
+			}
+			else {
+				console.log('서버 요청 중 오류 발생');
+			}
 		}
 	}
 	else {
-		alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
-		location.href = '/user/login.do';
+		if (confirm('로그인이 필요합니다. 로그인 페이지로 이동합니다.')) {
+			location.href = '/user/login.do';
+		}
 	}
 }
 

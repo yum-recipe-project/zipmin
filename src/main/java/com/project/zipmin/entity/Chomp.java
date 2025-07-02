@@ -22,8 +22,8 @@ public class Chomp {
 	@Id
 	@GeneratedValue(generator = "seq_chomp_id")
 	@SequenceGenerator(name = "seq_chomp_id", sequenceName = "SEQ_CHOMP_ID", allocationSize = 1)
-	
 	private int id;
+	
 	private String category;
 	
 }

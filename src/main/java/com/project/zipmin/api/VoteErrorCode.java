@@ -30,6 +30,8 @@ public enum VoteErrorCode implements Code {
 	
 	// 비즈니스 로직
 	// VOTE_PATICIPATE_NOT_ALLOWED(HttpStatus.FORBIDDEN, "기간 외 참여 시도"),
+	VOTE_NOT_STARTED(HttpStatus.FORBIDDEN, "투표 시작 전 접근 시도"),
+	VOTE_ALREADY_ENDED(HttpStatus.FORBIDDEN, "투표 종료 후 접근 시도"),
 	VOTE_RECORD_DUPLICATE(HttpStatus.CONFLICT, "투표 중복 참여 시도"),
 	
 	// 기타

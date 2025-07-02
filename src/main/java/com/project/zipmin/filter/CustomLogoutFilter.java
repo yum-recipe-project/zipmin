@@ -11,7 +11,7 @@ import com.project.zipmin.api.AuthErrorCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.controller.ReissueController;
-import com.project.zipmin.dto.UserResponseDto;
+import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.repository.UserRepository;
 import com.project.zipmin.service.ReissueService;
 import com.project.zipmin.util.CookieUtil;

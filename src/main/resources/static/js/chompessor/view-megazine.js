@@ -66,3 +66,27 @@ document.addEventListener('DOMContentLoaded', function() {
 		fetchCommentList('chomp_megazine');
 	});
 });
+
+
+
+
+/**
+ * 매거진 작성
+ */
+document.addEventListener('DOMContentLoaded', async function() {
+	
+	data = {
+		title: '테스트입니다',
+		postdate: new Date(),
+		content: '테스트 본문입니다.\n줄바꿈을 해보아요',
+		user_id: 1
+	};
+	
+	try {
+		// const response = await instance.post(`/megazines`, data);
+	}
+	catch (error) {
+		 console.log(error);
+	}
+	
+});

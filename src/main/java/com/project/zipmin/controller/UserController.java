@@ -24,7 +24,7 @@ import com.project.zipmin.dto.FundDTO;
 import com.project.zipmin.dto.PasswordVerifyRequestDto;
 import com.project.zipmin.dto.UserDto;
 import com.project.zipmin.dto.UserJoinRequestDto;
-import com.project.zipmin.dto.UserResponseDto;
+import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.UserUpdateRequestDto;
 import com.project.zipmin.entity.User;
 import com.project.zipmin.mapper.UserMapper;
@@ -60,7 +60,7 @@ public class UserController {
 	// 특정 사용자 조회
 	@GetMapping("/users/{userId}")
 	public ResponseEntity<?> viewMember(@PathVariable("userId") int id) {
-		UserResponseDto userResponseDto = userService.getUserById(id);
+		UserReadResponseDto userResponseDto = userService.getUserById(id);
 		
 		return ResponseEntity.status(UserSuccessCode.USER_PROFILE_FETCH_SUCCESS.getStatus())
 					.body(ApiResponse.success(UserSuccessCode.USER_PROFILE_FETCH_SUCCESS, userResponseDto));
@@ -72,7 +72,7 @@ public class UserController {
 	@PostMapping("/users")
 	public ResponseEntity<?> addUser(@RequestBody UserJoinRequestDto userJoinRequestDto) {
 		
-		UserResponseDto userResponseDto  = userService.joinUser(userJoinRequestDto);
+		UserReadResponseDto userResponseDto  = userService.joinUser(userJoinRequestDto);
 
 		return ResponseEntity.status(UserSuccessCode.USER_SIGNUP_SUCCESS.getStatus())
 					.body(ApiResponse.success(UserSuccessCode.USER_SIGNUP_SUCCESS, userResponseDto));
@@ -139,7 +139,7 @@ public class UserController {
 	@PutMapping("/users/{id}")
 	public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
 
-		UserResponseDto userResponseDto = userService.updateUser(id, userUpdateRequestDto);
+		UserReadResponseDto userResponseDto = userService.updateUser(id, userUpdateRequestDto);
 
 		return ResponseEntity.status(UserSuccessCode.USER_PROFILE_UPDATE_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_PROFILE_UPDATE_SUCCESS, userResponseDto));

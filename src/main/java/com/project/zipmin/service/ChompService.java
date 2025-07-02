@@ -16,13 +16,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.ChompErrorCode;
 import com.project.zipmin.api.EventErrorCode;
 import com.project.zipmin.api.MegazineErrorCode;
 import com.project.zipmin.api.VoteErrorCode;
+import com.project.zipmin.dto.ChompCreateRequestDto;
+import com.project.zipmin.dto.ChompCreateResponseDto;
 import com.project.zipmin.dto.ChompReadResponseDto;
 import com.project.zipmin.dto.EventReadResponseDto;
+import com.project.zipmin.dto.MegazineCreateRequestDto;
+import com.project.zipmin.dto.MegazineCreateResponseDto;
 import com.project.zipmin.dto.MegazineReadResponseDto;
-import com.project.zipmin.dto.UserResponseDto;
+import com.project.zipmin.dto.MegazineUpdateRequestDto;
+import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.VoteChoiceReadResponseDto;
 import com.project.zipmin.dto.VoteReadResponseDto;
 import com.project.zipmin.dto.VoteRecordCreateRequestDto;
@@ -77,6 +83,43 @@ public class ChompService {
 	private final VoteRecordMapper recordMapper;
 	private final MegazineMapper megazineMapper;
 	private final EventMapper eventMapper;
+	
+	
+	
+	
+	// 매거진을 작성하는 함수
+	public MegazineCreateResponseDto createMegazine(MegazineCreateRequestDto megazineRequestDto) {
+		
+		ChompCreateRequestDto chompRequestDto = new ChompCreateRequestDto();
+		chompRequestDto.setCategory("megazine");
+		
+		// 쩝쩝박사 생성
+		Chomp chomp = chompMapper.toEntity(chompRequestDto);
+		ChompCreateResponseDto chompResponseDto = new ChompCreateResponseDto();
+		try {
+			chomp = chompRepository.save(chomp);
+			chompResponseDto = chompMapper.toCreateResponseDto(chomp);
+		}
+		catch (Exception e) {
+			throw new ApiException(ChompErrorCode.CHOMP_CREATE_FAIL);
+		}
+		
+		// 입력값 검증
+	    if (megazineRequestDto == null || megazineRequestDto.getChompId() == 0 || megazineRequestDto.getContent() == null || megazineRequestDto.getTitle() == null || megazineRequestDto.getUserId() == 0) {
+	    	throw new ApiException(MegazineErrorCode.MEGAZINE_INVALID_INPUT);
+	    }
+		
+	    // 매거진 생성
+		megazineRequestDto.setChompId(chompResponseDto.getId());
+		Megazine megazine = megazineMapper.toEntity(megazineRequestDto);
+		try {
+			megazine = megazineRepository.save(megazine);
+			return megazineMapper.toCreateResponseDto(megazine);
+		}
+		catch (Exception e) {
+			throw new ApiException(MegazineErrorCode.MEGAZINE_CREATE_FAIL);
+		}
+	}
 	
 	
 	
@@ -156,7 +199,7 @@ public class ChompService {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getName())) {
 			String username = auth.getName();
-			UserResponseDto userDto = userService.readUserByUsername(username);
+			UserReadResponseDto userDto = userService.readUserByUsername(username);
 			
 			Optional<VoteRecord> record = recordRepository.findByUserIdAndVoteId(userDto.getId(), voteDto.getId());
 			
@@ -214,7 +257,15 @@ public class ChompService {
 	    }
 	    
 	    // 투표 기간 검사
-	    
+	    Vote vote = voteRepository.findById(recordDto.getVoteId())
+	    	    .orElseThrow(() -> new ApiException(VoteErrorCode.VOTE_NOT_FOUND));
+	    Date now = new Date();
+	    if (now.before(vote.getOpendate())) {
+	        throw new ApiException(VoteErrorCode.VOTE_NOT_STARTED);
+	    }
+	    if (now.after(vote.getClosedate())) {
+	        throw new ApiException(VoteErrorCode.VOTE_ALREADY_ENDED);
+	    }
 	    
 	    // 투표 기록 저장
 	    VoteRecord record = recordMapper.toEntity(recordDto);
@@ -222,17 +273,28 @@ public class ChompService {
 	    	record = recordRepository.save(record);
 	    	return recordMapper.toCreateResponseDto(record);
 	    }
-	    catch (DataIntegrityViolationException e) {
+	    catch (Exception e) {
 	    	throw new ApiException(VoteErrorCode.VOTE_RECORD_CREATE_FAIL);
 	    }
 	}
 	
 	
 	
+	// 매거진을 수정하는 함수
+	public void updateMegazine(MegazineUpdateRequestDto megazineRequestDto) {
+		
+		
+		
+	}
+	
+	
+	
+	
+	
 	// 투표를 취소하는 함수
 	public void deleteVoteRecord(VoteRecordDeleteRequestDto recordDto) {
 		
-		// 입력값 검증 (수정 필요 @Valid)
+		// 입력값 검증
 	    if (recordDto.getUserId() == 0 || recordDto.getVoteId() == 0) {
 	    	throw new ApiException(VoteErrorCode.VOTE_RECORD_INVALID_INPUT);
 	    }
@@ -241,8 +303,16 @@ public class ChompService {
 	        throw new ApiException(VoteErrorCode.VOTE_RECORD_NOT_FOUND);
 	    }
 		
-		// 투표 기간 검사
-		
+	    // 투표 기간 검사
+	    Vote vote = voteRepository.findById(recordDto.getVoteId())
+	    	    .orElseThrow(() -> new ApiException(VoteErrorCode.VOTE_NOT_FOUND));
+	    Date now = new Date();
+	    if (now.before(vote.getOpendate())) {
+	        throw new ApiException(VoteErrorCode.VOTE_NOT_STARTED);
+	    }
+	    if (now.after(vote.getClosedate())) {
+	        throw new ApiException(VoteErrorCode.VOTE_ALREADY_ENDED);
+	    }
 		
 		// 투표 기록 삭제
 		try {
@@ -252,4 +322,5 @@ public class ChompService {
 	        throw new ApiException(VoteErrorCode.VOTE_RECORD_DELETE_FAIL);
 	    }
 	}
+	
 }

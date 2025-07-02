@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,18 +26,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.dto.ChompReadResponseDto;
 import com.project.zipmin.dto.EventReadResponseDto;
+import com.project.zipmin.dto.MegazineCreateRequestDto;
+import com.project.zipmin.dto.MegazineCreateResponseDto;
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.ChompSuccessCode;
 import com.project.zipmin.api.EventSuccessCode;
+import com.project.zipmin.api.MegazineErrorCode;
 import com.project.zipmin.api.MegazineSuccessCode;
 import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.api.VoteSuccessCode;
 import com.project.zipmin.dto.MegazineReadResponseDto;
+import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.VoteReadResponseDto;
 import com.project.zipmin.dto.VoteRecordCreateRequestDto;
 import com.project.zipmin.dto.VoteRecordCreateResponseDto;
 import com.project.zipmin.dto.VoteRecordDeleteRequestDto;
+import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.UserService;
@@ -47,8 +53,10 @@ import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.MegazineNotFoundResponse;
 import com.project.zipmin.swagger.MegazineReadSuccessResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
+import com.project.zipmin.swagger.VoteAlreadyEndedResponse;
 import com.project.zipmin.swagger.VoteForbiddenResponse;
 import com.project.zipmin.swagger.VoteNotFoundResponse;
+import com.project.zipmin.swagger.VoteNotStartedResponse;
 import com.project.zipmin.swagger.VoteReadSuccessResponse;
 import com.project.zipmin.swagger.VoteRecordCreateFailResponse;
 import com.project.zipmin.swagger.VoteRecordCreateSuccessResponse;
@@ -200,6 +208,18 @@ public class ChompessorController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = VoteForbiddenResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "투표 시작 전 참여 시도",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteNotStartedResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "투표 종료 후 참여 시도",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteAlreadyEndedResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
 				description = "해당 사용자를 찾을 수 없음",
 				content = @Content(
@@ -283,6 +303,18 @@ public class ChompessorController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = VoteForbiddenResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "투표 시작 전 참여 시도",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteNotStartedResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "투표 종료 후 참여 시도",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteAlreadyEndedResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
 				description = "해당 사용자를 찾을 수 없음",
 				content = @Content(
@@ -310,12 +342,9 @@ public class ChompessorController {
 		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 사용자 ID 추출
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		int userId = userService.readUserByUsername(username).getId();
-
 		// 권한 없는 사용자의 접근
-		if (userId != recordDto.getUserId()) {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (userService.readUserByUsername(username).getId() != recordDto.getUserId()) {
 		    throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
 		}
 		
@@ -324,22 +353,6 @@ public class ChompessorController {
 		return ResponseEntity.status(VoteSuccessCode.VOTE_RECORD_DELETE_SUCCESS.getStatus())
 				.body(ApiResponse.success(VoteSuccessCode.VOTE_RECORD_DELETE_SUCCESS, null));
 	}
-	
-	
-	
-	
-	
-	
-	
-	// 사용자의 특정 투표 여부 확인
-	@GetMapping("/votes/{voteId}/status")
-	public int checkCastVoteStatus(
-			@PathVariable("voteId") int voteId) {
-		return 0;
-	}
-	
-
-
 	
 	
 	
@@ -377,11 +390,27 @@ public class ChompessorController {
 	}
 	
 	
-
-	// 새 매거진 등록 (관리자)
+	
+	// 새 매거진 작성 (관리자)
 	@PostMapping("/megazines")
-	public ResponseEntity<?> writeMegazines() {
-		return null;
+	public ResponseEntity<?> writeMegazines(@RequestBody MegazineCreateRequestDto megazineRequestDto) {
+		
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(MegazineErrorCode.MEGAZINE_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 권한 없는 사용자의 접근 (괸리자 권한)
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
+		    throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+		}
+		
+		MegazineCreateResponseDto megazineResponseDto = chompService.createMegazine(megazineRequestDto);
+		
+		return ResponseEntity.status(MegazineSuccessCode.MEGAZINE_CREATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(MegazineSuccessCode.MEGAZINE_CREATE_SUCCESS, megazineResponseDto));
 	}
 
 	
@@ -389,7 +418,9 @@ public class ChompessorController {
 	// 특정 매거진 수정 (관리자)
 	@PutMapping("/megazines/{id}")
 	public ResponseEntity<?> editMegazine(@PathVariable int id) {
-		return null;
+		
+		return ResponseEntity.status(MegazineSuccessCode.MEGAZINE_UPDATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(MegazineSuccessCode.MEGAZINE_UPDATE_SUCCESS, null));
 	}
 
 	

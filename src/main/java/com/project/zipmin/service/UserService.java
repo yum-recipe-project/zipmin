@@ -17,7 +17,7 @@ import com.project.zipmin.dto.FindUsernameRequestDto;
 import com.project.zipmin.dto.PasswordVerifyRequestDto;
 import com.project.zipmin.dto.UserDto;
 import com.project.zipmin.dto.UserJoinRequestDto;
-import com.project.zipmin.dto.UserResponseDto;
+import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.UserUpdateRequestDto;
 import com.project.zipmin.entity.User;
 import com.project.zipmin.entity.Role;
@@ -45,7 +45,7 @@ public class UserService {
 	
 
 	// 아이디로 사용자 조회
-	public UserResponseDto getUserById(int userId) {
+	public UserReadResponseDto getUserById(int userId) {
 		
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
@@ -56,7 +56,7 @@ public class UserService {
 	
 	
 	// 사용자명으로 사용자 조회
-	public UserResponseDto readUserByUsername(String username) {
+	public UserReadResponseDto readUserByUsername(String username) {
 		
 		// User user = userRepository.findByUsername(username)
 		// 		.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
@@ -67,7 +67,7 @@ public class UserService {
 	
 	
 	
-	public UserResponseDto joinUser(UserJoinRequestDto userJoinDto) {
+	public UserReadResponseDto joinUser(UserJoinRequestDto userJoinDto) {
 		
 		User user = userMapper.toEntity(userJoinDto);
 		user.setPassword(passwordEncoder.encode(userJoinDto.getPassword()));
@@ -116,7 +116,7 @@ public class UserService {
 
 
 
-	public UserResponseDto updateUser(int userId, UserUpdateRequestDto userDto) {
+	public UserReadResponseDto updateUser(int userId, UserUpdateRequestDto userDto) {
 		
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));

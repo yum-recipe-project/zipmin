@@ -83,7 +83,15 @@ import com.project.zipmin.swagger.MegazineUpdateFailResponse;
 import com.project.zipmin.swagger.MegazineUpdateSuccessResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
 import com.project.zipmin.swagger.VoteAlreadyEndedResponse;
+import com.project.zipmin.swagger.VoteChoiceDeleteFailResponse;
+import com.project.zipmin.swagger.VoteChoiceInvalidInputResponse;
+import com.project.zipmin.swagger.VoteCreateFailResponse;
+import com.project.zipmin.swagger.VoteCreateSuccessResponse;
+import com.project.zipmin.swagger.VoteDeleteFailResponse;
+import com.project.zipmin.swagger.VoteDeleteSuccessResponse;
 import com.project.zipmin.swagger.VoteForbiddenResponse;
+import com.project.zipmin.swagger.VoteInvalidInputResponse;
+import com.project.zipmin.swagger.VoteInvalidPeriodResponse;
 import com.project.zipmin.swagger.VoteNotFoundResponse;
 import com.project.zipmin.swagger.VoteNotStartedResponse;
 import com.project.zipmin.swagger.VoteReadSuccessResponse;
@@ -179,6 +187,60 @@ public class ChompessorController {
 	
 
 	// 새 투표 등록 (관리자)
+	@Operation(
+	    summary = "투표 작성",
+	    description = "투표를 작성합니다."
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "201",
+				description = "투표 작성 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteCreateSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "투표 작성 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteCreateFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteChoiceInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteInvalidPeriodResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인 되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteUnauthorizedAccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "권한 없는 사용자의 접근",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
 	@PostMapping("/votes")
 	public ResponseEntity<?> writeVote(@RequestBody VoteCreateRequestDto voteRequestDto) {
 		
@@ -191,7 +253,7 @@ public class ChompessorController {
 		// 권한 없는 사용자의 접근 (괸리자 권한)
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
-		    throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+		    throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
 		}
 		
 		VoteCreateResponseDto voteResponseDto = chompService.createVote(voteRequestDto);
@@ -200,9 +262,6 @@ public class ChompessorController {
 				.body(ApiResponse.success(VoteSuccessCode.VOTE_CREATE_SUCCESS, voteResponseDto));
 	}
 
-	
-	
-	
 	
 	
 	// 투표 수정 (관리자)
@@ -215,10 +274,73 @@ public class ChompessorController {
 
 	
 	
-	
-	
-	
 	// 투표 삭제 (관리자)
+	@Operation(
+	    summary = "투표 삭제",
+	    description = "투표를 삭제합니다."
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "투표 삭제 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteDeleteSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "투표 삭제 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteDeleteFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "투표 옵션 삭제 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteChoiceDeleteFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "쩝쩝박사 게시물 삭제 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ChompDeleteFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteInvalidPeriodResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인 되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteUnauthorizedAccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "권한 없는 사용자의 접근",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 투표를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
 	@DeleteMapping("/votes/{id}")
 	public ResponseEntity<?> deleteVote(
 			@PathVariable int id) {

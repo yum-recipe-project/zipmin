@@ -320,7 +320,6 @@ async function cancelVote() {
 
 
 
-
 /**
  * 댓글 정렬 버튼 클릭 시 해당하는 댓글을 가져오는 함수
  */

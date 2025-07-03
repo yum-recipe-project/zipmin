@@ -25,8 +25,9 @@ public enum EventErrorCode implements Code {
 	EVENT_DELETE_FAIL(HttpStatus.BAD_REQUEST, "이벤트 삭제 실패"),
 	
 	// 비즈니스 로직
-	EVENT_PATICIPATE_NOT_ALLOWED(HttpStatus.FORBIDDEN, "기간 외 참여 시도"),
-	EVENT_PATICIPATE_DUPLICATE(HttpStatus.CONFLICT, "이미 참여한 이벤트에 중복 참여 시도"),
+	EVENT_NOT_STARTED(HttpStatus.FORBIDDEN, "이벤트 시작 전 접근 시도"),
+	EVENT_ALREADY_ENDED(HttpStatus.FORBIDDEN, "이벤트 종료 후 접근 시도"),
+	EVENT_RECORD_DUPLICATE(HttpStatus.CONFLICT, "이미 참여한 이벤트에 중복 참여 시도"),
 	
 	// 기타
 	EVENT_UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "예외 처리되지 않은 내부 오류");

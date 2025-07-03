@@ -39,10 +39,5 @@ public class Vote {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CHOMP_ID")
 	private Chomp chomp;
-
-	// private int user_id;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "USER_ID")
-	private User user;
 	
 }

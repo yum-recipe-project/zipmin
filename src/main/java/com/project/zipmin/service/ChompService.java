@@ -23,7 +23,11 @@ import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.ChompCreateRequestDto;
 import com.project.zipmin.dto.ChompCreateResponseDto;
 import com.project.zipmin.dto.ChompReadResponseDto;
+import com.project.zipmin.dto.EventCreateRequestDto;
+import com.project.zipmin.dto.EventCreateResponseDto;
 import com.project.zipmin.dto.EventReadResponseDto;
+import com.project.zipmin.dto.EventUpdateRequestDto;
+import com.project.zipmin.dto.EventUpdateResponseDto;
 import com.project.zipmin.dto.MegazineCreateRequestDto;
 import com.project.zipmin.dto.MegazineCreateResponseDto;
 import com.project.zipmin.dto.MegazineReadResponseDto;
@@ -38,6 +42,8 @@ import com.project.zipmin.dto.VoteReadResponseDto;
 import com.project.zipmin.dto.VoteRecordCreateRequestDto;
 import com.project.zipmin.dto.VoteRecordCreateResponseDto;
 import com.project.zipmin.dto.VoteRecordDeleteRequestDto;
+import com.project.zipmin.dto.VoteUpdateRequestDto;
+import com.project.zipmin.dto.VoteUpdateResponseDto;
 import com.project.zipmin.entity.Chomp;
 import com.project.zipmin.entity.Event;
 import com.project.zipmin.entity.Megazine;
@@ -108,7 +114,7 @@ public class ChompService {
 		}
 
 		// 입력값 검증
-	    if (voteRequestDto == null || voteRequestDto.getTitle() == null || voteRequestDto.getOpendate() == null || voteRequestDto.getClosedate() == null || voteRequestDto.getChoices() == null || voteRequestDto.getUserId() == 0) {
+	    if (voteRequestDto == null || voteRequestDto.getTitle() == null || voteRequestDto.getOpendate() == null || voteRequestDto.getClosedate() == null || voteRequestDto.getChoices() == null) {
 	    	throw new ApiException(VoteErrorCode.VOTE_INVALID_INPUT);
 	    }
 	    for (VoteChoiceCreateRequestDto choiceDto : voteRequestDto.getChoices()) {
@@ -165,7 +171,7 @@ public class ChompService {
 		}
 		
 		// 입력값 검증
-	    if (megazineRequestDto == null || megazineRequestDto.getChompId() == 0 || megazineRequestDto.getContent() == null || megazineRequestDto.getTitle() == null || megazineRequestDto.getUserId() == 0) {
+	    if (megazineRequestDto == null || megazineRequestDto.getTitle() == null || megazineRequestDto.getContent() == null) {
 	    	throw new ApiException(MegazineErrorCode.MEGAZINE_INVALID_INPUT);
 	    }
 		
@@ -178,6 +184,47 @@ public class ChompService {
 		}
 		catch (Exception e) {
 			throw new ApiException(MegazineErrorCode.MEGAZINE_CREATE_FAIL);
+		}
+	}
+	
+	
+	
+	// 이벤트를 작성하는 함수
+	public EventCreateResponseDto createEvent(EventCreateRequestDto eventRequestDto) {
+		
+		ChompCreateRequestDto chompRequestDto = new ChompCreateRequestDto();
+		chompRequestDto.setCategory("event");
+		
+		// 쩝쩝박사 생성
+		Chomp chomp = chompMapper.toEntity(chompRequestDto);
+		ChompCreateResponseDto chompResponseDto = new ChompCreateResponseDto();
+		try {
+			chomp = chompRepository.save(chomp);
+			chompResponseDto = chompMapper.toCreateResponseDto(chomp);
+		}
+		catch (Exception e) {
+			throw new ApiException(ChompErrorCode.CHOMP_CREATE_FAIL);
+		}
+		
+		// 입력값 검증
+		if (eventRequestDto == null || eventRequestDto.getTitle() == null || eventRequestDto.getContent() == null || eventRequestDto.getOpendate() == null || eventRequestDto.getClosedate() == null) {
+			throw new ApiException(EventErrorCode.EVENT_INVALID_INPUT);
+		}
+		
+	    // 기간 검증
+	    if (eventRequestDto.getOpendate().after(eventRequestDto.getClosedate())) {
+	    	throw new ApiException(EventErrorCode.EVENT_INVALID_PERIOD);
+	    }
+	    
+	    // 이벤트 생성
+	    eventRequestDto.setChompId(chompResponseDto.getId());
+	    Event event = eventMapper.toEntity(eventRequestDto);
+	    try {
+	    	event = eventRepository.save(event);
+	    	return eventMapper.toCreateResponseDto(event);
+	    }
+	    catch (Exception e) {
+			throw new ApiException(EventErrorCode.EVENT_CREATE_FAIL);
 		}
 	}
 	
@@ -278,9 +325,8 @@ public class ChompService {
 		Megazine chompMegazine = megazineRepository.findById(id)
 				.orElseThrow(() -> new ApiException(MegazineErrorCode.MEGAZINE_NOT_FOUND));
 		
-		MegazineReadResponseDto megazineDto = megazineMapper.toReadResponseDto(chompMegazine);
+		return megazineMapper.toReadResponseDto(chompMegazine);
 		
-		return megazineDto;
 	}
 
 
@@ -291,9 +337,8 @@ public class ChompService {
 		Event chompEvent = eventRepository.findById(id)
 				.orElseThrow(() -> new ApiException(EventErrorCode.EVENT_NOT_FOUND));
 		
-		EventReadResponseDto eventDto = eventMapper.toReadResponseDto(chompEvent);
+		return eventMapper.toReadResponseDto(chompEvent);
 		
-		return eventDto;
 	}
 	
 	
@@ -335,6 +380,27 @@ public class ChompService {
 	
 	
 	
+	// 투표를 수정하는 함수
+	public VoteUpdateResponseDto updateVote(VoteUpdateRequestDto voteRequestDto) {
+		
+		// 입력값 검증
+		
+		
+		
+		// 투표 존재 여부 판단
+		Vote vote = voteRepository.findById(voteRequestDto.getId())
+				.orElseThrow(() -> new ApiException(VoteErrorCode.VOTE_NOT_FOUND));
+		
+		// 필요한 필드만 수정
+		
+		
+		
+		// 투표 수정
+		
+		
+		
+		return null;
+	}
 	
 	
 	
@@ -368,7 +434,40 @@ public class ChompService {
 	
 	
 	
+	// 이벤트를 수정하는 함수
+	public EventUpdateResponseDto updateEvent(EventUpdateRequestDto eventRequestDto) {
+		
+		// 입력값 검증
+		if (eventRequestDto == null || eventRequestDto.getId() == 0 || eventRequestDto.getTitle() == null || eventRequestDto.getContent() == null || eventRequestDto.getOpendate() == null || eventRequestDto.getClosedate() == null) {
+			throw new ApiException(EventErrorCode.EVENT_INVALID_INPUT);
+		}
+		
+		// 이벤트 존재 여부 판단
+		Event event = eventRepository.findById(eventRequestDto.getId())
+				.orElseThrow(() -> new ApiException(EventErrorCode.EVENT_NOT_FOUND));
+		
+	    // 기간 검증
+	    if (eventRequestDto.getOpendate().after(eventRequestDto.getClosedate())) {
+	    	throw new ApiException(EventErrorCode.EVENT_INVALID_PERIOD);
+	    }
+		
+		// 필요한 필드만 수정
+		event.setTitle(eventRequestDto.getTitle());
+		event.setContent(eventRequestDto.getContent());
+		event.setOpendate(eventRequestDto.getOpendate());
+		event.setClosedate(eventRequestDto.getClosedate());
+		
+		// 이벤트 수정
+		try {
+			event = eventRepository.save(event);
+			return eventMapper.toUpdateResponseDto(event);
+		}
+		catch (Exception e) {
+			throw new ApiException(EventErrorCode.EVENT_UPDATE_FAIL);
+		}
+	}
 	
+
 	
 	// 투표를 취소하는 함수
 	public void deleteVoteRecord(VoteRecordDeleteRequestDto recordDto) {
@@ -444,7 +543,6 @@ public class ChompService {
 	
 	
 	
-	
 	// 매거진을 삭제하는 함수
 	public void deleteMegazine(int id) {
 		
@@ -473,5 +571,35 @@ public class ChompService {
 			throw new ApiException(ChompErrorCode.CHOMP_DELETE_FAIL);
 		}
 	}
-
+	
+	
+	
+	// 이벤트를 삭제하는 함수
+	public void deleteEvent(int id) {
+		
+		// 입력값 검증
+		if (id < 0) {
+			throw new ApiException(EventErrorCode.EVENT_INVALID_INPUT);
+		}
+		
+		// 이벤트 존재 여부 판단
+		Event event = eventRepository.findById(id)
+				.orElseThrow(() -> new ApiException(EventErrorCode.EVENT_NOT_FOUND));
+		
+		// 이벤트 삭제
+		try {
+			megazineRepository.deleteById(id);
+		}
+		catch (Exception e) {
+			throw new ApiException(EventErrorCode.EVENT_DELETE_FAIL);
+		}
+		
+		// 쩝쩝박사 게시물 삭제
+		try {
+			chompRepository.deleteById(event.getChomp().getId());
+		}
+		catch (Exception e) {
+			throw new ApiException(ChompErrorCode.CHOMP_DELETE_FAIL);
+		}
+	}
 }

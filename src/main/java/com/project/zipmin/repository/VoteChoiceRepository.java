@@ -13,7 +13,6 @@ import com.project.zipmin.entity.VoteChoice;
 @Repository
 public interface VoteChoiceRepository extends JpaRepository<VoteChoice, Integer> {
 	
-	// @EntityGraph(attributePaths = {"vote"})
 	List<VoteChoice> findByVoteId(int voteId);
 	
 	

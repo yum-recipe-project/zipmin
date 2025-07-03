@@ -25,12 +25,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.dto.ChompReadResponseDto;
+import com.project.zipmin.dto.EventCreateRequestDto;
+import com.project.zipmin.dto.EventCreateResponseDto;
 import com.project.zipmin.dto.EventReadResponseDto;
+import com.project.zipmin.dto.EventUpdateRequestDto;
+import com.project.zipmin.dto.EventUpdateResponseDto;
 import com.project.zipmin.dto.MegazineCreateRequestDto;
 import com.project.zipmin.dto.MegazineCreateResponseDto;
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.ChompSuccessCode;
+import com.project.zipmin.api.EventErrorCode;
 import com.project.zipmin.api.EventSuccessCode;
 import com.project.zipmin.api.MegazineErrorCode;
 import com.project.zipmin.api.MegazineSuccessCode;
@@ -52,8 +57,18 @@ import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.ChompCreateFailResponse;
 import com.project.zipmin.swagger.ChompDeleteFailResponse;
 import com.project.zipmin.swagger.ChompReadListSuccessResponse;
+import com.project.zipmin.swagger.EventCreateFailResponse;
+import com.project.zipmin.swagger.EventCreateSuccessResponse;
+import com.project.zipmin.swagger.EventDeleteFailResponse;
+import com.project.zipmin.swagger.EventDeleteSuccessResponse;
+import com.project.zipmin.swagger.EventForbiddenResponse;
+import com.project.zipmin.swagger.EventInvalidInputResponse;
+import com.project.zipmin.swagger.EventInvalidPeriodResponse;
 import com.project.zipmin.swagger.EventNotFoundResponse;
 import com.project.zipmin.swagger.EventReadSuccessResponse;
+import com.project.zipmin.swagger.EventUnauthorizedAccessResponse;
+import com.project.zipmin.swagger.EventUpdateFailResponse;
+import com.project.zipmin.swagger.EventUpdateSuccessResponse;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.MegazineCreateFailResponse;
 import com.project.zipmin.swagger.MegazineCreateSuccessResponse;
@@ -154,7 +169,7 @@ public class ChompessorController {
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
 	@GetMapping("/votes/{id}")
-	public ResponseEntity<?> readVote(@Parameter(description = "조회할 투표의 ID", required = true, example = "1") @PathVariable int id) {
+	public ResponseEntity<?> readVote(@Parameter(description = "투표의 아이디", required = true, example = "1") @PathVariable int id) {
 		VoteReadResponseDto voteDto = chompService.readVoteById(id);
 		
 		return ResponseEntity.status(VoteSuccessCode.VOTE_READ_SUCCESS.getStatus())
@@ -168,16 +183,16 @@ public class ChompessorController {
 	public ResponseEntity<?> writeVote(@RequestBody VoteCreateRequestDto voteRequestDto) {
 		
 		// 인증 여부 확인 (비로그인)
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-//		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
-//		}
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
+		}
 		
 		// 권한 없는 사용자의 접근 (괸리자 권한)
-//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-//		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
-//		    throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
-//		}
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
+		    throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+		}
 		
 		VoteCreateResponseDto voteResponseDto = chompService.createVote(voteRequestDto);
 		
@@ -191,9 +206,10 @@ public class ChompessorController {
 	
 	
 	// 투표 수정 (관리자)
-	@PutMapping("/votes/{id}")
+	@PatchMapping("/votes/{id}")
 	public ResponseEntity<?> editVote(
 			@PathVariable int id) {
+		
 		return null;
 	}
 
@@ -208,16 +224,16 @@ public class ChompessorController {
 			@PathVariable int id) {
 		
 		// 인증 여부 확인 (비로그인)
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-//		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
-//		}
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
+		}
 		
 		// 권한 없는 사용자의 접근 (괸리자 권한)
-//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-//		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
-//		    throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
-//		}
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
+		    throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+		}
 		
 		chompService.deleteVote(id);
 		
@@ -296,7 +312,7 @@ public class ChompessorController {
 	})
 	@PostMapping("/votes/{voteId}/records")
 	public ResponseEntity<?> castVote(
-			@Parameter(description = "참여할 투표의 ID", required = true, example = "1") @PathVariable int voteId,
+			@Parameter(description = "투표의 아이디", required = true, example = "1") @PathVariable int voteId,
 			@Parameter(description = "투표 참여 요청 정보", required = true) @RequestBody VoteRecordCreateRequestDto recordRequestDto) {
 		
 		// 인증 여부 확인 (비로그인)
@@ -435,7 +451,7 @@ public class ChompessorController {
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
 	@GetMapping("/megazines/{id}")
-	public ResponseEntity<?> readMegazine(@Parameter(description = "조회할 매거진의 ID", required = true, example = "1") @PathVariable int id) {
+	public ResponseEntity<?> readMegazine(@Parameter(description = "매거진의 아이디", required = true, example = "1") @PathVariable int id) {
 		MegazineReadResponseDto megazineDto = chompService.readMegazineById(id);
 		
 		return ResponseEntity.status(MegazineSuccessCode.MEGAZINE_READ_SUCCESS.getStatus())
@@ -568,7 +584,7 @@ public class ChompessorController {
 	})
 	@PatchMapping("/megazines/{id}")
 	public ResponseEntity<?> editMegazine(
-			@Parameter(description = "수정할 매거진의 ID", required = true, example = "1") @PathVariable int id,
+			@Parameter(description = "매거진의 아이디", required = true, example = "1") @PathVariable int id,
 			@Parameter(description = "매거진 수정 요청 정보", required = true) @RequestBody MegazineUpdateRequestDto megazineRequestDto) {
 		
 		// 인증 여부 확인 (비로그인)
@@ -648,7 +664,7 @@ public class ChompessorController {
 	})
 	@DeleteMapping("/megazines/{id}")
 	public ResponseEntity<?> deleteMegazine(
-			@Parameter(description = "삭제할 매거진의 ID", required = true, example = "1") @PathVariable int id) {
+			@Parameter(description = "매거진의 아이디", required = true, example = "1") @PathVariable int id) {
 		
 		// 인증 여부 확인 (비로그인)
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -670,7 +686,7 @@ public class ChompessorController {
 	
 	
 	
-	// 특정 이벤트 조회
+	// 이벤트 상세 조회
 	@Operation(
 	    summary = "이벤트 상세 조회",
 	    description = "ID를 기준으로 이벤트의 상세 정보를 조회합니다."
@@ -696,11 +712,247 @@ public class ChompessorController {
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
 	@GetMapping("/events/{id}")
-	public ResponseEntity<?> readEvent(@Parameter(description = "조회할 이벤트의 ID", required = true, example = "1") @PathVariable int id) {
+	public ResponseEntity<?> readEvent(@Parameter(description = "이벤트의 아이디", required = true, example = "1") @PathVariable int id) {
 		EventReadResponseDto eventDto = chompService.readEventById(id);
 		
 		return ResponseEntity.status(EventSuccessCode.EVENT_READ_SUCCESS.getStatus())
 				.body(ApiResponse.success(EventSuccessCode.EVENT_READ_SUCCESS, eventDto));
 	}
-
+	
+	
+	
+	// 이벤트 작성
+	@Operation(
+	    summary = "이벤트 작성",
+	    description = "이벤트를 작성합니다."
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "이벤트 작성 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventCreateSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "이벤트 작성 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventCreateFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "쩝쩝박사 게시물 작성 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ChompCreateFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "이벤트 기간 설정이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventInvalidPeriodResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인 되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventUnauthorizedAccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "권한 없는 사용자의 접근",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
+	@PostMapping("/events")
+	public ResponseEntity<?> writeEvent(
+			@Parameter(description = "이벤트 작성 요청 정보", required = true)  @RequestBody EventCreateRequestDto eventRequestDto) {
+		
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(EventErrorCode.EVENT_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 권한 없는 사용자의 접근 (괸리자 권한)
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
+		    throw new ApiException(EventErrorCode.EVENT_FORBIDDEN);
+		}
+		
+		EventCreateResponseDto eventResponseDto = chompService.createEvent(eventRequestDto);
+		
+		return ResponseEntity.status(EventSuccessCode.EVENT_CREATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(EventSuccessCode.EVENT_CREATE_SUCCESS, eventResponseDto));
+	}
+	
+	
+	
+	// 특정 이벤트 수정
+	@Operation(
+	    summary = "이벤트 수정",
+	    description = "이벤트를 수정합니다."
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "이벤트 수정 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventUpdateSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "이벤트 수정 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventUpdateFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "이벤트 기간 설정이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventInvalidPeriodResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인 되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventUnauthorizedAccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "권한 없는 사용자의 접근",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 이벤트를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
+	@PatchMapping("/events/{id}")
+	public ResponseEntity<?> editEvent(
+			@Parameter(description = "이벤트의 아이디", required = true, example = "1") @PathVariable int id,
+			@Parameter(description = "이벤트 수정 요청 정보", required = true) @RequestBody EventUpdateRequestDto eventRequestDto) {
+		
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(EventErrorCode.EVENT_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 권한 없는 사용자의 접근 (괸리자 권한)
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
+		    throw new ApiException(EventErrorCode.EVENT_FORBIDDEN);
+		}
+		
+		EventUpdateResponseDto eventResponseDto = chompService.updateEvent(eventRequestDto);
+		
+		return ResponseEntity.status(EventSuccessCode.EVENT_UPDATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(EventSuccessCode.EVENT_UPDATE_SUCCESS, eventResponseDto));
+	}
+	
+	
+	
+	@DeleteMapping("/events/{id}")
+	@Operation(
+	    summary = "이벤트 삭제",
+	    description = "이벤트를 삭제합니다."
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "이벤트 삭제 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventDeleteSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "이벤트 삭제 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventDeleteFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "쩝쩝박사 게시물 삭제 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ChompDeleteFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인 되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventUnauthorizedAccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "권한 없는 사용자의 접근",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 이벤트를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
+	public ResponseEntity<?> deleteEvent(
+			@Parameter(description = "이벤트의 아이디", required = true, example = "1") @PathVariable int id) {
+		
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(EventErrorCode.EVENT_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 권한 없는 사용자의 접근 (괸리자 권한)
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
+		    throw new ApiException(EventErrorCode.EVENT_FORBIDDEN);
+		}
+		
+		chompService.deleteEvent(id);
+		
+		return ResponseEntity.status(EventSuccessCode.EVENT_DELETE_SUCCESS.getStatus())
+				.body(ApiResponse.success(EventSuccessCode.EVENT_DELETE_SUCCESS, null));
+	}
 }

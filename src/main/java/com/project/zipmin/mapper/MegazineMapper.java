@@ -15,11 +15,9 @@ public interface MegazineMapper {
 	
 	// Create
 	@Mapping(target = "chomp.id", source = "chompId")
-	@Mapping(target = "user.id", source = "userId")
 	Megazine toEntity(MegazineCreateRequestDto megazineDto);
 	
 	@Mapping(target = "chompId", source = "chomp.id")
-	@Mapping(target = "userId", source = "user.id")
 	MegazineCreateRequestDto toCreateRequestDto(Megazine megazine);
 	
 	Megazine toEntity(MegazineCreateResponseDto megazineDto);

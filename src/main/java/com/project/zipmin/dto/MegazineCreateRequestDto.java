@@ -15,6 +15,5 @@ public class MegazineCreateRequestDto {
 	private Date postdate;
 	private String content;
 	private int chompId;
-	private int userId;
 	
 }

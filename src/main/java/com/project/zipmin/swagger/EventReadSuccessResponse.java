@@ -1,6 +1,6 @@
 package com.project.zipmin.swagger;
 
-import com.project.zipmin.dto.VoteReadResponseDto;
+import com.project.zipmin.dto.EventReadResponseDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -13,7 +13,7 @@ public class EventReadSuccessResponse {
     @Schema(example = "이벤트 조회 성공", description = "에러 메시지")
     public String message;
 
-    @Schema(implementation = VoteReadResponseDto.class, description = "응답 데이터")
+    @Schema(implementation = EventReadResponseDto.class, description = "응답 데이터")
     public Object data;
 
 }

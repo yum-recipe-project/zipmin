@@ -49,7 +49,6 @@ function loadChompList(num) {
 		size : size
 	}).toString();
 	
-	// 
 	fetch(`/chomp?${parameters}`, {
 		method: 'GET'
 	})
@@ -245,7 +244,7 @@ function renderPagination() {
 			e.preventDefault();
 			const newPage = parseInt(this.dataset.page);
 			if (!isNaN(newPage) && newPage >= 0 && newPage < totalPages && newPage !== page) {
-				fetchChompList(newPage);
+				loadChompList(newPage);
 			}
 		});
 	});

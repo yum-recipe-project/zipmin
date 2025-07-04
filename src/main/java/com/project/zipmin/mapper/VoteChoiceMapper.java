@@ -1,7 +1,5 @@
 package com.project.zipmin.mapper;
 
-import java.util.List;
-
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -21,14 +19,14 @@ public interface VoteChoiceMapper {
 	@Mapping(target = "voteId", source = "vote.id")
 	VoteChoiceCreateRequestDto toCreateRequestDto(VoteChoice choice);
 	
-	@Mapping(target = "voteId", source = "vote.id")
-	List<VoteChoiceCreateRequestDto> toCreateRequestDtoList(List<VoteChoice> choiceList);	
-
+	
 	
 	// Read
 	VoteChoice toEntity(VoteChoiceReadResponseDto choiceDto);
+	
+	@Mapping(target = "count", ignore = true)
+	@Mapping(target = "rate", ignore = true)
 	VoteChoiceReadResponseDto toReadResponseDto(VoteChoice choice);
-	List<VoteChoiceReadResponseDto> toReadResponseDtoList(List<VoteChoice> choiceList);
 	
 	
 	

@@ -9,7 +9,7 @@ import com.project.zipmin.entity.Report;
 
 @Mapper(componentModel = "spring")
 public interface ReportMapper {
-	ReportDTO reportToReportDTO(Report report);
-	Report reportDTOToReport(ReportDTO reportDTO);
-	List<ReportDTO> reportListToReportDTOList(List<Report> reportList);
+//	ReportDTO reportToReportDTO(Report report);
+//	Report reportDTOToReport(ReportDTO reportDTO);
+//	List<ReportDTO> reportListToReportDTOList(List<Report> reportList);
 }

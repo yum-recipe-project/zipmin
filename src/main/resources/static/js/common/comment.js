@@ -168,98 +168,196 @@ function fetchCommentList(tablename) {
  */
 function renderCommentList() {
 	const maincomment = commentList.filter(comment => comment.id === comment.comm_id);
-	
-	const html = maincomment.map(comment => getCommentHTML(comment)).join("");
-	document.querySelector(".comment_list").insertAdjacentHTML("beforeend", html);
+	maincomment.forEach(comment => {
+		document.querySelector('.comment_list').appendChild(createComment(comment));
+	});
 }
 
 
 
 /**
- * 댓글 데이터를 HTML 문자열로 변환하는 함수
+ * 댓글 데이터를 변환하는 함수
  *
  * @param {Object} comment - 댓글 객체
  * @returns {string} 댓글 및 대댓글의 HTML 문자열
  */
-function getCommentHTML(comment) {
-
+function createComment(comment) {
 	const subcommentList = commentList.filter(data => data.comm_id === comment.id && data.id !== data.comm_id);
 
 	const postdate = new Date(comment.postdate);
 	const formatPostdate = `${postdate.getFullYear()}년 ${String(postdate.getMonth() + 1).padStart(2, '0')}월 ${String(postdate.getDate()).padStart(2, '0')}일`;
-	
-	const subcommentListHTML = subcommentList.map(subcomment => {
-		const subcommentPostdate = new Date(subcomment.postdate);
-		const formatSubcommentPostdate = `${subcommentPostdate.getFullYear()}년 ${String(subcommentPostdate.getMonth() + 1).padStart(2, '0')}월 ${String(subcommentPostdate.getDate()).padStart(2, '0')}일`;
-	
-		return `
-			<li class="subcomment">
-				<img class="subcomment_arrow" src="/images/chompessor/arrow_right.png">
-				<div class="subcomment_inner">
-					<div class="subcomment_info">
-						<div class="subcomment_writer">
-							<img src="/images/common/test.png">
-							<span>${subcomment.nickname}</span>
-							<span>${formatSubcommentPostdate}</span>
-						</div>
-						<div class="subcomment_action">
-							<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportCommentModal">신고</a>
-							<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editCommentModal">수정</a>
-							<a href="">삭제</a>
-						</div>
-					</div>
-					<p class="subcomment_content">${subcomment.content}</p>
-					<div class="comment_tool">
-						<button class="btn_tool write_subcomment_btn">
-							<img src="/images/common/thumb_up_full.png">
-							<img src="/images/common/thumb_up_empty.png">
-							<p>${subcomment.likecount}</p>
-						</button>
-					</div>
-				</div>
-			</li>`;
-	}).join("");
-	
-	return `
-		<li class="comment">
-			<div class="comment_info">
-				<div class="comment_writer">
-					<img src="/images/common/test.png">
-					<span>${comment.nickname}</span>
-					<span>${formatPostdate}</span>
-				</div>
-				<div class="comment_action">
-					<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reportCommentModal">신고</a>
-					<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editCommentModal">수정</a>
-					<a href="">삭제</a>
-				</div>
-			</div>
-			<p class="comment_content">${comment.content}</p>
-			<div class="comment_tool">
-				<button class="btn_tool write_subcomment_btn">
-					<img src="/images/common/thumb_up_full.png">
-					<img src="/images/common/thumb_up_empty.png">
-					<p>${comment.likecount}</p>
-				</button>
-				<a class="btn_outline_small write_subcomment_btn" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#writeSubcommentModal">
-					<span>답글 쓰기</span>
-				</a>
-			</div>
-		</li>
-		<ul class="subcomment_list">${subcommentListHTML}</ul>`;
+
+	// 댓글 li
+	const commentLi = document.createElement('li');
+	commentLi.className = 'comment';
+
+	// 댓글 정보
+	const infoDiv = document.createElement('div');
+	infoDiv.className = 'comment_info';
+
+	const writerDiv = document.createElement('div');
+	writerDiv.className = 'comment_writer';
+
+	const writerImg = document.createElement('img');
+	writerImg.src = '/images/common/test.png';
+
+	const writerName = document.createElement('span');
+	writerName.textContent = comment.nickname;
+
+	const dateSpan = document.createElement('span');
+	dateSpan.textContent = formatPostdate;
+
+	writerDiv.append(writerImg, writerName, dateSpan);
+
+	const actionDiv = document.createElement('div');
+	actionDiv.className = 'comment_action';
+
+	const reportLink = document.createElement('a');
+	reportLink.href = 'javascript:void(0);';
+	reportLink.dataset.bsToggle = 'modal';
+	reportLink.dataset.bsTarget = '#reportCommentModal';
+	reportLink.textContent = '신고';
+
+	const editLink = document.createElement('a');
+	editLink.href = 'javascript:void(0);';
+	editLink.dataset.bsToggle = 'modal';
+	editLink.dataset.bsTarget = '#editCommentModal';
+	editLink.textContent = '수정';
+
+	const deleteLink = document.createElement('a');
+	deleteLink.href = '';
+	deleteLink.textContent = '삭제';
+
+	actionDiv.append(reportLink, editLink, deleteLink);
+	infoDiv.append(writerDiv, actionDiv);
+
+	// 댓글 본문
+	const contentP = document.createElement('p');
+	contentP.className = 'comment_content';
+	contentP.textContent = comment.content;
+
+	// 툴
+	const toolDiv = document.createElement('div');
+	toolDiv.className = 'comment_tool';
+
+	const likeButton = document.createElement('button');
+	likeButton.className = 'btn_tool write_subcomment_btn';
+
+	const thumbFull = document.createElement('img');
+	thumbFull.src = '/images/common/thumb_up_full.png';
+
+	const thumbEmpty = document.createElement('img');
+	thumbEmpty.src = '/images/common/thumb_up_empty.png';
+
+	const likeCount = document.createElement('p');
+	likeCount.textContent = comment.likecount;
+
+	likeButton.append(thumbFull, thumbEmpty, likeCount);
+
+	const replyBtn = document.createElement('a');
+	replyBtn.className = 'btn_outline_small write_subcomment_btn';
+	replyBtn.href = 'javascript:void(0);';
+	replyBtn.dataset.bsToggle = 'modal';
+	replyBtn.dataset.bsTarget = '#writeSubcommentModal';
+
+	const replySpan = document.createElement('span');
+	replySpan.textContent = '답글 쓰기';
+
+	replyBtn.appendChild(replySpan);
+	toolDiv.append(likeButton, replyBtn);
+
+	// comment li 최종 구성
+	commentLi.append(infoDiv, contentP, toolDiv);
+
+	// 답글 ul
+	const subList = document.createElement('ul');
+	subList.className = 'subcomment_list';
+
+	subcommentList.forEach(subcomment => {
+		const subLi = document.createElement('li');
+		subLi.className = 'subcomment';
+
+		const arrowImg = document.createElement('img');
+		arrowImg.className = 'subcomment_arrow';
+		arrowImg.src = '/images/chompessor/arrow_right.png';
+
+		const innerDiv = document.createElement('div');
+		innerDiv.className = 'subcomment_inner';
+
+		const infoDiv = document.createElement('div');
+		infoDiv.className = 'subcomment_info';
+
+		const writerDiv = document.createElement('div');
+		writerDiv.className = 'subcomment_writer';
+
+		const img = document.createElement('img');
+		img.src = '/images/common/test.png';
+
+		const nameSpan = document.createElement('span');
+		nameSpan.textContent = subcomment.nickname;
+
+		const date = new Date(subcomment.postdate);
+		const dateSpan = document.createElement('span');
+		dateSpan.textContent = `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일`;
+
+		writerDiv.append(img, nameSpan, dateSpan);
+
+		const actionDiv = document.createElement('div');
+		actionDiv.className = 'subcomment_action';
+
+		['#reportCommentModal', '#editCommentModal'].forEach(modalId => {
+			const link = document.createElement('a');
+			link.href = 'javascript:void(0);';
+			link.dataset.bsToggle = 'modal';
+			link.dataset.bsTarget = modalId;
+			link.textContent = modalId === '#reportCommentModal' ? '신고' : '수정';
+			actionDiv.appendChild(link);
+		});
+
+		const deleteLink = document.createElement('a');
+		deleteLink.href = '';
+		deleteLink.textContent = '삭제';
+		actionDiv.appendChild(deleteLink);
+
+		infoDiv.append(writerDiv, actionDiv);
+
+		const contentP = document.createElement('p');
+		contentP.className = 'subcomment_content';
+		contentP.textContent = subcomment.content;
+
+		const toolDiv = document.createElement('div');
+		toolDiv.className = 'comment_tool';
+
+		const likeBtn = document.createElement('button');
+		likeBtn.className = 'btn_tool write_subcomment_btn';
+
+		const fullImg = document.createElement('img');
+		fullImg.src = '/images/common/thumb_up_full.png';
+
+		const emptyImg = document.createElement('img');
+		emptyImg.src = '/images/common/thumb_up_empty.png';
+
+		const count = document.createElement('p');
+		count.textContent = subcomment.likecount;
+
+		likeBtn.append(fullImg, emptyImg, count);
+		toolDiv.appendChild(likeBtn);
+
+		innerDiv.append(infoDiv, contentP, toolDiv);
+		subLi.append(arrowImg, innerDiv);
+		subList.appendChild(subLi);
+	});
+
+	const fragment = document.createDocumentFragment();
+	fragment.append(commentLi, subList);
+	return fragment;
 }
-
-
-
-
-
 
 
 
 /**
  * 댓글을 작성하는 함수
  */
-/*
 document.addEventListener('DOMContentLoaded', function () {
 	document.getElementById('writeCommentForm').addEventListener("submit", function (event) {
 		event.preventDefault();
@@ -275,16 +373,16 @@ document.addEventListener('DOMContentLoaded', function () {
 			console.log(payload.id);
 			
 			const params = new URLSearchParams(window.location.search);
-			const megazineId = params.get('megazineId');
+			const id = params.get('id');
 			
 			const data = {
 				content: document.getElementById("writeCommentContent").value.trim(),
 				tablename: 'chomp_megazine',
-				recodenum: Number(megazineId),
+				recodenum: Number(id),
 				user_id: payload.id
 			};
 			
-			const response = instance.post(`http://localhost:8586/comments`, data);
+			const response = instance.post('/comments', data);
 			
 			console.log(response);
 			
@@ -294,5 +392,4 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 	});
 });
-*/
 

@@ -1,51 +1,188 @@
 package com.project.zipmin.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.dto.CommentCreateRequestDto;
+import com.project.zipmin.dto.CommentCreateResponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.CommentUpdateRequestDto;
 import com.project.zipmin.dto.CommentUpdateResponseDto;
 import com.project.zipmin.dto.LikeCreateRequestDto;
+import com.project.zipmin.entity.Comment;
+import com.project.zipmin.mapper.CommentMapper;
+import com.project.zipmin.repository.CommentRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
-public interface CommentService {
+@RequiredArgsConstructor
+public class CommentService {
+	
+	@Autowired
+	private CommentRepository commentRepository;
+	
+	@Autowired
+	private LikeService likeService;
+
+	private final CommentMapper commentMapper;
+	
+	
 	
 	// 댓글 목록 조회 (오래된순)
-	public Page<CommentReadResponseDto> getCommentPageByTablenameAndRecodenumOrderByIdAsc(String tablename, int recodenum, Pageable pageable);
+	public Page<CommentReadResponseDto> getCommentPageByTablenameAndRecodenumOrderByIdAsc(String tablename, int recodenum, Pageable pageable) {
+		
+		Page<Comment> commentPage = commentRepository.findByTablenameAndRecodenumOrderByIdAsc(tablename, recodenum, pageable);
+
+		List<CommentReadResponseDto> commentDtoList = new ArrayList<CommentReadResponseDto>();
+		for (Comment comment : commentPage) {
+			CommentReadResponseDto commentDTO = commentMapper.toReadResponseDto(comment);
+			commentDTO.setCommId(comment.getComment().getId());
+			commentDTO.setUserId(comment.getUser().getId());
+			commentDTO.setNickname(comment.getUser().getNickname());
+			commentDTO.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
+			commentDtoList.add(commentDTO);
+		}
+	    return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
+	}
+
+	
 	
 	// 댓글 목록 조회 (최신순)
-	public Page<CommentReadResponseDto> getCommentPageByTablenameAndRecodenumOrderByIdDesc(String tablename, int recodenum, Pageable pageable);
+	public Page<CommentReadResponseDto> getCommentPageByTablenameAndRecodenumOrderByIdDesc(String tablename, int recodenum, Pageable pageable) {
+		
+		Page<Comment> commentPage = commentRepository.findByTablenameAndRecodenumOrderByIdDesc(tablename, recodenum, pageable);
+		
+		List<CommentReadResponseDto> commentDtoList = new ArrayList<CommentReadResponseDto>();
+		for (Comment comment : commentPage) {
+			CommentReadResponseDto commentDTO = commentMapper.toReadResponseDto(comment);
+			commentDTO.setCommId(comment.getComment().getId());
+			commentDTO.setUserId(comment.getUser().getId());
+			commentDTO.setNickname(comment.getUser().getNickname());
+			commentDTO.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
+			commentDtoList.add(commentDTO);
+		}
+	    return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
+	}
+
+	
 	
 	// 댓글 목록 조회 (인기순)
-	public Page<CommentReadResponseDto> getCommentPageByTablenameAndRecodenumOrderByLikecount(String tablename, int recodenum, Pageable pageable);
+	public Page<CommentReadResponseDto> getCommentPageByTablenameAndRecodenumOrderByLikecount(String tablename, int recodenum, Pageable pageable) {
+		
+		Page<Comment> commentPage = commentRepository.findByTablenameAndRecodenumOrderByLikecount(tablename, recodenum, pageable);
+
+		List<CommentReadResponseDto> commentDtoList = new ArrayList<CommentReadResponseDto>();
+		for (Comment comment : commentPage) {
+			CommentReadResponseDto commentDTO = commentMapper.toReadResponseDto(comment);
+			commentDTO.setCommId(comment.getComment().getId());
+			commentDTO.setUserId(comment.getUser().getId());
+			commentDTO.setNickname(comment.getUser().getNickname());
+			commentDTO.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
+			commentDtoList.add(commentDTO);
+		}
+	    return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
+	}
+
 	
 	
-	// 사용자 아이디를 이용해 댓글 수 조회
-	public int countCommentsByUserId(String userId);
+	
+	
+	
+	public int countCommentsByUserId(String userId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	
+	
+	
+	
+	
+	
+	
 	
 	// 댓글 작성
-	public void createComment(CommentCreateRequestDto commentDto);
+	public CommentCreateResponseDto createComment(CommentCreateRequestDto commentDto) {
+
+		// 입력값 검증
+		if (commentDto == null || commentDto.getContent() == null || commentDto.getTablename() == null || commentDto.getRecodenum() == null || commentDto.getUserId() == null) {
+			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
+		}
+		
+		Comment comment = commentMapper.toEntity(commentDto);
+		
+	    // 대댓글이면 댓글 참조
+	    if (commentDto.getCommId() != null) {
+	        Comment parent = commentRepository.findById(commentDto.getCommId())
+	            .orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
+	        comment.setComment(parent);
+	    }
+	    
+		// 댓글 저장
+		try {
+			comment = commentRepository.save(comment);
+			return commentMapper.toCreateResponseDto(comment);
+		}
+		catch (Exception e) {
+			throw new ApiException(CommentErrorCode.COMMENT_CREATE_FAIL);
+		}
+		
+	}
+
+	
+	
 	
 	// 댓글 수정
-	public CommentUpdateResponseDto updateComment(int id, CommentUpdateRequestDto commentDto);
-	
-	// 댓글 삭제
-	public int deleteCommentById(int commentId);
-	
-	// 테이블 이름과 일련번호를 이용해 댓글 목록 삭제
-	public int deleteCommentListByTablenameAndRecodenum(String tablename, int recodenum);
-	
-	// 댓글 좋아요
-	public void likeComment(LikeCreateRequestDto likeDto);
-	
-	// 댓글 좋아요 취소
-	public void unlikeComment(int id);
-	
-	
-	
+	public CommentUpdateResponseDto updateComment(int id, CommentUpdateRequestDto commentDto) {
 
+		Comment comment = commentRepository.findById(id)
+				.orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
+		
+		comment.setContent(commentDto.getContent());
+		comment = commentRepository.save(comment);
+		
+		return commentMapper.toUpdateResponseDto(comment);
+	}
+	
+	
+	
+	public int deleteCommentById(int commentId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int deleteCommentListByTablenameAndRecodenum(String tablename, int recodenum) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+
+	public void likeComment(LikeCreateRequestDto likeDto) {
+		likeService.addLike(likeDto);
+	}
+
+
+
+	public void unlikeComment(int id) {
+		likeService.removeLike(id);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

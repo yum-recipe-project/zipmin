@@ -14,11 +14,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CommentCreateRequestDto {
-	private int id;
-	private int commId;
+	
 	private Date postdate;
 	private String content;
 	private String tablename;
-	private int recodenum;
-	private int userId;
+	private Integer recodenum;
+	private Integer commId;
+	private Integer userId;
+	
 }

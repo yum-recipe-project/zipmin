@@ -14,6 +14,7 @@ import com.project.zipmin.entity.Event;
 public interface EventMapper {
 	
 	// Create
+	@Mapping(target = "id", ignore = true)
 	@Mapping(target = "chomp.id", source = "chompId")
 	Event toEntity(EventCreateRequestDto eventDto);
 	
@@ -30,6 +31,8 @@ public interface EventMapper {
 	
 	// Read
 	Event toEntity(EventReadResponseDto eventDto);
+	
+	@Mapping(target = "status", ignore = true)
 	EventReadResponseDto toReadResponseDto(Event event);
 	
 	

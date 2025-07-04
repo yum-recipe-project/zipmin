@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,19 +16,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.CommentSuccessCode;
+import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.CommentCreateRequestDto;
+import com.project.zipmin.dto.CommentCreateResponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.CommentUpdateRequestDto;
 import com.project.zipmin.dto.CommentUpdateResponseDto;
 import com.project.zipmin.service.CommentService;
+import com.project.zipmin.service.UserService;
 
 @RestController
 public class CommentController {
 	
 	@Autowired
 	CommentService commentService;
+	@Autowired
+	UserService userService;
+	
 	
 	
 	
@@ -55,9 +64,24 @@ public class CommentController {
 	
 	// 댓글 작성
 	@PostMapping("/comments")
-	public ResponseEntity<?> createComment(@RequestBody CommentCreateRequestDto commentDto) {
+	public ResponseEntity<?> createComment(@RequestBody CommentCreateRequestDto commentRequestDto) {
 		
-		return null;
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 권한 없는 사용자의 접근
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (userService.readUserByUsername(username).getId() != commentRequestDto.getUserId()) {
+		    throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+		}
+		
+		CommentCreateResponseDto commentResponseDto = commentService.createComment(commentRequestDto);
+		
+		return ResponseEntity.status(CommentSuccessCode.COMMENT_CREATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(CommentSuccessCode.COMMENT_CREATE_SUCCESS, commentResponseDto));
 	}
 	
 	

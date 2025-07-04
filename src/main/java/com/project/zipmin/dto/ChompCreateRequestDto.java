@@ -9,7 +9,6 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ChompCreateRequestDto {
 
-	private int id;
 	private String category;
 	
 }

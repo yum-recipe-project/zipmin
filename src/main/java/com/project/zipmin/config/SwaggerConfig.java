@@ -8,12 +8,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfig {
 	
-	@Bean
+    @Bean
     public OpenAPI openAPI() {
-	    return new OpenAPI()
-    	        .info(info);
-	}
-    
-    Info info = new Info().title("Swagger Test").version("0.0.1").description(
-        "<h3>Swagger test</h3>");
+        return new OpenAPI()
+                .info(new Info()
+                    .title("Swagger Test")
+                    .version("0.0.1")
+                    .description("<h3>Swagger test</h3>")
+                );
+    }
 }

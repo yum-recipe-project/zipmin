@@ -62,12 +62,14 @@
 
 /* 이벤트 내용 */
 #container .content .event_wrap .event_content {
+	white-space: pre-line;
 	line-height: 28px;
 	word-break: break-word;
 	font-weight: 300;
 	font-size: 16px;
 	letter-spacing: -0.025em;
 }
+
 #container .content .event_wrap img {
   width: 500px;
   height: auto;
@@ -76,8 +78,9 @@
 }
 
 
+
 /* 목록 버튼 */
 #container .content .event_wrap .list_btn {
-	text-align: end;
+	text-align: center;
 }
 

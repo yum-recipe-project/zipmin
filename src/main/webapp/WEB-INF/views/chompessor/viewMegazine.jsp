@@ -7,7 +7,9 @@
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/chompessor/view-megazine.css">
+		<link rel="stylesheet" href="/css/common/comment.css">
 		<script src="/js/chompessor/view-megazine.js"></script>
+		<script src="/js/common/comment.js"></script>
 	</head>
 	
 	<body>
@@ -17,7 +19,7 @@
 				<div class="megazine_wrap">
 					<!-- 매거진 헤더 -->
 					<div class="megazine_header">
-						<span class="megazine_category"></span>
+						<span class="megazine_category">매거진</span>
 						<h2 class="megazine_title"></h2>
 						<div class="megazine_writer">
 							<img src="/images/common/test.png">

@@ -52,15 +52,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 			user = userRepository.save(user);
 			
-			UserDto userDTO = new UserDto();
-			userDTO.setId(user.getId());
-			userDTO.setUsername(username);
-			userDTO.setName(oAuth2Response.getName());
-			userDTO.setNickname(oAuth2Response.getName());
-			userDTO.setEmail(oAuth2Response.getEmail());
-			userDTO.setRole("ROLE_USER");
+			UserDto userDto = new UserDto();
+			userDto.setId(user.getId());
+			userDto.setUsername(username);
+			userDto.setName(oAuth2Response.getName());
+			userDto.setNickname(oAuth2Response.getName());
+			userDto.setEmail(oAuth2Response.getEmail());
+			userDto.setRole("ROLE_USER");
 			
-			return new CustomOAuth2User(userDTO);
+			return new CustomOAuth2User(userDto);
 		}
 		// 회원정보가 존재한다면 조회된 데이터로 반환
 		else {

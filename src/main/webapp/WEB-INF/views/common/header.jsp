@@ -55,8 +55,14 @@
 				</ul>
 			</nav>
 			<!-- 검색창 -->
-			<form class="search_form" name="">
-				<input type="text" class="search_word" name="" placeholder="검색어를 입력하세요">
+			<form class="search_form" data-type="chompessor">
+				<input type="text" class="search_word" placeholder="검색어를 입력하세요">
+				<button type="submit" class="search_btn">
+					<img src="/images/common/search.png">
+				</button>
+			</form>
+			<form class="search_form">
+				<input type="text" class="search_word" placeholder="검색어를 입력하세요">
 				<button type="submit" class="search_btn">
 					<img src="/images/common/search.png">
 				</button>

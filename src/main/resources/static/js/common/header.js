@@ -1,5 +1,5 @@
 /**
- * 메뉴 항목 클릭 시 활성화 상태를 토글하는 함수
+ * 메뉴 항목 클릭 시 활성화 상태를 토글하고 검색창을 보여주는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
     const menuItems = document.querySelectorAll('.gnb ul li a');
@@ -13,6 +13,12 @@ document.addEventListener('DOMContentLoaded', function() {
             item.parentElement.classList.add('active');
         }
     });
+	
+	// 검색창
+	document.querySelectorAll('.search_form').forEach(form => {
+		const type = form.getAttribute('data-type');
+		form.style.display = (type === currentPath) ? 'flex' : 'none';
+	});
 
     // 로고 클릭 시 'active' 클래스 제거
     if (logo) {
@@ -92,21 +98,27 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 		}
 		catch (error) {
-			if (error.response?.data?.code === "AUTH_REFRESH_TOKEN_MISSING") {
-				alert("로그아웃 실패");
+			const code = error?.response?.data?.code;
+			
+			if (code === 'AUTH_REFRESH_TOKEN_MISSING') {
+				alert(result.message);
 			}
-			else if (error.response?.data?.code === "AUTH_REFRESH_TOKEN_EXPIRED") {
-				alert("로그아웃 실패");
+			else if (code === 'AUTH_REFRESH_TOKEN_EXPIRED') {
+				alert(result.message);
 			}
-			else if (error.response?.data?.code === "AUTH_REFRESH_TOKEN_INVALID") {
-				alert("로그아웃 실패");
+			else if (code === 'AUTH_REFRESH_TOKEN_INVALID') {
+				alert(result.message);
 			}
-			else if (error.response?.data?.code === "USER_NOT_FOUND") {
-				alert("로그아웃 실패");
+			else if (code === 'USER_NOT_FOUND') {
+				alert(result.message);
 			}
 			else {
-				alert("로그아웃 실패");
+				alert(result.message);
 			}
 		}
 	});
 });
+
+
+
+

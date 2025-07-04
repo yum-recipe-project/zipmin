@@ -61,6 +61,10 @@
 
 
 /* 투표 내용 */
+#container .vote_form {
+	display: none;
+}
+
 #container .vote_form .vote_checkbox_wrap {
 	display: flex;
 	flex-direction: column;
@@ -113,6 +117,10 @@
 
 
 /* 투표 결과 */
+#container .vote_result {
+	display: none;
+}
+
 #container .vote_result ul {
 	display: flex;
 	flex-direction: column;
@@ -121,7 +129,7 @@
 
 #container .vote_result .vote_option_wrap {
 	position: relative;
-	background: rgb(243, 245, 247);;
+	background: rgb(243, 245, 247);
 	border-radius: 4px;
 	overflow: hidden;
 	display: flex;
@@ -136,8 +144,7 @@
 	content: '';
 	top: 0px;
 	left: 0px;
-	/* 값 변경 필요 */
-	width: 66.3%;
+	width: var(--bar-width, 0%);
 	height: 100%;
 	background: rgb(215, 219, 230);
 }

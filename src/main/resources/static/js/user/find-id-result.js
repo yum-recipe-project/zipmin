@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		sessionStorage.removeItem('username');
 	}
 	else {
-		alert("잘못된 접근입니다.");
+		alert("잘못된 접근입니다. find-id-result.js");
 		window.location.href = "/user/login.do";
 	}
 });

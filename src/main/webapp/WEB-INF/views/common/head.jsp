@@ -7,9 +7,9 @@
 <link rel="stylesheet" href="/css/common/common.css">
 <link rel="stylesheet" href="/css/common/button.css">
 <link rel="stylesheet" href="/css/common/modal.css">
-<link rel="stylesheet" href="/css/common/comment.css">
+<!-- <link rel="stylesheet" href="/css/common/comment.css">
 <link rel="stylesheet" href="/css/common/review.css">
-<link rel="stylesheet" href="/css/common/pagination.css">
+<link rel="stylesheet" href="/css/common/pagination.css"> -->
 <link rel="stylesheet" href="/css/common/header.css">
 <link rel="stylesheet" href="/css/common/footer.css">
 
@@ -18,8 +18,11 @@
 <script src="/js/common/jquery-3.7.1.min.js"></script>
 <script src="/js/common/jquery-ui.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="/js/common/ui-common.js"></script>
-<script src="/js/common/header.js"></script>
-<script src="/js/common/pagination.js"></script>
+<script src="/js/common/config.js"></script>
+<script src="/js/common/header.js" defer></script>
+<!-- <script src="/js/common/pagination.js"></script>
 <script src="/js/common/comment.js"></script>
-<script src="/js/common/review.js"></script>
+<script src="/js/common/review.js"></script> -->
+<script src="/js/common/jwt.js"></script>

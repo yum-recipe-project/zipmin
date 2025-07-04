@@ -119,11 +119,11 @@
 }
 
 /* 폼 (휴대폰 번호) */
-#container .phone_field {
+#container .tel_field {
 	margin-top: 24px;
 }
 
-#container .phone_field label {
+#container .tel_field label {
 	font-weight: 500;
 	display: block;
 	margin-bottom: 4px;
@@ -133,7 +133,7 @@
 	color: var(--txt-color-600);
 }
 
-#container .phone_field input {
+#container .tel_field input {
 	appearance: none;
 	padding: 11px 0px 13px 12px;
 	width: 100%;
@@ -149,7 +149,7 @@
 	outline: none;
 }
 
-#container .phone_field input.danger {
+#container .tel_field input.danger {
 	appearance: none;
 	padding: 11px 32px 13px 12px;
 	width: 100%;
@@ -165,7 +165,7 @@
 	background: rgb(254, 245, 245);
 }
 
-#container .phone_field p {
+#container .tel_field p {
 	display: none;
 	margin-top: 4px;
 	font-size: 12px;
@@ -175,11 +175,11 @@
 }
 
 /* 폼 (아이디) */
-#container .id_field {
+#container .username_field {
 	margin-top: 24px;
 }
 
-#container .id_field label {
+#container .username_field label {
 	font-weight: 500;
 	display: block;
 	margin-bottom: 4px;
@@ -189,7 +189,7 @@
 	color: var(--txt-color-600);
 }
 
-#container .id_field input {
+#container .username_field input {
 	appearance: none;
 	padding: 11px 0px 13px 12px;
 	width: 100%;
@@ -205,7 +205,7 @@
 	outline: none;
 }
 
-#container .id_field input.danger {
+#container .username_field input.danger {
 	appearance: none;
 	padding: 11px 32px 13px 12px;
 	width: 100%;
@@ -221,7 +221,7 @@
 	background: rgb(254, 245, 245);
 }
 
-#container .id_field p {
+#container .username_field p {
 	display: none;
 	margin-top: 4px;
 	font-size: 12px;

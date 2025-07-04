@@ -10,8 +10,6 @@
 		<title>집밥의 민족</title>
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/user/user-info.css">
-		<link rel="stylesheet" href="/css/user/modify-user.css">
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,300,0,0&icon_names=edit_square" />
 		<script src="/js/user/user-info.js"></script>
 	</head>
 	
@@ -19,120 +17,97 @@
 		<main id="container">
 			<div class="content">
 				<div class="info_wrap">
-					<div>
-						<h2>회원정보</h2>
+					<h2>회원정보</h2>
+					
+					<!-- 아이디 정보 -->
+					<div class="account_info">
+						<h3>아이디</h3>
+						<div class="username_field">
+							<p class="username">정보 없음</p>
+						</div>
+					</div>
+					
+					<!-- 기본 정보 -->		
+					<div class="user_info">
+						<div class="info_title">
+							<h3>기본정보</h3>
+							<div class="edit_btn_wrap" id="edit-basic-info-btn">
+								<img class="edit_btn" src="/images/user/edit_user.png">
+								<a href="#">수정</a>
+							</div>
+						</div>
 						
-						<!-- 아이디 정보 -->
-						<form>
-							<div class="account_info">
-								<h3>아이디</h3>
-								<div class="id_field">
-									<input type="hidden" id="idInput" name="" value="" placeholder="영문 혹은 영문+숫자, 4~20자">
-									<p>dyboo1346</p>
-								</div>
+						<form id="basic-info-form">
+							<div class="name_field">
+								<label>이름</label>
+								<p class="name">정보 없음</p>
+								<input type="text" name="name" value="" placeholder="이름 입력">
+								<p class="name_hint">이름을 입력해주세요</p>
+							</div>
+							<div class="nickname_field">
+								<label>닉네임</label>
+								<p class="nickname">정보 없음</p>
+								<input type="text" name="nickname" value="" placeholder="닉네임 입력">
+								<p class="nickname_hint">닉네임을 입력해주세요</p>
+							</div>
+							<div class="tel_field">
+								<label>휴대폰 번호</label>
+								<p class="tel">정보 없음</p>
+								<input type="text" name="tel" value="" placeholder="- 없이 휴대폰 번호 입력">
+								<p class="tel_hint">휴대폰 번호를 입력해주세요</p>
+							</div>
+							<div id="submit-basic-info-btn">
+								<button type="submit" class="btn_primary_wide">저장</button>
 							</div>
 						</form>
-						
-						<!-- 기본 정보 -->
-						<form>
-							<div class="member_info">
-								<div class="info_title">
-									<h3>기본정보</h3>
-									<div class="edit_btn_wrap" id="basicModifyBtn">
-										<img id="basicIcon" class="edit_btn" src="/images/user/edit_user.png">
-										<a href="#" id="basicState">수정</a>
-									</div>
-								</div>
-								<div id="basicInfo">
-									<div class="name_field">
-										<label>이름</label>
-										<input type="hidden" id="nameInput" name="" value="" placeholder="이름 입력">
-										<p>부다영</p>
-									</div>
-									<div class="nickname_field">
-										<div class="nickname_label">
-											<label>닉네임</label>
-										</div>
-										<input type="hidden" id="nicknameInput" name="" value="" placeholder="닉네임 입력">
-										<p>외로운 참외</p>
-									</div>
-									<div class="phone_field">
-										<label>휴대폰 번호</label>
-										<input type="hidden" id="phoneInput" name="" value="" placeholder="- 없이 휴대폰 번호 입력">
-										<p id="phoneHint">010-2084-0204</p>
-									</div>
-								</div>
-								<!-- 기본정보 수정폼 -->
-								<div id="modifyBasicInfo" class="hidden">
-									<div class="name_field">
-										<label>이름</label>
-										<input type="text" id="nameInput" name="" value="부다영" placeholder="이름 입력">
-									</div>
-									<div class="nickname_field">
-										<div class="nickname_label">
-											<label>닉네임</label>
-										</div>
-										<input type="text" id="nicknameInput" name="" value="외로운 참외" placeholder="닉네임 입력">
-									</div>
-									<div class="phone_field">
-										<label>휴대폰 번호</label>
-										<input type="text" id="phoneInput" name="" value="010-2084-0204" placeholder="- 없이 휴대폰 번호 입력">
-									</div>
-									<div class="email_btn_wrap">
-										<button type="submit" class="save_btn">저장</button>
-									</div>
-								</div>
-								
-								
-								
-							</div>
-						</form>
-						
+					</div>
+							
+					
 						<!-- 이메일 정보 -->
-						<form>
-							<div class="email_info">
-								<div class="info_title">
-									<h3>이메일</h3>
-									<div class="edit_btn_wrap" id="emailModifyBtn">
-										<img id="emailIcon" class="edit_btn"  src="/images/user/edit_user.png">
-										<a href="#" id="emailState">수정</a>
-									</div>
-								</div>
-								<div class="email_field">
-									<input type="hidden" id="emailInput" name="" value="" placeholder="이메일 입력">
-									<p id="emailText">dyboo1346@naver.com</p>
-									
-									<!-- 이메일 수정폼 -->
-									<div id="modifyEmail" class="hidden">
-										<div class="modify_email">
-											<label>이메일</label>
-											<input type="email" name="" value="" placeholder="이메일 입력">
-										</div>
-										<div class="email_warning">
-											<img src="/images/user/error.png">
-											<p>이메일로 비밀번호 변경 링크 등이 발송됩니다. 개인정보 보호를 위해 정확한 메일 정보를 입력해주세요.</p>
-										</div>
-										<div class="email_btn_wrap">
-											<button type="submit" class="save_btn">저장</button>
-										</div>
-									</div>
-									
+						<div class="user_info">
+							<div class="info_title">
+								<h3>이메일</h3>
+								<div class="edit_btn_wrap" id="edit-email-info-btn">
+									<img class="edit_btn" src="/images/user/edit_user.png">
+									<a href="#">수정</a>
 								</div>
 							</div>
-						</form>
+														
+							<!-- 이메일 수정폼 -->
+							<form id="email-info-form">
+								<div class="email_field">
+									<label>이메일</label>
+									<p class="email">정보 없음</p>
+									<input type="email" name="email" value="" placeholder="이메일 입력">
+									<p class="email_hint">이메일을 입력해주세요.</p>
+								</div>
+								<div class="email_warning">
+									<img src="/images/user/error.png">
+									<p>이메일로 비밀번호 변경 링크 등이 발송됩니다. 개인정보 보호를 위해 정확한 메일 정보를 입력해주세요.</p>
+								</div>
+								<div id="submit-email-info-btn">
+									<button type="submit" class="btn_primary_wide">저장</button>
+								</div>
+							</form>
+						</div>
+						
+						<!-- 마이페이지 버튼 -->
+						<div class="btn_wrap">
+							<button onclick="location.href='/mypage.do'" type="button" class="btn_primary_wide">마이페이지로 이동</button>
+						</div>
 						
 						<!-- 회원탈퇴 버튼 -->
 						<div class="btn_wrap">
-							<button type="submit" class="delete_btn">탈퇴하기</button>
+							<button id="user_delete_btn" type="submit" class="btn_outline">탈퇴하기</button>
 						</div>
+					</div>
+					
+					<!-- 하단 정보 -->
+					<div class="buttom_info">
+						<p class="copy">© Yum Recipe Project</p>
 					</div>
 				</div>
 				
-				<!-- 하단 정보 -->
-				<div class="buttom_info">
-					<p class="copy">© Yum Recipe Project</p>
-				</div>
-			</div>
 		</main>
 	</body>
 </html>

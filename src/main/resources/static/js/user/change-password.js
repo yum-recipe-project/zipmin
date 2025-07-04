@@ -1,72 +1,151 @@
 /**
- * 비밀번호 변경 폼 입력 검증 함수
+ * 접근 권한을 설정하는 함수
  */
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.querySelector("form");
-    const oldPasswordInput = document.getElementById("oldPasswordInput");
-    const oldPasswordHint = document.getElementById("oldPasswordHint");
-    const newPasswordInput = document.getElementById("newPasswordInput");
-    const newPasswordHint = document.getElementById("newPasswordHint");
-    const checkPasswordInput = document.getElementById("checkPasswordInput");
-    const checkPasswordHint = document.getElementById("checkPasswordHint");
+document.addEventListener('DOMContentLoaded', async function() {
+	if (!isLoggedIn()) {
+		redirectToLogin();
+	}
 
-	// 이전 비밀번호 실시간 검사
-	oldPasswordInput.addEventListener("input", function() {
-		if (oldPasswordInput.value.trim() === "") {
-			oldPasswordInput.classList.add("danger");
-			oldPasswordHint.style.display = "block";
-		}
-		else {
-			oldPasswordInput.classList.remove("danger");
-			oldPasswordHint.style.display = "none";
-		}
+	try {
+		await instance.get('/dummy');
+	}
+	catch (error) {
+		console.log(error);
+	}
+});
+
+
+
+/**
+ * 비밀번호 검증을 확인하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const isPasswordVerified = sessionStorage.getItem('passwordVerified') === 'true';
+	if (!isPasswordVerified) {
+		sessionStorage.setItem('path', window.location.pathname);
+		location.href = '/user/verifyPassword.do';
+	}
+});
+
+
+
+/**
+ * 폼값을 실시간으로 검증하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const form = document.querySelector('form');
+	
+	// 현재 비밀번호 실시간 검사
+	form.oldPassword.addEventListener('input', function() {
+		const isOldPasswordEmpty = this.value.trim() === '';
+		this.classList.toggle('danger', isOldPasswordEmpty);
+		document.querySelector('.old_password_field p:nth-of-type(1)').style.display = isOldPasswordEmpty ? 'block' : 'none';
+		document.querySelector('.old_password_field p:nth-of-type(2)').style.display = 'none';
 	});
 	
 	// 새 비밀번호 실시간 검사
-	newPasswordInput.addEventListener("input", function() {
-		if (newPasswordInput.value.trim() === "") {
-			newPasswordInput.classList.add("danger");
-			newPasswordHint.style.display = "block";
-		}
-		else {
-			newPasswordInput.classList.remove("danger");
-			newPasswordHint.style.display = "none";
-		}
+	form.newPassword.addEventListener('input', function() {
+		const isNewPasswordEmpty = this.value.trim() === '';
+		this.classList.toggle('danger', isNewPasswordEmpty);
+		document.querySelector('.new_password_field p').style.display = isNewPasswordEmpty ? 'block' : 'none';
 	});
 	
 	// 비밀번호 확인 실시간 검사
-	checkPasswordInput.addEventListener("input", function() {
-		if (checkPasswordInput.value.trim() === "") {
-			checkPasswordInput.classList.add("danger");
-			checkPasswordHint.style.display = "block";
+	form.checkPassword.addEventListener('input', function() {
+		const isCheckPasswordEmpty = this.value.trim() === '';
+		this.classList.toggle('danger', isCheckPasswordEmpty);
+		document.querySelector('.check_password_field p:nth-of-type(1)').style.display = isCheckPasswordEmpty ? 'block' : 'none';
+		document.querySelector('.check_password_field p:nth-of-type(2)').style.display = 'none';
+	});
+});
+
+
+
+/**
+ * 비밀번호를 변경하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const form = document.querySelector('form');
+	form.addEventListener('submit', async function(event) {
+		event.preventDefault();
+		let isValid = true;
+		
+		if (form.checkPassword.value.trim() === '') {
+			form.checkPassword.classList.add('danger');
+			document.querySelector('.check_password_field p:nth-of-type(1)').style.display = 'block';
+			form.checkPassword.focus();
+			isValid = false;
 		}
+		
+		if (form.newPassword.value.trim() === '') {
+			form.newPassword.classList.add('danger');
+			document.querySelector('.new_password_field p').style.display = 'block';
+			form.newPassword.focus();
+			isValid = false;
+		}
+		
+		if (form.oldPassword.value.trim() === '') {
+			form.oldPassword.classList.add('danger');
+			document.querySelector('.old_password_field p:nth-of-type(1)').style.display = 'block';
+			form.oldPassword.focus();
+			isValid = false;
+		}
+		// 현재 비밀번호 일치 여부 확인
 		else {
-			checkPasswordInput.classList.remove("danger");
-			checkPasswordHint.style.display = "none";
+			try {
+				const token = localStorage.getItem('accessToken');
+				const payload = parseJwt(token);
+				
+				const data = {
+					id: payload.id,
+					password: form.oldPassword.value.trim()
+				}
+				
+				try {
+					await instance.post('/users/verify-password', data);
+				}
+				catch (error) {
+					form.oldPassword.classList.add('danger');
+					document.querySelector('.old_password_field p:nth-of-type(2)').style.display = 'block';
+					form.oldPassword.value = '';
+					form.newPassword.value = '';
+					form.checkPassword.value = '';
+					form.oldPassword.focus();
+					isValid = false;
+				}
+			}
+			catch(error) {
+				console.log(error);
+			}
+		}
+		
+		if (form.newPassword.value.trim() !== form.checkPassword.value.trim()) {
+			form.newPassword.classList.add('danger');
+			form.checkPassword.classList.add('danger');
+			document.querySelector('.check_password_field p:nth-of-type(2)').style.display = 'block';
+			isValid = false;
+		}
+
+		if (isValid) {
+			const token = localStorage.getItem('accessToken');
+			const payload = parseJwt(token);
+			
+			const data = {
+				password: form.newPassword.value.trim()
+			}
+			
+			try {
+				const response = await instance.put(`/users/${payload.id}`, data);
+				
+				if (response.data.code === 'USER_PROFILE_UPDATE_SUCCESS') {
+					alert('비밀번호가 변경되었습니다.');
+					location.href = '/mypage.do';
+				}
+			}
+			catch (error) {
+				console.log(error);
+			}
 		}
 	});
-	
-    // 폼 제출 시 최종 검사
-    form.addEventListener("submit", function (event) {
-		if (checkPasswordInput.value.trim() === "") {
-			event.preventDefault();
-			checkPasswordInput.classList.add("danger");
-			checkPasswordHint.style.display = "block";
-			checkPasswordInput.focus();
-		}
-		
-		if (newPasswordInput.value.trim() === "") {
-			event.preventDefault();
-			newPasswordInput.classList.add("danger");
-			newPasswordHint.style.display = "block";
-			newPasswordInput.focus();
-		}
-		
-		if (oldPasswordInput.value.trim() === "") {
-			event.preventDefault();
-			oldPasswordInput.classList.add("danger");
-			oldPasswordHint.style.display = "block";
-			oldPasswordInput.focus();
-		}
-    });
 });
+

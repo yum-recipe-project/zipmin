@@ -1,3 +1,21 @@
+/**
+ * 접근 권한을 설정하는 함수
+ */
+document.addEventListener('DOMContentLoaded', async function() {
+	if (!isLoggedIn()) {
+		redirectToLogin();
+	}
+
+	try {
+		await instance.get('/dummy');
+	}
+	catch (error) {
+		redirectToLogin();
+	}
+});
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
 	
 	// 닉네임 수정 

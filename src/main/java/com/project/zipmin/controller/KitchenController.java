@@ -8,10 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.zipmin.dto.CommentResponseDTO;
 import com.project.zipmin.dto.GuideDTO;
 
 @RestController
@@ -57,15 +55,6 @@ public class KitchenController {
 		return 0;
 	}
 	
-	
-	
-	// 특정 가이드의 댓글 목록 조회
-	@GetMapping("/{guideId}/comments")
-	public List<CommentResponseDTO> listGuideComment(
-			@PathVariable("guideId") int guideId,
-			@RequestParam(name = "sort", defaultValue = "new") String sort) {
-		return null;
-	}
 	
 	
 	

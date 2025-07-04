@@ -45,7 +45,7 @@
 
 
 /* 폼 (아이디) */
-#container .content .login_wrap .id_field input {
+#container .content .login_wrap .username_field input {
 	appearance: none;
 	padding: 11px 0px 13px 12px;
 	width: 100%;
@@ -61,7 +61,7 @@
 	outline: none;
 }
 
-#container .content .login_wrap .id_field input.danger {
+#container .content .login_wrap .username_field input.danger {
 	appearance: none;
 	padding: 11px 32px 13px 12px;
 	width: 100%;
@@ -77,7 +77,7 @@
 	background: rgb(254, 245, 245);
 }
 
-#container .content .login_wrap .id_field p {
+#container .content .login_wrap .username_field p {
 	display: none;
 	margin-top: 4px;
 	font-size: 12px;
@@ -134,8 +134,8 @@
 
 /* 폼 (알림) */
 #container .alert {
+	display: none;
 	margin-top: 16px !important;
-	display: flex;
 	padding: 11px 12px 13px;
 	border-radius: 4px;
 	color: rgb(244, 84, 82);

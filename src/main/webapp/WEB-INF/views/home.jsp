@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-
 <!DOCTYPE html>
 <html>
 	<head>
@@ -249,10 +248,6 @@
 					</ul>
 				</div>
 			
-				<h2>회원</h2>
-				<button onclick="location.href='/user/verifyPassword.do';">비밀번호 확인</button>
-				<br/><br/>
-				
 				<h2>마이페이지</h2>
 				<button onclick="location.href='/mypage/profile.do';">프로필</button>
 				<br/><br/>

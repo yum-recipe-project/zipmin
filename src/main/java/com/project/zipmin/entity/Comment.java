@@ -38,7 +38,7 @@ public class Comment {
 	private String tablename;
 	private int recodenum;
 	
-	// private String user_id;
+	// private int user_id;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")
 	private User user;

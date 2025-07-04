@@ -1,112 +1,86 @@
 /**
  * 전역 변수 선언
- * allChompList:
- * selectTab: 선택된 탭
- * selectSort: 선택된 정렬 기준
- * page: 현재 페이지 번호
- * size: 한번에 가져올 데이터 개수
  */
-let allChompList = [];
-let selectTab = "all";
-let selectSort = "all";
-let page = 0;
-const size = 10;
+let category = 'all';
+let totalPages = 0;
+let page = 0; // 현재 페이지 번호
+const size = 10; // 한번에 가져올 데이터 개수
+let chompList = [];
 
 
 
 /**
- * 
+ * 카테고리 클릭 시 데이터를 가져오는 함수
  */
-document.addEventListener('DOMContentLoaded', function () {
-	// 데이터 불러오기
-	fetch('http://localhost:8586/chomp', {
-		method: "GET"
-	})
-		.then(response => response.json())
-		.then(dataList => {
-			allChompList = dataList;
-			page = 0;
-			renderChompDataList();
-		})
-		.catch(error => console.error(error));
-
-	// 카테고리 탭 클릭
+document.addEventListener('DOMContentLoaded', function() {
+	
 	document.querySelectorAll(".btn_tab").forEach(tab => {
-		tab.addEventListener("click", function (e) {
-			e.preventDefault();
+		tab.addEventListener("click", function (event) {
+			event.preventDefault();
 			document.querySelector(".btn_tab.active")?.classList.remove("active");
 			this.classList.add("active");
-			selectTab = this.getAttribute("data-tab");
+			
+			category = this.getAttribute("data-tab");
 			page = 0;
-			renderChompDataList();
+			
+			chompList = [];
+			
+			loadChompList(page);
 		});
 	});
 
-	// 정렬 기준 필터 클릭
-	document.querySelectorAll(".btn_sort").forEach(sort => {
-		sort.addEventListener("click", function (e) {
-			e.preventDefault();
-			document.querySelector(".btn_sort.active")?.classList.remove("active");
-			this.classList.add("active");
-			selectSort = this.getAttribute("data-sort");
-			page = 0;
-			renderChompDataList();
-		});
-	});
-
-	// 더보기 버튼
-	document.querySelector(".btn_more").addEventListener("click", function () {
-		page++;
-		renderChompDataList();
-	});
+	// 초기 실행
+	loadChompList(page);
 });
+
+
+
+
+
+
+/**
+ * 쩝쩝박사 목록 데이터를 가져오는 함수
+ */
+function loadChompList(num) {
+	
+	const parameters = new URLSearchParams({
+		category : category,
+		page : num,
+		size : size
+	}).toString();
+	
+	// 
+	fetch(`/chomp?${parameters}`, {
+		method: 'GET'
+	})
+	.then(response => response.json())
+	.then(result => {
+		const data = result.data;
+		if (!data) return;
+		
+		page = data.number;
+		totalPages = data.totalPages;
+		chompList = data.content;
+		
+		renderChompList();
+		renderPagination();
+	})
+	.catch(error => console.log(error));
+}
 
 
 
 /**
  * 카테고리에 일치하는 목록을 렌더링 하는 함수
  */
-function renderChompDataList() {
-	const categoryMap = {
-		vote: "투표",
-		megazine: "매거진",
-		event: "이벤트",
-		all: "전체"
-	};
+function renderChompList() {
+	const container = document.getElementById("chomp");
+	container.innerHTML = '';
 
-	// 필터 적용
-	let filteredList = selectTab === "all"
-		? allChompList
-		: allChompList.filter(chomp => chomp.category === categoryMap[selectTab]);
-
-	filteredList = selectSort === "all"
-		? filteredList
-		: filteredList.filter(chomp => {
-			if (chomp.category === "투표") {
-				return chomp.chomp_vote_dto?.status === selectSort;
-			}
-			if (chomp.category === "이벤트") {
-				return chomp.chomp_event_dto?.status === selectSort;
-			}
-			return true;
-		});
-
-	// 페이징 처리
-	const start = 0;
-	const end = (page + 1) * size;
-	const currentList = filteredList.slice(start, end);
-
-	// 렌더링
-	const html = currentList.map(data => renderChompData(data)).join("");
-	document.getElementById("chomp").innerHTML = html;
-
-	// 더보기 버튼 제어
-	const btnMore = document.querySelector(".btn_more");
-	if (end >= filteredList.length) {
-		btnMore.style.display = "none";
-	} else {
-		btnMore.style.display = "block";
-	}
+	chompList.forEach(data => {
+		const element = createChomp(data);
+		container.appendChild(element);
+	});
 }
 
 
@@ -114,75 +88,166 @@ function renderChompDataList() {
 /**
  * 개별 데이터를 렌더링하는 함수
  */
-function renderChompData(data) {
+function createChomp(data) {
 	const today = new Date();
+	let dto, typeLabel, href, title, dateRange, status;
 
-	if (data.category === '투표') {
-		const opendate = new Date(data.chomp_vote_dto.opendate);
-		const closedate = new Date(data.chomp_vote_dto.closedate);
-		const status = (today >= opendate && today <= closedate)
-			? '<p class="ing_flag">투표중</p>'
-			: '<p class="end_flag">투표 종료</p>';
+	if (data.category === 'vote') {
+		dto = data.vote_dto;
+		typeLabel = '투표';
+		href = `/chompessor/viewVote.do?id=${dto.id}`;
+
+		const opendate = new Date(dto.opendate);
+		const closedate = new Date(dto.closedate);
+		title = dto.title;
+
 		const formatOpendate = `${opendate.getFullYear()}년 ${opendate.getMonth() + 1}월 ${opendate.getDate()}일`;
 		const formatClosedate = `${closedate.getFullYear()}년 ${closedate.getMonth() + 1}월 ${closedate.getDate()}일`;
-
-		return `
-			<li class="forum">
-				<a href="/chompessor/viewVote.do">
-					<div class="forum_thumbnail"><img src="/images/common/test.png"></div>
-					<div class="forum_info">
-						<p class="type">투표</p>
-						<h5>${data.title}</h5>
-						<div class="info">
-							${status}
-							<p class="date">${formatOpendate} - ${formatClosedate}</p>
-						</div>
-					</div>
-				</a>
-			</li>`;
+		dateRange = `${formatOpendate} - ${formatClosedate}`;
+		status = (today >= opendate && today <= closedate) ? '투표중' : '투표 종료';
 	}
+	else if (data.category === 'megazine') {
+		dto = data.megazine_dto;
+		typeLabel = '매거진';
+		href = `/chompessor/viewMegazine.do?id=${dto.id}`;
 
-	if (data.category === '매거진') {
-		const postdate = new Date(data.chomp_megazine_dto.postdate);
-		const formatDate = `${postdate.getFullYear()}년 ${postdate.getMonth() + 1}월 ${postdate.getDate()}일`;
-
-		return `
-			<li class="forum">
-				<a href="/chompessor/viewMegazine.do?megazineId=${data.chomp_megazine_dto.id}">
-					<div class="forum_thumbnail"><img src="/images/common/test.png"></div>
-					<div class="forum_info">
-						<p class="type">매거진</p>
-						<h5>${data.title}</h5>
-						<div class="info">
-							<p class="date">${formatDate}</p>
-						</div>
-					</div>
-				</a>
-			</li>`;
+		const postdate = new Date(dto.postdate);
+		title = dto.title;
+		dateRange = `${postdate.getFullYear()}년 ${postdate.getMonth() + 1}월 ${postdate.getDate()}일`;
 	}
+	else if (data.category === 'event') {
+		dto = data.event_dto;
+		typeLabel = '이벤트';
+		href = `/chompessor/viewEvent.do?id=${dto.id}`;
 
-	if (data.category === '이벤트') {
-		const opendate = new Date(data.chomp_event_dto.opendate);
-		const closedate = new Date(data.chomp_event_dto.closedate);
-		const status = (today >= opendate && today <= closedate)
-			? '<p class="ing_flag">행사 진행중</p>'
-			: '<p class="end_flag">행사 종료</p>';
+		const opendate = new Date(dto.opendate);
+		const closedate = new Date(dto.closedate);
+		title = dto.title;
+
 		const formatOpendate = `${opendate.getFullYear()}년 ${opendate.getMonth() + 1}월 ${opendate.getDate()}일`;
 		const formatClosedate = `${closedate.getFullYear()}년 ${closedate.getMonth() + 1}월 ${closedate.getDate()}일`;
-
-		return `
-			<li class="forum">
-				<a href="/chompessor/viewEvent.do">
-					<div class="forum_thumbnail"><img src="/images/common/test.png"></div>
-					<div class="forum_info">
-						<p class="type">이벤트</p>
-						<h5>${data.title}</h5>
-						<div class="info">
-							${status}
-							<p class="date">${formatOpendate} - ${formatClosedate}</p>
-						</div>
-					</div>
-				</a>
-			</li>`;
+		dateRange = `${formatOpendate} - ${formatClosedate}`;
+		status = (today >= opendate && today <= closedate) ? '행사 진행중' : '행사 종료';
 	}
+
+	// li
+	const li = document.createElement('li');
+	li.className = 'forum';
+
+	// a
+	const a = document.createElement('a');
+	a.href = href;
+
+	// thumbnail
+	const thumbnailDiv = document.createElement('div');
+	thumbnailDiv.className = 'forum_thumbnail';
+	const img = document.createElement('img');
+	img.src = '/images/common/test.png';
+	thumbnailDiv.appendChild(img);
+
+	// info
+	const infoDiv = document.createElement('div');
+	infoDiv.className = 'forum_info';
+
+	const typeP = document.createElement('p');
+	typeP.className = 'type';
+	typeP.textContent = typeLabel;
+
+	const titleH5 = document.createElement('h5');
+	titleH5.textContent = title;
+
+	const infoDetailDiv = document.createElement('div');
+	infoDetailDiv.className = 'info';
+
+	if (status) {
+		const statusP = document.createElement('p');
+		statusP.className = status.includes('중') ? 'ing_flag' : 'end_flag';
+		statusP.textContent = status;
+		infoDetailDiv.appendChild(statusP);
+	}
+
+	const dateP = document.createElement('p');
+	dateP.className = 'date';
+	dateP.textContent = dateRange;
+
+	infoDetailDiv.appendChild(dateP);
+	infoDiv.appendChild(typeP);
+	infoDiv.appendChild(titleH5);
+	infoDiv.appendChild(infoDetailDiv);
+
+	a.appendChild(thumbnailDiv);
+	a.appendChild(infoDiv);
+	li.appendChild(a);
+
+	return li;
 }
+
+
+
+/**
+ * 페이지네이션을 생성하는 함수
+ */
+function renderPagination() {
+	const pagination = document.querySelector('.pagination ul');
+	pagination.innerHTML = '';
+
+	// 이전 버튼
+	const prevLi = document.createElement('li');
+	const prevLink = document.createElement('a');
+	prevLink.href = '#';
+	prevLink.className = 'prev';
+	prevLink.dataset.page = page - 1;
+
+	if (page === 0) {
+		prevLink.style.pointerEvents = 'none';
+		prevLink.style.opacity = '0';
+	}
+
+	const prevImg = document.createElement('img');
+	prevImg.src = '/images/common/chevron_left.png';
+	prevLink.appendChild(prevImg);
+	prevLi.appendChild(prevLink);
+	pagination.appendChild(prevLi);
+
+	// 페이지 번호
+	for (let i = 0; i < totalPages; i++) {
+		const li = document.createElement('li');
+		const a = document.createElement('a');
+		a.href = '#';
+		a.className = `page${i === page ? ' active' : ''}`;
+		a.dataset.page = i;
+		a.textContent = i + 1;
+		li.appendChild(a);
+		pagination.appendChild(li);
+	}
+
+	// 다음 버튼
+	const nextLi = document.createElement('li');
+	const nextLink = document.createElement('a');
+	nextLink.href = '#';
+	nextLink.className = 'next';
+	nextLink.dataset.page = page + 1;
+
+	if (page === totalPages - 1) {
+		nextLink.style.pointerEvents = 'none';
+		nextLink.style.opacity = '0';
+	}
+
+	const nextImg = document.createElement('img');
+	nextImg.src = '/images/common/chevron_right.png';
+	nextLink.appendChild(nextImg);
+	nextLi.appendChild(nextLink);
+	pagination.appendChild(nextLi);
+
+	// 바인딩
+	document.querySelectorAll('.pagination a').forEach(link => {
+		link.addEventListener('click', function (e) {
+			e.preventDefault();
+			const newPage = parseInt(this.dataset.page);
+			if (!isNaN(newPage) && newPage >= 0 && newPage < totalPages && newPage !== page) {
+				fetchChompList(newPage);
+			}
+		});
+	});
+}
+

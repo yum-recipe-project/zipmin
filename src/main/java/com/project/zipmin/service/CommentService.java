@@ -192,12 +192,12 @@ public class CommentService {
 		Comment comment = commentRepository.findById(commentDto.getId())
 				.orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
 		
-//		// 소유자 검증 (관리자면 소유자 검증 무시)
-//		if (!userService.getUserById(commentDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
-//			if (comment.getUser().getId() != commentDto.getUserId()) {
-//				throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
-//			}
-//		}
+		// 소유자 검증 (관리자면 소유자 검증 무시)
+		if (!userService.getUserById(commentDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
+			if (comment.getUser().getId() != commentDto.getUserId()) {
+				throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+			}
+		}
 	    
 		// 댓글 삭제
 		try {

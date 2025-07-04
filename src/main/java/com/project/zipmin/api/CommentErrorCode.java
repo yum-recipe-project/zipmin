@@ -19,7 +19,7 @@ public enum CommentErrorCode implements Code {
 	// 데이터 처리
 	COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 댓글을 찾을 수 없음"),
     COMMENT_CREATE_FAIL(HttpStatus.BAD_REQUEST, "댓글 작성 실패"),
-    COMMENT_READ_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "댓글 조회 실패"),
+    COMMENT_READ_LIST_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "댓글 목록 조회 실패"),
     COMMENT_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "댓글 수정 실패"),
     COMMENT_DELETE_FAIL(HttpStatus.BAD_REQUEST, "댓글 삭제 실패"),
     

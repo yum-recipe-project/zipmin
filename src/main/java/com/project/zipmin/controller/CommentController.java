@@ -90,9 +90,22 @@ public class CommentController {
 	@PutMapping("/comments/{id}")
 	public ResponseEntity<?> updateComment(@PathVariable int id, @RequestBody CommentUpdateRequestDto commentRequestDto) {
 		
-		CommentUpdateResponseDto commentResponseDto = commentService.updateComment(id, commentRequestDto);
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
+		}
 		
-		return null;
+		// 권한 없는 사용자의 접근
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (userService.readUserByUsername(username).getId() != commentRequestDto.getUserId()) {
+		    throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+		}
+		
+		CommentUpdateResponseDto commentResponseDto = commentService.updateComment(commentRequestDto);
+		
+		return ResponseEntity.status(CommentSuccessCode.COMMENT_UPDATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(CommentSuccessCode.COMMENT_UPDATE_SUCCESS, commentResponseDto));
 	}
 	
 	

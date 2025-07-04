@@ -142,15 +142,29 @@ public class CommentService {
 	
 	
 	// 댓글 수정
-	public CommentUpdateResponseDto updateComment(int id, CommentUpdateRequestDto commentDto) {
+	public CommentUpdateResponseDto updateComment(CommentUpdateRequestDto commentRequestDto) {
+		
+		// 입력값 검증
+		if (commentRequestDto == null || commentRequestDto.getId() == null || commentRequestDto.getContent() == null || commentRequestDto.getUserId() == null) {
+			throw new ApiException(CommentErrorCode.COMMENT_NOT_FOUND);
+		}
 
-		Comment comment = commentRepository.findById(id)
+		// 댓글 존재 여부 판단
+		Comment comment = commentRepository.findById(commentRequestDto.getId())
 				.orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
 		
-		comment.setContent(commentDto.getContent());
-		comment = commentRepository.save(comment);
+		// 필요한 필드만 수정
+		comment.setContent(commentRequestDto.getContent());
 		
-		return commentMapper.toUpdateResponseDto(comment);
+		// 댓글 수정
+		try {
+			comment = commentRepository.save(comment);
+			return commentMapper.toUpdateResponseDto(comment);
+		}
+		catch (Exception e) {
+			throw new ApiException(CommentErrorCode.COMMENT_UPDATE_FAIL);
+		}
+		
 	}
 	
 	

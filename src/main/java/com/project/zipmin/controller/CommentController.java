@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,6 +23,7 @@ import com.project.zipmin.api.CommentSuccessCode;
 import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.CommentCreateRequestDto;
 import com.project.zipmin.dto.CommentCreateResponseDto;
+import com.project.zipmin.dto.CommentDeleteRequestDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.CommentUpdateRequestDto;
 import com.project.zipmin.dto.CommentUpdateResponseDto;
@@ -87,7 +89,7 @@ public class CommentController {
 	
 	
 	// 댓글 수정
-	@PutMapping("/comments/{id}")
+	@PatchMapping("/comments/{id}")
 	public ResponseEntity<?> updateComment(@PathVariable int id, @RequestBody CommentUpdateRequestDto commentRequestDto) {
 		
 		// 인증 여부 확인 (비로그인)
@@ -112,8 +114,24 @@ public class CommentController {
 	
 	// 댓글 삭제
 	@DeleteMapping("/comments/{id}")
-	public ResponseEntity<?> deleteComment(@PathVariable int id) {
-		return null;
+	public ResponseEntity<?> deleteComment(@PathVariable int id, @RequestBody CommentDeleteRequestDto commentDto) {
+		
+		// 인증 여부 확인 (비로그인)
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+//		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
+//		}
+		
+		// 권한 없는 사용자의 접근
+//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//		if (userService.readUserByUsername(username).getId() != commentDto.getUserId()) {
+//		    throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+//		}
+//		
+		commentService.deleteComment(commentDto);
+		
+		return ResponseEntity.status(CommentSuccessCode.COMMENT_DELETE_SUCCESS.getStatus())
+				.body(ApiResponse.success(CommentSuccessCode.COMMENT_DELETE_SUCCESS, null));
 	}
 	
 	

@@ -13,11 +13,13 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.dto.CommentCreateRequestDto;
 import com.project.zipmin.dto.CommentCreateResponseDto;
+import com.project.zipmin.dto.CommentDeleteRequestDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.CommentUpdateRequestDto;
 import com.project.zipmin.dto.CommentUpdateResponseDto;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.entity.Comment;
+import com.project.zipmin.entity.Role;
 import com.project.zipmin.mapper.CommentMapper;
 import com.project.zipmin.repository.CommentRepository;
 
@@ -30,6 +32,8 @@ public class CommentService {
 	@Autowired
 	private CommentRepository commentRepository;
 	
+	@Autowired
+	private UserService userService;
 	@Autowired
 	private LikeService likeService;
 
@@ -146,12 +150,20 @@ public class CommentService {
 		
 		// 입력값 검증
 		if (commentRequestDto == null || commentRequestDto.getId() == null || commentRequestDto.getContent() == null || commentRequestDto.getUserId() == null) {
-			throw new ApiException(CommentErrorCode.COMMENT_NOT_FOUND);
+			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
 		}
 
 		// 댓글 존재 여부 판단
 		Comment comment = commentRepository.findById(commentRequestDto.getId())
 				.orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
+		
+		
+		// 소유자 검증 (관리자면 소유자 검증 무시)
+		if (!userService.getUserById(commentRequestDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
+			if (comment.getUser().getId() != commentRequestDto.getUserId()) {
+				throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+			}
+		}
 		
 		// 필요한 필드만 수정
 		comment.setContent(commentRequestDto.getContent());
@@ -169,14 +181,32 @@ public class CommentService {
 	
 	
 	
-	public int deleteCommentById(int commentId) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public void deleteComment(CommentDeleteRequestDto commentDto) {
+		
+		// 입력값 검증
+		if (commentDto == null || commentDto.getId() == null || commentDto.getUserId() == null) {
+			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
+		}
+		
+		// 댓글 존재 여부 판단
+		Comment comment = commentRepository.findById(commentDto.getId())
+				.orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
+		
+//		// 소유자 검증 (관리자면 소유자 검증 무시)
+//		if (!userService.getUserById(commentDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
+//			if (comment.getUser().getId() != commentDto.getUserId()) {
+//				throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+//			}
+//		}
+	    
+		// 댓글 삭제
+		try {
+			commentRepository.deleteById(commentDto.getId());
+		}
+		catch (Exception e) {
+			throw new ApiException(CommentErrorCode.COMMENT_DELETE_FAIL);
+		}
 
-	public int deleteCommentListByTablenameAndRecodenum(String tablename, int recodenum) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 

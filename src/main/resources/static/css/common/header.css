@@ -124,9 +124,9 @@
 
 /* 헤더 하단 (검색창) */
 #header .header_bottom .inner .search_form {
+	display: none;
 	margin-left: auto !important;
 	width: 308px;
-	display: flex;
 	padding: 0px 12px;
 	border: 1px solid var(--line-color1);
 	border-radius: 4px;

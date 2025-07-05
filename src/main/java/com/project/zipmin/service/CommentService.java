@@ -181,6 +181,7 @@ public class CommentService {
 	
 	
 	
+	// 댓글 삭제
 	public void deleteComment(CommentDeleteRequestDto commentDto) {
 		
 		// 입력값 검증

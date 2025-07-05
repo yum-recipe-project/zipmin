@@ -20,7 +20,6 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.CommentSuccessCode;
-import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.CommentCreateRequestDto;
 import com.project.zipmin.dto.CommentCreateResponseDto;
 import com.project.zipmin.dto.CommentDeleteRequestDto;
@@ -62,7 +61,12 @@ public class CommentController {
 	
 	// 댓글 목록 조회
 	@GetMapping("/comments")
-	public ResponseEntity<?> readComment(@RequestParam String tablename, @RequestParam int recodenum, @RequestParam String sort, @RequestParam int page, @RequestParam int size) {
+	public ResponseEntity<?> readComment(
+			@RequestParam String tablename,
+			@RequestParam int recodenum,
+			@RequestParam String sort,
+			@RequestParam int page,
+			@RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
 		Page<CommentReadResponseDto> commentPage = null;

@@ -1,29 +1,65 @@
 package com.project.zipmin.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.dto.LikeCreateRequestDto;
+import com.project.zipmin.entity.Like;
+import com.project.zipmin.mapper.CommentMapper;
+import com.project.zipmin.mapper.LikeMapper;
+import com.project.zipmin.repository.LikeRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
-public interface LikeService {
+@RequiredArgsConstructor
+public class LikeService {
 	
-	// 팔로워 수 조회
-	public int selectFollowerCountByMemberId(String id);
+	@Autowired
+	private LikeRepository likeRepository;
 	
-	// 팔로잉 수 조회
-	public int selectFollowingCountByMemberId(String id);
+	private final LikeMapper likeMapper;
+
+	
 	
 	// 좋아요 등록
-	public void addLike(LikeCreateRequestDto likeDto);
-
-    // 좋아요 삭제
-    void removeLike(int id); 
+	public void addLike(LikeCreateRequestDto likeDto) {
+		
+		
+		Like like = likeMapper.toEntity(likeDto);
+		likeRepository.save(like);
+	}
+	
+	
+	
+	// 좋아요 삭제
+	public void removeLike(int id) {
+		likeRepository.findById(id).ifPresent(likeRepository::delete);
+	}
+	
+	
 	
 	// 특정 사용자가 특정 테이블의 특정 레코드에 좋아요 표시 여부 확인
-	public boolean hasUserLikedRecode(int userId, String tablename, int recodenum);
-    
+	public boolean hasUserLikedRecode(int userId, String tablename, int recodenum) {
+		return likeRepository.existsByUserIdAndTablenameAndRecodenum(userId, tablename, recodenum);
+	}
+
+	
+	
 	// 테이블 이름과 일련번호를 이용해 좋아요 수 조회
-	public long countLikesByTablenameAndRecodenum(String tablename, int recodenum);
+	public long countLikesByTablenameAndRecodenum(String tablename, int recodenum) {
+		return likeRepository.countByTablenameAndRecodenum(tablename, recodenum);
+	}
+	
+	
+	
+	
+	
+	
 	
 
+
+
+
+	
 }

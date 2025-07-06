@@ -81,8 +81,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	document.getElementById('writeCommentForm').addEventListener("submit", function (event) {
 		event.preventDefault();
 		
-		alert('댓글 작성');
-		
 		const tablename = 'megazine';
 		const content = document.getElementById("writeCommentContent").value.trim();
 		

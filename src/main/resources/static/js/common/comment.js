@@ -166,7 +166,7 @@ function loadCommentList({ tablename, sort, size }) {
 function renderCommentList(comments) {
 	comments.filter(comment => comment.comm_id === null)
 		.forEach(comment => {
-			document.querySelector('.comment_list').appendChild(createComment(comment));
+			document.querySelector('.comment_list').append(createComment(comment));
 	});
 }
 
@@ -381,7 +381,7 @@ function createSubcomment(subcomment) {
 /**
  * 댓글을 작성하는 함수
  */
-function writeComment({ tablename, content }) {
+async function writeComment({ tablename, content }) {
 	
 	if (!isLoggedIn()) {
 		redirectToLogin();
@@ -401,12 +401,24 @@ function writeComment({ tablename, content }) {
 			user_id: payload.id
 		};
 		
-		const response = instance.post('/comments', data);
+		const response = await instance.post('/comments', data);
 		
 		if (response.data.code === 'COMMENT_CREATE_SUCCESS') {
-			return response.data;
+			const newComment = response.data.data;
+
+			// 입력창 초기화
+			document.getElementById("writeCommentContent").value = '';
+			const submitBtn = document.querySelector("#writeCommentForm button[type='submit']");
+			submitBtn.disabled = true;
+			submitBtn.classList.add('disable');
+
+			// 댓글 리스트에 추가 (상단에)
+			commentList.unshift(newComment);
+
+			// 새 댓글만 렌더링하여 상단에 추가
+			const commentEl = createComment(newComment);
+			document.querySelector('.comment_list').prepend(commentEl);
 		}
-		
 	}
 	catch (error) {
 		const code = error?.response?.data?.code;

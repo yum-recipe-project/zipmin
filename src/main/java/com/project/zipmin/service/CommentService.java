@@ -8,9 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.CommentErrorCode;
+import com.project.zipmin.api.LikeErrorCode;
 import com.project.zipmin.dto.CommentCreateRequestDto;
 import com.project.zipmin.dto.CommentCreateResponseDto;
 import com.project.zipmin.dto.CommentDeleteRequestDto;
@@ -18,6 +20,8 @@ import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.CommentUpdateRequestDto;
 import com.project.zipmin.dto.CommentUpdateResponseDto;
 import com.project.zipmin.dto.LikeCreateRequestDto;
+import com.project.zipmin.dto.LikeCreateResponseDto;
+import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.entity.Comment;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.mapper.CommentMapper;
@@ -26,7 +30,9 @@ import com.project.zipmin.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
+
 public class CommentService {
 	
 	@Autowired
@@ -42,15 +48,25 @@ public class CommentService {
 	
 	
 	// 댓글 목록 조회 (오래된순)
-	public Page<CommentReadResponseDto> getCommentPageByTablenameAndRecodenumOrderByIdAsc(String tablename, int recodenum, Pageable pageable) {
+	public Page<CommentReadResponseDto> readCommentPageOrderByIdAsc(String tablename, Integer recodenum, Pageable pageable) {
 		
-		Page<Comment> commentPage = commentRepository.findByTablenameAndRecodenumOrderByIdAsc(tablename, recodenum, pageable);
+		// 입력값 검증
+		if (tablename == null || recodenum == null || pageable == null) {
+			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
+		}
+		
+		// 댓글 목록 조회
+		Page<Comment> commentPage;
+		try {
+			commentPage = commentRepository.findByTablenameAndRecodenumOrderByIdAsc(tablename, recodenum, pageable);
+		}
+		catch (Exception e) {
+			throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);
+		}
 
 		List<CommentReadResponseDto> commentDtoList = new ArrayList<CommentReadResponseDto>();
 		for (Comment comment : commentPage) {
 			CommentReadResponseDto commentDTO = commentMapper.toReadResponseDto(comment);
-			commentDTO.setCommId(comment.getComment().getId());
-			commentDTO.setUserId(comment.getUser().getId());
 			commentDTO.setNickname(comment.getUser().getNickname());
 			commentDTO.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
 			commentDtoList.add(commentDTO);
@@ -61,15 +77,25 @@ public class CommentService {
 	
 	
 	// 댓글 목록 조회 (최신순)
-	public Page<CommentReadResponseDto> getCommentPageByTablenameAndRecodenumOrderByIdDesc(String tablename, int recodenum, Pageable pageable) {
+	public Page<CommentReadResponseDto> readCommentPageOrderByIdDesc(String tablename, Integer recodenum, Pageable pageable) {
+
+		// 입력값 검증
+		if (tablename == null || recodenum == null || pageable == null) {
+			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
+		}
 		
-		Page<Comment> commentPage = commentRepository.findByTablenameAndRecodenumOrderByIdDesc(tablename, recodenum, pageable);
+		// 댓글 목록 조회
+		Page<Comment> commentPage;
+		try {
+			commentPage = commentRepository.findByTablenameAndRecodenumOrderByIdDesc(tablename, recodenum, pageable);
+		}
+		catch (Exception e) {
+			throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);
+		}
 		
 		List<CommentReadResponseDto> commentDtoList = new ArrayList<CommentReadResponseDto>();
 		for (Comment comment : commentPage) {
 			CommentReadResponseDto commentDTO = commentMapper.toReadResponseDto(comment);
-			commentDTO.setCommId(comment.getComment().getId());
-			commentDTO.setUserId(comment.getUser().getId());
 			commentDTO.setNickname(comment.getUser().getNickname());
 			commentDTO.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
 			commentDtoList.add(commentDTO);
@@ -80,15 +106,25 @@ public class CommentService {
 	
 	
 	// 댓글 목록 조회 (인기순)
-	public Page<CommentReadResponseDto> getCommentPageByTablenameAndRecodenumOrderByLikecount(String tablename, int recodenum, Pageable pageable) {
+	public Page<CommentReadResponseDto> readCommentPageOrderByLikecount(String tablename, Integer recodenum, Pageable pageable) {
 		
-		Page<Comment> commentPage = commentRepository.findByTablenameAndRecodenumOrderByLikecount(tablename, recodenum, pageable);
+		// 입력값 검증
+		if (tablename == null || recodenum == null || pageable == null) {
+			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
+		}
+		
+		// 댓글 목록 조회
+		Page<Comment> commentPage;
+		try {
+			commentPage = commentRepository.findByTablenameAndRecodenumOrderByLikecount(tablename, recodenum, pageable);
+		}
+		catch (Exception e) {
+			throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);
+		}
 
 		List<CommentReadResponseDto> commentDtoList = new ArrayList<CommentReadResponseDto>();
 		for (Comment comment : commentPage) {
 			CommentReadResponseDto commentDTO = commentMapper.toReadResponseDto(comment);
-			commentDTO.setCommId(comment.getComment().getId());
-			commentDTO.setUserId(comment.getUser().getId());
 			commentDTO.setNickname(comment.getUser().getNickname());
 			commentDTO.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
 			commentDtoList.add(commentDTO);
@@ -144,29 +180,28 @@ public class CommentService {
 
 	
 	
-	
 	// 댓글 수정
-	public CommentUpdateResponseDto updateComment(CommentUpdateRequestDto commentRequestDto) {
+	public CommentUpdateResponseDto updateComment(CommentUpdateRequestDto commentDto) {
 		
 		// 입력값 검증
-		if (commentRequestDto == null || commentRequestDto.getId() == null || commentRequestDto.getContent() == null || commentRequestDto.getUserId() == null) {
+		if (commentDto == null || commentDto.getId() == null || commentDto.getContent() == null || commentDto.getUserId() == null) {
 			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
 		}
 
 		// 댓글 존재 여부 판단
-		Comment comment = commentRepository.findById(commentRequestDto.getId())
+		Comment comment = commentRepository.findById(commentDto.getId())
 				.orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
 		
 		
 		// 소유자 검증 (관리자면 소유자 검증 무시)
-		if (!userService.getUserById(commentRequestDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
-			if (comment.getUser().getId() != commentRequestDto.getUserId()) {
+		if (!userService.getUserById(commentDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
+			if (comment.getUser().getId() != commentDto.getUserId()) {
 				throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
 			}
 		}
 		
 		// 필요한 필드만 수정
-		comment.setContent(commentRequestDto.getContent());
+		comment.setContent(commentDto.getContent());
 		
 		// 댓글 수정
 		try {
@@ -212,14 +247,46 @@ public class CommentService {
 
 
 
-	public void likeComment(LikeCreateRequestDto likeDto) {
-		likeService.addLike(likeDto);
+	// 댓글 좋아요
+	public LikeCreateResponseDto likeComment(LikeCreateRequestDto likeDto) {
+		
+		// 댓글 존재 여부 판단
+		Comment comment = commentRepository.findById(likeDto.getRecodenum())
+			    .orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
+		
+		// 좋아요 작성
+		try {
+		    return likeService.createLike(likeDto);
+		}
+		catch (ApiException e) {
+		    throw e;
+		}
+		catch (Exception e) {
+		    throw new ApiException(CommentErrorCode.COMMENT_LIKE_FAIL);
+		}
+		
 	}
 
 
 
-	public void unlikeComment(int id) {
-		likeService.removeLike(id);
+	// 댓글 좋아요 취소
+	public void unlikeComment(LikeDeleteRequestDto likeDto) {
+		
+		// 댓글 존재 여부 판단
+		Comment comment = commentRepository.findById(likeDto.getRecodenum())
+			    .orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
+		
+		// 좋아요 취소
+		try {
+			likeService.deleteLike(likeDto);
+		}
+		catch(ApiException e) {
+			throw e;
+		}
+		catch (Exception e) {
+			throw new ApiException(CommentErrorCode.COMMENT_UNLIKE_FAIL);
+		}
+
 	}
 	
 	

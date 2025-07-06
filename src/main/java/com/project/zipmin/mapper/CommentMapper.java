@@ -34,7 +34,12 @@ public interface CommentMapper {
 	
 	
 	// Read
+	@Mapping(target = "comment.id", source = "commId")
+	@Mapping(target = "user.id", source = "userId")
 	Comment toEntity(CommentReadResponseDto commentDto);
+	
+	@Mapping(target = "commId", source = "comment.id")
+	@Mapping(target = "userId", source = "user.id")
 	CommentReadResponseDto toReadResponseDto(Comment comment);
 	
 	

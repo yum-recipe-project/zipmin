@@ -1,4 +1,4 @@
-package com.project.zipmin.api;
+ package com.project.zipmin.api;
 
 import org.springframework.http.HttpStatus;
 

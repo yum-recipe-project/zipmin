@@ -39,8 +39,12 @@ document.addEventListener('DOMContentLoaded', async function() {
 /**
  * 댓글 정렬 버튼 클릭 시 해당하는 댓글을 가져오는 함수
  */
-document.addEventListener('DOMContentLoaded', function() {	
+document.addEventListener('DOMContentLoaded', function() {
 	
+	const tablename = 'megazine';
+	let sort = 'new';
+	let size = 10;
+
 	// 정렬 버튼 클릭 시 초기화 후 댓글 목록 조회
 	document.querySelectorAll('.comment_order button').forEach(tab => {
 		tab.addEventListener('click', function (event) {
@@ -54,15 +58,74 @@ document.addEventListener('DOMContentLoaded', function() {
 			document.querySelector('.comment_list').innerHTML = '';
 			commentList = [];
 			
-			fetchCommentList('chomp_megazine');
+			loadCommentList({ tablename, sort, size });
 		});
 	});
 	
 	// 최초 댓글 목록 조회
-	fetchCommentList('chomp_megazine');
+	loadCommentList({ tablename, sort, size });
 	
 	// 더보기 버튼 클릭 시 다음 페이지 로드
 	document.querySelector('.btn_more').addEventListener('click', function () {
-		fetchCommentList('chomp_megazine');
+		loadCommentList({ tablename, sort, size });
 	});
 });
+
+
+
+/**
+ * 댓글을 작성하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function () {
+	
+	document.getElementById('writeCommentForm').addEventListener("submit", function (event) {
+		event.preventDefault();
+		
+		alert('댓글 작성');
+		
+		const tablename = 'megazine';
+		const content = document.getElementById("writeCommentContent").value.trim();
+		
+		writeComment({ tablename, content });
+	});
+});
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+	const editForm = document.getElementById('editCommentForm');
+
+	editForm.addEventListener('submit', async function (e) {
+		e.preventDefault();
+
+		const id = document.getElementById('editCommentId').value;
+		const content = document.getElementById('editCommentContent').value.trim();
+
+		if (!content) {
+			alert('수정할 내용을 입력해주세요.');
+			return;
+		}
+
+		// 댓글 수정 요청
+		const data = await updateComment({ id, content });
+
+		// 모달 닫기
+		const modalEl = document.getElementById('editCommentModal');
+		const modalInstance = bootstrap.Modal.getInstance(modalEl);
+		modalInstance.hide();
+
+		// 수정 내용 반영 (id가 일치하는 댓글 DOM 찾아서 업데이트)
+		const contentEl = document.querySelector(
+		  `.comment[data-id='${id}'] .comment_content, .subcomment[data-id='${id}'] .subcomment_content`
+		);
+		if (contentEl) {
+		  contentEl.textContent = data.content;
+		}
+			
+	});
+});
+
+
+

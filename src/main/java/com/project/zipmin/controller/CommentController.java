@@ -26,6 +26,9 @@ import com.project.zipmin.dto.CommentDeleteRequestDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.CommentUpdateRequestDto;
 import com.project.zipmin.dto.CommentUpdateResponseDto;
+import com.project.zipmin.dto.LikeCreateRequestDto;
+import com.project.zipmin.dto.LikeCreateResponseDto;
+import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.CommentCreateFailResponse;
@@ -72,13 +75,13 @@ public class CommentController {
 		Page<CommentReadResponseDto> commentPage = null;
 		
 		if (sort.equals("new")) {
-			commentPage = commentService.getCommentPageByTablenameAndRecodenumOrderByIdDesc(tablename, recodenum, pageable);
+			commentPage = commentService.readCommentPageOrderByIdDesc(tablename, recodenum, pageable);
 		}
 		else if (sort.equals("old")) {
-			commentPage = commentService.getCommentPageByTablenameAndRecodenumOrderByIdAsc(tablename, recodenum, pageable);
+			commentPage = commentService.readCommentPageOrderByIdAsc(tablename, recodenum, pageable);
 		}
 		else if (sort.equals("hot")) {
-			commentPage = commentService.getCommentPageByTablenameAndRecodenumOrderByLikecount(tablename, recodenum, pageable);
+			commentPage = commentService.readCommentPageOrderByLikecount(tablename, recodenum, pageable);
 		}
 		
 		return ResponseEntity.status(CommentSuccessCode.COMMENT_READ_LIST_SUCCESS.getStatus())
@@ -319,18 +322,54 @@ public class CommentController {
 	
 	
 	
-	// 댓글 좋아요 표시
+	// 댓글 좋아요 작성
 	@GetMapping("/comments/{id}/likes")
-	public ResponseEntity<?> likeComment(@PathVariable int id) {
-		return null;
+	public ResponseEntity<?> likeComment(
+			@Parameter(description = "댓글의 일련번호", required = true, example = "1") @PathVariable int id,
+			@Parameter(description = "댓글 좋아요 작성 요청 정보", required = true) @RequestBody LikeCreateRequestDto likeRequestDto) {
+		
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 권한 없는 사용자의 접근
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (userService.readUserByUsername(username).getId() != likeRequestDto.getUserId()) {
+		    throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+		}
+		
+		LikeCreateResponseDto likeResponseDto = commentService.likeComment(likeRequestDto);
+		
+		return ResponseEntity.status(CommentSuccessCode.COMMENT_LIKE_SUCCESS.getStatus())
+				.body(ApiResponse.success(CommentSuccessCode.COMMENT_LIKE_SUCCESS, likeResponseDto));
 	}
 	
 	
 	
-	// 댓글 좋아요 취소
+	// 댓글 좋아요 삭제
 	@PostMapping("/comments/{id}/likes")
-	public ResponseEntity<?> unlikeComment(@PathVariable int id) {
-		return null;
+	public ResponseEntity<?> unlikeComment(
+			@Parameter(description = "댓글의 일련번호", required = true, example = "1") @PathVariable int id,
+			@Parameter(description = "댓글 좋아요 삭제 요청 정보", required = true) @RequestBody LikeDeleteRequestDto likeDto) {
+		
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 권한 없는 사용자의 접근
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (userService.readUserByUsername(username).getId() != likeDto.getUserId()) {
+		    throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+		}
+		
+		commentService.unlikeComment(likeDto);
+		
+		return ResponseEntity.status(CommentSuccessCode.COMMENT_UNLIKE_SUCCESS.getStatus())
+				.body(ApiResponse.success(CommentSuccessCode.COMMENT_UNLIKE_SUCCESS, null));
 	}
 	
 	

@@ -74,3 +74,12 @@ document.addEventListener('DOMContentLoaded', function() {
 		fetchCommentList('chomp_event');
 	});
 });
+
+
+
+
+
+
+
+
+

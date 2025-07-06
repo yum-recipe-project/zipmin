@@ -23,8 +23,8 @@ public enum CommentErrorCode implements Code {
     COMMENT_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "댓글 수정 실패"),
     COMMENT_DELETE_FAIL(HttpStatus.BAD_REQUEST, "댓글 삭제 실패"),
     
-    // COMMENT_LIKE_FAIL(HttpStatus.BAD_REQUEST, "댓글 좋아요 처리에 실패했습니다."),
-    // COMMENT_UNLIKE_FAIL(HttpStatus.BAD_REQUEST, "댓글 좋아요 취소에 실패했습니다."),
+    COMMENT_LIKE_FAIL(HttpStatus.BAD_REQUEST, "댓글 좋아요 실패"),
+    COMMENT_UNLIKE_FAIL(HttpStatus.BAD_REQUEST, "댓글 좋아요 삭제 실패"),
 	
 	// 기타
 	COMMENT_UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "예외 처리되지 않은 내부 오류");

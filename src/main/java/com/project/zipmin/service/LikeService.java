@@ -3,8 +3,15 @@ package com.project.zipmin.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.CommentErrorCode;
+import com.project.zipmin.api.LikeErrorCode;
+import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.LikeCreateRequestDto;
+import com.project.zipmin.dto.LikeCreateResponseDto;
+import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.entity.Like;
+import com.project.zipmin.entity.Role;
 import com.project.zipmin.mapper.CommentMapper;
 import com.project.zipmin.mapper.LikeMapper;
 import com.project.zipmin.repository.LikeRepository;
@@ -18,23 +25,68 @@ public class LikeService {
 	@Autowired
 	private LikeRepository likeRepository;
 	
+	@Autowired
+	private UserService userService;
+	
 	private final LikeMapper likeMapper;
 
 	
 	
-	// 좋아요 등록
-	public void addLike(LikeCreateRequestDto likeDto) {
+	// 좋아요 작성
+	public LikeCreateResponseDto createLike(LikeCreateRequestDto likeDto) {
 		
+		// 입력값 검증
+		if (likeDto == null || likeDto.getTablename() == null || likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+			throw new ApiException(LikeErrorCode.LIKE_INVALID_INPUT);
+		}
+		
+	    // 중복 투표 검사
+	    if (likeRepository.existsByUserIdAndTablenameAndRecodenum(likeDto.getUserId(), likeDto.getTablename(), likeDto.getRecodenum())) {
+	    	throw new ApiException(LikeErrorCode.LIKE_DUPLICATE);
+	    }
 		
 		Like like = likeMapper.toEntity(likeDto);
-		likeRepository.save(like);
+		
+		// 좋아요 저장
+		try {
+			like = likeRepository.save(like);
+			return likeMapper.toResponseDto(like);
+		}
+		catch (Exception e) {
+			throw new ApiException(LikeErrorCode.LIKE_CREATE_FAIL);
+		}
+		
 	}
 	
 	
 	
 	// 좋아요 삭제
-	public void removeLike(int id) {
-		likeRepository.findById(id).ifPresent(likeRepository::delete);
+	public void deleteLike(LikeDeleteRequestDto likeDto) {
+		
+		// 입력값 검증
+		if (likeDto == null || likeDto.getId() == null || likeDto.getTablename() == null || likeDto.getRecodenum() == null || likeDto.getId() == null) {
+			throw new ApiException(LikeErrorCode.LIKE_INVALID_INPUT);
+		}
+		
+		// 좋아요 존재 여부 판단
+		Like like = likeRepository.findById(likeDto.getId())
+				.orElseThrow(() -> new ApiException(LikeErrorCode.LIKE_NOT_FOUND));
+		
+		// 소유자 검증
+		if (!userService.getUserById(likeDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
+			if (like.getUser().getId() != likeDto.getUserId()) {
+				throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+			}
+		}
+		
+		// 좋아요 삭제
+		try {
+			likeRepository.deleteById(likeDto.getId());
+		}
+		catch (Exception e) {
+			throw new ApiException(LikeErrorCode.LIKE_DELETE_FAIL);
+		}
+		
 	}
 	
 	

@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class LikeCreateRequestDto {
 	
 	private String tablename;
-	private int recodenum;
-	private int userId;
+	private Integer recodenum;
+	private Integer userId;
 	
 }

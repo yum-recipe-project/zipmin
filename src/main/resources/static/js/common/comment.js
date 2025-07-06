@@ -178,90 +178,31 @@ function renderCommentList() {
  * @param {Object} comment - 댓글 객체
  * @returns {string} 댓글 및 대댓글의 HTML 문자열
  */
-/**
- * 댓글 데이터를 변환하는 함수
- *
- * @param {Object} comment - 댓글 객체
- * @returns {DocumentFragment} 댓글 및 대댓글의 DOM fragment
- */
 function createComment(comment) {
-	const subcommentList = commentList.filter(data => data.comm_id !== null && data.comm_id === comment.id);
-
-	const postdate = new Date(comment.postdate);
-	const formatPostdate = `${postdate.getFullYear()}년 ${String(postdate.getMonth() + 1).padStart(2, '0')}월 ${String(postdate.getDate()).padStart(2, '0')}일`;
+	const subcommentList = commentList.filter(data => data.comm_id === comment.id);
 
 	// 댓글 li
 	const commentLi = document.createElement('li');
 	commentLi.className = 'comment';
 	commentLi.dataset.id = comment.id;
 
-	// 댓글 정보
+	// 댓글 info
 	const infoDiv = document.createElement('div');
 	infoDiv.className = 'comment_info';
-
-	const writerDiv = document.createElement('div');
-	writerDiv.className = 'comment_writer';
-
-	const writerImg = document.createElement('img');
-	writerImg.src = '/images/common/test.png';
-
-	const writerName = document.createElement('span');
-	writerName.textContent = comment.nickname;
-
-	const dateSpan = document.createElement('span');
-	dateSpan.textContent = formatPostdate;
-
-	writerDiv.append(writerImg, writerName, dateSpan);
-
-	const actionDiv = document.createElement('div');
-	actionDiv.className = 'comment_action';
-
-	const reportLink = document.createElement('a');
-	reportLink.href = 'javascript:void(0);';
-	reportLink.dataset.bsToggle = 'modal';
-	reportLink.dataset.bsTarget = '#reportCommentModal';
-	reportLink.textContent = '신고';
-
-	const editLink = document.createElement('a');
-	editLink.href = 'javascript:void(0);';
-	editLink.dataset.bsToggle = 'modal';
-	editLink.dataset.bsTarget = '#editCommentModal';
-	editLink.textContent = '수정';
-	editLink.addEventListener('click', () => {
-		document.getElementById('editCommentContent').value = comment.content;
-		document.getElementById('editCommentId').value = comment.id;
-	});
-
-	const deleteLink = document.createElement('a');
-	deleteLink.href = '';
-	deleteLink.textContent = '삭제';
-	deleteLink.dataset.commentId = comment.id;
-
-	actionDiv.append(reportLink, editLink, deleteLink);
-	infoDiv.append(writerDiv, actionDiv);
+	infoDiv.append(
+		createWriterInfo({ nickname: comment.nickname, postdate: comment.postdate, isSub: false }),
+		createActionLinks({ id: comment.id, content: comment.content, isSub: false, userId: comment.user_id })
+	);
 
 	// 댓글 본문
 	const contentP = document.createElement('p');
 	contentP.className = 'comment_content';
 	contentP.textContent = comment.content;
 
-	// 툴
+	// 툴바 (좋아요, 답글)
 	const toolDiv = document.createElement('div');
 	toolDiv.className = 'comment_tool';
-
-	const likeButton = document.createElement('button');
-	likeButton.className = 'btn_tool write_subcomment_btn';
-
-	const thumbFull = document.createElement('img');
-	thumbFull.src = '/images/common/thumb_up_full.png';
-
-	const thumbEmpty = document.createElement('img');
-	thumbEmpty.src = '/images/common/thumb_up_empty.png';
-
-	const likeCount = document.createElement('p');
-	likeCount.textContent = comment.likecount;
-
-	likeButton.append(thumbFull, thumbEmpty, likeCount);
+	toolDiv.appendChild(createLikeButton(comment.likecount));
 
 	const replyBtn = document.createElement('a');
 	replyBtn.className = 'btn_outline_small write_subcomment_btn';
@@ -271,104 +212,166 @@ function createComment(comment) {
 
 	const replySpan = document.createElement('span');
 	replySpan.textContent = '답글 쓰기';
-
 	replyBtn.appendChild(replySpan);
-	toolDiv.append(likeButton, replyBtn);
 
-	// comment li 최종 구성
+	toolDiv.appendChild(replyBtn);
+
+	// 댓글 구성
 	commentLi.append(infoDiv, contentP, toolDiv);
 
-	// 답글 ul
+	// 대댓글 ul
 	const subList = document.createElement('ul');
 	subList.className = 'subcomment_list';
 
 	subcommentList.forEach(subcomment => {
-		const subLi = document.createElement('li');
-		subLi.className = 'subcomment';
-		subLi.dataset.id = subcomment.id;
-
-		const arrowImg = document.createElement('img');
-		arrowImg.className = 'subcomment_arrow';
-		arrowImg.src = '/images/chompessor/arrow_right.png';
-
-		const innerDiv = document.createElement('div');
-		innerDiv.className = 'subcomment_inner';
-
-		const subInfoDiv = document.createElement('div');
-		subInfoDiv.className = 'subcomment_info';
-
-		const subWriterDiv = document.createElement('div');
-		subWriterDiv.className = 'subcomment_writer';
-
-		const subImg = document.createElement('img');
-		subImg.src = '/images/common/test.png';
-
-		const subNameSpan = document.createElement('span');
-		subNameSpan.textContent = subcomment.nickname;
-
-		const subDate = new Date(subcomment.postdate);
-		const subDateSpan = document.createElement('span');
-		subDateSpan.textContent = `${subDate.getFullYear()}년 ${String(subDate.getMonth() + 1).padStart(2, '0')}월 ${String(subDate.getDate()).padStart(2, '0')}일`;
-
-		subWriterDiv.append(subImg, subNameSpan, subDateSpan);
-
-		const subActionDiv = document.createElement('div');
-		subActionDiv.className = 'subcomment_action';
-
-		const subReportLink = document.createElement('a');
-		subReportLink.href = 'javascript:void(0);';
-		subReportLink.dataset.bsToggle = 'modal';
-		subReportLink.dataset.bsTarget = '#reportCommentModal';
-		subReportLink.textContent = '신고';
-
-		const subEditLink = document.createElement('a');
-		subEditLink.href = 'javascript:void(0);';
-		subEditLink.dataset.bsToggle = 'modal';
-		subEditLink.dataset.bsTarget = '#editCommentModal';
-		subEditLink.textContent = '수정';
-		subEditLink.addEventListener('click', () => {
-			document.getElementById('editCommentContent').value = subcomment.content;
-			document.getElementById('editCommentId').value = subcomment.id;
-		});
-
-		const subDeleteLink = document.createElement('a');
-		subDeleteLink.href = '';
-		subDeleteLink.textContent = '삭제';
-		subDeleteLink.dataset.commentId = subcomment.id;
-
-		subActionDiv.append(subReportLink, subEditLink, subDeleteLink);
-		subInfoDiv.append(subWriterDiv, subActionDiv);
-
-		const subContentP = document.createElement('p');
-		subContentP.className = 'subcomment_content';
-		subContentP.textContent = subcomment.content;
-
-		const subToolDiv = document.createElement('div');
-		subToolDiv.className = 'comment_tool';
-
-		const subLikeBtn = document.createElement('button');
-		subLikeBtn.className = 'btn_tool write_subcomment_btn';
-
-		const subFullImg = document.createElement('img');
-		subFullImg.src = '/images/common/thumb_up_full.png';
-
-		const subEmptyImg = document.createElement('img');
-		subEmptyImg.src = '/images/common/thumb_up_empty.png';
-
-		const subCount = document.createElement('p');
-		subCount.textContent = subcomment.likecount;
-
-		subLikeBtn.append(subFullImg, subEmptyImg, subCount);
-		subToolDiv.appendChild(subLikeBtn);
-
-		innerDiv.append(subInfoDiv, subContentP, subToolDiv);
-		subLi.append(arrowImg, innerDiv);
+		const subLi = createSubcomment(subcomment);
 		subList.appendChild(subLi);
 	});
 
+	// fragment 반환
 	const fragment = document.createDocumentFragment();
 	fragment.append(commentLi, subList);
+
 	return fragment;
+}
+
+
+
+/**
+ * 좋아요 버튼을 생성하는 함수
+ */
+function createLikeButton(likeCount) {
+	const button = document.createElement('button');
+	button.className = 'btn_tool write_subcomment_btn';
+
+	const full = document.createElement('img');
+	full.src = '/images/common/thumb_up_full.png';
+
+	const empty = document.createElement('img');
+	empty.src = '/images/common/thumb_up_empty.png';
+
+	const count = document.createElement('p');
+	count.textContent = likeCount;
+
+	button.append(full, empty, count);
+	return button;
+}
+
+
+
+/**
+ * 수정과 신고와 삭제 동작의 링크를 생성하는 함수
+ */
+function createActionLinks({ id, content, isSub, userId }) {
+
+	const token = localStorage.getItem('accessToken');
+	
+	const actionDiv = document.createElement('div');
+	actionDiv.className = isSub ? 'subcomment_action' : 'comment_action';
+
+	if (token && parseJwt(token).id === userId) {
+		const editLink = document.createElement('a');
+		editLink.href = 'javascript:void(0);';
+		editLink.dataset.bsToggle = 'modal';
+		editLink.dataset.bsTarget = '#editCommentModal';
+		editLink.textContent = '수정';
+		editLink.addEventListener('click', () => {
+			document.getElementById('editCommentContent').value = content;
+			document.getElementById('editCommentId').value = id;
+		});
+	
+		const deleteLink = document.createElement('a');
+		deleteLink.href = '';
+		deleteLink.textContent = '삭제';
+		deleteLink.dataset.commentId = id;
+		
+		actionDiv.append(editLink, deleteLink);
+	}
+	
+	const reportLink = document.createElement('a');
+	reportLink.href = 'javascript:void(0);';
+	reportLink.textContent = '신고';
+
+	reportLink.addEventListener('click', (event) => {
+		event.preventDefault();		
+		if (!token) {
+			if (confirm('로그인이 필요합니다. 로그인 페이지로 이동합니다.')) {
+				location.href = '/user/login.do';
+			}
+			return;
+		}
+
+		reportLink.dataset.bsToggle = 'modal';
+		reportLink.dataset.bsTarget = '#reportCommentModal';
+	});
+	
+	actionDiv.append(reportLink);
+
+	return actionDiv;
+}
+
+
+
+/**
+ * 댓글과 대댓글의 작성자 정보 영역을 생성하는 함수
+ */
+function createWriterInfo({ nickname, postdate, isSub }) {
+	
+	const date = new Date(postdate);
+	const formatDate = `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일`;
+	
+	const wrapperDiv = document.createElement('div');
+	wrapperDiv.className = isSub ? 'subcomment_writer' : 'comment_writer';
+
+	const img = document.createElement('img');
+	img.src = '/images/common/test.png';
+
+	const nameSpan = document.createElement('span');
+	nameSpan.textContent = nickname;
+
+	const dateSpan = document.createElement('span');
+	dateSpan.textContent = formatDate;
+
+	wrapperDiv.append(img, nameSpan, dateSpan);
+	return wrapperDiv;
+}
+
+
+
+/**
+ * 대댓글을 생성하는 함수
+ */
+function createSubcomment(subcomment) {
+	const subLi = document.createElement('li');
+	subLi.className = 'subcomment';
+	subLi.dataset.id = subcomment.id;
+
+	const arrowImg = document.createElement('img');
+	arrowImg.className = 'subcomment_arrow';
+	arrowImg.src = '/images/chompessor/arrow_right.png';
+
+	const innerDiv = document.createElement('div');
+	innerDiv.className = 'subcomment_inner';
+
+	const infoDiv = document.createElement('div');
+	infoDiv.className = 'subcomment_info';
+	infoDiv.append(
+		createWriterInfo({ nickname: subcomment.nickname, postdate: subcomment.postdate, isSub: true }),
+		createActionLinks({ id: subcomment.id, content: subcomment.content, isSub: true, userId: subcomment.user_id })
+	);
+
+	const contentP = document.createElement('p');
+	contentP.className = 'subcomment_content';
+	contentP.textContent = subcomment.content;
+
+	const toolDiv = document.createElement('div');
+	toolDiv.className = 'comment_tool';
+	toolDiv.appendChild(createLikeButton(subcomment.likecount));
+
+	innerDiv.append(infoDiv, contentP, toolDiv);
+	subLi.append(arrowImg, innerDiv);
+
+	return subLi;
 }
 
 
@@ -398,11 +401,37 @@ function writeComment({ tablename, content }) {
 		
 		const response = instance.post('/comments', data);
 		
+		if (response.data.code === 'COMMENT_CREATE_SUCCESS') {
+			return response.data;
+		}
+		
 	}
 	catch (error) {
-		console.log(error);
+		const code = error?.response?.data?.code;
+		const message = error?.response?.data?.message;
+		
+		if (code === 'COMMENT_CREATE_FAIL') {
+			alert(message);
+		}
+		else if (code === 'COMMENT_INVALID_INPUT') {
+			alert(message);
+		}
+		else if (code === 'COMMENT_UNAUTHORIZED') {
+			alert(message);
+		}
+		else if (code === 'COMMENT_FORBIDDEN') {
+			alert(message);
+		}
+		else if (code === 'COMMENT_NOT_FOUND') {
+			alert(message);
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alert(message);
+		}
+		else {
+			console.log('서버 요청 중 오류 발생');
+		}
 	}
-	
 }
 
 
@@ -429,7 +458,7 @@ async function updateComment({ id, content }) {
 		const response = await instance.patch(`/comments/${id}`, data);
 		
 		if (response.data.code === 'COMMENT_UPDATE_SUCCESS') {
-			return response.data.data;
+			return response.data;
 		}
 	}
 	catch (error) {
@@ -483,11 +512,36 @@ function deleteComment({ id }) {
 		
 		const response = instance.delete(`/comments/${id}`, {data});
 		
-		console.log(response);
+		if (response.data.code === 'COMMENT_DELETE_SUCCESS') {
+			return response.data;
+		}
 		
 	}
 	catch (error) {
-		console.log(error);
+		const code = error?.response?.data?.code;
+		const message = error?.response?.data?.message;
+		
+		if (code === 'COMMENT_DELETE_FAIL') {
+			alert(message);
+		}
+		else if (code === 'COMMENT_INVALID_INPUT') {
+			alert(message);
+		}
+		else if (code === 'COMMENT_UNAUTHORIZED') {
+			alert(message);
+		}
+		else if (code === 'COMMENT_FORBIDDEN') {
+			alert(message);
+		}
+		else if (code === 'COMMENT_NOT_FOUND') {
+			alert(message);
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alert(message);
+		}
+		else {
+			console.log('서버 요청 중 오류 발생');
+		}
 	}
 	
 }

@@ -109,19 +109,15 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 
 		// 댓글 수정 요청
-		const data = await updateComment({ id, content });
+		const result = await updateComment({ id, content });
 
 		// 모달 닫기
-		const modalEl = document.getElementById('editCommentModal');
-		const modalInstance = bootstrap.Modal.getInstance(modalEl);
-		modalInstance.hide();
+		bootstrap.Modal.getInstance(document.getElementById('editCommentModal')).hide();
 
-		// 수정 내용 반영 (id가 일치하는 댓글 DOM 찾아서 업데이트)
-		const contentEl = document.querySelector(
-		  `.comment[data-id='${id}'] .comment_content, .subcomment[data-id='${id}'] .subcomment_content`
-		);
+		// 수정 내용 반영
+		const contentEl = document.querySelector(`.comment[data-id='${id}'] .comment_content, .subcomment[data-id='${id}'] .subcomment_content`);
 		if (contentEl) {
-		  contentEl.textContent = data.content;
+		  contentEl.textContent = result.data.content;
 		}
 			
 	});

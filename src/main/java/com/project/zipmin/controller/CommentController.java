@@ -61,7 +61,6 @@ public class CommentController {
 	
 	
 	
-	
 	// 댓글 목록 조회
 	@GetMapping("/comments")
 	public ResponseEntity<?> readComment(

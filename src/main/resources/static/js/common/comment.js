@@ -163,10 +163,10 @@ function loadCommentList({ tablename, sort, size }) {
 /**
  * 배열에 저장된 댓글 목록을 화면에 표시하는 함수
  */
-function renderCommentList() {
-	const maincomment = commentList.filter(comment => comment.comm_id === null);
-	maincomment.forEach(comment => {
-		document.querySelector('.comment_list').appendChild(createComment(comment));
+function renderCommentList(comments) {
+	comments.filter(comment => comment.comm_id === null)
+		.forEach(comment => {
+			document.querySelector('.comment_list').appendChild(createComment(comment));
 	});
 }
 
@@ -191,7 +191,7 @@ function createComment(comment) {
 	infoDiv.className = 'comment_info';
 	infoDiv.append(
 		createWriterInfo({ nickname: comment.nickname, postdate: comment.postdate, isSub: false }),
-		createActionLinks({ id: comment.id, content: comment.content, isSub: false, userId: comment.user_id })
+		createActionLink({ id: comment.id, content: comment.content, isSub: false, userId: comment.user_id })
 	);
 
 	// 댓글 본문
@@ -262,7 +262,7 @@ function createLikeButton(likeCount) {
 /**
  * 수정과 신고와 삭제 동작의 링크를 생성하는 함수
  */
-function createActionLinks({ id, content, isSub, userId }) {
+function createActionLink({ id, content, isSub, userId }) {
 
 	const token = localStorage.getItem('accessToken');
 	
@@ -281,9 +281,11 @@ function createActionLinks({ id, content, isSub, userId }) {
 		});
 	
 		const deleteLink = document.createElement('a');
-		deleteLink.href = '';
+		deleteLink.href = 'javascript:void(0);';
 		deleteLink.textContent = '삭제';
-		deleteLink.dataset.commentId = id;
+		deleteLink.addEventListener('click', async () => {
+			await deleteComment({ id });
+		});
 		
 		actionDiv.append(editLink, deleteLink);
 	}
@@ -357,7 +359,7 @@ function createSubcomment(subcomment) {
 	infoDiv.className = 'subcomment_info';
 	infoDiv.append(
 		createWriterInfo({ nickname: subcomment.nickname, postdate: subcomment.postdate, isSub: true }),
-		createActionLinks({ id: subcomment.id, content: subcomment.content, isSub: true, userId: subcomment.user_id })
+		createActionLink({ id: subcomment.id, content: subcomment.content, isSub: true, userId: subcomment.user_id })
 	);
 
 	const contentP = document.createElement('p');
@@ -439,108 +441,149 @@ function writeComment({ tablename, content }) {
 /**
  * 댓글을 수정하는 함수
  */
-async function updateComment({ id, content }) {
+document.addEventListener('DOMContentLoaded', function () {
 	
-	if (!isLoggedIn()) {
-		redirectToLogin();
-	}
+	const editForm = document.getElementById('editCommentForm');
 
-	try {
-		const token = localStorage.getItem('accessToken');
-		const payload = parseJwt(token);
+	editForm.addEventListener('submit', async function (e) {
+		e.preventDefault();
 		
-		const data = {
-			id: id,
-			content: content,
-			user_id: payload.id
-		};
-		
-		const response = await instance.patch(`/comments/${id}`, data);
-		
-		if (response.data.code === 'COMMENT_UPDATE_SUCCESS') {
-			return response.data;
+		if (!isLoggedIn()) {
+			redirectToLogin();
 		}
-	}
-	catch (error) {
-		const code = error?.response?.data?.code;
-		const message = error?.response?.data?.message;
-		
-		if (code === 'COMMENT_UPDATE_FAIL') {
-			alert(message);
-		}	
-		else if (code === 'INVALID_INPUT_RESPONSE') {
-			alert(message);
+
+		const id = document.getElementById('editCommentId').value;
+		const content = document.getElementById('editCommentContent').value.trim();
+
+		if (!content) {
+			alert('수정할 내용을 입력해주세요.');
+			return;
 		}
-		else if (code === 'COMMENT_UNAUTHORIZED_ACCESS') {
-			alert(message);
+
+		try {
+			const token = localStorage.getItem('accessToken');
+			const payload = parseJwt(token);
+			
+			const data = {
+				id: id,
+				content: content,
+				user_id: payload.id
+			};
+			
+			const response = await instance.patch(`/comments/${id}`, data);
+			
+			// 성공시 수정 내용 반영
+			if (response.data.code === 'COMMENT_UPDATE_SUCCESS') {
+				const contentEl = document.querySelector(`.comment[data-id='${id}'] .comment_content, .subcomment[data-id='${id}'] .subcomment_content`);
+				if (contentEl) {
+				  contentEl.textContent = response.data.data.content;
+				}
+				
+				// 모달 닫기
+				bootstrap.Modal.getInstance(document.getElementById('editCommentModal')).hide();
+			}
 		}
-		else if (code === 'COMMENT_FORBIDDEN') {
-			alert(message);
+		catch (error) {
+			const code = error?.response?.data?.code;
+			const message = error?.response?.data?.message;
+			
+			if (code === 'COMMENT_UPDATE_FAIL') {
+				alert(message);
+			}	
+			else if (code === 'INVALID_INPUT_RESPONSE') {
+				alert(message);
+			}
+			else if (code === 'COMMENT_UNAUTHORIZED_ACCESS') {
+				alert(message);
+			}
+			else if (code === 'COMMENT_FORBIDDEN') {
+				alert(message);
+			}
+			else if (code === 'COMMENT_NOT_FOUND') {
+				alert(message);
+			}
+			else if (code === 'INTERNAL_SERVER_ERROR') {
+				alert(message);
+			}
+			else {
+				console.log('서버 요청 중 오류 발생');
+			}
 		}
-		else if (code === 'COMMENT_NOT_FOUND') {
-			alert(message);
-		}
-		else if (code === 'INTERNAL_SERVER_ERROR') {
-			alert(message);
-		}
-		else {
-			console.log('서버 요청 중 오류 발생');
-		}
-	}
-	
-}
+			
+	});
+});
 
 
 
 /**
  * 댓글을 삭제하는 함수
  */
-function deleteComment({ id }) {
+async function deleteComment({ id }) {
 	
 	if (!isLoggedIn()) {
 		redirectToLogin();
 	}
 
-	try {
-		const token = localStorage.getItem('accessToken');
-		const payload = parseJwt(token);
-		
-		const data = {
-			id: id,
-			user_id: payload.id
-		};
-		
-		const response = instance.delete(`/comments/${id}`, {data});
-		
-		if (response.data.code === 'COMMENT_DELETE_SUCCESS') {
-			return response.data;
+	if (confirm('작성하신 댓글을 삭제하시겠습니까?')) {
+		try {
+			const token = localStorage.getItem('accessToken');
+			const payload = parseJwt(token);
+			
+			const data = {
+				id: id,
+				user_id: payload.id
+			};
+			
+			const response = await instance.delete(`/comments/${id}`, {data});
+			
+			if (response.data.code === 'COMMENT_DELETE_SUCCESS') {
+				const commentEl = document.querySelector(`.comment[data-id='${id}']`);
+				const subcommentListEl = commentEl?.nextElementSibling;
+
+				// 일반 댓글 삭제
+				if (commentEl) {
+					commentEl.remove();
+				}
+
+				// 대댓글 리스트도 함께 삭제
+				if (subcommentListEl && subcommentListEl.classList.contains('subcomment_list')) {
+					subcommentListEl.remove();
+				}
+
+				// 혹시 대댓글 단독 삭제일 경우도 처리
+				const subcommentEl = document.querySelector(`.subcomment[data-id='${id}']`);
+				if (subcommentEl) {
+					subcommentEl.remove();
+				}
+				commentList = commentList.filter(c => c.id !== id && c.comm_id !== id);
+			}
+			
 		}
-		
-	}
-	catch (error) {
-		const code = error?.response?.data?.code;
-		const message = error?.response?.data?.message;
-		
-		if (code === 'COMMENT_DELETE_FAIL') {
-			alert(message);
-		}
-		else if (code === 'COMMENT_INVALID_INPUT') {
-			alert(message);
-		}
-		else if (code === 'COMMENT_UNAUTHORIZED') {
-			alert(message);
-		}
-		else if (code === 'COMMENT_FORBIDDEN') {
-			alert(message);
-		}
-		else if (code === 'COMMENT_NOT_FOUND') {
-			alert(message);
-		}
-		else if (code === 'INTERNAL_SERVER_ERROR') {
-			alert(message);
-		}
-		else {
-			console.log('서버 요청 중 오류 발생');
+		catch (error) {
+			const code = error?.response?.data?.code;
+			const message = error?.response?.data?.message;
+			
+			if (code === 'COMMENT_DELETE_FAIL') {
+				alert(message);
+			}
+			else if (code === 'COMMENT_INVALID_INPUT') {
+				alert(message);
+			}
+			else if (code === 'COMMENT_UNAUTHORIZED') {
+				alert(message);
+			}
+			else if (code === 'COMMENT_FORBIDDEN') {
+				alert(message);
+			}
+			else if (code === 'COMMENT_NOT_FOUND') {
+				alert(message);
+			}
+			else if (code === 'INTERNAL_SERVER_ERROR') {
+				alert(message);
+			}
+			else {
+				console.log('서버 요청 중 오류 발생');
+			}
 		}
 	}
 	

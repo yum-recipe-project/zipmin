@@ -45,7 +45,7 @@ public class UserService {
 	
 
 	// 아이디로 사용자 조회
-	public UserReadResponseDto getUserById(int userId) {
+	public UserReadResponseDto readUserById(int userId) {
 		
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));

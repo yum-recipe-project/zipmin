@@ -207,8 +207,18 @@ function createComment(comment) {
 	const replyBtn = document.createElement('a');
 	replyBtn.className = 'btn_outline_small write_subcomment_btn';
 	replyBtn.href = 'javascript:void(0);';
-	replyBtn.dataset.bsToggle = 'modal';
-	replyBtn.dataset.bsTarget = '#writeSubcommentModal';
+	replyBtn.addEventListener('click', function (event) {
+		event.preventDefault();
+		if (!isLoggedIn()) {
+			if (confirm('로그인이 필요합니다. 로그인 페이지로 이동합니다.')) {
+				location.href = '/user/login.do';
+			}
+			replyBtn.dataset.bsToggle = 'modal';
+			replyBtn.dataset.bsTarget = '#writeSubcommentModal';
+		}
+		document.getElementById('writeSubcommentCommId').value = comment.id;
+	});
+
 
 	const replySpan = document.createElement('span');
 	replySpan.textContent = '답글 쓰기';
@@ -276,6 +286,9 @@ function createActionLink({ id, content, isSub, userId }) {
 		editLink.dataset.bsTarget = '#editCommentModal';
 		editLink.textContent = '수정';
 		editLink.addEventListener('click', () => {
+			if (!isLoggedIn()) {
+				redirectToLogin();
+			}
 			document.getElementById('editCommentContent').value = content;
 			document.getElementById('editCommentId').value = id;
 		});
@@ -284,6 +297,9 @@ function createActionLink({ id, content, isSub, userId }) {
 		deleteLink.href = 'javascript:void(0);';
 		deleteLink.textContent = '삭제';
 		deleteLink.addEventListener('click', async () => {
+			if (!isLoggedIn()) {
+				redirectToLogin();
+			}
 			await deleteComment({ id });
 		});
 		
@@ -302,7 +318,6 @@ function createActionLink({ id, content, isSub, userId }) {
 			}
 			return;
 		}
-
 		reportLink.dataset.bsToggle = 'modal';
 		reportLink.dataset.bsTarget = '#reportCommentModal';
 	});
@@ -405,6 +420,8 @@ async function writeComment({ tablename, content }) {
 		
 		if (response.data.code === 'COMMENT_CREATE_SUCCESS') {
 			const newComment = response.data.data;
+			
+			console.log(newComment);
 
 			// 입력창 초기화
 			document.getElementById("writeCommentContent").value = '';
@@ -531,10 +548,6 @@ document.addEventListener('DOMContentLoaded', function () {
  * 댓글을 삭제하는 함수
  */
 async function deleteComment({ id }) {
-	
-	if (!isLoggedIn()) {
-		redirectToLogin();
-	}
 
 	if (confirm('작성하신 댓글을 삭제하시겠습니까?')) {
 		try {
@@ -602,6 +615,53 @@ async function deleteComment({ id }) {
 }
 
 
+
+/**
+ * 대댓글을 작성하는 함수
+ */
+async function writeSubcomment({ tablename, content, commId }) {
+
+	try {
+		const token = localStorage.getItem('accessToken');
+		const payload = parseJwt(token);
+
+		const params = new URLSearchParams(window.location.search);
+		const id = params.get('id');
+
+		const data = {
+			content: content,
+			tablename: tablename,
+			recodenum: Number(id),
+			user_id: payload.id,
+			comm_id: commId
+		};
+
+		const response = await instance.post('/comments', data);
+
+		if (response.data.code === 'COMMENT_CREATE_SUCCESS') {
+			const newSubcomment = response.data.data;
+				const parentCommentId = newSubcomment.comm_id; // 부모 ID 확인
+
+				// 모달 닫기
+				bootstrap.Modal.getInstance(document.getElementById('writeSubcommentModal')).hide();
+
+				// 입력창 초기화
+				document.getElementById("writeSubcommentContent").value = '';
+				// document.querySelector("#writeSubcommentForm button[type='submit']").disabled = true;
+
+				// commentList에 추가
+				commentList.push(newSubcomment);
+
+				// 대댓글 DOM에 추가
+				const subList = document.querySelector(`.comment[data-id='${parentCommentId}']`).nextElementSibling;
+				subList.appendChild(createSubcomment(newSubcomment));
+		}
+	}
+	catch (error) {
+		console.log('대댓글 작성 중 오류 발생', error);
+		alert('대댓글 작성 실패');
+	}
+}
 
 
 

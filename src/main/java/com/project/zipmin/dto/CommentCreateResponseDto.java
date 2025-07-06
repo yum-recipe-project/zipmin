@@ -15,12 +15,15 @@ import lombok.NoArgsConstructor;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CommentCreateResponseDto {
 	
-	private int id;
+	private Integer id;
 	private Date postdate;
 	private String content;
 	private String tablename;
-	private int recodenum;
-	private int commId;
-	private int userId;
+	private Integer recodenum;
+	private Integer commId;
+	private Integer userId;
 	
+	private String nickname;
+	private long likecount;
+	private boolean likestatus;
 }

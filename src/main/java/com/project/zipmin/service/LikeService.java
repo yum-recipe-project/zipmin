@@ -73,7 +73,7 @@ public class LikeService {
 				.orElseThrow(() -> new ApiException(LikeErrorCode.LIKE_NOT_FOUND));
 		
 		// 소유자 검증
-		if (!userService.getUserById(likeDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
+		if (!userService.readUserById(likeDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
 			if (like.getUser().getId() != likeDto.getUserId()) {
 				throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
 			}

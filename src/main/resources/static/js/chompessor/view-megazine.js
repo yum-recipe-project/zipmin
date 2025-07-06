@@ -11,8 +11,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 		const response = await fetch(`/megazines/${id}`);
 		const result = await response.json();
 		
-		console.log(result);
-		
 		if (result.code === 'MEGAZINE_READ_SUCCESS') {
 			document.querySelector('.megazine_title').innerText = result.data.title;
 			document.querySelector('.megazine_content').innerText = result.data.content;
@@ -84,7 +82,37 @@ document.addEventListener('DOMContentLoaded', function () {
 		const tablename = 'megazine';
 		const content = document.getElementById("writeCommentContent").value.trim();
 		
+		if (!content) {
+			alert('내용을 입력해주세요.');
+			return;
+		}
+		
 		writeComment({ tablename, content });
 	});
 });
+
+
+
+/**
+ * 대댓글을 작성하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function () {
+	
+	document.getElementById('writeSubcommentForm').addEventListener('submit', function (event) {
+		event.preventDefault();
+
+		const tablename = 'megazine';
+		const content = document.getElementById('writeSubcommentContent').value.trim();
+		const commId = document.getElementById('writeSubcommentCommId').value;
+
+		if (!content) {
+			alert('내용을 입력해주세요.');
+			return;
+		}
+
+		writeSubcomment({ tablename, content, commId });
+	});
+	
+});
+
 

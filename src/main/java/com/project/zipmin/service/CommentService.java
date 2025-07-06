@@ -151,26 +151,31 @@ public class CommentService {
 	
 	
 	// 댓글 작성
-	public CommentCreateResponseDto createComment(CommentCreateRequestDto commentDto) {
+	public CommentCreateResponseDto createComment(CommentCreateRequestDto commentRequestDto) {
 
 		// 입력값 검증
-		if (commentDto == null || commentDto.getContent() == null || commentDto.getTablename() == null || commentDto.getRecodenum() == null || commentDto.getUserId() == null) {
+		if (commentRequestDto == null || commentRequestDto.getContent() == null || commentRequestDto.getTablename() == null || commentRequestDto.getRecodenum() == null || commentRequestDto.getUserId() == null) {
 			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
 		}
 		
-		Comment comment = commentMapper.toEntity(commentDto);
+		Comment comment = commentMapper.toEntity(commentRequestDto);
+		
+		System.err.println(comment);
 		
 	    // 대댓글이면 댓글 참조
-	    if (commentDto.getCommId() != null) {
-	        Comment parent = commentRepository.findById(commentDto.getCommId())
+	    if (commentRequestDto.getCommId() != null) {
+	        Comment parent = commentRepository.findById(commentRequestDto.getCommId())
 	            .orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
 	        comment.setComment(parent);
 	    }
 	    
 		// 댓글 저장
 		try {
-			comment = commentRepository.save(comment);
-			return commentMapper.toCreateResponseDto(comment);
+			comment = commentRepository.saveAndFlush(comment);
+			CommentCreateResponseDto commentResponseDto = commentMapper.toCreateResponseDto(comment);
+			commentResponseDto.setNickname(userService.readUserById(commentRequestDto.getUserId()).getNickname());
+			commentResponseDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
+			return commentResponseDto;
 		}
 		catch (Exception e) {
 			throw new ApiException(CommentErrorCode.COMMENT_CREATE_FAIL);
@@ -194,7 +199,7 @@ public class CommentService {
 		
 		
 		// 소유자 검증 (관리자면 소유자 검증 무시)
-		if (!userService.getUserById(commentDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
+		if (!userService.readUserById(commentDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
 			if (comment.getUser().getId() != commentDto.getUserId()) {
 				throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
 			}
@@ -229,7 +234,7 @@ public class CommentService {
 				.orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
 		
 		// 소유자 검증 (관리자면 소유자 검증 무시)
-		if (!userService.getUserById(commentDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
+		if (!userService.readUserById(commentDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
 			if (comment.getUser().getId() != commentDto.getUserId()) {
 				throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
 			}

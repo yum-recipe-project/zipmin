@@ -161,7 +161,7 @@ instance.interceptors.response.use(
 function redirectToLogin() {
 	localStorage.removeItem('accessToken');
 	alert('로그인 후 이용 가능합니다.');
-	window.location.href = '/login.do';
+	window.location.href = '/user/login.do';
 }
 
 

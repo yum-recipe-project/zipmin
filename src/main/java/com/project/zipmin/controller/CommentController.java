@@ -29,6 +29,9 @@ import com.project.zipmin.dto.CommentUpdateResponseDto;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
+import com.project.zipmin.dto.ReportCreateRequestDto;
+import com.project.zipmin.dto.ReportCreateResponseDto;
+import com.project.zipmin.dto.ReportDeleteRequestDto;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.CommentCreateFailResponse;
@@ -367,8 +370,6 @@ public class CommentController {
 		    throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
 		}
 		
-		System.err.println("comment controller : username - " + username);
-		
 		commentService.unlikeComment(likeDto);
 		
 		return ResponseEntity.status(CommentSuccessCode.COMMENT_UNLIKE_SUCCESS.getStatus())
@@ -385,35 +386,55 @@ public class CommentController {
 	
 	
 	
-	// 댓글 신고 개수 (관리자)
+	// 댓글 신고 작성
+	@PostMapping("/comments/{id}/reports")
+	public ResponseEntity<?> reportComment(
+			@Parameter(description = "댓글의 일련번호", required = true, example = "1") @PathVariable int id,
+			@Parameter(description = "댓글 신고 작성 요청 정보", required = true) @RequestBody ReportCreateRequestDto reportRequestDto) {
+		
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 권한 없는 사용자의 접근
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (userService.readUserByUsername(username).getId() != reportRequestDto.getUserId()) {
+		    throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+		}
+		
+		ReportCreateResponseDto reportReponseDto = commentService.reportComment(reportRequestDto);
+		
+		return ResponseEntity.status(CommentSuccessCode.COMMENT_REPORT_SUCCESS.getStatus())
+				.body(ApiResponse.success(CommentSuccessCode.COMMENT_REPORT_SUCCESS, reportReponseDto));
+	}
 	
 	
 	
-	// 댓글 신고 표시
-	// 특정 투표의 특정 댓글 신고
-//	@PostMapping("/votes/{voteId}/comments/{commId}/reports")
-//	public int reportVoteComment(
-//			@PathVariable("voteId") int voteId,
-//			@PathVariable("commId") int commId) {
-//		return 0;
-//	}
-//
-//	// 특정 투표의 특정 댓글 신고 개수 (관리자)
-//	@GetMapping("/votes/{voteId}/comments/{commId}/reports/count")
-//	public int countReportVoteComment(
-//			@PathVariable("voteId") int voteId,
-//			@PathVariable("commId") int commId) {
-//		return 0;
-//	}
-//
-//	// 특정 투표의 특정 댓글 신고 여부
-//	@GetMapping("/votes/{voteId}/comments/{commId}/reports/status")
-//	public boolean checkReportVoteComment(
-//			@PathVariable("voteId") int voteId,
-//			@PathVariable("commId") int commId) {
-//		return false;
-//	}
-	
+	// 댓글 신고 삭제
+	@DeleteMapping("/comments/{id}/reports")
+	public ResponseEntity<?> unlikeComment(
+			@Parameter(description = "댓글의 일련번호", required = true, example = "1") @PathVariable int id,
+			@Parameter(description = "댓글 신고 삭제 요청 정보", required = true) @RequestBody ReportDeleteRequestDto reportDto) {
+		
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 권한 없는 사용자의 접근
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (userService.readUserByUsername(username).getId() != reportDto.getUserId()) {
+		    throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+		}
+		
+		commentService.unreportComment(reportDto);
+		
+		return ResponseEntity.status(CommentSuccessCode.COMMENT_UNREPORT_SUCCESS.getStatus())
+				.body(ApiResponse.success(CommentSuccessCode.COMMENT_UNREPORT_SUCCESS, null));
+	}
 	
 	
 }

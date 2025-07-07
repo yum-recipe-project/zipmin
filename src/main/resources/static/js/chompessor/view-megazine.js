@@ -78,17 +78,9 @@ document.addEventListener('DOMContentLoaded', function () {
 	
 	document.getElementById('writeCommentForm').addEventListener("submit", function (event) {
 		event.preventDefault();
-		
-		const tablename = 'megazine';
-		const content = document.getElementById("writeCommentContent").value.trim();
-		
-		if (!content) {
-			alert('내용을 입력해주세요.');
-			return;
-		}
-		
-		writeComment({ tablename, content });
+		writeComment('megazine');
 	});
+	
 });
 
 
@@ -100,17 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	
 	document.getElementById('writeSubcommentForm').addEventListener('submit', function (event) {
 		event.preventDefault();
-
-		const tablename = 'megazine';
-		const content = document.getElementById('writeSubcommentContent').value.trim();
-		const commId = document.getElementById('writeSubcommentCommId').value;
-
-		if (!content) {
-			alert('내용을 입력해주세요.');
-			return;
-		}
-
-		writeSubcomment({ tablename, content, commId });
+		writeSubcomment('megazine');
 	});
 	
 });

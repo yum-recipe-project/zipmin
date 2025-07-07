@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.method.P;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,9 @@ import com.project.zipmin.dto.CommentUpdateResponseDto;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
+import com.project.zipmin.dto.ReportCreateRequestDto;
+import com.project.zipmin.dto.ReportCreateResponseDto;
+import com.project.zipmin.dto.ReportDeleteRequestDto;
 import com.project.zipmin.entity.Comment;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.mapper.CommentMapper;
@@ -44,6 +48,8 @@ public class CommentService {
 	private UserService userService;
 	@Autowired
 	private LikeService likeService;
+	@Autowired
+	private ReportService reportService;
 
 	private final CommentMapper commentMapper;
 	
@@ -160,6 +166,8 @@ public class CommentService {
 		}
 	    return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
 	}
+	
+	// 신고순으로 정렬하는거 추가하기
 
 	
 	
@@ -167,11 +175,6 @@ public class CommentService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-	
-	
-	
-	
 	
 	
 	
@@ -319,7 +322,46 @@ public class CommentService {
 
 	}
 	
+	// 댓글 신고
+	public ReportCreateResponseDto reportComment(ReportCreateRequestDto reportDto) {
+		
+		// 댓글 존재 여부 판단
+		Comment comment = commentRepository.findById(reportDto.getRecodenum())
+			    .orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
+		
+		// 신고 작성
+		try {
+			return reportService.createReport(reportDto);
+		}
+		catch (ApiException e) {
+		    throw e;
+		}
+		catch (Exception e) {
+		    throw new ApiException(CommentErrorCode.COMMENT_REPORT_FAIL);
+		}
+	}
 	
+	
+	
+	// 댓글 신고 취소
+	public void unreportComment(ReportDeleteRequestDto reportDto) {
+		
+		// 댓글 존재 여부 판단
+		Comment comment = commentRepository.findById(reportDto.getRecodenum())
+			    .orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
+		
+		// 신고 취소
+		try {
+			reportService.deleteReport(reportDto);
+		}
+		catch (ApiException e) {
+		    throw e;
+		}
+		catch (Exception e) {
+		    throw new ApiException(CommentErrorCode.COMMENT_UNREPORT_FAIL);
+		}
+		
+	}
 	
 	
 	

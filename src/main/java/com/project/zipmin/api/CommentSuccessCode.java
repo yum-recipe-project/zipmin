@@ -16,8 +16,10 @@ public enum CommentSuccessCode implements Code {
     COMMENT_UPDATE_SUCCESS(HttpStatus.OK, "댓글 수정 성공"),
     COMMENT_DELETE_SUCCESS(HttpStatus.OK, "댓글 삭제 성공"),
     
-    COMMENT_LIKE_SUCCESS(HttpStatus.OK, "댓글에 좋아요를 눌렀습니다."),
-    COMMENT_UNLIKE_SUCCESS(HttpStatus.OK, "댓글 좋아요가 취소되었습니다.");
+    COMMENT_LIKE_SUCCESS(HttpStatus.OK, "댓글 좋아요 성공"),
+    COMMENT_UNLIKE_SUCCESS(HttpStatus.OK, "댓글 좋아요 취소 성공"),
+    COMMENT_REPORT_SUCCESS(HttpStatus.OK, "댓글 신고 성공"),
+    COMMENT_UNREPORT_SUCCESS(HttpStatus.OK, "댓글 신고 취소 성공");
 	
 	private final HttpStatus status;
 	private final String message;

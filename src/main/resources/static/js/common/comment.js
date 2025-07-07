@@ -423,6 +423,8 @@ function createActionLink({ id, content, isSub, userId }) {
 		editLink.addEventListener('click', () => {
 			if (!isLoggedIn()) {
 				redirectToLogin();
+				bootstrap.Modal.getInstance(document.getElementById('reportCommentModal')).hide();
+				return;
 			}
 			document.getElementById('editCommentContent').value = content;
 			document.getElementById('editCommentId').value = id;
@@ -446,12 +448,15 @@ function createActionLink({ id, content, isSub, userId }) {
 	reportLink.textContent = '신고';
 	reportLink.dataset.bsToggle = 'modal';
 	reportLink.dataset.bsTarget = '#reportCommentModal';
+	
 	reportLink.addEventListener('click', () => {
+
 		if (!isLoggedIn()) {
 			redirectToLogin();
 			bootstrap.Modal.getInstance(document.getElementById('reportCommentModal')).hide();
 			return;
 		}
+		document.getElementById('reportCommentId').value = id;
 	});
 	
 	actionDiv.append(reportLink);
@@ -528,7 +533,7 @@ function createSubcomment(subcomment) {
 /**
  * 댓글을 작성하는 함수
  */
-async function writeComment({ tablename, content }) {
+async function writeComment(tablename) {
 	
 	if (!isLoggedIn()) {
 		redirectToLogin();
@@ -542,7 +547,7 @@ async function writeComment({ tablename, content }) {
 		const id = params.get('id');
 		
 		const data = {
-			content: content,
+			content: document.getElementById('writeCommentContent').value.trim(),
 			tablename: tablename,
 			recodenum: Number(id),
 			user_id: payload.id
@@ -599,14 +604,83 @@ async function writeComment({ tablename, content }) {
 
 
 
+document.addEventListener('DOMContentLoaded', function() {
+	
+	const reportForm = document.getElementById('reportCommentForm');
+	
+	reportForm.addEventListener('submit', async function(e) {
+		e.preventDefault();
+		
+		if (!isLoggedIn()) {
+			redirectToLogin();
+		}
+		
+		const commId = document.getElementById('reportCommentId').value;
+		const reason = document.querySelector('input[name="reason"]:checked')?.value;
+		
+		try {
+			const token = localStorage.getItem('accessToken');
+			const payload = parseJwt(token);
+
+			const data = {
+				tablename: 'comments',
+				recodenum: commId,
+				reason: reason,
+				user_id: payload.id
+			};
+			
+			const response = await instance.post(`/comments/${commId}/reports`, data);
+			
+			if (response.data.code === 'COMMENT_REPORT_SUCCESS') {
+				alert('신고 처리되었습니다.');
+			}
+			
+		}
+		catch (error) {
+			const code = error?.response?.data?.code;
+			const message = error?.response?.data?.message;
+
+			if (code === 'COMMENT_REPORT_FAIL') {
+				alert(message);
+			}
+			else if (code === 'REPORT_CREATE_FAIL') {
+				alert(message);
+			}
+			else if (code === 'REPORT_INVALID_INPUT') {
+				alert(message);
+			}
+			else if (code === 'REPORT_DUPLICATE') {
+				alert('이미 신고한 댓글입니다.');
+			}
+			else if (code === 'COMMENT_UNAUTHORIZED_ACCESS') {
+				alert(message);
+			}
+			else if (code === 'COMMENT_FORBIDDEN') {
+				alert(message);
+			}
+			else if (code === 'COMMENT_NOT_FOUND') {
+				alert(message);
+			}
+			else {
+				console.log('서버 요청 중 오류 발생');
+			}
+		}
+		
+		bootstrap.Modal.getInstance(document.getElementById('reportCommentModal')).hide();
+	});
+});
+
+
+
+
 /**
  * 댓글을 수정하는 함수
  */
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
 	
 	const editForm = document.getElementById('editCommentForm');
 
-	editForm.addEventListener('submit', async function (e) {
+	editForm.addEventListener('submit', async function(e) {
 		e.preventDefault();
 		
 		if (!isLoggedIn()) {
@@ -615,11 +689,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		const id = document.getElementById('editCommentId').value;
 		const content = document.getElementById('editCommentContent').value.trim();
-
-		if (!content) {
-			alert('수정할 내용을 입력해주세요.');
-			return;
-		}
 
 		try {
 			const token = localStorage.getItem('accessToken');
@@ -751,7 +820,7 @@ async function deleteComment({ id }) {
 /**
  * 대댓글을 작성하는 함수
  */
-async function writeSubcomment({ tablename, content, commId }) {
+async function writeSubcomment(tablename) {
 
 	try {
 		const token = localStorage.getItem('accessToken');
@@ -761,11 +830,11 @@ async function writeSubcomment({ tablename, content, commId }) {
 		const id = params.get('id');
 
 		const data = {
-			content: content,
+			content: document.getElementById('writeSubcommentContent').value.trim(),
 			tablename: tablename,
 			recodenum: Number(id),
 			user_id: payload.id,
-			comm_id: commId
+			comm_id: document.getElementById('writeSubcommentCommId').value
 		};
 
 		const response = await instance.post('/comments', data);

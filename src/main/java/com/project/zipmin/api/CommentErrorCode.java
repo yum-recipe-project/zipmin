@@ -25,6 +25,8 @@ public enum CommentErrorCode implements Code {
     
     COMMENT_LIKE_FAIL(HttpStatus.BAD_REQUEST, "댓글 좋아요 실패"),
     COMMENT_UNLIKE_FAIL(HttpStatus.BAD_REQUEST, "댓글 좋아요 삭제 실패"),
+    COMMENT_REPORT_FAIL(HttpStatus.BAD_REQUEST, "댓글 신고 실패"),
+    COMMENT_UNREPORT_FAIL(HttpStatus.BAD_REQUEST, "댓글 신고 삭제 실패"),
 	
 	// 기타
 	COMMENT_UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "예외 처리되지 않은 내부 오류");

@@ -5,8 +5,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 	
 	const params = new URLSearchParams(window.location.search);
 	const id = params.get('id');
-	const token = localStorage.getItem('accessToken');
 	
+	const token = localStorage.getItem('accessToken');
 	const headers = {
 		'Content-Type': 'application/json'
 	};

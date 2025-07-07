@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,10 +68,19 @@ public class CommentService {
 
 		List<CommentReadResponseDto> commentDtoList = new ArrayList<CommentReadResponseDto>();
 		for (Comment comment : commentPage) {
-			CommentReadResponseDto commentDTO = commentMapper.toReadResponseDto(comment);
-			commentDTO.setNickname(comment.getUser().getNickname());
-			commentDTO.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
-			commentDtoList.add(commentDTO);
+			CommentReadResponseDto commentDto = commentMapper.toReadResponseDto(comment);
+			commentDto.setNickname(comment.getUser().getNickname());
+			commentDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
+			
+			// 좋아요 여부 조회
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
+			    String username = authentication.getName();
+			    int userId = userService.readUserByUsername(username).getId();
+			    commentDto.setLikestatus(likeService.existsUserLike("comments", comment.getId(), userId));
+			}
+
+			commentDtoList.add(commentDto);
 		}
 	    return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
 	}
@@ -95,10 +106,19 @@ public class CommentService {
 		
 		List<CommentReadResponseDto> commentDtoList = new ArrayList<CommentReadResponseDto>();
 		for (Comment comment : commentPage) {
-			CommentReadResponseDto commentDTO = commentMapper.toReadResponseDto(comment);
-			commentDTO.setNickname(comment.getUser().getNickname());
-			commentDTO.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
-			commentDtoList.add(commentDTO);
+			CommentReadResponseDto commentDto = commentMapper.toReadResponseDto(comment);
+			commentDto.setNickname(comment.getUser().getNickname());
+			commentDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
+			
+			// 좋아요 여부 조회
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
+			    String username = authentication.getName();
+			    int userId = userService.readUserByUsername(username).getId();
+			    commentDto.setLikestatus(likeService.existsUserLike("comments", comment.getId(), userId));
+			}
+			
+			commentDtoList.add(commentDto);
 		}
 	    return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
 	}
@@ -124,17 +144,23 @@ public class CommentService {
 
 		List<CommentReadResponseDto> commentDtoList = new ArrayList<CommentReadResponseDto>();
 		for (Comment comment : commentPage) {
-			CommentReadResponseDto commentDTO = commentMapper.toReadResponseDto(comment);
-			commentDTO.setNickname(comment.getUser().getNickname());
-			commentDTO.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
-			commentDtoList.add(commentDTO);
+			CommentReadResponseDto commentDto = commentMapper.toReadResponseDto(comment);
+			commentDto.setNickname(comment.getUser().getNickname());
+			commentDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
+			
+			// 좋아요 여부 조회
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
+			    String username = authentication.getName();
+			    int userId = userService.readUserByUsername(username).getId();
+			    commentDto.setLikestatus(likeService.existsUserLike("comments", comment.getId(), userId));
+			}
+			
+			commentDtoList.add(commentDto);
 		}
 	    return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
 	}
 
-	
-	
-	
 	
 	
 	public int countCommentsByUserId(String userId) {
@@ -196,7 +222,6 @@ public class CommentService {
 		// 댓글 존재 여부 판단
 		Comment comment = commentRepository.findById(commentDto.getId())
 				.orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
-		
 		
 		// 소유자 검증 (관리자면 소유자 검증 무시)
 		if (!userService.readUserById(commentDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {

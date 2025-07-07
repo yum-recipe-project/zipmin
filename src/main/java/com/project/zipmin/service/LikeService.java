@@ -41,7 +41,7 @@ public class LikeService {
 		}
 		
 	    // 중복 투표 검사
-	    if (likeRepository.existsByUserIdAndTablenameAndRecodenum(likeDto.getUserId(), likeDto.getTablename(), likeDto.getRecodenum())) {
+	    if (likeRepository.existsByTablenameAndRecodenumAndUserId(likeDto.getTablename(), likeDto.getRecodenum(), likeDto.getUserId())) {
 	    	throw new ApiException(LikeErrorCode.LIKE_DUPLICATE);
 	    }
 		
@@ -64,12 +64,12 @@ public class LikeService {
 	public void deleteLike(LikeDeleteRequestDto likeDto) {
 		
 		// 입력값 검증
-		if (likeDto == null || likeDto.getId() == null || likeDto.getTablename() == null || likeDto.getRecodenum() == null || likeDto.getId() == null) {
+		if (likeDto == null || likeDto.getTablename() == null || likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
 			throw new ApiException(LikeErrorCode.LIKE_INVALID_INPUT);
 		}
 		
 		// 좋아요 존재 여부 판단
-		Like like = likeRepository.findById(likeDto.getId())
+		Like like = likeRepository.findByTablenameAndRecodenumAndUserId(likeDto.getTablename(), likeDto.getRecodenum(), likeDto.getUserId())
 				.orElseThrow(() -> new ApiException(LikeErrorCode.LIKE_NOT_FOUND));
 		
 		// 소유자 검증
@@ -81,7 +81,7 @@ public class LikeService {
 		
 		// 좋아요 삭제
 		try {
-			likeRepository.deleteById(likeDto.getId());
+			likeRepository.deleteById(like.getId());
 		}
 		catch (Exception e) {
 			throw new ApiException(LikeErrorCode.LIKE_DELETE_FAIL);
@@ -91,9 +91,15 @@ public class LikeService {
 	
 	
 	
-	// 특정 사용자가 특정 테이블의 특정 레코드에 좋아요 표시 여부 확인
-	public boolean hasUserLikedRecode(int userId, String tablename, int recodenum) {
-		return likeRepository.existsByUserIdAndTablenameAndRecodenum(userId, tablename, recodenum);
+	// 좋아요 표시 여부 확인
+	public boolean existsUserLike(String tablename, Integer recodenum, Integer userId) {
+		
+		// 입력값 검증
+		if (tablename == null || recodenum == null || userId == null) {
+			throw new ApiException(LikeErrorCode.LIKE_INVALID_INPUT);
+		}
+
+		return likeRepository.existsByTablenameAndRecodenumAndUserId(tablename, recodenum, userId);
 	}
 
 	

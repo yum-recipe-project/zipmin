@@ -322,7 +322,7 @@ public class CommentController {
 	
 	
 	// 댓글 좋아요 작성
-	@GetMapping("/comments/{id}/likes")
+	@PostMapping("/comments/{id}/likes")
 	public ResponseEntity<?> likeComment(
 			@Parameter(description = "댓글의 일련번호", required = true, example = "1") @PathVariable int id,
 			@Parameter(description = "댓글 좋아요 작성 요청 정보", required = true) @RequestBody LikeCreateRequestDto likeRequestDto) {
@@ -339,6 +339,8 @@ public class CommentController {
 		    throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
 		}
 		
+		System.err.println("comment controller : username - " + username);
+		
 		LikeCreateResponseDto likeResponseDto = commentService.likeComment(likeRequestDto);
 		
 		return ResponseEntity.status(CommentSuccessCode.COMMENT_LIKE_SUCCESS.getStatus())
@@ -348,7 +350,7 @@ public class CommentController {
 	
 	
 	// 댓글 좋아요 삭제
-	@PostMapping("/comments/{id}/likes")
+	@DeleteMapping("/comments/{id}/likes")
 	public ResponseEntity<?> unlikeComment(
 			@Parameter(description = "댓글의 일련번호", required = true, example = "1") @PathVariable int id,
 			@Parameter(description = "댓글 좋아요 삭제 요청 정보", required = true) @RequestBody LikeDeleteRequestDto likeDto) {
@@ -364,6 +366,8 @@ public class CommentController {
 		if (userService.readUserByUsername(username).getId() != likeDto.getUserId()) {
 		    throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
 		}
+		
+		System.err.println("comment controller : username - " + username);
 		
 		commentService.unlikeComment(likeDto);
 		

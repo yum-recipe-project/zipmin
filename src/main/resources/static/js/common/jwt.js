@@ -158,15 +158,17 @@ instance.interceptors.response.use(
 /**
  * 로그인 페이지로 이동시키는 함수
  */
+/*
 function redirectToLogin() {
 	localStorage.removeItem('accessToken');
 	alert('로그인 후 이용 가능합니다.');
 	window.location.href = '/user/login.do';
 }
-
-
-
-
-
-
+*/
+function redirectToLogin() {
+	localStorage.removeItem('accessToken');
+	if (confirm('로그인이 필요합니다. 로그인 페이지로 이동합니다.')) {
+		location.href = '/user/login.do';
+	}
+}
 

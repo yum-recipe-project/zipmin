@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class LikeDeleteRequestDto {
 	
-	private Integer id;
 	private String tablename;
 	private Integer recodenum;
 	private Integer userId;

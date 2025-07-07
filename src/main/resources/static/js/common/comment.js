@@ -117,6 +117,14 @@ function loadCommentList({ tablename, sort, size }) {
 	const params = new URLSearchParams(window.location.search);
 	const id = params.get('id');
 	
+	const token = localStorage.getItem('accessToken');
+	const headers = {
+		'Content-Type': 'application/json'
+	};
+	if (isLoggedIn()) {
+		headers['Authorization'] = `Bearer ${token}`;
+	}
+	
 	const parameters = new URLSearchParams({
 		tablename : tablename,
 		recodenum : id,
@@ -126,7 +134,8 @@ function loadCommentList({ tablename, sort, size }) {
 	}).toString();
 	
 	fetch(`/comments?${parameters}`, {
-		method: 'GET'
+		method: 'GET',
+		headers: headers
 	})
 	.then(response => response.json())
 	.then(result => {
@@ -202,19 +211,18 @@ function createComment(comment) {
 	// 툴바 (좋아요, 답글)
 	const toolDiv = document.createElement('div');
 	toolDiv.className = 'comment_tool';
-	toolDiv.appendChild(createLikeButton(comment.likecount));
+	toolDiv.appendChild(createLikeButton(comment.id, comment.likecount, comment.likestatus));
 
 	const replyBtn = document.createElement('a');
 	replyBtn.className = 'btn_outline_small write_subcomment_btn';
+	replyBtn.dataset.bsToggle = 'modal';
+	replyBtn.dataset.bsTarget = '#writeSubcommentModal';
 	replyBtn.href = 'javascript:void(0);';
-	replyBtn.addEventListener('click', function (event) {
-		event.preventDefault();
+	replyBtn.addEventListener('click', function () {
 		if (!isLoggedIn()) {
-			if (confirm('로그인이 필요합니다. 로그인 페이지로 이동합니다.')) {
-				location.href = '/user/login.do';
-			}
-			replyBtn.dataset.bsToggle = 'modal';
-			replyBtn.dataset.bsTarget = '#writeSubcommentModal';
+			redirectToLogin();
+			bootstrap.Modal.getInstance(document.getElementById('writeSubcommentModal')).hide();
+			return;
 		}
 		document.getElementById('writeSubcommentCommId').value = comment.id;
 	});
@@ -250,20 +258,147 @@ function createComment(comment) {
 /**
  * 좋아요 버튼을 생성하는 함수
  */
-function createLikeButton(likeCount) {
+function createLikeButton(id, likecount, likestatus) {
+	
+	// 좋아요 버튼 태그
 	const button = document.createElement('button');
-	button.className = 'btn_tool write_subcomment_btn';
+	button.className = 'btn_tool like_btn';
 
-	const full = document.createElement('img');
-	full.src = '/images/common/thumb_up_full.png';
-
-	const empty = document.createElement('img');
-	empty.src = '/images/common/thumb_up_empty.png';
+	const img = document.createElement('img');
+	img.src = likestatus ? '/images/common/thumb_up_full.png' : '/images/common/thumb_up_empty.png';
 
 	const count = document.createElement('p');
-	count.textContent = likeCount;
+	count.textContent = likecount;
 
-	button.append(full, empty, count);
+	button.append(img, count);
+
+	// 좋아요 버튼 동작
+	button.addEventListener('click', async function () {
+		
+		if (!isLoggedIn()) {
+			redirectToLogin();
+			return;
+		}
+		
+		// 좋아요 취소
+		if (likestatus) {
+			try {
+				const token = localStorage.getItem('accessToken');
+				const payload = parseJwt(token);
+				
+				const data = {
+					tablename: 'comments',
+					recodenum: id,
+					user_id: payload.id
+				}
+				
+				const response = await instance.delete(`/comments/${id}/likes`, {
+					data: data,
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${token}`
+					}
+				});
+				
+				if (response.data.code === 'COMMENT_UNLIKE_SUCCESS') {
+					likestatus = false;
+					img.src = '/images/common/thumb_up_empty.png';
+					count.textContent = Number(count.textContent) - 1;
+				}
+			}
+			catch (error) {
+				const code = error?.response?.data?.code;
+				const message = error?.response?.data?.message;
+				
+				if (code === 'COMMENT_UNLIKE_FAIL') {
+					alert(message);
+				}
+				else if (code === 'LIKE_CREATE_FAIL') {
+					alert(message);
+				}
+				else if (code === 'LIKE_INVALID_INPUT') {
+					alert(message);
+				}
+				else if (code === 'LIKE_NOT_FOUND') {
+					alert(message);
+				}
+				else if (code === 'COMMENT_UNAUTHORIZED') {
+					alert(message);
+				}
+				else if (code === 'COMMENT_FORBIDDEN') {
+					alert(message);
+				}
+				else if (code === 'COMMENT_NOT_FOUND') {
+					alert(message);
+				}
+				else if (code === 'INTERNAL_SERVER_ERROR') {
+					alert(message);
+				}
+				else {
+					console.log('서버 요청 중 오류 발생');
+				}
+			}
+		}
+		// 좋아요
+		else {
+			try {
+				const token = localStorage.getItem('accessToken');
+				const payload = parseJwt(token);
+				
+				const data = {
+					tablename: 'comments',
+					recodenum: id,
+					user_id: payload.id
+				}
+				
+				const response = await instance.post(`/comments/${id}/likes`, data, {
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${token}`
+					}
+				});
+				
+				if (response.data.code === 'COMMENT_LIKE_SUCCESS') {
+					likestatus = true;
+					img.src = '/images/common/thumb_up_full.png';
+					count.textContent = Number(count.textContent) + 1;
+				}
+			}
+			catch (error) {
+				const code = error?.response?.data?.code;
+				const message = error?.response?.data?.message;
+				
+				if (code === 'COMMENT_LIKE_FAIL') {
+					alert(message);
+				}
+				else if (code === 'LIKE_CREATE_FAIL') {
+					alert(message);
+				}
+				else if (code === 'LIKE_INVALID_INPUT') {
+					alert(message);
+				}
+				else if (code === 'LIKE_DUPLICATE') {
+					alert(message);
+				}
+				else if (code === 'COMMENT_UNAUTHORIZED') {
+					alert(message);
+				}
+				else if (code === 'COMMENT_FORBIDDEN') {
+					alert(message);
+				}
+				else if (code === 'COMMENT_NOT_FOUND') {
+					alert(message);
+				}
+				else if (code === 'INTERNAL_SERVER_ERROR') {
+					alert(message);
+				}
+				else {
+					console.log('서버 요청 중 오류 발생');
+				}
+			}
+		}
+	});
+
 	return button;
 }
 
@@ -309,17 +444,14 @@ function createActionLink({ id, content, isSub, userId }) {
 	const reportLink = document.createElement('a');
 	reportLink.href = 'javascript:void(0);';
 	reportLink.textContent = '신고';
-
-	reportLink.addEventListener('click', (event) => {
-		event.preventDefault();		
-		if (!token) {
-			if (confirm('로그인이 필요합니다. 로그인 페이지로 이동합니다.')) {
-				location.href = '/user/login.do';
-			}
+	reportLink.dataset.bsToggle = 'modal';
+	reportLink.dataset.bsTarget = '#reportCommentModal';
+	reportLink.addEventListener('click', () => {
+		if (!isLoggedIn()) {
+			redirectToLogin();
+			bootstrap.Modal.getInstance(document.getElementById('reportCommentModal')).hide();
 			return;
 		}
-		reportLink.dataset.bsToggle = 'modal';
-		reportLink.dataset.bsTarget = '#reportCommentModal';
 	});
 	
 	actionDiv.append(reportLink);
@@ -383,7 +515,7 @@ function createSubcomment(subcomment) {
 
 	const toolDiv = document.createElement('div');
 	toolDiv.className = 'comment_tool';
-	toolDiv.appendChild(createLikeButton(subcomment.likecount));
+	toolDiv.appendChild(createLikeButton(subcomment.id, subcomment.likecount, subcomment.likestatus));
 
 	innerDiv.append(infoDiv, contentP, toolDiv);
 	subLi.append(arrowImg, innerDiv);

@@ -104,8 +104,8 @@ import com.project.zipmin.swagger.VoteRecordInvalidInputResponse;
 import com.project.zipmin.swagger.VoteRecordNotFoundResponse;
 import com.project.zipmin.swagger.VoteUnauthorizedAccessResponse;
 
-@Tag(name = "Chompessor API", description = "쩝쩝박사 관련 API")
 @RestController
+@Tag(name = "Chompessor API", description = "쩝쩝박사 관련 API")
 public class ChompessorController {
 	
 	@Autowired
@@ -177,7 +177,7 @@ public class ChompessorController {
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
 	@GetMapping("/votes/{id}")
-	public ResponseEntity<?> readVote(@Parameter(description = "투표의 아이디", required = true, example = "1") @PathVariable int id) {
+	public ResponseEntity<?> readVote(@Parameter(description = "투표의 일련번호", required = true, example = "1") @PathVariable int id) {
 		VoteReadResponseDto voteDto = chompService.readVoteById(id);
 		
 		return ResponseEntity.status(VoteSuccessCode.VOTE_READ_SUCCESS.getStatus())
@@ -186,7 +186,7 @@ public class ChompessorController {
 	
 	
 
-	// 새 투표 등록 (관리자)
+	// 투표 작성 (관리자)
 	@Operation(
 	    summary = "투표 작성",
 	    description = "투표를 작성합니다."
@@ -218,7 +218,7 @@ public class ChompessorController {
 						schema = @Schema(implementation = VoteChoiceInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
-				description = "입력값이 유효하지 않음",
+				description = "투표 기간 설정이 유효하지 않음",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = VoteInvalidPeriodResponse.class))),
@@ -343,7 +343,7 @@ public class ChompessorController {
 	})
 	@DeleteMapping("/votes/{id}")
 	public ResponseEntity<?> deleteVote(
-			@PathVariable int id) {
+			@Parameter(description = "투표의 일련번호", required = true, example = "1") @PathVariable int id) {
 		
 		// 인증 여부 확인 (비로그인)
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -434,7 +434,7 @@ public class ChompessorController {
 	})
 	@PostMapping("/votes/{voteId}/records")
 	public ResponseEntity<?> castVote(
-			@Parameter(description = "투표의 아이디", required = true, example = "1") @PathVariable int voteId,
+			@Parameter(description = "투표의 일련번호", required = true, example = "1") @PathVariable int voteId,
 			@Parameter(description = "투표 참여 요청 정보", required = true) @RequestBody VoteRecordCreateRequestDto recordRequestDto) {
 		
 		// 인증 여부 확인 (비로그인)
@@ -573,7 +573,7 @@ public class ChompessorController {
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
 	@GetMapping("/megazines/{id}")
-	public ResponseEntity<?> readMegazine(@Parameter(description = "매거진의 아이디", required = true, example = "1") @PathVariable int id) {
+	public ResponseEntity<?> readMegazine(@Parameter(description = "매거진의 일련번호", required = true, example = "1") @PathVariable int id) {
 		MegazineReadResponseDto megazineDto = chompService.readMegazineById(id);
 		
 		return ResponseEntity.status(MegazineSuccessCode.MEGAZINE_READ_SUCCESS.getStatus())
@@ -706,7 +706,7 @@ public class ChompessorController {
 	})
 	@PatchMapping("/megazines/{id}")
 	public ResponseEntity<?> editMegazine(
-			@Parameter(description = "매거진의 아이디", required = true, example = "1") @PathVariable int id,
+			@Parameter(description = "매거진의 일련번호", required = true, example = "1") @PathVariable int id,
 			@Parameter(description = "매거진 수정 요청 정보", required = true) @RequestBody MegazineUpdateRequestDto megazineRequestDto) {
 		
 		// 인증 여부 확인 (비로그인)
@@ -786,7 +786,7 @@ public class ChompessorController {
 	})
 	@DeleteMapping("/megazines/{id}")
 	public ResponseEntity<?> deleteMegazine(
-			@Parameter(description = "매거진의 아이디", required = true, example = "1") @PathVariable int id) {
+			@Parameter(description = "매거진의 일련번호", required = true, example = "1") @PathVariable int id) {
 		
 		// 인증 여부 확인 (비로그인)
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -834,7 +834,7 @@ public class ChompessorController {
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
 	@GetMapping("/events/{id}")
-	public ResponseEntity<?> readEvent(@Parameter(description = "이벤트의 아이디", required = true, example = "1") @PathVariable int id) {
+	public ResponseEntity<?> readEvent(@Parameter(description = "이벤트의 일련번호", required = true, example = "1") @PathVariable int id) {
 		EventReadResponseDto eventDto = chompService.readEventById(id);
 		
 		return ResponseEntity.status(EventSuccessCode.EVENT_READ_SUCCESS.getStatus())
@@ -979,7 +979,7 @@ public class ChompessorController {
 	})
 	@PatchMapping("/events/{id}")
 	public ResponseEntity<?> editEvent(
-			@Parameter(description = "이벤트의 아이디", required = true, example = "1") @PathVariable int id,
+			@Parameter(description = "이벤트의 일련번호", required = true, example = "1") @PathVariable int id,
 			@Parameter(description = "이벤트 수정 요청 정보", required = true) @RequestBody EventUpdateRequestDto eventRequestDto) {
 		
 		// 인증 여부 확인 (비로그인)
@@ -1058,7 +1058,7 @@ public class ChompessorController {
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
 	public ResponseEntity<?> deleteEvent(
-			@Parameter(description = "이벤트의 아이디", required = true, example = "1") @PathVariable int id) {
+			@Parameter(description = "이벤트의 일련번호", required = true, example = "1") @PathVariable int id) {
 		
 		// 인증 여부 확인 (비로그인)
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

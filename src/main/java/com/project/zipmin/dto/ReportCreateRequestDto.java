@@ -1,7 +1,5 @@
 package com.project.zipmin.dto;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -13,13 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class CommentCreateRequestDto {
-	
-	private Date postdate;
-	private String content;
+public class ReportCreateRequestDto {
+
 	private String tablename;
 	private Integer recodenum;
-	private Integer commId;
+	private String reason;
 	private Integer userId;
 	
 }

@@ -11,7 +11,7 @@ import com.project.zipmin.service.LikeService;
 @RequestMapping("/likes")
 public class LikeController {
 	
-	LikeService likeDAO;
+	LikeService likeService;
 	
 //	// 좋아요 수
 //	@GetMapping("/count")

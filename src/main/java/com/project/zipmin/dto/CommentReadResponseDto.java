@@ -14,15 +14,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CommentReadResponseDto {
-	private int id;
-	private int commId;
+	
+	private Integer id;
 	private Date postdate;
 	private String content;
 	private String tablename;
-	private int recodenum;
-	private int userId;
+	private Integer recodenum;
+	private Integer commId;
+	private Integer userId;
 	
 	private String nickname;
 	private long likecount;
 	private boolean likestatus;
+	
 }

@@ -11,8 +11,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 		const response = await fetch(`/megazines/${id}`);
 		const result = await response.json();
 		
-		console.log(result);
-		
 		if (result.code === 'MEGAZINE_READ_SUCCESS') {
 			document.querySelector('.megazine_title').innerText = result.data.title;
 			document.querySelector('.megazine_content').innerText = result.data.content;
@@ -39,8 +37,12 @@ document.addEventListener('DOMContentLoaded', async function() {
 /**
  * 댓글 정렬 버튼 클릭 시 해당하는 댓글을 가져오는 함수
  */
-document.addEventListener('DOMContentLoaded', function() {	
+document.addEventListener('DOMContentLoaded', function() {
 	
+	const tablename = 'megazine';
+	let sort = 'new';
+	let size = 15;
+
 	// 정렬 버튼 클릭 시 초기화 후 댓글 목록 조회
 	document.querySelectorAll('.comment_order button').forEach(tab => {
 		tab.addEventListener('click', function (event) {
@@ -54,15 +56,45 @@ document.addEventListener('DOMContentLoaded', function() {
 			document.querySelector('.comment_list').innerHTML = '';
 			commentList = [];
 			
-			fetchCommentList('chomp_megazine');
+			loadCommentList({ tablename, sort, size });
 		});
 	});
 	
 	// 최초 댓글 목록 조회
-	fetchCommentList('chomp_megazine');
+	loadCommentList({ tablename, sort, size });
 	
 	// 더보기 버튼 클릭 시 다음 페이지 로드
 	document.querySelector('.btn_more').addEventListener('click', function () {
-		fetchCommentList('chomp_megazine');
+		loadCommentList({ tablename, sort, size });
 	});
 });
+
+
+
+/**
+ * 댓글을 작성하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function () {
+	
+	document.getElementById('writeCommentForm').addEventListener("submit", function (event) {
+		event.preventDefault();
+		writeComment('megazine');
+	});
+	
+});
+
+
+
+/**
+ * 대댓글을 작성하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function () {
+	
+	document.getElementById('writeSubcommentForm').addEventListener('submit', function (event) {
+		event.preventDefault();
+		writeSubcomment('megazine');
+	});
+	
+});
+
+

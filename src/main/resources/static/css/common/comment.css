@@ -191,6 +191,7 @@
 }
 
 #container .comment_content {
+	white-space: pre-line;
 	font-size: 14px;
 	font-weight: 400;
 	line-height: 1.4;
@@ -275,6 +276,7 @@
 	font-weight: 400;
 	line-height: 1.4;
 	letter-spacing: -0.02em;
+	white-space: pre-line;
 }
 
 

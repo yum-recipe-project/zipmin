@@ -60,7 +60,7 @@ public class UserController {
 	// 특정 사용자 조회
 	@GetMapping("/users/{userId}")
 	public ResponseEntity<?> viewMember(@PathVariable("userId") int id) {
-		UserReadResponseDto userResponseDto = userService.getUserById(id);
+		UserReadResponseDto userResponseDto = userService.readUserById(id);
 		
 		return ResponseEntity.status(UserSuccessCode.USER_PROFILE_FETCH_SUCCESS.getStatus())
 					.body(ApiResponse.success(UserSuccessCode.USER_PROFILE_FETCH_SUCCESS, userResponseDto));

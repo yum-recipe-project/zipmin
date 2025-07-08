@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <form id="reportCommentForm" onsubmit="">
+	<input type="hidden" id="reportCommentId" name="id">
 	<div class="modal" id="reportCommentModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -15,37 +16,37 @@
 						<div class="reason">
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportCommentReason1" name="reason" value="">
+									<input type="radio" id="reportCommentReason1" name="reason" value="정당/정치인 비하 및 선거운동">
 									<label for="reportCommentReason1">정당/정치인 비하 및 선거운동</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportCommentReason2" name="reason" value="">
+									<input type="radio" id="reportCommentReason2" name="reason" value="유출/사칭/사기">
 									<label for="reportCommentReason2">유출/사칭/사기</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportCommentReason3" name="reason" value="">
+									<input type="radio" id="reportCommentReason3" name="reason" value="욕설/비하">
 									<label for="reportCommentReason3">욕설/비하</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportCommentReason4" name="reason" value="">
+									<input type="radio" id="reportCommentReason4" name="reason" value="낚시/놀람/도배">
 									<label for="reportCommentReason4">낚시/놀람/도배</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportCommentReason5" name="reason" value="">
+									<input type="radio" id="reportCommentReason5" name="reason" value="상업적 광고 및 판매">
 									<label for="reportCommentReason5">상업적 광고 및 판매</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportCommentReason6" name="reason" value="">
+									<input type="radio" id="reportCommentReason6" name="reason" value="불법촬영물 등의 유통">
 									<label for="reportCommentReason6">불법촬영물 등의 유통</label>
 								</div>
 							</div>

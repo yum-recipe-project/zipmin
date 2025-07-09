@@ -1,15 +1,26 @@
 package com.project.zipmin.mapper;
 
-import java.util.List;
-
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import com.project.zipmin.dto.RecipeStepDTO;
+import com.project.zipmin.dto.RecipeStepCreateRequestDto;
+import com.project.zipmin.dto.RecipeStepCreateResponseDto;
 import com.project.zipmin.entity.RecipeStep;
 
 @Mapper(componentModel = "spring")
 public interface RecipeStepMapper {
-	RecipeStepDTO recipeStepToRecipeStepDTO(RecipeStep recipeStep);
-	RecipeStep recipeStepDTOToRecipeStep(RecipeStepDTO recipeStepDTO);
-	List<RecipeStepDTO> recipeStepListToRecipeStepDTOList(List<RecipeStep> recipeStepList);
+	
+	// Create
+	@Mapping(target = "recipe.id", source = "recipeId")
+	RecipeStep toEntity(RecipeStepCreateRequestDto stepDto);
+	
+	@Mapping(target = "recipeId", source = "recipe.id")
+	RecipeStepCreateRequestDto toCreateRequestDto(RecipeStep step);
+	
+	@Mapping(target = "recipe.id", source = "recipeId")
+	RecipeStep toEntity(RecipeStepCreateResponseDto stepDto);
+	
+	@Mapping(target = "recipeId", source = "recipe.id")
+	RecipeStepCreateResponseDto toCreateResponseDto(RecipeStep step);
+	
 }

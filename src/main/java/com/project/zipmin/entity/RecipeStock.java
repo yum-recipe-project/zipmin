@@ -19,12 +19,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Entity
-@Table(name = "RECIPE_INGREDIENT")
-public class RecipeIngredient {
+@Table(name = "RECIPE_STOCK")
+public class RecipeStock {
+	
 	@Id
-	@GeneratedValue(generator = "seq_recipe_ingredient_id")
-	@SequenceGenerator(name = "seq_recipe_ingredient_id", sequenceName = "SEQ_RECIPE_INGREDIENT_ID", allocationSize = 1)
+	@GeneratedValue(generator = "seq_recipe_stock_id")
+	@SequenceGenerator(name = "seq_recipe_stock_id", sequenceName = "SEQ_RECIPE_STOCK_ID", allocationSize = 1)
 	private int id;
+	
 	private String name;
 	private int amount;
 	private String unit;
@@ -34,4 +36,5 @@ public class RecipeIngredient {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "RECIPE_ID")
 	private Recipe recipe;
+	
 }

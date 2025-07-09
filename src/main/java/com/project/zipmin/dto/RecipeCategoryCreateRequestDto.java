@@ -7,9 +7,10 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class RecipeCategoryDTO {
-	private int id;
+public class RecipeCategoryCreateRequestDto {
+
 	private String type;
 	private String tag;
-	private int recipeId;
+	private Integer recipeId;
+	
 }

@@ -391,3 +391,132 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
     });
 });
+
+
+
+
+/**
+ * 
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	writeRecipe();
+});
+
+
+
+/**
+ * 
+ */
+async function writeRecipe() {
+	
+	if (!isLoggedIn()) {
+		redirectToLogin();
+	}
+	
+	try {
+		const token = localStorage.getItem('accessToken');
+		const payload = parseJwt(token);
+		
+		const data = {
+		  image_url: "https://example.com/recipe.jpg",
+		  title: "매콤한 제육볶음",
+		  introduce: "밥도둑 제육볶음! 누구나 좋아하는 간편한 요리입니다.",
+		  cooklevel: "초급",
+		  cooktime: "30분",
+		  spicy: "매움",
+		  portion: "2인분",
+		  tip: "고기를 재울 때 양파즙을 넣으면 더 부드러워요.",
+		  youtube_url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+		  user_id: payload.id,
+		  
+		  category_dto_list: [
+		    {
+		      type: "한식",
+		      tag: "제육",
+		      recipe_id: null
+		    },
+		    {
+		      type: "매운맛",
+		      tag: "밥반찬",
+		      recipe_id: null
+		    }
+		  ],
+		  
+		  stock_dto_list: [
+		    {
+		      name: "돼지고기",
+		      amount: 300,
+		      unit: "g",
+		      note: "앞다리살",
+		      recipe_id: null
+		    },
+		    {
+		      name: "고추장",
+		      amount: 2,
+		      unit: "큰술",
+		      note: "",
+		      recipe_id: null
+		    },
+		    {
+		      name: "간장",
+		      amount: 1,
+		      unit: "큰술",
+		      note: "",
+		      recipe_id: null
+		    }
+		  ],
+		  
+		  step_dto_list: [
+		    {
+		      image_url: "https://example.com/step1.jpg",
+		      content: "돼지고기에 양념을 넣고 20분간 재워둡니다.",
+		      recipe_id: null
+		    },
+		    {
+		      image_url: "https://example.com/step2.jpg",
+		      content: "재운 고기를 팬에 볶아 익혀줍니다.",
+		      recipe_id: null
+		    },
+		    {
+		      image_url: "https://example.com/step3.jpg",
+		      content: "양파와 대파를 넣고 마저 볶아 마무리합니다.",
+		      recipe_id: null
+		    }
+		  ]
+		};
+		
+		const response = await instance.post('/recipes', data);
+		
+		if (response.data.code === 'RECIPE_CREATE_SUCCESS') {
+			alert('성공');
+			console.log(response);
+		}
+	}
+	catch (error) {
+		const code = error?.response?.data?.code;
+		const message = error?.response?.data?.message;
+		
+		if (code === 'RECIPE_CREATE_FAIL') {
+			alert(message);
+		}
+		else {
+			console.log('서버 요청 중 오류 발생');
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

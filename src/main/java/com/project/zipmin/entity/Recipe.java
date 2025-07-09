@@ -21,10 +21,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "RECIPE")
 public class Recipe {
+	
 	@Id
 	@GeneratedValue(generator = "seq_recipe_id")
 	@SequenceGenerator(name = "seq_recipe_id", sequenceName = "SEQ_RECIPE_ID", allocationSize = 1)
 	private int id;
+	
 	private String imageUrl;
 	private String title;
 	private String introduce;
@@ -39,4 +41,5 @@ public class Recipe {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")
 	private User user;
+	
 }

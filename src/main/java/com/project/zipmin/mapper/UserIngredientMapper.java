@@ -5,11 +5,11 @@ import java.util.List;
 import org.mapstruct.Mapper;
 
 import com.project.zipmin.dto.UserIngredientDTO;
-import com.project.zipmin.entity.UserIngredient;
+import com.project.zipmin.entity.Fridge;
 
 @Mapper(componentModel = "spring")
 public interface UserIngredientMapper {
-	UserIngredientDTO userIngredientToUserIngredientDTO(UserIngredient userIngredient);
-	UserIngredient userIngredientDTOToUserIngredient(UserIngredientDTO userIngredientDTO);
-	List<UserIngredientDTO> userIngredientListToUserIngredientDTOList(List<UserIngredient> userIngredientList);
+	UserIngredientDTO userIngredientToUserIngredientDTO(Fridge userIngredient);
+	Fridge userIngredientDTOToUserIngredient(UserIngredientDTO userIngredientDTO);
+	List<UserIngredientDTO> userIngredientListToUserIngredientDTOList(List<Fridge> userIngredientList);
 }

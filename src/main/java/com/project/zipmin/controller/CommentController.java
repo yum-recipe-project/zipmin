@@ -342,8 +342,6 @@ public class CommentController {
 		    throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
 		}
 		
-		System.err.println("comment controller : username - " + username);
-		
 		LikeCreateResponseDto likeResponseDto = commentService.likeComment(likeRequestDto);
 		
 		return ResponseEntity.status(CommentSuccessCode.COMMENT_LIKE_SUCCESS.getStatus())

@@ -38,7 +38,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional
 @RequiredArgsConstructor
-
 public class CommentService {
 	
 	@Autowired
@@ -167,16 +166,8 @@ public class CommentService {
 	    return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
 	}
 	
-	// 신고순으로 정렬하는거 추가하기
+	// 목록 (신고순으로 정렬하는거 추가하기)
 
-	
-	
-	public int countCommentsByUserId(String userId) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	
 	
 	
 	// 댓글 작성
@@ -188,8 +179,6 @@ public class CommentService {
 		}
 		
 		Comment comment = commentMapper.toEntity(commentRequestDto);
-		
-		System.err.println(comment);
 		
 	    // 대댓글이면 댓글 참조
 	    if (commentRequestDto.getCommId() != null) {

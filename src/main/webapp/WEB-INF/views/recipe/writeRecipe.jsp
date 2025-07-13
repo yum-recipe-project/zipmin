@@ -14,43 +14,43 @@
 		
 		<main id="container">
 			<div class="content">
-				<form id="writeRecipeForm" name="writeRecipeForm" enctype="multipart/form-data" action="" onsubmit="">
+				<form id="writeRecipeForm" name="writeRecipeForm" enctype="multipart/form-data">
 					<div class="recipe_info_wrap">
 						<h2>맛있는 한 끼를 위한<br/>레시피를 소개해주세요!</h2>
 	
 						<!-- 대표 이미지 -->
 						<div class="thumbnail_field">
 							<label>대표 이미지</label>
-							<input type="file" id="thumbnailInput" name="image" accept="image/*">
-							<p id="thumbnailHint">대표 이미지를 첨부해주세요.</p>
+							<input type="file" name="thumbnail" accept="image/*">
+							<p>대표 이미지를 첨부해주세요.</p>
 						</div>
 						
 					
 						<!-- 제목 -->
 						<div class="title_field">
 							<label>제목</label>
-							<input type="text" id="titleInput" name="" value="" placeholder="요리 제목을 작성해주세요.">
-							<p id="titleHint">제목을 작성해주세요.</p>
+							<input type="text"name="title" placeholder="요리 제목을 작성해주세요.">
+							<p>제목을 작성해주세요.</p>
 						</div>
 						
 						<!-- 소개 -->
 						<div class="introduce_field">
 							<label>소개</label>
-							<input type="text" id="introduceInput" name="" value="" placeholder="소개를 작성해주세요.">
-							<p id="introduceHint">소개를 작성해주세요.</p>
+							<input type="text" name="introduce"placeholder="소개를 작성해주세요.">
+							<p>소개를 작성해주세요.</p>
 						</div>
 						
 						<!-- 난이도 -->
 						<div class="level_field">
 							<label>난이도</label>
 							<div class="level_btn_group">
-								<button type="button" class="level_btn" data-value="entry">입문</button>
-								<button type="button" class="level_btn" data-value="easy">초급</button>
-								<button type="button" class="level_btn" data-value="medium">중급</button>
-								<button type="button" class="level_btn" data-value="hard">고급</button>
+								<button type="button" class="level_btn" data-value="입문">입문</button>
+								<button type="button" class="level_btn" data-value="초급">초급</button>
+								<button type="button" class="level_btn" data-value="중급">중급</button>
+								<button type="button" class="level_btn" data-value="고급">고급</button>
 							</div>
-							<input type="hidden" name="" id="levelInput">
-							<p id="levelHint">난이도를 선택해주세요.</p>
+							<input type="hidden" name="cooklevel">
+							<p>난이도를 선택해주세요.</p>
 							<div class="notice">
 								<p>・&nbsp;&nbsp;입문 : 요리를 처음 해보는 사람들을 위한 단계</p>
 								<p>・&nbsp;&nbsp;초급 : 기본적인 칼질과 간단한 조리법을 익힌 단계</p>
@@ -62,30 +62,30 @@
 						<!-- 조리시간 -->
 						<div class="time_field">
 							<label>조리시간</label>
-							<select id="timeSelectbox" name="">
+							<select>
 								<option value="">조리시간을 선택하세요</option>
-								<option value="time1">10분</option>
-								<option value="time2">30분</option>
-								<option value="time3">1시간</option>
-								<option value="time4">1시간 30분</option>
-								<option value="time5">2시간 이상</option>
+								<option value="10분">10분</option>
+								<option value="30분">30분</option>
+								<option value="1시간">1시간</option>
+								<option value="1시간 30분">1시간 30분</option>
+								<option value="2시간 이상">2시간 이상</option>
 							</select>
-							<input type="hidden" id="timeInput">
-							<p id="timeHint">조리시간을 선택해주세요.</p>
+							<input type="hidden" name="cooktime">
+							<p>조리시간을 선택해주세요.</p>
 						</div>
 						
 						<!-- 맵기정도 -->
 						<div class="spicy_field">
 							<label>맵기 정도</label>
 							<div class="spicy_btn_group">
-								<button type="button" class="spicy_btn" data-value="mildest">아주 안매움</button>
-								<button type="button" class="spicy_btn" data-value="mild">안매움</button>
-								<button type="button" class="spicy_btn" data-value="medium">보통</button>
-								<button type="button" class="spicy_btn" data-value="spicy">매움</button>
-								<button type="button" class="spicy_btn" data-value="very_spicy">아주 매움</button>
+								<button type="button" class="spicy_btn" data-value="아주 안매움">아주 안매움</button>
+								<button type="button" class="spicy_btn" data-value="안매움">안매움</button>
+								<button type="button" class="spicy_btn" data-value="보통">보통</button>
+								<button type="button" class="spicy_btn" data-value="매움">매움</button>
+								<button type="button" class="spicy_btn" data-value="아주 매움">아주 매움</button>
 							</div>
-							<input type="hidden" name="" id="spicyInput">
-							<p id="spicyHint">맵기 정도를 선택해주세요.</p>
+							<input type="hidden" name="spicy">
+							<p>맵기 정도를 선택해주세요.</p>
 							<div class="notice">
 								<p>・&nbsp;&nbsp;아주 안매움 : 매운맛이 전혀 없어 아이들도 먹을 수 있는 단계</p>
 								<p>・&nbsp;&nbsp;안매움 : 고춧가루가 살짝 들어갔지만 맵지 않은 단계</p>
@@ -99,37 +99,90 @@
 						<!-- 카테고리 -->
 						<div class="category_field">
 							<label>카테고리</label>
-							<select id="categoryTypeSelectbox" name="">
+							<select>
 								<option value="">종류별</option>
-								<option value="type1">종류1</option>
-								<option value="type2">종류2</option>
+								<option value="밑반찬">밑반찬</option>
+								<option value="메인반찬">메인반찬</option>
+								<option value="국/탕">국/탕</option>
+								<option value="찌개">찌개</option>
+								<option value="찌개">찌개</option>
+								<option value="디저트">디저트</option>
+								<option value="면/만두">면/만두</option>
+								<option value="밥/죽/떡">밥/죽/떡</option>
+								<option value="퓨전">퓨전</option>
+								<option value="김치/젓갈/장류">김치/젓갈/장류</option>
+								<option value="양념/소스/잼">양념/소스/잼</option>
+								<option value="양식">양식</option>
+								<option value="샐러드">샐러드</option>
+								<option value="스프">스프</option>
+								<option value="빵">빵</option>
+								<option value="과자">과자</option>
+								<option value="차/음료/술">차/음료/술</option>
+								<option value="기타">기타</option>
 							</select>
-							<input type="hidden" id="categoryTypeInput">
-							<select id="categoryCaseSelectbox" name="">
+							<input type="hidden" name="categoryType">
+							<select id="categoryCaseSelectbox">
 								<option value="">상황별</option>
-								<option value="case1">상황1</option>
-								<option value="case2">상황2</option>
+								<option value="일상">일상</option>
+								<option value="초스피드">초스피드</option>
+								<option value="손님접대">손님접대</option>
+								<option value="술안주">술안주</option>
+								<option value="다이어트">다이어트</option>
+								<option value="도시락">도시락</option>
+								<option value="영양식">영양식</option>
+								<option value="간식">간식</option>
+								<option value="야식">야식</option>
+								<option value="푸드스타일링">푸드스타일링</option>
+								<option value="해장">해장</option>
+								<option value="명절">명절</option>
+								<option value="이유식">이유식</option>
+								<option value="기타">기타</option>
 							</select>
-							<input type="hidden" id="categoryCaseInput">
-							<select id="categoryIngredientSelectbox" name="">
+							<input type="hidden" name="categoryCase">
+							<select id="categoryIngredientSelectbox">
 								<option value="">재료별</option>
-								<option value="ingredient1">재료1</option>
-								<option value="ingredient2">재료2</option>
+								<option value="소고기">소고기</option>
+								<option value="돼지고기">돼지고기</option>
+								<option value="닭고기">닭고기</option>
+								<option value="육류">육류</option>
+								<option value="채소류">채소류</option>
+								<option value="해물류">해물류</option>
+								<option value="달걀/유제품">달걀/유제품</option>
+								<option value="가공식품류">가공식품류</option>
+								<option value="쌀">쌀</option>
+								<option value="밀가루">밀가루</option>
+								<option value="건어물류">건어물류</option>
+								<option value="버섯류">버섯류</option>
+								<option value="과일류">과일류</option>
+								<option value="콩/견과류">콩/견과류</option>
+								<option value="곡류">곡류</option>
+								<option value="기타">기타</option>
 							</select>
-							<input type="hidden" id="categoryIngredientInput">
-							<select id="categoryWaySelectbox" name="">
+							<input type="hidden" name="categoryIngredient">
+							<select id="categoryWaySelectbox">
 								<option value="">방법별</option>
-								<option value="way1">방법1</option>
-								<option value="way2">방법2</option>
+								<option value="볶음">볶음</option>
+								<option value="끓이기">끓이기</option>
+								<option value="부침">부침</option>
+								<option value="조림">조림</option>
+								<option value="비빔">비빔</option>
+								<option value="찜">찜</option>
+								<option value="절임">절임</option>
+								<option value="튀김">튀김</option>
+								<option value="삶기">삶기</option>
+								<option value="굽기">굽기</option>
+								<option value="데치기">데치기</option>
+								<option value="회">회</option>
+								<option value="기타">기타</option>
 							</select>
-							<input type="hidden" id="categoryWayInput">
-							<p id="categoryHint">카테고리를 선택해주세요.</p>
+							<input type="hidden" name="categoryWay">
+							<p>카테고리를 선택해주세요.</p>
 						</div>
 						
 						<!-- 제목 -->
 						<div class="youtube_field">
 							<label>유튜브 링크 (선택사항)</label>
-							<input type="text" id="youtubeInput" name="" value="" placeholder="유튜브 링크를 입력해주세요.">
+							<input type="text" name="youtube" placeholder="유튜브 링크를 입력해주세요.">
 						</div>
 					</div>
 					
@@ -139,16 +192,16 @@
 						<!-- 조리 양 -->
 						<div class="serving_field">
 							<label>조리 양</label>
-							<select id="servingSelectbox" name="">
+							<select>
 								<option value="">조리 양을 선택하세요</option>
-								<option value="serving1">1인분</option>
-								<option value="serving2">2인분</option>
-								<option value="serving3">3인분</option>
-								<option value="serving4">4인분</option>
-								<option value="serving5">5인분</option>
+								<option value="1인분">1인분</option>
+								<option value="2인분">2인분</option>
+								<option value="3인분">3인분</option>
+								<option value="4인분">4인분</option>
+								<option value="5인분">5인분</option>
 							</select>
-							<input type="hidden" id="servingInput">
-							<p id="servingHint">양을 선택해주세요.</p>
+							<input type="hidden" name="serving">
+							<p>양을 선택해주세요.</p>
 						</div>
 						
 						<!-- 재료 -->
@@ -197,7 +250,7 @@
 						<!-- 제목 -->
 						<div class="tip_field">
 							<label>팁 및 주의사항 (선택사항)</label>
-							<input type="text" id="tipInput" name="" value="" placeholder="요리팁이나 주의사항을 작성해주세요">
+							<input type="text" name="tip" placeholder="요리팁이나 주의사항을 작성해주세요">
 						</div>
 						
 						<!-- 공지사항 -->
@@ -213,7 +266,7 @@
 						<!-- 공지사항에 대한 동의 -->
 						<div class="accept_notice">
 							<div class="checkbox_wrap">
-								<input type="checkbox" id="acceptNotice" name="" value="">
+								<input type="checkbox" id="acceptNotice" name="notice">
 								<label for="acceptNotice">유의사항을 모두 확인했으며, 동의합니다.</label>
 							</div>
 						</div>

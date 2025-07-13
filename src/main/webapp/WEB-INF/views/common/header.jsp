@@ -22,14 +22,9 @@
 				</div>
 				<!-- 로그인 상태 -->
 				<div class="login_state">
-					<a class="account" href="/mypage.do">
-						<img src="/images/common/account.png">
-						<span class="user_name"></span>
-					</a>
+					<span class="user_name"></span>
 					<div class="divider"></div>
-					<a href="/fridge/viewMemo.do">장보기메모</a>
-					<div class="divider"></div>
-					<a href="/recipe/writeRecipe.do">레시피 작성</a>
+					<a href="/mypage.do">마이페이지</a>
 					<div class="divider"></div>
 					<a href="" id="logout">로그아웃</a>
 				</div>
@@ -52,6 +47,7 @@
 					<li><a href="/chompessor/listChomp.do">쩝쩝박사</a></li>
 					<li><a href="/cooking/listClass.do">쿠킹클래스</a></li>
 					<li><a href="/fridge/viewFridge.do">나의 냉장고</a></li>
+					<li><a href="/fridge/viewMemo.do">장보기메모</a></li>
 				</ul>
 			</nav>
 			<!-- 검색창 -->

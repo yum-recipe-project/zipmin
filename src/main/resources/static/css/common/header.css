@@ -61,17 +61,9 @@
 	color: var(--txt-color-500);
 }
 
-#header .header_top .inner .util_menu a.account {
-	display: flex;
-	gap: 4px;
-	align-items: center;
+#header .header_top .inner .util_menu .user_name {
 	color: #666;
 	font-weight: 600;
-}
-
-#header .header_top .inner .util_menu a.account img {
-	width: 16px;
-	height: 16px;
 }
 
 
@@ -126,7 +118,8 @@
 #header .header_bottom .inner .search_form {
 	display: none;
 	margin-left: auto !important;
-	width: 308px;
+	/* width: 308px; */
+	width: 280px;
 	padding: 0px 12px;
 	border: 1px solid var(--line-color1);
 	border-radius: 4px;

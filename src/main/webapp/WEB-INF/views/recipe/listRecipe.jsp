@@ -18,6 +18,8 @@
 				<div class="recipe_header">
 					<h2>레시피</h2>
 					
+					<a href="/recipe/writeRecipe.do">레시피 작성</a>
+					
 					<!-- 레시피 카테고리 -->
 					<div class="recipe_menu">
 						<div class="category">

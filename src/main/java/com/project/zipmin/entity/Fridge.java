@@ -30,7 +30,7 @@ public class Fridge {
 	@SequenceGenerator(name = "seq_fridge_id", sequenceName = "SEQ_FRIDGE_ID", allocationSize = 1)
 	private int id;
 	
-	private String imageUrl;
+	private String image;
 	private String name;
 	private int amount;
 	private String unit;

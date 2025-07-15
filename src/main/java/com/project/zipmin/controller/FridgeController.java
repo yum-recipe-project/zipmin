@@ -75,8 +75,7 @@ public class FridgeController {
 		
 		// 로그인 정보
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		UserReadResponseDto userDto = userService.readUserByUsername(username);
-		fridgeRequestDto.setUserId(userDto.getId());
+		fridgeRequestDto.setUserId(userService.readUserByUsername(username).getId());
 		
 		FridgeCreateResponseDto fridgeResponseDto = fridgeService.createFridge(fridgeRequestDto);
 		
@@ -100,8 +99,7 @@ public class FridgeController {
 		
 		// 로그인 정보
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		UserReadResponseDto userDto = userService.readUserByUsername(username);
-		fridgeRequestDto.setUserId(userDto.getId());
+		fridgeRequestDto.setUserId(userService.readUserByUsername(username).getId());
 		
 		FridgeUpdateResponseDto fridgeResponseDto = fridgeService.updateFridge(fridgeRequestDto);
 		
@@ -125,8 +123,7 @@ public class FridgeController {
 		
 		// 로그인 정보
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		UserReadResponseDto userDto = userService.readUserByUsername(username);
-		fridgeDto.setUserId(userDto.getId());
+		fridgeDto.setUserId(userService.readUserByUsername(username).getId());
 		
 		fridgeService.deleteFridge(fridgeDto);
 		

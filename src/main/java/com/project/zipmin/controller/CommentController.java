@@ -32,6 +32,7 @@ import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.ReportCreateRequestDto;
 import com.project.zipmin.dto.ReportCreateResponseDto;
 import com.project.zipmin.dto.ReportDeleteRequestDto;
+import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.CommentCreateFailResponse;
@@ -152,11 +153,9 @@ public class CommentController {
 		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 권한 없는 사용자의 접근
+		// 로그인 정보
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (userService.readUserByUsername(username).getId() != commentRequestDto.getUserId()) {
-		    throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
-		}
+		commentRequestDto.setUserId(userService.readUserByUsername(username).getId());
 		
 		CommentCreateResponseDto commentResponseDto = commentService.createComment(commentRequestDto);
 		
@@ -227,11 +226,9 @@ public class CommentController {
 		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 권한 없는 사용자의 접근
+		// 로그인 정보
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (userService.readUserByUsername(username).getId() != commentRequestDto.getUserId()) {
-		    throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
-		}
+		commentRequestDto.setUserId(userService.readUserByUsername(username).getId());
 		
 		CommentUpdateResponseDto commentResponseDto = commentService.updateComment(commentRequestDto);
 		
@@ -302,11 +299,9 @@ public class CommentController {
 		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 권한 없는 사용자의 접근
+		// 로그인 정보
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (userService.readUserByUsername(username).getId() != commentDto.getUserId()) {
-		    throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
-		}
+		commentDto.setUserId(userService.readUserByUsername(username).getId());
 		
 		commentService.deleteComment(commentDto);
 		
@@ -336,11 +331,9 @@ public class CommentController {
 		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 권한 없는 사용자의 접근
+		// 로그인 정보
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (userService.readUserByUsername(username).getId() != likeRequestDto.getUserId()) {
-		    throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
-		}
+		likeRequestDto.setUserId(userService.readUserByUsername(username).getId());
 		
 		LikeCreateResponseDto likeResponseDto = commentService.likeComment(likeRequestDto);
 		
@@ -362,11 +355,9 @@ public class CommentController {
 		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 권한 없는 사용자의 접근
+		// 로그인 정보
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (userService.readUserByUsername(username).getId() != likeDto.getUserId()) {
-		    throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
-		}
+		likeDto.setUserId(userService.readUserByUsername(username).getId());
 		
 		commentService.unlikeComment(likeDto);
 		
@@ -396,11 +387,9 @@ public class CommentController {
 		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 권한 없는 사용자의 접근
+		// 로그인 정보
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (userService.readUserByUsername(username).getId() != reportRequestDto.getUserId()) {
-		    throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
-		}
+		reportRequestDto.setUserId(userService.readUserByUsername(username).getId());
 		
 		ReportCreateResponseDto reportReponseDto = commentService.reportComment(reportRequestDto);
 		
@@ -422,11 +411,9 @@ public class CommentController {
 		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 권한 없는 사용자의 접근
+		// 로그인 정보
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (userService.readUserByUsername(username).getId() != reportDto.getUserId()) {
-		    throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
-		}
+		reportDto.setUserId(userService.readUserByUsername(username).getId());
 		
 		commentService.unreportComment(reportDto);
 		

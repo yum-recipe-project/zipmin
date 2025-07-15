@@ -102,8 +102,8 @@ public class FridgeService {
 		}
 		
 		// 필요한 필드만 수정
-		if (fridgeDto.getImageUrl() != null) {
-			fridge.setImageUrl(fridgeDto.getImageUrl());
+		if (fridgeDto.getImage() != null) {
+			fridge.setImage(fridge.getImage());
 		}
 		if (fridgeDto.getName() != null) {
 			fridge.setName(fridgeDto.getName());

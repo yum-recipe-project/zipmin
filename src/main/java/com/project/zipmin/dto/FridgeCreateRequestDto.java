@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class FridgeCreateRequestDto {
 	
-	private String imageUrl;
+	private String image;
 	private String name;
 	private Integer amount;
 	private String unit;

@@ -298,41 +298,7 @@
 						            <th width="60px"></th>
 						        </tr>
 						    </thead>
-						    <tbody>
-						        <tr>
-						            <td>마라탕 소스</td>
-						            <td>100g</td>
-						            <td>2025.01.02</td>
-						            <td>육류</td>
-						            <td>
-						            	<button class="delete_btn">
-						            		<img src="/images/fridge/close.png">
-						            	</button>
-						            </td> 
-						        </tr>
-						        <tr>
-						            <td>상하이 목장 치즈</td>
-						            <td>10ea</td>
-						            <td>2025.01.02</td>
-						            <td>채소류</td>
-						             <td>
-						            	<button class="delete_btn">
-						            		<img src="/images/fridge/close.png">
-						            	</button>
-						            </td>
-						        </tr>
-						        <tr>
-						            <td>제로콜라</td>
-						            <td>2L</td>
-						            <td>2025.01.02</td>
-						            <td>소스류</td>
-						             <td>
-						            	<button class="delete_btn">
-						            		<img src="/images/fridge/close.png">
-						            	</button>
-						            </td>
-						        </tr>
-						    </tbody>
+						    <tbody class="ingredient_body"></tbody>
 						</table>
 						
 					</div>

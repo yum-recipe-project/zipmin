@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class FridgeUpdateRequestDto {
 	
 	private Integer id;
-	private String imageUrl;
+	private String image;
 	private String name;
 	private Integer amount;
 	private String unit;

@@ -9,4 +9,9 @@ import com.project.zipmin.entity.Fridge;
 public interface FridgeRepository extends JpaRepository<Fridge, Integer> {
 
 	List<Fridge> findAllByUserId(int userId);
+	
+	
+	
+	
+	
 }

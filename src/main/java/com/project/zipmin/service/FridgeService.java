@@ -1,5 +1,6 @@
 package com.project.zipmin.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import com.project.zipmin.api.FridgeErrorCode;
 import com.project.zipmin.dto.FridgeCreateRequestDto;
 import com.project.zipmin.dto.FridgeCreateResponseDto;
 import com.project.zipmin.dto.FridgeDeleteRequestDto;
+import com.project.zipmin.dto.RecipeReadResponseDto;
+import com.project.zipmin.dto.RecipeStockReadResponseDto;
 import com.project.zipmin.dto.FridgeReadResponseDto;
 import com.project.zipmin.dto.FridgeUpdateRequestDto;
 import com.project.zipmin.dto.FridgeUpdateResponseDto;
@@ -31,6 +34,8 @@ public class FridgeService {
 	private FridgeRepository fridgeRepository;
 	
 	@Autowired
+	private RecipeService recipeService;
+	@Autowired
 	private UserService userService;
 	
 	private final FridgeMapper fridgeMapper;
@@ -38,7 +43,7 @@ public class FridgeService {
 	
 	
 	// 냉장고 목록 조회
-	public List<FridgeReadResponseDto> readFridge(Integer userId) {
+	public List<FridgeReadResponseDto> readFridgeList(Integer userId) {
 		
 		// 입력값 검증
 		if (userId == null) {
@@ -161,6 +166,40 @@ public class FridgeService {
 			throw new ApiException(FridgeErrorCode.FRIDGE_DELETE_FAIL);
 		}
 		
+	}
+	
+	
+	
+	// 냉장고 파먹기
+	public List<RecipeReadResponseDto> readPickList(Integer userId) {
+		
+		// 입력값 검증
+		if (userId == null) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
+		}
+		
+		List<RecipeReadResponseDto> pickDtoList = new ArrayList<>();
+		
+		// 레시피 목록 조회
+		List<RecipeReadResponseDto> recipeDtoList = recipeService.readRecipeList();
+		List<FridgeReadResponseDto> fridgeDtoList = readFridgeList(userId);
+		
+		for (RecipeReadResponseDto recipeDto : recipeDtoList) {
+			List<RecipeStockReadResponseDto> stockDtoList = recipeDto.getStockList();
+		    long count = stockDtoList.stream()
+		            .filter(stock -> fridgeDtoList.stream()
+		                .anyMatch(fridge -> fridge.getName().equals(stock.getName()))
+		            ).count();
+		    
+		    double rate = (count * 100.0) / stockDtoList.size();
+		    
+		    if (rate >= 70.0) {
+		    	recipeDto.setRate(rate);
+		    	pickDtoList.add(recipeDto);
+		    }
+		}
+		
+		return pickDtoList;
 	}
 
 }

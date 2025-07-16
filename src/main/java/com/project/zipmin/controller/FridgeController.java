@@ -24,6 +24,7 @@ import com.project.zipmin.dto.FridgeDeleteRequestDto;
 import com.project.zipmin.dto.FridgeReadResponseDto;
 import com.project.zipmin.dto.FridgeUpdateRequestDto;
 import com.project.zipmin.dto.FridgeUpdateResponseDto;
+import com.project.zipmin.dto.RecipeReadResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.service.FridgeService;
 import com.project.zipmin.service.UserService;
@@ -55,7 +56,7 @@ public class FridgeController {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		UserReadResponseDto userDto = userService.readUserByUsername(username);
 
-		List<FridgeReadResponseDto> fridgeList = fridgeService.readFridge(userDto.getId());
+		List<FridgeReadResponseDto> fridgeList = fridgeService.readFridgeList(userDto.getId());
 		
 		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS, fridgeList));
@@ -134,7 +135,26 @@ public class FridgeController {
 	
 	
 	
-	
+	// 냉장고 파먹기
+	@GetMapping("/fridges/pick")
+	public ResponseEntity<?> pickFridge() {
+		
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 로그인 정보
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		int userId = userService.readUserByUsername(username).getId();
+		
+		List<RecipeReadResponseDto> recipeList = fridgeService.readPickList(userId);
+		
+		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_PICK_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_PICK_LIST_SUCCESS, recipeList));
+		
+	}
 	
 	
 	

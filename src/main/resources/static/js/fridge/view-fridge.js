@@ -382,3 +382,72 @@ async function deleteFridge(id) {
 	}
 }
 
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', async function() {
+	
+	const token = localStorage.getItem('accessToken');
+	const headers = {
+		'Content-Type': 'application/json'
+	};
+
+	if (isLoggedIn()) {
+		headers['Authorization'] = `Bearer ${token}`;
+	}
+
+	try {
+		const response = await instance.get('/fridges/pick', { headers: headers });
+		
+		if (response.data.code === 'FRIDGE_PICK_LIST_SUCCESS') {
+			createPickList(response.data.data)
+		}
+	}
+	catch (error) {
+		
+	}
+	
+});
+
+
+
+/**
+ * 냉장고 재료로 만들 수 있는 레시피 목록을 생성하는 함수
+ */
+async function createPickList(list) {
+	const container = document.querySelector('.pick_list');
+	container.innerHTML = '';
+
+	list.forEach((recipe, index) => {
+		const li = document.createElement('li');
+		
+		const recipeDiv = document.createElement('div');
+		recipeDiv.className = 'recipe';
+
+		const numberSpan = document.createElement('span');
+		numberSpan.textContent = index + 1;
+
+		const titleP = document.createElement('p');
+		titleP.textContent = recipe.title;
+
+		recipeDiv.appendChild(numberSpan);
+		recipeDiv.appendChild(titleP);
+
+		// 일치율 표시
+		if (recipe.rate >= 90) {
+			const flagP = document.createElement('p');
+			flagP.className = 'flag';
+			flagP.textContent = `${recipe.rate}% 일치`;
+			recipeDiv.appendChild(flagP);
+		}
+
+		li.appendChild(recipeDiv);
+		container.appendChild(li);
+	});
+}
+
+
+
+

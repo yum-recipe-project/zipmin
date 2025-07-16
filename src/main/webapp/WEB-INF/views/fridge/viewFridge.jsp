@@ -62,41 +62,7 @@
 						<!-- 레시피 추천 -->
 						<div class="clear_recipe">
 							<p class="pick">냉장고 속 재료로 만들 수 있는 요리</p>
-							<ul>
-								<li>
-									<div class="recipe">
-										<span>1</span>
-										<p>김치볶음밥</p>
-										<p class="flag">90% 일치</p>
-									</div>
-								</li>
-								
-								<li>
-									<div class="recipe">
-										<span>2</span>
-										<p>김치볶음밥</p>
-									</div>
-								</li>
-								<li>
-									<div class="recipe">
-										<span>3</span>
-										<p>김치볶음밥</p>
-									</div>
-								</li>
-								<li>
-									<div class="recipe">
-										<span>4</span>
-										<p> 김치볶음밥</p>
-									</div>
-								</li>
-								<li>
-									<div class="recipe">
-										<span>5</span>
-										<p> 김치볶음밥</p>
-									</div>
-								</li>
-								
-							</ul>
+							<ul class="pick_list"></ul>
 						</div>
 					</div>
 				</div>

@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+
+
+
+
 /* 모달창 */
 .modal-backdrop {
 	background-color: rgba(0, 0, 0, 0.4) !important;
@@ -18,7 +22,7 @@
 
 
 
-/* 헤더 */
+/* 모달 헤더 */
 #container .modal-content .modal-header {
 	padding: 20px 20px 14px;
 	border-bottom: 1px solid var(--line-color1);
@@ -45,14 +49,13 @@
 
 
 
-/* 바디 */
+
+
+/* 모달 바디 */
 #container .modal-content .modal-body {
 	padding: 20px;
 }
 
-#container .modal-content .modal-body .form-group:not(:first-child) {
-	margin-top: 24px;
-}
 
 #container .modal-content .modal-body label {
 	font-size: 14px;
@@ -60,13 +63,16 @@
 	margin-bottom: 8px;
 }
 
-/* 바디 제목 */
 #container .modal-content .modal-body h5 {
 	font-size: 20px;
 	font-weight: 600;
 }
 
-/* 바디 (별점) */
+
+
+
+
+/* 별점 */
 #container .modal-content .modal-body .star_group {
 	display: flex;
 	align-items: center;
@@ -80,7 +86,38 @@
 	height: 20px;
 }
 
-/* 폼 */
+
+
+
+
+/* 폼 1 */
+#container .modal-content .modal-body .form-group:not(:first-child) {
+	margin-top: 24px;
+}
+
+#container .modal-content .modal-body .form-group p {
+	margin-top: 10px;
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 1.5;
+	color: var(--txt-color-500);
+}
+
+#container .modal-content .modal-body .form-group input.danger {
+	border: 1px solid #F45452;
+	background: rgb(254, 245, 245);
+}
+
+#container .modal-content .modal-body .form-group p.danger {
+	display: none;
+	margin-top: 4px;
+	font-size: 12px;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+	color: #F45452;
+}
+
+/* 폼 2 */
 #container .modal-content .modal-body .form-control {
 	border: 1px solid #DEE2E6;
 }
@@ -90,6 +127,10 @@
     box-shadow: none !important;
     border: 1px solid var(--point-color2);
 }
+
+
+
+
 
 /* 드롭다운 */
 #container .modal-content .modal-body .form-select {
@@ -102,15 +143,16 @@
     border: 1px solid var(--point-color2);
 }
 
-#container .modal-content .modal-body .form-group p {
-	margin-top: 10px;
-	font-weight: 400;
-	font-size: 12px;
-	line-height: 1.5;
-	color: var(--txt-color-500);
+#container .modal-content .modal-body .form-select.danger {
+	border: 1px solid #F45452;
+	background: rgb(254, 245, 245);
 }
 
-/* 바디 (주의사항) */
+
+
+
+
+/* 주의사항 */
 #container .modal-content .modal-body .form-notice {
 	display: flex;
 	align-items: center;
@@ -128,10 +170,15 @@
 	margin-right: 4px;
 }
 
-/* 바디 (하단 회색 설명 문구) */
+
+
+
+
+/* 하단 회색 설명 문구 */
 #container .modal-content .modal-body .form-info {
 	margin-top: 20px;
 }
+
 #container .modal-content .modal-body .form-info p {
 	margin: 0;
 	font-weight: 400;
@@ -139,6 +186,10 @@
 	line-height: 1.5;
 	color: var(--txt-color-500);
 }
+
+
+
+
 
 /* 테이블 */
 #container .modal-content .modal-body table {
@@ -173,7 +224,10 @@
 }
 
 
-/* 테이블 (포인트) */
+
+
+
+/* 포인트 */
 #container .modal-content .modal-body table.point {
 	table-layout: fixed;
     width: 100%;
@@ -215,7 +269,11 @@
     color: var(--point-color2);
 }
 
-/* 바디 (포인트 충전) */
+
+
+
+
+/* 포인트 충전 */
 #container .modal-content .modal-body .topup {
 	display: flex;
 	width: 100%;
@@ -232,7 +290,11 @@
 	border-radius: 12px;
 }
 
-/* 바디 (신고하기) */
+
+
+
+
+/* 신고하기 */
 #container .modal-content .modal-body .report {
 	display: flex;
 	width: 100%;
@@ -249,7 +311,11 @@
 	border-radius: 12px;
 }
 
-/* 바디 (라디오) */
+
+
+
+
+/* 라디오 */
 #container .modal-content .modal-body .form-radio {
 	display: flex;
 	align-items: center;
@@ -257,13 +323,16 @@
 	padding: 12px 0;
 	border-top: 1px solid var(--line-color1);
 }
+
 #container .modal-content .modal-body .form-radio:first-child {
 	border: none;
 }
+
 #container .modal-content .modal-body .form-radio .radio {
 	align-items: center;
 	display: inline-block;
 }
+
 #container .modal-content .modal-body .form-radio input[type='radio'] + label {
 	margin: 0;
 	cursor: pointer;
@@ -273,6 +342,7 @@
 	font-weight: 400;
 	width: 350px;
 }
+
 #container .modal-content .modal-body .form-radio input[type='radio'] + label:before {
 	content: '';
 	display: inline-block;
@@ -283,6 +353,7 @@
 	vertical-align: middle;
 	margin-right: 10px;
 }
+
 #container .modal-content .modal-body .form-radio input[type='radio']:checked + label:after {
 	content: '';
 	position: absolute;
@@ -295,6 +366,7 @@
 	background: #333;
 	border-radius: 50%;
 }
+
 #container .modal-content .modal-body .form-radio p {
 	font-size: 16px;
 	font-weight: 500;
@@ -305,8 +377,8 @@
 
 
 
-/* 바디 (냉장고 재료 추가하기) */
-#container .modal-content .modal-body .category_img {
+/* 이미지 선택 */
+#container .modal-content .modal-body .form-image {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
@@ -314,74 +386,70 @@
 	margin-bottom: 20px;
 }
 
-#container .modal-content .modal-body .category_img .title {
-	text-align: left;
-	font-size: 16px;
-	color: var(--txt-color-600);
-	font-weight: 700;
-}
-
-
-#container .modal-content .modal-body .category_img .img_select {
+#container .modal-content .modal-body .form-image .image_wrap {
 	display: flex;
-	gap: 10px;
+	gap: 20px;
 }
 
-#container .modal-content .modal-body .category_img .img_select .ingredient_img {
+#container .modal-content .modal-body .form-image .select_img {
 	display: block;
     width: 56px;
     height: 56px;
     border-radius: 50%;
     background-color: #ddd;
+    border: 1px solid var(--line-color3);
     flex-shrink: 0;
-    
-    /* 이미지 추가 테스트 */
-    background-size: cover;  
+    background-size: 80%;  
     background-position: center;
+    background-repeat: no-repeat;
 }
 
-#container .modal-content .modal-body .category_img .img_select .add_btn {
+#container .modal-content .modal-body .form-image .select_img.danger {
+	border: 1px solid #F45452;
+	background: rgb(254, 245, 245);
+}
+
+#container .modal-content .modal-body .form-image .select_btn {
 	display: flex;	
 	align-items: center;
 	gap: 2px;
 	background: none;
 	border: none;
 }
-#container .modal-content .modal-body .category_img .img_select .add_btn img {
+
+#container .modal-content .modal-body .form-image .select_btn img {
 	height: 20px;
 }
-#container .modal-content .modal-body .category_img .img_select .add_btn p {
+
+#container .modal-content .modal-body .form-image .select_btn p {
     font-size: 14px;
     margin: 0;
     letter-spacing: -0.5px;
 }
 
-#container .modal-content .modal-body .img_select_wrap {
-    display: none; 
-	margin: -15px 0 30px 66px;
+#container .modal-content .modal-body .form-image p.danger {
+	display: none;
+	margin-top: 4px;
+	font-size: 12px;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+	color: #F45452;
 }
 
+#container .modal-content .modal-body .image_list {
+    display: none; 
+	margin: -15px 0 30px 70px;
+}
 
-
-#container .modal-content .modal-body .img_wrap {
-	
+#container .modal-content .modal-body .image_list ul {
 	display: flex;
-	flex-direction: column;
+	flex-wrap: wrap;
 	align-items: flex-start;
 	gap: 10px;
 	margin-bottom: 20px;
 }
-#container .modal-content .modal-body .img_wrap .title {
-	text-align: left;
-	font-size: 16px;
-	color: var(--txt-color-600);
-	font-weight: 700;
-}
-#container .modal-content .modal-body .img_wrap .img_list {
-	display: flex;
-	gap: 10px;
-}
-#container .modal-content .modal-body .img_wrap .img_list .img_btn {
+
+#container .modal-content .modal-body .image_list ul li button {
 	display: block;
     width: 56px;
     height: 56px;
@@ -389,39 +457,19 @@
     background-color: #f1f6fd;
     flex-shrink: 0;
     border: 1px solid var(--line-color3); 
-    
-    /* 이미지 추가 테스트 */
     background-size: cover;  
     background-position: center;
 }
-#container .modal-content .modal-body .img_wrap .img_list .img_btn img {
+
+#container .modal-content .modal-body .image_list ul li button img {
 	height: 40px;
 }
 
-#container .modal-content .modal-body .input_wrap {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	margin-bottom: 20px;
-}
-#container .modal-content .modal-body .input_wrap  .title {
-	text-align: left;
-	font-size: 16px;
-	color: var(--txt-color-600);
-	font-weight: 700;
-	width: 70px;
-}
 
 
 
 
-
-
-
-
-
-
-/* 모달 (결과) */
+/* 결과 */
 #container .modal-content .modal-body .form-result {
 	display: flex;
 	justify-content: center;
@@ -444,7 +492,10 @@
 }
 
 
-/* 바디 (포인트 충전 박스) */
+
+
+
+/* 포인트 충전 박스 */
 #container .modal-content .modal-body .form-box {
 	display: flex;
 	flex-direction: row;
@@ -455,11 +506,13 @@
 	border-radius: 8px;
 	margin-top: 20px;
 }
+
 #container .modal-content .modal-body .form-box .message {
 	display: flex;
 	flex-direction: column;
 	gap: 4px;
 }
+
 #container .modal-content .modal-body .form-box .message p {
 	margin: 0px;
 	font-weight: 400;
@@ -467,10 +520,12 @@
 	line-height: 1.5;
 	color: var(--point-color2);
 }
+
 #container .modal-content .modal-body .form-box .message p:first-child {
 	font-weight: 500;
 	font-size: 16px;
 }
+
 #container .modal-content .modal-body .form-box button {
     width: 88px;
 	height: 32px;
@@ -488,6 +543,7 @@
     background: var(--point-color2);
     font-weight: 500;
 }
+
 #container .modal-content .modal-body .form-box button:hover {
 	background: #0073E6;
     color: #F2F2F2;
@@ -512,7 +568,9 @@
 
 
 
-/* 푸터 */
+
+
+/* 모달 푸터 */
 #container .modal-content .modal-footer {
 	padding: 8px 20px;
 	border-top: 1px solid var(--line-color1);
@@ -557,12 +615,6 @@
 	background: #0073E6;
     color: #F2F2F2;
 }
-
-
-
-
-
-
 
 
 

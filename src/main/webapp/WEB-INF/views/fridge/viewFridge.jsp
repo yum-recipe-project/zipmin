@@ -28,12 +28,12 @@
 					
 					<div class="fridge_content">
 					
+						<!-- 냉장고 -->
 						<div id="ingredient_swiper_container" class="fridge"></div>
 						
+						<!-- 작성 버튼 -->
 						<button class="btn_primary" data-bs-toggle="modal" data-bs-target="#addIngredientModal">냉장고 채우기</button>
-
-						
-								
+		
 						<!-- 재료 표 -->
 						<table class="ingredient_list">
 						    <thead>

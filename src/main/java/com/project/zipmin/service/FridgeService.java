@@ -62,8 +62,8 @@ public class FridgeService {
 	// 냉장고 작성
 	public FridgeCreateResponseDto createFridge(FridgeCreateRequestDto fridgeDto) {
 		
-		// 입력값 검증 (수정 필요할 수도)
-		if (fridgeDto == null || fridgeDto.getName() == null || fridgeDto.getUserId() == null) {
+		// 입력값 검증
+		if (fridgeDto == null || fridgeDto.getImage() == null || fridgeDto.getName() == null || fridgeDto.getAmount() == null || fridgeDto.getUnit() == null || fridgeDto.getExpdate() == null || fridgeDto.getCategory() == null || fridgeDto.getUserId() == null) {
 			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
 		}
 		
@@ -85,8 +85,8 @@ public class FridgeService {
 	// 냉장고 수정
 	public FridgeUpdateResponseDto updateFridge(FridgeUpdateRequestDto fridgeDto) {
 		
-		// 입력값 검증 (수정할수도)
-		if (fridgeDto == null || fridgeDto.getName() == null) {
+		// 입력값 검증
+		if (fridgeDto == null || fridgeDto.getId() == null || fridgeDto.getImage() == null || fridgeDto.getName() == null || fridgeDto.getAmount() == null || fridgeDto.getUnit() == null || fridgeDto.getExpdate() == null || fridgeDto.getCategory() == null || fridgeDto.getUserId() == null) {
 			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
 		}
 		

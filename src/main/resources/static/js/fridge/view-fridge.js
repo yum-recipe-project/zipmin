@@ -197,6 +197,133 @@ function createIngredientSwiper(list) {
 
 
 
+/**
+ * 냉장고 재료를 생성하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	
+	const form = document.getElementById('addIngredientForm');
+	form.addEventListener('submit', async function(event) {
+		event.preventDefault();
+		let isValid = true;
+		
+		if (form.image.value.trim() === '') {
+			document.querySelector('.image_field .select_img').classList.add('danger');
+			document.querySelector('.image_field p.danger').style.display = 'block';
+			form.image.focus();
+			isValid = false;
+		}
+		
+		if (form.category.value.trim() === '') {
+			document.querySelector('.category_field select').classList.add('danger');
+			document.querySelector('.category_field p').style.display = 'block';
+			form.amount.focus();
+			isValid = false;
+		}
+		
+		if (form.amount.value.trim() === '') {
+			form.amount.classList.add('danger');
+			document.querySelector('.amount_field p').style.display = 'block';
+			form.amount.focus();
+			isValid = false;
+		}
+		
+		if (form.expdate.value.trim() === '') {
+			form.expdate.classList.add('danger');
+			document.querySelector('.expdate_field p').style.display = 'block';
+			form.expdate.focus();
+			isValid = false;
+		}
+		
+		if (form.name.value.trim() === '') {
+			form.name.classList.add('danger');
+			document.querySelector('.name_field p').style.display = 'block';
+			form.name.focus();
+			isValid = false;
+		}
+		
+		if (isValid) {
+			if (!isLoggedIn()) {
+				redirectToLogin();
+			}
+			
+			try {
+				const token = localStorage.getItem('accessToken');
+				const headers = {
+					'Content-Type': 'application/json'
+				};
+				if (isLoggedIn()) {
+					headers['Authorization'] = `Bearer ${token}`;
+				}
+				
+				const rawAmount = form.amount.value;
+				const parsed = rawAmount.match(/^(\d+)(.*)$/);
+				
+				const data = {
+					image: form.image.value,
+					name: form.name.value,
+					amount: parsed ? parsed[1].trim() : '',
+					unit: parsed ? parsed[2].trim() : '',
+					expdate: form.expdate.value,
+					category: form.category.value
+				}
+				
+				console.log(data);
+				
+				const response = await instance.post(`/fridges`, data, {
+					headers: headers
+				});
+				
+				if (response.data.code === 'FRIDGE_CREATE_SUCCESS') {
+					// 모달 초기화 및 닫기
+					form.reset();
+					bootstrap.Modal.getInstance(document.getElementById('addIngredientModal')).hide();
+					
+					// 재랜더링
+					const list = await instance.get('/fridges');
+					if (list.data.code === 'FRIDGE_READ_LIST_SUCCESS') {
+						createIngredientList(list.data.data);
+						createIngredientSwiper(list.data.data);
+					}
+					else {
+						location.reload();
+					}
+				}
+				
+			}
+			catch (error) {
+				const code = error?.response?.data?.code;
+				const message = error?.response?.data?.message;
+
+				if (code === 'FRIDGE_CREATE_FAIL') {
+					alert(message);
+				}
+				else if (code === 'FRIDGE_INVALID_INPUT') {
+					alert(message);
+				}
+				else if (code === 'USER_NOT_FOUND') {
+					alert(message);
+				}
+				else if (code === 'FRIDGE_UNAUTHORIZED') {
+					alert(message);
+				}
+				else if (code === 'FRIDGE_FORBIDDEN') {
+					alert(message);
+				}
+				else if (code === 'INTERNAL_SERVER_ERROR') {
+					alert(message);
+				}
+				else {
+					console.log('서버 요청 중 오류 발생');
+				}
+			}
+		}
+	});
+});
+
+
+
+
 
 /**
  * 냉장고 재료를 삭제하는 함수

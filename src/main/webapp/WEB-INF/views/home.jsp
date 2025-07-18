@@ -19,9 +19,9 @@
 				<div class="main_banner">
 					<img src="/images/home/main_mascot.png"/>
 					<div class="txt">
-						<p class="title">오늘 저녁 <span>마라탕</span> 땡겨요</p>
-						<button class="btn_sort" onclick="location.href='/recipe/listRecipe.do'">
-				            마라탕 레시피 보러가기
+						<p class="title">오늘 <span class="meal"></span> <span class="roulette"></span> 땡겨요</p>
+						<button class="btn_sort roulette_link" style="display: none;">
+							레시피 보러가기
 				            <div class="btn_img"></div>
 				        </button>
 					</div>

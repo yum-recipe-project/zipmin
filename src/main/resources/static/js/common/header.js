@@ -121,4 +121,40 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+/**
+ * 
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	
+	// 추후에 키친가이드에서 가져와야 함 (수정 필요)
+	const tipList = [
+	  '닭 잡내 안나게 손질하는 법',
+	  '라면 맛있게 끓이는 꿀팁',
+	  '김치 오래 보관하는 방법',
+	  '스팸 기름 덜 나는 법',
+	  '달걀 껍데기 쉽게 까는 팁',
+	  '양파 썰 때 눈물 안 나는 법',
+	  '냄비 탄 자국 제거하는 방법'
+	];
+	
+	const display = document.querySelector('.tip_text');
+	
+	function changeTip() {
+		display.classList.add('slide-up');
+		
+		setTimeout(() => {
+			const randomList = tipList[Math.floor(Math.random() * tipList.length)];
+			// 추후에 링크도 넣어야 함
+			display.innerHTML = `${randomList}&nbsp;&nbsp;→`;
+			display.classList.remove('slide-up');
+		}, 500);
+	}
+	changeTip();
+	setInterval(changeTip, 10000);
+	
+});
+
+
+
+
 

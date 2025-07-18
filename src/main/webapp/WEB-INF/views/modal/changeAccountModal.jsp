@@ -20,7 +20,7 @@
 					<h5>출금 계좌 변경</h5>
 					<div class="form-group">
 						<label>은행</label>
-		                <select class="form-select" id="accountBankInput">
+		                <select class="form-select">
 		                    <option value="1">산업은행</option>
 		                    <option value="2">기업은행</option>
 		                    <option value="3">국민은행</option>
@@ -56,12 +56,12 @@
 					</div>
 					<div class="form-group">
 						<label>계좌번호</label>
-						<input class="form-control" id="accountNumberInput" name="" value="" type="number" step="1">
+						<input class="form-control" name="number" value="" type="number" step="1">
 						<p>'-' 없이 숫자만 입력해 주세요. 선불전자지급수단은 사용할 수 없어요.</p>
 					</div>
 					<div class="form-group">
 						<label>예금주명</label>
-						<input class="form-control" id="accountNameInput" name="name" value="">
+						<input class="form-control" name="name" value="">
 						<p>예금주명은 회원의 실명과 일치해야 해요.</p>
 					</div>
 				</div>

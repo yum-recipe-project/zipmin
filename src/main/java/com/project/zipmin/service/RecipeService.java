@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +14,7 @@ import com.project.zipmin.dto.RecipeCategoryCreateResponseDto;
 import com.project.zipmin.dto.RecipeCategoryReadResponseDto;
 import com.project.zipmin.dto.RecipeCreateRequestDto;
 import com.project.zipmin.dto.RecipeCreateResponseDto;
+import com.project.zipmin.dto.RecipeReadResponseDto;
 import com.project.zipmin.dto.RecipeStepCreateRequestDto;
 import com.project.zipmin.dto.RecipeStepCreateResponseDto;
 import com.project.zipmin.dto.RecipeStockCreateRequestDto;
@@ -55,9 +55,27 @@ public class RecipeService {
 	
 	
 
-	// 레시피 목록을 조회하는 함수
-	public Page<?> readRecipePage() {
-		return null;
+	// 레시피 목록을 조회하는 함수 (냉장고 파먹기 용)
+	public List<RecipeReadResponseDto> readRecipeList() {
+		
+		// 전체 목록 조회
+		List<Recipe> recipeList;
+		try {
+			recipeList = recipeRepository.findAll();
+			List<RecipeReadResponseDto> recipeDtoList = new ArrayList<>();
+			
+			for (Recipe recipe : recipeList) {
+				RecipeReadResponseDto recipeDto = recipeMapper.toReadResponseDto(recipe);
+				List<RecipeStock> stockList = stockRepository.findByRecipeId(recipe.getId());
+				recipeDto.setStockList(stockMapper.toReadResponseDtoList(stockList));
+				recipeDtoList.add(recipeDto);
+			}
+			return recipeDtoList;
+		}
+		catch (Exception e) {
+			throw new ApiException(RecipeErrorCode.RECIPE_READ_LIST_FAIL);
+		}
+		
 	}
 
 	

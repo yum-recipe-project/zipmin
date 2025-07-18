@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<form id="addIngredientForm" onsubmit="return validateAddMemoForm();">
+<form id="addIngredientForm">
 	<div class="modal" id="addIngredientModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -9,120 +9,71 @@
 					<h5>재료 추가하기</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 				</div>
+				
 				<div class="modal-body">
 				
-					<!-- 음식 이미지 -->
-					<div class="category_img">
-						<span class="title">이미지</span>
-						<div class="img_select">
-							<span class="ingredient_img"></span>
-							<button class="add_btn" id="ingredientAddBtn" type="button">
-							    <p id="ingredientState">이미지 선택하기</p>
-							    <img id="ingredientIcon" src="/images/common/arrow_down.png" alt="수정">
+					<!-- 이미지 선택 영역 -->
+					<div class="form-image image_field">
+						<label>이미지</label>
+						<div class="image_wrap">
+							<span class="select_img"></span>
+							<button type="button" class="select_btn">
+								<p>이미지 선택하기</p>
+								<img src="/images/common/arrow_down.png">
 							</button>
 						</div>
+						<p class="danger">이미지를 입력해주세요.</p>
 					</div>
 					
-					<!-- 이미지 선택 -->
-					<div class="img_select_wrap" id="imageSelectWrap">
-						<div class="img_wrap">
-							<span class="title">육류</span>
-							<ul class="img_list">
-								<li>
-									<button class="img_btn">
-										<img src="/images/fridge/chicken.png">
-									</button>
-								</li>
-								<li>
-									<button class="img_btn">
-										<img src="/images/fridge/pig.png">
-									</button>
-								</li>
-								<li>
-									<button class="img_btn">
-										<img src="/images/fridge/cow.png">
-									</button>
-								</li>
-							</ul>
-						</div>
-						<div class="img_wrap">
-							<span class="title">채소류</span>
-							<ul class="img_list">
-								<li>
-									<button class="img_btn">
-										<img src="/images/fridge/grass.png">
-									</button>
-								</li>
-								<li>
-									<button class="img_btn">
-										<img src="/images/fridge/carrot.png">
-									</button>
-								</li>
-								<li>
-									<button class="img_btn">
-										<img src="/images/fridge/onion.png">
-									</button>
-								</li>
-								<li>
-									<button class="img_btn">
-										<img src="/images/fridge/eggplant.png">
-									</button>
-								</li>
-							</ul>
-						</div>
-						<div class="img_wrap">
-							<span class="title">소스류</span>
-							<ul class="img_list">
-								<li>
-									<button class="img_btn">
-										<img src="/images/fridge/ketchup.png">
-									</button>
-								</li>
-								<li>
-									<button class="img_btn">
-										<img src="/images/fridge/soysauce.png">
-									</button>
-								</li>
-								<li>
-									<button class="img_btn">
-										<img src="/images/fridge/mayonnaise.png">
-									</button>
-								</li>
-								<li>
-									<button class="img_btn">
-										<img src="/images/fridge/chili.png">
-									</button>
-								</li>
-							</ul>
-						</div>
+					<!-- 이미지 목록 영역 -->
+					<div class="image_list">
+						<ul>
+							<li><button><img src="/images/fridge/chicken.png"></button></li>
+							<li><button><img src="/images/fridge/pig.png"></button></li>
+							<li><button><img src="/images/fridge/cow.png"></button></li>
+							<li><button><img src="/images/fridge/grass.png"></button></li>
+							<li><button><img src="/images/fridge/carrot.png"></button></li>
+							<li><button><img src="/images/fridge/onion.png"></button></li>
+							<li><button><img src="/images/fridge/eggplant.png"></button></li>
+							<li><button><img src="/images/fridge/ketchup.png"></button></li>
+							<li><button><img src="/images/fridge/soysauce.png"></button></li>
+							<li><button><img src="/images/fridge/mayonnaise.png"></button></li>
+							<li><button><img src="/images/fridge/chili.png"></button></li>
+						</ul>
+						<input type="hidden" name="image">
 					</div>
-					
-					<div class="input_wrap">
-						<span class="title">재료명</span>
-						<input type="text" id="nameInput" name="" value="" placeholder="재료명" class="form-control">
-					</div>
-					<div class="input_wrap">
-						<span class="title">소비기한</span>
-						<input type="date" id="dateInput" class="form-control">
-					</div>
-					<div class="input_wrap">
-						<span class="title">용량</span>
-						<input type="text" id="amountInput" name="" value="" placeholder="300g" class="form-control">
-					</div>
-					<div class="input_wrap">
-						<span class="title">카테고리</span>
-						<select name="category" class="form-select">
-				            <option value="meat">육류</option>
-				            <option value="vegetable">채소류</option>
-				            <option value="sauce">소스류</option>
-				            <option value="etc">기타</option>
-				        </select>
-					</div>
-					
-					
-					
-					
 				
+					<div class="form-group name_field">
+						<label>재료명</label>
+						<input type="text" name="name" placeholder="재료명 입력" class="form-control">
+						<p class="danger">재료명을 입력해주세요.</p>
+					</div>
+					
+					<div class="form-group expdate_field">
+						<label>소비기한</label>
+						<input type="date" name="expdate" class="form-control">
+						<p class="danger">소비기한을 입력해주세요.</p>
+					</div>
+					
+					<div class="form-group amount_field">
+						<label>용량</label>
+						<input class="form-control" type="text" name="amount" placeholder="용량 입력 (예: 300g)" class="form-control">
+						<p class="danger">용량을 입력해주세요.</p>
+					</div>
+					
+					<div class="form-group category_field">
+						<label>카테고리</label>
+						<select class="form-select">
+				            <option value="">- 카테고리를 선택하세요 -</option>
+				            <option value="육류">육류</option>
+				            <option value="채소류">채소류</option>
+				            <option value="소스류">소스류</option>
+				            <option value="기타">기타</option>
+				        </select>
+				        <input type="hidden" name="category">
+				        <p class="danger">카테고리를 입력해주세요.</p>
+					</div>
+
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>

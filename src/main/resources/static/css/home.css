@@ -1,6 +1,5 @@
 @charset "UTF-8";
 
-/* 메인베너 링크연결을 위한 임시 설정값임 수정 필요 */
 #container .main_banner {
     position: relative;
 	margin: 0 auto !important;
@@ -33,7 +32,7 @@
 #container .main_banner .banner_inner img:nth-of-type(2) {
 	position: absolute;
 	bottom: 0;
-	right: -40px;
+	right: -50px;
 	width: 320px;
 }
 
@@ -52,7 +51,7 @@
 
 #container .main_banner .banner_inner .roulette {
 	font-size: 70px;
-	color: rgb(23, 97, 255);
+	color: var(--point-color2);
 	vertical-align: middle;
 	transform: translateY(-3px);
 	display: inline-block;

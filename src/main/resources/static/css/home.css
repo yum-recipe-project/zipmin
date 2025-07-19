@@ -2,65 +2,75 @@
 
 /* 메인베너 링크연결을 위한 임시 설정값임 수정 필요 */
 #container .main_banner {
-	margin: 0 auto !important;
-	padding: 0 40px;
-	width: 1160px;
-	background: #901E1E;
-	height: 380px;
-	
-	display: flex;
-    align-items: center;  
-    justify-content: center;
-    text-align: center;  
     position: relative;
+	margin: 0 auto !important;
+	width: 100%;
+	overflow: hidden;
+    background: linear-gradient(rgb(210, 233, 252), rgb(244, 248, 254));
+    height: 330px;
+    padding-top: 20px;
 }
 
-#container .main_banner img {
+#container .main_banner .banner_inner {
+	position: relative;
+	margin: 0px auto;
+	max-width: 1100px;
+	height: 330px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	text-align: center;
+	padding-top: 60px;
+}
+
+#container .main_banner .banner_inner img:nth-of-type(1) {
 	position: absolute;
 	bottom: 0;
-	left: 30px;
+	left: 0;
 }
 
+#container .main_banner .banner_inner img:nth-of-type(2) {
+	position: absolute;
+	bottom: 0;
+	right: -40px;
+	width: 320px;
+}
 
-#container .main_banner .txt {
+#container .main_banner .banner_inner .title {
 	display: flex;
-    flex-direction: column;
-    align-items: center; 
-    text-align: center;
+	flex-direction: column;
+	align-items: center; 
+	text-align: center;
 }
 
-#container .main_banner .txt .title {
+#container .main_banner .banner_inner h3 {
 	font-size: 40px;
-	color: #fff;
 	font-weight: 600;
 	letter-spacing: -0.5px;
 }
 
-#container .main_banner .txt .title span {
-	font-size: 80px;
-	color: #fff;
-	font-weight: 600;
+#container .main_banner .banner_inner .roulette {
+	font-size: 70px;
+	color: rgb(23, 97, 255);
+	vertical-align: middle;
+	transform: translateY(-3px);
+	display: inline-block;
 }
 
-#container .main_banner .txt .btn_sort {
-	color: #fff;
-	display: flex;
-	align-items: center;
-	font-size: 14px;
+#container .main_banner .banner_inner .roulette_link {
+	margin-top: 15px;
+	font-size: 16px;
 	letter-spacing: 0;
+	opacity: 0;
+	transition: opacity 0.4s ease;
+	visibility: hidden;
 }
 
-#container .main_banner .txt .btn_sort .btn_img { 
-    width: 20px; 
-    height:20px;
-    background:#fff; 
-	-webkit-mask-box-image:url('/images/mypage/arrow_right.png');
-	mask-image: url('/images/mypage/arrow_right.png');
-	background-position:center;  background-size:cover;  position:relative; 
+#container .main_banner .banner_inner .roulette_link.show {
+	opacity: 1;
+	visibility: visible;
 }
-
-
-
 
 
 

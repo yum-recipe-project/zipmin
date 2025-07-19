@@ -51,9 +51,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			setTimeout(roulette, delay);
 		} else {
 			const result = randomList[(index - 1 + randomList.length) % randomList.length];
-			link.textContent = `'${result}' 레시피 보러가기`;
-			link.onclick = () => location.href = `/recipes?search=${encodeURIComponent(result)}`;
-			link.style.display = 'block';
+			link.innerHTML = `${result} 레시피 보러가기&nbsp;&nbsp;→`;
+			link.href = `/recipes?search=${encodeURIComponent(result)}`;
+			link.classList.add('show');
 		}
 	}
 

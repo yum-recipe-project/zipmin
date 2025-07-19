@@ -133,6 +133,7 @@ function loadCommentList({ tablename, sort, size }) {
 		size : size
 	}).toString();
 	
+	// await/fetch 방식으로 변경할 예정 !!! (home.js 참고)
 	fetch(`/comments?${parameters}`, {
 		method: 'GET',
 		headers: headers

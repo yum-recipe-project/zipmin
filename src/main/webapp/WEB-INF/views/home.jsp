@@ -119,62 +119,7 @@
 				    </div>
 				    
 				    <!-- 랭킹 리스트 -->
-					<ul class="recipe_list">
-					    <li>
-					        <a href="/recipe/viewRecipe.do">
-					            <div class="recipe_card">
-					                <div class="image"></div>
-					                <p>먹짱이 김치볶음밥이고 두줄까지는 가능합니당. 뒤부터는 말줄임표</p>
-					                <span>초급 / 30분 / 아주 매움</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/recipe/viewRecipe.do">
-					            <div class="recipe_card">
-					                <div class="image"></div>
-					                <p>먹짱이 김치볶음밥이고 두줄까지는 가능...</p>
-					                <span>초급 / 30분 / 아주 매움</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/recipe/viewRecipe.do">
-					            <div class="recipe_card">
-					                <div class="image"></div>
-					                <p>먹짱이 김치볶음밥이고 두줄까지는 가능합니당. 뒤부터는 말줄임표</p>
-					                <span>초급 / 30분 / 아주 매움</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/recipe/viewRecipe.do">
-					            <div class="recipe_card">
-					                <div class="image"></div>
-					                <p>먹짱이 김치볶음밥이고 두줄까지는 가능합니당. 뒤부터는 말줄임표</p>
-					                <span>초급 / 30분 / 아주 매움</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/recipe/viewRecipe.do">
-					            <div class="recipe_card">
-					                <div class="image"></div>
-					                <p>먹짱이 김치볶음밥이고 두줄까지는 가능합니당. 뒤부터는 말줄임표</p>
-					                <span>초급 / 30분 / 아주 매움</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/recipe/viewRecipe.do">
-					            <div class="recipe_card">
-					                <div class="image"></div>
-					                <p>먹짱이 김치볶음밥이고 두줄까지는 가능...</p>
-					                <span>초급 / 30분 / 아주 매움</span>
-					            </div>
-					        </a>
-					    </li>
-					</ul>
+					<ul class="recipe_list"></ul>
 				</div>
 				
 				<!-- 키친 가이드 랭킹 -->

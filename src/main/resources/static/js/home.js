@@ -1,24 +1,4 @@
 /**
- * 드롭다운 메뉴 작동 함수
- */
-document.addEventListener('DOMContentLoaded', function() {
-	
-	document.getElementById('recipeSortBtn').addEventListener('click', function () {
-	    document.querySelector('.dropdown').classList.toggle('active');
-	});
-
-	document.querySelectorAll('.dropdown_menu li').forEach(item => {
-	    item.addEventListener('click', function () {
-	        document.querySelector('.dropdown').classList.remove('active');
-	    });
-	});
-
-
-});
-
-
-
-/**
  * 룰렛을 돌리는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
@@ -79,3 +59,98 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	roulette();
 });
+
+
+
+/**
+ * 드롭다운 동작 및 정렬방식 변경하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function () {
+	let sort = 'hot';
+
+	const dropdown = document.querySelector('.dropdown');
+	const sortButton = document.getElementById('recipeSortBtn');
+	const sortItems = document.querySelectorAll('.dropdown_menu li');
+
+	sortButton.addEventListener('click', function () {
+		dropdown.classList.toggle('active');
+	});
+
+	sortItems.forEach((item, index) => {
+		item.addEventListener('click', async function () {
+			sort = index === 0 ? 'hot' : 'score';
+			dropdown.classList.remove('active');
+			sortButton.innerHTML = `${this.textContent} <div class="btn_img"></div>`;
+
+			await fetchRecipeList(sort);
+		});
+	});
+
+	fetchRecipeList(sort);
+});
+
+
+
+/**
+ * 서버에서 레시피를 가져오는 함수
+ */
+async function fetchRecipeList(sort) {
+	try {
+		const params = new URLSearchParams({
+			sort: sort,
+			page: 0,
+			size: 6
+		}).toString();
+
+		const response = await fetch(`/recipes?${params}`);
+		const result = await response.json();
+
+		if (result.code === 'RECIPE_READ_LIST_SUCCESS') {
+			renderRecipeList(result.data.content);
+		}
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+
+
+/**
+ * 레시피 목록을 화면에 렌더링 하는 함수
+ */
+function renderRecipeList(list) {
+	const container = document.querySelector('.recipe_list');
+	container.innerHTML = '';
+
+	list.forEach(recipe => {
+		const li = document.createElement('li');
+		
+		const a = document.createElement('a');
+		a.href = `/recipe/viewRecipe.do?id=${recipe.id}`;
+
+		const card = document.createElement('div');
+		card.className = 'recipe_card';
+		
+		const imageDiv = document.createElement('div');
+		imageDiv.className = 'image';
+		imageDiv.style.backgroundImage = `url(${recipe.image})`;
+		
+		const titleP = document.createElement('p');
+		titleP.textContent = recipe.title;
+		
+		const infoSpan = document.createElement('span');
+		infoSpan.textContent = `${recipe.cooklevel} / ${recipe.cooktime} / ${recipe.spicy}`;
+		
+		card.appendChild(imageDiv);
+		card.appendChild(titleP);
+		card.appendChild(infoSpan);
+		
+		a.appendChild(card);
+		li.appendChild(a);
+		container.appendChild(li);
+	});
+}
+
+
+
+

@@ -24,6 +24,9 @@ drop sequence seq_report_id;
 drop table likes;
 drop sequence seq_likes_id;
 
+drop table fridge;
+drop sequence seq_fridge_id;
+
 drop table review;
 drop sequence seq_review_id;
 drop table comments;
@@ -109,8 +112,55 @@ commit;
 
 
 
--- USER_INGREDIENT 테이블
+-- FRIDGE 테이블
+-- drop table fridge;
+-- drop sequence seq_fridge_id;
+create table fridge (
+    id number primary key,
+    image varchar2(300),
+    name varchar2(300) not null,
+    amount number,
+    unit varchar2(30),
+    expdate date,
+    category varchar2(50),
+    user_id number not null
+);
+alter table fridge
+    add constraint const_fridge_user foreign key(user_id)
+    references users(id) on delete cascade;
+create sequence seq_fridge_id
+    increment by 1
+    start with 1
+    minvalue 1
+    nomaxvalue
+    nocycle
+    nocache;
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭가슴살', 100, 'g', TO_DATE('25/07/20', 'RR/MM/DD'), '육류', 2);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '소고기', 300, 'g', TO_DATE('25/07/22', 'RR/MM/DD'), '육류', 2);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '돼지고기', 200, 'g', TO_DATE('25/07/18', 'RR/MM/DD'), '육류', 2);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '상추', 1, '팩', TO_DATE('25/07/16', 'RR/MM/DD'), '채소류', 2);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '당근', 2, '개', TO_DATE('25/07/19', 'RR/MM/DD'), '채소류', 2);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '양파', 1, '망', TO_DATE('25/07/21', 'RR/MM/DD'), '채소류', 2);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '가지', 1, '개', TO_DATE('25/07/23', 'RR/MM/DD'), '채소류', 2);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/ketchup.png', '케찹', 1, '병', TO_DATE('25/12/01', 'RR/MM/DD'), '소스류', 2);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '간장', 1, '병', TO_DATE('25/10/10', 'RR/MM/DD'), '소스류', 2);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/mayonnaise.png', '마요네즈', 1, '병', TO_DATE('25/11/15', 'RR/MM/DD'), '소스류', 2);
 
+
+-- 소불고기와 일부 일치 (소고기, 간장 O / 양파 X)
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '소고기', 300, 'g', TO_DATE('25/07/20', 'RR/MM/DD'), '육류', 2);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '간장', 100, 'ml', TO_DATE('25/10/10', 'RR/MM/DD'), '소스류', 2);
+
+-- 쌈밥과 완전히 일치 (돼지고기, 상추, 밥 O)
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '돼지고기', 200, 'g', TO_DATE('25/07/22', 'RR/MM/DD'), '육류', 2);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '상추', 1, '팩', TO_DATE('25/07/16', 'RR/MM/DD'), '채소류', 2);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, null, '밥', 1, '공기', TO_DATE('25/07/15', 'RR/MM/DD'), '기타', 2); -- 이미지 없음
+
+-- 마요네즈 비빔면과 일부 일치 (마요네즈 O / 불닭소스 X / 면 O)
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/mayonnaise.png', '마요네즈', 1, '병', TO_DATE('25/11/15', 'RR/MM/DD'), '소스류', 2);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, null, '면', 1, '개', TO_DATE('25/07/17', 'RR/MM/DD'), '기타', 2); -- 이미지 없음
+
+COMMIT;
 
 
 
@@ -121,15 +171,15 @@ commit;
 -- drop sequence seq_recipe_id;
 create table recipe (
     id number primary key,
-    image_url varchar2(50) not null,
-    title varchar2(50) not null,
+    image varchar2(50) not null,
+    title varchar2(200) not null,
     introduce varchar2(300) not null,
     cooklevel varchar2(30) not null,
     cooktime varchar2(30) not null,
     spicy varchar2(30) not null,
     portion varchar2(30) not null,
     tip varchar2(300),
-    youtube_url varchar2(100),
+    youtube varchar2(100),
     user_id number not null
 );
 alter table recipe
@@ -142,6 +192,15 @@ create sequence seq_recipe_id
     nomaxvalue
     nocycle
     nocache;
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/bulgogi.jpg', '소불고기', '달콤짭짤한 불고기 요리', '하', '30분 이내', '하', '2인분', '고기 재울 때 키위나 배를 갈아 넣으면 부드러워져요!', null, 2);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/wrap.jpg', '쌈밥', '야채와 함께 먹는 건강한 쌈밥', '중', '20분 이내', '하', '1인분', '고기를 굽기 전 밑간하면 더 맛있어요.', null, 2);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/mayomyeon.jpg', '마요네즈 비빔면 두줄까지는 워드랩 가능한지 테스트를 해볼게요', '매콤 고소한 초간단 비빔면', '하', '10분 이내', '상', '1인분', '불닭소스를 조절해서 맵기 조절 가능해요.', null, 2);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/kimchi_fried_rice.jpg', '김치볶음밥', '집에 있는 재료로 간단하게!', '하', '15분 이내', '중', '1인분', '김치는 꼭 볶아서 써야 깊은 맛이 나요!', null, 2);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/jjajang.jpg', '짜장면', '달콤 짭짤한 중식의 기본', '중', '30분 이내', '하', '2인분', '춘장을 충분히 볶아야 맛이 살아나요.', null, 2);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/dakgalbi.jpg', '닭갈비', '매콤한 맛의 대표 주자', '중', '40분 이내', '상', '3인분', '고구마를 넣으면 단맛이 더해져요.', null, 2);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/eggtamago.jpg', '계란말이', '도시락 단골 반찬', '하', '10분 이내', '하', '1인분', '육수나 우유를 조금 넣으면 부드러워져요.', null, 2);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/tteokbokki.jpg', '떡볶이', '매콤달콤 국민 간식', '하', '20분 이내', '중', '2인분', '고추장에 설탕 대신 올리고당을 써보세요.', null, 2);
+
 commit;
 
 
@@ -165,6 +224,17 @@ create sequence seq_recipe_category_id
     nomaxvalue
     nocycle
     nocache;
+-- 소불고기
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '종류별', '메인요리', 1);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '재료별', '소고기', 1);
+
+-- 쌈밥
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '상황별', '도시락', 2);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '재료별', '돼지고기', 2);
+
+-- 마요네즈 비빔면
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '방법별', '비빔', 3);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '재료별', '소스', 3);
 commit;
 
 
@@ -190,6 +260,20 @@ create sequence seq_recipe_stock_id
     nomaxvalue
     nocycle
     nocache;
+-- 소불고기
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '소고기', 300, 'g', '불고기용', 1);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '간장', 50, 'ml', '양념용', 1);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '양파', 1, '개', null, 1);
+
+-- 쌈밥
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '돼지고기', 200, 'g', null, 2);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '상추', 5, '장', null, 2);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '밥', 1, '공기', null, 2);
+
+-- 마요네즈 비빔면
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '마요네즈', 2, '큰술', null, 3);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '불닭소스', 1, '큰술', null, 3);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '면', 1, '개', '라면사리', 3);
 commit;
 
 
@@ -197,9 +281,10 @@ commit;
 -- RECIPE_STEP 테이블
 -- drop table recipe_step;
 -- drop sequence seq_recipe_step_id;
+
 create table recipe_step (
     id number primary key,
-    image_url varchar2(100) not null,
+    image varchar2(100),
     content varchar2(500) not null,
     recipe_id number
 );
@@ -213,6 +298,17 @@ create sequence seq_recipe_step_id
     nomaxvalue
     nocycle
     nocache;
+-- 소불고기
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '소고기를 양념에 재운다.', 1);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '양파와 함께 볶는다.', 1);
+
+-- 쌈밥
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '돼지고기를 구워준다.', 2);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '상추에 밥과 고기를 싸서 먹는다.', 2);
+
+-- 마요네즈 비빔면
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '면을 삶아 찬물에 헹군다.', 3);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '소스 재료와 비빈다.', 3);
 commit;
 
 
@@ -310,6 +406,28 @@ create sequence seq_review_id
     nomaxvalue
     nocycle
     nocache;
+-- 레시피 1번 리뷰
+INSERT INTO review VALUES (1, SYSDATE, 5, '정말 맛있어요! 또 해먹을래요.', 1, 2);
+INSERT INTO review VALUES (2, SYSDATE, 4, '조리도 쉽고 맛도 굿!', 1, 3);
+
+-- 레시피 2번 리뷰
+INSERT INTO review VALUES (3, SYSDATE, 3, '쏘쏘했어요. 무난한 맛.', 2, 4);
+
+-- 레시피 3번 리뷰
+INSERT INTO review VALUES (4, SYSDATE, 2, '제 입맛에는 좀 별로였어요.', 3, 3);
+INSERT INTO review VALUES (5, SYSDATE, 4, '간단해서 좋고 맛도 괜찮아요.', 3, 5);
+
+-- 레시피 5번 리뷰
+INSERT INTO review VALUES (6, SYSDATE, 5, '가족들이 정말 좋아했어요!', 5, 2);
+INSERT INTO review VALUES (7, SYSDATE, 4, '맛있고 재료도 간단해요.', 5, 3);
+INSERT INTO review VALUES (8, SYSDATE, 5, '소스 조합이 예술입니다.', 5, 4);
+
+-- 레시피 7번 리뷰
+INSERT INTO review VALUES (9, SYSDATE, 3, '무난했어요. 한 번쯤 해볼만.', 7, 5);
+
+-- 레시피 8번 리뷰
+INSERT INTO review VALUES (10, SYSDATE, 4, '떡이 쫀득쫀득해서 좋았어요.', 8, 2);
+
 commit;
 
 
@@ -340,7 +458,24 @@ insert into likes values (seq_likes_id.NEXTVAL, 3, 'comments', 4);
 insert into likes values (seq_likes_id.NEXTVAL, 4, 'comments', 4);
 insert into likes values (seq_likes_id.NEXTVAL, 5, 'comments', 4);
 insert into likes values (seq_likes_id.NEXTVAL, 6, 'comments', 4);
-commit;
+
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 2, 'recipe', 1);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 3, 'recipe', 1);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 4, 'recipe', 1);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 2, 'recipe', 2);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 3, 'recipe', 3);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 4, 'recipe', 3);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 2, 'recipe', 5);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 3, 'recipe', 5);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 4, 'recipe', 5);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 5, 'recipe', 5);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 6, 'recipe', 6);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 3, 'recipe', 7);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 4, 'recipe', 7);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 2, 'recipe', 8);
+
+COMMIT;
+
 
 
 

@@ -12,7 +12,7 @@ import lombok.Data;
 public class RecipeReadResponseDto {
 	
 	private Integer id;
-	private String imageUrl;
+	private String image;
 	private String title;
 	private String introduce;
 	private String cooklevel;
@@ -20,7 +20,7 @@ public class RecipeReadResponseDto {
 	private String spicy;
 	private String portion;
 	private String tip;
-	private String youtubeUrl;
+	private String youtube;
 	private Integer userId;
 	
 	private List<RecipeCategoryReadResponseDto> categoryList;

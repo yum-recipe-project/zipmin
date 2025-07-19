@@ -1,5 +1,7 @@
 package com.project.zipmin.entity;
 
+import org.hibernate.annotations.Formula;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -27,7 +29,7 @@ public class Recipe {
 	@SequenceGenerator(name = "seq_recipe_id", sequenceName = "SEQ_RECIPE_ID", allocationSize = 1)
 	private int id;
 	
-	private String imageUrl;
+	private String image;
 	private String title;
 	private String introduce;
 	private String cooklevel;
@@ -35,11 +37,16 @@ public class Recipe {
 	private String spicy;
 	private String portion;
 	private String tip;
-	private String youtubeUrl;
+	private String youtube;
 	
 	// private String userId;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")
 	private User user;
 	
+	@Formula("(SELECT COUNT(*) FROM likes l WHERE l.recodenum = id AND l.tablename = 'recipe')")
+	private int likecount;
+	
+	@Formula("(SELECT NVL(AVG(r.score), 0) FROM review r WHERE r.recipe_id = id)")
+	private Double score;
 }

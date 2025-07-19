@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,6 +81,75 @@ public class RecipeService {
 		
 	}
 
+	
+	
+	// 레시피 목록을 조회하는 함수 (최신순)
+	public Page<RecipeReadResponseDto> readRecipePageOrderByIdDesc(Pageable pageable) {
+		
+		return null;
+	}
+	
+	
+	
+	// 정확순 -> 이거 프론트에서 없애고 별점순으로 변경해도 좋을듯
+	
+	
+	
+	// 레시피 목록을 조회하는 함수 (좋아요순)
+	public Page<RecipeReadResponseDto> readRecipePageOrderByLikecount(Pageable pageable) {
+		
+		// 입력값 검증
+		if (pageable == null) {
+			throw new ApiException(RecipeErrorCode.RECIPE_INVALID_INPUT);
+		}
+		
+		// 레시피 목록 조회
+		Page<Recipe> recipePage;
+		try {
+			recipePage = recipeRepository.findOrderByLikecount(pageable);
+		}
+		catch (Exception e) {
+			throw new ApiException(RecipeErrorCode.RECIPE_READ_LIST_FAIL);
+		}
+		
+		List<RecipeReadResponseDto> recipeDtoList = new ArrayList<RecipeReadResponseDto>();
+		for (Recipe recipe : recipePage) {
+			RecipeReadResponseDto recipeDto = recipeMapper.toReadResponseDto(recipe);
+			recipeDtoList.add(recipeDto);
+		}
+
+		return new PageImpl<>(recipeDtoList, pageable, recipePage.getTotalElements());
+	}
+	
+	
+	
+	// 레시피 목록을 조회하는 함수 (별점순)
+	public Page<RecipeReadResponseDto> readRecipePageOrderByScore(Pageable pageable) {
+		
+		// 입력값 검증
+		if (pageable == null) {
+			throw new ApiException(RecipeErrorCode.RECIPE_INVALID_INPUT);
+		}
+		
+		// 레시피 목록 조회
+		Page<Recipe> recipePage;
+		try {
+			recipePage = recipeRepository.findOrderByScore(pageable);
+		}
+		catch (Exception e) {
+			throw new ApiException(RecipeErrorCode.RECIPE_READ_LIST_FAIL);
+		}
+		
+		List<RecipeReadResponseDto> recipeDtoList = new ArrayList<RecipeReadResponseDto>();
+		for (Recipe recipe : recipePage) {
+			RecipeReadResponseDto recipeDto = recipeMapper.toReadResponseDto(recipe);
+			recipeDtoList.add(recipeDto);
+		}
+
+		return new PageImpl<>(recipeDtoList, pageable, recipePage.getTotalElements());
+	}
+	
+	
 	
 	
 	// 레시피를 작성하는 함수

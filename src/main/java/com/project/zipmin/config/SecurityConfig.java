@@ -143,7 +143,10 @@ public class SecurityConfig {
 				.requestMatchers("/", "/login", "/logout", "/oauth2-jwt-header", "/reissue").permitAll()
 				.requestMatchers("/user/**").permitAll()
 				.requestMatchers("/users/**").permitAll()
+				
 				.requestMatchers("/recipe/**").permitAll()
+				.requestMatchers("/recipes", "/recipes/**").permitAll()
+				
 				.requestMatchers("/kitchen/**").permitAll()
 				
 				.requestMatchers("/chompessor/**").permitAll()

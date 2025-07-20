@@ -10,7 +10,7 @@ import lombok.Data;
 public class RecipeStepReadResponseDto {
 
 	private Integer id;
-	private String imageUrl;
+	private String image;
 	private String content;
 	private Integer recipeId;
 	

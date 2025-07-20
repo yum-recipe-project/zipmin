@@ -1,6 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<style>
+.tip_text {
+  display: inline-block;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.tip_text.slide-up {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+</style>
 
 <header id="header">
 	<!-- 헤더 상단 -->
@@ -9,9 +20,10 @@
 			<!-- 키친가이드 팁 -->
 			<div class="cook_tip">
 				<a href="#none">
-					<span>닭 잡내 안나게 손질하는 법&nbsp;&nbsp;></span>
+					<span class="tip_text"></span>
 				</a>
 			</div>
+			
 			<!-- 유틸 메뉴 -->
 			<div class="util_menu">
 				<!-- 비로그인 상태 -->

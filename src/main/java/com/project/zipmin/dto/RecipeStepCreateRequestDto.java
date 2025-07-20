@@ -9,7 +9,7 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class RecipeStepCreateRequestDto {
 
-	private String imageUrl;
+	private String image;
 	private String content;
 	private Integer recipeId;
 	

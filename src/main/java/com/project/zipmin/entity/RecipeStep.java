@@ -26,7 +26,7 @@ public class RecipeStep {
 	@GeneratedValue(generator = "seq_recipe_step_id")
 	@SequenceGenerator(name = "seq_recipe_step_id", sequenceName = "SEQ_RECIPE_STEP_ID", allocationSize = 1)
 	private int id;
-	private String imageUrl;
+	private String image;
 	private String content;
 	
 	// private int recipeId;

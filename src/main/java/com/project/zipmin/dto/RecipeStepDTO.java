@@ -10,7 +10,7 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class RecipeStepDTO {
 	private int id;
-	private String imageUrl;
+	private String image;
 	private String content;
 	private int recipeId;
 }

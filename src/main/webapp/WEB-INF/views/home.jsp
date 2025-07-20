@@ -13,19 +13,20 @@
 	
 	<body>
 		<%@include file="common/header.jsp" %>
+		
 		<main id="container">
-			<div class="content">
-				<!-- 메인 배너 -->
-				<div class="main_banner">
-					<img src="/images/home/main_mascot.png"/>
-					<div class="txt">
-						<p class="title">오늘 저녁 <span>마라탕</span> 땡겨요</p>
-						<button class="btn_sort" onclick="location.href='/recipe/listRecipe.do'">
-				            마라탕 레시피 보러가기
-				            <div class="btn_img"></div>
-				        </button>
+		
+			<!-- 메인 베너 -->
+			<div class="main_banner">
+				<div class="banner_inner">
+					<img src="/images/home/main_mascot1.png"/>
+					<div class="title">
+						<h3>오늘 <span class="meal"></span> <span class="roulette"></span> 땡겨요</h3>
+						<a class="roulette_link">모든 레시피 보러가기&nbsp;&nbsp;→</a>
 					</div>
+					<img src="/images/home/main_mascot2.png"/>
 				</div>
+			</div>
 				
 				<!-- 카테고리 메뉴 -->
 				<div class="category_menu">
@@ -119,62 +120,7 @@
 				    </div>
 				    
 				    <!-- 랭킹 리스트 -->
-					<ul class="recipe_list">
-					    <li>
-					        <a href="/recipe/viewRecipe.do">
-					            <div class="recipe_card">
-					                <div class="image"></div>
-					                <p>먹짱이 김치볶음밥이고 두줄까지는 가능합니당. 뒤부터는 말줄임표</p>
-					                <span>초급 / 30분 / 아주 매움</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/recipe/viewRecipe.do">
-					            <div class="recipe_card">
-					                <div class="image"></div>
-					                <p>먹짱이 김치볶음밥이고 두줄까지는 가능...</p>
-					                <span>초급 / 30분 / 아주 매움</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/recipe/viewRecipe.do">
-					            <div class="recipe_card">
-					                <div class="image"></div>
-					                <p>먹짱이 김치볶음밥이고 두줄까지는 가능합니당. 뒤부터는 말줄임표</p>
-					                <span>초급 / 30분 / 아주 매움</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/recipe/viewRecipe.do">
-					            <div class="recipe_card">
-					                <div class="image"></div>
-					                <p>먹짱이 김치볶음밥이고 두줄까지는 가능합니당. 뒤부터는 말줄임표</p>
-					                <span>초급 / 30분 / 아주 매움</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/recipe/viewRecipe.do">
-					            <div class="recipe_card">
-					                <div class="image"></div>
-					                <p>먹짱이 김치볶음밥이고 두줄까지는 가능합니당. 뒤부터는 말줄임표</p>
-					                <span>초급 / 30분 / 아주 매움</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/recipe/viewRecipe.do">
-					            <div class="recipe_card">
-					                <div class="image"></div>
-					                <p>먹짱이 김치볶음밥이고 두줄까지는 가능...</p>
-					                <span>초급 / 30분 / 아주 매움</span>
-					            </div>
-					        </a>
-					    </li>
-					</ul>
+					<ul class="recipe_list"></ul>
 				</div>
 				
 				<!-- 키친 가이드 랭킹 -->

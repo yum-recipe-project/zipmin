@@ -2,16 +2,14 @@
  * 접근 권한을 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', async function() {
-	if (!isLoggedIn()) {
-		redirectToLogin();
-	}
-
+	
 	try {
 		await instance.get('/dummy');
 	}
 	catch (error) {
-		console.log(error);
+		redirectToLogin();
 	}
+
 });
 
 

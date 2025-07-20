@@ -10,7 +10,6 @@ import lombok.Data;
 public class UserPasswordCheckRequestDto {
 	
 	private Integer id;
-	private String username;
 	private String password;
 	
 }

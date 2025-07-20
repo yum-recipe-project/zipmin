@@ -235,7 +235,7 @@ public class UserService {
 	public void checkPassword(UserPasswordCheckRequestDto userDto) {
 		
 		// 입력값 검증
-		if (userDto == null || userDto.getId() == null || userDto.getPassword() == null || userDto.getUsername() == null) {
+		if (userDto == null || userDto.getId() == null || userDto.getPassword() == null) {
 			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
 		}
 		

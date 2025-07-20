@@ -286,6 +286,18 @@ public class UserController {
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
+				description = "로그인 되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserUnauthorizedAccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "권한 없는 사용자의 접근",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
 				description = "비밀번호 불일치",
 				content = @Content(
 						mediaType = "application/json",
@@ -303,9 +315,34 @@ public class UserController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
-	@PostMapping("/users/check-password")
+	@PostMapping("/users/{id}/check-password")
 	public ResponseEntity<?> verifyPassword(
+			@Parameter(description = "사용자의 일련번호", required = true, example = "1") @PathVariable Integer id,
 			@Parameter(description = "비밀번호 확인 요청 정보", required = true) @RequestBody UserPasswordCheckRequestDto userDto) {
+
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}		
+		
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 로그인 정보
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		userDto.setId(userService.readUserByUsername(username).getId());
+		
+		// 본인 확인
+		if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN)) {
+			if (id != userService.readUserByUsername(username).getId()) {
+				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+			}
+		}
+		
+		System.err.println(userDto);
 		
 		// 비밀번호 확인
 		userService.checkPassword(userDto);

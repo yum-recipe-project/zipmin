@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -342,8 +343,6 @@ public class UserController {
 			}
 		}
 		
-		System.err.println(userDto);
-		
 		// 비밀번호 확인
 		userService.checkPassword(userDto);
 		
@@ -458,7 +457,7 @@ public class UserController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
-	@PutMapping("/users/{id}")
+	@PatchMapping("/users/{id}")
 	public ResponseEntity<?> updateUser(
 			@Parameter(description = "사용자의 일련번호", required = true, example = "1") @PathVariable Integer id,
 			@Parameter(description = "사용자 수정 요청 정보", required = true) @RequestBody UserUpdateRequestDto userRequestDto) {

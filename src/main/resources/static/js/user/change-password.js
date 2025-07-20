@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	const form = document.querySelector('form');
 	
 	// 현재 비밀번호 실시간 검사
-	form.oldPassword.addEventListener('input', function() {
+	form.oldPassword.addEventListener('blur', function() {
 		const isOldPasswordEmpty = this.value.trim() === '';
 		this.classList.toggle('danger', isOldPasswordEmpty);
 		document.querySelector('.old_password_field p:nth-of-type(1)').style.display = isOldPasswordEmpty ? 'block' : 'none';
@@ -42,18 +42,21 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 	
 	// 새 비밀번호 실시간 검사
-	form.newPassword.addEventListener('input', function() {
+	form.newPassword.addEventListener('blur', function() {
 		const isNewPasswordEmpty = this.value.trim() === '';
 		this.classList.toggle('danger', isNewPasswordEmpty);
 		document.querySelector('.new_password_field p').style.display = isNewPasswordEmpty ? 'block' : 'none';
 	});
 	
 	// 비밀번호 확인 실시간 검사
-	form.checkPassword.addEventListener('input', function() {
+	form.checkPassword.addEventListener('blur', function() {
 		const isCheckPasswordEmpty = this.value.trim() === '';
 		this.classList.toggle('danger', isCheckPasswordEmpty);
 		document.querySelector('.check_password_field p:nth-of-type(1)').style.display = isCheckPasswordEmpty ? 'block' : 'none';
-		document.querySelector('.check_password_field p:nth-of-type(2)').style.display = 'none';
+		if (document.querySelector('.check_password_field p:nth-of-type(2)').style.display === 'block') {
+			form.newPassword.classList.remove('danger');
+			document.querySelector('.check_password_field p:nth-of-type(2)').style.display = 'none';
+		} 
 	});
 });
 
@@ -88,32 +91,49 @@ document.addEventListener('DOMContentLoaded', function() {
 			form.oldPassword.focus();
 			isValid = false;
 		}
-		// 현재 비밀번호 일치 여부 확인
 		else {
+			// 현재 비밀번호 일치 여부 확인
 			try {
 				const token = localStorage.getItem('accessToken');
 				const payload = parseJwt(token);
 				
 				const data = {
-					id: payload.id,
 					password: form.oldPassword.value.trim()
 				}
 				
-				try {
-					await instance.post('/users/verify-password', data);
-				}
-				catch (error) {
+				await instance.post(`/users/${payload.id}/check-password`, data);
+			}
+			catch(error) {
+				const code = error?.response?.data?.code;
+				const message = error?.response?.data?.message;
+				
+				if (code === 'USER_INCORRECT_PASSWORD') {
 					form.oldPassword.classList.add('danger');
 					document.querySelector('.old_password_field p:nth-of-type(2)').style.display = 'block';
 					form.oldPassword.value = '';
 					form.newPassword.value = '';
 					form.checkPassword.value = '';
 					form.oldPassword.focus();
-					isValid = false;
 				}
-			}
-			catch(error) {
-				console.log(error);
+				else if (code === 'USER_INVALID_INPUT') {
+					alert(message);
+				}
+				else if (code === 'USER_UNAUTHORIZED_ACCESS') {
+					alert(message);
+				}
+				else if (code === 'USER_FORBIDDEN') {
+					alert(message);
+				}
+				else if (code === 'USER_NOT_FOUND') {
+					alert(message);
+				}
+				else if (code === 'INTERNAL_SERVER_ERROR') {
+					alert(message);
+				}
+				else {
+					console.log('서버 요청 중 오류 발생');
+				}
+				isValid = false;
 			}
 		}
 		
@@ -124,24 +144,48 @@ document.addEventListener('DOMContentLoaded', function() {
 			isValid = false;
 		}
 
+		// 비밀번호 수정
 		if (isValid) {
-			const token = localStorage.getItem('accessToken');
-			const payload = parseJwt(token);
-			
-			const data = {
-				password: form.newPassword.value.trim()
-			}
-			
 			try {
-				const response = await instance.put(`/users/${payload.id}`, data);
+				const token = localStorage.getItem('accessToken');
+				const payload = parseJwt(token);
 				
-				if (response.data.code === 'USER_PROFILE_UPDATE_SUCCESS') {
+				const data = {
+					password: form.newPassword.value.trim()
+				}
+				
+				const response = await instance.patch(`/users/${payload.id}`, data);
+				
+				if (response.data.code === 'USER_UPDATE_SUCCESS') {
 					alert('비밀번호가 변경되었습니다.');
 					location.href = '/mypage.do';
 				}
 			}
 			catch (error) {
-				console.log(error);
+				const code = error?.response?.data?.code;
+				const message = error?.response?.data?.message;
+				
+				if (code === 'USER_UPDATE_FAIL') {
+					alert(message);
+				}
+				else if (code === 'USER_INVALID_INPUT') {
+					alert(message);
+				}
+				else if (code === 'USER_UNAUTHORIZED_ACCESS') {
+					alert(message);
+				}
+				else if (code === 'USER_FORBIDDEN') {
+					alert(message);
+				}
+				else if (code === 'USER_NOT_FOUND') {
+					alert(message);
+				}
+				else if (code === 'INTERNAL_SERVER_ERROR') {
+					alert(message);
+				}
+				else {
+					console.log('서버 요청 중 오류 발생');
+				}
 			}
 		}
 	});

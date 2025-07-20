@@ -222,7 +222,7 @@ public class CommentService {
 			}
 		}
 		
-		// 필요한 필드만 수정
+		// 필요한 필드 수정
 		comment.setContent(commentDto.getContent());
 		
 		// 댓글 수정

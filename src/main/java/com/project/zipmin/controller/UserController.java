@@ -101,7 +101,7 @@ public class UserController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
-	})	
+	})
 	@GetMapping("/users")
 	public ResponseEntity<?> readUserPage(
 			@Parameter(description = "조회할 페이지 번호", required = true) @RequestParam int page,

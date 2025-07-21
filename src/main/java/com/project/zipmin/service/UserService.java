@@ -105,9 +105,9 @@ public class UserService {
 	public UserReadResponseDto readUserByNameAndTel(UserReadRequestDto userDto) {
 		
 		// 입력값 검증
-		if (userDto == null || userDto.getName() == null || userDto.getTel() == null) {
-			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-		}
+//		if (userDto == null || userDto.getName() == "" || userDto.getTel() == null) {
+//			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+//		}
 
 		// 사용자 조회
 		User user = userRepository.findByNameAndTel(userDto.getName(), userDto.getTel())

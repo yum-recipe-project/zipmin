@@ -27,4 +27,5 @@ public class AuthController {
         return ResponseEntity.status(AuthSuccessCode.AUTH_VALID_TOKEN.getStatus())
         			.body(ApiResponse.success(AuthSuccessCode.AUTH_VALID_TOKEN, null));
     }
+	
 }

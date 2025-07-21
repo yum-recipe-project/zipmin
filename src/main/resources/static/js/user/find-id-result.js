@@ -1,15 +1,14 @@
 /**
- * 아이디 정보를 표시하는 함수
+ * 아이디를 표시하는 함수
  */
-document.addEventListener('DOMContentLoaded', function() {
-	const data = sessionStorage.getItem('username');
-	
-	if (data) {
-		document.getElementById('username').innerText = data;
-		sessionStorage.removeItem('username');
+document.addEventListener('DOMContentLoaded', function () {
+	const username = sessionStorage.getItem('username');
+
+	if (username) {
+		document.getElementById('username').innerText = username;
 	}
 	else {
-		alert("잘못된 접근입니다. find-id-result.js");
+		alert("잘못된 접근입니다.");
 		window.location.href = "/user/login.do";
 	}
 });

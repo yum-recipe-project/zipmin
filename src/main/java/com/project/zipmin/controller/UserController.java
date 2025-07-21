@@ -68,6 +68,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -384,15 +385,13 @@ public class UserController {
 	})
 	@PostMapping("/users/find-username")
 	public ResponseEntity<?> findUsername(
-			@Parameter(description = "사용자 아이디 조회 요청 정보", required = true) @RequestBody UserReadRequestDto userRequestDto) {
+			@Parameter(description = "사용자 아이디 조회 요청 정보", required = true) @RequestBody @Valid UserReadRequestDto userRequestDto) {
 		
 		// 아이디 조회
 		String username = userService.readUserByNameAndTel(userRequestDto).getUsername();
 		
-//		return ResponseEntity.status(UserSuccessCode.USER_READ_USERNAME_SUCCESS.getStatus())
-//				.body(ApiResponse.success(UserSuccessCode.USER_READ_USERNAME_SUCCESS, Map.of("username", username)));
 		return ResponseEntity.status(UserSuccessCode.USER_READ_USERNAME_SUCCESS.getStatus())
-				.body(ApiResponse.success(UserSuccessCode.USER_READ_USERNAME_SUCCESS, username));
+				.body(ApiResponse.success(UserSuccessCode.USER_READ_USERNAME_SUCCESS, Map.of("username", username)));
 	}
 	
 	

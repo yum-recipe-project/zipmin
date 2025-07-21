@@ -175,7 +175,7 @@ public class UserService {
 			user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		}
 		if (userDto.getEmail() != null) {
-			if (userRepository.existsByEmail(userDto.getEmail())) {
+			if (!userDto.getEmail().equals(user.getEmail()) && userRepository.existsByEmail(userDto.getEmail())) {
 				throw new ApiException(UserErrorCode.USER_EMAIL_DUPLICATED);
 			}
 			user.setEmail(userDto.getEmail());
@@ -187,7 +187,7 @@ public class UserService {
 			user.setNickname(userDto.getNickname());
 		}
 		if (userDto.getTel() != null) {
-			if (userRepository.existsByTel(userDto.getTel())) {
+			if (!userDto.getTel().equals(user.getTel()) && userRepository.existsByTel(userDto.getTel())) {
 				throw new ApiException(UserErrorCode.USER_TEL_DUPLICATED);
 			}
 			user.setTel(userDto.getTel());

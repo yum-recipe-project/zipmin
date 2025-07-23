@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /**
- * 아이디 찾기 폼 입력을 실시간으로 검증하는 함수
+ * 아이디 찾기 폼을 실시간으로 검증하는 함수
  */
 document.addEventListener('DOMContentLoaded', function () {
 	
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 /**
- * 비밀번호 찾기 폼 입력을 실시간으로 검증하는 함수
+ * 비밀번호 찾기 폼을 실시간으로 검증하는 함수
  */
 document.addEventListener('DOMContentLoaded', function () {
 	

@@ -16,7 +16,7 @@
 				<div class="join_wrap">
 					<div>
 						<h3>회원 정보를 입력 후, 가입을 완료해주세요</h3>
-						<form>
+						<form id="join-form">
 							<!-- 기본 정보 -->
 							<div class="basic_info">
 								<h3>기본정보</h3>

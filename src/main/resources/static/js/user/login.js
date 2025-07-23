@@ -2,6 +2,7 @@
  * 로그인 폼을 실시간으로 검증하는 함수
  */
 document.addEventListener('DOMContentLoaded', function () {
+	
     const form = document.querySelector('form');
 	
 	// 아이디 실시간 검사

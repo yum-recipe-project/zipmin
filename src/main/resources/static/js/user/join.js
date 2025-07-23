@@ -2,17 +2,18 @@
  * 회원가입 폼 입력 검증 함수
  */
 document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('form');
+	
+    const form = document.getElementById('join-form');
 
 	// 이름 실시간 검사
-	form.name.addEventListener('input', function() {
+	form.name.addEventListener('blur', function() {
 		const isNameEmpty = this.value.trim() === '';
 		this.classList.toggle('danger', isNameEmpty);
 		document.querySelector('.name_field p').style.display = isNameEmpty ? 'block' : 'none';
 	});
 
 	// 휴대폰 번호 실시간 검사
-	form.tel.addEventListener('input', function() {
+	form.tel.addEventListener('blur', function() {
 		let tel = this.value.replace(/[^0-9]/g, '');
 		if (tel.length <= 3) {
 			this.value = tel;
@@ -29,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
 	
 	// 아이디 실시간 검사
-	form.username.addEventListener('input', function() {
+	form.username.addEventListener('blur', function() {
 		const isUsernameEmpty = this.value.trim() === '';
 		document.querySelector('.username_field p:nth-of-type(2)').style.display = 'none';
 		document.querySelector('.username_field p:nth-of-type(3)').style.display = 'none';
@@ -46,6 +47,9 @@ document.addEventListener('DOMContentLoaded', function () {
 				document.querySelector('.username_field p:nth-of-type(2)').style.display = 'block';
 			}
 		}
+	});
+	form.username.addEventListener('input', function() {
+		document.querySelector('.username_field p:nth-of-type(4)').style.display = 'none';
 	});
 
 	// 비밀번호 실시간 검사
@@ -110,16 +114,15 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 	});
 	
-	
 	// 닉네임 실시간 검사
-	form.nickname.addEventListener('input', function() {
+	form.nickname.addEventListener('blur', function() {
 		const isNicknameEmpty = this.value.trim() === '';
 		this.classList.toggle('danger', isNicknameEmpty);
 		document.querySelector('.nickname_field p').style.display = isNicknameEmpty ? 'block' : 'none';
 	});
 	
 	// 이메일 실시간 검사
-	form.email.addEventListener('input', function() {
+	form.email.addEventListener('blur', function() {
 		const isEmailEmpty = this.value.trim() === '';
 		this.classList.toggle('danger', isEmailEmpty);
 		document.querySelector('.email_field p').style.display = isEmailEmpty ? 'block' : 'none';
@@ -128,12 +131,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+
+
 /**
  * 회원가입을 하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
 	const form = document.querySelector('form');
-	form.addEventListener('submit', function (event) {
+	form.addEventListener('submit', async function (event) {
 		event.preventDefault();
 		let isValid = true;
 		
@@ -229,37 +234,61 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 		
 		if (isValid) {
-			const data = {
-				name: form.name.value.trim(),
-				username: form.username.value.trim(),
-				password: form.password1.value.trim(),
-				nickname: form.nickname.value.trim(),
-				tel: form.tel.value.trim(),
-				email: form.email.value.trim()
-			};
-			
-			fetch('/users', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(data)
-			})
-			.then((response) => response.json())
-			.then(result => {
-				if (result.code === 'USER_SIGNUP_SUCCESS') {
-					sessionStorage.setItem('user', JSON.stringify(result));
-			 		window.location.href = '/user/join/complete.do';
+			try {
+				const headers = { 'Content-Type': 'application/json' };
+				
+				const data = {
+					name: form.name.value.trim(),
+					username: form.username.value.trim(),
+					password: form.password1.value.trim(),
+					nickname: form.nickname.value.trim(),
+					tel: form.tel.value.trim(),
+					email: form.email.value.trim()
+				};
+				
+				const response = await fetch('/users', {
+					method: 'POST',
+					headers: headers,
+					body: JSON.stringify(data)
+				});
+				
+				const result = await response.json();
+				
+				if (result.code === 'USER_CREATE_SUCCESS') {
+					sessionStorage.setItem('user', JSON.stringify(result.data));
+					window.location.href = '/user/join/complete.do';
 				}
-				else {
+				else if (result.code === 'USER_CREATE_FAIL') {
 					alert('회원가입에 실패했습니다.');
 				}
-			})
-			.catch(error => console.log(error));
+				else if (result.code === 'USER_INVALID_INPUT') {
+					alert('입력값이 유효하지 않습니다.');
+				}
+				else if (result.code === 'USER_NOT_FOUND') {
+					alert('해당 사용자를 찾을 수 없습니다.');
+				}
+				else if (result.code === 'USER_USERNAME_DUPLICATED') {
+					alert('이미 사용 중인 아이디입니다.');
+				}
+				else if (result.code === 'USER_TEL_DUPLICATED') {
+					alert('이미 사용 중인 전화번호입니다.');
+				}
+				else if (result.code === 'USER_EMAIL_DUPLICATED') {
+					alert('이미 사용 중인 이메일입니다.');
+				}
+				else if (result.code === 'INTERNAL_SERVER_ERROR') {
+					alert('서버 내부 오류가 발생했습니다.');
+				}
+			}
+			catch (error) {
+				console.log(error);
+			}
 		}
 		
     });
 });
+
+
 
 
 
@@ -269,10 +298,16 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
 	document.querySelector('.nickname_field button').addEventListener('click', function(event) {
 		event.preventDefault();
+
+		document.querySelector('.nickname_field input').classList.remove('danger');
+		document.querySelector('.nickname_field p').style.display = 'none';
+		
 		const nickname = randomNickname();
 		document.querySelector('form').nickname.value = nickname;
 	});
-})
+});
+
+
 
 
 
@@ -288,11 +323,13 @@ function randomNickname() {
 
 
 
+
+
 /**
  * 아이디 중복을 확인하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	document.querySelector('.username_field button').addEventListener('click', function(event) {
+	document.querySelector('.username_field button').addEventListener('click', async function(event) {
 		event.preventDefault();
 		const username = document.querySelector('input[name="username"]').value.trim();
 		if (username === '') {
@@ -306,26 +343,31 @@ document.addEventListener('DOMContentLoaded', function() {
 			return;
 		}
 		
-		fetch(`/users/check-username?username=${username}`, {
-			method: 'GET'
-		})
-		.then((response) => response.json())
-		.then(result => {
-			if (result.code === 'USER_USERNAME_AVAILABLE') {
+		try {
+			const response = await fetch(`/users/check-username?username=${username}`, {
+				method: 'GET'
+			});
+			
+			const result = await response.json();
+			
+			if (result.code === 'USER_USERNAME_NOT_DUPLICATED') {
 				document.querySelector('.username_field p:nth-of-type(4)').style.display = 'block';
 			}
-			// 입력값이 올바르지 않습니다.
-			else if (result.code === 'USER_INVALID_PARAM') {
+			else if (result.code === 'USER_INVALID_INPUT') {
 				document.querySelector('form').username.classList.add('danger');
 				document.querySelector('.username_field p:nth-of-type(3)').style.display = 'block';
 			}
-			// 이미 사용 중인 아이디입니다.
 			else if (result.code === 'USER_USERNAME_DUPLICATED') {
 				document.querySelector('form').username.classList.add('danger');
 				document.querySelector('.username_field p:nth-of-type(3)').style.display = 'block';
 			}
-		})
-		.catch(error => console.log(error));
+			else if (result.code === 'INTERNAL_SERVER_ERROR') {
+				alert('서버 내부 오류가 발생했습니다.');
+			}
+		}
+		catch (error) {
+			console.log(error);
+		}
 	});
 });
 

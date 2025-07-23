@@ -1,21 +1,37 @@
 package com.project.zipmin.mapper;
 
-import java.util.List;
-
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
-import com.project.zipmin.dto.UserJoinRequestDto;
+import com.project.zipmin.dto.UserCreateRequestDto;
+import com.project.zipmin.dto.UserCreateResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
+import com.project.zipmin.dto.UserUpdateRequestDto;
+import com.project.zipmin.dto.UserUpdateResponseDto;
 import com.project.zipmin.entity.User;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-	User toEntity(UserJoinRequestDto userDto);
-	UserJoinRequestDto toRequestDto(User user);
-	List<UserJoinRequestDto> toRequestDtoList(List<User> users);
 	
+	// Read
 	User toEntity(UserReadResponseDto userDto);
-	UserReadResponseDto toResponseDto(User user);
-	List<UserReadResponseDto> toResponseDtoList(List<User> users);
+	UserReadResponseDto toReadResponseDto(User user);
+	
+	
+	
+	// Create
+	User toEntity(UserCreateRequestDto userDto);
+	UserCreateRequestDto toCreateRequestDto(User user);
+	
+	User toEntity (UserCreateResponseDto userDto);
+	UserCreateResponseDto toCreateResponseDto(User user);
+	
+	
+	
+	// Update
+	User toEntity(UserUpdateRequestDto userDto);
+	UserUpdateRequestDto toUpdateRequestDto(User user);
+	
+	User toEntity(UserUpdateResponseDto userDto);
+	UserUpdateResponseDto toUpdateResponseDto(User user);
+	
 }

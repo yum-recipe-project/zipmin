@@ -213,6 +213,12 @@
 #container .social .image {
 	display: flex;
 	margin-top: 24px;
+	gap: 24px;
+}
+
+#container .social .image a:first-of-type img {
+	width: 54px;
+	height: 54px;
 }
 
 #container .social .image img {
@@ -220,10 +226,10 @@
 	height: 48px;
 }
 
-#container .social .image img:not(:last-child) {
+/* #container .social .image img:not(:last-child) {
 	margin-right: 24px;
 }
-
+ */
 
 
 /* 출처 */

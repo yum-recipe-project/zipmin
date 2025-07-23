@@ -5,16 +5,17 @@ import org.springframework.stereotype.Repository;
 
 import com.project.zipmin.entity.User;
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 	
-	User findByUsername(String username);
-	
-	
+	Optional<User> findByUsername(String username);
+	Optional<User> findByNameAndTel(String name, String tel);
 	
 	boolean existsByUsername(String username);
-	User findByNameAndTel(String name, String tel);
+	boolean existsByTel(String tel);
+	boolean existsByEmail(String email);
 	
 }

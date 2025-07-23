@@ -238,7 +238,6 @@ public class CommentController {
 	
 	
 	// 댓글 삭제
-	@DeleteMapping("/comments/{id}")
 	@Operation(
 	    summary = "댓글 삭제",
 	    description = "댓글을 삭제합니다."
@@ -288,6 +287,7 @@ public class CommentController {
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 		
 	})
+	@DeleteMapping("/comments/{id}")
 	public ResponseEntity<?> deleteComment(
 			@Parameter(description = "댓글의 일련번호", required = true, example = "1") @PathVariable int id,
 			@Parameter(description = "댓글 삭제 요청 정보", required = true) @RequestBody CommentDeleteRequestDto commentDto) {

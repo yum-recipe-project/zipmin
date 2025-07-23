@@ -2,16 +2,14 @@
  * 접근 권한을 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', async function() {
-	if (!isLoggedIn()) {
-		redirectToLogin();
-	}
-
+	
 	try {
 		await instance.get('/dummy');
 	}
 	catch (error) {
-		redirectToLogin();
+		redirectToLogin('/');
 	}
+	
 });
 
 
@@ -52,16 +50,15 @@ document.addEventListener('DOMContentLoaded', function() {
 		if (isValid) {
 			const token = localStorage.getItem('accessToken');
 			const payload = parseJwt(token);
-			
-			const data = {
-				id: payload.id,
-				password: form.password.value.trim()
-			}
-			
+
 			try {
-				const response = await instance.post('/users/verify-password', data);
+				const data = {
+					password: form.password.value.trim()
+				}
 				
-				if (response.data.code === 'USER_PASSWORD_VERIFY_SUCCESS') {
+				const response = await instance.post(`/users/${payload.id}/check-password`, data);
+				
+				if (response.data.code === 'USER_CORRECT_PASSWORD') {
 					const path = sessionStorage.getItem('path') || '/';
 					sessionStorage.setItem('passwordVerified', 'true');
 					sessionStorage.removeItem('path');
@@ -69,16 +66,31 @@ document.addEventListener('DOMContentLoaded', function() {
 				}
 			}
 			catch (error) {
-				if (error.response?.data?.code === 'USER_PASSWORD_NOT_MATCH') {
+				const code = error?.response?.data?.code;
+				const message = error?.response?.data?.message;
+				
+				if (code === 'USER_INCORRECT_PASSWORD') {
 					document.querySelector('.alert').style.display = 'block';
 					form.password.value = '';
 					form.password.focus();
 				}
-				else if (error.response?.data?.code === 'USER_INVALID_PARAM') {
-					alert('입력값이 올바르지 않습니다.');
+				else if (code === 'USER_INVALID_INPUT') {
+					alert(message);
+				}
+				else if (code === 'USER_UNAUTHORIZED_ACCESS') {
+					alert(message);
+				}
+				else if (code === 'USER_FORBIDDEN') {
+					alert(message);
+				}
+				else if (code === 'USER_NOT_FOUND') {
+					alert(message);
+				}
+				else if (code === 'INTERNAL_SERVER_ERROR') {
+					alert(message);
 				}
 				else {
-					alert('문제가 발생했습니다. 다시 시도하세요.');
+					console.log('서버 요청 중 오류 발생');
 				}
 			}
 		}

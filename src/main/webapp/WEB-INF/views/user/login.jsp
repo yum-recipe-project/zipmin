@@ -56,18 +56,15 @@
 					<div class="social">
 						<div class="text">
 							집밥의민족 신규가입하고<br/><span>다양한 레시피</span> 만나보세요!
-						</div>
+						</div> 
 						<div class="image">
-							<!-- 사진 변경 필요!!!!!!! css 변경 필요!!!! -->
-							<a href="/oauth2/authorization/google">
-							  <img src="/images/user/kakao.png" alt="구글 로그인">
+							<a href="javascript:window.open('/oauth2/authorization/google', 'socialLoginPopup', 'width=500,height=600')">
+								<img src="/images/user/google.png" alt="구글 로그인">
 							</a>
-							<a href="/oauth2/authorization/naver">
-							  <img src="/images/user/naver.png" alt="네이버 로그인">
+							<a href="javascript:window.open('/oauth2/authorization/naver', 'socialLoginPopup', 'width=500,height=600')">
+								<img src="/images/user/naver.png" alt="네이버 로그인">
 							</a>
-						</div>
-						
-						
+						</div>	
 					</div>
 					
 					<!-- 출처 -->

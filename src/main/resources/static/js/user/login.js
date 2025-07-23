@@ -1,7 +1,8 @@
 /**
- * 폼 입력 검증 함수
+ * 로그인 폼을 실시간으로 검증하는 함수
  */
 document.addEventListener('DOMContentLoaded', function () {
+	
     const form = document.querySelector('form');
 	
 	// 아이디 실시간 검사
@@ -56,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	form.addEventListener('submit', async function(event) {
 		event.preventDefault();
 		let isValid = true;
-		// 폼 제출 시 최종 검사
+		
 		if (form.password.value.trim() === '') {
 			form.password.classList.add('danger');
 			document.querySelector('.password_field p').style.display = 'block';
@@ -73,17 +74,18 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 		// 로그인
 		if (isValid) {
-			const data = {
-				username : form.username.value.trim(),
-				password : form.password.value.trim()
-			};
 			
 			try {
+				const headers = { 'Content-Type' : 'application/json' };
+				
+				const data = {
+					username : form.username.value.trim(),
+					password : form.password.value.trim()
+				};
+				
 				const response = await fetch('/login', {
 					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
-					},
+					headers: headers,
 					body: JSON.stringify(data)
 				});
 				
@@ -111,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				}
 			}
 			catch (error) {
-				console.log(error);
+				console.log('서버 요청 중 오류 발생');
 			}
 		}
 	})

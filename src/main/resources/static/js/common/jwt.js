@@ -19,7 +19,7 @@ function parseJwt(token) {
  * 로그인 여부를 확인하는 함수
  */
 function isLoggedIn() {
-	return !!localStorage.getItem("accessToken");
+	return !!localStorage.getItem('accessToken');
 }
 
 
@@ -48,7 +48,7 @@ async function reissueJwt() {
 	const token = localStorage.getItem('accessToken');
 
 	if (!isTokenExpired(token)) {
-		throw new Error('토큰 재발급 실패');
+		throw new Error('액세스 토큰 유효기간 만료');
 	}
 
 	try {
@@ -98,7 +98,11 @@ let refreshQueue = []; // 재발급 기다리는 요청들
 instance.interceptors.request.use(async (config) => {
 	const token = localStorage.getItem('accessToken');
 	
-	// 토큰이 없으면 요청 전송
+	// 토큰이 없으면 요청 전송 (**** 이거 수정 필요 ****)
+	if (!token) {
+		throw new Error('ACCESS_TOKEN_MISSING');
+	}
+
 	if (!token) {
 		return config;
 	}
@@ -157,18 +161,19 @@ instance.interceptors.response.use(
 
 /**
  * 로그인 페이지로 이동시키는 함수
+ * 
+ * @param {string} url - 사용자가 취소 선택시 이동할 주소 (없으면 현재 페이지 유지)
  */
-/*
-function redirectToLogin() {
+function redirectToLogin(url) {
+	
 	localStorage.removeItem('accessToken');
-	alert('로그인 후 이용 가능합니다.');
-	window.location.href = '/user/login.do';
-}
-*/
-function redirectToLogin() {
-	localStorage.removeItem('accessToken');
+
 	if (confirm('로그인이 필요합니다. 로그인 페이지로 이동합니다.')) {
 		location.href = '/user/login.do';
 	}
+	else if (url) {
+		location.href = url;
+	}
+	
 }
 

@@ -276,6 +276,13 @@ public class CommentService {
 		Comment comment = commentRepository.findById(likeDto.getRecodenum())
 			    .orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
 		
+		// 소유자 검증
+		if (!userService.readUserById(likeDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
+			if (comment.getUser().getId() != likeDto.getUserId()) {
+				throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+			}
+		}
+		
 		// 좋아요 작성
 		try {
 		    return likeService.createLike(likeDto);
@@ -297,6 +304,13 @@ public class CommentService {
 		// 댓글 존재 여부 판단
 		Comment comment = commentRepository.findById(likeDto.getRecodenum())
 			    .orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
+		
+		// 소유자 검증
+		if (!userService.readUserById(likeDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
+			if (comment.getUser().getId() != likeDto.getUserId()) {
+				throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+			}
+		}
 		
 		// 좋아요 취소
 		try {

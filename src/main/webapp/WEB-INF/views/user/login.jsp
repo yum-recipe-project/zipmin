@@ -56,7 +56,7 @@
 					<div class="social">
 						<div class="text">
 							집밥의민족 신규가입하고<br/><span>다양한 레시피</span> 만나보세요!
-						</div>
+						</div> 
 						<div class="image">
 							<a href="javascript:window.open('/oauth2/authorization/google', 'socialLoginPopup', 'width=500,height=600')">
 								<img src="/images/user/google.png" alt="구글 로그인">

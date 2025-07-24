@@ -2,7 +2,7 @@
  * 댓글 작성 폼의 포커스 여부에 따라 입력창을 활성화하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	const writeCommentContent = document.getElementById("writeCommentContent");
+	const writeCommentContent = document.getElementById('writeCommentContent');
 	const commentContentBorder = document.querySelector('.comment_input');
 	writeCommentContent.addEventListener('focus', function() {
 		commentContentBorder.classList.add('focus');
@@ -14,18 +14,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+
+
 /**
  * 댓글 작성 폼값을 검증하고 버튼을 활성화하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	const writeCommentContent = document.getElementById("writeCommentContent");
-	const writeCommentButton = document.querySelector("#writeCommentForm button[type='submit']");
-	writeCommentContent.addEventListener("input", function() {
+	const writeCommentContent = document.getElementById('writeCommentContent');
+	const writeCommentButton = document.querySelector('#writeCommentForm button[type="submit"]');
+	writeCommentContent.addEventListener('input', function() {
 		const isCommentContentEmpty = writeCommentContent.value.trim() === "";
-		writeCommentButton.classList.toggle("disable", isCommentContentEmpty);
+		writeCommentButton.classList.toggle('disable', isCommentContentEmpty);
 		writeCommentButton.disabled = isCommentContentEmpty;
 	});
 });
+
+
 
 
 
@@ -33,13 +37,15 @@ document.addEventListener('DOMContentLoaded', function() {
  * 댓글을 수정하는 모달창의 폼값을 검증하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	const editCommentContent = document.getElementById("editCommentContent");
-	const editCommentButton = document.querySelector("#editCommentForm button[type='submit']");
-	editCommentContent.addEventListener("input", function() {
+	const editCommentContent = document.getElementById('editCommentContent');
+	const editCommentButton = document.querySelector('#editCommentForm button[type="submit"]');
+	editCommentContent.addEventListener('input', function() {
 		const isCommentContentEmpty = editCommentContent.value.trim() === "";
-		editCommentButton.classList.toggle("disabled", isCommentContentEmpty);
+		editCommentButton.classList.toggle('disabled', isCommentContentEmpty);
 	});
 });
+
+
 
 
 
@@ -47,16 +53,18 @@ document.addEventListener('DOMContentLoaded', function() {
  * 댓글을 신고하는 모달창의 신고 사유를 선택했는지 검증하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	const reasonRadio = document.querySelectorAll("#reportCommentForm input[name='reason']");
-	const submitButton = document.querySelector("#reportCommentForm button[type='submit']");
+	const reasonRadio = document.querySelectorAll('#reportCommentForm input[name="reason"]');
+	const submitButton = document.querySelector('#reportCommentForm button[type="submit"]');
 
 	reasonRadio.forEach(function(radio) {
-        radio.addEventListener("change", function() {
+        radio.addEventListener('change', function() {
 			const isChecked = Array.from(reasonRadio).some(radio => radio.checked);
-			submitButton.classList.toggle("disabled", !isChecked);
+			submitButton.classList.toggle('disabled', !isChecked);
         });
     });
 });
+
+
 
 
 
@@ -64,42 +72,43 @@ document.addEventListener('DOMContentLoaded', function() {
  * 대댓글을 입력하는 모달창의 내용 입력창의 폼값을 검증하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	const writeSubcommentContent = document.getElementById("writeSubcommentContent");
-	const writeSubcommentButton = document.querySelector("#writeSubcommentForm button[type='submit']");
-	writeSubcommentContent.addEventListener("input", function() {
-		const isWriteSubcommentContentEmpty = writeSubcommentContent.value.trim() === "";
-		writeSubcommentButton.classList.toggle("disabled", isWriteSubcommentContentEmpty);
+	const writeSubcommentContent = document.getElementById('writeSubcommentContent');
+	const writeSubcommentButton = document.querySelector('#writeSubcommentForm button[type="submit"]');
+	writeSubcommentContent.addEventListener('input', function() {
+		const isWriteSubcommentContentEmpty = writeSubcommentContent.value.trim() === '';
+		writeSubcommentButton.classList.toggle('disabled', isWriteSubcommentContentEmpty);
     });
 });
+
+
 
 
 
 /**
  * 로그인 여부에 따라 댓글 작성폼을 다르게 표시하는 함수
  */
-document.addEventListener('DOMContentLoaded', async function() {
-	if (!isLoggedIn()) {
+document.addEventListener('DOMContentLoaded', async function () {
+	
+	if (isLoggedIn()) {
+		const token = localStorage.getItem('accessToken');
+		const payload = parseJwt(token);
+		document.getElementById('logout_state').style.display = 'none';
+		document.getElementById('login_state').style.display = 'block';
+		document.querySelector('.login_user span').innerText = payload.nickname;
+	}
+	else {
 		document.getElementById('logout_state').style.display = 'block';
 		document.getElementById('login_state').style.display = 'none';
 	}
-	
+
 	try {
 		await instance.get('/dummy');
-		
-		const token = localStorage.getItem('accessToken');
-		const payload = parseJwt(token);
-		
-		document.getElementById('logout_state').style.display = 'none';
-		document.getElementById('login_state').style.display = 'block';
-		
-		document.querySelector('.login_user span').innerText = payload.nickname;
 	}
 	catch (error) {
-		setLoginState(false);
+		console.log(error);
 	}
+	
 });
-
-
 
 
 
@@ -112,107 +121,87 @@ let totalPages = 0;
 let page = 0;
 let commentList = [];
 
-function loadCommentList({ tablename, sort, size }) {
+async function fetchCommentList(tablename, sort, size) {
 
-	const params = new URLSearchParams(window.location.search);
-	const id = params.get('id');
-	
-	const token = localStorage.getItem('accessToken');
-	const headers = {
-		'Content-Type': 'application/json'
-	};
-	if (isLoggedIn()) {
-		headers['Authorization'] = `Bearer ${token}`;
+	try {
+		const id = new URLSearchParams(window.location.search).get('id');
+		
+		const params = new URLSearchParams({
+			tablename : tablename,
+			recodenum : id,
+			sort : sort,
+			page : page,
+			size : size
+		}).toString();
+		
+		const response = await fetch(`/comments?${params}`, {
+			method: 'GET'
+		});
+		
+		const result = await response.json();
+		
+		if (result.code === 'COMMENT_READ_LIST_SUCCESS') {
+			const newCommentList = result.data.content;
+			
+			commentList = [...commentList, ...newCommentList];
+			newCommentList.filter(comment => comment.comm_id === null)
+				.forEach(comment => {
+					document.querySelector('.comment_list').append(renderComment(comment));
+			});
+			
+			page = result.data.number + 1;
+			totalPages = result.data.totalPages;
+					
+			document.querySelector('.comment_count span:last-of-type').innerText = result.data.totalElements;
+			
+			// 더보기 버튼 제어
+			document.querySelector('.btn_more').style.display = page >= totalPages ? 'none' : 'block';
+		}
+		else if (result.code === 'COMMENT_INVALID_INPUT') {
+			alert('입력값이 유효하지 않습니다.');
+		}
+		else if (result.code === 'INTERVAL_SERVER_ERROR') {
+			alert('서버 내부 오류가 발생했습니다.');
+		}
+		
+	}
+	catch (error) {
+		console.log(error);
 	}
 	
-	const parameters = new URLSearchParams({
-		tablename : tablename,
-		recodenum : id,
-		sort : sort,
-		page : page,
-		size : size
-	}).toString();
-	
-	// await/fetch 방식으로 변경할 예정 !!! (home.js 참고)
-	fetch(`/comments?${parameters}`, {
-		method: 'GET',
-		headers: headers
-	})
-	.then(response => response.json())
-	.then(result => {
-		const data = result.data;
-		if (!data) return;
-		
-		console.log(result);
-		
-		const newComments = data.content;
-
-		commentList = [...commentList, ...newComments];
-		renderCommentList(newComments);
-
-		page = data.number + 1;
-		totalPages = data.totalPages;
-		
-		document.querySelector('.comment_count span:last-of-type').innerText = data.totalElements;
-
-		// 더보기 버튼 제어
-		const btnMore = document.querySelector('.btn_more');
-		if (page >= totalPages) {
-			btnMore.style.display = 'none';
-		}
-		else {
-			btnMore.style.display = 'block';
-		}
-		
-	})
-	.catch(error => console.log(error));
 }
 
 
 
-/**
- * 배열에 저장된 댓글 목록을 화면에 표시하는 함수
- */
-function renderCommentList(comments) {
-	comments.filter(comment => comment.comm_id === null)
-		.forEach(comment => {
-			document.querySelector('.comment_list').append(createComment(comment));
-	});
-}
-
 
 
 /**
- * 댓글 데이터를 변환하는 함수
+ * 댓글을 화면에 렌더링하는 함수
  *
  * @param {Object} comment - 댓글 객체
- * @returns {string} 댓글 및 대댓글의 HTML 문자열
+ * @returns {string} 댓글의 HTML 문자열
  */
-function createComment(comment) {
+function renderComment(comment) {
 	const subcommentList = commentList.filter(data => data.comm_id === comment.id);
 
-	// 댓글 li
 	const commentLi = document.createElement('li');
 	commentLi.className = 'comment';
 	commentLi.dataset.id = comment.id;
 
-	// 댓글 info
 	const infoDiv = document.createElement('div');
 	infoDiv.className = 'comment_info';
 	infoDiv.append(
-		createWriterInfo({ nickname: comment.nickname, postdate: comment.postdate, isSub: false }),
-		createActionLink({ id: comment.id, content: comment.content, isSub: false, userId: comment.user_id })
+		renderWriterInfo(comment.nickname, comment.postdate, false),
+		renderActionLink(comment.id, comment.content, comment.user_id, false)
 	);
 
-	// 댓글 본문
 	const contentP = document.createElement('p');
 	contentP.className = 'comment_content';
 	contentP.textContent = comment.content;
 
-	// 툴바 (좋아요, 답글)
 	const toolDiv = document.createElement('div');
 	toolDiv.className = 'comment_tool';
-	toolDiv.appendChild(createLikeButton(comment.id, comment.likecount, comment.likestatus));
+	toolDiv.appendChild(renderLikeButton(comment.id, comment.likecount, comment.likestatus));
 
 	const replyBtn = document.createElement('a');
 	replyBtn.className = 'btn_outline_small write_subcomment_btn';
@@ -228,26 +217,22 @@ function createComment(comment) {
 		document.getElementById('writeSubcommentCommId').value = comment.id;
 	});
 
-
 	const replySpan = document.createElement('span');
 	replySpan.textContent = '답글 쓰기';
 	replyBtn.appendChild(replySpan);
 
 	toolDiv.appendChild(replyBtn);
 
-	// 댓글 구성
 	commentLi.append(infoDiv, contentP, toolDiv);
 
-	// 대댓글 ul
 	const subList = document.createElement('ul');
 	subList.className = 'subcomment_list';
 
 	subcommentList.forEach(subcomment => {
-		const subLi = createSubcomment(subcomment);
+		const subLi = renderSubcomment(subcomment);
 		subList.appendChild(subLi);
 	});
 
-	// fragment 반환
 	const fragment = document.createDocumentFragment();
 	fragment.append(commentLi, subList);
 
@@ -256,12 +241,13 @@ function createComment(comment) {
 
 
 
+
+
 /**
  * 좋아요 버튼을 생성하는 함수
  */
-function createLikeButton(id, likecount, likestatus) {
+function renderLikeButton(id, likecount, likestatus) {
 	
-	// 좋아요 버튼 태그
 	const button = document.createElement('button');
 	button.className = 'btn_tool like_btn';
 
@@ -285,20 +271,20 @@ function createLikeButton(id, likecount, likestatus) {
 		if (likestatus) {
 			try {
 				const token = localStorage.getItem('accessToken');
-				const payload = parseJwt(token);
+				
+				const headers = {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${token}`
+				};
 				
 				const data = {
 					tablename: 'comments',
 					recodenum: id,
-					user_id: payload.id
 				}
 				
 				const response = await instance.delete(`/comments/${id}/likes`, {
 					data: data,
-					headers: {
-						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${token}`
-					}
+					headers: headers
 				});
 				
 				if (response.data.code === 'COMMENT_UNLIKE_SUCCESS') {
@@ -312,31 +298,31 @@ function createLikeButton(id, likecount, likestatus) {
 				const message = error?.response?.data?.message;
 				
 				if (code === 'COMMENT_UNLIKE_FAIL') {
-					alert(message);
+					alert('댓글 좋아요 취소에 실패했습니다.');
 				}
-				else if (code === 'LIKE_CREATE_FAIL') {
-					alert(message);
+				else if (code === 'LIKE_DELETE_FAIL') {
+					alert('좋아요 삭제에 실패했습니다');
 				}
 				else if (code === 'LIKE_INVALID_INPUT') {
-					alert(message);
+					alert('입력값이 유효하지 않습니다.');
 				}
 				else if (code === 'LIKE_NOT_FOUND') {
-					alert(message);
+					alert('해당 좋아요를 찾을 수 없습니다');
 				}
 				else if (code === 'COMMENT_UNAUTHORIZED') {
-					alert(message);
+					alert('로그인되지 않은 사용자입니다.');
 				}
 				else if (code === 'COMMENT_FORBIDDEN') {
-					alert(message);
+					alert('접근 권한이 없습니다.');
 				}
 				else if (code === 'COMMENT_NOT_FOUND') {
-					alert(message);
+					alert('해당 댓글을 찾을 수 없습니다.');
 				}
 				else if (code === 'INTERNAL_SERVER_ERROR') {
-					alert(message);
+					alert('서버 내부에서 오류가 발생했습니다.');
 				}
 				else {
-					console.log('서버 요청 중 오류 발생');
+					alert(message);
 				}
 			}
 		}
@@ -344,19 +330,19 @@ function createLikeButton(id, likecount, likestatus) {
 		else {
 			try {
 				const token = localStorage.getItem('accessToken');
-				const payload = parseJwt(token);
+				
+				const headers = {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${token}`
+				}
 				
 				const data = {
 					tablename: 'comments',
-					recodenum: id,
-					user_id: payload.id
+					recodenum: id
 				}
 				
 				const response = await instance.post(`/comments/${id}/likes`, data, {
-					headers: {
-						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${token}`
-					}
+					headers: headers
 				});
 				
 				if (response.data.code === 'COMMENT_LIKE_SUCCESS') {
@@ -370,31 +356,31 @@ function createLikeButton(id, likecount, likestatus) {
 				const message = error?.response?.data?.message;
 				
 				if (code === 'COMMENT_LIKE_FAIL') {
-					alert(message);
+					alert('댓글 좋아요에 실패했습니다.');
 				}
 				else if (code === 'LIKE_CREATE_FAIL') {
-					alert(message);
+					alert('댓글 생성에 실패했습니다.');
 				}
 				else if (code === 'LIKE_INVALID_INPUT') {
-					alert(message);
+					alert('입력값이 유효하지 않습니다.');
 				}
 				else if (code === 'LIKE_DUPLICATE') {
-					alert(message);
+					alert('이미 중복된 내용입니다.');
 				}
 				else if (code === 'COMMENT_UNAUTHORIZED') {
-					alert(message);
+					alert('로그인되지 않은 사용자입니다.');
 				}
 				else if (code === 'COMMENT_FORBIDDEN') {
-					alert(message);
+					alert('접근 권한이 없습니다.');
 				}
 				else if (code === 'COMMENT_NOT_FOUND') {
-					alert(message);
+					alert('해당 댓글을 찾을 수 없습니다.');
 				}
 				else if (code === 'INTERNAL_SERVER_ERROR') {
-					alert(message);
+					alert('서버 내부 오류가 발생했습니다.');
 				}
 				else {
-					console.log('서버 요청 중 오류 발생');
+					alert(message);
 				}
 			}
 		}
@@ -405,10 +391,12 @@ function createLikeButton(id, likecount, likestatus) {
 
 
 
+
+
 /**
  * 수정과 신고와 삭제 동작의 링크를 생성하는 함수
  */
-function createActionLink({ id, content, isSub, userId }) {
+function renderActionLink(id, content, userId, isSub) {
 
 	const token = localStorage.getItem('accessToken');
 	
@@ -438,7 +426,7 @@ function createActionLink({ id, content, isSub, userId }) {
 			if (!isLoggedIn()) {
 				redirectToLogin();
 			}
-			await deleteComment({ id });
+			await deleteComment(id);
 		});
 		
 		actionDiv.append(editLink, deleteLink);
@@ -467,10 +455,12 @@ function createActionLink({ id, content, isSub, userId }) {
 
 
 
+
+
 /**
  * 댓글과 대댓글의 작성자 정보 영역을 생성하는 함수
  */
-function createWriterInfo({ nickname, postdate, isSub }) {
+function renderWriterInfo(nickname, postdate, isSub) {
 	
 	const date = new Date(postdate);
 	const formatDate = `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일`;
@@ -493,10 +483,12 @@ function createWriterInfo({ nickname, postdate, isSub }) {
 
 
 
+
+
 /**
  * 대댓글을 생성하는 함수
  */
-function createSubcomment(subcomment) {
+function renderSubcomment(subcomment) {
 	const subLi = document.createElement('li');
 	subLi.className = 'subcomment';
 	subLi.dataset.id = subcomment.id;
@@ -511,8 +503,8 @@ function createSubcomment(subcomment) {
 	const infoDiv = document.createElement('div');
 	infoDiv.className = 'subcomment_info';
 	infoDiv.append(
-		createWriterInfo({ nickname: subcomment.nickname, postdate: subcomment.postdate, isSub: true }),
-		createActionLink({ id: subcomment.id, content: subcomment.content, isSub: true, userId: subcomment.user_id })
+		renderWriterInfo(subcomment.nickname, subcomment.postdate, true),
+		renderActionLink(subcomment.id, subcomment.content, subcomment.user_id, true)
 	);
 
 	const contentP = document.createElement('p');
@@ -521,13 +513,15 @@ function createSubcomment(subcomment) {
 
 	const toolDiv = document.createElement('div');
 	toolDiv.className = 'comment_tool';
-	toolDiv.appendChild(createLikeButton(subcomment.id, subcomment.likecount, subcomment.likestatus));
+	toolDiv.appendChild(renderLikeButton(subcomment.id, subcomment.likecount, subcomment.likestatus));
 
 	innerDiv.append(infoDiv, contentP, toolDiv);
 	subLi.append(arrowImg, innerDiv);
 
 	return subLi;
 }
+
+
 
 
 
@@ -542,36 +536,36 @@ async function writeComment(tablename) {
 	
 	try {
 		const token = localStorage.getItem('accessToken');
-		const payload = parseJwt(token);
 		
 		const params = new URLSearchParams(window.location.search);
 		const id = params.get('id');
 		
+		const headers = {
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${token}`
+		}
+		
 		const data = {
 			content: document.getElementById('writeCommentContent').value.trim(),
 			tablename: tablename,
-			recodenum: Number(id),
-			user_id: payload.id
+			recodenum: Number(id)
 		};
 		
-		const response = await instance.post('/comments', data);
+		const response = await instance.post('/comments', data, {
+			headers: headers
+		});
 		
 		if (response.data.code === 'COMMENT_CREATE_SUCCESS') {
 			const newComment = response.data.data;
 			
-			console.log(newComment);
-
-			// 입력창 초기화
 			document.getElementById("writeCommentContent").value = '';
 			const submitBtn = document.querySelector("#writeCommentForm button[type='submit']");
 			submitBtn.disabled = true;
 			submitBtn.classList.add('disable');
 
-			// 댓글 리스트에 추가 (상단에)
 			commentList.unshift(newComment);
 
-			// 새 댓글만 렌더링하여 상단에 추가
-			const commentEl = createComment(newComment);
+			const commentEl = renderComment(newComment);
 			document.querySelector('.comment_list').prepend(commentEl);
 		}
 	}
@@ -580,37 +574,41 @@ async function writeComment(tablename) {
 		const message = error?.response?.data?.message;
 		
 		if (code === 'COMMENT_CREATE_FAIL') {
-			alert(message);
+			alert('댓글 생성에 실패했습니다.');
 		}
 		else if (code === 'COMMENT_INVALID_INPUT') {
-			alert(message);
+			alert('입력값이 유효하지 않습니다.');
 		}
 		else if (code === 'COMMENT_UNAUTHORIZED') {
-			alert(message);
+			alert('로그인되지 않은 사용자입니다.');
 		}
 		else if (code === 'COMMENT_FORBIDDEN') {
-			alert(message);
+			alert('접근 권한이 없습니다.');
 		}
 		else if (code === 'COMMENT_NOT_FOUND') {
-			alert(message);
+			alert('해당 댓글을 찾을 수 없습니다.');
 		}
 		else if (code === 'INTERNAL_SERVER_ERROR') {
-			alert(message);
+			alert('서버 내부 오류가 발생했습니다.');
 		}
 		else {
-			console.log('서버 요청 중 오류 발생');
+			alert(message);
 		}
 	}
 }
 
 
 
+
+/**
+ * 댓글을 신고하는 함수
+ */
 document.addEventListener('DOMContentLoaded', function() {
 	
 	const reportForm = document.getElementById('reportCommentForm');
 	
-	reportForm.addEventListener('submit', async function(e) {
-		e.preventDefault();
+	reportForm.addEventListener('submit', async function(event) {
+		event.preventDefault();
 		
 		if (!isLoggedIn()) {
 			redirectToLogin();
@@ -621,16 +619,21 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 		try {
 			const token = localStorage.getItem('accessToken');
-			const payload = parseJwt(token);
+			
+			const headers = {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
+			}
 
 			const data = {
 				tablename: 'comments',
 				recodenum: commId,
-				reason: reason,
-				user_id: payload.id
+				reason: reason
 			};
 			
-			const response = await instance.post(`/comments/${commId}/reports`, data);
+			const response = await instance.post(`/comments/${commId}/reports`, data, {
+				headers: headers
+			});
 			
 			if (response.data.code === 'COMMENT_REPORT_SUCCESS') {
 				alert('신고 처리되었습니다.');
@@ -642,34 +645,35 @@ document.addEventListener('DOMContentLoaded', function() {
 			const message = error?.response?.data?.message;
 
 			if (code === 'COMMENT_REPORT_FAIL') {
-				alert(message);
+				alert('댓글 신고에 실패했습니다.');
 			}
 			else if (code === 'REPORT_CREATE_FAIL') {
-				alert(message);
+				alert('신고 생성에 실패했습니다.');
 			}
 			else if (code === 'REPORT_INVALID_INPUT') {
-				alert(message);
+				alert('입력값이 유효하지 않습니다.');
 			}
 			else if (code === 'REPORT_DUPLICATE') {
 				alert('이미 신고한 댓글입니다.');
 			}
 			else if (code === 'COMMENT_UNAUTHORIZED_ACCESS') {
-				alert(message);
+				alert('로그인되지 않은 사용자입니다.');
 			}
 			else if (code === 'COMMENT_FORBIDDEN') {
-				alert(message);
+				alert('접근 권한이 없습니다.');
 			}
 			else if (code === 'COMMENT_NOT_FOUND') {
-				alert(message);
+				alert('댓글을 찾을 수 없습니다.');
 			}
 			else {
-				console.log('서버 요청 중 오류 발생');
+				alert(message);
 			}
 		}
 		
 		bootstrap.Modal.getInstance(document.getElementById('reportCommentModal')).hide();
 	});
 });
+
 
 
 
@@ -693,24 +697,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		try {
 			const token = localStorage.getItem('accessToken');
-			const payload = parseJwt(token);
+			
+			const headers = {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
+			}
 			
 			const data = {
 				id: id,
-				content: content,
-				user_id: payload.id
+				content: content
 			};
 			
-			const response = await instance.patch(`/comments/${id}`, data);
+			const response = await instance.patch(`/comments/${id}`, data, {
+				headers: headers
+			});
 			
-			// 성공시 수정 내용 반영
 			if (response.data.code === 'COMMENT_UPDATE_SUCCESS') {
 				const contentEl = document.querySelector(`.comment[data-id='${id}'] .comment_content, .subcomment[data-id='${id}'] .subcomment_content`);
 				if (contentEl) {
 				  contentEl.textContent = response.data.data.content;
 				}
-				
-				// 모달 닫기
 				bootstrap.Modal.getInstance(document.getElementById('editCommentModal')).hide();
 			}
 		}
@@ -719,25 +725,25 @@ document.addEventListener('DOMContentLoaded', function() {
 			const message = error?.response?.data?.message;
 			
 			if (code === 'COMMENT_UPDATE_FAIL') {
-				alert(message);
+				alert('댓글 수정에 실패했습니다.');
 			}	
-			else if (code === 'INVALID_INPUT_RESPONSE') {
-				alert(message);
+			else if (code === 'COMMENT_INVALID_INPUT') {
+				alert('입력값이 유효하지 않습니다.');
 			}
 			else if (code === 'COMMENT_UNAUTHORIZED_ACCESS') {
-				alert(message);
+				alert('로그인되지 않은 사용자입니다.');
 			}
 			else if (code === 'COMMENT_FORBIDDEN') {
-				alert(message);
+				alert('접근 권한이 없습니다.');
 			}
 			else if (code === 'COMMENT_NOT_FOUND') {
-				alert(message);
+				alert('해당 댓글을 찾을 수 없습니다.');
 			}
 			else if (code === 'INTERNAL_SERVER_ERROR') {
-				alert(message);
+				alert('서버 내부 오류가 발생했습니다.');
 			}
 			else {
-				console.log('서버 요청 중 오류 발생');
+				alert(message);
 			}
 		}
 			
@@ -746,38 +752,43 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+
+
 /**
  * 댓글을 삭제하는 함수
  */
-async function deleteComment({ id }) {
+async function deleteComment(id) {
 
 	if (confirm('작성하신 댓글을 삭제하시겠습니까?')) {
 		try {
 			const token = localStorage.getItem('accessToken');
-			const payload = parseJwt(token);
+			
+			const headers = {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
+			}
 			
 			const data = {
-				id: id,
-				user_id: payload.id
+				id: id
 			};
 			
-			const response = await instance.delete(`/comments/${id}`, {data});
+			const response = await instance.delete(`/comments/${id}`, {
+				data: data,
+				headers: headers
+			});
 			
 			if (response.data.code === 'COMMENT_DELETE_SUCCESS') {
 				const commentEl = document.querySelector(`.comment[data-id='${id}']`);
 				const subcommentListEl = commentEl?.nextElementSibling;
 
-				// 일반 댓글 삭제
 				if (commentEl) {
 					commentEl.remove();
 				}
 
-				// 대댓글 리스트도 함께 삭제
 				if (subcommentListEl && subcommentListEl.classList.contains('subcomment_list')) {
 					subcommentListEl.remove();
 				}
 
-				// 혹시 대댓글 단독 삭제일 경우도 처리
 				const subcommentEl = document.querySelector(`.subcomment[data-id='${id}']`);
 				if (subcommentEl) {
 					subcommentEl.remove();
@@ -791,30 +802,32 @@ async function deleteComment({ id }) {
 			const message = error?.response?.data?.message;
 			
 			if (code === 'COMMENT_DELETE_FAIL') {
-				alert(message);
+				alert('댓글 삭제에 실패했습니다');
 			}
 			else if (code === 'COMMENT_INVALID_INPUT') {
-				alert(message);
+				alert('입력값이 유효하지 않습니다.');
 			}
 			else if (code === 'COMMENT_UNAUTHORIZED') {
-				alert(message);
+				alert('로그인되지 않은 사용자입니다.');
 			}
 			else if (code === 'COMMENT_FORBIDDEN') {
-				alert(message);
+				alert('접근 권한이 없습니다.');
 			}
 			else if (code === 'COMMENT_NOT_FOUND') {
-				alert(message);
+				alert('해당 댓글을 찾을 수 없습니다.');
 			}
 			else if (code === 'INTERNAL_SERVER_ERROR') {
-				alert(message);
+				alert('서버 내부 오류가 발생했습니다.');
 			}
 			else {
-				console.log('서버 요청 중 오류 발생');
+				alert(message);
 			}
 		}
 	}
 	
 }
+
+
 
 
 
@@ -829,39 +842,63 @@ async function writeSubcomment(tablename) {
 
 		const params = new URLSearchParams(window.location.search);
 		const id = params.get('id');
+		
+		const headers = {
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${token}`
+		}
 
 		const data = {
 			content: document.getElementById('writeSubcommentContent').value.trim(),
 			tablename: tablename,
 			recodenum: Number(id),
-			user_id: payload.id,
 			comm_id: document.getElementById('writeSubcommentCommId').value
 		};
 
-		const response = await instance.post('/comments', data);
+		const response = await instance.post('/comments', data, {
+			headers: headers
+		});
 
 		if (response.data.code === 'COMMENT_CREATE_SUCCESS') {
 			const newSubcomment = response.data.data;
-				const parentCommentId = newSubcomment.comm_id; // 부모 ID 확인
+			const parentCommentId = newSubcomment.comm_id;
 
-				// 모달 닫기
-				bootstrap.Modal.getInstance(document.getElementById('writeSubcommentModal')).hide();
+			bootstrap.Modal.getInstance(document.getElementById('writeSubcommentModal')).hide();
 
-				// 입력창 초기화
-				document.getElementById("writeSubcommentContent").value = '';
-				// document.querySelector("#writeSubcommentForm button[type='submit']").disabled = true;
+			document.getElementById("writeSubcommentContent").value = '';
 
-				// commentList에 추가
-				commentList.push(newSubcomment);
+			commentList.push(newSubcomment);
 
-				// 대댓글 DOM에 추가
-				const subList = document.querySelector(`.comment[data-id='${parentCommentId}']`).nextElementSibling;
-				subList.appendChild(createSubcomment(newSubcomment));
+			const subList = document.querySelector(`.comment[data-id='${parentCommentId}']`).nextElementSibling;
+			subList.appendChild(renderSubcomment(newSubcomment));
 		}
 	}
 	catch (error) {
-		console.log('대댓글 작성 중 오류 발생', error);
-		alert('대댓글 작성 실패');
+		console.log(error);
+		const code = error?.response?.data?.code;
+		const message = error?.response?.data?.message;
+
+		if (code === 'COMMENT_CREATE_FAIL') {
+			alert('댓글 생성에 실패했습니다.');
+		}
+		else if (code === 'COMMENT_INVALID_INPUT') {
+			alert('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'COMMENT_UNAUTHORIZED') {
+			alert('로그인되지 않은 사용자입니다.');
+		}
+		else if (code === 'COMMENT_FORBIDDEN') {
+			alert('접근 권한이 없습니다.');
+		}
+		else if (code === 'COMMENT_NOT_FOUND') {
+			alert('해당 댓글을 찾을 수 없습니다.');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alert('서버 내부 오류가 발생했습니다.');
+		}
+		else {
+			alert(message);
+		}
 	}
 }
 

@@ -94,7 +94,7 @@ function renderCommentList(commentList) {
 		
 		if (comment.title) {
 			const a = document.createElement('a');
-			a.href = `/${comment.tablename}/view.do?id=${comment.recodenum}`;
+			a.href = `/chompessor/view${capitalizeFirst(comment.tablename)}.do?id=${comment.recodenum}`;
 			a.textContent = comment.title;
 			titleDiv.appendChild(a);
 		}

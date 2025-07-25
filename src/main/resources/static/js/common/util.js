@@ -13,3 +13,17 @@ function formatDate(dateString) {
 	return `${year}년 ${month}월 ${day}일`;
 	
 }
+
+
+
+
+
+/**
+ * 첫 문자만 대문자로 변경하는 함수
+ */
+function capitalizeFirst(str) {
+	
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1);
+  
+}

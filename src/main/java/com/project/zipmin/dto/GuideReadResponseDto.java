@@ -9,11 +9,16 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class GuideDTO {
+public class GuideReadResponseDto {
+	
 	private int id;
 	private String title;
 	private String subtitle;
 	private String category;
 	private Date postdate;
 	private String content;
+	
+	private long likecount;
+	private boolean likestatus;
+	
 }

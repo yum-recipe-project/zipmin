@@ -7,7 +7,7 @@ import com.project.zipmin.dto.ClassApplyDTO;
 import com.project.zipmin.dto.ClassDTO;
 import com.project.zipmin.dto.ClassScheduleDTO;
 import com.project.zipmin.dto.ClassTeacherDTO;
-import com.project.zipmin.dto.GuideDTO;
+import com.project.zipmin.dto.GuideReadResponseDto;
 
 import java.util.List;
 

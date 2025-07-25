@@ -1,97 +1,185 @@
 /**
  * 전역 변수
  */
-let category = 'all';
+let category = '';
+let sort = 'new';
 let totalPages = 0;
 let page = 0;
-const size = 5;
+const size = 10;
+let guideList = [];
 
-document.addEventListener('DOMContentLoaded', () => {
-    init();
+
+
+
+
+/**
+ * 카테고리 클릭 시 데이터를 가져오는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	
+	// 카테고리 버튼
+	document.querySelectorAll('.btn_tab').forEach(btn => {
+        btn.addEventListener('click', function (event) {
+            event.preventDefault();
+            document.querySelector('.btn_tab.active')?.classList.remove('active');
+            btn.classList.add('active');
+
+            category = btn.dataset.category;
+            page = 0;
+			guideList = [];
+			
+            fetchGuideList();
+        });
+    });
+	
+	// 정렬 버튼
+	document.querySelectorAll('.btn_sort').forEach(btn => {
+		btn.addEventListener('click', function(event) {
+			event.preventDefault();
+			document.querySelector('.btn_sort.active')?.classList.remove('active');
+			btn.classList.add('active');
+			
+			sort = btn.dataset.sort;
+			page = 0;
+			guideList = [];
+			
+			fetchGuideList();
+		});
+	});
+	
+	fetchGuideList();
 });
 
+
+
+
+
 /**
- * 초기화 함수
- * - 가이드 목록 조회
- * - 찜 버튼 이벤트 등록
- * - 카테고리 탭 이벤트 등록
+ * 서버에서 키친가이드 목록 데이터를 가져오는 함수
  */
-function init() {
-    fetchGuideList(page);
-    initFavoriteButtons();
-    initCategoryTabs();
+async function fetchGuideList() {
+	
+	try {
+		const params = new URLSearchParams({
+			category: category,
+			sort: sort,
+			page: page,
+			size: size
+		});
+		
+		const response = await fetch(`/guides?${params}`, {
+			method: 'GET'
+		});
+		const result = await response.json();
+		
+		if (result.code === 'KITCHEN_READ_LIST_SUCCESS') {
+			
+            totalPages = result.data.totalPages;
+            page = result.data.number;
+			guideList = result.data.content;
+			
+            renderGuideList(result.data.content);
+            renderPagination();
+			
+			document.querySelector('.guide_util .total').innerText = `총 ${result.data.totalElements}개`;
+		}
+		// ****** 여기에 다른 에러 코드들 else if로 추가 ********
+		// common/comment.js 참고 !!
+	}
+	catch (error) {
+		console.log(error);
+	}
+	
 }
 
-/**
- * 키친가이드 목록 fetch 함수
- * @param {number} num - 요청할 페이지 번호
- */
-function fetchGuideList(num) {
-    console.log(`[fetchGuideList] Fetching URL: /guides?category=${category}&page=${num}&size=${size}`);
 
-	fetch(`/guides?category=${category}&page=${num}&size=${size}`)
-	        .then(res => res.json())
-	        .then(result => {
-	            const data = result.data;
-	            if (!data?.content) return;
 
-	            totalPages = data.totalPages;
-	            page = num;  // 현재 페이지 갱신
 
-	            renderGuideList(data.content);
-	            renderPagination(); // 동적 페이지네이션 렌더링
-				
-				// 총 게시글 개수 
-				const totalCountElement = document.querySelector('.guide_util .total');
-				if (totalCountElement && typeof data.totalElements === 'number') {
-				    totalCountElement.textContent = `총 ${data.totalElements}개`;
-				}
-
-	        })
-	        .catch(console.error);
-}
 
 /**
- * 가이드 리스트 UI 렌더링 함수
- * @param {Array} items - 가이드 항목 배열
+ * 키친가이드 목록을 화면에 렌더링하는 함수
+ * 
+ * @param {Array} guideList - 키친가이드 목록 배열
  */
-function renderGuideList(items) {
-    const guideList = document.querySelector('.guide_list');
-    guideList.innerHTML = '';
+function renderGuideList(guideList) {
+    const container = document.querySelector('.guide_list');
+    container.innerHTML = '';
 
-    items.forEach(item => {
+    guideList.forEach(guide => {
         const li = document.createElement('li');
-        li.innerHTML = `
-            <a href="/kitchen/viewGuide.do?id=${item.id}">
-                <div class="guide_item">
-                    <div class="guide_details">
-                        <div class="guide_top">
-                            <span>${item.subtitle}</span>
-                            <button class="favorite_btn"></button>
-                        </div>
-                        <span>${item.title}</span>
-                        <div class="info">
-                            <p>스크랩 ${item.scrapCount || 0}</p>
-                            <p>${formatDate(item.postdate)}</p>
-                        </div>
-                        <div class="writer">
-                            ${item.writerImage ?
-                                `<img src="${item.writerImage}">` :
-                                `<span class="profile_img"></span>`}
-                            <p>${item.writerNickname || '작성자'}</p>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        `;
-        guideList.appendChild(li);
+
+        const a = document.createElement('a');
+        a.href = `/kitchen/viewGuide.do?id=${guide.id}`;
+
+        const guideItem = document.createElement('div');
+        guideItem.className = 'guide_item';
+
+        const guideDetails = document.createElement('div');
+        guideDetails.className = 'guide_details';
+
+        const guideTop = document.createElement('div');
+        guideTop.className = 'guide_top';
+
+        const subtitleSpan = document.createElement('span');
+        subtitleSpan.textContent = guide.subtitle;
+
+        const favBtn = document.createElement('button');
+        favBtn.className = 'favorite_btn';
+
+        guideTop.append(subtitleSpan, favBtn);
+
+        const titleSpan = document.createElement('span');
+        titleSpan.textContent = guide.title;
+
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'info';
+
+        const scrapP = document.createElement('p');
+        scrapP.textContent = `스크랩 ${guide.likecount}`;
+
+        const dateP = document.createElement('p');
+        dateP.textContent = formatDate(guide.postdate);
+
+        infoDiv.append(scrapP, dateP);
+
+        const writerDiv = document.createElement('div');
+        writerDiv.className = 'writer';
+
+        if (guide.writerImage) {
+            const img = document.createElement('img');
+            img.src = guide.writerImage;
+            writerDiv.appendChild(img);
+        } else {
+            const profileImg = document.createElement('span');
+            profileImg.className = 'profile_img';
+            writerDiv.appendChild(profileImg);
+        }
+
+        const nicknameP = document.createElement('p');
+        nicknameP.textContent = '집밥의민족';
+        writerDiv.appendChild(nicknameP);
+
+        guideDetails.append(guideTop, titleSpan, infoDiv, writerDiv);
+        guideItem.appendChild(guideDetails);
+        a.appendChild(guideItem);
+        li.appendChild(a);
+        container.appendChild(li);
     });
 
-    initFavoriteButtons(); // 찜 버튼 이벤트 재등록
+	/******** 이거 수정 필요 *********/
+	/*** Dto에 likestatus를 저장해두었으므로 필요없음 ***/
+	/*** 위 코드의 favBtn을 적절히 표시하고 그 버튼 눌렀을 때의 백엔드 처리를 만들기 ****/
+    initFavoriteButtons(); 
 }
+
+
+
+
 
 /**
  * 찜 버튼 클릭 이벤트 등록 함수
+ * 
+ * ***** common/comment.js 보고 수정할 것 (renderLikeButton 부분)
  */
 function initFavoriteButtons() {
     document.querySelectorAll(".favorite_btn").forEach(button => {
@@ -103,80 +191,75 @@ function initFavoriteButtons() {
     });
 }
 
-/**
- * 카테고리 탭 클릭 이벤트 등록 함수
- */
-function initCategoryTabs() {
-    document.querySelectorAll(".btn_tab").forEach(tab => {
-        tab.addEventListener("click", e => {
-            e.preventDefault();
-            document.querySelector(".btn_tab.active")?.classList.remove("active");
-            tab.classList.add("active");
 
-            category = tab.dataset.category || 'all'; // 선택된 카테고리 설정
-            page = 0;
-            fetchGuideList(page); // 선택된 카테고리 목록 fetch
-        });
-    });
-}
+
 
 
 /**
- * 페이지네이션 렌더링 함수
+ * 페이지네이션을 화면에 렌더링하는 함수
  */
 function renderPagination() {
-    const paginationContainer = document.querySelector(".pagination ul");
-    paginationContainer.innerHTML = '';
+	const pagination = document.querySelector('.pagination ul');
+	pagination.innerHTML = '';
 
-    const currentGroup = Math.floor(page / size);
-    const start = currentGroup * size;
-    const end = Math.min(start + size, totalPages);
+	// 이전 버튼
+	const prevLi = document.createElement('li');
+	const prevLink = document.createElement('a');
+	prevLink.href = '#';
+	prevLink.className = 'prev';
+	prevLink.dataset.page = page - 1;
 
-    // prev
-    const prev = document.createElement('li');
-    prev.innerHTML = `<a href="#" class="prev"><img src="/images/common/chevron_left.png"></a>`;
-    if (start === 0) prev.style.visibility = 'hidden';
-    prev.addEventListener('click', e => {
-        e.preventDefault();
-        if (start > 0) {
-            fetchGuideList(start - 1);
-        }
-    });
-    paginationContainer.appendChild(prev);
+	if (page === 0) {
+		prevLink.style.pointerEvents = 'none';
+		prevLink.style.opacity = '0';
+	}
 
-    // page 개수
-    for (let i = start; i < end; i++) {
-        const li = document.createElement('li');
-        li.innerHTML = `<a href="#" class="page ${i === page ? 'active' : ''}">${i + 1}</a>`;
-        li.querySelector('a').addEventListener('click', e => {
-            e.preventDefault();
-            fetchGuideList(i);
-        });
-        paginationContainer.appendChild(li);
-    }
+	const prevImg = document.createElement('img');
+	prevImg.src = '/images/common/chevron_left.png';
+	prevLink.appendChild(prevImg);
+	prevLi.appendChild(prevLink);
+	pagination.appendChild(prevLi);
 
-    // next
-    const next = document.createElement('li');
-    next.innerHTML = `<a href="#" class="next"><img src="/images/common/chevron_right.png"></a>`;
-    if (end >= totalPages) next.style.visibility = 'hidden';
-    next.addEventListener('click', e => {
-        e.preventDefault();
-        if (end < totalPages) {
-            fetchGuideList(end);
-        }
-    });
-    paginationContainer.appendChild(next);
+	// 페이지 번호
+	for (let i = 0; i < totalPages; i++) {
+		const li = document.createElement('li');
+		const a = document.createElement('a');
+		a.href = '#';
+		a.className = `page${i === page ? ' active' : ''}`;
+		a.dataset.page = i;
+		a.textContent = i + 1;
+		li.appendChild(a);
+		pagination.appendChild(li);
+	}
+
+	// 다음 버튼
+	const nextLi = document.createElement('li');
+	const nextLink = document.createElement('a');
+	nextLink.href = '#';
+	nextLink.className = 'next';
+	nextLink.dataset.page = page + 1;
+
+	if (page === totalPages - 1) {
+		nextLink.style.pointerEvents = 'none';
+		nextLink.style.opacity = '0';
+	}
+
+	const nextImg = document.createElement('img');
+	nextImg.src = '/images/common/chevron_right.png';
+	nextLink.appendChild(nextImg);
+	nextLi.appendChild(nextLink);
+	pagination.appendChild(nextLi);
+
+	// 바인딩
+	document.querySelectorAll('.pagination a').forEach(link => {
+		link.addEventListener('click', function (e) {
+			e.preventDefault();
+			const newPage = parseInt(this.dataset.page);
+			if (!isNaN(newPage) && newPage >= 0 && newPage < totalPages && newPage !== page) {
+				page = newPage;
+				fetchGuideList();
+			}
+		});
+	});
 }
 
-/**
- * 날짜 포맷 함수 (yyyy.mm.dd)
- * @param {string} isoString - ISO 날짜 문자열
- * @returns {string} 포맷된 날짜 문자열
- */
-function formatDate(isoString) {
-    const date = new Date(isoString);
-    const yyyy = date.getFullYear();
-    const mm = String(date.getMonth() + 1).padStart(2, '0');
-    const dd = String(date.getDate()).padStart(2, '0');
-    return `${yyyy}.${mm}.${dd}`;
-}

@@ -1,7 +1,5 @@
 package com.project.zipmin.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -48,7 +46,7 @@ public class RecipeController {
 		Page<RecipeReadResponseDto> recipePage = null;
 		
 		// ****** 카테고리 검색 + 검색어 검색 추가할 것 (현재는 홈에서 사용하기 위해 정렬 처리만 되어 있음) ******
-		// ****** 그리고 홈에서는 별점, 팔로우만 보기 등 필요 없어서 이런 세부적인 부분도 구현 안되어 있음 ******
+		// ****** 그리고 홈에서는 별점, 팔로우만 보기 등 필요 없어서 이런 세부적인 부분도 구현 안되어 있음 필요하다면 구현할 것 ******
 		if (sort.equals("new")) {
 			recipePage = recipeService.readRecipePageOrderByIdDesc(pageable);
 		}
@@ -65,7 +63,7 @@ public class RecipeController {
 	
 	
 	
-	// 특정 레시피 조회 (테스트)
+	// 특정 레시피 조회
 	@GetMapping("/recipes/{id}")
 	public ResponseEntity<?> viewRecipe(@PathVariable int id) {
 		
@@ -100,7 +98,7 @@ public class RecipeController {
 	
 	// 특정 레시피 수정
 	@PutMapping("/recipes/{id}")
-	public ResponseEntity<?> editRecipe(@PathVariable("recipeIdx") int id) {
+	public ResponseEntity<?> editRecipe(@PathVariable int id) {
 		
 		// 구현 필요 없을 듯
 		

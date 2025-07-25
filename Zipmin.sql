@@ -239,6 +239,112 @@ create sequence seq_guide_id
     nocache;
 commit;
 
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '뿔 소라 손질법', '제주 바다향을 담은', 'preparation', sysdate, 
+'뿔소라는 양식이 불가능해 오직 자연산으로만 채취 가능합니다. 제주 해녀들이 직접 잡은 자연산 뿔소라! 귀한 만큼 손질법을 제대로 알고 먹어야 더 맛있게 즐길 수 있습니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '해산물 신선하게 보관하는 법', '싱싱함을 오래 유지하는 비법', 'storage', sysdate, 
+'구입한 해산물은 가능한 빨리 냉장 보관하며, 랩으로 밀폐하거나 진공포장 후 얼음과 함께 보관하는 것이 신선도를 오래 유지하는 비법입니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '해물탕 맛있게 끓이는 비법', '시원한 국물의 비결', 'cooking', sysdate, 
+'해물탕을 끓일 때는 신선한 해산물과 함께 멸치 육수를 사용하고, 조개와 새우를 먼저 넣어 시원한 맛을 내는 것이 중요합니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '해산물 요리 시 주의사항', '안전하고 맛있게 즐기는 방법', 'etc', sysdate, 
+'해산물은 알레르기 유발 가능성이 있으므로 주의가 필요하며, 조리 전 깨끗이 세척하고 신선도를 꼭 확인하는 것이 중요합니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '소고기 요리 시 주의사항', '안전하고 맛있게 즐기는 방법', 'etc', sysdate, 
+'소고기는 알레르기 유발 가능성이 있으므로 주의가 필요하며, 조리 전 깨끗이 세척하고 신선도를 꼭 확인하는 것이 중요합니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '복어 요리 시 주의사항', '안전하고 맛있게 즐기는 방법', 'etc', sysdate, 
+'복어는 알레르기 유발 가능성이 있으므로 주의가 필요하며, 조리 전 깨끗이 세척하고 신선도를 꼭 확인하는 것이 중요합니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '전복 손질법', '깨끗하게 다듬는 법', 'preparation', sysdate,
+'전복은 껍데기에서 살을 조심히 분리하고, 솔로 깨끗이 문질러 이물질을 제거한 뒤 내장을 제거하고 조리합니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '굴 손질과 세척법', '비린내 없이 준비하기', 'preparation', sysdate,
+'굴은 소금물에 2~3번 흔들어 씻고, 식초를 살짝 넣어 헹구면 비린내를 줄이고 깔끔하게 손질할 수 있습니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '생선 냉동 보관법', '신선도 유지하는 팁', 'storage', sysdate,
+'생선은 흐르는 물에 씻은 후 물기를 제거하고, 한 마리씩 랩으로 싸서 냉동하면 선도를 오래 유지할 수 있습니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '조개류 보관법', '살아있는 조개 오래 보관하기', 'storage', sysdate,
+'조개는 신문지에 싸서 냉장고에 보관하거나, 소금물에 담가 놓으면 하루 정도 더 살아있게 할 수 있습니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '문어 삶는 법', '부드럽게 익히는 노하우', 'cooking', sysdate,
+'문어는 끓는 물에 식초와 소금을 약간 넣고 삶으며, 3분마다 꺼내어 식히기를 반복하면 부드러운 식감이 살아납니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '홍합탕 맛있게 끓이기', '국물 맛을 살리는 비법', 'cooking', sysdate,
+'홍합은 깨끗이 손질한 뒤, 마늘과 파를 넣고 끓이면 시원한 국물 맛이 살아나며, 끓이기 전에 해감이 필수입니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '생선 조림 실패하지 않는 법', '양념이 잘 배게 만드는 비법', 'cooking', sysdate,
+'생선 조림은 물을 적게 넣고, 중불에서 졸이며 양념을 끼얹는 방식으로 조리해야 간이 골고루 배입니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '알레르기 유발 해산물 리스트', '민감한 사람은 꼭 확인하세요', 'etc', sysdate,
+'조개류, 새우, 오징어, 문어 등은 알레르기를 유발할 수 있으므로 주의가 필요하며, 섭취 전 반드시 식품 성분 확인이 필요합니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '냉동 해산물 해동법', '맛과 식감 살리는 해동 팁', 'storage', sysdate,
+'냉동 해산물은 냉장 해동이 가장 좋으며, 찬물에 담가 천천히 해동하는 것도 효과적입니다. 전자레인지 해동은 권장하지 않습니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '갑각류 손질 시 주의사항', '손 다치지 않는 꿀팁', 'preparation', sysdate,
+'꽃게나 새우 손질 시에는 등껍질을 제거할 때 칼 대신 주방가위를 사용하면 안전하게 작업할 수 있습니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '생선 손질법', '비린내 없이 손질하기', 'preparation', sysdate,
+'생선을 손질할 때 소금으로 문지른 후 식초물에 헹구면 비린내를 줄일 수 있습니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '채소 보관 꿀팁', '오래 신선하게!', 'storage', sysdate,
+'잎채소는 키친타월로 감싸 밀폐용기에 보관하면 수분 조절이 되어 신선함을 오래 유지할 수 있습니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '계란 보관법', '냉장고 온도에 주의', 'storage', sysdate,
+'계란은 뾰족한 쪽이 아래로 가도록 보관해야 노른자가 중심을 유지하고 신선하게 보관할 수 있습니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '고기 해동 요령', '전자레인지보다는 냉장해동!', 'preparation', sysdate,
+'고기는 냉장실에서 천천히 해동하는 것이 육즙 손실을 줄이고 식감도 유지할 수 있습니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '오일 종류별 특성', '조리용 오일 고르기', 'info', sysdate,
+'올리브유는 중불 이하 요리에 적합하고, 해바라기유나 카놀라유는 고온 조리에 더 알맞습니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '스테인리스 팬 사용법', '달궈야 눌어붙지 않아요!', 'cooking', sysdate,
+'스테인리스 팬은 충분히 예열한 후 기름을 둘러야 음식이 눌어붙지 않습니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '신선한 해산물 고르는 법', '눈으로 판단하세요', 'info', sysdate,
+'해산물은 투명하고 윤기 있는 외관, 선명한 눈동자를 가진 것이 신선한 상태입니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '된장 보관법', '곰팡이 걱정 없이!', 'storage', sysdate,
+'된장은 표면에 키친타월을 덮고 냉장 보관하면 곰팡이 발생을 줄일 수 있습니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '튀김 기름 온도 맞추기', '젓가락으로 확인!', 'cooking', sysdate,
+'기름에 나무젓가락을 넣었을 때 기포가 빠르게 올라오면 적정 온도(약 170~180도)입니다.');
+
+INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
+(seq_guide_id.nextval, '양파 눈물 안 나는 법', '냉장고에 잠깐 넣기', 'preparation', sysdate,
+'양파를 자르기 전에 냉장고에 30분 정도 넣어두면 휘발성 물질이 줄어 눈물이 덜 납니다.');
+
+commit;
+
 
 
 -- COMMENT 테이블
@@ -340,6 +446,8 @@ insert into likes values (seq_likes_id.NEXTVAL, 2, 'comments', 4);
 insert into likes values (seq_likes_id.NEXTVAL, 3, 'comments', 4);
 insert into likes values (seq_likes_id.NEXTVAL, 4, 'comments', 4);
 insert into likes values (seq_likes_id.NEXTVAL, 5, 'comments', 4);
+insert into likes values (seq_likes_id.NEXTVAL, 2, 'guide', 1);
+
 commit;
 
 

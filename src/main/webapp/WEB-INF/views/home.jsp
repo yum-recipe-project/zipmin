@@ -136,62 +136,7 @@
 				    </div>
 				    
 				    <!-- 랭킹 리스트 -->
-					<ul class="guide_list">
-					    <li>
-					        <a href="/kitchen/viewGuide.do">
-					            <div class="guide_card">
-					                <div class="image"></div>
-					                <p>칼에 버터 안 묻히고 소분 하는 법</p>
-					                <span>스크랩 29</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/kitchen/viewGuide.do">
-					            <div class="guide_card">
-					                <div class="image"></div>
-					                <p>칼에 버터 안 묻히고 소분 하는 법</p>
-					                <span>스크랩 29</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/kitchen/viewGuide.do">
-					            <div class="guide_card">
-					                <div class="image"></div>
-					                <p>칼에 버터 안 묻히고 소분 하는 법</p>
-					                <span>스크랩 29</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/kitchen/viewGuide.do">
-					            <div class="guide_card">
-					                <div class="image"></div>
-					                <p>칼에 버터 안 묻히고 소분 하는 법</p>
-					                <span>스크랩 29</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/kitchen/viewGuide.do">
-					            <div class="guide_card">
-					                <div class="image"></div>
-					                <p>칼에 버터 안 묻히고 소분 하는 법</p>
-					                <span>스크랩 29</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/kitchen/viewGuide.do">
-					            <div class="guide_card">
-					                <div class="image"></div>
-					                <p>칼에 버터 안 묻히고 소분 하는 법</p>
-					                <span>스크랩 29</span>
-					            </div>
-					        </a>
-					    </li>
-					</ul>
+					<ul class="guide_list"></ul>
 				</div>
 			
 				<h2>마이페이지</h2>

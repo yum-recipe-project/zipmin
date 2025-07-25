@@ -87,6 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
 
 	fetchRecipeList(sort);
+	fetchGuideList(sort);
 });
 
 
@@ -154,3 +155,67 @@ function renderRecipeList(list) {
 
 
 
+
+/**
+ * 서버에서 키친가이드를 가져오는 함수
+ */
+async function fetchGuideList(sort) {
+	try {
+		const params = new URLSearchParams({
+			sort: sort,
+			page: 0,
+			size: 6
+		}).toString();
+
+		const response = await fetch(`/guides?${params}`);
+		const result = await response.json();
+
+		if (result.code === 'KITCHEN_READ_LIST_SUCCESS') {
+			renderGuideList(result.data.content);
+		}
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+
+
+
+/**
+ * 
+ */
+function renderGuideList(list) {
+	const container = document.querySelector('.guide_list');
+	container.innerHTML = '';
+	
+	list.forEach(guide => {
+		const li = document.createElement('li');
+		
+		const a = document.createElement('a');
+		a.href = `/kitchen/viewGuide.do?id=${guide.id}`;
+		
+		const card = document.createElement('div');
+		card.className = 'guide_card';
+		
+		const imageDiv = document.createElement('div');
+		imageDiv.className = 'image';
+		imageDiv.style.backgroundImage = `url('${guide.imageUrl}')`;
+		imageDiv.style.backgroundSize = 'cover';
+		imageDiv.style.backgroundPosition = 'center';
+		
+		const titleP = document.createElement('p');
+		titleP.textContent = guide.title;
+		
+		const scrapSpan = document.createElement('span');
+		scrapSpan.textContent = `스크랩 ${guide.likecount}`;
+		
+		card.appendChild(imageDiv);
+		card.appendChild(titleP);
+		card.appendChild(scrapSpan);
+		
+		a.appendChild(card);
+		li.appendChild(a);
+		container.appendChild(li);
+	});
+	
+}

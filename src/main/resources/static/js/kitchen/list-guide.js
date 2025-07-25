@@ -168,15 +168,4 @@ function renderPagination() {
     paginationContainer.appendChild(next);
 }
 
-/**
- * 날짜 포맷 함수 (yyyy.mm.dd)
- * @param {string} isoString - ISO 날짜 문자열
- * @returns {string} 포맷된 날짜 문자열
- */
-function formatDate(isoString) {
-    const date = new Date(isoString);
-    const yyyy = date.getFullYear();
-    const mm = String(date.getMonth() + 1).padStart(2, '0');
-    const dd = String(date.getDate()).padStart(2, '0');
-    return `${yyyy}.${mm}.${dd}`;
-}
+

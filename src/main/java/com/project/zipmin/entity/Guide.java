@@ -2,6 +2,8 @@ package com.project.zipmin.entity;
 
 import java.util.Date;
 
+import org.hibernate.annotations.Formula;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -29,4 +31,8 @@ public class Guide {
 	private String category;
 	private Date postdate;
 	private String content;
+	
+	@Formula("(SELECT COUNT(*) FROM likes l WHERE l.recodenum = id AND l.tablename = 'guide')")
+	private int likecount;
+	
 }

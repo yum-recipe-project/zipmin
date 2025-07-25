@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class GuideResponseDTO {
-	private GuideDTO guide;
+	private GuideReadResponseDto guide;
 	private long likecount;
 }

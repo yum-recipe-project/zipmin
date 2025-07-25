@@ -19,7 +19,7 @@
 				<div class="guide_header">
 					<h2>키친가이드</h2>
 					<div class="tab">
-						<a class="btn_tab active" href="" data-category="all"><span>전체</span></a>
+						<a class="btn_tab active" href="" data-category=""><span>전체</span></a>
 						<a class="btn_tab" href="" data-category="preparation"><span>손질법</span></a>
 						<a class="btn_tab" href="" data-category="storage"><span>보관법</span></a>
 						<a class="btn_tab" href="" data-category="info"><span>요리 정보</span></a>
@@ -33,8 +33,8 @@
 					<div class="guide_util">
 						<p class="total"></p>
 						<div class="guide_sort">
-							<button class="btn_sort active">최신순</button>
-							<button class="btn_sort">인기순</button>
+							<button class="btn_sort active" data-sort="new">최신순</button>
+							<button class="btn_sort" data-sort="hot">인기순</button>
 						</div>
 					</div>
 					
@@ -47,8 +47,7 @@
 	
 				<div class="pagination_wrap">
 					<div class="pagination">
-					    <ul>
-					    </ul>
+					    <ul></ul>
 					</div>
 				</div>
 			

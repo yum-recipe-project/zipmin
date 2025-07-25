@@ -74,7 +74,7 @@ public class LikeService {
 		// 소유자 검증
 		if (!userService.readUserById(likeDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
 			if (like.getUser().getId() != likeDto.getUserId()) {
-				throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+				throw new ApiException(LikeErrorCode.LIKE_FORBIDDEN);
 			}
 		}
 		

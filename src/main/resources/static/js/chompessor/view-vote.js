@@ -343,16 +343,16 @@ document.addEventListener('DOMContentLoaded', function() {
 			document.querySelector('.comment_list').innerHTML = '';
 			commentList = [];
 			
-			loadCommentList({ tablename, sort, size });
+			fetchCommentList(tablename, sort, size);
 		});
 	});
 	
 	// 최초 댓글 목록 조회
-	loadCommentList({ tablename, sort, size });
+	fetchCommentList(tablename, sort, size);
 	
 	// 더보기 버튼 클릭 시 다음 페이지 로드
 	document.querySelector('.btn_more').addEventListener('click', function () {
-		loadCommentList({ tablename, sort, size });
+		fetchCommentList(tablename, sort, size);
 	});
 });
 
@@ -364,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 document.addEventListener('DOMContentLoaded', function () {
 	
-	document.getElementById('writeCommentForm').addEventListener("submit", function (event) {
+	document.getElementById('writeCommentForm').addEventListener('submit', function (event) {
 		event.preventDefault();
 		writeComment('vote');
 	});

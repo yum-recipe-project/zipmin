@@ -20,7 +20,7 @@ public enum ReportErrorCode implements Code {
 	REPORT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 신고를 찾을 수 없음"),
 	REPORT_CREATE_FAIL(HttpStatus.BAD_REQUEST, "신고 작성 실패"),
 	REPORT_DELETE_FAIL(HttpStatus.BAD_REQUEST, "신고 삭제 실패"),
-	REPORT_COUNT_READ_FAIL(HttpStatus.BAD_REQUEST, "신고 개수 조회 실패"),
+	REPORT_READ_COUNT_FAIL(HttpStatus.BAD_REQUEST, "신고 개수 조회 실패"),
 	
 	// 비즈니스 로직
 	REPORT_DUPLICATE(HttpStatus.CONFLICT, "신고 중복 작성 시도"),

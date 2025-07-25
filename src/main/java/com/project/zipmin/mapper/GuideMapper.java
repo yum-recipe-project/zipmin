@@ -12,5 +12,4 @@ public interface GuideMapper {
 	GuideDTO guideToGuideDTO(Guide guide);
 	Guide guideDTOToGuide(GuideDTO guideDTO);
 	List<GuideDTO> guideListToGuideDTOList(List<Guide> guideList);
-
 }

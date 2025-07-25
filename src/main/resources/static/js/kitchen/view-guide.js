@@ -1,54 +1,59 @@
-/**
- * 댓글 작성 폼의 focus 여부에 따라 입력창을 활성화하는 함수
- */
-document.addEventListener('DOMContentLoaded', function() {
-	const commentInput = document.getElementById("commentInput");
-	const commentInputBorder = document.querySelector('.comment_input');
-	commentInput.addEventListener('focus', function() {
-		commentInputBorder.classList.add('focus');
-	});
-	commentInput.addEventListener('blur', function() {
-		commentInputBorder.classList.remove('focus');
-	});
+document.addEventListener('DOMContentLoaded', () => {
+    const guideId = getGuideIdFromQuery(); 
+    if (guideId) {
+        fetchGuideDetail(guideId);
+    }
 });
 
-
+/**
+ * 요청 URL에서 guideId 추출
+ */
+function getGuideIdFromQuery() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('id');
+}
 
 /**
- * 댓글 작성 폼값을 검증하는 함수 (댓글 내용 미작성 시 버튼 비활성화)
+ * 키친가이드 상세 게시글 fetch 함수
+ * @param {number} guideId - 요청할 가이드 ID
  */
-document.addEventListener('DOMContentLoaded', function() {
-	const commentButton = document.getElementById("commentButton");
-	commentInput.addEventListener("input", function() {
-		const isCommentEmpty = commentInput.value.trim() === "";
-		commentButton.classList.toggle("disable", isCommentEmpty);
-		commentButton.disabled = isCommentEmpty;
-	});
-});
+function fetchGuideDetail(guideId) {
+    console.log(`[fetchGuideDetail] Fetching URL: /guides/${guideId}`);
 
+    fetch(`/guides/${guideId}`)
+        .then(res => res.json())
+        .then(result => {
+            const response = result.data;
+			if (!response || !response.guide) return;
 
+            renderGuide(response.guide, response.likecount);
+        })
+        .catch(console.error);
+}
 
 /**
- * 댓글 정렬 탭 메뉴 클릭 시 탭 메뉴를 활성화하고 해당하는 내용을 표시하는 함수
+ * 가이드 상세 데이터 UI 렌더링 함수
+ * @param {Object} guide - 가이드 객체
  */
-document.addEventListener('DOMContentLoaded', function() {
-	const tabCommentItems = document.querySelectorAll('.comment_order button');
-	const contentCommentItems = document.querySelectorAll('.comment_list');
-	// 탭 클릭 이벤트 설정
-	tabCommentItems.forEach((item, index) => {
-	    item.addEventListener("click", function(event) {
-	        event.preventDefault();
-	        
-	        tabCommentItems.forEach(button => button.classList.remove('active'));
-	        this.classList.add('active');
-	        
-	        contentCommentItems.forEach(content => content.style.display = 'none');
-	        contentCommentItems[index].style.display = 'block';
-	    });
-	});
-	// 기본으로 첫번째 활성화
-	tabCommentItems.forEach(button => button.classList.remove('active'));
-	contentCommentItems.forEach(content => content.style.display = 'none');
-	tabCommentItems[0].classList.add('active');
-	contentCommentItems[0].style.display = 'block';
-});
+function renderGuide(guide, likeCount) {
+	document.querySelector('.subtitle').textContent = guide.subtitle || '';
+	document.querySelector('.title').textContent = guide.title || '';
+	document.querySelector('.post_date').textContent = formatDate(guide.postdate);
+	document.querySelector('.guide_content').textContent = guide.content || '';
+	document.querySelector('.scrap').textContent = (likeCount != null) ? likeCount : '0'; // 데이터가 없을 경우 스크랩 수가 0
+
+	
+	console.log("likeCount: " + likeCount);
+	
+}
+
+/**
+ * 날짜 포맷 함수 (yyyy.mm.dd)
+ */
+function formatDate(isoString) {
+    const date = new Date(isoString);
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    return `${yyyy}.${mm}.${dd}`;
+}

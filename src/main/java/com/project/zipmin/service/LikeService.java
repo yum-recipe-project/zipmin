@@ -1,18 +1,17 @@
 package com.project.zipmin.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.LikeErrorCode;
-import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.entity.Like;
 import com.project.zipmin.entity.Role;
-import com.project.zipmin.mapper.CommentMapper;
 import com.project.zipmin.mapper.LikeMapper;
 import com.project.zipmin.repository.LikeRepository;
 
@@ -115,9 +114,9 @@ public class LikeService {
 	
 	
 	
-
-
-
-
+	
+	public int selectLikeCountByTable(String tablename, int recodenum) {
+	    return (int) likeRepository.countByTablenameAndRecodenum(tablename, recodenum);
+	}
 	
 }

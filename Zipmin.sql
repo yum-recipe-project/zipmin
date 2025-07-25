@@ -577,6 +577,25 @@ INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 3, 'recipe', 7);
 INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 4, 'recipe', 7);
 INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 2, 'recipe', 8);
 
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 2, 'guide', 1);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 3, 'guide', 1);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 4, 'guide', 2);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 5, 'guide', 2);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 2, 'guide', 3);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 6, 'guide', 4);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 3, 'guide', 4);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 4, 'guide', 5);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 5, 'guide', 6);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 2, 'guide', 6);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 6, 'guide', 7);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 3, 'guide', 8);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 4, 'guide', 8);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 2, 'guide', 9);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 5, 'guide', 9);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 6, 'guide', 10);
+INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 3, 'guide', 10);
+
+
 COMMIT;
 
 

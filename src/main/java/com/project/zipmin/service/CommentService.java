@@ -19,6 +19,7 @@ import com.project.zipmin.api.LikeErrorCode;
 import com.project.zipmin.dto.CommentCreateRequestDto;
 import com.project.zipmin.dto.CommentCreateResponseDto;
 import com.project.zipmin.dto.CommentDeleteRequestDto;
+import com.project.zipmin.dto.CommentReadMyResponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.CommentUpdateRequestDto;
 import com.project.zipmin.dto.CommentUpdateResponseDto;
@@ -45,6 +46,8 @@ public class CommentService {
 	
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private ChompService chompService;
 	@Autowired
 	private LikeService likeService;
 	@Autowired
@@ -166,7 +169,55 @@ public class CommentService {
 	    return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
 	}
 	
+	
+	
+	
+	
 	// 목록 (신고순으로 정렬하는거 추가하기)
+	
+	
+	
+	
+	
+	
+	// 사용자가 작성한 댓글 목록 조회
+	public Page<CommentReadMyResponseDto> readCommentPageByUserId(Integer userId, Pageable pageable) {
+		
+		if (userId == null || pageable == null) {
+			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
+		}
+		
+		// 댓글 목록 조회
+		Page<Comment> commentPage;
+		try {
+			commentPage = commentRepository.findByUserId(userId, pageable);
+		}
+		catch (Exception e) {
+			throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);
+		}
+		
+		List<CommentReadMyResponseDto> commentDtoList = new ArrayList<CommentReadMyResponseDto>();
+		for (Comment comment : commentPage) {
+			CommentReadMyResponseDto commentDto = commentMapper.toReadMyResponseDto(comment);
+			commentDto.setNickname(comment.getUser().getNickname());
+			String title = null;
+			if (comment.getTablename().equals("vote")) {
+				title = chompService.readVoteById(comment.getRecodenum()).getTitle();
+			}
+			else if (comment.getTablename().equals("megazine")) {
+				title = chompService.readMegazineById(comment.getRecodenum()).getTitle();
+			}
+			else if (comment.getTablename().equals("event")) {
+				title = chompService.readEventById(comment.getRecodenum()).getTitle();
+			}
+			commentDto.setTitle(title);
+			commentDtoList.add(commentDto);
+		}
+		
+		return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
+	}
+	
+	
 
 	
 	

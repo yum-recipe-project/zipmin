@@ -34,4 +34,6 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
 		       "ORDER BY c.likecount DESC, c.id ASC",
 		   countQuery = "SELECT COUNT(c) FROM Comment c WHERE c.tablename = :tablename AND c.recodenum = :recodenum")
 	Page<Comment> findByTablenameAndRecodenumOrderByLikecount(@Param("tablename") String tablename, @Param("recodenum") int recodenum, Pageable pageable);
+	
+	Page<Comment> findByUserId(int userId, Pageable pageable);
 }

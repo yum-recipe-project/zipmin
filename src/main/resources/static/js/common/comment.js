@@ -412,7 +412,7 @@ function renderActionLink(id, content, userId, isSub) {
 		editLink.addEventListener('click', () => {
 			if (!isLoggedIn()) {
 				redirectToLogin();
-				bootstrap.Modal.getInstance(document.getElementById('reportCommentModal')).hide();
+				bootstrap.Modal.getInstance(document.getElementById('editCommentModal')).hide();
 				return;
 			}
 			document.getElementById('editCommentContent').value = content;
@@ -462,9 +462,6 @@ function renderActionLink(id, content, userId, isSub) {
  */
 function renderWriterInfo(nickname, postdate, isSub) {
 	
-	const date = new Date(postdate);
-	const formatDate = `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일`;
-	
 	const wrapperDiv = document.createElement('div');
 	wrapperDiv.className = isSub ? 'subcomment_writer' : 'comment_writer';
 
@@ -475,7 +472,7 @@ function renderWriterInfo(nickname, postdate, isSub) {
 	nameSpan.textContent = nickname;
 
 	const dateSpan = document.createElement('span');
-	dateSpan.textContent = formatDate;
+	dateSpan.textContent = formatDate(postdate);
 
 	wrapperDiv.append(img, nameSpan, dateSpan);
 	return wrapperDiv;

@@ -1,10 +1,11 @@
 package com.project.zipmin.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.project.zipmin.mapper.GuideMapper;
-import com.project.zipmin.repository.KitchenRepository;
 import com.project.zipmin.repository.LikeRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,13 @@ public class LikeServiceImpl implements LikeService {
 
 	@Override
 	public int selectLikeCountByTable(String tablename, int recodenum) {
-	    return (int) likeRepository.countByTablenameAndRecodenum(tablename, recodenum);
+	    return likeRepository.countByTablenameAndRecodenum(tablename, recodenum);
+	}
+	
+	@Override
+	public Map<Integer, Integer> selectLikeCountsByTable(String tablename, List<Integer> recordNums) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -44,6 +51,8 @@ public class LikeServiceImpl implements LikeService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	
 
 	
 }

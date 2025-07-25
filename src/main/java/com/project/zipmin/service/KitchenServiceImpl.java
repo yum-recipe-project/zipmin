@@ -24,6 +24,8 @@ public class KitchenServiceImpl implements KitchenService {
 	@Autowired
 	private final GuideMapper guideMapper;
 	
+	
+	
 //	 모든 키친가이드 게시물 조회	
 	@Override
     public Page<GuideDTO> getGuideList(String category, Pageable pageable) {

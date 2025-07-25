@@ -9,7 +9,7 @@ import com.project.zipmin.entity.Like;
 public interface LikeRepository extends JpaRepository<Like, Integer> {
 	
 	@Query("SELECT COUNT(l) FROM Like l WHERE l.tablename = :tablename AND l.recodenum = :recodenum")
-    long countByTablenameAndRecodenum(
+    int countByTablenameAndRecodenum(
     		@Param("tablename") String tablename,
     		@Param("recodenum") int recodenum);
 	

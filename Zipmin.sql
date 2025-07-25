@@ -192,14 +192,14 @@ create sequence seq_recipe_id
     nomaxvalue
     nocycle
     nocache;
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/bulgogi.jpg', '소불고기', '달콤짭짤한 불고기 요리', '하', '30분 이내', '하', '2인분', '고기 재울 때 키위나 배를 갈아 넣으면 부드러워져요!', null, 2);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/wrap.jpg', '쌈밥', '야채와 함께 먹는 건강한 쌈밥', '중', '20분 이내', '하', '1인분', '고기를 굽기 전 밑간하면 더 맛있어요.', null, 2);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/mayomyeon.jpg', '마요네즈 비빔면 두줄까지는 워드랩 가능한지 테스트를 해볼게요', '매콤 고소한 초간단 비빔면', '하', '10분 이내', '상', '1인분', '불닭소스를 조절해서 맵기 조절 가능해요.', null, 2);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/kimchi_fried_rice.jpg', '김치볶음밥', '집에 있는 재료로 간단하게!', '하', '15분 이내', '중', '1인분', '김치는 꼭 볶아서 써야 깊은 맛이 나요!', null, 2);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/jjajang.jpg', '짜장면', '달콤 짭짤한 중식의 기본', '중', '30분 이내', '하', '2인분', '춘장을 충분히 볶아야 맛이 살아나요.', null, 2);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/dakgalbi.jpg', '닭갈비', '매콤한 맛의 대표 주자', '중', '40분 이내', '상', '3인분', '고구마를 넣으면 단맛이 더해져요.', null, 2);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/eggtamago.jpg', '계란말이', '도시락 단골 반찬', '하', '10분 이내', '하', '1인분', '육수나 우유를 조금 넣으면 부드러워져요.', null, 2);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/tteokbokki.jpg', '떡볶이', '매콤달콤 국민 간식', '하', '20분 이내', '중', '2인분', '고추장에 설탕 대신 올리고당을 써보세요.', null, 2);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/bulgogi.jpg', '소불고기', '달콤짭짤한 불고기 요리', '하', '30분 이내', '매움', '2인분', '고기 재울 때 키위나 배를 갈아 넣으면 부드러워져요!', null, 2);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/wrap.jpg', '쌈밥', '야채와 함께 먹는 건강한 쌈밥', '중', '20분 이내', '보통', '1인분', '고기를 굽기 전 밑간하면 더 맛있어요.', null, 2);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/mayomyeon.jpg', '마요네즈 비빔면 두줄까지는 워드랩 가능한지 테스트를 해볼게요', '매콤 고소한 초간단 비빔면', '아주 매움', '10분 이내', '상', '1인분', '불닭소스를 조절해서 맵기 조절 가능해요.', null, 2);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/kimchi_fried_rice.jpg', '김치볶음밥', '집에 있는 재료로 간단하게!', '상', '15분 이내', '아주 매움', '1인분', '김치는 꼭 볶아서 써야 깊은 맛이 나요!', null, 2);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/jjajang.jpg', '짜장면', '달콤 짭짤한 중식의 기본', '중', '30분 이내', '보통', '2인분', '춘장을 충분히 볶아야 맛이 살아나요.', null, 2);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/dakgalbi.jpg', '닭갈비', '매콤한 맛의 대표 주자', '중', '40분 이내', '아주 매움', '3인분', '고구마를 넣으면 단맛이 더해져요.', null, 2);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/eggtamago.jpg', '계란말이', '도시락 단골 반찬', '하', '10분 이내', '매움', '1인분', '육수나 우유를 조금 넣으면 부드러워져요.', null, 2);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/tteokbokki.jpg', '떡볶이', '매콤달콤 국민 간식', '하', '20분 이내', '보통', '2인분', '고추장에 설탕 대신 올리고당을 써보세요.', null, 2);
 
 commit;
 
@@ -333,8 +333,6 @@ create sequence seq_guide_id
     nomaxvalue
     nocycle
     nocache;
-commit;
-
 INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
 (seq_guide_id.nextval, '뿔 소라 손질법', '제주 바다향을 담은', 'preparation', sysdate, 
 '뿔소라는 양식이 불가능해 오직 자연산으로만 채취 가능합니다. 제주 해녀들이 직접 잡은 자연산 뿔소라! 귀한 만큼 손질법을 제대로 알고 먹어야 더 맛있게 즐길 수 있습니다.');
@@ -438,7 +436,6 @@ INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
 INSERT INTO guide (id, title, subtitle, category, postdate, content) VALUES
 (seq_guide_id.nextval, '양파 눈물 안 나는 법', '냉장고에 잠깐 넣기', 'preparation', sysdate,
 '양파를 자르기 전에 냉장고에 30분 정도 넣어두면 휘발성 물질이 줄어 눈물이 덜 납니다.');
-
 commit;
 
 
@@ -563,7 +560,6 @@ insert into likes values (seq_likes_id.NEXTVAL, 2, 'comments', 4);
 insert into likes values (seq_likes_id.NEXTVAL, 3, 'comments', 4);
 insert into likes values (seq_likes_id.NEXTVAL, 4, 'comments', 4);
 insert into likes values (seq_likes_id.NEXTVAL, 5, 'comments', 4);
-<<<<<<< HEAD
 insert into likes values (seq_likes_id.NEXTVAL, 6, 'comments', 4);
 
 INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 2, 'recipe', 1);
@@ -583,11 +579,6 @@ INSERT INTO likes VALUES (seq_likes_id.NEXTVAL, 2, 'recipe', 8);
 
 COMMIT;
 
-=======
-insert into likes values (seq_likes_id.NEXTVAL, 2, 'guide', 1);
-
-commit;
->>>>>>> branch 'develop' of https://github.com/yum-recipe-project/zipmin.git
 
 
 

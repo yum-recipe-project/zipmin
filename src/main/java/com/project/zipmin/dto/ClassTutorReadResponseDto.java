@@ -7,10 +7,12 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ClassTeacherDTO {
+public class ClassTutorReadResponseDto {
+	
 	private int id;
-	private String imageUrl;
+	private String image;
 	private String name;
 	private String career;
 	private int classId;
+	
 }

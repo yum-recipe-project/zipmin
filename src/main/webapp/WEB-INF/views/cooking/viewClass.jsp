@@ -40,46 +40,21 @@
 						<!-- 소개 -->
 						<section id="intro" class="intro_wrap">
 							<h3>클래스 소개</h3>
-							<div class="target">
-								<h4>이런 분께 추천해요</h4>
-								<p>한식을 제대로 배우고 싶은 분</p>
-								<p>요리에 대한 기초가 부족한 분</p>
-								<p>집에서 맛있는 한식을 직접 만들고 싶은 분</p>
-							</div>
+							<div class="target"></div>
 							<div class="intro">
 								<h4>어떤 걸 배울까요?</h4>
-								<p>한식의 기본 재료 손질과 조리법을 배웁니다.<br/>쉽게 알려줍니다.</p>
+								<p></p>
 							</div>
 						</section>
 						<!-- 커리큘럼 -->
 						<section id="curriculum" class="curriculum_wrap">
 							<h3>커리큘럼</h3>
-							<ul class="curriculum_list">
-								<li>
-									<div class="meta">
-										<span class="badge">1교시</span>
-										<span>14:00 - 16:00</span>
-									</div>
-									<div class="title">
-										<strong>1교시 수업 제목</strong>
-										<span></span>
-									</div>
-								</li>
-							</ul>
+							<ul class="curriculum_list"></ul>
 						</section>
 						<!-- 강사 소개 -->
 						<section class="lecturer_wrap">
 							<h3>강사 소개</h3>
-							<div class="lecturer">
-								<div class="photo">
-									<img src="/images/common/test.png">
-								</div>
-								<div class="profile">
-									<h5>이집밥</h5>
-									<p>한식 전문 셰프 (10년 경력)</p>
-									<p>한식 조리 기능사</p>
-								</div>
-							</div>
+							<ul class="tutor_list"></ul>
 						</section>
 						<!-- 공지사항 -->
 						<section class="notice">
@@ -94,33 +69,33 @@
 					<!-- 클래스 신청 -->
 					<div class="class_apply">
 						<div class="apply_header">
-							<h2>한식 입문 클래스</h2>
+							<h2></h2>
 							<button class="btn_primary_wide" type="button" data-bs-toggle="modal" data-bs-target="#applyClassModal"
 								onclick="">
 								신청하기
 							</button>
 						</div>
 						<div class="apply_info">
-							<div class="info">
+							<div class="info headcount">
 								<img src="/images/cooking/group.png">
-								<p>40명 선정</p>
+								<p></p>
 							</div>
 							<div class="info">
 								<img src="/images/cooking/announce.png">
 								<p>선착순 마감</p>
 							</div>
-							<div class="info">
+							<div class="info need">
 								<img src="/images/cooking/bag.png">
-								<p>간단한 필기도구</p>
+								<p></p>
 							</div>
 						</div>
 						<div class="apply_address">
 							<div class="place">
 								<em>장소</em>
-								<span>더조은아카데미 2층</span>
+								<span></span>
 							</div>
 							<div class="date">
-								<span>2024.03.05(수) 16:00-17:00</span>
+								<span></span>
 							</div>
 						</div>
 					</div>

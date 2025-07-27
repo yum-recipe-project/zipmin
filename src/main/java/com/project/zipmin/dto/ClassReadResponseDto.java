@@ -1,6 +1,7 @@
 package com.project.zipmin.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -9,20 +10,23 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ClassDTO {
+public class ClassReadResponseDto {
+	
 	private int id;
 	private String userId;
 	private String title;
-	private int place;
+	private String place;
 	private Date eventdate;
-	private String starttime;
-	private String endtime;
+	private Date starttime;
+	private Date endtime;
 	private int headcount;
 	private String need;
-	private String imageUrl;
-	private String target1;
-	private String target2;
-	private String target3;
+	private String image;
 	private String introduce;
-	private boolean approval;
+	private int approval;
+	
+	// target 등등
+	private List<ClassTargetReadResponseDto> targetList;
+	private List<ClassScheduleReadResponseDto> scheduleList;
+	private List<ClassTutorReadResponseDto> tutorList;
 }

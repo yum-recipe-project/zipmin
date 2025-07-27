@@ -7,10 +7,12 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ClassScheduleDTO {
+public class ReviewReadResponseDto {
 	private int id;
-	private int starttime;
-	private int endtime;
-	private String title;
-	private int classId;
+	// private Date postdate;
+	private String postdate;
+	private int score;
+	private String content;
+	private int recipeId;
+	private String userId;
 }

@@ -26,7 +26,7 @@ import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
-import com.project.zipmin.dto.ClassDTO;
+import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.CommentReadMyResponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.UserReadRequestDto;
@@ -674,7 +674,7 @@ public class UserController {
 
 	// 사용자가 참가한 모든 클래스 조회
 	@GetMapping("/{userId}/classes")
-	public List<ClassDTO> listUserClass(
+	public List<ClassReadResponseDto> listUserClass(
 			@PathVariable("userId") String userId) {
 		return null;
 	}

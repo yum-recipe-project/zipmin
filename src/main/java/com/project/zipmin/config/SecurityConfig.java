@@ -156,6 +156,9 @@ public class SecurityConfig {
 				.requestMatchers("/comments", "/comments/**").permitAll()
 				
 				.requestMatchers("/cooking/**").permitAll()
+				.requestMatchers("/classes", "/classes/**").permitAll()
+				
+				
 				.requestMatchers("/fridge/**").permitAll()
 				
 				.requestMatchers("/mypage.do").permitAll()

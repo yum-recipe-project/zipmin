@@ -15,6 +15,10 @@ public enum CookingErrorCode implements Code {
 	
 	// 입력값 오류
 	COOKING_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
+	COOKING_TARGET_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
+	COOKING_SCHEDULE_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
+	COOKING_TUTOR_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
+	COOKING_APPLY_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
 	
 	// 데이터 처리
 	COOKING_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 쿠킹클래스를 찾을 수 없음"),
@@ -44,6 +48,14 @@ public enum CookingErrorCode implements Code {
     COOKING_TUTOR_READ_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "강사 조회 실패"),
     COOKING_TUTOR_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "강사 수정 실패"),
     COOKING_TUTOR_DELETE_FAIL(HttpStatus.BAD_REQUEST, "강사 삭제 실패"),
+    
+    COOKING_APPLY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 신청를 찾을 수 없음"),
+    COOKING_APPLY_CREATE_FAIL(HttpStatus.BAD_REQUEST, "신청 작성 실패"),
+    COOKING_APPLY_READ_LIST_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "신청 목록 조회 실패"),
+    COOKING_APPLY_READ_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "신청 조회 실패"),
+    COOKING_APPLY_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "신청 수정 실패"),
+    COOKING_APPLY_DELETE_FAIL(HttpStatus.BAD_REQUEST, "신청 삭제 실패"),
+    COOKING_APPLY_DUPLICATE(HttpStatus.CONFLICT, "신청 중복 작성 시도"),
 	
 	// 기타
 	COOKING_UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "예외 처리되지 않은 내부 오류");

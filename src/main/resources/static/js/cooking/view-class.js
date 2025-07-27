@@ -1,3 +1,7 @@
+// 신청 완료한 클래스는표시 !!!!
+
+
+
 /**
  * 탭 메뉴 클릭 시 탭 메뉴를 활성화하는 함수
  */
@@ -31,6 +35,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 		
 		if (result.code === 'COOKING_READ_SUCCESS') {
 			
+			document.getElementById('applyClassId').value = id;
 			// 추후에 실제 이미지로 수정
 			document.querySelector('.apply_header h2').innerText = result.data.title;
 			document.querySelector('.thumbnail img').src = '/images/common/test.png';
@@ -184,6 +189,3 @@ function renderTutorList(list) {
 	});
 	
 }
-
-
-

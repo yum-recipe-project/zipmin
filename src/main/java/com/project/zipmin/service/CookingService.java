@@ -10,18 +10,23 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.CookingErrorCode;
+import com.project.zipmin.dto.ClassApplyCreateRequestDto;
+import com.project.zipmin.dto.ClassApplyCreateResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.ClassScheduleReadResponseDto;
 import com.project.zipmin.dto.ClassTargetReadResponseDto;
 import com.project.zipmin.dto.ClassTutorReadResponseDto;
 import com.project.zipmin.entity.Class;
+import com.project.zipmin.entity.ClassApply;
 import com.project.zipmin.entity.ClassSchedule;
 import com.project.zipmin.entity.ClassTarget;
 import com.project.zipmin.entity.ClassTutor;
+import com.project.zipmin.mapper.ClassApplyMapper;
 import com.project.zipmin.mapper.ClassMapper;
 import com.project.zipmin.mapper.ClassScheduleMapper;
 import com.project.zipmin.mapper.ClassTargetMapper;
 import com.project.zipmin.mapper.ClassTutorMapper;
+import com.project.zipmin.repository.ClassApplyRepository;
 import com.project.zipmin.repository.ClassRepository;
 import com.project.zipmin.repository.ClassScheduleRepository;
 import com.project.zipmin.repository.ClassTargetRepository;
@@ -42,6 +47,8 @@ public class CookingService {
 	private ClassScheduleRepository scheduleRepository;
 	@Autowired
 	private ClassTutorRepository tutorRepository;
+	@Autowired
+	private ClassApplyRepository applyRepository;
 	
 	@Autowired
 	private UserService userService;
@@ -50,6 +57,7 @@ public class CookingService {
 	private final ClassTargetMapper targetMapper;
 	private final ClassScheduleMapper scheduleMapper;
 	private final ClassTutorMapper tutorMapper;
+	private final ClassApplyMapper applyMapper;
 	
 	
 	
@@ -113,6 +121,47 @@ public class CookingService {
 		
 		return classDto;
 	}
+	
+	
+	
+	// 클래스 지원을 작성하는 함수
+	public ClassApplyCreateResponseDto createApply(ClassApplyCreateRequestDto applyDto) {
+		
+		// 입력값 검증
+		if (applyDto == null || applyDto.getClassId() == null || applyDto.getUserId() == null || applyDto.getReason() == null) {
+			throw new ApiException(CookingErrorCode.COOKING_APPLY_INVALID_INPUT);
+		}
+		
+		// 중복 신청 검사
+		if (applyRepository.existsByClasssIdAndUserId(applyDto.getClassId(), applyDto.getUserId())) {
+			throw new ApiException(CookingErrorCode.COOKING_APPLY_DUPLICATE);
+		}
+		
+		// 클래스 지원 생성
+		ClassApply apply = applyMapper.toEntity(applyDto);
+		try {
+			apply = applyRepository.save(apply);
+			return applyMapper.toCreateResponseDto(apply);
+		}
+		catch (Exception e) {
+			throw new ApiException(CookingErrorCode.COOKING_APPLY_CREATE_FAIL);
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

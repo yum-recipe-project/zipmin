@@ -8,6 +8,7 @@
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/cooking/view-class.css">
 		<script src="/js/cooking/view-class.js"></script>
+		<script src="/js/modal/apply-class-modal.js"></script>
 	</head>
 	<body>
 		<%@include file="../common/header.jsp" %>
@@ -70,8 +71,7 @@
 					<div class="class_apply">
 						<div class="apply_header">
 							<h2></h2>
-							<button class="btn_primary_wide" type="button" data-bs-toggle="modal" data-bs-target="#applyClassModal"
-								onclick="">
+							<button class="btn_primary_wide" type="button" data-bs-toggle="modal" data-bs-target="#applyClassModal">
 								신청하기
 							</button>
 						</div>
@@ -103,37 +103,7 @@
 			</div>
 						
 			<!-- 클래스 신청 모달창 -->
-			<form id="applyClassForm" method="post" action="" onsubmit="">
-				<!-- 히든 폼에 사용자 정보 숨겨서 같이 보내야 함 -->
-				<div class="modal" id="applyClassModal">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5>한식 입문 클래스</h5>
-								<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-							</div>
-							<div class="modal-body">
-								<div class="form-group">
-									<label>1. 클래스를 신청하게 된 동기와 이유를 적어주세요 (500자 이내)</label>
-									<textarea class="form-control" id="applyClassReasonInput" name="content" style="height: 90px;"></textarea>
-								</div>
-								<div class="form-group">
-									<label>2. 강사님께 궁금한 점이 있다면 적어주세요 (선택사항)</label>
-									<textarea class="form-control" id="applyClassQuestionInput" name="content" style="height: 90px;"></textarea>
-								</div>
-								<p class="form-notice">
-									<img src="/images/cooking/error.png">
-									교육 신청 전 교육 정보를 한번 더 확인해주세요!
-								</p>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn" data-bs-dismiss="modal">닫기</button>
-								<button type="submit" id="applyClassButton" class="btn btn-disable" disabled>신청하기</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</form>
+			<%@include file="../modal/applyClassModal.jsp" %>
 			
 		</main>
 		<%@include file="../common/footer.jsp" %>

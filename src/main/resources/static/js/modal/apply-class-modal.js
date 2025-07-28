@@ -27,9 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	form.addEventListener('submit', async function(event) {
 		event.preventDefault();
-		
-		// 제출시 폼값 검사 추가
-		
+	
 		if (!isLoggedIn()) {
 			redirectToLogin();
 		}

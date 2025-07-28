@@ -30,10 +30,24 @@ document.addEventListener('DOMContentLoaded', async function() {
 		const params = new URLSearchParams(window.location.search);
 		const id = params.get('id');
 		
-		const response = await fetch(`/classes/${id}`);
+		const headers = {
+			'Content-Type': 'application/json'
+		}
+		
+		if (isLoggedIn()) {
+			const token = localStorage.getItem('accessToken');
+			headers['Authorization'] = `Bearer ${token}`;
+		}
+		
+		const response = await fetch(`/classes/${id}`, {
+			headers: headers
+		});
+		
 		const result = await response.json();
 		
 		if (result.code === 'COOKING_READ_SUCCESS') {
+			
+			console.log(result);
 			
 			document.getElementById('applyClassId').value = id;
 			// 추후에 실제 이미지로 수정
@@ -45,6 +59,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 			document.querySelector('.place span').innerText = result.data.place;
 			document.querySelector('.date span').innerText = `${formatDateWithDay(result.data.eventdate)} ${formatTime(result.data.starttime)} - ${formatTime(result.data.endtime)}`;
 			
+			renderApplyButton(result.data.applystatus);
 			renderTargetList(result.data.target_list);
 			renderScheduleList(result.data.schedule_list);
 			renderTutorList(result.data.tutor_list);
@@ -189,3 +204,44 @@ function renderTutorList(list) {
 	});
 	
 }
+
+
+
+
+/**
+ * 클래스 신청 상태에 따라 신청 버튼을 화면에 렌더링하는 함수
+ */
+function renderApplyButton(applystatus) {
+	
+	const container = document.querySelector('.apply_header');
+	if (!container) return;
+
+	const button = document.createElement('button');
+	button.type = 'button';
+
+	if (applystatus === true) {
+		button.disabled = true;
+		button.className = 'btn_gray_wide';
+		button.innerText = '신청 완료';
+	}
+	else {
+		button.disabled = false;
+		button.className = 'btn_primary_wide';
+		button.innerText = '신청하기';
+		button.setAttribute('data-bs-toggle', 'modal');
+		button.setAttribute('data-bs-target', '#applyClassModal');
+	}
+	
+	// 신청하기 버튼 클릭시 로그인 여부를 확인
+	button.addEventListener('click', function() {
+		if (!isLoggedIn()) {
+			redirectToLogin();
+			bootstrap.Modal.getInstance(document.getElementById('applyClassModal')).hide();
+		}
+	});
+
+	container.appendChild(button);
+}
+
+
+

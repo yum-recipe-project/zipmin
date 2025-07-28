@@ -71,9 +71,6 @@
 					<div class="class_apply">
 						<div class="apply_header">
 							<h2></h2>
-							<button class="btn_primary_wide" type="button" data-bs-toggle="modal" data-bs-target="#applyClassModal">
-								신청하기
-							</button>
 						</div>
 						<div class="apply_info">
 							<div class="info headcount">

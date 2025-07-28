@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -118,6 +120,19 @@ public class CookingService {
 		catch (Exception e) {
 			throw new ApiException(CookingErrorCode.COOKING_TUTOR_READ_FAIL);
 		}
+		
+		// 쿠킹클래스 신청 여부 조회
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		classDto.setApplystatus(false);
+
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    return classDto;
+		}
+
+		String username = authentication.getName();
+		int userId = userService.readUserByUsername(username).getId();
+		classDto.setApplystatus(applyRepository.existsByClasssIdAndUserId(id, userId));
+		System.err.println(id + " + " + userId);
 		
 		return classDto;
 	}

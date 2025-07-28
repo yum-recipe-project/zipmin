@@ -13,7 +13,7 @@ import lombok.Data;
 public class ClassReadResponseDto {
 	
 	private int id;
-	private String userId;
+	private int userId;
 	private String title;
 	private String place;
 	private Date eventdate;
@@ -29,4 +29,5 @@ public class ClassReadResponseDto {
 	private List<ClassTargetReadResponseDto> targetList;
 	private List<ClassScheduleReadResponseDto> scheduleList;
 	private List<ClassTutorReadResponseDto> tutorList;
+	private boolean applystatus;
 }

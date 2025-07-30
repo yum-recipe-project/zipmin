@@ -487,7 +487,7 @@ public class UserController {
 		userRequestDto.setId(userService.readUserByUsername(username).getId());
 		
 		// 본인 확인
-		if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN)) {
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
 			if (id != userService.readUserByUsername(username).getId()) {
 				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
 			}

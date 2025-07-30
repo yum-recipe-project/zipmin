@@ -11,9 +11,13 @@ import com.project.zipmin.api.CookingSuccessCode;
 import com.project.zipmin.dto.ClassApplyCreateRequestDto;
 import com.project.zipmin.dto.ClassApplyCreateResponseDto;
 import com.project.zipmin.dto.ClassApplyReadResponseDto;
+import com.project.zipmin.dto.ClassApplyUpdateRequestDto;
+import com.project.zipmin.dto.ClassApplyUpdateResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.ClassScheduleReadResponseDto;
 import com.project.zipmin.dto.ClassTutorReadResponseDto;
+import com.project.zipmin.dto.GuideReadResponseDto;
+import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.CookingService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.CookingReadSuccessResponse;
@@ -27,6 +31,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,6 +44,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -127,74 +135,32 @@ public class CookingController {
 		return null;
 	}
 
-	// 특정 클래스의 일정 추가
-	@PostMapping("/classes/{id}/schedules")
-	public int writeSchedule(
-			@PathVariable int id) {
-		return 0;
-	}
-
-	// 특정 클래스의 일정 수정
-	@PutMapping("/classes/{id}/schedules")
-	public int editSchedule(
-			@PathVariable int id) {
-		// 필요 없을수도있음
-		return 0;
-	}
-
-	// 특정 클래스의 일정 삭제
-	@DeleteMapping("/classes/{id}/schedules")
-	public int deleteSchedule(
-			@PathVariable int id) {
-		// 필요 없을 수도 있음
-		return 0;
-	}
 	
 	
 	
-	// 특정 클래스의 강사 목록 조회
-	@GetMapping("/classes/{id}/teacher")
-	public List<ClassTutorReadResponseDto> viewTeacher(
-			@PathVariable int id) {
-		// 필요에 따라선 클래스 조회에서 일정 목록을 한번에 조회하게 될 수도 있음
-		return null;
-	}
-
-	// 특정 클래스의 강사 추가
-	@PostMapping("/classes/{id}/teacher")
-	public int writeTeacher(
-			@PathVariable int id) {
-		return 0;
-	}
-
-	// 특정 클래스의 강사 수정
-	@PutMapping("/classes/{id}/teacher")
-	public int editTeacher(
-			@PathVariable int id) {
-		// 필요 없을수도있음
-		return 0;
-	}
-
-	// 특정 클래스의 강사 삭제
-	@DeleteMapping("/classes/{id}/teacher")
-	public int deleteTeacher(
-			@PathVariable int id) {
-		// 필요 없을 수도 있음
-		return 0;
-	}
-	
-	
-	
-	// 특정 클래스의 신청서 목록 조회
+	// 클래스의 신청 목록 조회
 	@GetMapping("/classes/{id}/applies")
-	public List<ClassApplyReadResponseDto> listClassApply(
-			@PathVariable int id) {
-		return null;
+	public ResponseEntity<?> listClassApply(
+			@PathVariable int id,
+			@RequestParam int sort,
+		    @RequestParam int page,
+		    @RequestParam int size) {
+		
+		Pageable pageable = PageRequest.of(page, size);
+		Page<ClassApplyReadResponseDto> applyPage = null;
+		
+		// 로그인 여부도 잘 확인해야함
+		
+		
+		applyPage = cookingService.readApplyPageById(id, sort, pageable);
+		
+		return ResponseEntity.status(CookingSuccessCode.COOKING_APPLY_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(CookingSuccessCode.COOKING_APPLY_READ_LIST_SUCCESS, applyPage));
 	}
 	
 	
 	
-	// 클래스 지원 작성
+	// 클래스 신청 작성
 	@PostMapping("/classes/{id}/applies")
 	public ResponseEntity<?> applyClass(
 			@PathVariable int id,
@@ -225,10 +191,57 @@ public class CookingController {
 		return 0;
 	}
 	
-	// 특정 클래스 출석
-	@PatchMapping("/classes/{id}/applies/{applyId}")
-	public int attendClass(
-			@PathVariable int id) {
-		return 0;
+	
+	
+	
+	
+	// 클래스 지원 수정 (출석)
+	@PatchMapping("/classes/{classId}/applies/{applyId}")
+	public ResponseEntity<?> attendClass(
+			@PathVariable int classId,
+			@PathVariable int applyId,
+			@RequestBody ClassApplyUpdateRequestDto applyRequestDto) {
+		
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(CookingErrorCode.COOKING_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 로그인 정보
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		int id = userService.readUserByUsername(username).getId();
+		
+		// 본인 확인 (******** 수정 필요함id도 적절히 수정해야하고 개최자 여부 확인 *******)
+//		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
+//			if (id != applyRequestDto.getUserId()) {
+//				throw new ApiException(CookingErrorCode.COOKING_FORBIDDEN);
+//			}
+//		}
+		
+		ClassApplyUpdateResponseDto applyResponseDto = cookingService.updateApply(applyRequestDto);
+		
+		return ResponseEntity.status(CookingSuccessCode.COOKING_APPLY_UPDATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(CookingSuccessCode.COOKING_APPLY_UPDATE_SUCCESS, applyResponseDto));
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

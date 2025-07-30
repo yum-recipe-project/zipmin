@@ -17,6 +17,9 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.CookingErrorCode;
 import com.project.zipmin.dto.ClassApplyCreateRequestDto;
 import com.project.zipmin.dto.ClassApplyCreateResponseDto;
+import com.project.zipmin.dto.ClassApplyReadResponseDto;
+import com.project.zipmin.dto.ClassApplyUpdateRequestDto;
+import com.project.zipmin.dto.ClassApplyUpdateResponseDto;
 import com.project.zipmin.dto.ClassReadMyApplyResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.ClassScheduleReadResponseDto;
@@ -155,11 +158,11 @@ public class CookingService {
 		Date now = new Date();
 		
 		try {
-			classPage = switch (sort) {
-				case "end" -> classRepository.findByUserIdAndEventdateBefore(userId, now, pageable);
-				case "progress" -> classRepository.findByUserIdAndEventdateAfter(userId, now, pageable);
-				default -> classRepository.findByUserId(userId, pageable);
-			};
+			switch (sort) {
+				case "end" -> classPage = classRepository.findByUserIdAndEventdateBefore(userId, now, pageable);
+				case "progress" -> classPage = classRepository.findByUserIdAndEventdateAfter(userId, now, pageable);
+				default -> classPage = classRepository.findByUserId(userId, pageable);
+			}
 		}
 		catch (Exception e) {
 			throw new ApiException(CookingErrorCode.COOKING_APPLY_READ_LIST_FAIL);
@@ -218,12 +221,77 @@ public class CookingService {
 	
 	
 	
+	// 클래스 신청 목록 조회
+	public Page<ClassApplyReadResponseDto> readApplyPageById(Integer id, Integer sort, Pageable pageable) {
+		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(CookingErrorCode.COOKING_APPLY_INVALID_INPUT);
+		}
+		
+		// 클래스 신청 목록 조회
+		Page<ClassApply> applyPage;
+		try {
+			applyPage = (sort == -1)
+					? applyRepository.findByClasssId(id, pageable)
+					: applyRepository.findByClasssIdAndSelected(id, sort, pageable);
+		}
+		catch (Exception e) {
+			throw new ApiException(CookingErrorCode.COOKING_APPLY_READ_LIST_FAIL);
+		}
+		
+		List<ClassApplyReadResponseDto> applyDtoList = new ArrayList<ClassApplyReadResponseDto>();
+		for (ClassApply apply : applyPage) {
+			ClassApplyReadResponseDto applyDto = applyMapper.toReadResponseDto(apply);
+			applyDto.setName(apply.getUser().getName());
+			applyDtoList.add(applyDto);
+		}
+		
+		return new PageImpl<>(applyDtoList, pageable, applyPage.getTotalElements());
+	}
 	
 	
 	
 	
-	
-	
+	// 클래스 지원 수정
+	public ClassApplyUpdateResponseDto updateApply(ClassApplyUpdateRequestDto applyDto) {
+		
+		// 입력값 검증
+		if (applyDto == null || applyDto.getId() == null) {
+			throw new ApiException(CookingErrorCode.COOKING_APPLY_INVALID_INPUT);
+		}
+		
+		// 클래스 여부 판단
+		Class classs = classRepository.findById(applyDto.getClassId())
+				.orElseThrow(() -> new ApiException(CookingErrorCode.COOKING_NOT_FOUND));
+ 		
+		// 클래스 지원 여부 판단
+		ClassApply apply = applyRepository.findById(applyDto.getId())
+				.orElseThrow(() -> new ApiException(CookingErrorCode.COOKING_APPLY_NOT_FOUND));
+		
+		// 필요한 필드만 수정
+		if (applyDto.getReason() != null) {
+			apply.setReason(applyDto.getReason());
+		}
+		if (applyDto.getQuestion() != null) {
+			apply.setQuestion(applyDto.getQuestion());
+		}
+		if (applyDto.getSelected() != null) {
+			apply.setSelected(applyDto.getSelected());
+		}
+		if (applyDto.getAttend() != null) {
+			apply.setAttend(applyDto.getAttend());
+		}
+		
+		// 클래스 지원 수정
+		try {
+			apply = applyRepository.save(apply);
+			return applyMapper.toUpdateResponseDto(apply);
+		}
+		catch (Exception e) {
+			throw new ApiException(CookingErrorCode.COOKING_APPLY_CREATE_FAIL);
+		}
+	}
 	
 	
 	

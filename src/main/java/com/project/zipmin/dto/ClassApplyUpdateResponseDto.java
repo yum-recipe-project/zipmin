@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ClassApplyReadResponseDto {
+public class ClassApplyUpdateResponseDto {
 	
 	private int id;
 	private Date applydate;
@@ -20,6 +20,5 @@ public class ClassApplyReadResponseDto {
 	private int userId;
 	private int classId;
 	
-	private String name;
 }
 

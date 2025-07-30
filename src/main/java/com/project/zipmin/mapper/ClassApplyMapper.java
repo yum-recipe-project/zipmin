@@ -6,6 +6,8 @@ import org.mapstruct.Mapping;
 import com.project.zipmin.dto.ClassApplyCreateRequestDto;
 import com.project.zipmin.dto.ClassApplyCreateResponseDto;
 import com.project.zipmin.dto.ClassApplyReadResponseDto;
+import com.project.zipmin.dto.ClassApplyUpdateRequestDto;
+import com.project.zipmin.dto.ClassApplyUpdateResponseDto;
 import com.project.zipmin.entity.ClassApply;
 
 @Mapper(componentModel = "spring")
@@ -38,5 +40,20 @@ public interface ClassApplyMapper {
 	@Mapping(target = "classId", source = "classs.id")
 	@Mapping(target = "userId", source = "user.id")
 	ClassApplyCreateResponseDto toCreateResponseDto(ClassApply apply);
+	
+	
+	
+	// Update
+	@Mapping(target = "classs.id", source = "classId")
+	ClassApply toEntity(ClassApplyUpdateRequestDto applyDto);
+	
+	@Mapping(target = "classId", source = "classs.id")
+	ClassApplyUpdateRequestDto toUpdateRequestDto(ClassApply apply);
+	
+	@Mapping(target = "classs.id", source = "classId")
+	ClassApply toEntity(ClassApplyUpdateResponseDto applyDto);
+	
+	@Mapping(target = "classId", source = "classs.id")
+	ClassApplyUpdateResponseDto toUpdateResponseDto(ClassApply apply);
 	
 }

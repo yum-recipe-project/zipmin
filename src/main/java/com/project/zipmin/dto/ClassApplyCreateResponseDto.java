@@ -15,6 +15,7 @@ public class ClassApplyCreateResponseDto {
 	private Date applydate;
 	private String reason;
 	private String question;
+	private int selected;
 	private int attend;
 	private int userId;
 	private int classId;

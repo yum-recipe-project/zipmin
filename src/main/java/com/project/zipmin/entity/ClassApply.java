@@ -32,6 +32,7 @@ public class ClassApply {
 	private Date applydate;
 	private String reason;
 	private String question;
+	private int selected;
 	private int attend;
 	
 	// private int classId;

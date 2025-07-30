@@ -86,13 +86,11 @@ async function fetchClassList() {
 		
 		if (response.data.code === 'USER_READ_LIST_SUCCESS') {
 			
-			console.log(response);
-			
 			totalPages = response.data.data.totalPages;
 			page = response.data.data.number;
 			classList = response.data.data.content;
 			
-			renderClassList(response.data.data.content);
+			renderClassList(classList);
 			renderPagination();
 			
 			document.querySelector('.class_util .total').innerText = `총 ${response.data.data.totalElements}개`;
@@ -177,7 +175,7 @@ function renderClassList(classList) {
 		btn.className = 'btn_outline';
 		btn.textContent = '신청서 보기';
 		btn.onclick = function () {
-			location.href = `/mypage/class/application.do?classId=${classs.id}`;
+			location.href = `/mypage/class/application.do?id=${classs.id}`;
 		};
 
 		cancelDiv.appendChild(btn);

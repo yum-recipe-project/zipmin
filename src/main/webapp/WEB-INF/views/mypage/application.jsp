@@ -7,6 +7,7 @@
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/mypage/application.css">
+		<link rel="stylesheet" href="/css/common/pagination.css">
 		<script src="/js/mypage/application.js"></script>
 	</head>
 	<body>
@@ -14,7 +15,7 @@
 		<main id="container">
 			<div class="content">
 				<div class="apply_wrap">
-					<!-- 지원서 헤더 -->
+					<!-- 신청서 헤더 -->
 					<div class="apply_header">
 						<a href="/mypage.do">
 							<span>
@@ -25,48 +26,24 @@
 						<h2>한식 입문 클래스 신청서</h2>
 					</div>
 					
-					<!-- 지원서 유틸 -->
+					<!-- 신청서 유틸 -->
 					<div class="apply_util">
-						<p class="total">총 23개</p>
+						<p class="total"></p>
 						<div class="apply_sort">
-							<button class="btn_sort active">전체</button>
-							<button class="btn_sort">선정</button>
-							<button class="btn_sort">대기</button>
+							<button class="btn_sort active" data-sort="-1">전체</button>
+							<button class="btn_sort" data-sort="1">선정</button>
+							<button class="btn_sort" data-sort="0">대기</button>
 						</div>
 					</div>
 					
-					<ul class="apply_list">
-						<li>
-							<table>
-								<colgroup>
-									<col width="100px">
-									<col width="*">
-								</colgroup>
-								<tbody>
-									<tr>
-										<th scope="col">이름</th>
-										<td>정하림</td>
-									</tr>
-									<tr>
-										<th scope="col">상태</th>
-										<td>대기중</td>
-									</tr>
-									<tr>
-										<th scope="col">신청동기</th>
-										<td>그냥 신청해봤어요</td>
-									</tr>
-									<tr>
-										<th scope="col">질문</th>
-										<td>알이 먼저인가요 닭이 먼저인가요?</td>
-									</tr>
-								</tbody>
-							</table>
-							<div class="attend_btn">
-								<button onclick="" class="active">출석</button>
-								<button onclick="">결석</button>
-							</div>
-						</li>					
-					</ul>
+					<!-- 신청서 목록 -->
+					<ul class="apply_list"></ul>
+				</div>
+				
+				<div class="pagination_wrap">
+					<div class="pagination">
+					    <ul></ul>
+					</div>
 				</div>
 			</div>
 		</main>

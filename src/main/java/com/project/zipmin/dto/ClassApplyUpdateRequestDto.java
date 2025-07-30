@@ -1,7 +1,5 @@
 package com.project.zipmin.dto;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -9,17 +7,14 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ClassApplyReadResponseDto {
+public class ClassApplyUpdateRequestDto {
 	
-	private int id;
-	private Date applydate;
+	private Integer id;
 	private String reason;
 	private String question;
-	private int selected;
-	private int attend;
-	private int userId;
-	private int classId;
+	private Integer selected;
+	private Integer attend;
+	private Integer classId;
 	
-	private String name;
 }
 

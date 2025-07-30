@@ -158,12 +158,12 @@ function renderClassList(classList) {
 		scheduleSpan.append(`${formatDateWithDay(classs.eventdate)} ${formatTime(classs.starttime)}-${formatTime(classs.endtime)}`);
 		dateP.appendChild(scheduleSpan);
 
-		// 선정발표 (****** DB 수정하고 작업할것 *******)
+		// 선정발표
 		const deadlineSpan = document.createElement('span');
 		const deadlineEm = document.createElement('em');
 		deadlineEm.textContent = '선정발표';
 		deadlineSpan.appendChild(deadlineEm);
-		deadlineSpan.append(` ${formatDate(classs.closedate)}`);
+		deadlineSpan.append(`${formatDateWithDay(classs.noticedate)} ${formatTime(classs.starttime)}`);
 		dateP.appendChild(deadlineSpan);
 
 		infoDiv.appendChild(dateP);

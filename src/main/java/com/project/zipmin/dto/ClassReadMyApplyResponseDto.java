@@ -19,6 +19,7 @@ public class ClassReadMyApplyResponseDto {
 	private Date eventdate;
 	private Date starttime;
 	private Date endtime;
+	private Date noticedate;
 	private int headcount;
 	private String need;
 	private String image;

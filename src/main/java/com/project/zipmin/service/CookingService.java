@@ -1,10 +1,13 @@
 package com.project.zipmin.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,7 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.CookingErrorCode;
 import com.project.zipmin.dto.ClassApplyCreateRequestDto;
 import com.project.zipmin.dto.ClassApplyCreateResponseDto;
+import com.project.zipmin.dto.ClassReadMyApplyResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.ClassScheduleReadResponseDto;
 import com.project.zipmin.dto.ClassTargetReadResponseDto;
@@ -132,14 +136,61 @@ public class CookingService {
 		String username = authentication.getName();
 		int userId = userService.readUserByUsername(username).getId();
 		classDto.setApplystatus(applyRepository.existsByClasssIdAndUserId(id, userId));
-		System.err.println(id + " + " + userId);
 		
 		return classDto;
 	}
 	
 	
 	
-	// 클래스 지원을 작성하는 함수
+	// 사용자가 개설한 클래스 목록 조회
+	public Page<ClassReadResponseDto> readClassPageByUserId(Integer userId, String sort, Pageable pageable) {
+		
+		// 입력값 검증
+		if (userId == null || pageable == null) {
+			throw new ApiException(CookingErrorCode.COOKING_INVALID_INPUT);
+		}
+		
+		// 클래스 목록 조회
+		Page<Class> classPage;
+		Date now = new Date();
+		
+		try {
+			classPage = switch (sort) {
+				case "end" -> classRepository.findByUserIdAndEventdateBefore(userId, now, pageable);
+				case "progress" -> classRepository.findByUserIdAndEventdateAfter(userId, now, pageable);
+				default -> classRepository.findByUserId(userId, pageable);
+			};
+		}
+		catch (Exception e) {
+			throw new ApiException(CookingErrorCode.COOKING_APPLY_READ_LIST_FAIL);
+		}
+		
+		List<ClassReadResponseDto> classDtoList = new ArrayList<ClassReadResponseDto>();
+		for (Class classs : classPage) {
+			ClassReadResponseDto classDto = classMapper.toReadResponseDto(classs);
+			// 여기에 내용 추가
+			classDtoList.add(classDto);
+		}
+		
+		return new PageImpl<>(classDtoList, pageable, classPage.getTotalElements());
+	}
+	
+	
+	
+	
+	// 사용자가 신청한 클래스 목록 조회
+	public Page<ClassReadMyApplyResponseDto> readApplyClassPageByUserId(Integer userId, Pageable pageable) {
+		
+		return null;
+	}
+	
+	
+	
+	
+	
+	
+	
+	// 클래스 신청을 작성하는 함수
 	public ClassApplyCreateResponseDto createApply(ClassApplyCreateRequestDto applyDto) {
 		
 		// 입력값 검증

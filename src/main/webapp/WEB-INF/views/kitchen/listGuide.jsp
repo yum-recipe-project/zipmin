@@ -40,9 +40,8 @@
 					
 					<div id="guideList"></div>
 					
-						<!-- 키친가이드 목록 -->
-						<ul class="guide_list"></ul>
-
+					<!-- 키친가이드 목록 -->
+					<ul class="guide_list"></ul>
 				</div>
 	
 				<div class="pagination_wrap">

@@ -1,7 +1,3 @@
-// 신청 완료한 클래스는표시 !!!!
-
-
-
 /**
  * 탭 메뉴 클릭 시 탭 메뉴를 활성화하는 함수
  */
@@ -151,7 +147,7 @@ function renderScheduleList(list) {
 		strong.textContent = schedule.title;
 
 		const subSpan = document.createElement('span');
-		subSpan.textContent = ''; // 필요 시 서브 제목
+		subSpan.textContent = '';
 
 		titleDiv.append(strong, subSpan);
 

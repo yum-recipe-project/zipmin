@@ -117,10 +117,15 @@ function renderApplyList(applyList) {
 		const table = document.createElement('table');
 
 		const colgroup = document.createElement('colgroup');
-		colgroup.innerHTML = `
-			<col width="100px">
-			<col width="*">
-		`;
+		
+		const col1 = document.createElement('col');
+		col1.setAttribute('width', '100px');
+		
+		const col2 = document.createElement('col');
+		col2.setAttribute('width', '*');
+		
+		colgroup.appendChild(col1);
+		colgroup.appendChild(col2);
 
 		const tbody = document.createElement('tbody');
 
@@ -147,6 +152,80 @@ function renderApplyList(applyList) {
 
 		table.append(colgroup, tbody);
 		li.appendChild(table);
+		
+		// 선정/대기 버튼 영역
+		const selectBox = document.createElement('div');
+		selectBox.className = 'select_btn';
+
+		// 버튼 생성
+		const selectBtn = document.createElement('button');
+		selectBtn.textContent = '선정';
+
+		const pendingBtn = document.createElement('button');
+		pendingBtn.textContent = '대기';
+
+		// 초기 상태 active 적용
+		if (apply.selected === 1) {
+			selectBtn.classList.add('active');
+		} else {
+			pendingBtn.classList.add('active');
+		}
+
+		// 선정 버튼 클릭 이벤트
+		selectBtn.onclick = async function () {
+			try {
+				const id = new URLSearchParams(window.location.search).get('id');
+				const token = localStorage.getItem('accessToken');
+
+				const data = {
+					id: apply.id,
+					selected: 1,
+					class_id: id
+				};
+
+				const headers = {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${token}`
+				};
+
+				await instance.patch(`/classes/${id}/applies/${apply.id}`, data, { headers });
+
+				selectBtn.classList.add('active');
+				pendingBtn.classList.remove('active');
+			} catch (error) {
+				console.log(error);
+			}
+		};
+
+		// 대기 버튼 클릭 이벤트
+		pendingBtn.onclick = async function () {
+			try {
+				const id = new URLSearchParams(window.location.search).get('id');
+				const token = localStorage.getItem('accessToken');
+
+				const data = {
+					id: apply.id,
+					selected: 0,
+					class_id: id
+				};
+
+				const headers = {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${token}`
+				};
+
+				await instance.patch(`/classes/${id}/applies/${apply.id}`, data, { headers });
+
+				pendingBtn.classList.add('active');
+				selectBtn.classList.remove('active');
+			} catch (error) {
+				console.log(error);
+			}
+		};
+
+		selectBox.append(selectBtn, pendingBtn);
+		li.appendChild(selectBox);
+
 
 		// 버튼 영역
 		const btnBox = document.createElement('div');
@@ -176,12 +255,12 @@ function renderApplyList(applyList) {
 					attend: 1,
 					class_id: id
 				};
-
+				
 				const headers = {
 					'Content-Type': 'application/json',
 					'Authorization': `Bearer ${token}`
 				};
-
+				
 				await instance.patch(`/classes/${id}/applies/${apply.id}`, data, { headers });
 
 				attendBtn.classList.add('active');

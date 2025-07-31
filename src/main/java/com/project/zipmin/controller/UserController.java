@@ -27,7 +27,7 @@ import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.CookingSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
-import com.project.zipmin.dto.ClassReadMyApplyResponseDto;
+import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.CommentReadMyResponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
@@ -620,9 +620,10 @@ public class UserController {
 	
 	
 	// 신청한 쿠킹클래스
-	@GetMapping("/users/{id}/classes/applies")
+	@GetMapping("/users/{id}/applied-classes")
 	public ResponseEntity<?> readUserClassApplyList(
 			@Parameter(description = "사용자의 일련번호", required = true, example = "1") @PathVariable Integer id,
+			@RequestParam String sort,
 			@Parameter(description = "조회할 페이지 번호", required = true, example = "1") @RequestParam int page,
 			@Parameter(description = "페이지의 항목 수", required = true, example = "10") @RequestParam int size) {
 		
@@ -648,10 +649,10 @@ public class UserController {
 		}
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<ClassReadMyApplyResponseDto> applyPage = cookingService.readApplyClassPageByUserId(id, pageable);
+		Page<ClassMyApplyReadResponseDto> applyPage = cookingService.readApplyClassPageByUserId(id, sort, pageable);
 		
-		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, applyPage));
+		return ResponseEntity.status(CookingSuccessCode.COOKING_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(CookingSuccessCode.COOKING_READ_LIST_SUCCESS, applyPage));
 	}
 	
 	

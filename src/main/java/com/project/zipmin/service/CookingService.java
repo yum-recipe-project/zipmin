@@ -20,7 +20,7 @@ import com.project.zipmin.dto.ClassApplyCreateResponseDto;
 import com.project.zipmin.dto.ClassApplyReadResponseDto;
 import com.project.zipmin.dto.ClassApplyUpdateRequestDto;
 import com.project.zipmin.dto.ClassApplyUpdateResponseDto;
-import com.project.zipmin.dto.ClassReadMyApplyResponseDto;
+import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.ClassScheduleReadResponseDto;
 import com.project.zipmin.dto.ClassTargetReadResponseDto;
@@ -182,11 +182,51 @@ public class CookingService {
 	
 	
 	// 사용자가 신청한 클래스 목록 조회
-	public Page<ClassReadMyApplyResponseDto> readApplyClassPageByUserId(Integer userId, Pageable pageable) {
+	public Page<ClassMyApplyReadResponseDto> readApplyClassPageByUserId(Integer userId, String sort, Pageable pageable) {
 		
-		return null;
-	}
-	
+		// 입력값 검증
+		
+		
+		
+		// 사용자가 신청한 클래스의 아이디 조회
+		List<Integer> classIdList;
+		
+		try {
+			classIdList = applyRepository.findClasssIdsByUserId(userId);
+			
+			   if (classIdList == null || classIdList.isEmpty()) {
+				   System.err.println("없는듯");
+			        return Page.empty(); // 비어있는 페이지 반환
+			    }
+		}
+		catch (Exception e) {
+			throw new ApiException(CookingErrorCode.COOKING_APPLY_READ_LIST_FAIL);
+		}
+		
+		// 클래스 목록 조회
+		Page<Class> classPage;
+		Date now = new Date();
+
+		try {
+			switch (sort) {
+			case "end" -> classPage = classRepository.findByIdInAndEventdateBefore(classIdList, now, pageable);
+			case "progress" -> classPage = classRepository.findByIdInAndEventdateAfter(classIdList, now, pageable);
+			default -> classPage = classRepository.findByIdIn(classIdList, pageable);
+			}
+		}
+		catch (Exception e) {
+			throw new ApiException(CookingErrorCode.COOKING_READ_LIST_FAIL);
+		}
+		
+		List<ClassMyApplyReadResponseDto> classDtoList = new ArrayList<ClassMyApplyReadResponseDto>();
+		for (Class classs : classPage) {
+			ClassMyApplyReadResponseDto classDto = classMapper.toReadMyApplyResponseDto(classs);
+			// 여기에 내용 추가
+			classDtoList.add(classDto);
+		}
+		
+		return new PageImpl<>(classDtoList, pageable, classPage.getTotalElements());
+	}	
 	
 	
 	

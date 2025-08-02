@@ -17,8 +17,8 @@ public interface ClassRepository extends JpaRepository<Class, Integer> {
 	Page<Class> findByUserIdAndEventdateAfter(int userId, Date now, Pageable pageable);
 	Page<Class> findByUserIdAndEventdateBefore(int userId, Date now, Pageable pageable);
 	
-	Page<Class> findByIdIn(List<Integer> ids, Pageable pageable);
-	Page<Class> findByIdInAndEventdateBefore(List<Integer> ids, Date now, Pageable pageable);
-	Page<Class> findByIdInAndEventdateAfter(List<Integer> ids, Date now, Pageable pageable);
+//	Page<Class> findByIdIn(List<Integer> ids, Pageable pageable);
+//	Page<Class> findByIdInAndEventdateBefore(List<Integer> ids, Date now, Pageable pageable);
+//	Page<Class> findByIdInAndEventdateAfter(List<Integer> ids, Date now, Pageable pageable);
 
 }

@@ -115,6 +115,7 @@ function renderClassList(classList) {
 
 	classList.forEach(classs => {
 		const li = document.createElement('li');
+		li.dataset.applyId = classs.apply_id;
 
 		// 상태 영역
 		const statusDiv = document.createElement('div');
@@ -183,8 +184,9 @@ function renderClassList(classList) {
 		cancelBtn.textContent = '신청 취소';
 		cancelBtn.addEventListener('click', function(event) {
 			event.preventDefault();
-			alert('삭제버튼 클릭' + classs.id);
-			// 여기서 삭제 동작 함수 호출 ************
+			if (confirm('정말 신청을 취소하시겠습니까?')) {
+				deleteApply(classs.apply_id, classs.id);
+			}
 		});
 		cancelDiv.appendChild(cancelBtn);
 
@@ -198,6 +200,43 @@ function renderClassList(classList) {
 
 
 
+async function deleteApply(id, classId) {
+	
+	try {
+		
+		const token = localStorage.getItem('accessToken');
+		const payload = parseJwt(token);
+
+		const data = {
+			id: id,
+			class_id: classId
+		}
+
+		const headers = {
+			'Content-Type': 'application/json',
+			'Authorization' : `Bearer ${token}`
+		}
+
+		const response = await instance.delete(`/classes/${payload.id}/applies`, {
+			data: data,
+			headers: headers
+		});
+
+		console.log(response);
+		
+		if (response.data.code === 'COOKING_APPLY_DELETE_SUCCESS') {
+			alert('쿠킹클래스 신청이 성공적으로 취소되었습니다.');
+			const applyElement = document.querySelector(`.class_list li[data-apply-id='${id}']`);
+			if (applyElement) applyElement.remove();
+		}
+		
+	}
+	catch (error) {
+		/******** 여기에 에러 코드 추가 !!!!!! ********/
+		console.log(error);
+	}
+	
+}
 
 
 

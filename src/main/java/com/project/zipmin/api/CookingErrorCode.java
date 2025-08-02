@@ -49,13 +49,15 @@ public enum CookingErrorCode implements Code {
     COOKING_TUTOR_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "강사 수정 실패"),
     COOKING_TUTOR_DELETE_FAIL(HttpStatus.BAD_REQUEST, "강사 삭제 실패"),
     
-    COOKING_APPLY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 신청를 찾을 수 없음"),
+    COOKING_APPLY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 신청을 찾을 수 없음"),
     COOKING_APPLY_CREATE_FAIL(HttpStatus.BAD_REQUEST, "신청 작성 실패"),
     COOKING_APPLY_READ_LIST_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "신청 목록 조회 실패"),
     COOKING_APPLY_READ_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "신청 조회 실패"),
     COOKING_APPLY_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "신청 수정 실패"),
     COOKING_APPLY_DELETE_FAIL(HttpStatus.BAD_REQUEST, "신청 삭제 실패"),
     COOKING_APPLY_DUPLICATE(HttpStatus.CONFLICT, "신청 중복 작성 시도"),
+    
+    COOKING_ALREADY_ENDED(HttpStatus.FORBIDDEN, "투표 종료 후 접근 시도"),
 	
 	// 기타
 	COOKING_UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "예외 처리되지 않은 내부 오류");

@@ -10,6 +10,7 @@ import com.project.zipmin.api.CookingErrorCode;
 import com.project.zipmin.api.CookingSuccessCode;
 import com.project.zipmin.dto.ClassApplyCreateRequestDto;
 import com.project.zipmin.dto.ClassApplyCreateResponseDto;
+import com.project.zipmin.dto.ClassApplyDeleteRequestDto;
 import com.project.zipmin.dto.ClassApplyReadResponseDto;
 import com.project.zipmin.dto.ClassApplyUpdateRequestDto;
 import com.project.zipmin.dto.ClassApplyUpdateResponseDto;
@@ -186,16 +187,31 @@ public class CookingController {
 	
 	// 특정 클래스에 참가 신청 취소
 	@DeleteMapping("/classes/{id}/applies")
-	public int cancelApplyClass(
-			@PathVariable int id) {
-		return 0;
+	public ResponseEntity<?> cancelApplyClass(
+			@PathVariable int id,
+			@RequestBody ClassApplyDeleteRequestDto applyDto) {
+		
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(CookingErrorCode.COOKING_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 로그인 정보
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		applyDto.setUserId(userService.readUserByUsername(username).getId());
+		
+		cookingService.deleteApply(applyDto);
+		
+		return ResponseEntity.status(CookingSuccessCode.COOKING_APPLY_DELETE_SUCCESS.getStatus())
+				.body(ApiResponse.success(CookingSuccessCode.COOKING_APPLY_DELETE_SUCCESS, null));
 	}
 	
 	
 	
 	
 	
-	// 클래스 지원 수정 (출석)
+	// 클래스 신청 수정 (출석)
 	@PatchMapping("/classes/{classId}/applies/{applyId}")
 	public ResponseEntity<?> attendClass(
 			@PathVariable int classId,

@@ -21,4 +21,5 @@ public class ClassMyApplyReadResponseDto {
 	private String image;
 	
 	private boolean applystatus;
+	private int applyId;
 }

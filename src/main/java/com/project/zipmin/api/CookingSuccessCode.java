@@ -16,11 +16,11 @@ public enum CookingSuccessCode implements Code {
     COOKING_UPDATE_SUCCESS(HttpStatus.OK, "쿠킹클래스 수정 성공"),
     COOKING_DELETE_SUCCESS(HttpStatus.OK, "쿠킹클래스 삭제 성공"),
     
-    COOKING_APPLY_READ_LIST_SUCCESS(HttpStatus.OK, "지원 목록 조회 성공"),
-    COOKING_APPLY_READ_SUCCESS(HttpStatus.OK, "지원 조회 성공"),
-    COOKING_APPLY_CREATE_SUCCESS(HttpStatus.CREATED, "지원 작성 성공"),
-    COOKING_APPLY_UPDATE_SUCCESS(HttpStatus.OK, "지원 수정 성공"),
-    COOKING_APPLY_DELETE_SUCCESS(HttpStatus.OK, "지원 삭제 성공");
+    COOKING_APPLY_READ_LIST_SUCCESS(HttpStatus.OK, "신청 목록 조회 성공"),
+    COOKING_APPLY_READ_SUCCESS(HttpStatus.OK, "신청 조회 성공"),
+    COOKING_APPLY_CREATE_SUCCESS(HttpStatus.CREATED, "신청 작성 성공"),
+    COOKING_APPLY_UPDATE_SUCCESS(HttpStatus.OK, "신청 수정 성공"),
+    COOKING_APPLY_DELETE_SUCCESS(HttpStatus.OK, "신청 삭제 성공");
 	
 	private final HttpStatus status;
 	private final String message;

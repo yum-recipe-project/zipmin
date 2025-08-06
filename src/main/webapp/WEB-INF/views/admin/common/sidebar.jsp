@@ -57,24 +57,29 @@
 				<!-- ti-article /  게시판 -->
 				<li class="nav-small-cap">
 					<i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-					<span class="hide-menu">쩝쩝박사</span>
+					<span class="hide-menu">게시판</span>
 				</li>
 				<li class="sidebar-item">
-					<a class="sidebar-link" href="/admin/listVote.do" aria-expanded="false">
+					<a class="sidebar-link" href="/admin.do" aria-expanded="false">
 						<span><i class="ti ti-article"></i></span>
-						<span class="hide-menu">투표</span>
+						<span class="hide-menu">키친가이드</span>
 					</a>
 				</li>
 				<li class="sidebar-item">
-					<a class="sidebar-link" href="/admin/alert.do" aria-expanded="false">
+					<a class="sidebar-link" href="/admin/listChomp.do" aria-expanded="false">
 						<span><i class="ti ti-article"></i></span>
-						<span class="hide-menu">매거진</span>
+						<span class="hide-menu">쩝쩝박사</span>
 					</a>
 				</li>
+				
+				<li class="nav-small-cap">
+					<i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+					<span class="hide-menu">어쩌구</span>
+				</li>
 				<li class="sidebar-item">
-					<a class="sidebar-link" href="/admin/alert.do" aria-expanded="false">
-						<span><i class="ti ti-article"></i></span>
-						<span class="hide-menu">이벤트</span>
+					<a class="sidebar-link" href="/admin/listComment.do" aria-expanded="false">
+						<span><i class="ti ti ti-message-dots"></i></span>
+						<span class="hide-menu">댓글</span>
 					</a>
 				</li>
 				

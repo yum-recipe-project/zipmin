@@ -109,7 +109,6 @@
     font-size: 16px;
     line-height: 20px;
     letter-spacing: -0.4px;
-    color: #2A3547;
     display: block;
 }
 
@@ -122,7 +121,7 @@
 #container .content .tab ul li a span {
     position: relative;
     -webkit-box-align: center;
-    padding: 12px 20px;
+    padding: 12px;
     align-items: flex-start !important;
     display: flex !important;
 }

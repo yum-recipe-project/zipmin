@@ -171,6 +171,24 @@ public class CommentService {
 	
 	
 	
+	// **** 수정 보완 필요 *** 댓글 수
+	public int readCommentCount(String tablename, Integer recodenum) {
+		
+		// 입력값 검증
+		if (tablename == null || recodenum == null) {
+			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
+		}
+		
+		try {
+			return commentRepository.countByTablenameAndRecodenum(tablename, recodenum);
+		}
+		catch (Exception e) {
+			throw new ApiException(CommentErrorCode.COMMENT_READ_COUNT_FAIL);
+		}
+		
+	}
+	
+	
 	
 	
 	// 목록 (신고순으로 정렬하는거 추가하기)

@@ -18,4 +18,5 @@ public class MegazineReadResponseDto {
 	private Date postdate;
 	private String content;
 	
+	private int commentcount;
 }

@@ -4,7 +4,8 @@
 let totalPages = 0;
 let page = 0;
 const size = 10;
-let voteList = [];
+let megazineList = [];
+
 
 
 
@@ -12,49 +13,50 @@ let voteList = [];
 /**
  * 
  */
-document.addEventListener('DOMContentLoaded', async function() {
-	fetchVoteList();
+document.addEventListener('DOMContentLoaded', function() {
+	fetchMegazineList();
 });
 
 
 
 
-
 /**
- * 서버에서 투표 목록 데이터를 가져오는 함수
+ * 서버에서 매거진 목록 데이터를 가져오는 함수
  */
-async function fetchVoteList() {
+async function fetchMegazineList() {
 	
 	try {
 		const params = new URLSearchParams({
 			page : page,
 			size : size
 		}).toString();
-		
+
 		const headers = {
 			'Content-Type': 'application/json'
 		};
-		
-		const response = await fetch(`/votes?${params}`, {
+
+		const response = await fetch(`/megazines?${params}`, {
 			method: 'GET',
 			headers: headers
 		});
-		
+
 		const result = await response.json();
 		
-		if (result.code === 'VOTE_READ_LIST_SUCCESS') {
+		console.log(result);
+
+		if (result.code === 'MEGAZINE_READ_LIST_SUCCESS') {
 
 			totalPages = result.data.totalPages;
 			page = result.data.number;
-			voteList = result.data.content;
+			megazineList = result.data.content;
 			
-			renderVoteList(result.data.content);
+			renderMegainzeList(result.data.content);
 			renderPagination();
 			
 			document.querySelector('.total').innerText = `총 ${result.data.totalElements}개`;
 		}
 		
-		// 여기에 에러코드 추가 !!!!******
+		// ***** 여기에 에러코드 더 추가해야함 ***
 		
 	}
 	catch (error) {
@@ -67,15 +69,14 @@ async function fetchVoteList() {
 
 
 
-
 /**
- * 투표 목록을 화면에 렌더링하는 함수
+ * 매거진 목록을 화면에 렌더링하는 함수
  */
-function renderVoteList(voteList) {
-	const container = document.querySelector('.vote_list');
+function renderMegainzeList(megazineList) {
+	const container = document.querySelector('.megazine_list');
 	container.innerHTML = '';
 
-	voteList.forEach((vote, index) => {
+	megazineList.forEach((megazine, index) => {
 		const tr = document.createElement('tr');
 
 		// No
@@ -85,61 +86,25 @@ function renderVoteList(voteList) {
 		noH6.textContent = index + 1;
 		noTd.appendChild(noH6);
 
-		// 제목 + 선택지
+		// 제목
 		const titleTd = document.createElement('td');
-		const titleWrap = document.createElement('div');
-		titleWrap.className = 'align-items-center';
-
 		const titleH6 = document.createElement('h6');
-		titleH6.className = 'fs-4 fw-semibold mb-2';
-		titleH6.textContent = vote.title;
-		titleWrap.appendChild(titleH6);
-
-		// 가장 높은 rate 찾기
-		const maxRate = Math.max(...vote.choice_list.map(choice => choice.rate));
-
-		vote.choice_list.forEach(choice => {
-			const choiceSpan = document.createElement('span');
-			choiceSpan.className = 'fw-normal';
-			
-			if (choice.rate === maxRate && maxRate !== 0) {
-				choiceSpan.innerHTML = `<b>${choice.choice} (${choice.rate}%)</b>`;
-			} else {
-				choiceSpan.textContent = `${choice.choice} (${choice.rate}%)`;
-			}
-
-			titleWrap.appendChild(choiceSpan);
-			titleWrap.appendChild(document.createElement('br'));
-		});
-
-		titleTd.appendChild(titleWrap);
+		titleH6.className = 'fw-semibold mb-0';
+		titleH6.textContent = megazine.title;
+		titleTd.appendChild(titleH6);
 
 		// 참여 기간
 		const periodTd = document.createElement('td');
 		const periodH6 = document.createElement('h6');
 		periodH6.className = 'fw-semibold mb-0';
-		periodH6.textContent = `${formatDate(vote.opendate)} - ${formatDate(vote.closedate)}`;
+		periodH6.textContent = `${formatDate(megazine.postdate)}`;
 		periodTd.appendChild(periodH6);
 
-		// 상태
-		const statusTd = document.createElement('td');
-		const statusSpan = document.createElement('span');
-		statusSpan.className = `badge ${vote.status === 'open' ? 'bg-primary-subtle text-primary' : 'bg-danger-subtle text-danger'} d-inline-flex align-items-center gap-1`;
-		statusSpan.innerHTML = `<i class="ti ${vote.status === 'open' ? 'ti-check' : 'ti-x'} fs-4"></i>${vote.status === 'open' ? '투표중' : '투표 종료'}`;
-		statusTd.appendChild(statusSpan);
-
-		// 참여자수
-		const totalTd = document.createElement('td');
-		const totalH6 = document.createElement('h6');
-		totalH6.className = 'fw-semibold mb-0';
-		totalH6.textContent = `${vote.total}명`;
-		totalTd.appendChild(totalH6);
-
-		// 댓글수
+		// 댓글 수
 		const commentTd = document.createElement('td');
 		const commentH6 = document.createElement('h6');
 		commentH6.className = 'fw-semibold mb-0';
-		commentH6.textContent = `${vote.commentcount}개`;
+		commentH6.textContent = `${megazine.commentcount || 0}개`;
 		commentTd.appendChild(commentH6);
 
 		// 기능 (드롭다운)
@@ -160,7 +125,8 @@ function renderVoteList(voteList) {
 		ul.setAttribute('aria-labelledby', `dropdownMenuButton${index}`);
 
 		const editLi = document.createElement('li');
-		editLi.innerHTML = `<a class="dropdown-item d-flex align-items-center gap-3" href="#"><i class="fs-4 ti ti-edit"></i>Edit</a>`;
+		editLi.innerHTML = `
+			<a class="dropdown-item d-flex align-items-center gap-3" href="#"><i class="fs-4 ti ti-edit"></i>Edit</a>`;
 
 		const deleteLi = document.createElement('li');
 		deleteLi.innerHTML = `<a class="dropdown-item d-flex align-items-center gap-3" href="#"><i class="fs-4 ti ti-trash"></i>Delete</a>`;
@@ -169,11 +135,11 @@ function renderVoteList(voteList) {
 		dropdownDiv.append(dropdownBtn, ul);
 		actionTd.appendChild(dropdownDiv);
 
-		tr.append(noTd, titleTd, periodTd, statusTd, totalTd, commentTd, actionTd);
+		// 조립
+		tr.append(noTd, titleTd, periodTd, commentTd, actionTd);
 		container.appendChild(tr);
 	});
 }
-
 
 
 
@@ -241,11 +207,22 @@ function renderPagination() {
 			const newPage = parseInt(this.dataset.page);
 			if (!isNaN(newPage) && newPage >= 0 && newPage < totalPages && newPage !== page) {
 				page = newPage;
-				fetchVoteList();
+				fetchMegazineList();
 			}
 		});
 	});
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

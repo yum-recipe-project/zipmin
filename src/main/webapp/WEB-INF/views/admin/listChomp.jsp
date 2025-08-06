@@ -10,9 +10,9 @@
 		<title>집밥의민족</title>
 		<link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
 		<link rel="stylesheet" href="../assets/css/styles.min.css" />
-		<link rel="stylesheet" href="/css/admin/list-vote.css" />
+		<link rel="stylesheet" href="/css/admin/list-chomp.css" />
 		<script src="/js/common/util.js"></script>
-		<script src="/js/admin/list-vote.js"></script>
+		<script src="/js/admin/list-chomp.js"></script>
 	</head>
 	
 	<body>
@@ -37,13 +37,9 @@
 								<img src="/images/cooking/arrow_right.png">
 								<span>게시판</span>
 							</a>
-							<a href="/admin/listChomp.do">
-								<img src="/images/cooking/arrow_right.png">
-								<span>쩝쩝박사</span>
-							</a>
 							<a class="active" href="">
 								<img src="/images/cooking/arrow_right.png">
-								<span>투표 관리</span>
+								<span>쩝쩝박사</span>
 							</a>
 						</div>
 						
@@ -52,10 +48,10 @@
 							<div class="tab">
 								<ul>
 									<li class="btn_tab">
-										<a href="/admin/listChomp.do"><span>전체</span></a>
+										<a href="/admin/listChomp.do" class="active"><span>전체</span></a>
 									</li>
 									<li class="btn_tab">
-										<a href="/admin/listVote.do" class="active"><span>투표 관리</span></a>
+										<a href="/admin/listVote.do"><span>투표 관리</span></a>
 									</li>
 									<li class="btn_tab">
 										<a href="/admin/listMegazine.do"><span>매거진 관리</span></a>
@@ -65,10 +61,6 @@
 									</li>
 								</ul>
 							</div>
-							<button type="button" class="btn btn-info m-1">
-								<i class="ti ti-plus fs-4"></i>
-								투표 추가
-							</button>
 						</div>
 			
 						<table class="table text-nowrap mb-0 align-middle">
@@ -80,7 +72,7 @@
 						            <th></th>
 						            <th></th>
 						            <th></th>
-						            <th class="text-end pe-4"><i class="ti ti-search fs-6"></i></th>
+						            <th class="text-end"><i class="ti ti-search fs-6"></i></th>
 						        </tr>
 						        <tr class="table_th">
 						            <th>

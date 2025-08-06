@@ -50,6 +50,7 @@ import com.project.zipmin.dto.VoteRecordCreateRequestDto;
 import com.project.zipmin.dto.VoteRecordCreateResponseDto;
 import com.project.zipmin.dto.VoteRecordDeleteRequestDto;
 import com.project.zipmin.entity.Role;
+import com.project.zipmin.service.ChompCommentService;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.UserService;
@@ -113,6 +114,8 @@ public class ChompessorController {
 	UserService userService;
 	@Autowired
 	CommentService commentService;
+	@Autowired
+	ChompCommentService chompCommentService;
 
 	
 	
@@ -159,13 +162,11 @@ public class ChompessorController {
 		    @Parameter(description = "페이지 크기", example = "10") @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<VoteReadResponseDto> votePage = chompService.readVotePage(pageable);
+		Page<VoteReadResponseDto> votePage = chompCommentService.readVotePage(pageable);
 		
 		return ResponseEntity.status(VoteSuccessCode.VOTE_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(VoteSuccessCode.VOTE_READ_LIST_SUCCESS, votePage));
 	}
-	
-	
 	
 	
 	
@@ -564,6 +565,22 @@ public class ChompessorController {
 				.body(ApiResponse.success(VoteSuccessCode.VOTE_RECORD_DELETE_SUCCESS, null));
 	}
 	
+	
+	
+	// 매거진 목록 조회
+	@GetMapping("/megazines")
+	public ResponseEntity<?> listMegazine(
+			// 검색어같은 것도 추가할 것
+			@Parameter(description = "페이지 번호", example = "0") @RequestParam int page,
+			@Parameter(description = "페이지 크기", example = "10") @RequestParam int size) {
+		
+		Pageable pageable = PageRequest.of(page, size);
+		Page<MegazineReadResponseDto> megazinePage = chompCommentService.readMegazinePage(pageable);
+		
+		return ResponseEntity.status(MegazineSuccessCode.MEGAZINE_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(MegazineSuccessCode.MEGAZINE_READ_LIST_SUCCESS, megazinePage));
+	}
+
 	
 	
 	// 특정 매거진 조회

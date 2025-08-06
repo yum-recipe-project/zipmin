@@ -10,9 +10,9 @@
 		<title>집밥의민족</title>
 		<link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
 		<link rel="stylesheet" href="../assets/css/styles.min.css" />
-		<link rel="stylesheet" href="/css/admin/list-vote.css" />
+		<link rel="stylesheet" href="/css/admin/list-megazine.css" />
 		<script src="/js/common/util.js"></script>
-		<script src="/js/admin/list-vote.js"></script>
+		<script src="/js/admin/list-megazine.js"></script>
 	</head>
 	
 	<body>
@@ -43,7 +43,7 @@
 							</a>
 							<a class="active" href="">
 								<img src="/images/cooking/arrow_right.png">
-								<span>투표 관리</span>
+								<span>매거진 관리</span>
 							</a>
 						</div>
 						
@@ -55,10 +55,10 @@
 										<a href="/admin/listChomp.do"><span>전체</span></a>
 									</li>
 									<li class="btn_tab">
-										<a href="/admin/listVote.do" class="active"><span>투표 관리</span></a>
+										<a href="/admin/listVote.do"><span>투표 관리</span></a>
 									</li>
 									<li class="btn_tab">
-										<a href="/admin/listMegazine.do"><span>매거진 관리</span></a>
+										<a href="/admin/listMegazine.do" class="active"><span>매거진 관리</span></a>
 									</li>
 									<li class="btn_tab">
 										<a href="/admin/listEvent.do"><span>이벤트 관리</span></a>
@@ -67,7 +67,7 @@
 							</div>
 							<button type="button" class="btn btn-info m-1">
 								<i class="ti ti-plus fs-4"></i>
-								투표 추가
+								매거진 추가
 							</button>
 						</div>
 			
@@ -75,8 +75,6 @@
 						    <thead class="text-dark fs-4">
 						        <tr>
 						            <th class="total"></th>
-						            <th></th>
-						            <th></th>
 						            <th></th>
 						            <th></th>
 						            <th></th>
@@ -90,13 +88,7 @@
 						                <h6 class="fs-4 fw-semibold mb-0">제목</h6>
 						            </th>
 						            <th>
-						                <h6 class="fs-4 fw-semibold mb-0">참여 기간</h6>
-						            </th>
-						            <th>
-						                <h6 class="fs-4 fw-semibold mb-0">상태</h6>
-						            </th>
-						            <th>
-						                <h6 class="fs-4 fw-semibold mb-0">참여자수</h6>
+						                <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
 						            </th>
 						            <th>
 						                <h6 class="fs-4 fw-semibold mb-0">댓글수</h6>
@@ -104,7 +96,7 @@
 						            <th></th>
 						        </tr>
 						    </thead>
-						    <tbody class="vote_list"></tbody>
+						    <tbody class="megazine_list"></tbody>
 						</table>
 	
 						<!-- 페이지네이션 -->

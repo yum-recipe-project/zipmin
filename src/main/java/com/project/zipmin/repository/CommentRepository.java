@@ -36,4 +36,6 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
 	Page<Comment> findByTablenameAndRecodenumOrderByLikecount(@Param("tablename") String tablename, @Param("recodenum") int recodenum, Pageable pageable);
 	
 	Page<Comment> findByUserId(int userId, Pageable pageable);
+	
+    int countByTablenameAndRecodenum(@Param("tablename") String tablename, @Param("recodenum") Integer recodenum);
 }

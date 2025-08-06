@@ -10,9 +10,9 @@
 		<title>집밥의민족</title>
 		<link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
 		<link rel="stylesheet" href="../assets/css/styles.min.css" />
-		<link rel="stylesheet" href="/css/admin/list-vote.css" />
+		<link rel="stylesheet" href="/css/admin/list-comment.css" />
 		<script src="/js/common/util.js"></script>
-		<script src="/js/admin/list-vote.js"></script>
+		<script src="/js/admin/list-comment.js"></script>
 	</head>
 	
 	<body>
@@ -35,33 +35,35 @@
 							<a href="/admin/home.do"><span>메인</span></a>
 							<a href="">
 								<img src="/images/cooking/arrow_right.png">
-								<span>게시판</span>
-							</a>
-							<a href="/admin/listChomp.do">
-								<img src="/images/cooking/arrow_right.png">
-								<span>쩝쩝박사</span>
+								<span>댓글/리뷰</span>
 							</a>
 							<a class="active" href="">
 								<img src="/images/cooking/arrow_right.png">
-								<span>투표 관리</span>
+								<span>댓글</span>
 							</a>
 						</div>
 						
-						<h1>쩝쩝박사 게시판</h1>
+						<h1>댓글 관리</h1>
 						<div class="bar">
 							<div class="tab">
 								<ul>
-									<li class="btn_tab">
-										<a href="/admin/listChomp.do"><span>전체</span></a>
+									<li class="btn_tab" data-testid="tabItem">
+										<a class="active"><span>전체</span></a>
 									</li>
-									<li class="btn_tab">
-										<a href="/admin/listVote.do" class="active"><span>투표 관리</span></a>
+									<li class="btn_tab" data-testid="tabItem">
+										<a><span>투표</span></a>
 									</li>
-									<li class="btn_tab">
-										<a href="/admin/listMegazine.do"><span>매거진 관리</span></a>
+									<li class="btn_tab" data-testid="tabItem">
+										<a><span>매거진</span></a>
 									</li>
-									<li class="btn_tab">
-										<a href="/admin/listEvent.do"><span>이벤트 관리</span></a>
+									<li class="btn_tab" data-testid="tabItem">
+										<a><span>이벤트</span></a>
+									</li>
+									<li class="btn_tab" data-testid="tabItem">
+										<a><span>매거진</span></a>
+									</li>
+									<li class="btn_tab" data-testid="tabItem">
+										<a><span>매거진</span></a>
 									</li>
 								</ul>
 							</div>
@@ -80,7 +82,7 @@
 						            <th></th>
 						            <th></th>
 						            <th></th>
-						            <th class="text-end pe-4"><i class="ti ti-search fs-6"></i></th>
+						            <th><i class="ti ti-search fs-6"></i></th>
 						        </tr>
 						        <tr class="table_th">
 						            <th>

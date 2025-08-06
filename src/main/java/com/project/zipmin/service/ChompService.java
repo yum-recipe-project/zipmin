@@ -136,50 +136,6 @@ public class ChompService {
 		
 		return new PageImpl<>(chompDtoList, pageable, chompPage.getTotalElements());
 	}
-
-	
-	
-	// 투표의 목록을 조회하는 함수
-	public Page<VoteReadResponseDto> readVotePage(Pageable pageable) {
-		
-		Page<Vote> votePage = voteRepository.findAll(pageable);
-		
-		List<VoteReadResponseDto> voteDtoList = new ArrayList<>();
-		Date today = new Date();
-		for (Vote vote : votePage) {
-			VoteReadResponseDto voteDto = voteMapper.toReadResponseDto(vote);
-			
-			// 투표수
-			long total = recordRepository.countByVoteId(vote.getId());
-			voteDto.setTotal(total);
-			
-			// 투표 상태
-			String status = (today.after(voteDto.getOpendate()) && today.before(voteDto.getClosedate())) ? "open" : "close";
-			voteDto.setStatus(status);
-			
-			// 투표 옵션
-			List<VoteChoice> choiceList = choiceRepository.findByVoteId(vote.getId());
-			List<VoteChoiceReadResponseDto> choiceDtoList = new ArrayList<>();
-			for (VoteChoice choice : choiceList) {
-				VoteChoiceReadResponseDto choiceDto = choiceMapper.toReadResponseDto(choice);
-				
-				long count = recordRepository.countByChoiceId(choice.getId());
-				double rate = (total == 0) ? 0.0 : Math.round(((double) count / total) * 100) / 1.0;
-				
-				choiceDto.setCount((int) count);
-				choiceDto.setRate(rate);
-				
-				choiceDtoList.add(choiceDto);
-			}
-			voteDto.setChoiceList(choiceDtoList);
-			
-			voteDtoList.add(voteDto);
-		}
-		
-		return new PageImpl<>(voteDtoList, pageable, votePage.getTotalElements());
-	}
-	
-	
 	
 	
 	

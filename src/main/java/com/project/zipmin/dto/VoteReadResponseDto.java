@@ -22,4 +22,5 @@ public class VoteReadResponseDto {
 	private boolean voted;
 	private int choiceId;
 	private long total;
+	private int commentcount;
 }

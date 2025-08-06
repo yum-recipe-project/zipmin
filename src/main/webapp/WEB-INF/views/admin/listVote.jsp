@@ -10,11 +10,9 @@
 		<title>집밥의민족</title>
 		<link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
 		<link rel="stylesheet" href="../assets/css/styles.min.css" />
-		<link rel="stylesheet" href="/css/common/pagination.css">
 		<link rel="stylesheet" href="/css/admin/list-vote.css" />
 		<script src="/js/common/util.js"></script>
 		<script src="/js/admin/list-vote.js"></script>
-		<script src="/js/common/pagination.js"></script>
 	</head>
 	
 	<body>
@@ -113,6 +111,7 @@
 				</main>
 			</div>
 		</div>
+		
 		<script src="../assets/libs/jquery/dist/jquery.min.js"></script>
 		<script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="../assets/js/sidebarmenu.js"></script>

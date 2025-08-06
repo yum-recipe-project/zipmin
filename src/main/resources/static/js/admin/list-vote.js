@@ -10,9 +10,10 @@ let voteList = [];
 
 
 /**
- * 
+ * 탭 버튼 클릭시 연결된 내용을 표시하는 함수
  */
 document.addEventListener('DOMContentLoaded', async function() {
+	
 
 	fetchVoteList();
 	
@@ -255,6 +256,8 @@ function renderPagination() {
 		});
 	});
 }
+
+
 
 
 

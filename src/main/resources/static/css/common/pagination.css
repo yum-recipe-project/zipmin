@@ -35,7 +35,7 @@
 
 .pagination a.active {
     font-weight: 600;
-    color: var(--point-color2);
+    color: #1A7CE2;
     position: relative;  
 }
 
@@ -46,7 +46,7 @@
     left: 1;
     width: 10px; 
     height: 2px; 
-    background-color: var(--point-color2);
+    background-color: #1A7CE2;
 }
 
 

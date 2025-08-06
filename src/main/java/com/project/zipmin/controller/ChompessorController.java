@@ -150,6 +150,26 @@ public class ChompessorController {
 	
 	
 	
+	
+	// 투표 목록 조회
+	@GetMapping("/votes")
+	public ResponseEntity<?> listVote(
+			// 검색어같은 것도 추가할 것
+			@Parameter(description = "페이지 번호", example = "0") @RequestParam int page,
+		    @Parameter(description = "페이지 크기", example = "10") @RequestParam int size) {
+		
+		Pageable pageable = PageRequest.of(page, size);
+		Page<VoteReadResponseDto> votePage = chompService.readVotePage(pageable);
+		
+		return ResponseEntity.status(VoteSuccessCode.VOTE_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(VoteSuccessCode.VOTE_READ_LIST_SUCCESS, votePage));
+	}
+	
+	
+	
+	
+	
+	
 	// 투표 상세 조회
 	@Operation(
 	    summary = "투표 상세 조회",

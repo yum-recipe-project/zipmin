@@ -1,20 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
-<!-- Sidebar Start -->
 <aside class="left-sidebar">
-	<!-- Sidebar scroll-->
-		<div>
-			<div class="brand-logo d-flex align-items-center justify-content-between">
-				<a href="/admin/home.do" class="text-nowrap logo-img">
-					<img src="../assets/images/logos/dark-logo.svg" width="180" alt="" />
-				</a>
+	<div>
+		<div class="brand-logo d-flex align-items-center justify-content-between" style="background-color: #5D87FF;">
+			<a href="/admin/home.do" class="text-nowrap logo-img">
+				<img src="../assets/images/logos/logo.svg" width="180" alt="" />
+				<!-- <img src="/images/common/logo.png" width="180" alt="" /> -->
+				
+			</a>
 			<div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
 				<i class="ti ti-x fs-8"></i>
 			</div>
 		</div>
-		<!-- Sidebar navigation-->
+		
 		<nav class="sidebar-nav scroll-sidebar" data-simplebar="">
 			<ul id="sidebarnav">
 				<li class="nav-small-cap">
@@ -29,15 +29,59 @@
 						<span class="hide-menu">Dashboard</span>
 					</a>
 				</li>
+				
+				<!-- 회원 -->
 				<li class="nav-small-cap">
 					<i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-					<span class="hide-menu">UI COMPONENTS</span>
+					<span class="hide-menu">회원</span>
 				</li>
 				<li class="sidebar-item">
 					<a class="sidebar-link" href="/admin/button.do" aria-expanded="false">
-						<span><i class="ti ti-article"></i></span>
-						<span class="hide-menu">Buttons</span>
+						<span><i class="ti ti-mood-happy"></i></span>
+						<span class="hide-menu">회원관리</span>
 					</a>
+				</li>
+				<li class="sidebar-item">
+					<a class="sidebar-link" href="/admin/button.do" aria-expanded="false">
+						<span><i class="ti ti-cash"></i></span>
+						<span class="hide-menu">인출</span>
+					</a>
+				</li>
+				
+				
+				
+				
+				
+				
+				
+				<!-- ti-article /  게시판 -->
+				<li class="nav-small-cap">
+					<i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+					<span class="hide-menu">쩝쩝박사</span>
+				</li>
+				<li class="sidebar-item">
+					<a class="sidebar-link" href="/admin/listVote.do" aria-expanded="false">
+						<span><i class="ti ti-article"></i></span>
+						<span class="hide-menu">투표</span>
+					</a>
+				</li>
+				<li class="sidebar-item">
+					<a class="sidebar-link" href="/admin/alert.do" aria-expanded="false">
+						<span><i class="ti ti-article"></i></span>
+						<span class="hide-menu">매거진</span>
+					</a>
+				</li>
+				<li class="sidebar-item">
+					<a class="sidebar-link" href="/admin/alert.do" aria-expanded="false">
+						<span><i class="ti ti-article"></i></span>
+						<span class="hide-menu">이벤트</span>
+					</a>
+				</li>
+				
+				
+				<li class="nav-small-cap">
+					<i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+					<span class="hide-menu">-</span>
 				</li>
 				<li class="sidebar-item">
 					<a class="sidebar-link" href="/admin/alert.do" aria-expanded="false">

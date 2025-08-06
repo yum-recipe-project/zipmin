@@ -163,6 +163,8 @@ public class SecurityConfig {
 				.requestMatchers("/mypage.do").permitAll()
 				.requestMatchers("/mypage/**").permitAll()
 				
+				.requestMatchers("/admin/login.do").permitAll()
+				// .requestMatchers("/admin/**").hasRole("ADMIN")
 				.requestMatchers("/admin/**").permitAll()
 				.requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**", "/assets/**").permitAll()
 				

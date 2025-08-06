@@ -16,6 +16,11 @@ public class AdminViewController {
 		return "admin/login";
 	}
 	
+	@GetMapping("/admin/listVote.do")
+	public String adminListVote() {
+		return "admin/listVote";
+	}
+	
 	@GetMapping("/admin/register.do")
 	public String adminRegister() {
 		return "admin/register";

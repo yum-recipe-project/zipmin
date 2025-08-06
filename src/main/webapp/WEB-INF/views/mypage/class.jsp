@@ -7,6 +7,7 @@
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/mypage/class.css">
+		<link rel="stylesheet" href="/css/common/pagination.css">
 		<script src="/js/mypage/class.js"></script>
 	</head>
 	<body>
@@ -27,47 +28,22 @@
 					</div>
 					
 					<div class="class_util">
-						<p class="total">총 23개</p>
+						<p class="total"></p>
 						<div class="class_sort">
-							<button class="btn_sort active">전체</button>
-							<button class="btn_sort">진행중</button>
-							<button class="btn_sort">마감</button>
+							<button class="btn_sort active" data-sort="">전체</button>
+							<button class="btn_sort" data-sort="progress">진행중</button>
+							<button class="btn_sort" data-sort="end">마감</button>
 						</div>
 					</div>
 					
-					<c:if test="${ true }">
-						<ul class="class_list">
-							<%-- <c:forEach> --%>
-								<li>
-									<c:if test="${ true }">
-										<div class="status">
-											진행중
-										</div>
-									</c:if>
-									<c:if test="${ false }">
-										<div class="status ">
-											마감
-										</div>
-									</c:if>
-									<div class="class">
-										<a href="/cooking/viewClass.do" class="thumbnail">
-											<img src="/images/common/test.png">
-										</a>
-										<div class="info">
-											<a href="/cooking/viewClass.do">한식 입문 클래스</a>
-											<p>
-												<span><em>수업일정</em>2025.04.05(수) 15:00-17:00</span>
-												<span><em>선정발표</em>2025.03.15(월) 12:00</span>
-											</p>
-										</div>
-										<div class="cancel_btn">
-											<button class="btn_outline" onclick="location.href='/mypage/class/application.do';">신청서 보기</button>
-										</div>
-									</div>
-								</li>
-							<%-- </c:forEach> --%>
-						</ul>
-					</c:if>
+					<!-- 클래스 목록 -->
+					<ul class="class_list"></ul>
+				</div>
+				
+				<div class="pagination_wrap">
+					<div class="pagination">
+					    <ul></ul>
+					</div>
 				</div>
 			</div>
 		</main>

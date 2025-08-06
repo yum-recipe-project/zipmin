@@ -151,6 +151,13 @@ public class RecipeService {
 	
 	
 	
+	// 레시피 상세 조회
+	public RecipeReadResponseDto readRecipdById() {
+		return null;
+	}
+	
+	
+	
 	
 	// 레시피를 작성하는 함수
 	public RecipeCreateResponseDto createRecipe(RecipeCreateRequestDto recipeRequestDto) {

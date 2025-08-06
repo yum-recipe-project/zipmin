@@ -105,7 +105,6 @@
 								<option value="메인반찬">메인반찬</option>
 								<option value="국/탕">국/탕</option>
 								<option value="찌개">찌개</option>
-								<option value="찌개">찌개</option>
 								<option value="디저트">디저트</option>
 								<option value="면/만두">면/만두</option>
 								<option value="밥/죽/떡">밥/죽/떡</option>
@@ -113,6 +112,7 @@
 								<option value="김치/젓갈/장류">김치/젓갈/장류</option>
 								<option value="양념/소스/잼">양념/소스/잼</option>
 								<option value="양식">양식</option>
+								<option value="중식">중식</option>
 								<option value="샐러드">샐러드</option>
 								<option value="스프">스프</option>
 								<option value="빵">빵</option>
@@ -128,6 +128,7 @@
 								<option value="손님접대">손님접대</option>
 								<option value="술안주">술안주</option>
 								<option value="다이어트">다이어트</option>
+								<option value="축하">축하</option>
 								<option value="도시락">도시락</option>
 								<option value="영양식">영양식</option>
 								<option value="간식">간식</option>

@@ -13,7 +13,7 @@ let guideList = [];
 
 
 /**
- * 카테고리 클릭 시 데이터를 가져오는 함수
+ * 카테고리 버튼 클릭시 연결된 내용을 표시하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
 	

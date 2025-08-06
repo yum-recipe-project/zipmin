@@ -5,7 +5,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>집밥의 민족</title>
+		<title>집밥의민족</title>
 		<%@include file="common/head.jsp" %>
 		<link rel="stylesheet" href="/css/home.css">
 		<script src="/js/home.js"></script>
@@ -31,68 +31,93 @@
 				<!-- 카테고리 메뉴 -->
 				<div class="category_menu">
 					<div class="type">
-						<h2>종류별</h2>
+						<h2>카테고리로 레시피 검색!</h2>
+						<br/>
 						<ul class="category_list">
-							<li>
-								<div class="image"></div>
-								<p>치킨</p>
+							<li onclick="location.href=''">
+								<img class="image" src="/images/home/bap.png">
+								<p>밥/죽/떡</p>
 							</li>
 							<li>
-								<div class="image"></div>
+								<img class="image" src="/images/home/soup.png">
+								<p>국/탕</p>
+							</li>
+							<li>
+								<img class="image" src="/images/home/pasta.png">
+								<p>양식</p>
+							</li>
+							<li>
+								<img class="image" src="/images/home/china.png">
 								<p>중식</p>
 							</li>
 							<li>
-								<div class="image"></div>
-								<p>돈까스</p>
+								<img class="image" src="/images/home/pigfeet.png">
+								<p>돼지고기</p>
 							</li>
 							<li>
-								<div class="image"></div>
+								<img class="image" src="/images/home/chicken.png">
+								<p>닭고기</p>
+							</li>
+							<li>
+								<img class="image" src="/images/home/sushi.png">
 								<p>회</p>
 							</li>
 							<li>
-								<div class="image"></div>
-								<p>피자</p>
+								<img class="image" src="/images/home/noodle.png">
+								<p>면/만두</p>
 							</li>
 							<li>
-								<div class="image"></div>
-								<p>찜</p>
+								<img class="image" src="/images/home/lunch.png">
+								<p>도시락</p>
 							</li>
 							<li>
-								<div class="image"></div>
-								<p>탕</p>
+								<img class="image" src="/images/home/night.png">
+								<p>야식</p>
 							</li>
-							<li>
-								<div class="image"></div>
-								<p>족발</p>
-							</li>
-							<li>
-								<div class="image"></div>
-								<p>보쌈</p>
-							</li>
-							<li>
-								<div class="image"></div>
-								<p>중식</p>
-							</li>
+							
 						</ul>
 					</div>
 					<div class="case">
-						<h2>상황별</h2>
 						<ul class="category_list">
 							<li>
-								<div class="image"></div>
-								<p>명절</p>
+								<img class="image" src="/images/home/rice.png">
+								<p>가공식품류</p>
 							</li>
 							<li>
-								<div class="image"></div>
-								<p>술안주</p>
-							</li>
-							<li>
-								<div class="image"></div>
-								<p>다이어트</p>
-							</li>
-							<li>
-								<div class="image"></div>
+								<img class="image" src="/images/home/burger.png">
 								<p>해장</p>
+							</li>
+							<li>
+								<img class="image" src="/images/home/life.png">
+								<p>일상</p>
+							</li>
+							<li>
+								<img class="image" src="/images/home/flower.png">
+								<p>축하</p>
+							</li>
+							<li>
+								<img class="image" src="/images/home/speed.png">
+								<p>초스피드</p>
+							</li>
+							<li>
+								<img class="image" src="/images/home/snackfood.png">
+								<p>간식</p>
+							</li>
+							<li>
+								<img class="image" src="/images/home/dessert.png">
+								<p>빵</p>
+							</li>
+							<li>
+								<img class="image" src="/images/home/cake.png">
+								<p>디저트</p>
+							</li>
+							<li>
+								<img class="image" src="/images/home/drink.png">
+								<p>차/음료/술</p>
+							</li>
+							<li>
+								<img class="image" src="/images/home/etc.png">
+								<p>기타</p>
 							</li>
 						</ul>
 					</div>	

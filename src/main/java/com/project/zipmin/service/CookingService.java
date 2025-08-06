@@ -1,0 +1,369 @@
+package com.project.zipmin.service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.CookingErrorCode;
+import com.project.zipmin.dto.ClassApplyCreateRequestDto;
+import com.project.zipmin.dto.ClassApplyCreateResponseDto;
+import com.project.zipmin.dto.ClassApplyDeleteRequestDto;
+import com.project.zipmin.dto.ClassApplyReadResponseDto;
+import com.project.zipmin.dto.ClassApplyUpdateRequestDto;
+import com.project.zipmin.dto.ClassApplyUpdateResponseDto;
+import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
+import com.project.zipmin.dto.ClassReadResponseDto;
+import com.project.zipmin.dto.ClassScheduleReadResponseDto;
+import com.project.zipmin.dto.ClassTargetReadResponseDto;
+import com.project.zipmin.dto.ClassTutorReadResponseDto;
+import com.project.zipmin.entity.Class;
+import com.project.zipmin.entity.ClassApply;
+import com.project.zipmin.entity.ClassSchedule;
+import com.project.zipmin.entity.ClassTarget;
+import com.project.zipmin.entity.ClassTutor;
+import com.project.zipmin.entity.Role;
+import com.project.zipmin.mapper.ClassApplyMapper;
+import com.project.zipmin.mapper.ClassMapper;
+import com.project.zipmin.mapper.ClassScheduleMapper;
+import com.project.zipmin.mapper.ClassTargetMapper;
+import com.project.zipmin.mapper.ClassTutorMapper;
+import com.project.zipmin.repository.ClassApplyRepository;
+import com.project.zipmin.repository.ClassRepository;
+import com.project.zipmin.repository.ClassScheduleRepository;
+import com.project.zipmin.repository.ClassTargetRepository;
+import com.project.zipmin.repository.ClassTutorRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class CookingService {
+	
+	@Autowired
+	private ClassRepository classRepository;
+	@Autowired
+	private ClassTargetRepository targetRepository;
+	@Autowired
+	private ClassScheduleRepository scheduleRepository;
+	@Autowired
+	private ClassTutorRepository tutorRepository;
+	@Autowired
+	private ClassApplyRepository applyRepository;
+	
+	@Autowired
+	private UserService userService;
+	
+	private final ClassMapper classMapper;
+	private final ClassTargetMapper targetMapper;
+	private final ClassScheduleMapper scheduleMapper;
+	private final ClassTutorMapper tutorMapper;
+	private final ClassApplyMapper applyMapper;
+	
+	
+	
+	// 클래스 목록 조회
+	public Page<ClassReadResponseDto> readClassPage() {
+		return null;
+	}
+	
+	
+	
+	// 클래스 상세 조회
+	public ClassReadResponseDto readClassById(int id) {
+		
+		Class classs = classRepository.findById(id)
+				.orElseThrow(() -> new ApiException(CookingErrorCode.COOKING_NOT_FOUND));
+		
+		// 클래스 조회
+		ClassReadResponseDto classDto = classMapper.toReadResponseDto(classs);
+		
+		// 클래스 대상 조회
+		try {
+			List<ClassTarget> targetList = targetRepository.findByClasssId(id);
+			List<ClassTargetReadResponseDto> targetDtoList = new ArrayList<>();
+			for (ClassTarget target : targetList) {
+				ClassTargetReadResponseDto targetDto = targetMapper.toReadResponseDto(target);
+				targetDtoList.add(targetDto);
+			}
+			classDto.setTargetList(targetDtoList);
+		}
+		catch (Exception e) {
+			throw new ApiException(CookingErrorCode.COOKING_TARGET_READ_LIST_FAIL);
+		}
+		
+		// 클래스 커리큘럼 조회
+		try {
+			List<ClassSchedule> scheduleList = scheduleRepository.findByClasssId(id);
+			List<ClassScheduleReadResponseDto> scheduleDtoList = new ArrayList<>();
+			for (ClassSchedule schedule : scheduleList) {
+				ClassScheduleReadResponseDto scheduleDto = scheduleMapper.toReadResponseDto(schedule);
+				scheduleDtoList.add(scheduleDto);
+			}
+			classDto.setScheduleList(scheduleDtoList);
+		}
+		catch (Exception e) {
+			throw new ApiException(CookingErrorCode.COOKING_SCHEDULE_READ_LIST_FAIL);
+		}
+		
+		// 클래스 강사 조회
+		try {
+			List<ClassTutor> tutorList = tutorRepository.findByClasssId(id);
+			List<ClassTutorReadResponseDto> tutorDtoList = new ArrayList<>();
+			for (ClassTutor tutor : tutorList) {
+				ClassTutorReadResponseDto tutorDto = tutorMapper.toReadResponseDto(tutor);
+				tutorDtoList.add(tutorDto);
+			}
+			classDto.setTutorList(tutorDtoList);
+		}
+		catch (Exception e) {
+			throw new ApiException(CookingErrorCode.COOKING_TUTOR_READ_FAIL);
+		}
+		
+		// 쿠킹클래스 신청 여부 조회
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		classDto.setApplystatus(false);
+
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    return classDto;
+		}
+
+		String username = authentication.getName();
+		int userId = userService.readUserByUsername(username).getId();
+		classDto.setApplystatus(applyRepository.existsByClasssIdAndUserId(id, userId));
+		
+		return classDto;
+	}
+	
+	
+	
+	// 사용자가 개설한 클래스 목록 조회
+	public Page<ClassReadResponseDto> readClassPageByUserId(Integer userId, String sort, Pageable pageable) {
+		
+		// 입력값 검증
+		if (userId == null || pageable == null) {
+			throw new ApiException(CookingErrorCode.COOKING_INVALID_INPUT);
+		}
+		
+		// 클래스 목록 조회
+		Page<Class> classPage;
+		Date now = new Date();
+		
+		try {
+			switch (sort) {
+				case "end" -> classPage = classRepository.findByUserIdAndEventdateBefore(userId, now, pageable);
+				case "progress" -> classPage = classRepository.findByUserIdAndEventdateAfter(userId, now, pageable);
+				default -> classPage = classRepository.findByUserId(userId, pageable);
+			}
+		}
+		catch (Exception e) {
+			throw new ApiException(CookingErrorCode.COOKING_APPLY_READ_LIST_FAIL);
+		}
+		
+		List<ClassReadResponseDto> classDtoList = new ArrayList<ClassReadResponseDto>();
+		for (Class classs : classPage) {
+			ClassReadResponseDto classDto = classMapper.toReadResponseDto(classs);
+			// 여기에 내용 추가
+			classDtoList.add(classDto);
+		}
+		
+		return new PageImpl<>(classDtoList, pageable, classPage.getTotalElements());
+	}
+	
+	
+	
+	// 사용자가 신청한 클래스 목록 조회
+	public Page<ClassMyApplyReadResponseDto> readApplyClassPageByUserId(Integer userId, String sort, Pageable pageable) {
+
+	    // 입력값 검증
+
+		
+		// 사용자 신청 목록 조회
+	    Page<ClassApply> applyPage;
+	    Date now = new Date();
+
+	    try {
+	        switch (sort) {
+	            case "end" -> applyPage = applyRepository.findByUserIdAndClasss_EventdateBefore(userId, now, pageable);
+	            case "progress" -> applyPage = applyRepository.findByUserIdAndClasss_EventdateAfter(userId, now, pageable);
+	            default -> applyPage = applyRepository.findByUserId(userId, pageable);
+	        }
+	    }
+	    catch (Exception e) {
+	        throw new ApiException(CookingErrorCode.COOKING_APPLY_READ_LIST_FAIL);
+	    }
+
+	    List<ClassMyApplyReadResponseDto> classDtoList = new ArrayList<>();
+	    for (ClassApply apply : applyPage.getContent()) {
+	        ClassMyApplyReadResponseDto classDto = classMapper.toReadMyApplyResponseDto(apply.getClasss());
+	        classDto.setApplyId(apply.getId());
+	        classDtoList.add(classDto);
+	    }
+
+	    return new PageImpl<>(classDtoList, pageable, applyPage.getTotalElements());
+	}
+
+	
+	
+	
+	
+	
+	
+	// 클래스 신청을 작성하는 함수
+	public ClassApplyCreateResponseDto createApply(ClassApplyCreateRequestDto applyDto) {
+		
+		// 입력값 검증
+		if (applyDto == null || applyDto.getClassId() == null || applyDto.getUserId() == null || applyDto.getReason() == null) {
+			throw new ApiException(CookingErrorCode.COOKING_APPLY_INVALID_INPUT);
+		}
+		
+		// 중복 신청 검사
+		if (applyRepository.existsByClasssIdAndUserId(applyDto.getClassId(), applyDto.getUserId())) {
+			throw new ApiException(CookingErrorCode.COOKING_APPLY_DUPLICATE);
+		}
+		
+		// 클래스 지원 생성
+		ClassApply apply = applyMapper.toEntity(applyDto);
+		try {
+			apply = applyRepository.save(apply);
+			return applyMapper.toCreateResponseDto(apply);
+		}
+		catch (Exception e) {
+			throw new ApiException(CookingErrorCode.COOKING_APPLY_CREATE_FAIL);
+		}
+		
+	}
+	
+	
+	
+	
+	// 클래스 신청 목록 조회
+	public Page<ClassApplyReadResponseDto> readApplyPageById(Integer id, Integer sort, Pageable pageable) {
+		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(CookingErrorCode.COOKING_APPLY_INVALID_INPUT);
+		}
+		
+		// 클래스 신청 목록 조회
+		Page<ClassApply> applyPage;
+		try {
+			applyPage = (sort == -1)
+					? applyRepository.findByClasssId(id, pageable)
+					: applyRepository.findByClasssIdAndSelected(id, sort, pageable);
+		}
+		catch (Exception e) {
+			throw new ApiException(CookingErrorCode.COOKING_APPLY_READ_LIST_FAIL);
+		}
+		
+		List<ClassApplyReadResponseDto> applyDtoList = new ArrayList<ClassApplyReadResponseDto>();
+		for (ClassApply apply : applyPage) {
+			ClassApplyReadResponseDto applyDto = applyMapper.toReadResponseDto(apply);
+			applyDto.setName(apply.getUser().getName());
+			applyDtoList.add(applyDto);
+		}
+		
+		return new PageImpl<>(applyDtoList, pageable, applyPage.getTotalElements());
+	}
+	
+	
+	
+	
+	// 클래스 신청 수정
+	public ClassApplyUpdateResponseDto updateApply(ClassApplyUpdateRequestDto applyDto) {
+		
+		// 입력값 검증
+		if (applyDto == null || applyDto.getId() == null) {
+			throw new ApiException(CookingErrorCode.COOKING_APPLY_INVALID_INPUT);
+		}
+		
+		// 클래스 여부 판단
+		Class classs = classRepository.findById(applyDto.getClassId())
+				.orElseThrow(() -> new ApiException(CookingErrorCode.COOKING_NOT_FOUND));
+ 		
+		// 클래스 지원 여부 판단
+		ClassApply apply = applyRepository.findById(applyDto.getId())
+				.orElseThrow(() -> new ApiException(CookingErrorCode.COOKING_APPLY_NOT_FOUND));
+		
+		// 필요한 필드만 수정
+		if (applyDto.getReason() != null) {
+			apply.setReason(applyDto.getReason());
+		}
+		if (applyDto.getQuestion() != null) {
+			apply.setQuestion(applyDto.getQuestion());
+		}
+		if (applyDto.getSelected() != null) {
+			apply.setSelected(applyDto.getSelected());
+		}
+		if (applyDto.getAttend() != null) {
+			apply.setAttend(applyDto.getAttend());
+		}
+		
+		// 클래스 지원 수정
+		try {
+			apply = applyRepository.save(apply);
+			return applyMapper.toUpdateResponseDto(apply);
+		}
+		catch (Exception e) {
+			throw new ApiException(CookingErrorCode.COOKING_APPLY_CREATE_FAIL);
+		}
+	}
+	
+	
+	
+	// 클래스 신청 삭제
+	public void deleteApply(ClassApplyDeleteRequestDto applyDto) {
+		
+		// 입력값 검증
+		if (applyDto == null || applyDto.getId() == null || applyDto.getUserId() == null || applyDto.getClassId() == null) {
+			throw new ApiException(CookingErrorCode.COOKING_APPLY_INVALID_INPUT);
+		}
+		
+		// 클래스 신청 존재 여부 판단
+		ClassApply apply = applyRepository.findById(applyDto.getId())
+				.orElseThrow(() -> new ApiException(CookingErrorCode.COOKING_APPLY_NOT_FOUND));
+		
+		// 소유자 검증
+		if (!userService.readUserById(applyDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
+			if (apply.getUser().getId() != applyDto.getUserId()) {
+				throw new ApiException(CookingErrorCode.COOKING_FORBIDDEN);
+			}
+		}
+		
+	    // 삭제 가능 여부 판단
+		Class classs = classRepository.findById(applyDto.getClassId())
+				.orElseThrow(() -> new ApiException(CookingErrorCode.COOKING_NOT_FOUND));
+	    Date now = new Date();
+	    if (classs.getNoticedate().before(now) && apply.getSelected() == 1) {
+	        throw new ApiException(CookingErrorCode.COOKING_ALREADY_ENDED);
+	    }
+		
+		// 클래스 신청 삭제
+		try {
+			applyRepository.deleteById(applyDto.getId());
+		}
+		catch (Exception e) {
+			throw new ApiException(CookingErrorCode.COOKING_APPLY_DELETE_FAIL);
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}

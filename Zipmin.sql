@@ -19,6 +19,17 @@ drop sequence seq_vote_id;
 drop table chomp;
 drop sequence seq_chomp_id;
 
+drop table class_apply;
+drop sequence seq_class_apply_id;
+drop table class_target;
+drop sequence seq_class_target_id;
+drop table class_schedule;
+drop sequence seq_class_schedule_id;
+drop table class_tutor;
+drop sequence seq_class_tutor_id;
+drop table classes;
+drop sequence seq_classes_id;
+
 drop table report;
 drop sequence seq_report_id;
 drop table likes;
@@ -626,19 +637,187 @@ commit;
 
 
 -- CLASSES 테이블
+-- drop table classes;
+-- drop sequence seq_classes_id;
+create table classes (
+    id number primary key,
+    title varchar2(200) not null,
+    image varchar2(200) not null,
+    introduce varchar2(1000) not null,
+    place varchar2(100) not null,
+    eventdate date not null,
+    starttime date not null,
+    endtime date not null,
+    noticedate date not null,
+    headcount number not null,
+    need varchar2(200) not null,
+    approval number default 0,
+    user_id number not null
+);
+alter table classes
+    add constraint const_classes_users foreign key(user_id)
+    references users(id) on delete cascade;
+create sequence seq_classes_id
+    increment by 1
+    start with 1
+    minvalue 1
+    nomaxvalue
+    nocycle
+    nocache;
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '홈메이드 김치 담그기 클래스', 'kimchi.jpg', '전통 방식으로 김치를 직접 담가보는 클래스입니다.', '서울 강남구', TO_DATE('2025-07-05', 'YYYY-MM-DD'), TO_DATE('1970-01-01 10:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 12:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-01', 'YYYY-MM-DD'), 10, '앞치마, 밀폐용기', 1, 2);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '프렌치 디저트 클래스', 'dessert.jpg', '마카롱과 에끌레어를 직접 만들어 보는 시간!', '서울 마포구', TO_DATE('2025-08-10', 'YYYY-MM-DD'), TO_DATE('1970-01-01 14:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 16:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-05', 'YYYY-MM-DD'), 8, '고무장갑, 에코백', 0, 3);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '한식 요리 입문 클래스', 'korean_food.jpg', '된장찌개, 불고기 등 한식을 처음 접하는 분들을 위한 클래스입니다.', '서울 종로구', TO_DATE('2025-08-12', 'YYYY-MM-DD'), TO_DATE('1970-01-01 11:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 13:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-07', 'YYYY-MM-DD'), 12, '필기도구', 1, 2);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '홈카페 음료 만들기', 'homecafe.jpg', '시그니처 커피와 티를 집에서도 만들어보세요!', '서울 송파구', TO_DATE('2025-08-15', 'YYYY-MM-DD'), TO_DATE('1970-01-01 15:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 17:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-10', 'YYYY-MM-DD'), 6, '텀블러, 필기도구', 1, 2);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '비건 베이킹 클래스', 'vegan_baking.jpg', '계란, 우유 없이 건강한 디저트를 만들어보는 수업입니다.', '서울 관악구', TO_DATE('2025-08-18', 'YYYY-MM-DD'), TO_DATE('1970-01-01 13:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 15:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-13', 'YYYY-MM-DD'), 7, '앞치마, 밀폐용기', 0, 3);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '이탈리안 파스타 만들기', 'pasta.jpg', '생면부터 소스까지 직접 만들어보는 본격 파스타 클래스!', '서울 성동구', TO_DATE('2025-08-20', 'YYYY-MM-DD'), TO_DATE('1970-01-01 10:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 12:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-15', 'YYYY-MM-DD'), 9, '앞치마, 밀가루 안 튀는 옷', 1, 3);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '어린이 쿠킹 클래스', 'kids_cook.jpg', '아이와 함께하는 안전한 요리 시간!', '서울 서초구', TO_DATE('2025-08-22', 'YYYY-MM-DD'), TO_DATE('1970-01-01 10:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 11:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-17', 'YYYY-MM-DD'), 5, '아이용 앞치마, 물티슈', 0, 2);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '저염식 식단 클래스', 'low_salt.jpg', '건강한 저염식 식단을 직접 만들고 먹어보는 클래스', '서울 동작구', TO_DATE('2025-08-25', 'YYYY-MM-DD'), TO_DATE('1970-01-01 13:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 15:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-20', 'YYYY-MM-DD'), 10, '텀블러, 앞치마', 1, 3);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '아시아 요리 탐방', 'asia_cuisine.jpg', '동남아 요리 레시피와 식재료를 배워보는 클래스입니다.', '서울 중구', TO_DATE('2025-07-28', 'YYYY-MM-DD'), TO_DATE('1970-01-01 14:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 16:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-23', 'YYYY-MM-DD'), 8, '앞치마, 필기도구', 1, 3);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '계절김치 마스터 클래스', 'seasonal_kimchi.jpg', '제철 채소로 김치를 만들어보는 마스터 클래스입니다.', '서울 은평구', TO_DATE('2025-08-30', 'YYYY-MM-DD'), TO_DATE('1970-01-01 11:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 13:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-25', 'YYYY-MM-DD'), 6, '앞치마, 밀폐용기, 고무장갑', 0, 2);
+commit;
 
 
 
+-- TARGET 테이블
+-- drop table class_target;
+-- drop sequence seq_class_target_id;
+create table class_target (
+    id number primary key,
+    content varchar2(100) not null,
+    class_id number not null
+);
+alter table class_target
+    add constraint const_target_classes foreign key(class_id)
+    references classes(id) on delete cascade;
+create sequence seq_class_target_id
+    increment by 1
+    start with 1
+    minvalue 1
+    nomaxvalue
+    nocycle
+    nocache;
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '성인', 1);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '요리 초보자', 1);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '디저트에 관심 있는 사람', 2);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '제과 자격증 준비생', 2);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '한식을 배우고 싶은 사람', 3);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '대학생', 3);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '홈카페 취미러', 4);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '커피 애호가', 4);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '비건 식단 관심자', 5);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '건강식에 관심 있는 사람', 5);
+commit;
 
--- CLASS_TEACHER 테이블
+
+-- CLASS_TUTOR 테이블
+-- drop table class_tutor;
+-- drop sequence seq_class_tutor_id;
+create table class_tutor (
+    id number primary key,
+    image varchar2(300) not null,
+    name varchar2(30) not null,
+    career varchar2(100) not null,
+    class_id number not null
+);
+alter table class_tutor
+    add constraint const_tutor_classes foreign key(class_id)
+    references classes(id) on delete cascade;
+create sequence seq_class_tutor_id
+    increment by 1
+    start with 1
+    minvalue 1
+    nomaxvalue
+    nocycle
+    nocache;
+INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor1.jpg', '김지현', '10년 경력의 양식 셰프', 1);
+INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor2.jpg', '이민수', '한식 조리사 자격증 보유, 8년 경력', 1);
+INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor3.jpg', '박서연', '제과제빵 기능사, 유명 제과점 근무', 3);
+INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor4.jpg', '정우진', '푸드 스타일리스트 경력 5년', 4);
+INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor5.jpg', '최수진', '비건 요리 전문가, 6년 강의', 5);
+INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor6.jpg', '한지훈', '프렌치 레스토랑 헤드 셰프, 12년 경력', 6);
+commit;
+
+
 
 
 
 -- CLASS_SCHEDULE 테이블
+-- drop table class_schedule;
+-- drop sequence seq_class_schedule_id;
+create table class_schedule (
+    id number primary key,
+    starttime date not null,
+    endtime date not null,
+    title varchar2(100),
+    class_id number not null
+);
+alter table class_schedule
+    add constraint const_schedule_classes foreign key(class_id)
+    references classes(id) on delete cascade;
+create sequence seq_class_schedule_id
+    increment by 1
+    start with 1
+    minvalue 1
+    nomaxvalue
+    nocycle
+    nocache;
+INSERT INTO class_schedule VALUES (1, TO_DATE('1970-01-01 10:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 12:00', 'YYYY-MM-DD HH24:MI'), '기본 이론 설명', 1);
+INSERT INTO class_schedule VALUES (2, TO_DATE('1970-01-01 13:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 15:00', 'YYYY-MM-DD HH24:MI'), '김치 실습', 1);
+INSERT INTO class_schedule VALUES (3, TO_DATE('1970-01-01 14:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 15:30', 'YYYY-MM-DD HH24:MI'), '디저트 반죽', 2);
+INSERT INTO class_schedule VALUES (4, TO_DATE('1970-01-01 15:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 16:30', 'YYYY-MM-DD HH24:MI'), '디저트 굽기', 2);
+INSERT INTO class_schedule VALUES (5, TO_DATE('1970-01-01 11:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 12:30', 'YYYY-MM-DD HH24:MI'), '불고기 조리', 3);
+INSERT INTO class_schedule VALUES (6, TO_DATE('1970-01-01 12:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 13:00', 'YYYY-MM-DD HH24:MI'), '시식 및 질의응답', 3);
+INSERT INTO class_schedule VALUES (7, TO_DATE('1970-01-01 15:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 16:00', 'YYYY-MM-DD HH24:MI'), '홈카페 음료 소개', 4);
+INSERT INTO class_schedule VALUES (8, TO_DATE('1970-01-01 16:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 17:00', 'YYYY-MM-DD HH24:MI'), '음료 만들기 실습', 4);
+INSERT INTO class_schedule VALUES (9, TO_DATE('1970-01-01 13:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 14:30', 'YYYY-MM-DD HH24:MI'), '비건 재료 소개', 5);
+INSERT INTO class_schedule VALUES (10, TO_DATE('1970-01-01 14:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 15:30', 'YYYY-MM-DD HH24:MI'), '비건 디저트 실습', 5);
+commit;
 
 
 
--- CLASS_APPLY 테이블
+
+
+-- APPLY 테이블
+-- drop table class_apply;
+-- drop sequence seq_class_apply_id;
+create table class_apply (
+    id number primary key,
+    applydate date default sysdate,
+    reason varchar2(1000) not null,
+    question varchar2(1000),
+    selected number(1) default 0,
+    attend number(1) default 0,
+    user_id number not null,
+    class_id number not null
+);
+alter table class_apply
+    add constraint const_apply_classes foreign key(class_id)
+    references classes(id) on delete cascade;
+alter table class_apply
+    add constraint const_apply_users foreign key(user_id)
+    references users(id) on delete cascade;
+create sequence seq_class_apply_id
+    increment by 1
+    start with 1
+    minvalue 1
+    nomaxvalue
+    nocycle
+    nocache;
+INSERT INTO class_apply VALUES (seq_class_apply_id.NEXTVAL, SYSDATE, '한식을 제대로 배워보고 싶어서 신청했습니다.', '김치 보관법에 대해 궁금합니다.', 0, 0, 2, 1);
+INSERT INTO class_apply VALUES (seq_class_apply_id.NEXTVAL, SYSDATE, '요리에 자신감을 얻고 싶습니다.', 0, 0, 2, 1);
+INSERT INTO class_apply VALUES (seq_class_apply_id.NEXTVAL, SYSDATE, '전통 음식을 직접 만들어보고 싶습니다.', '매운 정도는 조절 가능한가요?', 0, 0, 2, 2);
+INSERT INTO class_apply VALUES (seq_class_apply_id.NEXTVAL, SYSDATE, '가족에게 해주고 싶은 요리를 배우고 싶어요.', '', 0, 1, 1, 2);
+INSERT INTO class_apply VALUES (seq_class_apply_id.NEXTVAL, SYSDATE, '기초부터 제대로 배우고 싶어서 신청합니다.', '준비물이 많은가요?', 0, 1, 3, 3);
+commit;
+
+
+
+
+
+
+
+
+
 
 
 

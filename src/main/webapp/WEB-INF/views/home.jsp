@@ -39,6 +39,18 @@
 								<p>밥/죽/떡</p>
 							</li>
 							<li>
+								<img class="image" src="/images/home/soup.png">
+								<p>국/탕</p>
+							</li>
+							<li>
+								<img class="image" src="/images/home/pasta.png">
+								<p>양식</p>
+							</li>
+							<li>
+								<img class="image" src="/images/home/china.png">
+								<p>중식</p>
+							</li>
+							<li>
 								<img class="image" src="/images/home/pigfeet.png">
 								<p>돼지고기</p>
 							</li>
@@ -55,23 +67,9 @@
 								<p>면/만두</p>
 							</li>
 							<li>
-								<img class="image" src="/images/home/soup.png">
-								<p>국/탕</p>
-							</li>
-							<!-- 이거 카테고리에 추가해야함 -->
-							<li>
-								<img class="image" src="/images/home/china.png">
-								<p>중식</p>
-							</li>
-							<li>
-								<img class="image" src="/images/home/pasta.png">
-								<p>양식</p>
-							</li>
-							<li>
 								<img class="image" src="/images/home/lunch.png">
 								<p>도시락</p>
 							</li>
-							
 							<li>
 								<img class="image" src="/images/home/night.png">
 								<p>야식</p>
@@ -82,6 +80,26 @@
 					<div class="case">
 						<ul class="category_list">
 							<li>
+								<img class="image" src="/images/home/rice.png">
+								<p>가공식품류</p>
+							</li>
+							<li>
+								<img class="image" src="/images/home/burger.png">
+								<p>해장</p>
+							</li>
+							<li>
+								<img class="image" src="/images/home/life.png">
+								<p>일상</p>
+							</li>
+							<li>
+								<img class="image" src="/images/home/flower.png">
+								<p>축하</p>
+							</li>
+							<li>
+								<img class="image" src="/images/home/speed.png">
+								<p>초스피드</p>
+							</li>
+							<li>
 								<img class="image" src="/images/home/snackfood.png">
 								<p>간식</p>
 							</li>
@@ -90,24 +108,8 @@
 								<p>빵</p>
 							</li>
 							<li>
-								<img class="image" src="/images/home/burger.png">
-								<p>수정</p>
-							</li>
-							<li>
-								<img class="image" src="/images/home/pizza.png">
-								<p>수정</p>
-							</li>
-							<li>
-								<img class="image" src="/images/home/rice.png">
-								<p>가공식품류</p>
-							</li>
-							<li>
 								<img class="image" src="/images/home/cake.png">
 								<p>디저트</p>
-							</li>
-							<li>
-								<img class="image" src="/images/home/speed.png">
-								<p>초스피드</p>
 							</li>
 							<li>
 								<img class="image" src="/images/home/drink.png">
@@ -117,14 +119,6 @@
 								<img class="image" src="/images/home/etc.png">
 								<p>기타</p>
 							</li>
-							<li>
-								<img class="image" src="/images/home/life.png">
-								<p>일상</p>
-							</li>
-							<!-- <li>
-								<img class="image" src="/images/home/flower.png">
-								<p>수정 (축하 이런걸로)</p>
-							</li> -->
 						</ul>
 					</div>	
 				</div>

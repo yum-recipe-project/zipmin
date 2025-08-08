@@ -8,11 +8,11 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>집밥의민족</title>
+		<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 		<link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
 		<link rel="stylesheet" href="../assets/css/styles.min.css" />
-		<link rel="stylesheet" href="/css/admin/list-megazine.css" />
-		<script src="/js/common/util.js"></script>
-		<script src="/js/admin/list-megazine.js"></script>
+		<link rel="stylesheet" href="/css/admin/write-megazine.css" />
+		<script src="/js/admin/write-megazine.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 		<script src="/js/common/jwt.js"></script>
 	</head>
@@ -43,9 +43,13 @@
 								<img src="/images/cooking/arrow_right.png">
 								<span>쩝쩝박사</span>
 							</a>
-							<a class="active" href="">
+							<a href="/admin/listMegazine.do">
 								<img src="/images/cooking/arrow_right.png">
 								<span>매거진 관리</span>
+							</a>
+							<a class="active" href="/admin/writeMegazine.do">
+								<img src="/images/cooking/arrow_right.png">
+								<span>매거진 추가</span>
 							</a>
 						</div>
 						
@@ -67,57 +71,46 @@
 									</li>
 								</ul>
 							</div>
-							<button type="button" class="btn btn-info m-1" onclick="location.href='/admin/writeMegazine.do';">
-								<i class="ti ti-plus fs-4"></i>
-								매거진 추가
-							</button>
 						</div>
-			
-						<table class="table text-nowrap mb-0 align-middle">
-						    <thead class="text-dark fs-4">
-						        <tr>
-						            <th class="total"></th>
-						            <th></th>
-						            <th></th>
-						            <th></th>
-						            <th class="text-end pe-4"><i class="ti ti-search fs-6"></i></th>
-						        </tr>
-						        <tr class="table_th">
-						            <th>
-						                <h6 class="fs-4 fw-semibold mb-0">No</h6>
-						            </th>
-						            <th>
-						                <h6 class="fs-4 fw-semibold mb-0">제목</h6>
-						            </th>
-						            <th>
-						                <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
-						            </th>
-						            <th>
-						                <h6 class="fs-4 fw-semibold mb-0">댓글수</h6>
-						            </th>
-						            <th></th>
-						        </tr>
-						    </thead>
-						    <tbody class="megazine_list"></tbody>
-						</table>
-	
-						<!-- 페이지네이션 -->
-						<div class="pagination_wrap">
-							<div class="pagination">
-							    <ul></ul>
-							</div>
-						</div>
+						
+			            <div class="card-body">
+			            
+			    
+			            	<form id="writeMegazineForm">
+			            		<div class="card-body">
+			            			<!-- 제목 -->
+			            			<div class="mb-4">
+			            				<label for="titleInput" class="form-label">제목</label>
+			            				<input type="text" name="title" id="titleInput" class="form-control" placeholder="제목을 입력하세요">
+			            			</div>
+			            			<!-- 내용 -->
+			            			<div class="mb-3">
+										<label for="editor" class="form-label">내용</label>
+										<div id="editor" style="height: 300px;"></div>
+			            				<textarea name="content" style="display: none;"></textarea>
+			            			</div>
+			            			<!-- 버튼 -->
+			            			<div class="p-3">
+			            				<div class="text-end">
+			            					<button type="submit" class="btn btn-primary">작성하기</button>
+			            					<button type="button" class="btn bg-danger-subtle text-danger ms-6 px-4" onclick="location.href='/admin/listMegazine.do';">취소하기</button>
+			            				</div>
+			            			</div>
+			            		</div>
+			            	</form>
+			            </div>
 					
 					</div>
 				</main>
 			</div>
 		</div>
-		
+
 		<script src="../assets/libs/jquery/dist/jquery.min.js"></script>
 		<script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="../assets/js/sidebarmenu.js"></script>
 		<script src="../assets/js/app.min.js"></script>
 		<script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+		<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 	</body>
 
 </html>

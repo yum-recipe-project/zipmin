@@ -6,6 +6,7 @@
 		<meta charset="UTF-8">
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
+		<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 		<link rel="stylesheet" href="/css/chompessor/view-megazine.css">
 		<link rel="stylesheet" href="/css/common/comment.css">
 		<script src="/js/chompessor/view-megazine.js"></script>

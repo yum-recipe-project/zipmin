@@ -32,6 +32,11 @@ public class AdminViewController {
 		return "admin/listMegazine";
 	}
 	
+	@GetMapping("/admin/writeMegazine.do")
+	public String adminWriteMegazine() {
+		return "admin/writeMegazine";
+	}
+	
 	
 	@GetMapping("/admin/listEvent.do")
 	public String adminListEvent() {

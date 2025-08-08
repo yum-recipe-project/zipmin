@@ -2,6 +2,8 @@ package com.project.zipmin.entity;
 
 import java.util.Date;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -13,6 +15,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,6 +37,9 @@ public class Megazine {
 	private int id;
 	
 	private String title;
+	
+	@CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
 	private Date postdate;
 	private String content;
 	

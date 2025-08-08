@@ -835,7 +835,6 @@ async function writeSubcomment(tablename) {
 
 	try {
 		const token = localStorage.getItem('accessToken');
-		const payload = parseJwt(token);
 
 		const params = new URLSearchParams(window.location.search);
 		const id = params.get('id');

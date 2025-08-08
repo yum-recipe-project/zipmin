@@ -13,6 +13,8 @@
 		<link rel="stylesheet" href="/css/admin/list-megazine.css" />
 		<script src="/js/common/util.js"></script>
 		<script src="/js/admin/list-megazine.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script src="/js/common/jwt.js"></script>
 	</head>
 	
 	<body>

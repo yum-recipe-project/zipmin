@@ -78,6 +78,7 @@ function renderMegainzeList(megazineList) {
 
 	megazineList.forEach((megazine, index) => {
 		const tr = document.createElement('tr');
+		tr.dataset.id = megazine.id;
 
 		// No
 		const noTd = document.createElement('td');
@@ -124,12 +125,35 @@ function renderMegainzeList(megazineList) {
 		ul.className = 'dropdown-menu';
 		ul.setAttribute('aria-labelledby', `dropdownMenuButton${index}`);
 
+		// Edit li
 		const editLi = document.createElement('li');
-		editLi.innerHTML = `
-			<a class="dropdown-item d-flex align-items-center gap-3" href="#"><i class="fs-4 ti ti-edit"></i>Edit</a>`;
+		const editLink = document.createElement('a');
+		editLink.className = 'dropdown-item d-flex align-items-center gap-3';
+		editLink.href = '#';
 
+		const editIcon = document.createElement('i');
+		editIcon.className = 'fs-4 ti ti-edit';
+
+		editLink.appendChild(editIcon);
+		editLink.append('Edit');
+		editLi.appendChild(editLink);
+
+		// Delete li
 		const deleteLi = document.createElement('li');
-		deleteLi.innerHTML = `<a class="dropdown-item d-flex align-items-center gap-3" href="#"><i class="fs-4 ti ti-trash"></i>Delete</a>`;
+		const deleteLink = document.createElement('a');
+		deleteLink.className = 'dropdown-item d-flex align-items-center gap-3';
+		deleteLink.href = '#';
+
+		const deleteIcon = document.createElement('i');
+		deleteIcon.className = 'fs-4 ti ti-trash';
+
+		deleteLink.appendChild(deleteIcon);
+		deleteLink.append('Delete');
+		deleteLi.appendChild(deleteLink);
+		deleteLi.addEventListener('click', function(event) {
+			event.preventDefault();
+			deleteMegazine(megazine.id);
+		});
 
 		ul.append(editLi, deleteLi);
 		dropdownDiv.append(dropdownBtn, ul);
@@ -216,7 +240,66 @@ function renderPagination() {
 
 
 
+/**
+ * 매거진을 삭제하는 함수
+ */
+async function deleteMegazine(id) {
+	
+	if (confirm('매거진을 삭제하시겠습니까?')) {
+		try {
+			const token = localStorage.getItem('accessToken');
 
+			const headers = {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
+			}
+
+			const data = {
+				id: id
+			};
+
+			const response = await instance.delete(`/megazines/${id}`, {
+				data: data,
+				headers: headers
+			});
+			
+			if (response.data.code === 'MEGAZINE_DELETE_SUCCESS') {
+				alert('매거진이 성공적으로 삭제되었습니다.');
+				const trElement = document.querySelector(`.megazine_list tr[data-id='${id}']`);
+				if (trElement) trElement.remove();
+			}
+		}
+		catch (error) {
+			const code = error?.response?.data?.code;
+			
+			if (code === 'MEGAZINE_DELETE_FAIL') {
+				alert('매거진 삭제에 실패했습니다');
+			}
+			if (code === 'CHOMP_DELETE_FAIL') {
+				alert('쩝쩝박사 게시물 삭제에 실패했습니다');
+			}
+			else if (code === 'MEGAZINE_INVALID_INPUT') {
+				alert('입력값이 유효하지 않습니다.');
+			}
+			else if (code === 'MEGAZINE_UNAUTHORIZED') {
+				alert('로그인되지 않은 사용자입니다.');
+			}
+			else if (code === 'MEGAZINE_FORBIDDEN') {
+				alert('접근 권한이 없습니다.');
+			}
+			else if (code === 'MEGAZINE_NOT_FOUND') {
+				alert('해당 매거진을 찾을 수 없습니다.');
+			}
+			else if (code === 'INTERNAL_SERVER_ERROR') {
+				alert('서버 내부 오류가 발생했습니다.');
+			}
+			else {
+				console.log(error);
+			}
+		}
+	}
+
+}
 
 
 

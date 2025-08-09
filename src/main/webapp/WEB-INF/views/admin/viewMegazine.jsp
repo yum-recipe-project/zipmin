@@ -8,13 +8,14 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>집밥의민족</title>
+		<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 		<link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
 		<link rel="stylesheet" href="../assets/css/styles.min.css" />
-		<link rel="stylesheet" href="/css/admin/list-megazine.css" />
-		<script src="/js/common/util.js"></script>
-		<script src="/js/admin/list-megazine.js"></script>
+		<link rel="stylesheet" href="/css/admin/view-megazine.css" />
+		<script src="/js/admin/view-megazine.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 		<script src="/js/common/jwt.js"></script>
+		<script src="/js/common/util.js"></script>
 	</head>
 	
 	<body>
@@ -29,13 +30,13 @@
 				<%@include file="./common/header.jsp" %>
 				
 				<div class="container-fluid">
-				
 					<!-- 네비게이션 바 -->
 					<div class="nav_wrap">
 						<a href="/admin/home.do"><span>메인</span></a>
 						<a href=""><img src="/images/cooking/arrow_right.png"><span>게시판</span></a>
 						<a href="/admin/listChomp.do"><img src="/images/cooking/arrow_right.png"><span>쩝쩝박사</span></a>
 						<a href="/admin/listMegazine.do"><img src="/images/cooking/arrow_right.png"><span>매거진 관리</span></a>
+						<a class="active" href="/admin/writeMegazine.do"><img src="/images/cooking/arrow_right.png"><span>매거진 추가</span></a>
 					</div>
 					
 					<!-- 제목 -->
@@ -49,59 +50,44 @@
 								<li class="btn_tab"><a href="/admin/listEvent.do"><span>이벤트 관리</span></a></li>
 							</ul>
 						</div>
-						<button type="button" class="btn btn-info m-1" onclick="location.href='/admin/writeMegazine.do';">
-							<i class="ti ti-plus fs-4"></i> 매거진 작성
-						</button>
 					</div>
 					
-					<!-- 목록 -->
-					<table class="table text-nowrap mb-0 align-middle">
-					    <thead class="text-dark fs-4">
-					        <tr>
-					            <th class="total"></th>
-					            <th></th>
-					            <th colspan="3" class="text-end">
-					            	<form class="search position-relative text-end">
-					            		<input type="text" class="form-control search-chat py-2 ps-5" id="text-srh" placeholder="검색어를 입력하세요">
-					            		<i class="ti ti-search position-absolute top-50 start-0 translate-middle-y fs-6 text-dark ms-3"></i>
-					            	</form>
-					            </th>
-					        </tr>
-					        <tr class="table_th">
-					            <th>
-					                <h6 class="fs-4 fw-semibold mb-0">No</h6>
-					            </th>
-					            <th>
-					                <h6 class="fs-4 fw-semibold mb-0">제목</h6>
-					            </th>
-					            <th>
-					                <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
-					            </th>
-					            <th>
-					                <h6 class="fs-4 fw-semibold mb-0">댓글수</h6>
-					            </th>
-					            <th></th>
-					        </tr>
-					    </thead>
-					    <tbody class="megazine_list"></tbody>
-					</table>
-
-					<!-- 페이지네이션 -->
-					<div class="pagination_wrap">
-						<div class="pagination">
-						    <ul></ul>
+						
+					<!-- 본문 -->
+					<div class="card overflow-hidden">
+						<div class="card-body p-4">
+							<!-- 제목 -->
+							<h2 class="title fs-9 fw-semibold my-4 mt-2"></h2>
+							<div class="d-flex align-items-center gap-2">
+								<div class="d-flex align-items-center gap-2"><b>집밥의민족</b></div>
+								<div class="d-flex align-items-center gap-2">
+									<i class="ti ti-point text-dark fs-5"></i>
+									<!-- 작성일 -->
+									<span class="postdate"></span>
+								</div>
+							</div>
 						</div>
+						<!-- 내용 -->
+						<div class="content card-body border-top p-4 mb-3"></div>
+						<!-- 버튼 -->
+            			<div class="p-3">
+            				<div class="text-end">
+            					<button id="editMegazineBtn" type="button" class="btn btn-info px-4">수정하기</button>
+            					<button id="deleteMegazineBtn" type="button" class="btn btn-danger ms-6 px-4">삭제하기</button>
+            					<button type="button" class="btn btn-light ms-6 px-4" onclick="location.href='/admin/listMegazine.do';">목록으로</button>
+            				</div>
+            			</div>
 					</div>
-				
 				</div>
 			</div>
 		</div>
-		
+
 		<script src="../assets/libs/jquery/dist/jquery.min.js"></script>
 		<script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="../assets/js/sidebarmenu.js"></script>
 		<script src="../assets/js/app.min.js"></script>
 		<script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+		<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 	</body>
 
 </html>

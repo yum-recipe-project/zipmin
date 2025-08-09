@@ -3,7 +3,8 @@
  */
 let totalPages = 0;
 let page = 0;
-const size = 10;
+const size = 3;
+let keyword = '';
 let megazineList = [];
 
 
@@ -11,11 +12,20 @@ let megazineList = [];
 
 
 /**
- * 
+ * 매거진 목록을 검색하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
+	
+	document.querySelector('form.search').addEventListener('submit', function(event) {
+		event.preventDefault();
+		keyword = document.getElementById('text-srh').value.trim();
+		page = 0;
+		fetchMegazineList();
+	});
+	
 	fetchMegazineList();
 });
+
 
 
 
@@ -28,7 +38,8 @@ async function fetchMegazineList() {
 	try {
 		const params = new URLSearchParams({
 			page : page,
-			size : size
+			size : size,
+			keyword: keyword
 		}).toString();
 
 		const headers = {
@@ -79,8 +90,8 @@ function renderMegainzeList(megazineList) {
 	megazineList.forEach((megazine, index) => {
 		const tr = document.createElement('tr');
 		tr.dataset.id = megazine.id;
-
-		// No
+		
+		// 번호
 		const noTd = document.createElement('td');
 		const noH6 = document.createElement('h6');
 		noH6.className = 'fw-semibold mb-0';
@@ -93,6 +104,7 @@ function renderMegainzeList(megazineList) {
 		titleH6.className = 'fw-semibold mb-0';
 		titleH6.textContent = megazine.title;
 		titleTd.appendChild(titleH6);
+		titleTd.onclick = () => location.href = `/admin/viewMegazine.do?id=${megazine.id}`; 
 
 		// 참여 기간
 		const periodTd = document.createElement('td');
@@ -108,63 +120,31 @@ function renderMegainzeList(megazineList) {
 		commentH6.textContent = `${megazine.commentcount || 0}개`;
 		commentTd.appendChild(commentH6);
 
-		// 기능 (드롭다운)
+		// 기능
 		const actionTd = document.createElement('td');
-		const dropdownDiv = document.createElement('div');
-		dropdownDiv.className = 'dropdown dropstart';
 
-		const dropdownBtn = document.createElement('a');
-		dropdownBtn.href = 'javascript:void(0)';
-		dropdownBtn.className = 'text-muted';
-		dropdownBtn.setAttribute('id', `dropdownMenuButton${index}`);
-		dropdownBtn.setAttribute('data-bs-toggle', 'dropdown');
-		dropdownBtn.setAttribute('aria-expanded', 'false');
-		dropdownBtn.innerHTML = `<i class="ti ti-dots-vertical fs-6"></i>`;
+		const btnWrap = document.createElement('div');
+		btnWrap.className = 'd-flex justify-content-end gap-2';
 
-		const ul = document.createElement('ul');
-		ul.className = 'dropdown-menu';
-		ul.setAttribute('aria-labelledby', `dropdownMenuButton${index}`);
+		// 수정 버튼
+		const editBtn = document.createElement('button');
+		editBtn.type = 'button';
+		editBtn.className = 'btn btn-sm btn-outline-info';
+		editBtn.innerHTML = '수정';
+		editBtn.onclick = () => { location.href = `/admin/editMegazine.do?id=${megazine.id}`; };
 
-		// Edit li
-		const editLi = document.createElement('li');
-		const editLink = document.createElement('a');
-		editLink.className = 'dropdown-item d-flex align-items-center gap-3';
-		editLink.href = '#';
+		// 삭제 버튼
+		const deleteBtn = document.createElement('button');
+		deleteBtn.type = 'button';
+		deleteBtn.className = 'btn btn-sm btn-outline-danger';
+		deleteBtn.innerHTML = '삭제';
+		deleteBtn.onclick = () => { deleteMegazine(megazine.id); };
 
-		const editIcon = document.createElement('i');
-		editIcon.className = 'fs-4 ti ti-edit';
+		btnWrap.append(editBtn, deleteBtn);
+		actionTd.appendChild(btnWrap);
 
-		editLink.appendChild(editIcon);
-		editLink.append('Edit');
-		editLi.appendChild(editLink);
-		editLi.addEventListener('click', function(event) {
-			event.preventDefault();
-			location.href = `/admin/editMegazine.do?id=${megazine.id}`;
-		})
-
-		// Delete li
-		const deleteLi = document.createElement('li');
-		const deleteLink = document.createElement('a');
-		deleteLink.className = 'dropdown-item d-flex align-items-center gap-3';
-		deleteLink.href = '#';
-
-		const deleteIcon = document.createElement('i');
-		deleteIcon.className = 'fs-4 ti ti-trash';
-
-		deleteLink.appendChild(deleteIcon);
-		deleteLink.append('Delete');
-		deleteLi.appendChild(deleteLink);
-		deleteLi.addEventListener('click', function(event) {
-			event.preventDefault();
-			deleteMegazine(megazine.id);
-		});
-
-		ul.append(editLi, deleteLi);
-		dropdownDiv.append(dropdownBtn, ul);
-		actionTd.appendChild(dropdownDiv);
-
-		// 조립
 		tr.append(noTd, titleTd, periodTd, commentTd, actionTd);
+
 		container.appendChild(tr);
 	});
 }

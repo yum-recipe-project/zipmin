@@ -119,6 +119,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			
 			console.log(response);
 			
+			// 성공시 동작 추가 !!!!!
+			
 		}
 		catch (error) {
 			console.log(error);

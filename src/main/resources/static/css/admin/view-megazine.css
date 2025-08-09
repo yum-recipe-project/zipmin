@@ -134,84 +134,25 @@
     left: 0px;
 }
 
-.body-wrapper .container-fluid button {
-	display: flex;
-	align-items: center;
-	gap: 8px;
+
+
+/* 본문 */
+.card {
+	margin-top: 70px;
+	box-shadow: none;
 }
 
-.body-wrapper .container-fluid button i {
-	margin-bottom: 1px;
+.card-body {
+	border: 1px solid #ddd;
 }
 
-
-
-/* 목록 테이블 */
-.body-wrapper .container-fluid .search {
-	width: 250px;
-	margin-left: auto;
-} 
-
-.body-wrapper .container-fluid table {
-	margin-top: 40px;
+.content {
+	font-size: 16px;
 }
 
-.body-wrapper .container-fluid .table_th {
-	background: #DDEBFF;
+.content p {
+    margin-top: 0px;
+    margin-bottom: 0px !important;
 }
 
 
-
-/* 페이지네이션 */
-.pagination_wrap {
-	margin-top: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;    
-    height: 100%;           
-	padding-bottom: 80px;
-}
-
- .pagination {
-    text-align: center;
-}
-
-.pagination ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    align-items: center;
-}
-
-.pagination li {
-    margin: 0 5px;
-}
-
-.pagination a {
-    text-decoration: none;
-    font-size: 16px;
-    color: #333;
-    padding: 8px 15px;
-    display: flex;
-    align-items: center; 
-}
-
-.pagination a.active {
-    font-weight: 600;
-    color: #FFF;
-    position: relative;  
-    background: #5D87FF;
-    border-radius: 50%;
-}
-
-.pagination .prev, .pagination .next {
-    font-size: 18px;
-}
-
-.pagination .prev img, .pagination .next img {
-    width: 16px;
-    height: 16px;
-    vertical-align: middle;
-    margin-right: 5px; 
-}

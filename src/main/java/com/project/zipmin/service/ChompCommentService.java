@@ -130,9 +130,11 @@ public class ChompCommentService {
 	
 	
 	// 매거진의 목록을 조회하는 함수
-	public Page<MegazineReadResponseDto> readMegazinePage(Pageable pageable) {
+	public Page<MegazineReadResponseDto> readMegazinePage(String keyword, Pageable pageable) {
 		
-		Page<Megazine> megazinePage = megazineRepository.findAll(pageable);
+		Page<Megazine> megazinePage = (keyword == null || keyword.isBlank())
+				? megazineRepository.findAll(pageable)
+				: megazineRepository.findByTitleContainingIgnoreCase(keyword, pageable);
 		
 		List<MegazineReadResponseDto> megazineDtoList = new ArrayList<>();
 		for (Megazine megazine : megazinePage) {

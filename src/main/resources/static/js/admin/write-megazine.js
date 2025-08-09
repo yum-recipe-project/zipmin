@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			return;
 		}
 		
-		form.content.value = quill.root.innerHTML;
+		form.content.value = stripTrailingEmptyParagraphs(quill.root.innerHTML);
 		if (quill.getText().trim().length === 0) {
 			alert('내용을 입력하세요');
 			form.content.focus();
@@ -37,6 +37,23 @@ document.addEventListener('DOMContentLoaded', function() {
 		createMegazine();
 	});
 });
+
+
+
+
+function stripTrailingEmptyParagraphs(html) {
+  const temp = document.createElement('div');
+  temp.innerHTML = html;
+
+  while (
+    temp.lastElementChild &&
+    temp.lastElementChild.tagName === 'P' &&
+    temp.lastElementChild.innerHTML.trim().toUpperCase() === '<BR>'
+  ) {
+    temp.removeChild(temp.lastElementChild);
+  }
+  return temp.innerHTML;
+}
 
 
 

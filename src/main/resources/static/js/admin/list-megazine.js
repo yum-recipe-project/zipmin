@@ -56,7 +56,7 @@ async function fetchMegazineList() {
 			document.querySelector('.total').innerText = `총 ${result.data.totalElements}개`;
 		}
 		
-		// ***** 여기에 에러코드 더 추가해야함 ***
+		/*** 여기에 에러코드 더 추가해야함  */
 		
 	}
 	catch (error) {
@@ -137,6 +137,10 @@ function renderMegainzeList(megazineList) {
 		editLink.appendChild(editIcon);
 		editLink.append('Edit');
 		editLi.appendChild(editLink);
+		editLi.addEventListener('click', function(event) {
+			event.preventDefault();
+			location.href = `/admin/editMegazine.do?id=${megazine.id}`;
+		})
 
 		// Delete li
 		const deleteLi = document.createElement('li');

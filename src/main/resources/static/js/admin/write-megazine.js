@@ -3,7 +3,7 @@
  */
 document.addEventListener('DOMContentLoaded', function() {
 	
-	// Quill 에디터 초기화
+	// 에디터 초기화
 	const quill = new Quill('#editor', {
 		theme: 'snow',
 		placeholder: '내용을 입력하세요...',

@@ -753,7 +753,7 @@ public class ChompessorController {
 		
 		// 권한 없는 사용자의 접근 (괸리자 권한)
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
 		    throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
 		}
 		

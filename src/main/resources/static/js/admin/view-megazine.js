@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 /**
  * 수정과 삭제 버튼 클릭이벤트를 처리하는 함수
  */
+/*
 document.addEventListener('DOMContentLoaded', function() {
 	
 	const id = new URLSearchParams(window.location.search).get('id');
@@ -99,3 +100,4 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 	
 });
+*/

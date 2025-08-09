@@ -3,7 +3,7 @@
  */
 let totalPages = 0;
 let page = 0;
-const size = 3;
+const size = 10;
 let keyword = '';
 let megazineList = [];
 

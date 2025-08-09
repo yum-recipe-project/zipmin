@@ -35,7 +35,7 @@
 						<a href=""><img src="/images/cooking/arrow_right.png"><span>게시판</span></a>
 						<a href="/admin/listChomp.do"><img src="/images/cooking/arrow_right.png"><span>쩝쩝박사</span></a>
 						<a href="/admin/listMegazine.do"><img src="/images/cooking/arrow_right.png"><span>매거진 관리</span></a>
-						<a href="/admin/writeMegazine.do" class="active"><img src="/images/cooking/arrow_right.png"><span>매거진 수정</span></a>
+						<a href="" class="active"><img src="/images/cooking/arrow_right.png"><span>매거진 수정</span></a>
 					</div>
 					
 					<!-- 제목 -->
@@ -69,8 +69,8 @@
 		            			<!-- 버튼 -->
 		            			<div class="p-3">
 		            				<div class="text-end">
-		            					<button type="submit" class="btn btn-primary">수정하기</button>
-		            					<button type="button" class="btn bg-danger-subtle text-danger ms-6 px-4" onclick="location.href='/admin/listMegazine.do';">취소하기</button>
+		            					<button type="submit" class="btn btn-info px-4">수정하기</button>
+            							<button type="button" class="btn btn-light ms-6 px-4" onclick="location.href='/admin/listMegazine.do';">목록으로</button>
 		            				</div>
 		            			</div>
 		            		</div>

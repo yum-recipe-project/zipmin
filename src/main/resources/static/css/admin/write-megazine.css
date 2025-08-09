@@ -1,22 +1,20 @@
 @charset "UTF-8";
 
-#container .content {
+.body-wrapper .container-fluid {
 	margin: 0px auto;
 	padding: 80px 40px;
 }
 
 
 
-
-
 /* 네비게이션 바 */
-#container .content .nav_wrap {
+.body-wrapper .container-fluid .nav_wrap {
 	display: flex;
 	align-items: center;
 	height: 56px;
 }
 
-#container .content .nav_wrap a {
+.body-wrapper .container-fluid .nav_wrap a {
 	color: #999;
 	font-size: 14px;
 	line-height: 20px;
@@ -28,19 +26,19 @@
 	overflow: hidden;
 }
 
-#container .content .nav_wrap a img {
+.body-wrapper .container-fluid .nav_wrap a img {
 	width: 16px;
 	height: 16px;
 	flex: none;
 	margin: 0 4px;
 }
 
-#container .content .nav_wrap a span {
+.body-wrapper .container-fluid .nav_wrap a span {
 	position: relative;
 	color: var(--txt-color-500);
 }
 
-#container .content .nav_wrap a span:hover::after {
+.body-wrapper .container-fluid .nav_wrap a span:hover::after {
 	content: '';
 	position: absolute;
 	left: 0;
@@ -50,7 +48,7 @@
 	background: var(--txt-color-500);
 }
 
-#container .content .nav_wrap a.active {
+.body-wrapper .container-fluid .nav_wrap a.active {
 	color: #666;
 	pointer-events: none;
 	font-size: 14px;
@@ -63,26 +61,25 @@
 	overflow: hidden; 
 }
 
-#container .content .nav_wrap a.active span {
+.body-wrapper .container-fluid .nav_wrap a.active span {
 	color: var(--txt-color-600);
 }
 
 
 
-
 /* 제목 */
-#container .content h1 {
+.body-wrapper .container-fluid h1 {
 	font-weight: 700;
 	margin-top: 20px;
 }
 
-#container .content .bar {
+.body-wrapper .container-fluid .bar {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
 
-#container .content .tab {
+.body-wrapper .container-fluid .tab {
 	position: relative;
 	background: rgb(255, 255, 255);
 	overflow: auto hidden;
@@ -90,21 +87,21 @@
 	scrollbar-width: none;
 }
 
-#container .content .tab ul {
+.body-wrapper .container-fluid .tab ul {
 	display: flex;
 	white-space: nowrap;
 	margin-top: 16px;
 }
 
-#container .content .tab ul li {
+.body-wrapper .container-fluid .tab ul li {
 	position: relative;
 }
 
-#container .content .tab ul li:first-child a {
+.body-wrapper .container-fluid .tab ul li:first-child a {
 	margin-left: 0px;
 }
 
-#container .content .tab ul li a {
+.body-wrapper .container-fluid .tab ul li a {
     font-weight: 500;
     font-size: 16px;
     line-height: 20px;
@@ -113,13 +110,13 @@
     display: block;
 }
 
-#container .content .tab ul li a.active {
+.body-wrapper .container-fluid .tab ul li a.active {
     font-weight: 700;
     color: #5D87FF;
 }
 
 
-#container .content .tab ul li a span {
+.body-wrapper .container-fluid .tab ul li a span {
     position: relative;
     -webkit-box-align: center;
     padding: 12px 20px;
@@ -127,7 +124,7 @@
     display: flex !important;
 }
 
-#container .content .tab ul li a.active span::after {
+.body-wrapper .container-fluid .tab ul li a.active span::after {
     content: "";
     width: 100%;
     height: 3px;
@@ -139,8 +136,7 @@
 
 
 
-
-
+/* 에디터 */
 .card-body {
 	margin-top: 70px;
 }

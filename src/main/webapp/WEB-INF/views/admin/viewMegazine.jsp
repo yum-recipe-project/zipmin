@@ -72,8 +72,6 @@
 						<!-- 버튼 -->
             			<div class="p-3">
             				<div class="text-end">
-            					<button id="editMegazineBtn" type="button" class="btn btn-info px-4">수정하기</button>
-            					<button id="deleteMegazineBtn" type="button" class="btn btn-danger ms-6 px-4">삭제하기</button>
             					<button type="button" class="btn btn-light ms-6 px-4" onclick="location.href='/admin/listMegazine.do';">목록으로</button>
             				</div>
             			</div>

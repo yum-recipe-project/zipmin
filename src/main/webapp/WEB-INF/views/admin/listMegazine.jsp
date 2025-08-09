@@ -50,7 +50,7 @@
 							</ul>
 						</div>
 						<button type="button" class="btn btn-info m-1" onclick="location.href='/admin/writeMegazine.do';">
-							<i class="ti ti-plus fs-4"></i> 매거진 작성
+							<i class="ti ti-plus fs-4"></i> 매거진 작성하기
 						</button>
 					</div>
 					

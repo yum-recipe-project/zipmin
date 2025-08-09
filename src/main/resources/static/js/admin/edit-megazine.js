@@ -117,13 +117,35 @@ document.addEventListener('DOMContentLoaded', function() {
 				headers: headers
 			});
 			
-			console.log(response);
-			
-			// 성공시 동작 추가 !!!!!
-			
+			if (response.data.code === 'MEGAZINE_UPDATE_SUCCESS') {
+				location.href = `/admin/viewMegazine.do?id=${response.data.data.id}`;
+			}
 		}
 		catch (error) {
 			console.log(error);
+			const code = error?.response?.data?.code;
+			
+			if (code === 'MEGAZINE_UPDATA_FAIL') {
+				alert('매거진 수정에 실패했습니다.');
+			}
+			else if (code === 'MEGAZINE_INVALID_INPUT') {
+				alert('입력값이 유효하지 않습니다.');
+			}
+			else if (code === 'MEGAZINE_UNAUTHORIZED_ACCESS') {
+				alert('로그인되지 않은 사용자입니다.');
+			}
+			else if (code === 'MEGAZINE_FORBIDDEN') {
+				alert('접근 권한이 없습니다.');
+			}
+			else if (code === 'MEGAZINE_NOT_FOUND') {
+				alert('해당 매거진을 찾을 수 없습니다.');
+			}
+			else if (code === 'INTERNAL_SERVER_ERROR') {
+				alert('서버 내부 오류가 발생했습니다.');
+			}
+			else {
+				console.log(error);
+			}
 		}
 	});
 	

@@ -89,7 +89,7 @@ function renderVoteList(voteList) {
 		const tr = document.createElement('tr');
 		tr.dataset.id = vote.id;
 		
-		// No
+		// 번호
 		const noTd = document.createElement('td');
 		const noH6 = document.createElement('h6');
 		noH6.className = 'fw-semibold mb-0';

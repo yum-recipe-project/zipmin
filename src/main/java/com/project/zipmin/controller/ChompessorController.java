@@ -158,7 +158,7 @@ public class ChompessorController {
 	// 투표 목록 조회
 	@GetMapping("/votes")
 	public ResponseEntity<?> listVote(
-			// 검색어같은 것도 추가할 것
+			@Parameter(description = "검색어", example = "가나다") @RequestParam String keyword,
 			@Parameter(description = "페이지 번호", example = "0") @RequestParam int page,
 		    @Parameter(description = "페이지 크기", example = "10") @RequestParam int size) {
 		
@@ -841,6 +841,23 @@ public class ChompessorController {
 		
 		return ResponseEntity.status(MegazineSuccessCode.MEGAZINE_DELETE_SUCCESS.getStatus())
 				.body(ApiResponse.success(MegazineSuccessCode.MEGAZINE_DELETE_SUCCESS, null));
+	}
+	
+	
+	
+	
+	// 이벤트 목록 조회
+	@GetMapping("/events")
+	public ResponseEntity<?> listEvent(
+			@Parameter(description = "검색어", example = "가나다") @RequestParam String keyword,
+			@Parameter(description = "페이지 번호", example = "0") @RequestParam int page,
+			@Parameter(description = "페이지 크기", example = "10") @RequestParam int size) {
+		
+		Pageable pageable = PageRequest.of(page, size);
+		Page<EventReadResponseDto> eventPage = chompCommentService.readEventPage(keyword, pageable);
+		
+		return ResponseEntity.status(EventSuccessCode.EVENT_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(EventSuccessCode.EVENT_READ_LIST_SUCCESS, eventPage));
 	}
 	
 	

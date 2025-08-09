@@ -24,6 +24,7 @@ import com.project.zipmin.dto.CommentReadMyResponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.CommentUpdateRequestDto;
 import com.project.zipmin.dto.CommentUpdateResponseDto;
+import com.project.zipmin.dto.EventReadResponseDto;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
@@ -34,6 +35,7 @@ import com.project.zipmin.dto.ReportDeleteRequestDto;
 import com.project.zipmin.dto.VoteChoiceReadResponseDto;
 import com.project.zipmin.dto.VoteReadResponseDto;
 import com.project.zipmin.entity.Comment;
+import com.project.zipmin.entity.Event;
 import com.project.zipmin.entity.Megazine;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.entity.Vote;
@@ -148,6 +150,30 @@ public class ChompCommentService {
 		}
 		
 		return new PageImpl<>(megazineDtoList, pageable, megazinePage.getTotalElements());
+	}
+	
+	
+	
+	
+	// 투표의 목록을 조회하는 함수
+	public Page<EventReadResponseDto> readEventPage(String keyword, Pageable pageable) {
+		
+		Page<Event> eventPage = (keyword == null || keyword.isBlank())
+				? eventRepository.findAll(pageable)
+						: eventRepository.findByTitleContainingIgnoreCase(keyword, pageable);
+		
+		List<EventReadResponseDto> eventDtoList = new ArrayList<>();
+		for (Event event : eventPage) {
+			EventReadResponseDto eventDto = eventMapper.toReadResponseDto(event);
+			
+			// 댓글수
+			int count = readCommentCount("event", event.getId());
+			eventDto.setCommentcount(count);
+			
+			eventDtoList.add(eventDto);
+		}
+		
+		return new PageImpl<>(eventDtoList, pageable, eventPage.getTotalElements());
 	}
 	
 	

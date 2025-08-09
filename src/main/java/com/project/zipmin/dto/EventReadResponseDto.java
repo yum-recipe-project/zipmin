@@ -18,5 +18,6 @@ public class EventReadResponseDto {
 	private String content;
 	
 	private String status;
+	private int commentcount;
 	
 }

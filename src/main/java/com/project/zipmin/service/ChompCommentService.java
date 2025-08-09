@@ -160,7 +160,7 @@ public class ChompCommentService {
 		
 		Page<Event> eventPage = (keyword == null || keyword.isBlank())
 				? eventRepository.findAll(pageable)
-						: eventRepository.findByTitleContainingIgnoreCase(keyword, pageable);
+				: eventRepository.findByTitleContainingIgnoreCase(keyword, pageable);
 		
 		List<EventReadResponseDto> eventDtoList = new ArrayList<>();
 		for (Event event : eventPage) {

@@ -39,7 +39,7 @@ async function fetchMegazineList() {
 		const params = new URLSearchParams({
 			page : page,
 			size : size,
-			keyword: keyword
+			keyword : keyword
 		}).toString();
 
 		const headers = {

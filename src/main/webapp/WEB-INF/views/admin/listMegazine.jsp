@@ -29,7 +29,6 @@
 				<%@include file="./common/header.jsp" %>
 				
 				<div class="container-fluid">
-				
 					<!-- 네비게이션 바 -->
 					<div class="nav_wrap">
 						<a href="/admin/home.do"><span>메인</span></a>
@@ -92,7 +91,6 @@
 						    <ul></ul>
 						</div>
 					</div>
-				
 				</div>
 			</div>
 		</div>

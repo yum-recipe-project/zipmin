@@ -4,15 +4,25 @@
 let totalPages = 0;
 let page = 0;
 const size = 10;
+let keyword = '';
 let voteList = [];
 
 
 
 
+
 /**
- * 
+ * 투표 목록을 검색하는 함수
  */
-document.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener('DOMContentLoaded', function() {
+	
+	document.querySelector('form.search').addEventListener('submit', function(event) {
+		event.preventDefault();
+		keyword = document.getElementById('text-srh').value.trim();
+		page = 0;
+		fetchVoteList();
+	});
+	
 	fetchVoteList();
 });
 
@@ -28,7 +38,8 @@ async function fetchVoteList() {
 	try {
 		const params = new URLSearchParams({
 			page : page,
-			size : size
+			size : size,
+			keyword : keyword
 		}).toString();
 		
 		const headers = {
@@ -67,7 +78,6 @@ async function fetchVoteList() {
 
 
 
-
 /**
  * 투표 목록을 화면에 렌더링하는 함수
  */
@@ -85,7 +95,7 @@ function renderVoteList(voteList) {
 		noH6.textContent = index + 1;
 		noTd.appendChild(noH6);
 
-		// 제목 + 선택지
+		// 제목
 		const titleTd = document.createElement('td');
 		const titleWrap = document.createElement('div');
 		titleWrap.className = 'align-items-center';
@@ -95,9 +105,9 @@ function renderVoteList(voteList) {
 		titleH6.textContent = vote.title;
 		titleWrap.appendChild(titleH6);
 
-		// 가장 높은 rate 찾기
 		const maxRate = Math.max(...vote.choice_list.map(choice => choice.rate));
 
+		// 선택지
 		vote.choice_list.forEach(choice => {
 			const choiceSpan = document.createElement('span');
 			choiceSpan.className = 'fw-normal';
@@ -113,6 +123,7 @@ function renderVoteList(voteList) {
 		});
 
 		titleTd.appendChild(titleWrap);
+		titleTd.onclick = () => location.href = `/admin/viewVote.do?id=${vote.id}`;
 
 		// 참여 기간
 		const periodTd = document.createElement('td');
@@ -120,6 +131,7 @@ function renderVoteList(voteList) {
 		periodH6.className = 'fw-semibold mb-0';
 		periodH6.textContent = `${formatDate(vote.opendate)} - ${formatDate(vote.closedate)}`;
 		periodTd.appendChild(periodH6);
+		periodTd.onclick = () => location.href = `/admin/viewVote.do?id=${vote.id}`;
 
 		// 상태
 		const statusTd = document.createElement('td');
@@ -142,38 +154,33 @@ function renderVoteList(voteList) {
 		commentH6.textContent = `${vote.commentcount}개`;
 		commentTd.appendChild(commentH6);
 
-		// 기능 (드롭다운)
+		// 기능
 		const actionTd = document.createElement('td');
-		const dropdownDiv = document.createElement('div');
-		dropdownDiv.className = 'dropdown dropstart';
 
-		const dropdownBtn = document.createElement('a');
-		dropdownBtn.href = 'javascript:void(0)';
-		dropdownBtn.className = 'text-muted';
-		dropdownBtn.setAttribute('id', `dropdownMenuButton${index}`);
-		dropdownBtn.setAttribute('data-bs-toggle', 'dropdown');
-		dropdownBtn.setAttribute('aria-expanded', 'false');
-		dropdownBtn.innerHTML = `<i class="ti ti-dots-vertical fs-6"></i>`;
+		const btnWrap = document.createElement('div');
+		btnWrap.className = 'd-flex justify-content-end gap-2';
 
-		const ul = document.createElement('ul');
-		ul.className = 'dropdown-menu';
-		ul.setAttribute('aria-labelledby', `dropdownMenuButton${index}`);
+		// 수정 버튼
+		const editBtn = document.createElement('button');
+		editBtn.type = 'button';
+		editBtn.className = 'btn btn-sm btn-outline-info';
+		editBtn.innerHTML = '수정';
+		editBtn.onclick = () => { location.href = `/admin/editVote.do?id=${vote.id}`; };
 
-		const editLi = document.createElement('li');
-		editLi.innerHTML = `<a class="dropdown-item d-flex align-items-center gap-3" href="#"><i class="fs-4 ti ti-edit"></i>Edit</a>`;
+		// 삭제 버튼
+		const deleteBtn = document.createElement('button');
+		deleteBtn.type = 'button';
+		deleteBtn.className = 'btn btn-sm btn-outline-danger';
+		deleteBtn.innerHTML = '삭제';
+		deleteBtn.onclick = () => { deleteVote(vote.id); };
 
-		const deleteLi = document.createElement('li');
-		deleteLi.innerHTML = `<a class="dropdown-item d-flex align-items-center gap-3" href="#"><i class="fs-4 ti ti-trash"></i>Delete</a>`;
-
-		ul.append(editLi, deleteLi);
-		dropdownDiv.append(dropdownBtn, ul);
-		actionTd.appendChild(dropdownDiv);
+		btnWrap.append(editBtn, deleteBtn);
+		actionTd.appendChild(btnWrap);
 
 		tr.append(noTd, titleTd, periodTd, statusTd, totalTd, commentTd, actionTd);
 		container.appendChild(tr);
 	});
 }
-
 
 
 
@@ -246,6 +253,82 @@ function renderPagination() {
 		});
 	});
 }
+
+
+
+
+
+/**
+ * 투표를 삭제하는 함수
+ */
+async function deleteVote(id) {
+	
+	if (confirm('투표를 삭제하시겠습니까?')) {
+		try {
+			const token = localStorage.getItem('accessToken');
+
+			const headers = {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
+			}
+
+			const data = {
+				id: id
+			};
+
+			const response = await instance.delete(`/votes/${id}`, {
+				data: data,
+				headers: headers
+			});
+			
+			if (response.data.code === 'VOTE_DELETE_SUCCESS') {
+				alert('투표가 성공적으로 삭제되었습니다.');
+				const trElement = document.querySelector(`.vote_list tr[data-id='${id}']`);
+				if (trElement) trElement.remove();
+			}
+		}
+		catch (error) {
+			const code = error?.response?.data?.code;
+			
+			if (code === 'VOTE_DELETE_FAIL') {
+				alert('투표 삭제에 실패했습니다');
+			}
+			if (code === 'CHOMP_DELETE_FAIL') {
+				alert('쩝쩝박사 게시물 삭제에 실패했습니다');
+			}
+			else if (code === 'VOTE_INVALID_INPUT') {
+				alert('입력값이 유효하지 않습니다.');
+			}
+			else if (code === 'VOTE_UNAUTHORIZED') {
+				alert('로그인되지 않은 사용자입니다.');
+			}
+			else if (code === 'VOTE_FORBIDDEN') {
+				alert('접근 권한이 없습니다.');
+			}
+			else if (code === 'VOTE_NOT_FOUND') {
+				alert('해당 매거진을 찾을 수 없습니다.');
+			}
+			else if (code === 'INTERNAL_SERVER_ERROR') {
+				alert('서버 내부 오류가 발생했습니다.');
+			}
+			else {
+				console.log(error);
+			}
+		}
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

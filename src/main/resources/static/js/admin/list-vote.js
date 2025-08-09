@@ -87,7 +87,8 @@ function renderVoteList(voteList) {
 
 	voteList.forEach((vote, index) => {
 		const tr = document.createElement('tr');
-
+		tr.dataset.id = vote.id;
+		
 		// No
 		const noTd = document.createElement('td');
 		const noH6 = document.createElement('h6');

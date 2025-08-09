@@ -141,6 +141,7 @@ public class ChompessorController {
 	@GetMapping("/chomp")
 	public ResponseEntity<?> listChomp(
 			@Parameter(description = "카테고리", example = "all") @RequestParam String category,
+			@Parameter(description = "검색어", example = "가나다") @RequestParam String keyword,
 		    @Parameter(description = "페이지 번호", example = "0") @RequestParam int page,
 		    @Parameter(description = "페이지 크기", example = "10") @RequestParam int size) {
 		
@@ -272,7 +273,7 @@ public class ChompessorController {
 		
 		// 권한 없는 사용자의 접근 (괸리자 권한)
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
 		    throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
 		}
 		
@@ -373,7 +374,7 @@ public class ChompessorController {
 		
 		// 권한 없는 사용자의 접근 (괸리자 권한)
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
 		    throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
 		}
 		

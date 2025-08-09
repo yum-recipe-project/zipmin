@@ -13,101 +13,85 @@
 		<link rel="stylesheet" href="/css/admin/list-chomp.css" />
 		<script src="/js/common/util.js"></script>
 		<script src="/js/admin/list-chomp.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script src="/js/common/jwt.js"></script>
 	</head>
 	
 	<body>
-		<!--  Body Wrapper -->
 		<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
 			data-sidebar-position="fixed" data-header-position="fixed">
 			
-			<!-- Sidebar -->
+			<!-- 사이드바 -->
 			<%@include file="./common/sidebar.jsp" %>
-			
-			<!--  Main wrapper -->
+
 			<div class="body-wrapper">
+				<!-- 헤더 -->
 				<%@include file="./common/header.jsp" %>
 				
-				<main id="container">
-					<div class="content">
-					
-						<!-- 네비게이션 바 -->
-						<div class="nav_wrap">
-							<a href="/admin/home.do"><span>메인</span></a>
-							<a href="">
-								<img src="/images/cooking/arrow_right.png">
-								<span>게시판</span>
-							</a>
-							<a class="active" href="">
-								<img src="/images/cooking/arrow_right.png">
-								<span>쩝쩝박사</span>
-							</a>
-						</div>
-						
-						<h1>쩝쩝박사 게시판</h1>
-						<div class="bar">
-							<div class="tab">
-								<ul>
-									<li class="btn_tab">
-										<a href="/admin/listChomp.do" class="active"><span>전체</span></a>
-									</li>
-									<li class="btn_tab">
-										<a href="/admin/listVote.do"><span>투표 관리</span></a>
-									</li>
-									<li class="btn_tab">
-										<a href="/admin/listMegazine.do"><span>매거진 관리</span></a>
-									</li>
-									<li class="btn_tab">
-										<a href="/admin/listEvent.do"><span>이벤트 관리</span></a>
-									</li>
-								</ul>
-							</div>
-						</div>
-			
-						<table class="table text-nowrap mb-0 align-middle">
-						    <thead class="text-dark fs-4">
-						        <tr>
-						            <th class="total"></th>
-						            <th></th>
-						            <th></th>
-						            <th></th>
-						            <th></th>
-						            <th></th>
-						            <th class="text-end"><i class="ti ti-search fs-6"></i></th>
-						        </tr>
-						        <tr class="table_th">
-						            <th>
-						                <h6 class="fs-4 fw-semibold mb-0">No</h6>
-						            </th>
-						            <th>
-						                <h6 class="fs-4 fw-semibold mb-0">제목</h6>
-						            </th>
-						            <th>
-						                <h6 class="fs-4 fw-semibold mb-0">참여 기간</h6>
-						            </th>
-						            <th>
-						                <h6 class="fs-4 fw-semibold mb-0">상태</h6>
-						            </th>
-						            <th>
-						                <h6 class="fs-4 fw-semibold mb-0">참여자수</h6>
-						            </th>
-						            <th>
-						                <h6 class="fs-4 fw-semibold mb-0">댓글수</h6>
-						            </th>
-						            <th></th>
-						        </tr>
-						    </thead>
-						    <tbody class="vote_list"></tbody>
-						</table>
-	
-						<!-- 페이지네이션 -->
-						<div class="pagination_wrap">
-							<div class="pagination">
-							    <ul></ul>
-							</div>
-						</div>
-					
+				<div class="container-fluid">
+					<!-- 네비게이션 바 -->
+					<div class="nav_wrap">
+						<a href="/admin/home.do"><span>메인</span></a>
+						<a href=""><img src="/images/cooking/arrow_right.png"><span>게시판</span></a>
+						<a href="/admin/listChomp.do"><img src="/images/cooking/arrow_right.png"><span>쩝쩝박사</span></a>
 					</div>
-				</main>
+					
+					<!-- 제목 -->
+					<h1>쩝쩝박사 게시판</h1>
+					<div class="bar">
+						<div class="tab">
+							<ul>
+								<li class="btn_tab"><a href="/admin/listChomp.do" class="active"><span>전체</span></a></li>
+								<li class="btn_tab"><a href="/admin/listVote.do"><span>투표 관리</span></a></li>
+								<li class="btn_tab"><a href="/admin/listMegazine.do"><span>매거진 관리</span></a></li>
+								<li class="btn_tab"><a href="/admin/listEvent.do"><span>이벤트 관리</span></a></li>
+							</ul>
+						</div>
+					</div>
+		
+					<!-- 목록 -->
+					<table class="table text-nowrap mb-0 align-middle">
+					    <thead class="text-dark fs-4">
+					        <tr>
+					            <th class="total"></th>
+					            <th></th>
+					            <th></th>
+					            <th colspan="3" class="text-end">
+					            	<form class="search position-relative text-end">
+					            		<input type="text" class="form-control search-chat py-2 ps-5" id="text-srh" placeholder="검색어를 입력하세요">
+					            		<i class="ti ti-search position-absolute top-50 start-0 translate-middle-y fs-6 text-dark ms-3"></i>
+					            	</form>
+					            </th>
+					        </tr>
+					        <tr class="table_th">
+					            <th>
+					                <h6 class="fs-4 fw-semibold mb-0">No</h6>
+					            </th>
+					            <th>
+					                <h6 class="fs-4 fw-semibold mb-0">카테고리</h6>
+					            </th>
+					            <th>
+					                <h6 class="fs-4 fw-semibold mb-0">제목</h6>
+					            </th>
+					            <th>
+					                <h6 class="fs-4 fw-semibold mb-0">기간</h6>
+					            </th>
+					            <th>
+					                <h6 class="fs-4 fw-semibold mb-0">댓글수</h6>
+					            </th>
+					            <th></th>
+					        </tr>
+					    </thead>
+					    <tbody class="chomp_list"></tbody>
+					</table>
+
+					<!-- 페이지네이션 -->
+					<div class="pagination_wrap">
+						<div class="pagination">
+						    <ul></ul>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		

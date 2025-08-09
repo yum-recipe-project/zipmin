@@ -122,10 +122,9 @@ function renderMegainzeList(megazineList) {
 
 		// 기능
 		const actionTd = document.createElement('td');
-
 		const btnWrap = document.createElement('div');
 		btnWrap.className = 'd-flex justify-content-end gap-2';
-
+		
 		// 수정 버튼
 		const editBtn = document.createElement('button');
 		editBtn.type = 'button';

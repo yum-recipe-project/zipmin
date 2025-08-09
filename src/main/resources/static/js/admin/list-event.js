@@ -89,7 +89,7 @@ function renderEventList(eventList) {
         const tr = document.createElement('tr');
         tr.dataset.id = event.id;
 
-        // No
+        // 번호
         const noTd = document.createElement('td');
         const noH6 = document.createElement('h6');
         noH6.className = 'fw-semibold mb-0';
@@ -121,7 +121,7 @@ function renderEventList(eventList) {
         const isOpen = now >= openDate && now <= closeDate;
 
         statusSpan.className = `badge ${isOpen ? 'bg-primary-subtle text-primary' : 'bg-danger-subtle text-danger'} d-inline-flex align-items-center gap-1`;
-        statusSpan.innerHTML = `<i class="ti ${isOpen ? 'ti-check' : 'ti-x'} fs-4"></i>${isOpen ? '진행중' : '종료'}`;
+        statusSpan.innerHTML = `<i class="ti ${isOpen ? 'ti-check' : 'ti-x'} fs-4"></i>${isOpen ? '행사 진행중' : '행사 종료'}`;
         statusTd.appendChild(statusSpan);
 
         // 댓글수
@@ -157,9 +157,6 @@ function renderEventList(eventList) {
         container.appendChild(tr);
     });
 }
-
-
-
 
 
 

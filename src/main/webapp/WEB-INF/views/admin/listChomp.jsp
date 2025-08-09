@@ -33,7 +33,7 @@
 					<div class="nav_wrap">
 						<a href="/admin/home.do"><span>메인</span></a>
 						<a href=""><img src="/images/cooking/arrow_right.png"><span>게시판</span></a>
-						<a href="/admin/listChomp.do"><img src="/images/cooking/arrow_right.png"><span>쩝쩝박사</span></a>
+						<a href="/admin/listChomp.do" class="active"><img src="/images/cooking/arrow_right.png"><span>쩝쩝박사</span></a>
 					</div>
 					
 					<!-- 제목 -->

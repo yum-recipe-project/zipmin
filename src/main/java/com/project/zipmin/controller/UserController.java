@@ -230,6 +230,20 @@ public class UserController {
 	public ResponseEntity<?> createUser(
 			@Parameter(description = "사용자 생성 요청 정보", required = true) @RequestBody UserCreateRequestDto userRequestDto) {
 		
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		
+		// 권한 설정
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    userRequestDto.setRole(Role.ROLE_USER);
+		}
+		else {
+			String username = SecurityContextHolder.getContext().getAuthentication().getName();
+			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+				userRequestDto.setRole(Role.ROLE_ADMIN);
+			}
+		}
+		
 		UserCreateResponseDto userResponseDto  = userService.createUser(userRequestDto);
 
 		return ResponseEntity.status(UserSuccessCode.USER_CREATE_SUCCESS.getStatus())

@@ -30,7 +30,6 @@ let userList = [];
 
 
 
-
 /**
  * 카테고리 클릭 시 데이터를 가져오는 함수
  */
@@ -50,6 +49,12 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 	});
 	
+	const token = localStorage.getItem('accessToken');
+	const payload = parseJwt(token);
+	
+	if (payload.role === 'ROLE_SUPER_ADMIN') {
+		renderAddAdminButton();
+	}
 	fetchUserList();
 });
 
@@ -110,6 +115,30 @@ async function fetchUserList() {
 	}
 	
 }
+
+
+
+
+/**
+ * 관리자 추가 버튼을 화면에 렌더링하는 함수
+ */
+function renderAddAdminButton() {
+	
+	const createBtn = document.createElement('button');
+	createBtn.type = 'button';
+	createBtn.className = 'btn btn-info m-1';
+	createBtn.dataset.bsToggle = 'modal';
+	createBtn.dataset.bsTarget = '#addAdminModal';
+
+	const icon = document.createElement('i');
+	icon.className = 'ti ti-plus fs-4';
+
+	const text = document.createTextNode('관리자 생성하기');
+
+	createBtn.append(icon, text);
+	document.querySelector('.bar').appendChild(createBtn);
+	
+};
 
 
 

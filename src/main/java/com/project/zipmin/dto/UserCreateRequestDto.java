@@ -2,6 +2,7 @@ package com.project.zipmin.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.project.zipmin.entity.Role;
 
 import lombok.Data;
 
@@ -14,4 +15,5 @@ public class UserCreateRequestDto {
 	private String nickname;
 	private String tel;
 	private String email;
+	private Role role;
 }

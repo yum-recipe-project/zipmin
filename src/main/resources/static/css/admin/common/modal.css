@@ -55,7 +55,6 @@
 	padding: 20px !important;
 }
 
-
 .modal-content .modal-body label {
 	color: #181a1c;
 	font-size: 14px;
@@ -66,6 +65,10 @@
 .modal-content .modal-body h5 {
 	font-size: 20px;
 	font-weight: 600;
+}
+
+.modal-content .modal-body input {
+	color: #181a1c;
 }
 
 

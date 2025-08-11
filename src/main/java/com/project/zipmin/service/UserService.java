@@ -134,13 +134,13 @@ public class UserService {
 	public UserCreateResponseDto createUser(UserCreateRequestDto userRequestDto) {
 		
 		// 입력값 검증
-		if (userRequestDto == null || userRequestDto.getUsername() == null || userRequestDto.getTel() == null || userRequestDto.getPassword() == null || userRequestDto.getNickname() == null || userRequestDto.getName() == null || userRequestDto.getEmail() == null) {
+		if (userRequestDto == null || userRequestDto.getUsername() == null || userRequestDto.getPassword() == null || userRequestDto.getNickname() == null || userRequestDto.getName() == null) {
 			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
 		}
 		
 		User user = userMapper.toEntity(userRequestDto);
 		user.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
-		user.setRole(Role.ROLE_USER);
+		user.setRole(userRequestDto.getRole());
 		
 		// 중복 아이디 검사
 		if (userRepository.existsByUsername(userRequestDto.getUsername())) {
@@ -148,12 +148,12 @@ public class UserService {
 		}
 		
 		// 중복 전화번호 검사
-		if (userRepository.existsByTel(userRequestDto.getTel())) {
+		if (userRequestDto.getTel() != null && userRepository.existsByTel(userRequestDto.getTel())) {
 			throw new ApiException(UserErrorCode.USER_TEL_DUPLICATED);
 		}
 		
 		// 중복 이메일 검사
-		if (userRepository.existsByEmail(userRequestDto.getEmail())) {
+		if (userRequestDto.getEmail() != null && userRepository.existsByEmail(userRequestDto.getEmail())) {
 			throw new ApiException(UserErrorCode.USER_EMAIL_DUPLICATED);
 		}
 		

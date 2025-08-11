@@ -11,12 +11,13 @@
 		<link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
 		<link rel="stylesheet" href="../assets/css/styles.min.css" />
 		<link rel="stylesheet" href="/css/admin/list-user.css" />
-		<link rel="stylesheet" href="/css/admin/modal/edit-user-modal.css" />
+		<link rel="stylesheet" href="/css/admin/common/modal.css" />
 		<script src="/js/common/util.js"></script>
 		<script src="/js/admin/list-user.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 		<script src="/js/common/jwt.js"></script>
 		<script src="/js/admin/modal/edit-user-modal.js"></script>
+		<script src="/js/admin/modal/add-admin-modal.js"></script>
 	</head>
 	
 	<body>
@@ -47,7 +48,6 @@
 								<li class="btn_tab"><a href="" data-tab="ADMIN"><span>관리자</span></a></li>
 								<li class="btn_tab"><a href="" data-tab="USER"><span>일반 회원</span></a></li>
 							</ul>
-							
 						</div>
 					</div>
 		
@@ -102,6 +102,8 @@
 				
 				<!-- 회원정보 수정 모달 -->
 				<%@include file="../admin/modal/editUserModal.jsp" %>
+				<!-- 관리자 생성 모달 -->
+				<%@include file="../admin/modal/addAdminModal.jsp" %>
 			</div>
 		</div>
 		

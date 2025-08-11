@@ -37,16 +37,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		else {
 			this.value = tel.slice(0, 3) + '-' + tel.slice(3, 7) + '-' + tel.slice(7, 11);
 		}
-		const isTelEmpty = this.value.trim() === '';
-		this.classList.toggle('danger', isTelEmpty);
-		document.querySelector('.tel_field p').style.display = isTelEmpty ? 'block' : 'none';
-	});
-
-	// 이메일 실시간 검사
-	form.email.addEventListener('input', function() {
-		const isEmailEmpty = this.value.trim() === '';
-		this.classList.toggle('danger', isEmailEmpty);
-		document.querySelector('.email_field p').style.display = isEmailEmpty ? 'block' : 'none';
 	});
 	
 });
@@ -64,20 +54,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	form.addEventListener('submit', async function(event) {
 		event.preventDefault();
 		let isValid = true;
-		
-		if (form.email.value.trim() === '') {
-			form.email.classList.add('danger');
-			document.querySelector('.email_field p').style.display = 'block';
-			form.email.focus();
-			isValid = false;
-		}
-		
-		if (form.tel.value.trim() === '') {
-			form.tel.classList.add('danger');
-			document.querySelector('.tel_field p').style.display = 'block';
-			form.tel.focus();
-			isValid = false;
-		}
 		
 		if (form.nickname.value.trim() === '') {
 			form.nickname.classList.add('danger');

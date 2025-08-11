@@ -573,11 +573,18 @@ public class UserController {
 		
 		// 권한 확인	
 		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
 			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (userService.readUserById(id).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
 				}
+				if (userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
+					if (userService.readUserByUsername(username).getId() != id) {
+						throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+					}
+				}
 			}
+			// 일반 회원
 			else {
 				if (userService.readUserByUsername(username).getId() != id) {
 					throw new ApiException(UserErrorCode.USER_FORBIDDEN);

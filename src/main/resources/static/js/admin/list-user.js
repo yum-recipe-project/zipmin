@@ -204,7 +204,8 @@ function renderUserList(userList) {
 		// 삭제 버튼 조건
 		const canDelete =
 		    (payload.role === 'ROLE_SUPER_ADMIN' && payload.id !== user.id) ||
-		    (payload.role === 'ROLE_ADMIN' && user.role === 'ROLE_USER');
+		    (payload.role === 'ROLE_ADMIN' && user.role === 'ROLE_USER') || 
+			(payload.id === user.id);
 
 		if (canDelete) {
 		    const deleteBtn = document.createElement('button');
@@ -309,6 +310,7 @@ async function deleteUser(id) {
 	if (confirm('사용자를 삭제하시겠습니까?')) {
 		try {
 			const token = localStorage.getItem('accessToken');
+			const payload = parseJwt(token);
 
 			const headers = {
 				'Content-Type': 'application/json',
@@ -321,8 +323,14 @@ async function deleteUser(id) {
 			
 			if (response.data.code === 'USER_DELETE_SUCCESS') {
 				alert('사용자가 성공적으로 삭제되었습니다.');
-				const trElement = document.querySelector(`.user_list tr[data-id='${id}']`);
-				if (trElement) trElement.remove();
+				if (payload.id === id) {
+					localStorage.removeItem('accessToken');
+					location.href = '/admin/login.do';
+				}
+				else {
+					const trElement = document.querySelector(`.user_list tr[data-id='${id}']`);
+					if (trElement) trElement.remove();
+				}
 			}
 		}
 		catch (error) {

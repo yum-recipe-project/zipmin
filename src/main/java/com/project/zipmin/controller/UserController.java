@@ -571,8 +571,13 @@ public class UserController {
 		// 로그인 정보
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		
-		// 권한 확인	
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+		// 권한 확인
+		if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (userService.readUserByUsername(username).getId() == id) {
+				throw new ApiException(UserErrorCode.USER_SUPER_ADMIN_FORBIDDEN);
+			}
+		}
+		else {
 			// 관리자
 			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (userService.readUserById(id).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {

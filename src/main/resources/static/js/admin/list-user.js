@@ -174,7 +174,7 @@ function renderUserList(userList) {
 		const roleH6 = document.createElement('h6');
 		roleH6.className = 'fw-semibold mb-0';
 		roleH6.textContent =
-			user.role === 'ROLE_SUPER_ADMIN' ? '최고 관리자' :
+			user.role === 'ROLE_SUPER_ADMIN' ? '총관리자' :
 			user.role === 'ROLE_ADMIN' ? '관리자' : '일반 회원';
 		roleTd.appendChild(roleH6);
 
@@ -336,10 +336,26 @@ async function deleteUser(id) {
 		catch (error) {
 			const code = error?.response?.data?.code;
 			
-			
-			/**** 더 추가해야 함 !!!! */
 			if (code === 'USER_DELETE_FAIL') {
 				alert('사용자 삭제에 실패했습니다.');
+			}
+			if (code === 'USER_INVALID_INPUT') {
+				alert('입력값이 유효하지 않습니다.')
+			}
+			if (code === 'USER_UNAUTHORIZED_ACCESS') {
+				alert('로그인되지 않은 사용자입니다.');
+			}
+			if (code === 'USER_NOT_FOUND') {
+				alert('해당 사용자를 찾을 수 없습니다.');
+			}
+			if (code === 'USER_FORBIDDEN') {
+				alert('접근 권한이 없습니다.');
+			}
+			if (code === 'USER_SUPER_ADMIN_FORBIDDEN') {
+				alert('총관리자는 삭제할 수 없습니다.');
+			}
+			if (code === 'INTERNAL_SERVER_ERROR') {
+				alert('서버 내부 오류가 발생했습니다.');
 			}
 			else {
 				console.log(error);

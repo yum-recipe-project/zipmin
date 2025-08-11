@@ -54,8 +54,14 @@ public class UserService {
 	            userPage = userRepository.findAll(pageable);
 	        }
 			else {
-	            Role role = Role.valueOf(category.toUpperCase());
-	            userPage = userRepository.findByRole(role, pageable);
+				List<Role> roles = null;
+				if (category.equalsIgnoreCase("admin")) {
+				    roles = List.of(Role.ROLE_ADMIN, Role.ROLE_SUPER_ADMIN);
+				}
+				else if (category.equalsIgnoreCase("user")) {
+				    roles = List.of(Role.ROLE_USER);
+				}
+				userPage = userRepository.findByRoleIn(roles, pageable);
 	        }
 		}
 		catch (Exception e) {

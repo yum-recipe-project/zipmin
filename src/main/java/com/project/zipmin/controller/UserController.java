@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -570,10 +571,17 @@ public class UserController {
 		// 로그인 정보
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		
-		// 본인 확인
-		if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN)) {
-			if (id != userService.readUserByUsername(username).getId()) {
-				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+		// 권한 확인	
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserById(id).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+				}
+			}
+			else {
+				if (userService.readUserByUsername(username).getId() != id) {
+					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+				}
 			}
 		}
 		

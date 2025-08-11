@@ -42,8 +42,8 @@
 						<div class="tab">
 							<ul>
 								<li class="btn_tab"><a href="" data-tab="" class="active"><span>전체</span></a></li>
-								<li class="btn_tab"><a href="" data-tab="ROLE_ADMIN"><span>관리자</span></a></li>
-								<li class="btn_tab"><a href="" data-tab="ROLE_USER"><span>일반 회원</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="ADMIN"><span>관리자</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="USER"><span>일반 회원</span></a></li>
 							</ul>
 							
 						</div>

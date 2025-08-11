@@ -1,4 +1,24 @@
 /**
+ * 접근 권한을 설정하는 함수
+ */
+document.addEventListener('DOMContentLoaded', async function() {
+	if (!isLoggedIn()) {
+		redirectToLogin();
+	}
+
+	try {
+		await instance.get('/dummy');
+	}
+	catch (error) {
+		redirectToLogin();
+	}
+});
+
+
+
+
+
+/**
  * 전역변수
  */
 let category = '';
@@ -153,29 +173,48 @@ function renderUserList(userList) {
 		const roleTd = document.createElement('td');
 		const roleH6 = document.createElement('h6');
 		roleH6.className = 'fw-semibold mb-0';
-		roleH6.textContent = user.role === 'ROLE_ADMIN' ? '관리자' : '일반 회원';
+		roleH6.textContent =
+			user.role === 'ROLE_SUPER_ADMIN' ? '최고 관리자' :
+			user.role === 'ROLE_ADMIN' ? '관리자' : '일반 회원';
 		roleTd.appendChild(roleH6);
 
+		const token = localStorage.getItem('accessToken');
+		const payload = parseJwt(token);
+		
 		// 기능
 		const actionTd = document.createElement('td');
 		const btnWrap = document.createElement('div');
 		btnWrap.className = 'd-flex justify-content-end gap-2';
 
-		// 수정 버튼
-		const editBtn = document.createElement('button');
-		editBtn.type = 'button';
-		editBtn.className = 'btn btn-sm btn-outline-info';
-		editBtn.innerHTML = '수정';
-		// editBtn.onclick = () => { location.href = `/admin/editMegazine.do?id=${megazine.id}`; };
+		// 수정 버튼 조건
+		const canEdit =
+		    payload.role === 'ROLE_SUPER_ADMIN' ||
+		    (payload.role === 'ROLE_ADMIN' && user.role === 'ROLE_USER') ||
+		    (payload.id === user.id);
 
-		// 삭제 버튼
-		const deleteBtn = document.createElement('button');
-		deleteBtn.type = 'button';
-		deleteBtn.className = 'btn btn-sm btn-outline-danger';
-		deleteBtn.innerHTML = '삭제';
-		// deleteBtn.onclick = () => { deleteMegazine(megazine.id); };
-		
-		btnWrap.append(editBtn, deleteBtn);
+		if (canEdit) {
+		    const editBtn = document.createElement('button');
+		    editBtn.type = 'button';
+		    editBtn.className = 'btn btn-sm btn-outline-info';
+		    editBtn.innerHTML = '수정';
+		    // editBtn.onclick = () => { location.href = `/admin/editUser.do?id=${user.id}`; };
+		    btnWrap.appendChild(editBtn);
+		}
+
+		// 삭제 버튼 조건
+		const canDelete =
+		    (payload.role === 'ROLE_SUPER_ADMIN' && payload.id !== user.id) ||
+		    (payload.role === 'ROLE_ADMIN' && user.role === 'ROLE_USER');
+
+		if (canDelete) {
+		    const deleteBtn = document.createElement('button');
+		    deleteBtn.type = 'button';
+		    deleteBtn.className = 'btn btn-sm btn-outline-danger';
+		    deleteBtn.innerHTML = '삭제';
+		    deleteBtn.onclick = () => deleteUser(user.id);
+		    btnWrap.appendChild(deleteBtn);
+		}
+
 		actionTd.appendChild(btnWrap);
 
 		tr.append(noTd, usernameTd, nameTd, nicknameTd, telTd, emailTd, roleTd, actionTd);
@@ -257,3 +296,59 @@ function renderPagination() {
 		});
 	});
 }
+
+
+
+
+
+/**
+ * 회원을 삭제하는 함수
+ */
+async function deleteUser(id) {
+	
+	if (confirm('사용자를 삭제하시겠습니까?')) {
+		try {
+			const token = localStorage.getItem('accessToken');
+
+			const headers = {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
+			}
+			
+			const response = await instance.delete(`/users/${id}`, {
+				headers: headers
+			});
+			
+			if (response.data.code === 'USER_DELETE_SUCCESS') {
+				alert('사용자가 성공적으로 삭제되었습니다.');
+				const trElement = document.querySelector(`.user_list tr[data-id='${id}']`);
+				if (trElement) trElement.remove();
+			}
+		}
+		catch (error) {
+			const code = error?.response?.data?.code;
+			
+			
+			/**** 더 추가해야 함 !!!! */
+			if (code === 'USER_DELETE_FAIL') {
+				alert('사용자 삭제에 실패했습니다.');
+			}
+			else {
+				console.log(error);
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

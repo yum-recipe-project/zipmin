@@ -139,7 +139,6 @@ function renderUserList(userList) {
 		usernameH6.className = 'fw-semibold mb-0';
 		usernameH6.textContent = user.username;
 		usernameTd.appendChild(usernameH6);
-		// usernameTd.onclick = () => location.href = `/admin/viewMegazine.do?id=${megazine.id}`; 
 		
 		// 이름
 		const nameTd = document.createElement('td');
@@ -196,8 +195,23 @@ function renderUserList(userList) {
 		    const editBtn = document.createElement('button');
 		    editBtn.type = 'button';
 		    editBtn.className = 'btn btn-sm btn-outline-info';
+			editBtn.dataset.bsToggle = 'modal';
+			editBtn.dataset.bsTarget = '#editUserModal';
 		    editBtn.innerHTML = '수정';
-		    // editBtn.onclick = () => { location.href = `/admin/editUser.do?id=${user.id}`; };
+		    editBtn.onclick = () => {
+				if (!isLoggedIn()) {
+					redirectToLogin();
+					bootstrap.Modal.getInstance(document.getElementById('editUserModal')).hide();
+					return;
+				}
+				const form = document.getElementById('editUserForm');
+				form.id.value = user.id;
+				form.username.value = user.username;
+				form.name.value = user.name;
+				form.nickname.value = user.nickname;
+				form.tel.value = user.tel;
+				form.email.value = user.email;
+			};
 		    btnWrap.appendChild(editBtn);
 		}
 

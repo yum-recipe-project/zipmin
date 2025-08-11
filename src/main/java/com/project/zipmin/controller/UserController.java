@@ -488,12 +488,26 @@ public class UserController {
 		
 		// 로그인 정보
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		userRequestDto.setId(userService.readUserByUsername(username).getId());
+		userRequestDto.setId(id);
 		
-		// 본인 확인
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
-			if (id != userService.readUserByUsername(username).getId()) {
-				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+		// 권한 확인
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserById(id).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+				}
+				if (userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
+					if (userService.readUserByUsername(username).getId() != id) {
+						throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+					}
+				}
+			}
+			// 일반 회원
+			else {
+				if (userService.readUserByUsername(username).getId() != id) {
+					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+				}
 			}
 		}
 		

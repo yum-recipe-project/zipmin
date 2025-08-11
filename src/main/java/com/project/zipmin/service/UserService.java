@@ -183,6 +183,12 @@ public class UserService {
 				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
 
 		// 필요한 필드 수정
+		if (userDto.getUsername() != null) {
+			if (!userDto.getUsername().equals(user.getUsername()) && userRepository.existsByUsername(userDto.getUsername())) {
+				throw new ApiException(UserErrorCode.USER_USERNAME_DUPLICATED);
+			}
+			user.setUsername(userDto.getUsername());
+		}
 		if (userDto.getPassword() != null) {
 			user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		}

@@ -45,12 +45,18 @@ public class UserService {
 	
 
 	// 사용자 목록 조회
-	public Page<UserReadResponseDto> readUserPage(Pageable pageable) {
+	public Page<UserReadResponseDto> readUserPage(String category, Pageable pageable) {
 		
 		// 사용자 목록 조회
 		Page<User> userPage;
 		try {
-			userPage = userRepository.findAll(pageable);
+			if (category == null || category.isBlank()) {
+	            userPage = userRepository.findAll(pageable);
+	        }
+			else {
+	            Role role = Role.valueOf(category.toUpperCase());
+	            userPage = userRepository.findByRole(role, pageable);
+	        }
 		}
 		catch (Exception e) {
 			throw new ApiException(UserErrorCode.USER_READ_LIST_FAIL);

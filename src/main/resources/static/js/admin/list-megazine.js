@@ -239,7 +239,7 @@ async function deleteMegazine(id) {
 
 			const data = {
 				id: id
-			};
+			}
 
 			const response = await instance.delete(`/megazines/${id}`, {
 				data: data,

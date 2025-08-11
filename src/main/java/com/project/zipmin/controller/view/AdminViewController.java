@@ -57,6 +57,11 @@ public class AdminViewController {
 		return "admin/listComment";
 	}
 	
+	@GetMapping("/admin/listUser.do")
+	public String adminListUser() {
+		return "admin/listUser";
+	}
+	
 	@GetMapping("/admin/register.do")
 	public String adminRegister() {
 		return "admin/register";

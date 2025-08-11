@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			
 			category = this.getAttribute("data-tab");
 			page = 0;
-			
 			chompList = [];
 			
 			loadChompList(page);

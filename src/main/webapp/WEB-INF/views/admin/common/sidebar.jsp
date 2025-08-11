@@ -36,9 +36,9 @@
 					<span class="hide-menu">회원</span>
 				</li>
 				<li class="sidebar-item">
-					<a class="sidebar-link" href="/admin/button.do" aria-expanded="false">
+					<a class="sidebar-link" href="/admin/listUser.do" aria-expanded="false">
 						<span><i class="ti ti-mood-happy"></i></span>
-						<span class="hide-menu">회원관리</span>
+						<span class="hide-menu">회원 관리</span>
 					</a>
 				</li>
 				<li class="sidebar-item">

@@ -41,12 +41,12 @@
 					<div class="bar">
 						<div class="tab">
 							<ul>
-								<li class="btn_tab"><a href="/admin/listComment.do" class="active"><span>전체</span></a></li>
-								<li class="btn_tab"><a href="/admin/listVote.do"><span>레시피</span></a></li>
-								<li class="btn_tab"><a href="/admin/listVote.do"><span>키친가이드</span></a></li>
-								<li class="btn_tab"><a href="/admin/listVote.do"><span>투표 게시판</span></a></li>
-								<li class="btn_tab"><a href="/admin/listMegazine.do"><span>매거진 게시판</span></a></li>
-								<li class="btn_tab"><a href="/admin/listEvent.do"><span>이벤트 게시판</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="" class="active"><span>전체</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="recipe"><span>레시피</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="guide"><span>키친가이드</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="vote"><span>투표 게시판</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="megazine"><span>매거진 게시판</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="event"><span>이벤트 게시판</span></a></li>
 							</ul>
 						</div>
 					</div>
@@ -80,7 +80,7 @@
 					            <th>
 					                <h6 class="fs-4 fw-semibold mb-0">작성자</h6>
 					            </th>
-					            <th class="sort_btn asc" data-key="postdate">
+					            <th class="sort_btn desc" data-key="postdate">
 					                <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
 					            </th>
 					            <th class="sort_btn" data-key="likecount">

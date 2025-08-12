@@ -5,8 +5,9 @@ let totalPages = 0;
 let page = 0;
 const size = 10;
 let keyword = '';
+let category = '';
 let sortKey = 'postdate';
-let sortOrder = 'asc';
+let sortOrder = 'desc';
 let commentList = [];
 
 
@@ -26,6 +27,28 @@ document.addEventListener('DOMContentLoaded', function() {
 		fetchCommentList();
 	});
 	
+	// 카테고리
+	document.querySelectorAll('.btn_tab a').forEach(tab => {
+		tab.addEventListener('click', function (event) {
+			event.preventDefault();
+			document.querySelector('.btn_tab a.active')?.classList.remove('active');
+			this.classList.add('active');
+			
+			category = this.getAttribute('data-tab');
+			page = 0;
+			keyword = '';
+			document.getElementById('text-srh').value = '';
+			sortKey = 'postdate';
+			sortOrder = 'desc';
+			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
+			document.querySelector(`.sort_btn[data-key="${sortKey}"]`).classList.add(sortOrder);
+			
+			commentList = [];
+			
+			fetchCommentList();
+		});
+	});
+	
 	// 정렬 버튼
 	document.querySelectorAll('.sort_btn').forEach(btn => {
 		btn.addEventListener('click', function(event) {
@@ -37,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		    }
 			else {
 		      sortKey = key;
-		      sortOrder = 'asc';
+		      sortOrder = 'desc';
 		    }
 			
 			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
@@ -65,6 +88,7 @@ async function fetchCommentList() {
 			page : page,
 			size : size,
 			keyword : keyword,
+			tablename: category,
 			sort: sortKey + '-' + sortOrder
 		}).toString();
 		
@@ -117,7 +141,7 @@ function renderCommentList(commentList) {
     const tr = document.createElement('tr');
     tr.dataset.id = comment.id;
 
-    // No
+    // 번호
     const noTd = document.createElement('td');
     const noH6 = document.createElement('h6');
     noH6.className = 'fw-semibold mb-0';
@@ -125,7 +149,6 @@ function renderCommentList(commentList) {
     noTd.appendChild(noH6);
 
     // 게시판명
-	//****** 이거 수정 !!!!! */
     const tableTd = document.createElement('td');
     const tableH6 = document.createElement('h6');
     tableH6.className = 'fw-semibold mb-0';

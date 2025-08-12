@@ -56,6 +56,33 @@ public class AdminViewController {
 		return "admin/listComment";
 	}
 	
+	@GetMapping("/admin/listRecipeComment.do")
+	public String adminListRecipeComment() {
+		return "admin/listRecipeComment";
+	}
+	
+	@GetMapping("/admin/listGuideComment.do")
+	public String adminListGuideComment() {
+		return "admin/listGuideComment";
+	}
+	
+	@GetMapping("/admin/listMegazineComment.do")
+	public String adminListMegazineComment() {
+		return "admin/listMegazineComment";
+	}
+	
+	
+	@GetMapping("/admin/listVoteComment.do")
+	public String adminListVoteComment() {
+		return "admin/listVoteComment";
+	}
+	
+	
+	@GetMapping("/admin/listEventComment.do")
+	public String adminListEventComment() {
+		return "admin/listEventComment";
+	}
+	
 	@GetMapping("/admin/listReview.do")
 	public String adminListReview() {
 		return "admin/listReview";

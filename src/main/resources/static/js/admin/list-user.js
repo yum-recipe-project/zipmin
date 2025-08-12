@@ -227,10 +227,10 @@ function renderUserList(userList) {
 			editBtn.dataset.bsToggle = 'modal';
 			editBtn.dataset.bsTarget = '#editUserModal';
 		    editBtn.innerHTML = '수정';
+			// admin/list-comment.js보고 수정
 		    editBtn.onclick = () => {
 				if (!isLoggedIn()) {
 					redirectToLogin();
-					bootstrap.Modal.getInstance(document.getElementById('editUserModal')).hide();
 					return;
 				}
 				const form = document.getElementById('editUserForm');

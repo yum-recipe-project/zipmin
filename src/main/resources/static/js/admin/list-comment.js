@@ -219,8 +219,19 @@ function renderCommentList(commentList) {
 	const editBtn = document.createElement('button');
 	editBtn.type = 'button';
 	editBtn.className = 'btn btn-sm btn-outline-info';
+	editBtn.dataset.bsToggle = 'modal';
+	editBtn.dataset.bsTarget = '#editCommentModal';
 	editBtn.innerHTML = '수정';
-	// editBtn.onclick = () => { location.href = `/admin/editMegazine.do?id=${megazine.id}`; };
+	editBtn.addEventListener('click', (event) => {
+		if (!isLoggedIn()) {
+			event.preventDefault();
+			redirectToLogin();
+			return;
+		}
+		const form = document.getElementById('editCommentForm');
+		form.id.value = comment.id;
+		form.content.value = comment.content;
+	});
 
 	// 삭제 버튼
 	const deleteBtn = document.createElement('button');
@@ -369,18 +380,8 @@ async function deleteComment(id) {
 				console.log(error);
 			}
 		}
-		
-		
 	}
 }
-
-
-
-
-
-
-
-
 
 
 

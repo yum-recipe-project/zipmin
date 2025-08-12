@@ -489,10 +489,20 @@ public class CommentService {
 		Comment comment = commentRepository.findById(commentDto.getId())
 				.orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
 		
-		// 소유자 검증 (관리자면 소유자 검증 무시)
-		if (!userService.readUserById(commentDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
-			if (comment.getUser().getId() != commentDto.getUserId()) {
-				throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (comment.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(CommentErrorCode.COMMENT_SUPER_ADMIN_FORBIDDEN);
+				}
+			}
+			// 일반 회원
+			else {
+				if (userService.readUserByUsername(username).getId() != comment.getUser().getId()) {
+					throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+				}
 			}
 		}
 		

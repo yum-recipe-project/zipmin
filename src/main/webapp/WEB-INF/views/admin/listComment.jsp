@@ -11,10 +11,12 @@
 		<link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
 		<link rel="stylesheet" href="../assets/css/styles.min.css" />
 		<link rel="stylesheet" href="/css/admin/list-comment.css" />
+		<link rel="stylesheet" href="/css/admin/common/modal.css" />
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 		<script src="/js/common/jwt.js"></script>
 		<script src="/js/common/util.js"></script>
 		<script src="/js/admin/list-comment.js"></script>
+		<script src="/js/admin/modal/edit-comment-modal.js"></script>
 	</head>
 	
 	<body>
@@ -104,6 +106,9 @@
 				
 				</div>
 			</div>
+			
+			<!-- 댓글 수정 모달 -->
+			<%@include file="../admin/modal/editCommentModal.jsp" %>
 		</div>
 		
 		<script src="../assets/libs/jquery/dist/jquery.min.js"></script>

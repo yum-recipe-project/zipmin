@@ -765,12 +765,7 @@ async function deleteComment(id) {
 				'Authorization': `Bearer ${token}`
 			}
 			
-			const data = {
-				id: id
-			};
-			
 			const response = await instance.delete(`/comments/${id}`, {
-				data: data,
 				headers: headers
 			});
 			

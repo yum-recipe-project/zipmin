@@ -12,6 +12,7 @@ public enum CommentErrorCode implements Code {
 	// 인증/인가
 	COMMENT_UNAUTHORIZED_ACCESS(HttpStatus.UNAUTHORIZED, "로그인되지 않은 사용자"),
 	COMMENT_FORBIDDEN(HttpStatus.FORBIDDEN, "권한 없는 사용자의 접근"),
+	COMMENT_SUPER_ADMIN_FORBIDDEN(HttpStatus.FORBIDDEN, "권한 없는 사용자의 접근"),
 	
 	// 입력값 오류
 	COMMENT_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),

@@ -341,8 +341,10 @@ public class CommentController {
 	})
 	@DeleteMapping("/comments/{id}")
 	public ResponseEntity<?> deleteComment(
-			@Parameter(description = "댓글의 일련번호", required = true, example = "1") @PathVariable int id,
-			@Parameter(description = "댓글 삭제 요청 정보", required = true) @RequestBody CommentDeleteRequestDto commentDto) {
+			@Parameter(description = "댓글의 일련번호", required = true, example = "1") @PathVariable int id) {
+		
+		///// ******* SUPERADMINFORBIDDEN도 스웨거에 추가할것
+		
 		
 		// 인증 여부 확인 (비로그인)
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -350,11 +352,7 @@ public class CommentController {
 		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 로그인 정보
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		commentDto.setUserId(userService.readUserByUsername(username).getId());
-		
-		commentService.deleteComment(commentDto);
+		commentService.deleteComment(id);
 		
 		return ResponseEntity.status(CommentSuccessCode.COMMENT_DELETE_SUCCESS.getStatus())
 				.body(ApiResponse.success(CommentSuccessCode.COMMENT_DELETE_SUCCESS, null));

@@ -61,3 +61,91 @@ function capitalizeFirst(str) {
   
 }
 
+
+
+
+
+/**
+ * 
+ */
+function alertPrimary(message) {
+	area = document.createElement('div');
+	area.id = 'alert-area';
+	area.style.position = 'fixed';
+	area.style.bottom = '40px';
+	area.style.left = '50%';
+	area.style.transform = 'translateX(-50%)';
+	area.style.zIndex = '9999';
+	document.body.appendChild(area);
+	
+	const alertDiv = document.createElement('div');
+	alertDiv.className = 'alert customize-alert text-primary rounded-pill alert-light-primary bg-primary-subtle fade show';
+	alertDiv.setAttribute('role', 'alert');
+	alertDiv.style.fontSize = '1rem';
+	alertDiv.style.padding = '0.75rem 1rem';
+	
+	const flexDiv = document.createElement('div');
+	flexDiv.className = 'd-flex align-items-center me-3 me-md-0';
+	
+	const icon = document.createElement('i');
+	icon.className = 'ti ti-info-circle fs-5 me-2 flex-shrink-0 text-primary';
+
+	const textNode = document.createTextNode(message);
+	
+	flexDiv.appendChild(icon);
+	flexDiv.appendChild(textNode);
+	alertDiv.appendChild(flexDiv);
+	area.appendChild(alertDiv);
+	
+	// 일정시간 후 페이드아웃 후 제거
+	setTimeout(() => {
+		alertDiv.classList.remove('show');
+		setTimeout(() => alertDiv.remove(), 300);
+	}, 2000);
+}
+
+
+
+
+/**
+ * 
+ */
+function alertDanger(message) {
+	area = document.createElement('div');
+	area.id = 'alert-area';
+	area.style.position = 'fixed';
+	area.style.bottom = '40px';
+	area.style.left = '50%';
+	area.style.transform = 'translateX(-50%)';
+	area.style.zIndex = '9999';
+	document.body.appendChild(area);
+	
+	const alertDiv = document.createElement('div');
+	alertDiv.className = 'alert customize-alert rounded-pill alert-light-danger bg-danger-subtle text-danger fade show';
+	alertDiv.setAttribute('role', 'alert');
+	alertDiv.style.fontSize = '1rem';
+	alertDiv.style.padding = '0.75rem 1rem';
+	
+	const flexDiv = document.createElement('div');
+	flexDiv.className = 'd-flex align-items-center me-3 me-md-0';
+	
+	const icon = document.createElement('i');
+	icon.className = 'ti ti-info-circle fs-5 me-2 text-danger';
+	
+	const textNode = document.createTextNode(message);
+	
+	flexDiv.appendChild(icon);
+	flexDiv.appendChild(textNode);
+	alertDiv.appendChild(flexDiv);
+	area.appendChild(alertDiv);
+	
+	// 일정시간 후 페이드아웃 후 제거
+	setTimeout(() => {
+		alertDiv.classList.remove('show');
+		setTimeout(() => alertDiv.remove(), 300);
+	}, 2000);
+}
+
+
+
+

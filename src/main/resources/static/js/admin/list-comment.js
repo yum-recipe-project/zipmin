@@ -227,7 +227,7 @@ function renderCommentList(commentList) {
 	deleteBtn.type = 'button';
 	deleteBtn.className = 'btn btn-sm btn-outline-danger';
 	deleteBtn.innerHTML = '삭제';
-	// deleteBtn.onclick = () => { deleteMegazine(megazine.id); };
+	deleteBtn.onclick = () => deleteComment(comment.id);
 
 	btnWrap.append(editBtn, deleteBtn);
 	actionTd.appendChild(btnWrap);
@@ -309,6 +309,70 @@ function renderPagination() {
 }
 
 
+
+
+
+
+/**
+ * 댓글을 삭제하는 함수
+ */
+async function deleteComment(id) {
+	
+	if (confirm('댓글을 삭제하시겠습니까?')) {
+		try {
+			const token = localStorage.getItem('accessToken');
+
+			const headers = {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
+			}
+			
+			const response = await instance.delete(`/comments/${id}`, {
+				headers: headers
+			});
+			
+			console.log(response);
+			
+			if (response.data.code === 'COMMENT_DELETE_SUCCESS') {
+				alertPrimary('댓글이 성공적으로 삭제되었습니다.');
+				
+				// 이거 댓글이면 대댓글도 다 삭제되도록 수정 ****************
+				const trElement = document.querySelector(`.comment_list tr[data-id='${id}']`);
+				if (trElement) trElement.remove();
+			}
+		}
+		catch (error) {
+			const code = error?.response?.data?.code;
+			
+			if (code === 'COMMENT_DELETE_FAIL') {
+				alertDanger('댓글 삭제에 실패했습니다.');
+			}
+			else if (code === 'COMMENT_INVALID_INPUT') {
+				alertDanger('입력값이 유효하지 않습니다.');
+			}
+			else if (code === 'COMMENT_UNAUTHORIZED_ACCESS') {
+				alertDanger('로그인되지 않은 사용자입니다.');
+			}
+			else if (code === 'COMMENT_FORBIDDEN') {
+				alertDanger('접근 권한이 없습니다.');
+			}
+			else if (code === 'COMMENT_SUPER_ADMIN_FORBIDDEN') {
+				alertDanger('접근 권한이 없습니다.');
+			}
+			else if (code === 'COMMENT_NOT_FOUND') {
+				alertDanger('해당 댓글을 찾을 수 없습니다.');
+			}
+			else if (code == 'INTERNAL_SERVER_ERROR') {
+				alertDanger('서버 내부 오류가 발생했습니다.');
+			}
+			else {
+				console.log(error);
+			}
+		}
+		
+		
+	}
+}
 
 
 

@@ -513,27 +513,37 @@ public class CommentService {
 	
 	
 	// 댓글 삭제
-	public void deleteComment(CommentDeleteRequestDto commentDto) {
+	public void deleteComment(Integer id) {
 		
 		// 입력값 검증
-		if (commentDto == null || commentDto.getId() == null || commentDto.getUserId() == null) {
+		if (id == null) {
 			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
 		}
 		
 		// 댓글 존재 여부 판단
-		Comment comment = commentRepository.findById(commentDto.getId())
+		Comment comment = commentRepository.findById(id)
 				.orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
 		
-		// 소유자 검증 (관리자면 소유자 검증 무시)
-		if (!userService.readUserById(commentDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
-			if (comment.getUser().getId() != commentDto.getUserId()) {
-				throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (comment.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(CommentErrorCode.COMMENT_SUPER_ADMIN_FORBIDDEN);
+				}
+			}
+			// 일반 회원
+			else {
+				if (userService.readUserByUsername(username).getId() != comment.getUser().getId()) {
+					throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+				}
 			}
 		}
-	    
+
 		// 댓글 삭제
 		try {
-			commentRepository.deleteById(commentDto.getId());
+			commentRepository.deleteById(id);
 		}
 		catch (Exception e) {
 			throw new ApiException(CommentErrorCode.COMMENT_DELETE_FAIL);

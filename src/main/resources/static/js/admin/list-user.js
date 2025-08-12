@@ -250,7 +250,7 @@ function renderUserList(userList) {
 		    deleteBtn.innerHTML = '삭제';
 		    deleteBtn.onclick = () => deleteUser(user.id);
 			
-		    btnWrap.appendChild(editBtn, deleteBtn);
+		    btnWrap.append(editBtn, deleteBtn);
 		}
 
 		actionTd.appendChild(btnWrap);

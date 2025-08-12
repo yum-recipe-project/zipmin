@@ -26,7 +26,6 @@ public class AdminViewController {
 		return "admin/listVote";
 	}
 	
-	
 	@GetMapping("/admin/listMegazine.do")
 	public String adminListMegazine() {
 		return "admin/listMegazine";
@@ -55,6 +54,11 @@ public class AdminViewController {
 	@GetMapping("/admin/listComment.do")
 	public String adminListComment() {
 		return "admin/listComment";
+	}
+	
+	@GetMapping("/admin/listReview.do")
+	public String adminListReview() {
+		return "admin/listReview";
 	}
 	
 	@GetMapping("/admin/listUser.do")

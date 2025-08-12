@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <!doctype html>
-<html lang="en">
+<html>
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,113 +11,98 @@
 		<link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
 		<link rel="stylesheet" href="../assets/css/styles.min.css" />
 		<link rel="stylesheet" href="/css/admin/list-comment.css" />
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script src="/js/common/jwt.js"></script>
 		<script src="/js/common/util.js"></script>
 		<script src="/js/admin/list-comment.js"></script>
 	</head>
 	
 	<body>
-		<!--  Body Wrapper -->
 		<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
 			data-sidebar-position="fixed" data-header-position="fixed">
 			
-			<!-- Sidebar -->
+			<!-- 사이드바 -->
 			<%@include file="./common/sidebar.jsp" %>
 			
-			<!--  Main wrapper -->
 			<div class="body-wrapper">
+				<!-- 헤더 -->
 				<%@include file="./common/header.jsp" %>
 				
-				<main id="container">
-					<div class="content">
-					
-						<!-- 네비게이션 바 -->
-						<div class="nav_wrap">
-							<a href="/admin/home.do"><span>메인</span></a>
-							<a href="">
-								<img src="/images/cooking/arrow_right.png">
-								<span>댓글/리뷰</span>
-							</a>
-							<a class="active" href="">
-								<img src="/images/cooking/arrow_right.png">
-								<span>댓글</span>
-							</a>
-						</div>
-						
-						<h1>댓글 관리</h1>
-						<div class="bar">
-							<div class="tab">
-								<ul>
-									<li class="btn_tab" data-testid="tabItem">
-										<a class="active"><span>전체</span></a>
-									</li>
-									<li class="btn_tab" data-testid="tabItem">
-										<a><span>투표</span></a>
-									</li>
-									<li class="btn_tab" data-testid="tabItem">
-										<a><span>매거진</span></a>
-									</li>
-									<li class="btn_tab" data-testid="tabItem">
-										<a><span>이벤트</span></a>
-									</li>
-									<li class="btn_tab" data-testid="tabItem">
-										<a><span>매거진</span></a>
-									</li>
-									<li class="btn_tab" data-testid="tabItem">
-										<a><span>매거진</span></a>
-									</li>
-								</ul>
-							</div>
-							<button type="button" class="btn btn-info m-1">
-								<i class="ti ti-plus fs-4"></i>
-								투표 추가
-							</button>
-						</div>
-			
-						<table class="table text-nowrap mb-0 align-middle">
-						    <thead class="text-dark fs-4">
-						        <tr>
-						            <th class="total"></th>
-						            <th></th>
-						            <th></th>
-						            <th></th>
-						            <th></th>
-						            <th></th>
-						            <th><i class="ti ti-search fs-6"></i></th>
-						        </tr>
-						        <tr class="table_th">
-						            <th>
-						                <h6 class="fs-4 fw-semibold mb-0">No</h6>
-						            </th>
-						            <th>
-						                <h6 class="fs-4 fw-semibold mb-0">제목</h6>
-						            </th>
-						            <th>
-						                <h6 class="fs-4 fw-semibold mb-0">참여 기간</h6>
-						            </th>
-						            <th>
-						                <h6 class="fs-4 fw-semibold mb-0">상태</h6>
-						            </th>
-						            <th>
-						                <h6 class="fs-4 fw-semibold mb-0">참여자수</h6>
-						            </th>
-						            <th>
-						                <h6 class="fs-4 fw-semibold mb-0">댓글수</h6>
-						            </th>
-						            <th></th>
-						        </tr>
-						    </thead>
-						    <tbody class="vote_list"></tbody>
-						</table>
-	
-						<!-- 페이지네이션 -->
-						<div class="pagination_wrap">
-							<div class="pagination">
-							    <ul></ul>
-							</div>
-						</div>
-					
+					<div class="container-fluid">
+					<!-- 네비게이션 바 -->
+					<div class="nav_wrap">
+						<a href="/admin/home.do"><span>메인</span></a>
+						<a href=""><img src="/images/cooking/arrow_right.png"><span>댓글/리뷰</span></a>
+						<a href="/admin/listComment.do" class="active"><img src="/images/cooking/arrow_right.png"><span>댓글</span></a>
 					</div>
-				</main>
+					
+					<!-- 제목 -->
+					<h1>댓글</h1>
+					<div class="bar">
+						<div class="tab">
+							<ul>
+								<li class="btn_tab"><a href="/admin/listComment.do" class="active"><span>전체</span></a></li>
+								<li class="btn_tab"><a href="/admin/listVote.do"><span>레시피</span></a></li>
+								<li class="btn_tab"><a href="/admin/listVote.do"><span>키친가이드</span></a></li>
+								<li class="btn_tab"><a href="/admin/listVote.do"><span>투표 게시판</span></a></li>
+								<li class="btn_tab"><a href="/admin/listMegazine.do"><span>매거진 게시판</span></a></li>
+								<li class="btn_tab"><a href="/admin/listEvent.do"><span>이벤트 게시판</span></a></li>
+							</ul>
+						</div>
+					</div>
+		
+					<!-- 목록 -->
+					<table class="table text-nowrap mb-0 align-middle">
+					    <thead class="text-dark fs-4">
+					        <tr>
+					            <th class="total"></th>
+					            <th></th>
+					            <th></th>
+					            <th></th>
+					            <th></th>
+					            <th colspan="3" class="text-end">
+					            	<form class="search position-relative text-end">
+					            		<input type="text" class="form-control search-chat py-2 ps-5" id="text-srh" placeholder="검색어를 입력하세요">
+					            		<i class="ti ti-search position-absolute top-50 start-0 translate-middle-y fs-6 text-dark ms-3"></i>
+					            	</form>
+					            </th>
+					        </tr>
+					        <tr class="table_th">
+					            <th>
+					                <h6 class="fs-4 fw-semibold mb-0">No</h6>
+					            </th>
+					            <th>
+					                <h6 class="fs-4 fw-semibold mb-0">게시판명</h6>
+					            </th>
+					            <th>
+					                <h6 class="fs-4 fw-semibold mb-0">내용</h6>
+					            </th>
+					            <th>
+					                <h6 class="fs-4 fw-semibold mb-0">작성자</h6>
+					            </th>
+					            <th class="sort_btn asc" data-key="postdate">
+					                <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
+					            </th>
+					            <th class="sort_btn" data-key="likecount">
+					                <h6 class="fs-4 fw-semibold mb-0">좋아요수</h6>
+					            </th>
+					            <th class="sort_btn" data-key="reportcount">
+					                <h6 class="fs-4 fw-semibold mb-0">신고수</h6>
+					            </th>
+					            <th></th>
+					        </tr>
+					    </thead>
+					    <tbody class="comment_list"></tbody>
+					</table>
+
+					<!-- 페이지네이션 -->
+					<div class="pagination_wrap">
+						<div class="pagination">
+						    <ul></ul>
+						</div>
+					</div>
+				
+				</div>
 			</div>
 		</div>
 		

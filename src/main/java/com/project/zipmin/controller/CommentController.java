@@ -111,23 +111,34 @@ public class CommentController {
 	})
 	@GetMapping("/comments")
 	public ResponseEntity<?> readComment(
-			@Parameter(description = "테이블 이름", required = true, example = "recipe") @RequestParam String tablename,
-			@Parameter(description = "레코드 번호", required = true, example = "1") @RequestParam int recodenum,
-			@Parameter(description = "정렬 순서", required = true, example = "new") @RequestParam String sort,
+			@Parameter(description = "테이블 이름", required = false, example = "recipe") @RequestParam(required = false) String tablename,
+			@Parameter(description = "레코드 번호", required = false, example = "1") @RequestParam(required = false) Integer recodenum,
+			@Parameter(description = "검색어", required = false, example = "가나다") @RequestParam(required = false) String keyword,
+			@Parameter(description = "정렬 순서", required = false, example = "new") @RequestParam(required = false) String sort,
 			@Parameter(description = "조회할 페이지 번호", required = true, example = "1") @RequestParam int page,
 			@Parameter(description = "페이지의 항목 수", required = true, example = "10") @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
 		Page<CommentReadResponseDto> commentPage = null;
 		
-		if (sort.equals("new")) {
-			commentPage = commentService.readCommentPageOrderByIdDesc(tablename, recodenum, pageable);
+		//***** 이거 수정함 !!!!! 댓글 js도 수정해야함 !!!!!!
+		if (sort.equals("postdate-desc")) {
+			commentPage = commentService.readCommentPageOrderByIdDesc(tablename, recodenum, keyword, pageable);
 		}
-		else if (sort.equals("old")) {
-			commentPage = commentService.readCommentPageOrderByIdAsc(tablename, recodenum, pageable);
+		else if (sort.equals("postdate-asc")) {
+			commentPage = commentService.readCommentPageOrderByIdAsc(tablename, recodenum, keyword, pageable);
 		}
-		else if (sort.equals("hot")) {
-			commentPage = commentService.readCommentPageOrderByLikecount(tablename, recodenum, pageable);
+		else if (sort.equals("likecount-desc")) {
+			commentPage = commentService.readCommentPageOrderByLikecountDesc(tablename, recodenum, keyword, pageable);
+		}
+		else if (sort.equals("likecount-asc")) {
+			commentPage = commentService.readCommentPageOrderByLikecountAsc(tablename, recodenum, keyword, pageable);
+		}
+		else if (sort.equals("reportcount-desc")) {
+			commentPage = commentService.readCommentPageOrderByReportcountDesc(tablename, recodenum, keyword, pageable);
+		}
+		else if (sort.equals("reportcount-asc")) {
+			commentPage = commentService.readCommentPageOrderByReportcountAsc(tablename, recodenum, keyword, pageable);
 		}
 		
 		return ResponseEntity.status(CommentSuccessCode.COMMENT_READ_LIST_SUCCESS.getStatus())

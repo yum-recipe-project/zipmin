@@ -58,17 +58,35 @@ public class CommentService {
 	
 	
 	// 댓글 목록 조회 (오래된순)
-	public Page<CommentReadResponseDto> readCommentPageOrderByIdAsc(String tablename, Integer recodenum, Pageable pageable) {
+	public Page<CommentReadResponseDto> readCommentPageOrderByIdAsc(String tablename, Integer recodenum, String keyword, Pageable pageable) {
 		
 		// 입력값 검증
-		if (tablename == null || recodenum == null || pageable == null) {
+		if (pageable == null) {
 			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
 		}
 		
 		// 댓글 목록 조회
-		Page<Comment> commentPage;
+		Page<Comment> commentPage = null;
 		try {
-			commentPage = commentRepository.findByTablenameAndRecodenumOrderByIdAsc(tablename, recodenum, pageable);
+			boolean hasTable = tablename != null && !tablename.isBlank();
+	        boolean hasRecord = recodenum != null;
+	        boolean hasKeyword = keyword != null && !keyword.isBlank();
+
+	        if (!hasTable) {
+	        	// 전체
+	            commentPage = hasKeyword
+	                    ? commentRepository.findByContentContainingIgnoreCaseOrderByPostdateAsc(keyword, pageable)
+	                    : commentRepository.findAllByOrderByPostdateAsc(pageable);
+	        }
+	        else if (!hasRecord) {
+	            // 테이블만
+	            commentPage = hasKeyword
+	                    ? commentRepository.findByTablenameAndContentContainingIgnoreCaseOrderByPostdateAsc(tablename, keyword, pageable)
+	                    : commentRepository.findByTablenameOrderByPostdateAsc(tablename, pageable);
+	        } else {
+	        	// 테이블과 레코드
+	            commentPage = commentRepository.findByTablenameAndRecodenumOrderByComment_IdDescIdAsc(tablename, recodenum, pageable);
+	        }
 		}
 		catch (Exception e) {
 			throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);
@@ -96,17 +114,35 @@ public class CommentService {
 	
 	
 	// 댓글 목록 조회 (최신순)
-	public Page<CommentReadResponseDto> readCommentPageOrderByIdDesc(String tablename, Integer recodenum, Pageable pageable) {
+	public Page<CommentReadResponseDto> readCommentPageOrderByIdDesc(String tablename, Integer recodenum, String keyword, Pageable pageable) {
 
 		// 입력값 검증
-		if (tablename == null || recodenum == null || pageable == null) {
+		if (pageable == null) {
 			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
 		}
 		
 		// 댓글 목록 조회
 		Page<Comment> commentPage;
 		try {
-			commentPage = commentRepository.findByTablenameAndRecodenumOrderByIdDesc(tablename, recodenum, pageable);
+			boolean hasTable = tablename != null && !tablename.isBlank();
+	        boolean hasRecord = recodenum != null;
+	        boolean hasKeyword = keyword != null && !keyword.isBlank();
+
+	        if (!hasTable) {
+	        	// 전체
+	            commentPage = hasKeyword
+	                    ? commentRepository.findByContentContainingIgnoreCaseOrderByPostdateDesc(keyword, pageable)
+	                    : commentRepository.findAllByOrderByPostdateDesc(pageable);
+	        }
+	        else if (!hasRecord) {
+	            // 테이블만
+	            commentPage = hasKeyword
+	                    ? commentRepository.findByTablenameAndContentContainingIgnoreCaseOrderByPostdateDesc(tablename, keyword, pageable)
+	                    : commentRepository.findByTablenameOrderByPostdateDesc(tablename, pageable);
+	        } else {
+	        	// 테이블과 레코드
+	            commentPage = commentRepository.findByTablenameAndRecodenumOrderByComment_IdDescIdDesc(tablename, recodenum, pageable);
+	        }
 		}
 		catch (Exception e) {
 			throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);
@@ -134,17 +170,35 @@ public class CommentService {
 	
 	
 	// 댓글 목록 조회 (인기순)
-	public Page<CommentReadResponseDto> readCommentPageOrderByLikecount(String tablename, Integer recodenum, Pageable pageable) {
+	public Page<CommentReadResponseDto> readCommentPageOrderByLikecountDesc(String tablename, Integer recodenum, String keyword, Pageable pageable) {
 		
 		// 입력값 검증
-		if (tablename == null || recodenum == null || pageable == null) {
+		if (pageable == null) {
 			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
 		}
 		
 		// 댓글 목록 조회
 		Page<Comment> commentPage;
 		try {
-			commentPage = commentRepository.findByTablenameAndRecodenumOrderByLikecount(tablename, recodenum, pageable);
+			boolean hasTable = tablename != null && !tablename.isBlank();
+	        boolean hasRecord = recodenum != null;
+	        boolean hasKeyword = keyword != null && !keyword.isBlank();
+
+	        if (!hasTable) {
+	        	// 전체
+	            commentPage = hasKeyword
+	                    ? commentRepository.findByContentContainingIgnoreCaseOrderByLikecountDescIdAsc(keyword, pageable)
+	                    : commentRepository.findAllByOrderByLikecountDescIdAsc(pageable);
+	        }
+	        else if (!hasRecord) {
+	            // 테이블만
+	            commentPage = hasKeyword
+	                    ? commentRepository.findByTablenameAndContentContainingIgnoreCaseOrderByLikecountDescIdAsc(tablename, keyword, pageable)
+	                    : commentRepository.findByTablenameOrderByLikecountDescIdAsc(tablename, pageable);
+	        } else {
+	        	// 테이블과 레코드
+	            commentPage = commentRepository.findByTablenameAndRecodenumOrderByLikecountDescIdAsc(tablename, recodenum, pageable);
+	        }
 		}
 		catch (Exception e) {
 			throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);
@@ -171,6 +225,165 @@ public class CommentService {
 	
 	
 	
+	// 댓글 목록 조회 (비인기순)
+	public Page<CommentReadResponseDto> readCommentPageOrderByLikecountAsc(
+	        String tablename, Integer recodenum, String keyword, Pageable pageable) {
+
+	    if (pageable == null) {
+	        throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
+	    }
+
+	    Page<Comment> commentPage;
+	    try {
+	    	boolean hasTable = tablename != null && !tablename.isBlank();
+	    	boolean hasRecord = recodenum != null;
+	    	boolean hasKeyword = keyword != null && !keyword.isBlank();
+	    	
+	        if (!hasTable) {
+	        	// 전체
+	            commentPage = hasKeyword
+	                    ? commentRepository.findByContentContainingIgnoreCaseOrderByLikecountAscIdAsc(keyword, pageable)
+	                    : commentRepository.findAllByOrderByLikecountAscIdAsc(pageable);
+	        }
+	        else if (!hasRecord) {
+	        	// 테이블만
+	            commentPage = hasKeyword
+	                    ? commentRepository.findByTablenameAndContentContainingIgnoreCaseOrderByLikecountAscIdAsc(tablename, keyword, pageable)
+	                    : commentRepository.findByTablenameOrderByLikecountAscIdAsc(tablename, pageable);
+	        }
+	        else {
+	        	// 테이블과 레코드
+	            commentPage = commentRepository.findByTablenameAndRecodenumOrderByLikecountAscIdAsc(tablename, recodenum, pageable);
+	        }
+	    } catch (Exception e) {
+	        throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);
+	    }
+
+	    List<CommentReadResponseDto> list = new ArrayList<>();
+	    for (Comment c : commentPage) {
+	        CommentReadResponseDto dto = commentMapper.toReadResponseDto(c);
+	        dto.setNickname(c.getUser().getNickname());
+	        dto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", c.getId()));
+
+	        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
+	            String username = auth.getName();
+	            int userId = userService.readUserByUsername(username).getId();
+	            dto.setLikestatus(likeService.existsUserLike("comments", c.getId(), userId));
+	        }
+	        list.add(dto);
+	    }
+	    return new PageImpl<>(list, pageable, commentPage.getTotalElements());
+	}
+
+	
+	
+	// 댓글 목록 조회 (신고순)
+	public Page<CommentReadResponseDto> readCommentPageOrderByReportcountDesc(
+	        String tablename, Integer recodenum, String keyword, Pageable pageable) {
+
+	    if (pageable == null) {
+	    	throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
+	    }
+
+	    Page<Comment> commentPage;
+	    try {
+	    	boolean hasTable = tablename != null && !tablename.isBlank();
+	    	boolean hasRecord = recodenum != null;
+	    	boolean hasKeyword = keyword != null && !keyword.isBlank();
+	    	
+	        if (!hasTable) {
+	        	// 전체
+	            commentPage = hasKeyword
+	                    ? commentRepository.findByContentContainingIgnoreCaseOrderByReportcountDescIdAsc(keyword, pageable)
+	                    : commentRepository.findAllByOrderByReportcountDescIdAsc(pageable);
+	        }
+	        else if (!hasRecord) {
+	        	// 테이블만
+	            commentPage = hasKeyword
+	                    ? commentRepository.findByTablenameAndContentContainingIgnoreCaseOrderByReportcountDescIdAsc(tablename, keyword, pageable)
+	                    : commentRepository.findByTablenameOrderByReportcountDescIdAsc(tablename, pageable);
+	        }
+	        else {
+	        	// 테이블과 레코드
+	            commentPage = commentRepository.findByTablenameAndRecodenumOrderByReportcountDescIdAsc(tablename, recodenum, pageable);
+	        }
+	    } catch (Exception e) {
+	        throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);
+	    }
+
+	    List<CommentReadResponseDto> list = new ArrayList<>();
+	    for (Comment c : commentPage) {
+	        CommentReadResponseDto dto = commentMapper.toReadResponseDto(c);
+	        dto.setNickname(c.getUser().getNickname());
+	        dto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", c.getId()));
+	        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
+	            String username = auth.getName();
+	            int userId = userService.readUserByUsername(username).getId();
+	            dto.setLikestatus(likeService.existsUserLike("comments", c.getId(), userId));
+	        }
+	        list.add(dto);
+	    }
+	    return new PageImpl<>(list, pageable, commentPage.getTotalElements());
+	}
+	
+	
+	
+	// 댓글 목록 조회 (미신고순)
+	public Page<CommentReadResponseDto> readCommentPageOrderByReportcountAsc(
+	        String tablename, Integer recodenum, String keyword, Pageable pageable) {
+
+	    if (pageable == null) {
+	    	throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
+	    }
+
+	    Page<Comment> commentPage;
+	    try {
+	    	boolean hasTable = tablename != null && !tablename.isBlank();
+	    	boolean hasRecord = recodenum != null;
+	    	boolean hasKeyword = keyword != null && !keyword.isBlank();
+	    	
+	        if (!hasTable) {
+	        	// 전체
+	            commentPage = hasKeyword
+	                    ? commentRepository.findByContentContainingIgnoreCaseOrderByReportcountAscIdAsc(keyword, pageable)
+	                    : commentRepository.findAllByOrderByReportcountAscIdAsc(pageable);
+	        }
+	        else if (!hasRecord) {
+	        	// 테이블만
+	            commentPage = hasKeyword
+	                    ? commentRepository.findByTablenameAndContentContainingIgnoreCaseOrderByReportcountAscIdAsc(tablename, keyword, pageable)
+	                    : commentRepository.findByTablenameOrderByReportcountAscIdAsc(tablename, pageable);
+	        }
+	        else {
+	        	// 테이블과 레코드
+	            commentPage = commentRepository.findByTablenameAndRecodenumOrderByReportcountAscIdAsc(tablename, recodenum, pageable);
+	        }
+	    } catch (Exception e) {
+	        throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);
+	    }
+
+	    List<CommentReadResponseDto> list = new ArrayList<>();
+	    for (Comment c : commentPage) {
+	        CommentReadResponseDto dto = commentMapper.toReadResponseDto(c);
+	        dto.setNickname(c.getUser().getNickname());
+	        dto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", c.getId()));
+	        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
+	            String username = auth.getName();
+	            int userId = userService.readUserByUsername(username).getId();
+	            dto.setLikestatus(likeService.existsUserLike("comments", c.getId(), userId));
+	        }
+	        list.add(dto);
+	    }
+	    return new PageImpl<>(list, pageable, commentPage.getTotalElements());
+	}
+
+	
+	
+	
+	
 	// **** 수정 보완 필요 *** 댓글 수
 	public int readCommentCount(String tablename, Integer recodenum) {
 		
@@ -187,14 +400,6 @@ public class CommentService {
 		}
 		
 	}
-	
-	
-	
-	
-	// 목록 (신고순으로 정렬하는거 추가하기)
-	
-	
-	
 	
 	
 	

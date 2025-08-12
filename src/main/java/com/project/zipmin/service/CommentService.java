@@ -153,6 +153,7 @@ public class CommentService {
 			CommentReadResponseDto commentDto = commentMapper.toReadResponseDto(comment);
 			commentDto.setNickname(comment.getUser().getNickname());
 			commentDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
+			commentDto.setRole(comment.getUser().getRole().toString());
 			
 			// 좋아요 여부 조회
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -209,6 +210,7 @@ public class CommentService {
 			CommentReadResponseDto commentDto = commentMapper.toReadResponseDto(comment);
 			commentDto.setNickname(comment.getUser().getNickname());
 			commentDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
+			commentDto.setRole(comment.getUser().getRole().toString());
 			
 			// 좋아요 여부 조회
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -259,21 +261,22 @@ public class CommentService {
 	        throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);
 	    }
 
-	    List<CommentReadResponseDto> list = new ArrayList<>();
-	    for (Comment c : commentPage) {
-	        CommentReadResponseDto dto = commentMapper.toReadResponseDto(c);
-	        dto.setNickname(c.getUser().getNickname());
-	        dto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", c.getId()));
+	    List<CommentReadResponseDto> commentDtoList = new ArrayList<>();
+	    for (Comment comment : commentPage) {
+	        CommentReadResponseDto commentDto = commentMapper.toReadResponseDto(comment);
+	        commentDto.setNickname(comment.getUser().getNickname());
+	        commentDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
+	        commentDto.setRole(comment.getUser().getRole().toString());
 
 	        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
 	            String username = auth.getName();
 	            int userId = userService.readUserByUsername(username).getId();
-	            dto.setLikestatus(likeService.existsUserLike("comments", c.getId(), userId));
+	            commentDto.setLikestatus(likeService.existsUserLike("comments", comment.getId(), userId));
 	        }
-	        list.add(dto);
+	        commentDtoList.add(commentDto);
 	    }
-	    return new PageImpl<>(list, pageable, commentPage.getTotalElements());
+	    return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
 	}
 
 	
@@ -312,20 +315,22 @@ public class CommentService {
 	        throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);
 	    }
 
-	    List<CommentReadResponseDto> list = new ArrayList<>();
-	    for (Comment c : commentPage) {
-	        CommentReadResponseDto dto = commentMapper.toReadResponseDto(c);
-	        dto.setNickname(c.getUser().getNickname());
-	        dto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", c.getId()));
+	    List<CommentReadResponseDto> commentDtoList = new ArrayList<>();
+	    for (Comment comment : commentPage) {
+	        CommentReadResponseDto commentDto = commentMapper.toReadResponseDto(comment);
+	        commentDto.setNickname(comment.getUser().getNickname());
+	        commentDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
+	        commentDto.setRole(comment.getUser().getRole().toString());
+
 	        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
 	            String username = auth.getName();
 	            int userId = userService.readUserByUsername(username).getId();
-	            dto.setLikestatus(likeService.existsUserLike("comments", c.getId(), userId));
+	            commentDto.setLikestatus(likeService.existsUserLike("comments", comment.getId(), userId));
 	        }
-	        list.add(dto);
+	        commentDtoList.add(commentDto);
 	    }
-	    return new PageImpl<>(list, pageable, commentPage.getTotalElements());
+	    return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
 	}
 	
 	
@@ -364,20 +369,22 @@ public class CommentService {
 	        throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);
 	    }
 
-	    List<CommentReadResponseDto> list = new ArrayList<>();
-	    for (Comment c : commentPage) {
-	        CommentReadResponseDto dto = commentMapper.toReadResponseDto(c);
-	        dto.setNickname(c.getUser().getNickname());
-	        dto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", c.getId()));
+	    List<CommentReadResponseDto> commentDtoList = new ArrayList<>();
+	    for (Comment comment : commentPage) {
+	        CommentReadResponseDto commentDto = commentMapper.toReadResponseDto(comment);
+	        commentDto.setNickname(comment.getUser().getNickname());
+	        commentDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
+	        commentDto.setRole(comment.getUser().getRole().toString());
+
 	        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
 	            String username = auth.getName();
 	            int userId = userService.readUserByUsername(username).getId();
-	            dto.setLikestatus(likeService.existsUserLike("comments", c.getId(), userId));
+	            commentDto.setLikestatus(likeService.existsUserLike("comments", comment.getId(), userId));
 	        }
-	        list.add(dto);
+	        commentDtoList.add(commentDto);
 	    }
-	    return new PageImpl<>(list, pageable, commentPage.getTotalElements());
+	    return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
 	}
 
 	

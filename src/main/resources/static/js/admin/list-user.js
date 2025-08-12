@@ -214,13 +214,14 @@ function renderUserList(userList) {
 		const btnWrap = document.createElement('div');
 		btnWrap.className = 'd-flex justify-content-end gap-2';
 
-		// 수정 버튼 조건
-		const canEdit =
+		// 기능 버튼 조건
+		const canAction =
 		    payload.role === 'ROLE_SUPER_ADMIN' ||
 		    (payload.role === 'ROLE_ADMIN' && user.role === 'ROLE_USER') ||
 		    (payload.id === user.id);
 
-		if (canEdit) {
+		if (canAction) {
+			// 수정 버튼
 		    const editBtn = document.createElement('button');
 		    editBtn.type = 'button';
 		    editBtn.className = 'btn btn-sm btn-outline-info';
@@ -241,22 +242,15 @@ function renderUserList(userList) {
 				form.tel.value = user.tel;
 				form.email.value = user.email;
 			};
-		    btnWrap.appendChild(editBtn);
-		}
 
-		// 삭제 버튼 조건
-		const canDelete =
-		    (payload.role === 'ROLE_SUPER_ADMIN' && payload.id !== user.id) ||
-		    (payload.role === 'ROLE_ADMIN' && user.role === 'ROLE_USER') || 
-			(payload.id === user.id);
-
-		if (canDelete) {
+			// 삭제 버튼
 		    const deleteBtn = document.createElement('button');
 		    deleteBtn.type = 'button';
 		    deleteBtn.className = 'btn btn-sm btn-outline-danger';
 		    deleteBtn.innerHTML = '삭제';
 		    deleteBtn.onclick = () => deleteUser(user.id);
-		    btnWrap.appendChild(deleteBtn);
+			
+		    btnWrap.appendChild(editBtn, deleteBtn);
 		}
 
 		actionTd.appendChild(btnWrap);

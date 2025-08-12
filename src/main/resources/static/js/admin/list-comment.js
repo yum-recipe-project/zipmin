@@ -209,38 +209,50 @@ function renderCommentList(commentList) {
     reportH6.className = 'fw-semibold mb-0';
     reportH6.textContent = (comment.reportcount ?? 0).toString();
     reportTd.appendChild(reportH6);
+	
+	const token = localStorage.getItem('accessToken');
+	const payload = parseJwt(token);
 
 	// 기능
 	const actionTd = document.createElement('td');
 	const btnWrap = document.createElement('div');
 	btnWrap.className = 'd-flex justify-content-end gap-2';
 	
-	// 수정 버튼
-	const editBtn = document.createElement('button');
-	editBtn.type = 'button';
-	editBtn.className = 'btn btn-sm btn-outline-info';
-	editBtn.dataset.bsToggle = 'modal';
-	editBtn.dataset.bsTarget = '#editCommentModal';
-	editBtn.innerHTML = '수정';
-	editBtn.addEventListener('click', (event) => {
-		if (!isLoggedIn()) {
-			event.preventDefault();
-			redirectToLogin();
-			return;
-		}
-		const form = document.getElementById('editCommentForm');
-		form.id.value = comment.id;
-		form.content.value = comment.content;
-	});
-
-	// 삭제 버튼
-	const deleteBtn = document.createElement('button');
-	deleteBtn.type = 'button';
-	deleteBtn.className = 'btn btn-sm btn-outline-danger';
-	deleteBtn.innerHTML = '삭제';
-	deleteBtn.onclick = () => deleteComment(comment.id);
-
-	btnWrap.append(editBtn, deleteBtn);
+	// 기능 버튼 조건
+	const canAction =
+	    payload.role === 'ROLE_SUPER_ADMIN' ||
+	    (payload.role === 'ROLE_ADMIN' && comment.role === 'ROLE_USER') ||
+	    (payload.id === comment.user_id);
+	
+	if (canAction) {
+		// 수정 버튼
+		const editBtn = document.createElement('button');
+		editBtn.type = 'button';
+		editBtn.className = 'btn btn-sm btn-outline-info';
+		editBtn.dataset.bsToggle = 'modal';
+		editBtn.dataset.bsTarget = '#editCommentModal';
+		editBtn.innerHTML = '수정';
+		editBtn.addEventListener('click', (event) => {
+			if (!isLoggedIn()) {
+				event.preventDefault();
+				redirectToLogin();
+				return;
+			}
+			const form = document.getElementById('editCommentForm');
+			form.id.value = comment.id;
+			form.content.value = comment.content;
+		});
+		
+		// 삭제 버튼
+		const deleteBtn = document.createElement('button');
+		deleteBtn.type = 'button';
+		deleteBtn.className = 'btn btn-sm btn-outline-danger';
+		deleteBtn.innerHTML = '삭제';
+		deleteBtn.onclick = () => deleteComment(comment.id);
+		
+		btnWrap.append(editBtn, deleteBtn);
+	}
+	
 	actionTd.appendChild(btnWrap);
 
     tr.append(noTd, tableTd, contentTd, writerTd, dateTd, likeTd, reportTd, actionTd);

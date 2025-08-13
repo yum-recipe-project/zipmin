@@ -177,10 +177,12 @@ function renderCommentList(commentList) {
     // 내용
     const contentTd = document.createElement('td');
     const contentH6 = document.createElement('h6');
-    contentH6.className = 'fw-semibold mb-0';
-    // textContent로 XSS 방지
+    contentH6.className = 'fw-semibold mb-0 truncate';
     contentH6.textContent = comment.content || '';
     contentTd.appendChild(contentH6);
+	contentH6.addEventListener('click', function () {
+	    this.classList.toggle('expanded');
+	});
 
     // 작성자
     const writerTd = document.createElement('td');
@@ -193,7 +195,7 @@ function renderCommentList(commentList) {
     const dateTd = document.createElement('td');
     const dateH6 = document.createElement('h6');
     dateH6.className = 'fw-semibold mb-0';
-	dateH6.textContent = `${formatDate(comment.postdate)} ${formatTime(comment.postdate)}`;
+	dateH6.textContent = formatDateTime(comment.postdate);
     dateTd.appendChild(dateH6);
 
     // 좋아요수

@@ -38,7 +38,9 @@ function formatDateWithDay(isoString) {
 
 
 
-
+/**
+ * 
+ */
 function formatTime(timeStr) {
 	
 	const date = new Date(timeStr);
@@ -46,6 +48,28 @@ function formatTime(timeStr) {
 	
 }
 
+
+
+
+/**
+ * 
+ * 2025.08.01 13:45
+ */
+function formatDateTime(dateStr) {
+	
+	// 날짜
+	const date = new Date(dateStr);
+	
+	const year = date.getFullYear();
+	const month = String(date.getMonth() + 1).padStart(2, '0');
+	const day = String(date.getDate()).padStart(2, '0');
+
+	// 시간
+	const time = new Date(dateStr);
+	
+	return `${year}.${month}.${day} ${time.toTimeString().substring(0, 5)}`;
+	
+}
 
 
 

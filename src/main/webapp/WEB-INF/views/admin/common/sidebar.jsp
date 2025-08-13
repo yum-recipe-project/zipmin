@@ -37,7 +37,7 @@
 				</li>
 				<li class="sidebar-item">
 					<a class="sidebar-link" href="/admin/listUser.do" aria-expanded="false">
-						<span><i class="ti ti-mood-happy"></i></span>
+						<span><i class="ti ti-user-circle"></i></span>
 						<span class="hide-menu">회원 관리</span>
 					</a>
 				</li>
@@ -54,14 +54,20 @@
 					<span class="hide-menu">게시판</span>
 				</li>
 				<li class="sidebar-item">
+					<a class="sidebar-link" href="/admin/listRecipe.do" aria-expanded="false">
+						<span><i class="ti ti-notebook"></i></span>
+						<span class="hide-menu">레시피</span>
+					</a>
+				</li>
+				<li class="sidebar-item">
 					<a class="sidebar-link" href="/admin/listGuide.do" aria-expanded="false">
-						<span><i class="ti ti-article"></i></span>
+						<span><i class="ti ti-tools-kitchen-2"></i></span>
 						<span class="hide-menu">키친가이드</span>
 					</a>
 				</li>
 				<li class="sidebar-item">
 					<a class="sidebar-link" href="/admin/listChomp.do" aria-expanded="false">
-						<span><i class="ti ti-article"></i></span>
+						<span><i class="ti ti-chef-hat"></i></span>
 						<span class="hide-menu">쩝쩝박사</span>
 					</a>
 				</li>
@@ -72,14 +78,25 @@
 				</li>
 				<li class="sidebar-item">
 					<a class="sidebar-link" href="/admin/listComment.do" aria-expanded="false">
-						<span><i class="ti ti ti-message-dots"></i></span>
+						<span><i class="ti ti ti-message-2"></i></span>
 						<span class="hide-menu">댓글 관리</span>
 					</a>
 				</li>
 				<li class="sidebar-item">
 					<a class="sidebar-link" href="/admin/listReview.do" aria-expanded="false">
-						<span><i class="ti ti ti-message-dots"></i></span>
+						<span><i class="ti ti ti-star"></i></span>
 						<span class="hide-menu">리뷰 관리</span>
+					</a>
+				</li>
+				
+				<li class="nav-small-cap">
+					<i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+					<span class="hide-menu">쿠킹클래스</span>
+				</li>
+				<li class="sidebar-item">
+					<a class="sidebar-link" href="/admin/listClass.do" aria-expanded="false">
+						<span><i class="ti ti-mood-smile"></i></span>
+						<span class="hide-menu">쿠킹클래스 관리</span>
 					</a>
 				</li>
 				

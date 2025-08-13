@@ -3,7 +3,7 @@
  */
 let totalPages = 0;
 let page = 0;
-const size = 20;
+const size = 15;
 let keyword = '';
 let category = '';
 let sortKey = 'postdate';

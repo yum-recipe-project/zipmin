@@ -12,6 +12,7 @@
 		<link rel="stylesheet" href="../assets/css/styles.min.css" />
 		<link rel="stylesheet" href="/css/admin/list-megazine.css" />
 		<script src="/js/common/util.js"></script>
+		<script src="/js/common/pagination.js"></script>
 		<script src="/js/admin/list-megazine.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 		<script src="/js/common/jwt.js"></script>

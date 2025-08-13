@@ -21,6 +21,11 @@ public class AdminViewController {
 		return "admin/listUser";
 	}
 	
+	@GetMapping("/admin/listRecipe.do")
+	public String adminListRecipe() {
+		return "admin/listRecipe";
+	}
+	
 	@GetMapping("/admin/listGuide.do")
 	public String adminListGuide() {
 		return "admin/listGuide";

@@ -13,6 +13,7 @@
 		<link rel="stylesheet" href="/css/admin/list-user.css" />
 		<link rel="stylesheet" href="/css/admin/common/modal.css" />
 		<script src="/js/common/util.js"></script>
+		<script src="/js/common/pagination.js"></script>
 		<script src="/js/admin/list-user.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 		<script src="/js/common/jwt.js"></script>

@@ -13,6 +13,7 @@
 		<link rel="stylesheet" href="/css/admin/list-vote.css" />
 		<script src="/js/common/util.js"></script>
 		<script src="/js/admin/list-vote.js"></script>
+		<script src="/js/common/pagination.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 		<script src="/js/common/jwt.js"></script>
 	</head>

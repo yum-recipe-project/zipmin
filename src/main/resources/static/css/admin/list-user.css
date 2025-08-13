@@ -146,6 +146,8 @@
 
 
 
+
+
 /* 목록 테이블 */
 .body-wrapper .container-fluid .search {
 	width: 250px;
@@ -154,11 +156,40 @@
 
 .body-wrapper .container-fluid table {
 	margin-top: 40px;
+	width: 1120px;
 }
 
 .body-wrapper .container-fluid .table_th {
 	background: #DDEBFF;
 }
+
+.body-wrapper .container-fluid tbody {
+	text-align: center;
+}
+
+.body-wrapper .container-fluid .flex {
+	display: flex;
+	gap: 5px;
+	align-items: center;
+}
+
+.fixed-table {
+	table-layout: fixed !important;
+	width: 100%;
+}
+
+.fixed-table th,
+.fixed-table td {
+	overflow: visible;
+	text-overflow: clip;
+	white-space: normal;
+	vertical-align: middle;
+	min-width: 0;
+}
+
+
+
+
 
 
 

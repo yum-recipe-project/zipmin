@@ -158,12 +158,11 @@
 
 .body-wrapper .container-fluid table {
 	margin-top: 40px;
-	width: 1080px;
+	width: 1120px;
 }
 
 .body-wrapper .container-fluid .table_th {
 	background: #DDEBFF;
-	text-align: center;
 }
 
 .body-wrapper .container-fluid tbody {

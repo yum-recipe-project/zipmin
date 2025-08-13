@@ -73,17 +73,17 @@
 				<li class="sidebar-item">
 					<a class="sidebar-link" href="/admin/listComment.do" aria-expanded="false">
 						<span><i class="ti ti ti-message-dots"></i></span>
-						<span class="hide-menu">댓글</span>
+						<span class="hide-menu">댓글 관리</span>
 					</a>
 				</li>
 				<li class="sidebar-item">
 					<a class="sidebar-link" href="/admin/listReview.do" aria-expanded="false">
 						<span><i class="ti ti ti-message-dots"></i></span>
-						<span class="hide-menu">리뷰</span>
+						<span class="hide-menu">리뷰 관리</span>
 					</a>
 				</li>
 				
-				<!-- 여기에 쿠킹클래스 같은거 들어가야 겠지.. -->
+				<!-- 여기에 쿠킹클래스 같은거 들어가야겠지.. -->
 		</nav>
 		<!-- End Sidebar navigation -->
 	</div>

@@ -177,7 +177,7 @@ function renderCommentList(commentList) {
     // 내용
     const contentTd = document.createElement('td');
     const contentH6 = document.createElement('h6');
-    contentH6.className = 'fw-semibold mb-0 truncate';
+    contentH6.className = 'fw-semibold mb-0 truncate text-start';
     contentH6.textContent = comment.content || '';
     contentTd.appendChild(contentH6);
 	contentH6.addEventListener('click', function () {

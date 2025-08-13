@@ -52,17 +52,29 @@
 					</div>
 		
 					<!-- 목록 -->
-					<table class="table text-nowrap mb-0 align-middle">
+					<table class="table text-nowrap mb-0 align-middle fixed-table">
 					    <thead class="text-dark fs-4">
+					    	<colgroup>
+					    		<col style="width:4%">
+					    		<col style="width:18%">
+					    		<col style="width:11%">
+					    		<col style="width:13%">
+					    		<col style="width:14%">
+					    		<col style="width:18%">
+					    		<col style="width:11%">
+					    		<col style="width:11%">
+					    	</colgroup>
 					        <tr>
-					            <th class="total"></th>
+					            <th colspan="2" class="total text-start"></th>
 					            <th></th>
 					            <th></th>
 					            <th></th>
-					            <th></th>
-					            <th></th>
-					            <th></th>
-					            <th></th>
+					            <th colspan="3" class="text-end">
+					            	<form class="search position-relative text-end">
+					            		<input type="text" class="form-control search-chat py-2 ps-5" id="text-srh" placeholder="검색어를 입력하세요">
+					            		<i class="ti ti-search position-absolute top-50 start-0 translate-middle-y fs-6 text-dark ms-3"></i>
+					            	</form>
+					            </th>
 					        </tr>
 					        <tr class="table_th">
 					            <th>

@@ -15,6 +15,7 @@
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 		<script src="/js/common/jwt.js"></script>
 		<script src="/js/common/util.js"></script>
+		<script src="/js/common/pagination.js"></script>
 		<script src="/js/admin/list-comment.js"></script>
 		<script src="/js/admin/modal/edit-comment-modal.js"></script>
 		<script src="/js/admin/modal/list-report-modal.js"></script>

@@ -9,9 +9,9 @@
 			<span></span>
 		</div>
 		<div class="comment_order">
-			<button class="btn_sort_small active" data-sort="new">최신순</button>
-			<button class="btn_sort_small" data-sort="old">오래된순</button>
-			<button class="btn_sort_small" data-sort="hot">인기순</button>
+			<button class="btn_sort_small active" data-sort="postdate-desc">최신순</button>
+			<button class="btn_sort_small" data-sort="postdate-asc">오래된순</button>
+			<button class="btn_sort_small" data-sort="likecount-desc">인기순</button>
 		</div>
 	</div>
 	

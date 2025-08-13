@@ -72,10 +72,8 @@ public class LikeService {
 				.orElseThrow(() -> new ApiException(LikeErrorCode.LIKE_NOT_FOUND));
 		
 		// 소유자 검증
-		if (!userService.readUserById(likeDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
-			if (like.getUser().getId() != likeDto.getUserId()) {
-				throw new ApiException(LikeErrorCode.LIKE_FORBIDDEN);
-			}
+		if (like.getUser().getId() != likeDto.getUserId()) {
+			throw new ApiException(LikeErrorCode.LIKE_FORBIDDEN);
 		}
 		
 		// 좋아요 삭제

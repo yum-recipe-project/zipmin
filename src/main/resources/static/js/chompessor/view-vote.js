@@ -326,7 +326,7 @@ async function cancelVote() {
 document.addEventListener('DOMContentLoaded', function() {	
 	
 	const tablename = 'vote';
-	let sort = 'new';
+	let sort = 'postdate-desc';
 	let size = 15;
 
 	

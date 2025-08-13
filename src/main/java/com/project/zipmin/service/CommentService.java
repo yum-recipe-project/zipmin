@@ -60,6 +60,8 @@ public class CommentService {
 	// 댓글 목록 조회 (오래된순)
 	public Page<CommentReadResponseDto> readCommentPageOrderByIdAsc(String tablename, Integer recodenum, String keyword, Pageable pageable) {
 		
+		System.err.println("*************** 이거 실행 ***************");
+		
 		// 입력값 검증
 		if (pageable == null) {
 			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
@@ -577,12 +579,8 @@ public class CommentService {
 		Comment comment = commentRepository.findById(likeDto.getRecodenum())
 			    .orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
 		
-		// 소유자 검증
-		if (!userService.readUserById(likeDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
-			if (comment.getUser().getId() != likeDto.getUserId()) {
-				throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
-			}
-		}
+		// 좋아요 중복 작성 처리해야함 *****
+		
 		
 		// 좋아요 작성
 		try {
@@ -605,13 +603,6 @@ public class CommentService {
 		// 댓글 존재 여부 판단
 		Comment comment = commentRepository.findById(likeDto.getRecodenum())
 			    .orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
-		
-		// 소유자 검증
-		if (!userService.readUserById(likeDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
-			if (comment.getUser().getId() != likeDto.getUserId()) {
-				throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
-			}
-		}
 		
 		// 좋아요 취소
 		try {

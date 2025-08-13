@@ -135,7 +135,8 @@ async function fetchCommentList(tablename, sort, size) {
 		}).toString();
 		
 		const response = await fetch(`/comments?${params}`, {
-			method: 'GET'
+			method: 'GET',
+			headers: getAuthHeaders()
 		});
 		
 		const result = await response.json();

@@ -1,5 +1,8 @@
 package com.project.zipmin.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +11,7 @@ import com.project.zipmin.api.ReportErrorCode;
 import com.project.zipmin.dto.ReportCreateRequestDto;
 import com.project.zipmin.dto.ReportCreateResponseDto;
 import com.project.zipmin.dto.ReportDeleteRequestDto;
+import com.project.zipmin.dto.ReportReadResponseDto;
 import com.project.zipmin.entity.Report;
 import com.project.zipmin.mapper.ReportMapper;
 import com.project.zipmin.repository.ReportRepository;
@@ -17,9 +21,12 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ReportService {
-	
+
 	@Autowired
 	private ReportRepository reportRepository;
+	
+	@Autowired
+	private UserService userService;
 	
 	private final ReportMapper reportMapper;
 	
@@ -31,6 +38,37 @@ public class ReportService {
 	public boolean selectReportStatusByTable(String id, String tablename, int recodenum) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	
+	
+	
+	// 신고 목록
+	public List<ReportReadResponseDto> readReportListByTablenameAndRecodenum(String tablename, Integer recodenum) {
+		
+		// 입력값 검증
+		if (tablename == null || recodenum == null) {
+			throw new ApiException(ReportErrorCode.REPORT_INVALID_INPUT);
+		}
+		
+		List<Report> reportList = null;
+		try {
+			reportList = reportRepository.findAllByTablenameAndRecodenum(tablename, recodenum);
+		}
+		catch (Exception e) {
+			throw new ApiException(ReportErrorCode.REPORT_READ_LIST_FAIL);
+		}
+		
+		List<ReportReadResponseDto> reportDtoList = new ArrayList<>();
+		for (Report report : reportList) {
+			ReportReadResponseDto reportDto = reportMapper.toReadResponseDto(report);
+			reportDto.setUsername(userService.readUserById(reportDto.getUserId()).getUsername());
+			reportDto.setNickname(userService.readUserById(reportDto.getUserId()).getNickname());
+			
+			reportDtoList.add(reportDto);
+		}
+		
+		return reportDtoList;
 	}
 	
 	
@@ -83,5 +121,25 @@ public class ReportService {
 		}
 		
 	}
+	
+	
+	
+	
+	
+	// 신고수 조회
+	public long countReportByTablenameAndRecodenum(String tablename, int recodenum) {
+		return reportRepository.countByTablenameAndRecodenum(tablename, recodenum);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

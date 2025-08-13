@@ -252,6 +252,45 @@
 
 
 
+/* 신고 버튼 */
+.report-td {
+	position: relative;
+	text-align: center;
+}
+
+.report-count {
+	transition: opacity .12s ease;
+}
+
+.report-cell {
+	position: relative;
+	display: inline-block;
+	min-width: 72px;
+}
+
+.report-btn {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity .12s ease;
+	white-space: nowrap;
+}
+
+.report-td.has-reports:hover .report-count {
+	opacity: 0;
+}
+.report-td.has-reports:hover .report-btn {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+
+
+
+
 /* 페이지네이션 */
 .pagination_wrap {
 	margin-top: 50px;

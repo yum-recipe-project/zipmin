@@ -17,6 +17,7 @@
 		<script src="/js/common/util.js"></script>
 		<script src="/js/admin/list-comment.js"></script>
 		<script src="/js/admin/modal/edit-comment-modal.js"></script>
+		<script src="/js/admin/modal/list-report-modal.js"></script>
 	</head>
 	
 	<body>
@@ -35,11 +36,11 @@
 					<div class="nav_wrap">
 						<a href="/admin/home.do"><span>메인</span></a>
 						<a href=""><img src="/images/cooking/arrow_right.png"><span>댓글/리뷰</span></a>
-						<a href="/admin/listComment.do" class="active"><img src="/images/cooking/arrow_right.png"><span>댓글</span></a>
+						<a href="/admin/listComment.do" class="active"><img src="/images/cooking/arrow_right.png"><span>댓글 관리</span></a>
 					</div>
 					
 					<!-- 제목 -->
-					<h1>댓글</h1>
+					<h1>댓글 관리</h1>
 					<div class="bar">
 						<div class="tab">
 							<ul>
@@ -59,9 +60,9 @@
 					    	<colgroup>
 					    		<col style="width:4%">
 					    		<col style="width:10%">
-					    		<col style="width:27%">
+					    		<col style="width:26%">
 					    		<col style="width:12%">
-					    		<col style="width:14%">
+					    		<col style="width:15%">
 					    		<col style="width:11%">
 					    		<col style="width:11%">
 					    		<col style="width:11%">
@@ -118,6 +119,8 @@
 			
 			<!-- 댓글 수정 모달 -->
 			<%@include file="../admin/modal/editCommentModal.jsp" %>
+			<!-- 신고 목록 모달 -->
+			<%@include file="../admin/modal/listReportModal.jsp" %>
 		</div>
 		
 		<script src="../assets/libs/jquery/dist/jquery.min.js"></script>

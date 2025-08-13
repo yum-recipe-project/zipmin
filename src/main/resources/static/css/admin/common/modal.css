@@ -53,6 +53,7 @@
 /* 모달 바디 */
 .modal-content .modal-body {
 	padding: 20px !important;
+	 max-height: min(80vh, 720px);
 }
 
 .modal-content .modal-body label {
@@ -102,6 +103,23 @@
 	color: #F45452;
 }
 
+
+
+
+
+/* 테이블 */
+.modal-content .modal-body .table {
+	margin-bottom: 25px !important;
+}
+
+.modal-content .modal-body .table_th {
+	color: red;
+	background: #F6F9FC;
+}
+
+.modal-content .modal-body tr {
+	text-align: center;
+}
 
 
 

@@ -60,8 +60,6 @@ public class CommentService {
 	// 댓글 목록 조회 (오래된순)
 	public Page<CommentReadResponseDto> readCommentPageOrderByIdAsc(String tablename, Integer recodenum, String keyword, Pageable pageable) {
 		
-		System.err.println("*************** 이거 실행 ***************");
-		
 		// 입력값 검증
 		if (pageable == null) {
 			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
@@ -99,6 +97,7 @@ public class CommentService {
 			CommentReadResponseDto commentDto = commentMapper.toReadResponseDto(comment);
 			commentDto.setNickname(comment.getUser().getNickname());
 			commentDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
+			commentDto.setReportcount(reportService.countReportByTablenameAndRecodenum("comments", comment.getId()));
 			
 			// 좋아요 여부 조회
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -156,6 +155,7 @@ public class CommentService {
 			commentDto.setNickname(comment.getUser().getNickname());
 			commentDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
 			commentDto.setRole(comment.getUser().getRole().toString());
+			commentDto.setReportcount(reportService.countReportByTablenameAndRecodenum("comments", comment.getId()));
 			
 			// 좋아요 여부 조회
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -213,6 +213,7 @@ public class CommentService {
 			commentDto.setNickname(comment.getUser().getNickname());
 			commentDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
 			commentDto.setRole(comment.getUser().getRole().toString());
+			commentDto.setReportcount(reportService.countReportByTablenameAndRecodenum("comments", comment.getId()));
 			
 			// 좋아요 여부 조회
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -269,7 +270,8 @@ public class CommentService {
 	        commentDto.setNickname(comment.getUser().getNickname());
 	        commentDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
 	        commentDto.setRole(comment.getUser().getRole().toString());
-
+	        commentDto.setReportcount(reportService.countReportByTablenameAndRecodenum("comments", comment.getId()));
+	        
 	        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
 	            String username = auth.getName();
@@ -323,7 +325,8 @@ public class CommentService {
 	        commentDto.setNickname(comment.getUser().getNickname());
 	        commentDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
 	        commentDto.setRole(comment.getUser().getRole().toString());
-
+	        commentDto.setReportcount(reportService.countReportByTablenameAndRecodenum("comments", comment.getId()));
+	        
 	        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
 	            String username = auth.getName();
@@ -377,7 +380,8 @@ public class CommentService {
 	        commentDto.setNickname(comment.getUser().getNickname());
 	        commentDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
 	        commentDto.setRole(comment.getUser().getRole().toString());
-
+	        commentDto.setReportcount(reportService.countReportByTablenameAndRecodenum("comments", comment.getId()));
+	        
 	        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
 	            String username = auth.getName();

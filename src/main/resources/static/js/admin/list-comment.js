@@ -205,13 +205,41 @@ function renderCommentList(commentList) {
     likeH6.textContent = (comment.likecount ?? 0).toString();
     likeTd.appendChild(likeH6);
 
-    // 신고수
-    const reportTd = document.createElement('td');
-    const reportH6 = document.createElement('h6');
-    reportH6.className = 'fw-semibold mb-0';
-    reportH6.textContent = (comment.reportcount ?? 0).toString();
-    reportTd.appendChild(reportH6);
+	// 신고수
+	const reportTd = document.createElement('td');
+	reportTd.classList.add('report-td');
 	
+	const reportWrap = document.createElement('div');
+	reportWrap.className = 'report-cell d-inline-block position-relative';
+	
+	const reportCount = document.createElement('h6');
+	reportCount.className = 'report-count fw-semibold mb-0';
+	reportCount.textContent = String(comment.reportcount ?? 0);
+	reportWrap.appendChild(reportCount);
+	
+	// 신고 보기 버튼
+	if ((comment.reportcount ?? 0) > 0) {
+		reportTd.classList.add('has-reports');
+		
+		const viewBtn = document.createElement('button');
+		viewBtn.type = 'button';
+		viewBtn.className = 'btn btn-sm btn-outline-dark report-btn';
+		viewBtn.textContent = '신고 보기';
+		viewBtn.title = '신고 내역 보기';
+		viewBtn.dataset.bsToggle = 'modal';
+		viewBtn.dataset.bsTarget = '#listReportModal';
+		viewBtn.dataset.recodenum = comment.id;
+		viewBtn.addEventListener('click', (event) => {
+			if (!isLoggedIn()) {
+				event.preventDefault();
+				redirectToLogin();
+				return;
+			}			
+		});
+		reportWrap.appendChild(viewBtn);
+	}
+	reportTd.appendChild(reportWrap);
+
 	const token = localStorage.getItem('accessToken');
 	const payload = parseJwt(token);
 

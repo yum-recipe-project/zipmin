@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			this.classList.add('active');
 			
 			category = this.getAttribute('data-tab');
-			let totalPages = 0;
 			page = 0;
 			keyword = '';
 			document.getElementById('text-srh').value = '';

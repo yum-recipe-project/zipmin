@@ -8,7 +8,9 @@
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/kitchen/view-guide.css">
+		<link rel="stylesheet" href="/css/common/comment.css">
 		<script src="/js/kitchen/view-guide.js"></script>
+		<script src="/js/common/comment.js"></script>
 	</head>
 	
 	<body>

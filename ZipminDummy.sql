@@ -460,155 +460,151 @@ insert into comments values (seq_comments_id.NEXTVAL, 109, sysdate, '눈물 덜 
 insert into comments values (seq_comments_id.NEXTVAL, 109, sysdate, '칼질도 훨씬 수월했습니다.', 'guide', 26, 17);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '향이 날아가지 않도록 보관도 신경쓸게요.', 'guide', 26, 9);
 insert into comments values (seq_comments_id.NEXTVAL, 112, sysdate, '타이밍이 포인트네요. 자세히 알게 됐어요.', 'guide', 26, 18);
-
+-- 113
 
 -- 매거진 댓글
--- megazine 댓글 더미 (루트→대댓글 순으로 묶음, 숫자 comm_id로 참조)
-
--- recodenum=1
+-- megazine 1
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '요약 박스가 특히 좋았어요.', 'megazine', 1, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 1, sysdate, '실제로 해보니 효과 있었어요.', 'megazine', 1, 9);
+insert into comments values (seq_comments_id.NEXTVAL, 114, sysdate, '실제로 해보니 효과 있었어요.', 'megazine', 1, 9);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '자료 출처까지 정리돼 있어 신뢰가 갑니다.', 'megazine', 1, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 3, sysdate, '가격대별 추천표도 부탁드립니다.', 'megazine', 1, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 3, sysdate, '보완 설명 감사합니다.', 'megazine', 1, 15);
+insert into comments values (seq_comments_id.NEXTVAL, 116, sysdate, '가격대별 추천표도 부탁드립니다.', 'megazine', 1, 5);
+insert into comments values (seq_comments_id.NEXTVAL, 116, sysdate, '보완 설명 감사합니다.', 'megazine', 1, 15);
 
--- recodenum=2
+-- megazine 2
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '요약 박스가 특히 좋았어요.', 'megazine', 2, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 6, sysdate, '다음 글도 기대할게요.', 'megazine', 2, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 6, sysdate, '실제로 해보니 효과 있었어요.', 'megazine', 2, 23);
+insert into comments values (seq_comments_id.NEXTVAL, 119, sysdate, '다음 글도 기대할게요.', 'megazine', 2, 5);
+insert into comments values (seq_comments_id.NEXTVAL, 119, sysdate, '실제로 해보니 효과 있었어요.', 'megazine', 2, 23);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '현장감 있는 팁 덕분에 바로 적용했습니다.', 'megazine', 2, 6);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '디테일한 비교가 정말 도움 됐어요.', 'megazine', 2, 6);
-insert into comments values (seq_comments_id.NEXTVAL, 10, sysdate, '실제로 해보니 효과 있었어요.', 'megazine', 2, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 10, sysdate, '가격대별 추천표도 부탁드립니다.', 'megazine', 2, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 10, sysdate, '보완 설명 감사합니다.', 'megazine', 2, 12);
+insert into comments values (seq_comments_id.NEXTVAL, 123, sysdate, '실제로 해보니 효과 있었어요.', 'megazine', 2, 5);
+insert into comments values (seq_comments_id.NEXTVAL, 123, sysdate, '가격대별 추천표도 부탁드립니다.', 'megazine', 2, 5);
+insert into comments values (seq_comments_id.NEXTVAL, 123, sysdate, '보완 설명 감사합니다.', 'megazine', 2, 12);
 
--- recodenum=3
+-- megazine 3
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(홈메이드) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 3, 9);
-insert into comments values (seq_comments_id.NEXTVAL, 14, sysdate, '표나 그림 추가되면 더 좋을 듯!', 'megazine', 3, 5);
+insert into comments values (seq_comments_id.NEXTVAL, 127, sysdate, '표나 그림 추가되면 더 좋을 듯!', 'megazine', 3, 5);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '현장감 있는 팁 덕분에 바로 적용했습니다.', 'megazine', 3, 21);
-insert into comments values (seq_comments_id.NEXTVAL, 16, sysdate, '비교 기준이 명확해서 이해가 쉬웠습니다.', 'megazine', 3, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 16, sysdate, '다음 글도 기대할게요.', 'megazine', 3, 6);
-insert into comments values (seq_comments_id.NEXTVAL, 16, sysdate, '보완 설명 감사합니다.', 'megazine', 3, 18);
+insert into comments values (seq_comments_id.NEXTVAL, 129, sysdate, '비교 기준이 명확해서 이해가 쉬웠습니다.', 'megazine', 3, 4);
+insert into comments values (seq_comments_id.NEXTVAL, 129, sysdate, '다음 글도 기대할게요.', 'megazine', 3, 6);
+insert into comments values (seq_comments_id.NEXTVAL, 129, sysdate, '보완 설명 감사합니다.', 'megazine', 3, 18);
 
--- recodenum=4
+-- megazine 4
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(프리미엄) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 4, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 20, sysdate, '가격대별 추천표도 부탁드립니다.', 'megazine', 4, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 20, sysdate, '실제로 해보니 효과 있었어요.', 'megazine', 4, 9);
+insert into comments values (seq_comments_id.NEXTVAL, 133, sysdate, '가격대별 추천표도 부탁드립니다.', 'megazine', 4, 5);
+insert into comments values (seq_comments_id.NEXTVAL, 133, sysdate, '실제로 해보니 효과 있었어요.', 'megazine', 4, 9);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '자료 출처까지 정리돼 있어 신뢰가 갑니다.', 'megazine', 4, 7);
-insert into comments values (seq_comments_id.NEXTVAL, 23, sysdate, '표나 그림 추가되면 더 좋을 듯!', 'megazine', 4, 14);
-insert into comments values (seq_comments_id.NEXTVAL, 23, sysdate, '보완 설명 감사합니다.', 'megazine', 4, 11);
+insert into comments values (seq_comments_id.NEXTVAL, 136, sysdate, '표나 그림 추가되면 더 좋을 듯!', 'megazine', 4, 14);
+insert into comments values (seq_comments_id.NEXTVAL, 136, sysdate, '보완 설명 감사합니다.', 'megazine', 4, 11);
 
--- recodenum=5
+-- megazine 5
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(비건) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 5, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 26, sysdate, '비교 기준이 명확해서 이해가 쉬웠습니다.', 'megazine', 5, 4);
+insert into comments values (seq_comments_id.NEXTVAL, 139, sysdate, '비교 기준이 명확해서 이해가 쉬웠습니다.', 'megazine', 5, 4);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '현장감 있는 팁 덕분에 바로 적용했습니다.', 'megazine', 5, 8);
-insert into comments values (seq_comments_id.NEXTVAL, 28, sysdate, '가격대별 추천표도 부탁드립니다.', 'megazine', 5, 6);
+insert into comments values (seq_comments_id.NEXTVAL, 141, sysdate, '가격대별 추천표도 부탁드립니다.', 'megazine', 5, 6);
 
--- recodenum=6
+-- megazine 6
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(핫플) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 6, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 30, sysdate, '오픈 시간대 방문 팁 유용했어요.', 'megazine', 6, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 30, sysdate, '보완 설명 감사합니다.', 'megazine', 6, 13);
+insert into comments values (seq_comments_id.NEXTVAL, 143, sysdate, '오픈 시간대 방문 팁 유용했어요.', 'megazine', 6, 5);
+insert into comments values (seq_comments_id.NEXTVAL, 143, sysdate, '보완 설명 감사합니다.', 'megazine', 6, 13);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '자료 출처까지 정리돼 있어 신뢰가 갑니다.', 'megazine', 6, 22);
-insert into comments values (seq_comments_id.NEXTVAL, 33, sysdate, '테이크아웃 팁도 실전적이네요.', 'megazine', 6, 9);
+insert into comments values (seq_comments_id.NEXTVAL, 146, sysdate, '테이크아웃 팁도 실전적이네요.', 'megazine', 6, 9);
 
--- recodenum=7
+-- megazine 7
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(편의점) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 7, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 35, sysdate, '한정판은 첫 주가 핵심이라는 점 메모!', 'megazine', 7, 5);
+insert into comments values (seq_comments_id.NEXTVAL, 148, sysdate, '한정판은 첫 주가 핵심이라는 점 메모!', 'megazine', 7, 5);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '현장감 있는 팁 덕분에 바로 적용했습니다.', 'megazine', 7, 17);
-insert into comments values (seq_comments_id.NEXTVAL, 37, sysdate, '우유 함량 체크 포인트 좋았습니다.', 'megazine', 7, 16);
+insert into comments values (seq_comments_id.NEXTVAL, 150, sysdate, '우유 함량 체크 포인트 좋았습니다.', 'megazine', 7, 16);
 
--- recodenum=8
+-- megazine 8
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(믹스) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 8, 7);
-insert into comments values (seq_comments_id.NEXTVAL, 39, sysdate, '7:3 비율이 제 입맛에 딱이네요.', 'megazine', 8, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 39, sysdate, '코코아 닙스 토핑도 시도해볼게요.', 'megazine', 8, 5);
+insert into comments values (seq_comments_id.NEXTVAL, 152, sysdate, '7:3 비율이 제 입맛에 딱이네요.', 'megazine', 8, 4);
+insert into comments values (seq_comments_id.NEXTVAL, 152, sysdate, '코코아 닙스 토핑도 시도해볼게요.', 'megazine', 8, 5);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '자료 출처까지 정리돼 있어 신뢰가 갑니다.', 'megazine', 8, 10);
-insert into comments values (seq_comments_id.NEXTVAL, 42, sysdate, '웨이퍼 조합이 바삭함을 살려주네요.', 'megazine', 8, 12);
-insert into comments values (seq_comments_id.NEXTVAL, 42, sysdate, '보완 설명 감사합니다.', 'megazine', 8, 18);
+insert into comments values (seq_comments_id.NEXTVAL, 155, sysdate, '웨이퍼 조합이 바삭함을 살려주네요.', 'megazine', 8, 12);
+insert into comments values (seq_comments_id.NEXTVAL, 155, sysdate, '보완 설명 감사합니다.', 'megazine', 8, 18);
 
--- recodenum=9
+-- megazine 9
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(제철 과일) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 9, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 45, sysdate, '온도 대비로 향이 확 살아나네요.', 'megazine', 9, 8);
+insert into comments values (seq_comments_id.NEXTVAL, 158, sysdate, '온도 대비로 향이 확 살아나네요.', 'megazine', 9, 8);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '현장감 있는 팁 덕분에 바로 적용했습니다.', 'megazine', 9, 11);
-insert into comments values (seq_comments_id.NEXTVAL, 47, sysdate, '복숭아와 조합이 특히 좋았습니다.', 'megazine', 9, 5);
+insert into comments values (seq_comments_id.NEXTVAL, 160, sysdate, '복숭아와 조합이 특히 좋았습니다.', 'megazine', 9, 5);
 
--- recodenum=10
+-- megazine 10
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(플로트) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 10, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 49, sysdate, '거품 조절 팁 덕에 비율 잡기 쉬웠어요.', 'megazine', 10, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 49, sysdate, '레몬 제스트 마무리가 신의 한 수.', 'megazine', 10, 9);
+insert into comments values (seq_comments_id.NEXTVAL, 162, sysdate, '거품 조절 팁 덕에 비율 잡기 쉬웠어요.', 'megazine', 10, 5);
+insert into comments values (seq_comments_id.NEXTVAL, 162, sysdate, '레몬 제스트 마무리가 신의 한 수.', 'megazine', 10, 9);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '자료 출처까지 정리돼 있어 신뢰가 갑니다.', 'megazine', 10, 13);
-insert into comments values (seq_comments_id.NEXTVAL, 52, sysdate, '탄산수는 충분히 차갑게가 포인트.', 'megazine', 10, 7);
-insert into comments values (seq_comments_id.NEXTVAL, 52, sysdate, '보완 설명 감사합니다.', 'megazine', 10, 18);
+insert into comments values (seq_comments_id.NEXTVAL, 165, sysdate, '탄산수는 충분히 차갑게가 포인트.', 'megazine', 10, 7);
+insert into comments values (seq_comments_id.NEXTVAL, 165, sysdate, '보완 설명 감사합니다.', 'megazine', 10, 18);
 
--- recodenum=11
+-- megazine 11
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(예비) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 11, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 55, sysdate, '표나 그림 추가되면 더 좋을 듯!', 'megazine', 11, 6);
-insert into comments values (seq_comments_id.NEXTVAL, 55, sysdate, '비교 기준이 명확해서 이해가 쉬웠습니다.', 'megazine', 11, 12);
+insert into comments values (seq_comments_id.NEXTVAL, 168, sysdate, '표나 그림 추가되면 더 좋을 듯!', 'megazine', 11, 6);
+insert into comments values (seq_comments_id.NEXTVAL, 168, sysdate, '비교 기준이 명확해서 이해가 쉬웠습니다.', 'megazine', 11, 12);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '현장감 있는 팁 덕분에 바로 적용했습니다.', 'megazine', 11, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 58, sysdate, '다음 글도 기대할게요.', 'megazine', 11, 10);
-insert into comments values (seq_comments_id.NEXTVAL, 58, sysdate, '보완 설명 감사합니다.', 'megazine', 11, 19);
+insert into comments values (seq_comments_id.NEXTVAL, 171, sysdate, '다음 글도 기대할게요.', 'megazine', 11, 10);
+insert into comments values (seq_comments_id.NEXTVAL, 171, sysdate, '보완 설명 감사합니다.', 'megazine', 11, 19);
 
--- recodenum=12
+-- megazine 12
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(페어링(제철)) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 12, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 61, sysdate, '산미 있는 과일과의 조합이 좋네요.', 'megazine', 12, 8);
-insert into comments values (seq_comments_id.NEXTVAL, 61, sysdate, '멜론 조합은 고소함이 살아납니다.', 'megazine', 12, 5);
+insert into comments values (seq_comments_id.NEXTVAL, 174, sysdate, '산미 있는 과일과의 조합이 좋네요.', 'megazine', 12, 8);
+insert into comments values (seq_comments_id.NEXTVAL, 174, sysdate, '멜론 조합은 고소함이 살아납니다.', 'megazine', 12, 5);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '자료 출처까지 정리돼 있어 신뢰가 갑니다.', 'megazine', 12, 21);
-insert into comments values (seq_comments_id.NEXTVAL, 64, sysdate, '서빙 5분 전 냉장 숙성 팁이 핵심.', 'megazine', 12, 6);
+insert into comments values (seq_comments_id.NEXTVAL, 177, sysdate, '서빙 5분 전 냉장 숙성 팁이 핵심.', 'megazine', 12, 6);
 
--- recodenum=14
+-- megazine 14
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(캘린더) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 14, 13);
-insert into comments values (seq_comments_id.NEXTVAL, 66, sysdate, '화요일 입고 비중 메모했습니다.', 'megazine', 14, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 66, sysdate, '개점 직후 방문이 확실하네요.', 'megazine', 14, 9);
+insert into comments values (seq_comments_id.NEXTVAL, 179, sysdate, '화요일 입고 비중 메모했습니다.', 'megazine', 14, 5);
+insert into comments values (seq_comments_id.NEXTVAL, 179, sysdate, '개점 직후 방문이 확실하네요.', 'megazine', 14, 9);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '현장감 있는 팁 덕분에 바로 적용했습니다.', 'megazine', 14, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 69, sysdate, '보냉 파우치+아이스팩 조합이 좋네요.', 'megazine', 14, 7);
+insert into comments values (seq_comments_id.NEXTVAL, 182, sysdate, '보냉 파우치+아이스팩 조합이 좋네요.', 'megazine', 14, 7);
 
--- recodenum=17
+-- megazine 17
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '자료 출처까지 정리돼 있어 신뢰가 갑니다.', 'megazine', 17, 13);
-insert into comments values (seq_comments_id.NEXTVAL, 72, sysdate, '다음 글도 기대할게요.', 'megazine', 17, 5);
+insert into comments values (seq_comments_id.NEXTVAL, 184, sysdate, '다음 글도 기대할게요.', 'megazine', 17, 5);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(건강) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 17, 8);
-insert into comments values (seq_comments_id.NEXTVAL, 74, sysdate, '실제로 해보니 효과 있었어요.', 'megazine', 17, 8);
+insert into comments values (seq_comments_id.NEXTVAL, 186, sysdate, '실제로 해보니 효과 있었어요.', 'megazine', 17, 8);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '현장감 있는 팁 덕분에 바로 적용했습니다.', 'megazine', 17, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 76, sysdate, '표나 그림 추가되면 더 좋을 듯!', 'megazine', 17, 12);
-insert into comments values (seq_comments_id.NEXTVAL, 76, sysdate, '다음 글도 기대할게요.', 'megazine', 17, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 76, sysdate, '보완 설명 감사합니다.', 'megazine', 17, 17);
+insert into comments values (seq_comments_id.NEXTVAL, 188, sysdate, '표나 그림 추가되면 더 좋을 듯!', 'megazine', 17, 12);
+insert into comments values (seq_comments_id.NEXTVAL, 188, sysdate, '다음 글도 기대할게요.', 'megazine', 17, 4);
+insert into comments values (seq_comments_id.NEXTVAL, 188, sysdate, '보완 설명 감사합니다.', 'megazine', 17, 17);
 
--- recodenum=19
+-- megazine 19
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '현장감 있는 팁 덕분에 바로 적용했습니다.', 'megazine', 19, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 80, sysdate, '가격대별 추천표도 부탁드립니다.', 'megazine', 19, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 80, sysdate, '다음 글도 기대할게요.', 'megazine', 19, 21);
+insert into comments values (seq_comments_id.NEXTVAL, 192, sysdate, '가격대별 추천표도 부탁드립니다.', 'megazine', 19, 5);
+insert into comments values (seq_comments_id.NEXTVAL, 192, sysdate, '다음 글도 기대할게요.', 'megazine', 19, 21);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(건강 체크) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 19, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 83, sysdate, '가격대별 추천표도 부탁드립니다.', 'megazine', 19, 8);
-insert into comments values (seq_comments_id.NEXTVAL, 83, sysdate, '보완 설명 감사합니다.', 'megazine', 19, 5);
-
-
-
+insert into comments values (seq_comments_id.NEXTVAL, 195, sysdate, '가격대별 추천표도 부탁드립니다.', 'megazine', 19, 8);
+insert into comments values (seq_comments_id.NEXTVAL, 195, sysdate, '보완 설명 감사합니다.', 'megazine', 19, 5);
 
 -- 투표 댓글
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '녹차 아이스크림 투표 참여 완료!', 'vote', 1, 22);
-insert into comments values (seq_comments_id.NEXTVAL, 20, sysdate, '배라 녹차 한 표요!', 'vote', 1, 23);
-insert into comments values (seq_comments_id.NEXTVAL, 21, sysdate, '하겐다즈도 진하긴 하죠 ㅎㅎ', 'vote', 1, 3);
+insert into comments values (seq_comments_id.NEXTVAL, 198, sysdate, '배라 녹차 한 표요!', 'vote', 1, 23);
+insert into comments values (seq_comments_id.NEXTVAL, 198, sysdate, '하겐다즈도 진하긴 하죠 ㅎㅎ', 'vote', 1, 3);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '여름 과일 투표 기대됩니다.', 'vote', 2, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 23, sysdate, '복숭아가 짱이죠!', 'vote', 2, 5);
+insert into comments values (seq_comments_id.NEXTVAL, 201, sysdate, '복숭아가 짱이죠!', 'vote', 2, 5);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '가을 아이스크림 주제 흥미롭네요.', 'vote', 3, 6);
-insert into comments values (seq_comments_id.NEXTVAL, 25, sysdate, '밤맛이 생각보다 괜찮더라고요.', 'vote', 3, 7);
-insert into comments values (seq_comments_id.NEXTVAL, 25, sysdate, '고구마맛은 호불호가 갈리네요.', 'vote', 3, 8);
+insert into comments values (seq_comments_id.NEXTVAL, 203, sysdate, '밤맛이 생각보다 괜찮더라고요.', 'vote', 3, 7);
+insert into comments values (seq_comments_id.NEXTVAL, 203, sysdate, '고구마맛은 호불호가 갈리네요.', 'vote', 3, 8);
 
 -- 이벤트 댓글
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '페스티벌 일정 확인했습니다. 가볼게요!', 'event', 1, 9);
-insert into comments values (seq_comments_id.NEXTVAL, 28, sysdate, '스탬프 투어 굿즈 기대됩니다.', 'event', 1, 10);
+insert into comments values (seq_comments_id.NEXTVAL, 206, sysdate, '스탬프 투어 굿즈 기대됩니다.', 'event', 1, 10);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '초코 위크 타임세일 정보 감사!', 'event', 2, 11);
-insert into comments values (seq_comments_id.NEXTVAL, 30, sysdate, '17시에 오면 혜택이 많네요.', 'event', 2, 12);
+insert into comments values (seq_comments_id.NEXTVAL, 208, sysdate, '17시에 오면 혜택이 많네요.', 'event', 2, 12);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '여름 시식회 참여 후기 남깁니다. 만족!', 'event', 3, 13);
-insert into comments values (seq_comments_id.NEXTVAL, 32, sysdate, '보냉팩 제공이 아주 유용했어요.', 'event', 3, 14);
+insert into comments values (seq_comments_id.NEXTVAL, 210, sysdate, '보냉팩 제공이 아주 유용했어요.', 'event', 3, 14);
+
+-- 레시피 댓글
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '레시피 1번 따라해봤어요. 성공!', 'recipe', 1, 15);
-insert into comments values (seq_comments_id.NEXTVAL, 34, sysdate, '재료 대체 팁도 부탁드립니다.', 'recipe', 1, 16);
-insert into comments values (seq_comments_id.NEXTVAL, 35, sysdate, '우유 대신 오트밀크로 해도 괜찮았어요.', 'recipe', 1, 17);
+insert into comments values (seq_comments_id.NEXTVAL, 212, sysdate, '재료 대체 팁도 부탁드립니다.', 'recipe', 1, 16);
+insert into comments values (seq_comments_id.NEXTVAL, 212, sysdate, '우유 대신 오트밀크로 해도 괜찮았어요.', 'recipe', 1, 17);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '레시피 2번 소스 맛이 좋네요.', 'recipe', 2, 18);
 insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '레시피 3번은 준비가 간단해서 좋아요.', 'recipe', 3, 19);
-insert into comments values (seq_comments_id.NEXTVAL, 39, sysdate, '조리 시간만 조금 더 알려주세요.', 'recipe', 3, 20);
-insert into comments values (seq_comments_id.NEXTVAL, 39, sysdate, '온도도 표기되면 완벽할 듯!', 'recipe', 3, 21);
+insert into comments values (seq_comments_id.NEXTVAL, 216, sysdate, '조리 시간만 조금 더 알려주세요.', 'recipe', 3, 20);
+insert into comments values (seq_comments_id.NEXTVAL, 216, sysdate, '온도도 표기되면 완벽할 듯!', 'recipe', 3, 21);
 
 commit;
-
 
 
 

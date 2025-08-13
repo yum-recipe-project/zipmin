@@ -121,7 +121,6 @@ public class CommentController {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<CommentReadResponseDto> commentPage = null;
 		
-		//***** 이거 수정함 !!!!! 댓글 js도 수정해야함 !!!!!!
 		if (sort.equals("postdate-desc")) {
 			commentPage = commentService.readCommentPageOrderByIdDesc(tablename, recodenum, keyword, pageable);
 		}
@@ -140,6 +139,8 @@ public class CommentController {
 		else if (sort.equals("reportcount-asc")) {
 			commentPage = commentService.readCommentPageOrderByReportcountAsc(tablename, recodenum, keyword, pageable);
 		}
+		
+		System.err.println(commentPage.getContent());
 		
 		return ResponseEntity.status(CommentSuccessCode.COMMENT_READ_LIST_SUCCESS.getStatus())
         		.body(ApiResponse.success(CommentSuccessCode.COMMENT_READ_LIST_SUCCESS, commentPage));

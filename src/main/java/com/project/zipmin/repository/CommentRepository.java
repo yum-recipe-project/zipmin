@@ -12,67 +12,67 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
 	
 	// 오래된순
 	Page<Comment> findAllByOrderByPostdateAscIdAsc(Pageable pageable);
-	Page<Comment> findByContentContainingIgnoreCaseOrderByPostdateAscIdAsc(String keyword, Pageable pageable);
+	Page<Comment> findAllByContentContainingIgnoreCaseOrderByPostdateAscIdAsc(String keyword, Pageable pageable);
 	
-	Page<Comment> findByTablenameOrderByPostdateAscIdAsc(String tablename, Pageable pageable);
-	Page<Comment> findByTablenameAndContentContainingIgnoreCaseOrderByPostdateAscIdAsc(String tablename, String keyword, Pageable pageable);
+	Page<Comment> findAllByTablenameOrderByPostdateAscIdAsc(String tablename, Pageable pageable);
+	Page<Comment> findAllByTablenameAndContentContainingIgnoreCaseOrderByPostdateAscIdAsc(String tablename, String keyword, Pageable pageable);
 	
-	Page<Comment> findByTablenameAndRecodenumOrderByComment_IdDescIdAsc(String tablename, int recodenum, Pageable pageable);
+	Page<Comment> findAllByTablenameAndRecodenumOrderByComment_IdDescIdAsc(String tablename, int recodenum, Pageable pageable);
 
 	
 
 	// 최신순
 	Page<Comment> findAllByOrderByPostdateDescIdDesc(Pageable pageable);
-	Page<Comment> findByContentContainingIgnoreCaseOrderByPostdateDescIdDesc(String keyword, Pageable pageable);
+	Page<Comment> findAllByContentContainingIgnoreCaseOrderByPostdateDescIdDesc(String keyword, Pageable pageable);
 
-	Page<Comment> findByTablenameOrderByPostdateDescIdDesc(String tablename, Pageable pageable);
-	Page<Comment> findByTablenameAndContentContainingIgnoreCaseOrderByPostdateDescIdDesc(String tablename, String keyword, Pageable pageable);
+	Page<Comment> findAllByTablenameOrderByPostdateDescIdDesc(String tablename, Pageable pageable);
+	Page<Comment> findAllByTablenameAndContentContainingIgnoreCaseOrderByPostdateDescIdDesc(String tablename, String keyword, Pageable pageable);
 	
-	Page<Comment> findByTablenameAndRecodenumOrderByComment_IdDescIdDesc(String tablename, int recodenum, Pageable pageable);
+	Page<Comment> findAllByTablenameAndRecodenumOrderByComment_IdDescIdDesc(String tablename, int recodenum, Pageable pageable);
 	
 
 	
 	// 인기순
 	Page<Comment> findAllByOrderByLikecountDescIdDesc(Pageable pageable);
-	Page<Comment> findByContentContainingIgnoreCaseOrderByLikecountDescIdDesc(String keyword, Pageable pageable);
+	Page<Comment> findAllByContentContainingIgnoreCaseOrderByLikecountDescIdDesc(String keyword, Pageable pageable);
 	
-	Page<Comment> findByTablenameOrderByLikecountDescIdDesc(String tablename, Pageable pageable);
-	Page<Comment> findByTablenameAndContentContainingIgnoreCaseOrderByLikecountDescIdDesc(String tablename, String keyword, Pageable pageable);
+	Page<Comment> findAllByTablenameOrderByLikecountDescIdDesc(String tablename, Pageable pageable);
+	Page<Comment> findAllByTablenameAndContentContainingIgnoreCaseOrderByLikecountDescIdDesc(String tablename, String keyword, Pageable pageable);
 	
-	Page<Comment> findByTablenameAndRecodenumOrderByLikecountDescIdDesc(String tablename, int recodenum, Pageable pageable);
+	Page<Comment> findAllByTablenameAndRecodenumOrderByLikecountDescIdDesc(String tablename, int recodenum, Pageable pageable);
 	
 	
 
 	// 비인기순
 	Page<Comment> findAllByOrderByLikecountAscIdDesc(Pageable pageable);
-	Page<Comment> findByContentContainingIgnoreCaseOrderByLikecountAscIdDesc(String keyword, Pageable pageable);
+	Page<Comment> findAllByContentContainingIgnoreCaseOrderByLikecountAscIdDesc(String keyword, Pageable pageable);
 	
-	Page<Comment> findByTablenameOrderByLikecountAscIdDesc(String tablename, Pageable pageable);
-	Page<Comment> findByTablenameAndContentContainingIgnoreCaseOrderByLikecountAscIdDesc(String tablename, String keyword, Pageable pageable);
+	Page<Comment> findAllByTablenameOrderByLikecountAscIdDesc(String tablename, Pageable pageable);
+	Page<Comment> findAllByTablenameAndContentContainingIgnoreCaseOrderByLikecountAscIdDesc(String tablename, String keyword, Pageable pageable);
 	
-	Page<Comment> findByTablenameAndRecodenumOrderByLikecountAscIdDesc(String tablename, int recodenum, Pageable pageable);
+	Page<Comment> findAllByTablenameAndRecodenumOrderByLikecountAscIdDesc(String tablename, int recodenum, Pageable pageable);
 	
 	
 	
 	// 신고순
 	Page<Comment> findAllByOrderByReportcountDescIdDesc(Pageable pageable);
-	Page<Comment> findByContentContainingIgnoreCaseOrderByReportcountDescIdDesc(String keyword, Pageable pageable);
+	Page<Comment> findAllByContentContainingIgnoreCaseOrderByReportcountDescIdDesc(String keyword, Pageable pageable);
 	
-	Page<Comment> findByTablenameOrderByReportcountDescIdDesc(String tablename, Pageable pageable);
-	Page<Comment> findByTablenameAndContentContainingIgnoreCaseOrderByReportcountDescIdDesc(String tablename, String keyword, Pageable pageable);
+	Page<Comment> findAllByTablenameOrderByReportcountDescIdDesc(String tablename, Pageable pageable);
+	Page<Comment> findAllByTablenameAndContentContainingIgnoreCaseOrderByReportcountDescIdDesc(String tablename, String keyword, Pageable pageable);
 	
-	Page<Comment> findByTablenameAndRecodenumOrderByReportcountDescIdDesc(String tablename, int recodenum, Pageable pageable);
+	Page<Comment> findAllByTablenameAndRecodenumOrderByReportcountDescIdDesc(String tablename, int recodenum, Pageable pageable);
 
 	
 	
 	// 미신고순
 	Page<Comment> findAllByOrderByReportcountAscIdDesc(Pageable pageable);
-	Page<Comment> findByContentContainingIgnoreCaseOrderByReportcountAscIdDesc(String keyword, Pageable pageable);
+	Page<Comment> findAllByContentContainingIgnoreCaseOrderByReportcountAscIdDesc(String keyword, Pageable pageable);
 	
-	Page<Comment> findByTablenameOrderByReportcountAscIdDesc(String tablename, Pageable pageable);
-	Page<Comment> findByTablenameAndContentContainingIgnoreCaseOrderByReportcountAscIdDesc(String tablename, String keyword, Pageable pageable);
+	Page<Comment> findAllByTablenameOrderByReportcountAscIdDesc(String tablename, Pageable pageable);
+	Page<Comment> findAllByTablenameAndContentContainingIgnoreCaseOrderByReportcountAscIdDesc(String tablename, String keyword, Pageable pageable);
 	
-	Page<Comment> findByTablenameAndRecodenumOrderByReportcountAscIdDesc(String tablename, int recodenum, Pageable pageable);
+	Page<Comment> findAllByTablenameAndRecodenumOrderByReportcountAscIdDesc(String tablename, int recodenum, Pageable pageable);
 	
 	
 	

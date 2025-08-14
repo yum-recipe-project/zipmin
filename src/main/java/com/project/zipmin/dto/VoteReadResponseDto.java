@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.project.zipmin.entity.Chomp;
 
 import lombok.Data;
 
@@ -16,7 +17,10 @@ public class VoteReadResponseDto {
 	private String title;
 	private Date opendate;
 	private Date closedate;
+	private String content;
+	private String category;
 	
+	// 수정해야함
 	private String status;
 	private List<VoteChoiceReadResponseDto> choiceList;
 	private boolean voted;

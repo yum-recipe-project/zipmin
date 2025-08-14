@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.method.P;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -34,26 +33,18 @@ import com.project.zipmin.dto.ReportCreateResponseDto;
 import com.project.zipmin.dto.ReportDeleteRequestDto;
 import com.project.zipmin.dto.VoteChoiceReadResponseDto;
 import com.project.zipmin.dto.VoteReadResponseDto;
+import com.project.zipmin.entity.Chomp;
 import com.project.zipmin.entity.Comment;
-import com.project.zipmin.entity.Event;
-import com.project.zipmin.entity.Megazine;
 import com.project.zipmin.entity.Role;
-import com.project.zipmin.entity.Vote;
 import com.project.zipmin.entity.VoteChoice;
 import com.project.zipmin.mapper.ChompMapper;
 import com.project.zipmin.mapper.CommentMapper;
-import com.project.zipmin.mapper.EventMapper;
-import com.project.zipmin.mapper.MegazineMapper;
 import com.project.zipmin.mapper.VoteChoiceMapper;
-import com.project.zipmin.mapper.VoteMapper;
 import com.project.zipmin.mapper.VoteRecordMapper;
 import com.project.zipmin.repository.ChompRepository;
 import com.project.zipmin.repository.CommentRepository;
-import com.project.zipmin.repository.EventRepository;
-import com.project.zipmin.repository.MegazineRepository;
 import com.project.zipmin.repository.VoteChoiceRepository;
 import com.project.zipmin.repository.VoteRecordRepository;
-import com.project.zipmin.repository.VoteRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -63,39 +54,32 @@ import lombok.RequiredArgsConstructor;
 public class ChompCommentService {
 	
 	@Autowired
-	private CommentRepository commentRepository;
+	private ChompRepository chompRepository;
 	@Autowired
-	private VoteRepository voteRepository;
+	private CommentRepository commentRepository;
 	@Autowired
 	private VoteChoiceRepository choiceRepository;
 	@Autowired
 	private VoteRecordRepository recordRepository;
-	@Autowired
-	private MegazineRepository megazineRepository;
-	@Autowired
-	private EventRepository eventRepository;
 	
 	private final ChompMapper chompMapper;
-	private final VoteMapper voteMapper;
 	private final VoteChoiceMapper choiceMapper;
 	private final VoteRecordMapper recordMapper;
-	private final MegazineMapper megazineMapper;
-	private final EventMapper eventMapper;
 	
 	
 	
 	// 투표의 목록을 조회하는 함수
 	public Page<VoteReadResponseDto> readVotePage(Pageable pageable) {
 		
-		Page<Vote> votePage = voteRepository.findAll(pageable);
+		Page<Chomp> votePage = chompRepository.findAll(pageable);
 		
 		List<VoteReadResponseDto> voteDtoList = new ArrayList<>();
 		Date today = new Date();
-		for (Vote vote : votePage) {
-			VoteReadResponseDto voteDto = voteMapper.toReadResponseDto(vote);
+		for (Chomp vote : votePage) {
+			VoteReadResponseDto voteDto = chompMapper.toVoteReadResponseDto(vote);
 			
 			// 투표수
-			long total = recordRepository.countByVoteId(vote.getId());
+			long total = recordRepository.countByChompId(vote.getId());
 			voteDto.setTotal(total);
 			
 			// 댓글수
@@ -107,7 +91,7 @@ public class ChompCommentService {
 			voteDto.setStatus(status);
 			
 			// 투표 옵션
-			List<VoteChoice> choiceList = choiceRepository.findByVoteId(vote.getId());
+			List<VoteChoice> choiceList = choiceRepository.findByChompId(vote.getId());
 			List<VoteChoiceReadResponseDto> choiceDtoList = new ArrayList<>();
 			for (VoteChoice choice : choiceList) {
 				VoteChoiceReadResponseDto choiceDto = choiceMapper.toReadResponseDto(choice);
@@ -131,50 +115,52 @@ public class ChompCommentService {
 	
 	
 	
-	// 매거진의 목록을 조회하는 함수
-	public Page<MegazineReadResponseDto> readMegazinePage(String keyword, Pageable pageable) {
-		
-		Page<Megazine> megazinePage = (keyword == null || keyword.isBlank())
-				? megazineRepository.findAll(pageable)
-				: megazineRepository.findByTitleContainingIgnoreCase(keyword, pageable);
-		
-		List<MegazineReadResponseDto> megazineDtoList = new ArrayList<>();
-		for (Megazine megazine : megazinePage) {
-			MegazineReadResponseDto megazineDto = megazineMapper.toReadResponseDto(megazine);
-			
-			// 댓글수
-			int count = readCommentCount("megazine", megazine.getId());
-			megazineDto.setCommentcount(count);
-			
-			megazineDtoList.add(megazineDto);
-		}
-		
-		return new PageImpl<>(megazineDtoList, pageable, megazinePage.getTotalElements());
-	}
-	
-	
-	
-	
-	// 투표의 목록을 조회하는 함수
-	public Page<EventReadResponseDto> readEventPage(String keyword, Pageable pageable) {
-		
-		Page<Event> eventPage = (keyword == null || keyword.isBlank())
-				? eventRepository.findAll(pageable)
-				: eventRepository.findByTitleContainingIgnoreCase(keyword, pageable);
-		
-		List<EventReadResponseDto> eventDtoList = new ArrayList<>();
-		for (Event event : eventPage) {
-			EventReadResponseDto eventDto = eventMapper.toReadResponseDto(event);
-			
-			// 댓글수
-			int count = readCommentCount("event", event.getId());
-			eventDto.setCommentcount(count);
-			
-			eventDtoList.add(eventDto);
-		}
-		
-		return new PageImpl<>(eventDtoList, pageable, eventPage.getTotalElements());
-	}
+//	// 매거진의 목록을 조회하는 함수
+//	public Page<MegazineReadResponseDto> readMegazinePage(String keyword, Pageable pageable) {
+//		
+//		
+//		// 이것도 sort 기준으로 하도록 수정 !!!
+//		Page<Chomp> megazinePage = (keyword == null || keyword.isBlank())
+//				? chompRepository.findAll(pageable)
+//				: chompRepository.findByTitleContainingIgnoreCase(keyword, pageable);
+//		
+//		List<MegazineReadResponseDto> megazineDtoList = new ArrayList<>();
+//		for (Megazine megazine : megazinePage) {
+//			MegazineReadResponseDto megazineDto = megazineMapper.toReadResponseDto(megazine);
+//			
+//			// 댓글수
+//			int count = readCommentCount("megazine", megazine.getId());
+//			megazineDto.setCommentcount(count);
+//			
+//			megazineDtoList.add(megazineDto);
+//		}
+//		
+//		return new PageImpl<>(megazineDtoList, pageable, megazinePage.getTotalElements());
+//	}
+//	
+//	
+//	
+//	
+//	// 투표의 목록을 조회하는 함수
+//	public Page<EventReadResponseDto> readEventPage(String keyword, Pageable pageable) {
+//		
+//		Page<Event> eventPage = (keyword == null || keyword.isBlank())
+//				? eventRepository.findAll(pageable)
+//				: eventRepository.findByTitleContainingIgnoreCase(keyword, pageable);
+//		
+//		List<EventReadResponseDto> eventDtoList = new ArrayList<>();
+//		for (Event event : eventPage) {
+//			EventReadResponseDto eventDto = eventMapper.toReadResponseDto(event);
+//			
+//			// 댓글수
+//			int count = readCommentCount("event", event.getId());
+//			eventDto.setCommentcount(count);
+//			
+//			eventDtoList.add(eventDto);
+//		}
+//		
+//		return new PageImpl<>(eventDtoList, pageable, eventPage.getTotalElements());
+//	}
 	
 	
 	

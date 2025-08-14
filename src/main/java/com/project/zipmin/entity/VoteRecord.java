@@ -28,10 +28,10 @@ public class VoteRecord {
 	@SequenceGenerator(name = "seq_vote_record_id", sequenceName = "SEQ_VOTE_RECORD_ID", allocationSize = 1)
 	private int id;
 	
-	// private int vote_id;
+	// private int chomp_id;
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "vote_id")
-	Vote vote;
+	@JoinColumn(name = "CHOMP_ID")
+	Chomp chomp;
 	
 	// private int user_id;
 	@OneToOne(fetch = FetchType.LAZY)

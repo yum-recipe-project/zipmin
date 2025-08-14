@@ -39,7 +39,7 @@ function getAuthHeaders() {
 
     if (isLoggedIn()) {
         const token = localStorage.getItem('accessToken');
-        headers['Authorization'] = `Bearer ${token}`;
+        headers.Authorization = `Bearer ${token}`;
     }
 
     return headers;

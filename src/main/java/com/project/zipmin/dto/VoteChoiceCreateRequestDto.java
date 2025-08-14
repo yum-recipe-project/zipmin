@@ -10,6 +10,6 @@ import lombok.Data;
 public class VoteChoiceCreateRequestDto {
 
 	private String choice;
-	private int voteId;
+	private int chompId;
 	
 }

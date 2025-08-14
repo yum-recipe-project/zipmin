@@ -3,8 +3,11 @@
  */
 let totalPages = 0;
 let page = 0;
-const size = 10;
+const size = 15;
 let keyword = '';
+let category = '';
+let sortKey = 'postdate'
+let sortOrder = 'desc';
 let chompList = [];
 
 
@@ -16,11 +19,56 @@ let chompList = [];
  */
 document.addEventListener('DOMContentLoaded', function() {
 	
+	// 검색
 	document.querySelector('form.search').addEventListener('submit', function(event) {
 		event.preventDefault();
 		keyword = document.getElementById('text-srh').value.trim();
 		page = 0;
 		fetchChompList();
+	});
+	
+	// 카테고리
+	document.querySelectorAll('.btn_tab a').forEach(tab => {
+		tab.addEventListener('click', function (event) {
+			event.preventDefault();
+			document.querySelector('.btn_tab a.active')?.classList.remove('active');
+			this.classList.add('active');
+			
+			category = this.getAttribute('data-tab');
+			page = 0;
+			keyword = '';
+			document.getElementById('text-srh').value = '';
+			sortKey = 'postdate';
+			sortOrder = 'desc';
+			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
+			document.querySelector(`.sort_btn[data-key="${sortKey}"]`).classList.add(sortOrder);
+			
+			commentList = [];
+			
+			fetchChompList();
+		});
+	});
+	
+	// 정렬 버튼
+	document.querySelectorAll('.sort_btn').forEach(btn => {
+		btn.addEventListener('click', function(event) {
+			event.preventDefault();
+			const key = btn.dataset.key;
+
+		    if (sortKey === key) {
+		      sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+		    }
+			else {
+		      sortKey = key;
+		      sortOrder = 'desc';
+		    }
+			
+			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
+			this.classList.add(sortOrder);
+			
+			page = 0;
+			fetchChompList();
+		});
 	});
 	
 	fetchChompList();
@@ -37,25 +85,25 @@ async function fetchChompList() {
 	
 	try {
 		const params = new URLSearchParams({
-			page : page,
-			size : size,
+			// category: category,
+			category: 'all',
+			sort: sortKey + '-' + sortOrder,
 			keyword : keyword,
-			category : 'all'
+			page : page,
+			size : size
 		}).toString();
-
-		const headers = {
-			'Content-Type': 'application/json'
-		};
+		
+		console.log(params);
 
 		const response = await fetch(`/chomp?${params}`, {
 			method: 'GET',
-			headers: headers
+			headers: getAuthHeaders()
 		});
 
 		const result = await response.json();
 		
 		console.log(result);
-
+		
 		if (result.code === 'CHOMP_READ_LIST_SUCCESS') {
 
 			totalPages = result.data.totalPages;
@@ -99,7 +147,7 @@ function renderChompList(chompList) {
 		noH6.textContent = index + 1;
 		noTd.appendChild(noH6);
 		
-		// 카테고리
+		// 게시판명
 		const categoryTd = document.createElement('td');
 		const categoryH6 = document.createElement('h6');
 		categoryH6.className = 'fw-semibold mb-0';
@@ -117,20 +165,41 @@ function renderChompList(chompList) {
         // 제목
 		const titleTd = document.createElement('td');
 		const titleH6 = document.createElement('h6');
-		titleH6.className = 'fw-semibold mb-0';
+		// titleH6.className = 'fw-semibold mb-0';
+		titleH6.className = 'fs-4 fw-semibold mb-2';
 		if (chomp.category === 'event' && chomp.event_dto) {
 		    titleH6.textContent = chomp.event_dto.title;
+			titleTd.appendChild(titleH6);
 		    titleTd.onclick = () => location.href = `/admin/viewEvent.do?id=${chomp.event_dto.id}`;
 		}
 		else if (chomp.category === 'megazine' && chomp.megazine_dto) {
 		    titleH6.textContent = chomp.megazine_dto.title;
 		    titleTd.onclick = () => location.href = `/admin/viewMegazine.do?id=${chomp.megazine_dto.id}`;
+			titleTd.appendChild(titleH6);
 		}
 		else if (chomp.category === 'vote' && chomp.vote_dto) {
+			// 제목
 		    titleH6.textContent = chomp.vote_dto.title;
 		    titleTd.onclick = () => location.href = `/admin/viewVote.do?id=${chomp.vote_dto.id}`;
+			titleTd.appendChild(titleH6); // 이거 선택지랑 같이 append
+			// 선택지
+			/*
+			const maxRate = Math.max(...chomp.vote_dto.choice_list.map(choice => choice.rate));
+			chomp.vote_dto.choice_list.forEach(choice => {
+				const choiceSpan = document.createElement('span');
+				choiceSpan.className = 'fw-normal';
+				if (choice.rate === maxRate && maxRate !== 0) {
+					choiceSpan.innerHTML = `<b>${choice.choice} (${choice.rate}%)</b>`;
+				}
+				else {
+					choiceSpan.textContent = `${choice.choice} (${choice.rate}%)`;
+				}
+				titleTd.appendChild(titleH6);
+				titleWrap.appendChild(choiceSpan);
+				titleWrap.appendChild(document.createElement('br'));
+			});
+			*/
 		}
-		titleTd.appendChild(titleH6);
 
         // 기간
 		const periodTd = document.createElement('td');
@@ -147,21 +216,51 @@ function renderChompList(chompList) {
 		}
 		periodTd.appendChild(periodH6);
 		
+		// 상태
+		const statusTd = document.createElement('td');
+		if (chomp.category === 'vote' && chomp.vote_dto) {
+			/*
+			const statusSpan = document.createElement('span');
+			statusSpan.className = `badge ${vote.status === 'open' ? 'bg-primary-subtle text-primary' : 'bg-danger-subtle text-danger'} d-inline-flex align-items-center gap-1`;
+			statusSpan.innerHTML = `<i class="ti ${vote.status === 'open' ? 'ti-check' : 'ti-x'} fs-4"></i>${vote.status === 'open' ? '투표중' : '투표 종료'}`;
+			statusTd.appendChild(statusSpan);
+			*/
+		}
+		
+		
+		
+		
+		
 
         // 댓글수
 		const commentTd = document.createElement('td');
 		const commentH6 = document.createElement('h6');
 		commentH6.className = 'fw-semibold mb-0';
 		if (chomp.category === 'event' && chomp.event_dto) {
-		    commentH6.textContent = `${chomp.event_dto.commentcount || 0}개`;
+		    commentH6.textContent = chomp.event_dto.commentcount;
 		}
 		else if (chomp.category === 'megazine' && chomp.megazine_dto) {
-		    commentH6.textContent = `${chomp.megazine_dto.commentcount || 0}개`;
+		    commentH6.textContent = chomp.megazine_dto.commentcount;
 		}
 		else if (chomp.category === 'vote' && chomp.vote_dto) {
-		    commentH6.textContent = `${chomp.vote_dto.commentcount || 0}개`;
+		    commentH6.textContent = chomp.vote_dto.commentcount;
 		}
 		commentTd.appendChild(commentH6);
+		
+		
+		
+		// 참여자수
+		const totalTd = document.createElement('td');
+		if (chomp.category === 'vote' && chomp.vote_dto) {
+			/*
+			const totalH6 = document.createElement('h6');
+			totalH6.className = 'fw-semibold mb-0';
+			totalH6.textContent = `${vote.total}명`;
+			totalTd.appendChild(totalH6);
+			*/
+		}
+		
+		
 
         // 기능 버튼
 		const actionTd = document.createElement('td');
@@ -202,7 +301,7 @@ function renderChompList(chompList) {
 		btnWrap.append(editBtn, deleteBtn);
 		actionTd.appendChild(btnWrap);
 		
-		tr.append(noTd, categoryTd, titleTd, periodTd, commentTd, actionTd);
+		tr.append(noTd, categoryTd, titleTd, periodTd, statusTd, commentTd, totalTd, actionTd);
 
         container.appendChild(tr);
     });

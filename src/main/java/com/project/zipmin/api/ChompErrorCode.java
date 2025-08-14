@@ -20,6 +20,7 @@ public enum ChompErrorCode implements Code {
 	CHOMP_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 쩝쩝박사 게시물을 찾을 수 없음"),
 	CHOMP_CREATE_FAIL(HttpStatus.BAD_REQUEST, "쩝쩝박사 게시물 작성 실패"),
 	CHOMP_READ_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "쩝쩝박사 게시물 조회 실패"),
+	CHOMP_READ_LIST_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "쩝쩝박사 게시물 목록 조회 실패"),
 	CHOMP_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "쩝쩝박사 게시물 수정 실패"),
 	CHOMP_DELETE_FAIL(HttpStatus.BAD_REQUEST, "쩝쩝박사 게시물 삭제 실패"),
 	

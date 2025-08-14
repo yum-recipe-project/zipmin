@@ -92,17 +92,11 @@ async function fetchCommentList() {
 			sort: sortKey + '-' + sortOrder
 		}).toString();
 		
-		const headers = {
-			'Content-Type': 'application/json'
-		};
-		
 		const response = await fetch(`/comments?${params}`, {
 			method: 'GET',
-			headers: headers
+			headers: getAuthHeaders()
 		});
 		const result = await response.json();
-		
-		console.log(result);
 		
 		if (result.code === 'COMMENT_READ_LIST_SUCCESS') {
 			totalPages = result.data.totalPages;

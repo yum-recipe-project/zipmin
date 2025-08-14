@@ -205,6 +205,11 @@
 	text-overflow: clip;
 }
 
+
+
+
+
+/* 정렬 버튼 */
 .body-wrapper .container-fluid th.sort_btn {
 	position: relative;
 }

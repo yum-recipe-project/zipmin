@@ -75,17 +75,17 @@ public class CommentService {
 	        if (!hasTable) {
 	        	// 전체
 	            commentPage = hasKeyword
-	                    ? commentRepository.findByContentContainingIgnoreCaseOrderByPostdateAscIdAsc(keyword, pageable)
+	                    ? commentRepository.findAllByContentContainingIgnoreCaseOrderByPostdateAscIdAsc(keyword, pageable)
 	                    : commentRepository.findAllByOrderByPostdateAscIdAsc(pageable);
 	        }
 	        else if (!hasRecord) {
 	            // 테이블만
 	            commentPage = hasKeyword
-	                    ? commentRepository.findByTablenameAndContentContainingIgnoreCaseOrderByPostdateAscIdAsc(tablename, keyword, pageable)
-	                    : commentRepository.findByTablenameOrderByPostdateAscIdAsc(tablename, pageable);
+	                    ? commentRepository.findAllByTablenameAndContentContainingIgnoreCaseOrderByPostdateAscIdAsc(tablename, keyword, pageable)
+	                    : commentRepository.findAllByTablenameOrderByPostdateAscIdAsc(tablename, pageable);
 	        } else {
 	        	// 테이블과 레코드
-	            commentPage = commentRepository.findByTablenameAndRecodenumOrderByComment_IdDescIdAsc(tablename, recodenum, pageable);
+	            commentPage = commentRepository.findAllByTablenameAndRecodenumOrderByComment_IdDescIdAsc(tablename, recodenum, pageable);
 	        }
 		}
 		catch (Exception e) {
@@ -132,17 +132,17 @@ public class CommentService {
 	        if (!hasTable) {
 	        	// 전체
 	            commentPage = hasKeyword
-	                    ? commentRepository.findByContentContainingIgnoreCaseOrderByPostdateDescIdDesc(keyword, pageable)
+	                    ? commentRepository.findAllByContentContainingIgnoreCaseOrderByPostdateDescIdDesc(keyword, pageable)
 	                    : commentRepository.findAllByOrderByPostdateDescIdDesc(pageable);
 	        }
 	        else if (!hasRecord) {
 	            // 테이블만
 	            commentPage = hasKeyword
-	                    ? commentRepository.findByTablenameAndContentContainingIgnoreCaseOrderByPostdateDescIdDesc(tablename, keyword, pageable)
-	                    : commentRepository.findByTablenameOrderByPostdateDescIdDesc(tablename, pageable);
+	                    ? commentRepository.findAllByTablenameAndContentContainingIgnoreCaseOrderByPostdateDescIdDesc(tablename, keyword, pageable)
+	                    : commentRepository.findAllByTablenameOrderByPostdateDescIdDesc(tablename, pageable);
 	        } else {
 	        	// 테이블과 레코드
-	            commentPage = commentRepository.findByTablenameAndRecodenumOrderByComment_IdDescIdDesc(tablename, recodenum, pageable);
+	            commentPage = commentRepository.findAllByTablenameAndRecodenumOrderByComment_IdDescIdDesc(tablename, recodenum, pageable);
 	        }
 		}
 		catch (Exception e) {
@@ -190,17 +190,17 @@ public class CommentService {
 	        if (!hasTable) {
 	        	// 전체
 	            commentPage = hasKeyword
-	                    ? commentRepository.findByContentContainingIgnoreCaseOrderByLikecountDescIdDesc(keyword, pageable)
+	                    ? commentRepository.findAllByContentContainingIgnoreCaseOrderByLikecountDescIdDesc(keyword, pageable)
 	                    : commentRepository.findAllByOrderByLikecountDescIdDesc(pageable);
 	        }
 	        else if (!hasRecord) {
 	            // 테이블만
 	            commentPage = hasKeyword
-	                    ? commentRepository.findByTablenameAndContentContainingIgnoreCaseOrderByLikecountDescIdDesc(tablename, keyword, pageable)
-	                    : commentRepository.findByTablenameOrderByLikecountDescIdDesc(tablename, pageable);
+	                    ? commentRepository.findAllByTablenameAndContentContainingIgnoreCaseOrderByLikecountDescIdDesc(tablename, keyword, pageable)
+	                    : commentRepository.findAllByTablenameOrderByLikecountDescIdDesc(tablename, pageable);
 	        } else {
 	        	// 테이블과 레코드
-	            commentPage = commentRepository.findByTablenameAndRecodenumOrderByLikecountDescIdDesc(tablename, recodenum, pageable);
+	            commentPage = commentRepository.findAllByTablenameAndRecodenumOrderByLikecountDescIdDesc(tablename, recodenum, pageable);
 	        }
 		}
 		catch (Exception e) {
@@ -247,18 +247,18 @@ public class CommentService {
 	        if (!hasTable) {
 	        	// 전체
 	            commentPage = hasKeyword
-	                    ? commentRepository.findByContentContainingIgnoreCaseOrderByLikecountAscIdDesc(keyword, pageable)
+	                    ? commentRepository.findAllByContentContainingIgnoreCaseOrderByLikecountAscIdDesc(keyword, pageable)
 	                    : commentRepository.findAllByOrderByLikecountAscIdDesc(pageable);
 	        }
 	        else if (!hasRecord) {
 	        	// 테이블만
 	            commentPage = hasKeyword
-	                    ? commentRepository.findByTablenameAndContentContainingIgnoreCaseOrderByLikecountAscIdDesc(tablename, keyword, pageable)
-	                    : commentRepository.findByTablenameOrderByLikecountAscIdDesc(tablename, pageable);
+	                    ? commentRepository.findAllByTablenameAndContentContainingIgnoreCaseOrderByLikecountAscIdDesc(tablename, keyword, pageable)
+	                    : commentRepository.findAllByTablenameOrderByLikecountAscIdDesc(tablename, pageable);
 	        }
 	        else {
 	        	// 테이블과 레코드
-	            commentPage = commentRepository.findByTablenameAndRecodenumOrderByLikecountAscIdDesc(tablename, recodenum, pageable);
+	            commentPage = commentRepository.findAllByTablenameAndRecodenumOrderByLikecountAscIdDesc(tablename, recodenum, pageable);
 	        }
 	    } catch (Exception e) {
 	        throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);
@@ -302,18 +302,18 @@ public class CommentService {
 	        if (!hasTable) {
 	        	// 전체
 	            commentPage = hasKeyword
-	                    ? commentRepository.findByContentContainingIgnoreCaseOrderByReportcountDescIdDesc(keyword, pageable)
+	                    ? commentRepository.findAllByContentContainingIgnoreCaseOrderByReportcountDescIdDesc(keyword, pageable)
 	                    : commentRepository.findAllByOrderByReportcountDescIdDesc(pageable);
 	        }
 	        else if (!hasRecord) {
 	        	// 테이블만
 	            commentPage = hasKeyword
-	                    ? commentRepository.findByTablenameAndContentContainingIgnoreCaseOrderByReportcountDescIdDesc(tablename, keyword, pageable)
-	                    : commentRepository.findByTablenameOrderByReportcountDescIdDesc(tablename, pageable);
+	                    ? commentRepository.findAllByTablenameAndContentContainingIgnoreCaseOrderByReportcountDescIdDesc(tablename, keyword, pageable)
+	                    : commentRepository.findAllByTablenameOrderByReportcountDescIdDesc(tablename, pageable);
 	        }
 	        else {
 	        	// 테이블과 레코드
-	            commentPage = commentRepository.findByTablenameAndRecodenumOrderByReportcountDescIdDesc(tablename, recodenum, pageable);
+	            commentPage = commentRepository.findAllByTablenameAndRecodenumOrderByReportcountDescIdDesc(tablename, recodenum, pageable);
 	        }
 	    } catch (Exception e) {
 	        throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);
@@ -357,18 +357,18 @@ public class CommentService {
 	        if (!hasTable) {
 	        	// 전체
 	            commentPage = hasKeyword
-	                    ? commentRepository.findByContentContainingIgnoreCaseOrderByReportcountAscIdDesc(keyword, pageable)
+	                    ? commentRepository.findAllByContentContainingIgnoreCaseOrderByReportcountAscIdDesc(keyword, pageable)
 	                    : commentRepository.findAllByOrderByReportcountAscIdDesc(pageable);
 	        }
 	        else if (!hasRecord) {
 	        	// 테이블만
 	            commentPage = hasKeyword
-	                    ? commentRepository.findByTablenameAndContentContainingIgnoreCaseOrderByReportcountAscIdDesc(tablename, keyword, pageable)
-	                    : commentRepository.findByTablenameOrderByReportcountAscIdDesc(tablename, pageable);
+	                    ? commentRepository.findAllByTablenameAndContentContainingIgnoreCaseOrderByReportcountAscIdDesc(tablename, keyword, pageable)
+	                    : commentRepository.findAllByTablenameOrderByReportcountAscIdDesc(tablename, pageable);
 	        }
 	        else {
 	        	// 테이블과 레코드
-	            commentPage = commentRepository.findByTablenameAndRecodenumOrderByReportcountAscIdDesc(tablename, recodenum, pageable);
+	            commentPage = commentRepository.findAllByTablenameAndRecodenumOrderByReportcountAscIdDesc(tablename, recodenum, pageable);
 	        }
 	    } catch (Exception e) {
 	        throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);

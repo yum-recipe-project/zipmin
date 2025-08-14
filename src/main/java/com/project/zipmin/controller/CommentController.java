@@ -140,8 +140,6 @@ public class CommentController {
 			commentPage = commentService.readCommentPageOrderByReportcountAsc(tablename, recodenum, keyword, pageable);
 		}
 		
-		System.err.println(commentPage.getContent());
-		
 		return ResponseEntity.status(CommentSuccessCode.COMMENT_READ_LIST_SUCCESS.getStatus())
         		.body(ApiResponse.success(CommentSuccessCode.COMMENT_READ_LIST_SUCCESS, commentPage));
 	}

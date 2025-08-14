@@ -7,6 +7,8 @@
 
 
 
+
+
 /* 네비게이션 바 */
 .body-wrapper .container-fluid .nav_wrap {
 	display: flex;
@@ -156,15 +158,98 @@
 
 .body-wrapper .container-fluid table {
 	margin-top: 40px;
+	width: 1120px;
 }
 
 .body-wrapper .container-fluid .table_th {
 	background: #DDEBFF;
-	text-align: center;
 }
 
 .body-wrapper .container-fluid tbody {
 	text-align: center;
+}
+
+.body-wrapper .container-fluid .flex {
+	display: flex;
+	gap: 5px;
+	align-items: center;
+}
+
+.fixed-table {
+	table-layout: fixed !important;
+	width: 100%;
+}
+
+.fixed-table th,
+.fixed-table td {
+	overflow: visible;
+	text-overflow: clip;
+	white-space: normal;
+	vertical-align: middle;
+	min-width: 0;
+}
+
+.fixed-table .truncate {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	cursor: pointer;
+	display: block;
+	min-width: 0;
+}
+
+.fixed-table .expanded {
+	white-space: normal;
+	word-break: break-all;
+	overflow: visible;
+	text-overflow: clip;
+}
+
+
+
+
+
+/* 정렬 버튼 */
+.body-wrapper .container-fluid th.sort_btn {
+	position: relative;
+}
+
+.body-wrapper .container-fluid th.sort_btn:before {
+	bottom: 52%;
+	content: '▲';
+	opacity: 0.125;
+	position: absolute;
+    display: block;
+    right: 10px;
+    line-height: 9px;
+    font-size: .8em;
+}
+
+.body-wrapper .container-fluid th.sort_btn:after {
+	top: 52%;
+	content: '▼';
+	position: absolute;
+    display: block;
+    opacity: 0.125;
+    right: 10px;
+    line-height: 9px;
+    font-size: .8em;
+}
+
+.body-wrapper .container-fluid th.sort_btn.asc::before {
+    opacity: 0.6;
+}
+
+.body-wrapper .container-fluid th.sort_btn.asc::after {
+    opacity: 0.125;
+}
+
+.body-wrapper .container-fluid th.sort_btn.desc::before {
+    opacity: 0.125;
+}
+
+.body-wrapper .container-fluid th.sort_btn.desc::after {
+    opacity: 0.6;
 }
 
 

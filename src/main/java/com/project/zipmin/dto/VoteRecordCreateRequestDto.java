@@ -9,7 +9,7 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class VoteRecordCreateRequestDto {
 	
-	private int voteId;
+	private int chompId;
 	private int userId;
 	private int choiceId;
 	

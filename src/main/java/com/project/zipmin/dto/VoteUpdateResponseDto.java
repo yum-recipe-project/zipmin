@@ -16,6 +16,7 @@ public class VoteUpdateResponseDto {
 	private String title;
 	private Date opendate;
 	private Date closedate;
+	private String category;
 	
 	private List<VoteChoiceReadResponseDto> choiceList;
 }

@@ -11,11 +11,11 @@
 		<link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
 		<link rel="stylesheet" href="../assets/css/styles.min.css" />
 		<link rel="stylesheet" href="/css/admin/list-chomp.css" />
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script src="/js/common/jwt.js"></script>
 		<script src="/js/common/util.js"></script>
 		<script src="/js/common/pagination.js"></script>
 		<script src="/js/admin/list-chomp.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-		<script src="/js/common/jwt.js"></script>
 	</head>
 	
 	<body>
@@ -42,19 +42,30 @@
 					<div class="bar">
 						<div class="tab">
 							<ul>
-								<li class="btn_tab"><a href="/admin/listChomp.do" class="active"><span>전체</span></a></li>
-								<li class="btn_tab"><a href="/admin/listVote.do"><span>투표 관리</span></a></li>
-								<li class="btn_tab"><a href="/admin/listMegazine.do"><span>매거진 관리</span></a></li>
-								<li class="btn_tab"><a href="/admin/listEvent.do"><span>이벤트 관리</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="" class="active"><span>전체</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="vote"><span>투표 관리</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="megazine"><span>매거진 관리</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="event"><span>이벤트 관리</span></a></li>
 							</ul>
 						</div>
 					</div>
 		
 					<!-- 목록 -->
-					<table class="table text-nowrap mb-0 align-middle">
+					<table class="table text-nowrap mb-0 align-middle fixed-table">
 					    <thead class="text-dark fs-4">
+					    	<colgroup>
+					    		<col style="width:4%">
+					    		<col style="width:10%">
+					    		<col style="width:26%">
+					    		<col style="width:12%">
+					    		<col style="width:15%">
+					    		<col style="width:11%">
+					    		<col style="width:11%">
+					    		<col style="width:11%">
+					    	</colgroup>
 					        <tr>
-					            <th class="total"></th>
+					            <th colspan="2" class="total text-start"></th>
+					            <th></th>
 					            <th></th>
 					            <th></th>
 					            <th colspan="3" class="text-end">
@@ -69,16 +80,22 @@
 					                <h6 class="fs-4 fw-semibold mb-0">No</h6>
 					            </th>
 					            <th>
-					                <h6 class="fs-4 fw-semibold mb-0">카테고리</h6>
+					                <h6 class="fs-4 fw-semibold mb-0">게시판명</h6>
 					            </th>
-					            <th>
+					            <th class="sort_btn" data-key="title">
 					                <h6 class="fs-4 fw-semibold mb-0">제목</h6>
 					            </th>
-					            <th>
+					            <th class="sort_btn desc" data-key="postdate">
 					                <h6 class="fs-4 fw-semibold mb-0">기간</h6>
 					            </th>
 					            <th>
+					                <h6 class="fs-4 fw-semibold mb-0">상태</h6>
+					            </th>
+					            <th class="sort_btn" data-key="commentcount">
 					                <h6 class="fs-4 fw-semibold mb-0">댓글수</h6>
+					            </th>
+					            <th>
+					                <h6 class="fs-4 fw-semibold mb-0">참여자수</h6>
 					            </th>
 					            <th></th>
 					        </tr>
@@ -94,6 +111,8 @@
 					</div>
 				</div>
 			</div>
+			
+			<!-- 모달 위치 -->
 		</div>
 		
 		<script src="../assets/libs/jquery/dist/jquery.min.js"></script>

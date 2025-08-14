@@ -48,7 +48,6 @@ import com.project.zipmin.dto.VoteCreateResponseDto;
 import com.project.zipmin.dto.VoteReadResponseDto;
 import com.project.zipmin.dto.VoteRecordCreateRequestDto;
 import com.project.zipmin.dto.VoteRecordCreateResponseDto;
-import com.project.zipmin.dto.VoteRecordDeleteRequestDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.ChompCommentService;
 import com.project.zipmin.service.ChompService;
@@ -140,13 +139,16 @@ public class ChompessorController {
 	})
 	@GetMapping("/chomp")
 	public ResponseEntity<?> listChomp(
-			@Parameter(description = "카테고리", example = "all") @RequestParam String category,
-			@Parameter(description = "검색어", example = "가나다") @RequestParam String keyword,
+			@Parameter(description = "카테고리", example = "all") @RequestParam(required = false) String category,
+			@Parameter(description = "검색어", example = "가나다") @RequestParam(required = false) String keyword,
+			@Parameter(description = "정렬 순서", required = false, example = "new") @RequestParam(required = false) String sort,
 		    @Parameter(description = "페이지 번호", example = "0") @RequestParam int page,
 		    @Parameter(description = "페이지 크기", example = "10") @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<ChompReadResponseDto> chompPage = chompService.readChompPage(category, pageable);
+		Page<ChompReadResponseDto> chompPage = null;
+		
+		chompPage = chompService.readChompPage(category, keyword, sort, pageable);
 
 		return ResponseEntity.status(ChompSuccessCode.CHOMP_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(ChompSuccessCode.CHOMP_READ_LIST_SUCCESS, chompPage));
@@ -546,7 +548,7 @@ public class ChompessorController {
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
 	@DeleteMapping("/votes/{voteId}/records")
-	public ResponseEntity<?> cancelVote(@PathVariable int voteId, @RequestBody VoteRecordDeleteRequestDto recordDto) {
+	public ResponseEntity<?> cancelVote(@PathVariable int voteId) {
 		
 		// 인증 여부 확인 (비로그인)
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -554,13 +556,14 @@ public class ChompessorController {
 		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
 		}
 		
+		// ******** 이거 아마 Service에서 할 수도 ***
 		// 권한 없는 사용자의 접근
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (userService.readUserByUsername(username).getId() != recordDto.getUserId()) {
-		    throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
-		}
+//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//		if (userService.readUserByUsername(username).getId() != recordDto.getUserId()) {
+//		    throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+//		}
 		
-		chompService.deleteVoteRecord(recordDto);
+		chompService.deleteVoteRecord(voteId);
 		
 		return ResponseEntity.status(VoteSuccessCode.VOTE_RECORD_DELETE_SUCCESS.getStatus())
 				.body(ApiResponse.success(VoteSuccessCode.VOTE_RECORD_DELETE_SUCCESS, null));
@@ -576,10 +579,11 @@ public class ChompessorController {
 			@Parameter(description = "페이지 크기", example = "10") @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<MegazineReadResponseDto> megazinePage = chompCommentService.readMegazinePage(keyword, pageable);
+		// Page<MegazineReadResponseDto> megazinePage = chompCommentService.readMegazinePage(keyword, pageable);
 		
-		return ResponseEntity.status(MegazineSuccessCode.MEGAZINE_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(MegazineSuccessCode.MEGAZINE_READ_LIST_SUCCESS, megazinePage));
+		// return ResponseEntity.status(MegazineSuccessCode.MEGAZINE_READ_LIST_SUCCESS.getStatus())
+		// 		.body(ApiResponse.success(MegazineSuccessCode.MEGAZINE_READ_LIST_SUCCESS, megazinePage));
+		return null;
 	}
 
 	
@@ -854,10 +858,11 @@ public class ChompessorController {
 			@Parameter(description = "페이지 크기", example = "10") @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<EventReadResponseDto> eventPage = chompCommentService.readEventPage(keyword, pageable);
+		// Page<EventReadResponseDto> eventPage = chompCommentService.readEventPage(keyword, pageable);
 		
-		return ResponseEntity.status(EventSuccessCode.EVENT_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(EventSuccessCode.EVENT_READ_LIST_SUCCESS, eventPage));
+//		return ResponseEntity.status(EventSuccessCode.EVENT_READ_LIST_SUCCESS.getStatus())
+//				.body(ApiResponse.success(EventSuccessCode.EVENT_READ_LIST_SUCCESS, eventPage));
+		return null;
 	}
 	
 	

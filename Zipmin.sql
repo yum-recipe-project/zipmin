@@ -8,16 +8,16 @@
 
 
 -- 테이블과 시퀀스 일괄 삭제
-drop table event;
-drop sequence seq_event_id;
-drop table megazine;
-drop sequence seq_megazine_id;
+-- drop table event;
+-- drop sequence seq_event_id;
+-- drop table megazine;
+-- drop sequence seq_megazine_id;
 drop table vote_record;
 drop sequence seq_vote_record_id;
 drop table vote_choice;
 drop sequence seq_vote_choice_id;
-drop table vote;
-drop sequence seq_vote_id;
+-- drop table vote;
+-- drop sequence seq_vote_id;
 drop table chomp;
 drop sequence seq_chomp_id;
 
@@ -290,37 +290,16 @@ commit;
 -- CHOMP 테이블
 -- drop table chomp;
 -- drop sequence seq_chomp_id;
+-------- ---------------- user_id 추가할것 !!!
 create table chomp (
     id number primary key,
+    title varchar2(100) not null,
+    opendate date,
+    closedate date not null,
+    content varchar2(1000),
     category varchar2(30) not null
 );
 create sequence seq_chomp_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
-
-
-
-
-
--- VOTE 테이블
--- drop table vote;
--- drop sequence seq_vote_id;
-create table vote (
-    id number primary key,
-    title varchar2(100) not null,
-    opendate date not null,
-    closedate date not null,
-    chomp_id number not null
-);
-alter table vote
-    add constraint const_vote_chomp foreign key(chomp_id)
-    references chomp(id) on delete cascade;
-create sequence seq_vote_id
     increment by 1
     start with 1
     minvalue 1
@@ -339,11 +318,11 @@ commit;
 create table vote_choice (
     id number primary key,
     choice varchar2(100) not null,
-    vote_id number not null
+    chomp_id number not null
 );
 alter table vote_choice
-    add constraint const_vote_choice_vote foreign key(vote_id)
-    references vote(id) on delete cascade;
+    add constraint const_vote_choice_chomp foreign key(chomp_id)
+    references chomp(id) on delete cascade;
 create sequence seq_vote_choice_id
     increment by 1
     start with 1
@@ -362,13 +341,13 @@ commit;
 -- drop sequence seq_vote_record_id;
 create table vote_record (
     id number primary key,
-    vote_id number not null,
+    chomp_id number not null,
     user_id number,
     choice_id number not null
 );
 alter table vote_record
-    add constraint const_vote_record_vote foreign key(vote_id)
-    references vote(id) on delete cascade;
+    add constraint const_vote_record_chomp foreign key(chomp_id)
+    references chomp(id) on delete cascade;
 alter table vote_record
     add constraint cosnt_vote_record_users foreign key(user_id)
     references users(id) on delete set null;
@@ -376,59 +355,6 @@ alter table vote_record
     add constraint const_vote_record_choice foreign key(choice_id)
     references vote_choice(id) on delete cascade;
 create sequence seq_vote_record_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
-
-
-
-
-
--- MEDGAZINE 테이블
--- drop table megazine;
--- drop sequence seq_megazine_id;
-create table megazine (
-    id number primary key,
-    title varchar2(100) not null,
-    postdate date default sysdate,
-    content varchar2(1000) not null,
-    chomp_id number not null
-);
-alter table megazine
-    add constraint const_megazine_chomp foreign key(chomp_id)
-    references chomp(id) on delete cascade;
-create sequence seq_megazine_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
-
-
-
-
-
--- EVENT 테이블
--- drop table event;
--- drop sequence seq_event_id;
-create table event (
-    id number primary key,
-    title varchar2(100) not null,
-    opendate date not null,
-    closedate date not null,
-    content varchar2(1000) not null,
-    chomp_id number not null
-);
-alter table event
-    add constraint const_event_chomp foreign key(chomp_id)
-    references chomp(id) on delete cascade;
-create sequence seq_event_id
     increment by 1
     start with 1
     minvalue 1

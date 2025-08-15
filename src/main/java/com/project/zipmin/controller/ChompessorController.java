@@ -139,7 +139,7 @@ public class ChompessorController {
 	})
 	@GetMapping("/chomp")
 	public ResponseEntity<?> listChomp(
-			@Parameter(description = "카테고리", example = "all") @RequestParam(required = false) String category,
+			@Parameter(description = "카테고리", example = "megazine") @RequestParam(required = false) String category,
 			@Parameter(description = "검색어", example = "가나다") @RequestParam(required = false) String keyword,
 			@Parameter(description = "정렬 순서", required = false, example = "new") @RequestParam(required = false) String sort,
 		    @Parameter(description = "페이지 번호", example = "0") @RequestParam int page,

@@ -6,7 +6,7 @@ let page = 0;
 const size = 15;
 let keyword = '';
 let category = '';
-let sortKey = 'postdate'
+let sortKey = 'cloasedate'
 let sortOrder = 'desc';
 let chompList = [];
 
@@ -85,16 +85,13 @@ async function fetchChompList() {
 	
 	try {
 		const params = new URLSearchParams({
-			// category: category,
-			category: 'all',
+			category: category,
 			sort: sortKey + '-' + sortOrder,
 			keyword : keyword,
 			page : page,
 			size : size
 		}).toString();
 		
-		console.log(params);
-
 		const response = await fetch(`/chomp?${params}`, {
 			method: 'GET',
 			headers: getAuthHeaders()
@@ -151,14 +148,16 @@ function renderChompList(chompList) {
 		const categoryTd = document.createElement('td');
 		const categoryH6 = document.createElement('h6');
 		categoryH6.className = 'fw-semibold mb-0';
-		if (chomp.category === 'event' && chomp.event_dto) {
-		    categoryH6.textContent = '이벤트';
-		}
-		else if (chomp.category === 'megazine' && chomp.megazine_dto) {
-		    categoryH6.textContent = '매거진';
-		}
-		else if (chomp.category === 'vote' && chomp.vote_dto) {
-		    categoryH6.textContent = '투표';
+		switch(chomp.category) {
+			case 'vote' :
+				categoryH6.textContent = '투표';
+				break;
+			case 'megazine' :
+				categoryH6.textContent = '매거진';
+				break;
+			case 'event' :
+				categoryH6.textContent = '이벤트';
+				break;
 		}
 		categoryTd.appendChild(categoryH6);
 
@@ -167,6 +166,9 @@ function renderChompList(chompList) {
 		const titleH6 = document.createElement('h6');
 		// titleH6.className = 'fw-semibold mb-0';
 		titleH6.className = 'fs-4 fw-semibold mb-2';
+		titleH6.textContent = chomp.title;
+		titleTd.appendChild(titleH6);
+		/*
 		if (chomp.category === 'event' && chomp.event_dto) {
 		    titleH6.textContent = chomp.event_dto.title;
 			titleTd.appendChild(titleH6);
@@ -183,7 +185,6 @@ function renderChompList(chompList) {
 		    titleTd.onclick = () => location.href = `/admin/viewVote.do?id=${chomp.vote_dto.id}`;
 			titleTd.appendChild(titleH6); // 이거 선택지랑 같이 append
 			// 선택지
-			/*
 			const maxRate = Math.max(...chomp.vote_dto.choice_list.map(choice => choice.rate));
 			chomp.vote_dto.choice_list.forEach(choice => {
 				const choiceSpan = document.createElement('span');
@@ -198,21 +199,24 @@ function renderChompList(chompList) {
 				titleWrap.appendChild(choiceSpan);
 				titleWrap.appendChild(document.createElement('br'));
 			});
-			*/
+		
 		}
+		*/
 
         // 기간
 		const periodTd = document.createElement('td');
 		const periodH6 = document.createElement('h6');
 		periodH6.className = 'fw-semibold mb-0';
-		if (chomp.category === 'event' && chomp.event_dto) {
-		    periodH6.textContent = `${formatDate(chomp.event_dto.opendate)} - ${formatDate(chomp.event_dto.closedate)}`;
-		}
-		else if (chomp.category === 'megazine' && chomp.megazine_dto) {
-		    periodH6.textContent = `${formatDate(chomp.megazine_dto.postdate)}`;
-		}
-		else if (chomp.category === 'vote' && chomp.vote_dto) {
-		    periodH6.textContent = `${formatDate(chomp.vote_dto.opendate)} - ${formatDate(chomp.vote_dto.closedate)}`;
+		switch(chomp.category) {
+			case 'vote' :
+				periodH6.textContent = `${formatDate(chomp.opendate)} - ${formatDate(chomp.closedate)}`;
+				break;
+			case 'megazine' :
+				periodH6.textContent = `${formatDate(chomp.closedate)}`;
+				break;
+			case 'event' :
+				periodH6.textContent = `${formatDate(chomp.opendate)} - ${formatDate(chomp.closedate)}`;
+				break;
 		}
 		periodTd.appendChild(periodH6);
 		
@@ -230,36 +234,21 @@ function renderChompList(chompList) {
 		
 		
 		
-		
-
         // 댓글수
 		const commentTd = document.createElement('td');
 		const commentH6 = document.createElement('h6');
 		commentH6.className = 'fw-semibold mb-0';
-		if (chomp.category === 'event' && chomp.event_dto) {
-		    commentH6.textContent = chomp.event_dto.commentcount;
-		}
-		else if (chomp.category === 'megazine' && chomp.megazine_dto) {
-		    commentH6.textContent = chomp.megazine_dto.commentcount;
-		}
-		else if (chomp.category === 'vote' && chomp.vote_dto) {
-		    commentH6.textContent = chomp.vote_dto.commentcount;
-		}
+		commentH6.textContent = chomp.commentcount;
 		commentTd.appendChild(commentH6);
-		
-		
 		
 		// 참여자수
 		const totalTd = document.createElement('td');
-		if (chomp.category === 'vote' && chomp.vote_dto) {
-			/*
-			const totalH6 = document.createElement('h6');
-			totalH6.className = 'fw-semibold mb-0';
-			totalH6.textContent = `${vote.total}명`;
-			totalTd.appendChild(totalH6);
-			*/
+		const totalH6 = document.createElement('h6');
+		totalH6.className = 'fw-semibold mb-0';
+		if (chomp.category === 'vote') {
+			totalH6.textContent = chomp.total;
 		}
-		
+		totalTd.appendChild(totalH6);
 		
 
         // 기능 버튼

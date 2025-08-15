@@ -79,8 +79,6 @@ public class ChompService {
 	
 	
 	
-	
-	// ========
 	// 쩝쩝박사 목록 조회 (최신순)
 	public Page<ChompReadResponseDto> readChompPage(String category, String keyword, String sort, Pageable pageable) {
 		
@@ -94,11 +92,11 @@ public class ChompService {
 		
 		if (sort != null && !sort.isBlank()) {
 			switch (sort) {
-				case "postdate-desc":
-					sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id"));
+				case "closedate-desc":
+					sortSpec = Sort.by(Sort.Order.desc("closedate"), Sort.Order.desc("id"));
 					break;
-				case "postdate-asc":
-					sortSpec = Sort.by(Sort.Order.asc("postdate"), Sort.Order.desc("id"));
+				case "closedate-asc":
+					sortSpec = Sort.by(Sort.Order.asc("closedate"), Sort.Order.desc("id"));
 					break;
 				case "title-desc":
 					sortSpec = Sort.by(Sort.Order.desc("title"), Sort.Order.desc("id"));
@@ -107,10 +105,10 @@ public class ChompService {
 					sortSpec = Sort.by(Sort.Order.asc("title"), Sort.Order.desc("id"));
 					break;
 				case "commentcount-desc":
-					sortSpec = Sort.by(Sort.Order.desc("commentCount"), Sort.Order.desc("id"));
+					sortSpec = Sort.by(Sort.Order.desc("commentcount"), Sort.Order.desc("id"));
 					break;
 				case "commentcount-asc":
-					sortSpec = Sort.by(Sort.Order.asc("commentCount"), Sort.Order.desc("id"));
+					sortSpec = Sort.by(Sort.Order.asc("commentcount"), Sort.Order.desc("id"));
 					break;
 				default:
 					sortSpec = Sort.by(Sort.Order.desc("id"));

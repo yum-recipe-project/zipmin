@@ -21,10 +21,20 @@ public class ChompReadResponseDto {
 	private String category;
 	
 	// 수정해야함
-	private String status;
-	private List<VoteChoiceReadResponseDto> choiceList;
 	private boolean voted;
 	private int choiceId;
 	private long total;
+	
+	
+	
+	
+	
+	
+	
+	private String status;
 	private int commentcount;
+	
+	
+	// private List<VoteChoiceReadResponseDto> choiceList;
+	private int recordcount;
 }

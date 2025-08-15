@@ -2,11 +2,12 @@
  * 전역변수
  */
 let totalPages = 0;
+let totalElements = 0;
 let page = 0;
 const size = 15;
 let keyword = '';
 let category = '';
-let sortKey = 'cloasedate'
+let sortKey = 'id'
 let sortOrder = 'desc';
 let chompList = [];
 
@@ -38,13 +39,12 @@ document.addEventListener('DOMContentLoaded', function() {
 			page = 0;
 			keyword = '';
 			document.getElementById('text-srh').value = '';
-			sortKey = 'postdate';
+			sortKey = 'id';
 			sortOrder = 'desc';
 			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
 			document.querySelector(`.sort_btn[data-key="${sortKey}"]`).classList.add(sortOrder);
 			
 			commentList = [];
-			
 			fetchChompList();
 		});
 	});
@@ -104,6 +104,7 @@ async function fetchChompList() {
 		if (result.code === 'CHOMP_READ_LIST_SUCCESS') {
 
 			totalPages = result.data.totalPages;
+			totalElements = result.data.totalElements;
 			page = result.data.number;
 			chompList = result.data.content;
 			
@@ -141,7 +142,14 @@ function renderChompList(chompList) {
 		const noTd = document.createElement('td');
 		const noH6 = document.createElement('h6');
 		noH6.className = 'fw-semibold mb-0';
-		noH6.textContent = index + 1;
+		
+		const offset = page * size + index;
+		if (sortKey === 'id' && sortOrder === 'asc') {
+			noH6.textContent = offset + 1;
+		}
+		else {
+			noH6.textContent = totalElements - offset;
+		}
 		noTd.appendChild(noH6);
 		
 		// 게시판명
@@ -164,44 +172,26 @@ function renderChompList(chompList) {
         // 제목
 		const titleTd = document.createElement('td');
 		const titleH6 = document.createElement('h6');
-		// titleH6.className = 'fw-semibold mb-0';
-		titleH6.className = 'fs-4 fw-semibold mb-2';
+		titleH6.className = 'fw-semibold mb-0 view';
 		titleH6.textContent = chomp.title;
+		switch (chomp.category) {
+			case 'vote':
+				titleH6.dataset.bsToggle = 'modal';
+				titleH6.dataset.bsTarget = '#viewVoteModal';
+				titleH6.dataset.id = chomp.id;
+				break;
+			case 'megazine':
+				titleH6.dataset.bsToggle = 'modal';
+				titleH6.dataset.bsTarget = '#viewMegazineModal';
+				titleH6.dataset.id = chomp.id;
+				break;
+			case 'event':
+				titleH6.dataset.bsToggle = 'modal';
+				titleH6.dataset.bsTarget = '#viewEventModal';
+				titleH6.dataset.id = chomp.id;
+				break;
+		}
 		titleTd.appendChild(titleH6);
-		/*
-		if (chomp.category === 'event' && chomp.event_dto) {
-		    titleH6.textContent = chomp.event_dto.title;
-			titleTd.appendChild(titleH6);
-		    titleTd.onclick = () => location.href = `/admin/viewEvent.do?id=${chomp.event_dto.id}`;
-		}
-		else if (chomp.category === 'megazine' && chomp.megazine_dto) {
-		    titleH6.textContent = chomp.megazine_dto.title;
-		    titleTd.onclick = () => location.href = `/admin/viewMegazine.do?id=${chomp.megazine_dto.id}`;
-			titleTd.appendChild(titleH6);
-		}
-		else if (chomp.category === 'vote' && chomp.vote_dto) {
-			// 제목
-		    titleH6.textContent = chomp.vote_dto.title;
-		    titleTd.onclick = () => location.href = `/admin/viewVote.do?id=${chomp.vote_dto.id}`;
-			titleTd.appendChild(titleH6); // 이거 선택지랑 같이 append
-			// 선택지
-			const maxRate = Math.max(...chomp.vote_dto.choice_list.map(choice => choice.rate));
-			chomp.vote_dto.choice_list.forEach(choice => {
-				const choiceSpan = document.createElement('span');
-				choiceSpan.className = 'fw-normal';
-				if (choice.rate === maxRate && maxRate !== 0) {
-					choiceSpan.innerHTML = `<b>${choice.choice} (${choice.rate}%)</b>`;
-				}
-				else {
-					choiceSpan.textContent = `${choice.choice} (${choice.rate}%)`;
-				}
-				titleTd.appendChild(titleH6);
-				titleWrap.appendChild(choiceSpan);
-				titleWrap.appendChild(document.createElement('br'));
-			});
-		
-		}
-		*/
 
         // 기간
 		const periodTd = document.createElement('td');
@@ -209,31 +199,32 @@ function renderChompList(chompList) {
 		periodH6.className = 'fw-semibold mb-0';
 		switch(chomp.category) {
 			case 'vote' :
-				periodH6.textContent = `${formatDate(chomp.opendate)} - ${formatDate(chomp.closedate)}`;
+				periodH6.textContent = `${formatDateDot(chomp.opendate)} - ${formatDateDot(chomp.closedate)}`;
 				break;
 			case 'megazine' :
-				periodH6.textContent = `${formatDate(chomp.closedate)}`;
+				periodH6.textContent = `${formatDateDot(chomp.closedate)}`;
 				break;
 			case 'event' :
-				periodH6.textContent = `${formatDate(chomp.opendate)} - ${formatDate(chomp.closedate)}`;
+				periodH6.textContent = `${formatDateDot(chomp.opendate)} - ${formatDateDot(chomp.closedate)}`;
 				break;
 		}
 		periodTd.appendChild(periodH6);
 		
 		// 상태
 		const statusTd = document.createElement('td');
-		if (chomp.category === 'vote' && chomp.vote_dto) {
-			/*
-			const statusSpan = document.createElement('span');
-			statusSpan.className = `badge ${vote.status === 'open' ? 'bg-primary-subtle text-primary' : 'bg-danger-subtle text-danger'} d-inline-flex align-items-center gap-1`;
-			statusSpan.innerHTML = `<i class="ti ${vote.status === 'open' ? 'ti-check' : 'ti-x'} fs-4"></i>${vote.status === 'open' ? '투표중' : '투표 종료'}`;
-			statusTd.appendChild(statusSpan);
-			*/
+		const statusSpan = document.createElement('span');
+		switch (chomp.category) {
+			case 'vote' :
+				statusSpan.className = `badge ${chomp.status === 'open' ? 'bg-primary-subtle text-primary' : 'bg-danger-subtle text-danger'} d-inline-flex align-items-center gap-1`;
+				statusSpan.innerHTML = chomp.status === 'open' ? '투표 진행중' : '투표 종료';
+				break;
+			case 'event' :
+				statusSpan.className = `badge ${chomp.status === 'open' ? 'bg-primary-subtle text-primary' : 'bg-danger-subtle text-danger'} d-inline-flex align-items-center gap-1`;
+				statusSpan.innerHTML = chomp.status === 'open' ? '이벤트 진행중' : '이벤트 종료';
+				break;
 		}
-		
-		
-		
-		
+		statusTd.appendChild(statusSpan);
+
         // 댓글수
 		const commentTd = document.createElement('td');
 		const commentH6 = document.createElement('h6');
@@ -246,52 +237,71 @@ function renderChompList(chompList) {
 		const totalH6 = document.createElement('h6');
 		totalH6.className = 'fw-semibold mb-0';
 		if (chomp.category === 'vote') {
-			totalH6.textContent = chomp.total;
+			totalH6.textContent = chomp.recordcount;
 		}
 		totalTd.appendChild(totalH6);
 		
-
-        // 기능 버튼
+        // 기능
 		const actionTd = document.createElement('td');
-		const btnWrap = document.createElement('div');
-		btnWrap.className = 'd-flex justify-content-end gap-2';
+		const canAction = true;
 		
-        // 수정 버튼
-		const editBtn = document.createElement('button');
-		editBtn.type = 'button';
-		editBtn.className = 'btn btn-sm btn-outline-info';
-		editBtn.innerHTML = '수정';
-		if (chomp.category === 'event' && chomp.event_dto) {
-		    editBtn.onclick = () => { location.href = `/admin/editEvent.do?id=${chomp.event_dto.id}`; };
+		if (canAction) {
+			const btnWrap = document.createElement('div');
+			btnWrap.className = 'd-flex justify-content-end gap-2';
+			
+			// 수정
+			const editBtn = document.createElement('button');
+			editBtn.type = 'button';
+			editBtn.className = 'btn btn-sm btn-outline-info';
+			editBtn.innerHTML = '수정';
+			switch (chomp.category) {
+				case 'vote' :
+					editBtn.dataset.bsToggle = 'modal';
+					editBtn.dataset.bsTarget = '#editVoteModal';
+					editBtn.dataset.id = chomp.id;
+					// editBtn.onclick = () => location.href = `/admin/editEvent.do?id=${chomp.event_dto.id}`;
+					break;
+				case 'megazine' :
+					editBtn.dataset.bsToggle = 'modal';
+					editBtn.dataset.bsTarget = '#editMegazineModal';
+					editBtn.dataset.id = chomp.id;
+					break;
+				case 'event' :
+					editBtn.dataset.bsToggle = 'modal';
+					editBtn.dataset.bsTarget = '#editEventModal';
+					editBtn.dataset.id = chomp.id;
+					break;
+			}
+			editBtn.addEventListener('click', (event) => {
+				if (!isLoggedIn()) {
+					event.preventDefault();
+					redirectToLogin();
+					return;
+				}
+			});
+			
+			// 삭제 버튼
+			const deleteBtn = document.createElement('button');
+			deleteBtn.type = 'button';
+			deleteBtn.className = 'btn btn-sm btn-outline-danger';
+			deleteBtn.innerHTML = '삭제';
+			switch (chomp.category) {
+				case 'vote' :
+					deleteBtn.onclick = () => deleteVote(chomp.id);
+					break;
+				case 'megazine' :
+					deleteBtn.onclick = () => deleteMegazine(chomp.id);
+					break;
+				case 'event' :
+					deleteBtn.onclick = () => deleteEvent(chomp.id);
+					break;
+			}
+			
+			btnWrap.append(editBtn, deleteBtn);
+			actionTd.appendChild(btnWrap);
 		}
-		else if (chomp.category === 'megazine' && chomp.megazine_dto) {
-		    editBtn.onclick = () => { location.href = `/admin/editMegazine.do?id=${chomp.megazine_dto.id}`; };
-		}
-		else if (chomp.category === 'vote' && chomp.vote_dto) {
-		    editBtn.onclick = () => { location.href = `/admin/editVote.do?id=${chomp.vote_dto.id}`; };
-		}
-		
-		// 삭제 버튼
-		const deleteBtn = document.createElement('button');
-		deleteBtn.type = 'button';
-		deleteBtn.className = 'btn btn-sm btn-outline-danger';
-		deleteBtn.innerHTML = '삭제';
-		deleteBtn.onclick = () => { deleteMegazine(megazine.id); };
-		if (chomp.category === 'event' && chomp.event_dto) {
-		    deleteBtn.onclick = () => { deleteEvent(chomp.event_dto.id, chomp.id); };
-		}
-		else if (chomp.category === 'megazine' && chomp.megazine_dto) {
-			deleteBtn.onclick = () => { deleteMegazine(chomp.megazine_dto.id, chomp.id); };
-		}
-		else if (chomp.category === 'vote' && chomp.vote_dto) {
-		    deleteBtn.onclick = () => { deleteVote(chomp.vote_dto.id, chomp.id); };
-		}
-		
-		btnWrap.append(editBtn, deleteBtn);
-		actionTd.appendChild(btnWrap);
 		
 		tr.append(noTd, categoryTd, titleTd, periodTd, statusTd, commentTd, totalTd, actionTd);
-
         container.appendChild(tr);
     });
 }
@@ -300,63 +310,110 @@ function renderChompList(chompList) {
 
 
 
-
 /**
  * 매거진을 삭제하는 함수
  */
-async function deleteMegazine(id, chompId) {
+async function deleteMegazine(id) {
 	
-	if (confirm('매거진을 삭제하시겠습니까?')) {
-		try {
-			const token = localStorage.getItem('accessToken');
+	try {
+		const token = localStorage.getItem('accessToken');
 
-			const headers = {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${token}`
-			}
-
-			const data = {
-				id: id
-			};
-
-			const response = await instance.delete(`/megazines/${id}`, {
-				data: data,
-				headers: headers
-			});
-			
-			if (response.data.code === 'MEGAZINE_DELETE_SUCCESS') {
-				alert('매거진이 성공적으로 삭제되었습니다.');
-				const trElement = document.querySelector(`.chomp_list tr[data-id='${chompId}']`);
-				if (trElement) trElement.remove();
-			}
+		const headers = {
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${token}`
 		}
-		catch (error) {
-			const code = error?.response?.data?.code;
-			
-			if (code === 'MEGAZINE_DELETE_FAIL') {
-				alert('매거진 삭제에 실패했습니다');
-			}
-			if (code === 'CHOMP_DELETE_FAIL') {
-				alert('쩝쩝박사 게시물 삭제에 실패했습니다');
-			}
-			else if (code === 'MEGAZINE_INVALID_INPUT') {
-				alert('입력값이 유효하지 않습니다.');
-			}
-			else if (code === 'MEGAZINE_UNAUTHORIZED') {
-				alert('로그인되지 않은 사용자입니다.');
-			}
-			else if (code === 'MEGAZINE_FORBIDDEN') {
-				alert('접근 권한이 없습니다.');
-			}
-			else if (code === 'MEGAZINE_NOT_FOUND') {
-				alert('해당 매거진을 찾을 수 없습니다.');
-			}
-			else if (code === 'INTERNAL_SERVER_ERROR') {
-				alert('서버 내부 오류가 발생했습니다.');
-			}
-			else {
-				console.log(error);
-			}
+
+		const data = {
+			id: id
+		};
+
+		const response = await instance.delete(`/megazines/${id}`, {
+			data: data,
+			headers: headers
+		});
+		
+		if (response.data.code === 'MEGAZINE_DELETE_SUCCESS') {
+			alertPrimary('매거진이 성공적으로 삭제되었습니다.');
+			const trElement = document.querySelector(`.chomp_list tr[data-id='${id}']`);
+			if (trElement) trElement.remove();
+		}
+	}
+	catch (error) {
+		const code = error?.response?.data?.code;
+		
+		if (code === 'MEGAZINE_DELETE_FAIL') {
+			alertDanger('매거진 삭제에 실패했습니다');
+		}
+		else if (code === 'MEGAZINE_INVALID_INPUT') {
+			alealertDangerrt('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'MEGAZINE_UNAUTHORIZED') {
+			alertDanger('로그인되지 않은 사용자입니다.');
+		}
+		else if (code === 'MEGAZINE_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (code === 'MEGAZINE_NOT_FOUND') {
+			alertDanger('해당 매거진을 찾을 수 없습니다.');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alertDanger('서버 내부 오류가 발생했습니다.');
+		}
+		else {
+			console.log(error);
+		}
+	}
+
+}
+
+
+
+
+
+/**
+ * 투표를 삭제하는 함수
+ */
+async function deleteVote(id) {
+	
+	try {
+		const data = {
+			id: id
+		};
+
+		const response = await instance.delete(`/votes/${id}`, {
+			data: data,
+			headers: getAuthHeaders()
+		});
+		
+		if (response.data.code === 'VOTE_DELETE_SUCCESS') {
+			alertPrimary('투표가 성공적으로 삭제되었습니다.');
+			const trElement = document.querySelector(`.chomp_list tr[data-id='${id}']`);
+			if (trElement) trElement.remove();
+		}
+	}
+	catch (error) {
+		const code = error?.response?.data?.code;
+		
+		if (code === 'VOTE_DELETE_FAIL') {
+			alertDanger('투표 삭제에 실패했습니다');
+		}
+		else if (code === 'VOTE_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'VOTE_UNAUTHORIZED') {
+			alertDanger('로그인되지 않은 사용자입니다.');
+		}
+		else if (code === 'VOTE_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (code === 'VOTE_NOT_FOUND') {
+			alertDanger('해당 매거진을 찾을 수 없습니다.');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alertDanger('서버 내부 오류가 발생했습니다.');
+		}
+		else {
+			console.log(error);
 		}
 	}
 
@@ -366,61 +423,49 @@ async function deleteMegazine(id, chompId) {
 
 
 /**
- * 투표를 삭제하는 함수
+ * 이벤트를 삭제하는 함수
  */
-async function deleteVote(id, chompId) {
+async function deleteEvent(id) {
 	
-	if (confirm('투표를 삭제하시겠습니까?')) {
-		try {
-			const token = localStorage.getItem('accessToken');
+	try {
+		const data = {
+			id: id
+		};
 
-			const headers = {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${token}`
-			}
-
-			const data = {
-				id: id
-			};
-
-			const response = await instance.delete(`/votes/${id}`, {
-				data: data,
-				headers: headers
-			});
-			
-			if (response.data.code === 'VOTE_DELETE_SUCCESS') {
-				alert('투표가 성공적으로 삭제되었습니다.');
-				const trElement = document.querySelector(`.chomp_list tr[data-id='${chompId}']`);
-				if (trElement) trElement.remove();
-			}
+		const response = await instance.delete(`/events/${id}`, {
+			data: data,
+			headers: getAuthHeaders()
+		});
+		
+		if (response.data.code === 'EVENT_DELETE_SUCCESS') {
+			alertPrimary('이벤트가 성공적으로 삭제되었습니다.');
+			const trElement = document.querySelector(`.chomp_list tr[data-id='${id}']`);
+			if (trElement) trElement.remove();
 		}
-		catch (error) {
-			const code = error?.response?.data?.code;
-			
-			if (code === 'VOTE_DELETE_FAIL') {
-				alert('투표 삭제에 실패했습니다');
-			}
-			if (code === 'CHOMP_DELETE_FAIL') {
-				alert('쩝쩝박사 게시물 삭제에 실패했습니다');
-			}
-			else if (code === 'VOTE_INVALID_INPUT') {
-				alert('입력값이 유효하지 않습니다.');
-			}
-			else if (code === 'VOTE_UNAUTHORIZED') {
-				alert('로그인되지 않은 사용자입니다.');
-			}
-			else if (code === 'VOTE_FORBIDDEN') {
-				alert('접근 권한이 없습니다.');
-			}
-			else if (code === 'VOTE_NOT_FOUND') {
-				alert('해당 매거진을 찾을 수 없습니다.');
-			}
-			else if (code === 'INTERNAL_SERVER_ERROR') {
-				alert('서버 내부 오류가 발생했습니다.');
-			}
-			else {
-				console.log(error);
-			}
+	}
+	catch (error) {
+		const code = error?.response?.data?.code;
+		
+		if (code === 'EVENT_DELETE_FAIL') {
+			alertDanger('투표 삭제에 실패했습니다');
+		}
+		else if (code === 'EVENT_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'EVENT_UNAUTHORIZED') {
+			alertDanger('로그인되지 않은 사용자입니다.');
+		}
+		else if (code === 'EVENT_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (code === 'EVENT_NOT_FOUND') {
+			alertDanger('해당 매거진을 찾을 수 없습니다.');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alertDanger('서버 내부 오류가 발생했습니다.');
+		}
+		else {
+			console.log(error);
 		}
 	}
 

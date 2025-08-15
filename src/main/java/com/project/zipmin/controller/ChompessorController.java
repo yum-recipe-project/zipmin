@@ -38,6 +38,7 @@ import com.project.zipmin.api.EventErrorCode;
 import com.project.zipmin.api.EventSuccessCode;
 import com.project.zipmin.api.MegazineErrorCode;
 import com.project.zipmin.api.MegazineSuccessCode;
+import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.api.VoteSuccessCode;
 import com.project.zipmin.dto.MegazineReadResponseDto;
@@ -374,10 +375,24 @@ public class ChompessorController {
 		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 권한 없는 사용자의 접근 (괸리자 권한)
+		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-		    throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+//				if (userService.readUserById(id).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+//					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+//				}
+//				if (userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
+//					if (userService.readUserByUsername(username).getId() != id) {
+//						throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+//					}
+//				}
+			}
+			// 일반 회원
+			else {
+				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+			}
 		}
 		
 		chompService.deleteVote(id);
@@ -835,10 +850,24 @@ public class ChompessorController {
 		    throw new ApiException(MegazineErrorCode.MEGAZINE_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 권한 없는 사용자의 접근 (괸리자 권한)
+		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-		    throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+//				if (userService.readUserById(id).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+//					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+//				}
+//				if (userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
+//					if (userService.readUserByUsername(username).getId() != id) {
+//						throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+//					}
+//				}
+			}
+			// 일반 회원
+			else {
+				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+			}
 		}
 		
 		chompService.deleteMegazine(id);
@@ -1125,10 +1154,24 @@ public class ChompessorController {
 		    throw new ApiException(EventErrorCode.EVENT_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 권한 없는 사용자의 접근 (괸리자 권한)
+		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-		    throw new ApiException(EventErrorCode.EVENT_FORBIDDEN);
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+//				if (userService.readUserById(id).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+//					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+//				}
+//				if (userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
+//					if (userService.readUserByUsername(username).getId() != id) {
+//						throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+//					}
+//				}
+			}
+			// 일반 회원
+			else {
+				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+			}
 		}
 		
 		chompService.deleteEvent(id);

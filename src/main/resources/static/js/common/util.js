@@ -1,5 +1,5 @@
 /**
- * 날짜를 포맷해주는 함수
+ * 날짜를 포맷해주는 함수 (2025년 8월 15일)
  */
 function formatDate(dateString) {
 	
@@ -18,7 +18,23 @@ function formatDate(dateString) {
 
 
 /**
- * 날짜를 요일과 함께 포맷해주는 함수
+ * 날짜를 포맷해주는 함수 (2025.08.15)
+ */
+function formatDateDot(dateInput) {
+    const parsedDate = new Date(dateInput);
+
+    const year = parsedDate.getFullYear();
+    const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
+    const day = String(parsedDate.getDate()).padStart(2, '0');
+
+    return `${year}.${month}.${day}`;
+}
+
+
+
+
+/**
+ * 날짜를 포맷해주는 함수 (2025.08.15(금))
  */
 function formatDateWithDay(isoString) {
 	
@@ -39,7 +55,7 @@ function formatDateWithDay(isoString) {
 
 
 /**
- * 
+ * 시간을 포맷해주는 함수 (13:45)
  */
 function formatTime(timeStr) {
 	
@@ -52,8 +68,7 @@ function formatTime(timeStr) {
 
 
 /**
- * 
- * 2025.08.01 13:45
+ * 날짜와 시간을 포맷해주는 함수 (2025.08.15 13:45)
  */
 function formatDateTime(dateStr) {
 	
@@ -70,6 +85,11 @@ function formatDateTime(dateStr) {
 	return `${year}.${month}.${day} ${time.toTimeString().substring(0, 5)}`;
 	
 }
+
+
+
+
+
 
 
 

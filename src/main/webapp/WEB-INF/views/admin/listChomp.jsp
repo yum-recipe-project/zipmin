@@ -11,11 +11,20 @@
 		<link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
 		<link rel="stylesheet" href="../assets/css/styles.min.css" />
 		<link rel="stylesheet" href="/css/admin/list-chomp.css" />
+		<link rel="stylesheet" href="/css/admin/modal/view-vote-modal.css" />
+		<link rel="stylesheet" href="/css/admin/modal/view-megazine-modal.css" />
+		<link rel="stylesheet" href="/css/admin/modal/view-event-modal.css" />
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 		<script src="/js/common/jwt.js"></script>
 		<script src="/js/common/util.js"></script>
 		<script src="/js/common/pagination.js"></script>
 		<script src="/js/admin/list-chomp.js"></script>
+		<script src="/js/admin/modal/view-vote-modal.js"></script>
+		<script src="/js/admin/modal/view-megazine-modal.js"></script>
+		<script src="/js/admin/modal/view-event-modal.js"></script>
+		<script src="/js/admin/modal/edit-vote-modal.js"></script>
+		<script src="/js/admin/modal/edit-megazine-modal.js"></script>
+		<script src="/js/admin/modal/edit-event-modal.js"></script>
 	</head>
 	
 	<body>
@@ -54,12 +63,12 @@
 					<table class="table text-nowrap mb-0 align-middle fixed-table">
 					    <thead class="text-dark fs-4">
 					    	<colgroup>
-					    		<col style="width:4%">
+					    		<col style="width:8%">
+					    		<col style="width:9%">
+					    		<col style="width:22%">
+					    		<col style="width:19%">
 					    		<col style="width:10%">
-					    		<col style="width:26%">
-					    		<col style="width:12%">
-					    		<col style="width:15%">
-					    		<col style="width:11%">
+					    		<col style="width:10%">
 					    		<col style="width:11%">
 					    		<col style="width:11%">
 					    	</colgroup>
@@ -76,7 +85,7 @@
 					            </th>
 					        </tr>
 					        <tr class="table_th">
-					            <th>
+					            <th class="sort_btn desc" data-key="id">
 					                <h6 class="fs-4 fw-semibold mb-0">No</h6>
 					            </th>
 					            <th>
@@ -85,7 +94,7 @@
 					            <th class="sort_btn" data-key="title">
 					                <h6 class="fs-4 fw-semibold mb-0">제목</h6>
 					            </th>
-					            <th class="sort_btn desc" data-key="closedate">
+					            <th class="sort_btn" data-key="closedate">
 					                <h6 class="fs-4 fw-semibold mb-0">기간</h6>
 					            </th>
 					            <th>
@@ -94,7 +103,7 @@
 					            <th class="sort_btn" data-key="commentcount">
 					                <h6 class="fs-4 fw-semibold mb-0">댓글수</h6>
 					            </th>
-					            <th>
+					            <th class="sort_btn" data-key="recordcount">
 					                <h6 class="fs-4 fw-semibold mb-0">참여자수</h6>
 					            </th>
 					            <th></th>
@@ -113,6 +122,13 @@
 			</div>
 			
 			<!-- 모달 위치 -->
+			<%@include file="../admin/modal/viewVoteModal.jsp" %>
+			<%@include file="../admin/modal/viewMegazineModal.jsp" %>
+			<%@include file="../admin/modal/viewEventModal.jsp" %>
+			
+			<%@include file="../admin/modal/editVoteModal.jsp" %>
+			<%@include file="../admin/modal/editMegazineModal.jsp" %>
+			<%@include file="../admin/modal/editEventModal.jsp" %>
 		</div>
 		
 		<script src="../assets/libs/jquery/dist/jquery.min.js"></script>

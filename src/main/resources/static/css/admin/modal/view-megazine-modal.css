@@ -1,0 +1,63 @@
+@charset "UTF-8";
+
+
+
+.modal-body .megazine_wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+}
+
+
+
+/* 헤더 */
+.modal-body .megazine_wrap .megazine_header span {
+	color: var(--txt-color-500);
+	font-weight: 400;
+	line-height: 1.4;
+	letter-spacing: -0.02em;
+	font-size: 14px;
+}
+
+.modal-body .megazine_wrap .megazine_header h2 {
+	margin-top: 8px;
+	font-weight: 700;
+	line-height: 1.5;
+	letter-spacing: -0.03em;
+	font-size: 32px;
+}
+
+.modal-body .megazine_wrap .megazine_header .megazine_writer {
+	margin-top: 8px;
+	display: flex;
+	gap: 4px;
+	align-items: center;
+}
+
+.modal-body .megazine_wrap .megazine_header .megazine_writer img {
+	border-radius: 50%;
+	background: #ddd;
+	width: 24px;
+	height: 24px;
+	margin-right: 4px;
+}
+
+.modal-body .megazine_wrap .megazine_header .megazine_writer span {
+	color: var(--txt-color-500);
+	font-weight: 400;
+	line-height: 1.4;
+	letter-spacing: -0.02em;
+	font-size: 14px;
+}
+
+
+
+/* 내용 */
+.modal-body .megazine_wrap .megazine_content {
+	white-space: pre-line;
+	line-height: 28px;
+	word-break: break-word;
+	font-weight: 300;
+	font-size: 16px;
+	letter-spacing: -0.025em;
+}

@@ -92,6 +92,12 @@ public class ChompService {
 		
 		if (sort != null && !sort.isBlank()) {
 			switch (sort) {
+				case "id-desc":
+					sortSpec = Sort.by(Sort.Order.desc("id"));
+					break;
+				case "id-asc":
+					sortSpec = Sort.by(Sort.Order.asc("id"));
+					break;
 				case "closedate-desc":
 					sortSpec = Sort.by(Sort.Order.desc("closedate"), Sort.Order.desc("id"));
 					break;
@@ -109,6 +115,12 @@ public class ChompService {
 					break;
 				case "commentcount-asc":
 					sortSpec = Sort.by(Sort.Order.asc("commentcount"), Sort.Order.desc("id"));
+					break;
+				case "recordcount-desc":
+					sortSpec = Sort.by(Sort.Order.desc("recordcount"), Sort.Order.desc("id"));
+					break;
+				case "recordcountcount-asc":
+					sortSpec = Sort.by(Sort.Order.asc("recordcount"), Sort.Order.desc("id"));
 					break;
 				default:
 					sortSpec = Sort.by(Sort.Order.desc("id"));
@@ -154,6 +166,8 @@ public class ChompService {
 			        : (today.after(chompDto.getOpendate()) && today.before(chompDto.getClosedate())) ? "open" : "close";
 			chompDto.setStatus(status);
 			
+			
+			
 			chompDtoList.add(chompDto);
 		}
 		
@@ -164,7 +178,6 @@ public class ChompService {
 	
 	
 	
-	// ======
 	// 투표 상세 조회
 	public VoteReadResponseDto readVoteById(int id) {
 		

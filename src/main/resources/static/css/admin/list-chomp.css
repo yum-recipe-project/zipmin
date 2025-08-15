@@ -205,6 +205,16 @@
 	text-overflow: clip;
 }
 
+.view {
+    transition: color 0.2s ease, text-decoration 0.2s ease;
+    cursor: pointer;
+}
+
+.view:hover {
+    color: #5D87FF;
+    text-decoration: underline;
+}
+
 
 
 

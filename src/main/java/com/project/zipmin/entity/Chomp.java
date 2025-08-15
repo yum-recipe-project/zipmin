@@ -37,4 +37,7 @@ public class Chomp {
 	@Formula("(SELECT COUNT(*) FROM comments c WHERE c.recodenum = id AND c.tablename = category)")
 	private int commentcount;
 	
+	@Formula("(SELECT COUNT(*) FROM vote_record vr WHERE vr.chomp_id = id)")
+	private int recordcount;
+
 }

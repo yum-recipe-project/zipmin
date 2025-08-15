@@ -234,8 +234,6 @@ function renderCommentList(commentList) {
 	}
 	reportTd.appendChild(reportWrap);
 
-	const token = localStorage.getItem('accessToken');
-	const payload = parseJwt(token);
 
 	// 기능
 	const actionTd = document.createElement('td');
@@ -243,6 +241,8 @@ function renderCommentList(commentList) {
 	btnWrap.className = 'd-flex justify-content-end gap-2';
 	
 	// 기능 버튼 조건
+	const token = localStorage.getItem('accessToken');
+	const payload = parseJwt(token);
 	const canAction =
 	    payload.role === 'ROLE_SUPER_ADMIN' ||
 	    (payload.role === 'ROLE_ADMIN' && comment.role === 'ROLE_USER') ||

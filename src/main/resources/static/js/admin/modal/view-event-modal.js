@@ -16,7 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			console.log(response);
 			
 			if (response.data.code === 'EVENT_READ_SUCCESS') {
-				
+				document.querySelector('.event_title').innerText = response.data.data.title;
+				document.querySelector('.event_postdate').innerHTML = formatDate(response.data.data.closedate);
+				document.querySelector('.event_content').innerHTML = response.data.data.content;
 			}
 		}
 		catch (error) {

@@ -13,8 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
 				headers: getAuthHeaders()
 			});
 			
-			console.log(response);
-			
 			if (response.data.code === 'MEGAZINE_READ_SUCCESS') {
 				document.querySelector('.megazine_title').innerText = response.data.data.title;
 				document.querySelector('.megazine_postdate').innerHTML = formatDate(response.data.data.closedate);

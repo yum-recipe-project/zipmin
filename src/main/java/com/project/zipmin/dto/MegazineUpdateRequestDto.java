@@ -9,8 +9,9 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class MegazineUpdateRequestDto {
 	
-	private int id;
+	private Integer id;
 	private String title;
 	private String content;
+	private Integer userId;
 	
 }

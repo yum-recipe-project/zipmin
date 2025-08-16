@@ -302,7 +302,12 @@ function renderChompList(chompList) {
 		
         // 기능
 		const actionTd = document.createElement('td');
-		const canAction = true;
+		const token = localStorage.getItem('accessToken');
+		const payload = parseJwt(token);
+		const canAction =
+			payload.role === 'ROLE_SUPER_ADMIN' ||
+			(payload.role === 'ROLE_ADMIN' && chomp.role === 'ROLE_USER') ||
+			(payload.id === chomp.user_id);
 		
 		if (canAction) {
 			const btnWrap = document.createElement('div');
@@ -319,11 +324,24 @@ function renderChompList(chompList) {
 					editBtn.dataset.bsTarget = '#editVoteModal';
 					editBtn.dataset.id = chomp.id;
 					// editBtn.onclick = () => location.href = `/admin/editEvent.do?id=${chomp.event_dto.id}`;
+					editBtn.onclick = () => {
+						alert('하하');
+					}
 					break;
 				case 'megazine' :
 					editBtn.dataset.bsToggle = 'modal';
 					editBtn.dataset.bsTarget = '#editMegazineModal';
-					editBtn.dataset.id = chomp.id;
+					// editBtn.dataset.id = chomp.id;
+					editBtn.addEventListener('click', function(event) {
+						event.preventDefault();
+						if (!isLoggedIn()) {
+							redirectToLogin();
+							return;
+						}
+						document.getElementById('editMegazineId').value = chomp.id;
+						document.getElementById('editMegazineTitleInput').value = chomp.title;
+						document.getElementById('editMegazineContentInput').value = chomp.content;
+					});
 					break;
 				case 'event' :
 					editBtn.dataset.bsToggle = 'modal';

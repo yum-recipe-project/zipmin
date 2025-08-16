@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			
 			if (response.data.code === 'EVENT_READ_SUCCESS') {
 				document.querySelector('.event_title').innerText = response.data.data.title;
-				document.querySelector('.event_postdate').innerHTML = formatDate(response.data.data.closedate);
+				document.querySelector('.event_postdate').innerHTML = formatDatePeriod(response.data.data.opendate, response.data.data.closedate);
 				document.querySelector('.event_content').innerHTML = response.data.data.content;
 				document.querySelector('.event_image').src = response.data.data.image;
 			}

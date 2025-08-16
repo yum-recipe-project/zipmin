@@ -708,12 +708,15 @@ public class ChompessorController {
 				throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
 			}
 		}
+		megazineRequestDto.setUserId(userService.readUserByUsername(username).getId());
 		
 		MegazineCreateResponseDto megazineResponseDto = chompService.createMegazine(megazineRequestDto);
 		
 		return ResponseEntity.status(MegazineSuccessCode.MEGAZINE_CREATE_SUCCESS.getStatus())
 				.body(ApiResponse.success(MegazineSuccessCode.MEGAZINE_CREATE_SUCCESS, megazineResponseDto));
 	}
+	
+	
 	
 	
 	
@@ -775,12 +778,6 @@ public class ChompessorController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(MegazineErrorCode.MEGAZINE_UNAUTHORIZED_ACCESS);
-		}
-		
-		// 권한 없는 사용자의 접근 (괸리자 권한)
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-		    throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
 		}
 		
 		MegazineUpdateResponseDto megazineResponseDto = chompService.updateMegazine(megazineRequestDto);

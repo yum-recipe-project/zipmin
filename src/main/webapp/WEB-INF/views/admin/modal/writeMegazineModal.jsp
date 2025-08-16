@@ -6,7 +6,7 @@
 		<div class="modal-dialog modal-lg modal-dialog-scrollable">
 			<div class="modal-content">
 				<div class="modal-header d-flex align-items-center">
-					<h5>매거진 생성하기</h5>
+					<h5>매거진 작성하기</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 				</div>
 				<div class="modal-body">

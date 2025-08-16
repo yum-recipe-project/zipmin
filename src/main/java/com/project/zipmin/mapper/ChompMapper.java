@@ -35,10 +35,16 @@ public interface ChompMapper {
 //	
 //	ChompCreateResponseDto toCreateResponseDto(Chomp chomp);
 	
+	@Mapping(target = "user.id", source = "userId")
 	Chomp toEntity(MegazineCreateRequestDto megazineDto);
+	
+	@Mapping(target = "userId", source = "user.id")
 	MegazineCreateRequestDto toMegazineCreateRequestDto(Chomp chomp);
 	
+	@Mapping(target = "user.id", source = "userId")
 	Chomp toEntity(MegazineCreateResponseDto megazineDto);
+	
+	@Mapping(target = "userId", source = "user.id")
 	MegazineCreateResponseDto toMegazineCreateResponseDto(Chomp chomp);
 	
 	
@@ -64,10 +70,16 @@ public interface ChompMapper {
 	
 	
 	// Read
+	@Mapping(target = "user.id", source = "userId")
 	Chomp toEntity(ChompReadResponseDto chompDto);
+	
+	@Mapping(target = "userId", source = "user.id")
 	ChompReadResponseDto toReadResponseDto(Chomp chomp);
 	
+	@Mapping(target = "user.id", source = "userId")
+	Chomp toEntity(MegazineReadResponseDto megazineDto);
 	
+	@Mapping(target = "userId", source = "user.id")
 	MegazineReadResponseDto toMegazineReadResponseDto(Chomp chomp);
 	
 	@Mapping(target = "user.id", source = "userId")

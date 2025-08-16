@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ChompErrorCode;
+import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.EventErrorCode;
 import com.project.zipmin.api.MegazineErrorCode;
 import com.project.zipmin.api.VoteErrorCode;
@@ -48,6 +49,7 @@ import com.project.zipmin.dto.VoteRecordCreateResponseDto;
 import com.project.zipmin.dto.VoteUpdateRequestDto;
 import com.project.zipmin.dto.VoteUpdateResponseDto;
 import com.project.zipmin.entity.Chomp;
+import com.project.zipmin.entity.Role;
 import com.project.zipmin.entity.VoteChoice;
 import com.project.zipmin.entity.VoteRecord;
 import com.project.zipmin.mapper.ChompMapper;
@@ -416,12 +418,14 @@ public class ChompService {
 	
 	
 	
-	// =======
+	
+	
 	// 매거진을 작성하는 함수
 	public MegazineCreateResponseDto createMegazine(MegazineCreateRequestDto megazineRequestDto) {
 		
 		// 입력값 검증
-	    if (megazineRequestDto == null || megazineRequestDto.getTitle() == null || megazineRequestDto.getContent() == null || megazineRequestDto.getCategory() == null) {
+	    if (megazineRequestDto == null || megazineRequestDto.getTitle() == null || megazineRequestDto.getContent() == null
+	    		|| megazineRequestDto.getCategory() == null || megazineRequestDto.getUserId() == null) {
 	    	throw new ApiException(MegazineErrorCode.MEGAZINE_INVALID_INPUT);
 	    }
 	    
@@ -438,18 +442,42 @@ public class ChompService {
 	
 	
 	
-	// =====
-	// 매거진을 수정하는 함수
+	
+	
+	// 매거진 수정
 	public MegazineUpdateResponseDto updateMegazine(MegazineUpdateRequestDto megazineRequestDto) {
 		
 		// 입력값 검증
-		if (megazineRequestDto == null || megazineRequestDto.getId() == 0 || megazineRequestDto.getContent() == null || megazineRequestDto.getTitle() == null) {
+		if (megazineRequestDto == null || megazineRequestDto.getId() == null
+				|| megazineRequestDto.getContent() == null || megazineRequestDto.getTitle() == null) {
 			throw new ApiException(MegazineErrorCode.MEGAZINE_INVALID_INPUT);
 		}
 		
 		// 매거진 존재 여부 판단
 		Chomp megazine = chompRepository.findById(megazineRequestDto.getId())
 				.orElseThrow(() -> new ApiException(MegazineErrorCode.MEGAZINE_NOT_FOUND));
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (megazine.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+				}
+				if (megazine.getUser().getRole().equals(Role.ROLE_ADMIN)) {
+					if (userService.readUserByUsername(username).getId() != megazine.getUser().getId()) {
+						throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+					}
+				}
+			}
+			// 일반 회원
+			else {
+				if (userService.readUserByUsername(username).getId() != megazine.getUser().getId()) {
+					throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+				}
+			}
+		}
 		
 		// 필요한 필드만 수정
 		megazine.setTitle(megazineRequestDto.getTitle());
@@ -466,8 +494,9 @@ public class ChompService {
 	}
 	
 	
+
 	
-	// ====
+	
 	// 매거진을 삭제하는 함수
 	public void deleteMegazine(Integer id) {
 		
@@ -492,7 +521,8 @@ public class ChompService {
 	
 	
 	
-	// ====
+	
+	
 	// 이벤트의 상세 내용을 조회하는 함수
 	public EventReadResponseDto readEventById(int id) {
 		

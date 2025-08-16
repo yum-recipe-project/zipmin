@@ -19,6 +19,8 @@ public class ChompReadResponseDto {
 	private Date closedate;
 	private String content;
 	private String category;
+	private String image;
+	private Integer userId;
 	
 	// 수정해야함
 	private boolean voted;

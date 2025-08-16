@@ -41,11 +41,6 @@ public interface ChompMapper {
 	Chomp toEntity(MegazineCreateResponseDto megazineDto);
 	MegazineCreateResponseDto toMegazineCreateResponseDto(Chomp chomp);
 	
-	Chomp toEntity(EventCreateRequestDto eventDto);
-	EventCreateRequestDto toEventCreateRequestDto(Chomp chomp);
-	
-	Chomp toEntity(EventCreateResponseDto eventDto);
-	EventCreateResponseDto toEventCreateResponseDto(Chomp chomp);
 	
 	Chomp toEntity(VoteCreateRequestDto voteDto);
 	VoteCreateRequestDto toVoteCreateRequestDto(Chomp chomp);
@@ -53,6 +48,17 @@ public interface ChompMapper {
 	Chomp toEntity(VoteCreateResponseDto voteDto);
 	VoteCreateResponseDto toVoteCreateResponseDto(Chomp chomp);
 
+	@Mapping(target = "user.id", source = "userId")
+	Chomp toEntity(EventCreateRequestDto eventDto);
+	
+	@Mapping(target = "userId", source = "user.id")
+	EventCreateRequestDto toEventCreateRequestDto(Chomp chomp);
+	
+	@Mapping(target = "user.id", source = "userId")
+	Chomp toEntity(EventCreateResponseDto eventDto);
+	
+	@Mapping(target = "userId", source = "user.id")
+	EventCreateResponseDto toEventCreateResponseDto(Chomp chomp);
 	
 	
 	
@@ -64,6 +70,10 @@ public interface ChompMapper {
 	
 	MegazineReadResponseDto toMegazineReadResponseDto(Chomp chomp);
 	
+	@Mapping(target = "user.id", source = "userId")
+	Chomp toEntity(EventReadResponseDto eventDto);
+	
+	@Mapping(target = "userId", source = "user.id")
 	EventReadResponseDto toEventReadResponseDto(Chomp chomp);
 	
 	VoteReadResponseDto toVoteReadResponseDto(Chomp chomp);

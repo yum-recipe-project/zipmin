@@ -28,6 +28,7 @@ public enum EventErrorCode implements Code {
 	EVENT_NOT_STARTED(HttpStatus.FORBIDDEN, "이벤트 시작 전 접근 시도"),
 	EVENT_ALREADY_ENDED(HttpStatus.FORBIDDEN, "이벤트 종료 후 접근 시도"),
 	EVENT_RECORD_DUPLICATE(HttpStatus.CONFLICT, "이미 참여한 이벤트에 중복 참여 시도"),
+	EVENT_FILE_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "이벤트 파일 업로드 실패"),
 	
 	// 기타
 	EVENT_UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "예외 처리되지 않은 내부 오류");

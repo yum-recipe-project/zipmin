@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +22,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.dto.ChompReadResponseDto;
 import com.project.zipmin.dto.EventCreateRequestDto;
@@ -116,7 +119,6 @@ public class ChompessorController {
 	CommentService commentService;
 	@Autowired
 	ChompCommentService chompCommentService;
-
 	
 	
 	// 쩝쩝박사 목록 조회
@@ -382,14 +384,14 @@ public class ChompessorController {
 		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 			// 관리자
 			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-//				if (userService.readUserById(id).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-//					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
-//				}
-//				if (userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
-//					if (userService.readUserByUsername(username).getId() != id) {
-//						throw new ApiException(UserErrorCode.USER_FORBIDDEN);
-//					}
-//				}
+				if (userService.readUserById(id).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+				}
+				if (userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
+					if (userService.readUserByUsername(username).getId() != id) {
+						throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+					}
+				}
 			}
 			// 일반 회원
 			else {
@@ -992,21 +994,25 @@ public class ChompessorController {
 	})
 	@PostMapping("/events")
 	public ResponseEntity<?> writeEvent(
-			@Parameter(description = "이벤트 작성 요청 정보", required = true)  @RequestBody EventCreateRequestDto eventRequestDto) {
+			@Parameter(description = "이벤트 작성 요청 정보", required = true)  @RequestPart EventCreateRequestDto eventRequestDto,
+			@RequestPart(value = "file", required = false) MultipartFile file) {
 		
 		// 인증 여부 확인 (비로그인)
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(EventErrorCode.EVENT_UNAUTHORIZED_ACCESS);
 		}
-		
-		// 권한 없는 사용자의 접근 (괸리자 권한)
+
+		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
-		    throw new ApiException(EventErrorCode.EVENT_FORBIDDEN);
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+			}
 		}
-		
-		EventCreateResponseDto eventResponseDto = chompService.createEvent(eventRequestDto);
+		eventRequestDto.setUserId(userService.readUserByUsername(username).getId());
+	
+		EventCreateResponseDto eventResponseDto = chompService.createEvent(eventRequestDto, file);
 		
 		return ResponseEntity.status(EventSuccessCode.EVENT_CREATE_SUCCESS.getStatus())
 				.body(ApiResponse.success(EventSuccessCode.EVENT_CREATE_SUCCESS, eventResponseDto));
@@ -1163,14 +1169,14 @@ public class ChompessorController {
 		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 			// 관리자
 			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-//				if (userService.readUserById(id).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-//					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
-//				}
-//				if (userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
-//					if (userService.readUserByUsername(username).getId() != id) {
-//						throw new ApiException(UserErrorCode.USER_FORBIDDEN);
-//					}
-//				}
+				if (userService.readUserById(id).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+				}
+				if (userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
+					if (userService.readUserByUsername(username).getId() != id) {
+						throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+					}
+				}
 			}
 			// 일반 회원
 			else {

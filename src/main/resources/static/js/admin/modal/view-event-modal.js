@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				document.querySelector('.event_title').innerText = response.data.data.title;
 				document.querySelector('.event_postdate').innerHTML = formatDate(response.data.data.closedate);
 				document.querySelector('.event_content').innerHTML = response.data.data.content;
+				document.querySelector('.event_image').src = response.data.data.image;
 			}
 		}
 		catch (error) {

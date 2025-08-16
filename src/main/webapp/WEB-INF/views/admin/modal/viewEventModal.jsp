@@ -26,7 +26,7 @@
 					<!-- 이벤트 내용 -->
 					<p class="event_content"></p>
 					<!-- 이벤트 이미지 -->
-					<img src="/images/common/test.png">
+					<img class="event_image" src="/images/common/test.png">
 				</div>
 			</div>
 			<div class="modal-footer">

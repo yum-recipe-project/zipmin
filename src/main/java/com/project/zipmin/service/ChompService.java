@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -16,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ChompErrorCode;
@@ -71,6 +73,11 @@ public class ChompService {
 	
 	@Autowired
 	private UserService userService;
+	
+	private final FileService fileService;
+	
+    @Value("${app.upload.base-url:/files}")
+    private String baseUrl;
 	
 	
 	private final ChompMapper chompMapper;
@@ -492,18 +499,24 @@ public class ChompService {
 		Chomp event = chompRepository.findById(id)
 				.orElseThrow(() -> new ApiException(EventErrorCode.EVENT_NOT_FOUND));
 		
-		return chompMapper.toEventReadResponseDto(event);
+		EventReadResponseDto eventDto = chompMapper.toEventReadResponseDto(event);
+		eventDto.setImage(baseUrl + "/" + eventDto.getImage());
+		
+		return eventDto;
 		
 	}
 	
 	
 	
-	// ======
+	
+	
 	// 이벤트를 작성하는 함수
-	public EventCreateResponseDto createEvent(EventCreateRequestDto eventRequestDto) {
+	public EventCreateResponseDto createEvent(EventCreateRequestDto eventRequestDto, MultipartFile file) {
 		
 		// 입력값 검증
-		if (eventRequestDto == null || eventRequestDto.getTitle() == null || eventRequestDto.getContent() == null || eventRequestDto.getOpendate() == null || eventRequestDto.getClosedate() == null || eventRequestDto.getCategory() == null) {
+		if (eventRequestDto == null || eventRequestDto.getTitle() == null || file == null
+				|| eventRequestDto.getContent() == null || eventRequestDto.getOpendate() == null
+				|| eventRequestDto.getClosedate() == null || eventRequestDto.getCategory() == null) {
 			throw new ApiException(EventErrorCode.EVENT_INVALID_INPUT);
 		}
 		
@@ -512,6 +525,15 @@ public class ChompService {
 	    	throw new ApiException(EventErrorCode.EVENT_INVALID_PERIOD);
 	    }
 	    
+        // 파일 저장
+        try {
+        	String image = fileService.store(file);
+        	eventRequestDto.setImage(image);
+        }
+        catch (Exception e) {
+            throw new ApiException(EventErrorCode.EVENT_FILE_UPLOAD_FAIL);
+        }
+        
 	    // 이벤트 생성
 	    Chomp event = chompMapper.toEntity(eventRequestDto);
 	    try {

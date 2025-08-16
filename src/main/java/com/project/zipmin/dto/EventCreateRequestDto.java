@@ -16,5 +16,7 @@ public class EventCreateRequestDto {
 	private Date closedate;
 	private String content;
 	private String category;
+	private String image;
+	private Integer userId;
 	
 }

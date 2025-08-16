@@ -290,15 +290,19 @@ commit;
 -- CHOMP 테이블
 -- drop table chomp;
 -- drop sequence seq_chomp_id;
--------- ---------------- user_id 추가할것 !!!
 create table chomp (
     id number primary key,
     title varchar2(100) not null,
     opendate date,
     closedate date not null,
     content varchar2(1000),
-    category varchar2(30) not null
+    image varchar2(500),
+    category varchar2(30) not null,
+    user_id number not null
 );
+alter table chomp
+    add constraint const_chomp_user foreign key(user_id)
+    references users(id) on delete cascade;
 create sequence seq_chomp_id
     increment by 1
     start with 1

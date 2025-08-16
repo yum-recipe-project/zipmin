@@ -699,10 +699,12 @@ public class ChompessorController {
 		    throw new ApiException(MegazineErrorCode.MEGAZINE_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 권한 없는 사용자의 접근 (괸리자 권한)
+		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-		    throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+			}
 		}
 		
 		MegazineCreateResponseDto megazineResponseDto = chompService.createMegazine(megazineRequestDto);

@@ -14,6 +14,6 @@ public class MegazineCreateRequestDto {
 	private String title;
 	private Date closedate;
 	private String content;
-	private int category;
+	private String category;
 	
 }

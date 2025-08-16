@@ -103,6 +103,22 @@
 	color: #F45452;
 }
 
+/* 폼 2 */
+textarea {
+    resize: none !important;
+    color: #181a1c !important;
+}
+
+#container .modal-content .modal-body .form-control {
+	border: 1px solid #DEE2E6;
+}
+
+#container .modal-content .modal-body .form-control:focus {
+	outline: none !important;
+    box-shadow: none !important;
+    border: 1px solid var(--point-color2);
+}
+
 
 
 

@@ -7,6 +7,7 @@ import org.hibernate.annotations.Formula;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -40,4 +41,11 @@ public class Chomp {
 	@Formula("(SELECT COUNT(*) FROM vote_record vr WHERE vr.chomp_id = id)")
 	private int recordcount;
 
+	
+	@PrePersist
+    public void prePersist() {
+        if (this.closedate == null) {
+            this.closedate = new Date();
+        }
+    }
 }

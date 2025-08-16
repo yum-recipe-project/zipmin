@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			document.querySelector(`.sort_btn[data-key="${sortKey}"]`).classList.add(sortOrder);
 			
 			commentList = [];
+			renderAddChompButton(category);
 			fetchChompList();
 		});
 	});
@@ -122,6 +123,64 @@ async function fetchChompList() {
 	}
 	
 }
+
+
+
+
+
+/**
+ * 쩝쩝박사 추가 버튼을 화면에 렌더링하는 함수
+ */
+function renderAddChompButton(category) {
+	
+	const container = document.querySelector('.bar');
+	
+	// 기존 버튼 제거
+	const oldBtn = container.querySelector('.btn-info[data-bs-toggle="modal"]');
+	if (oldBtn) oldBtn.remove();
+	
+	if (category === '') {
+		return;
+	}
+	
+	const createBtn = document.createElement('button');
+	createBtn.type = 'button';
+	createBtn.className = 'btn btn-info m-1';
+	
+	
+	createBtn.dataset.bsToggle = 'modal';
+	let modalId = '';
+	let label = '';
+
+	switch (category) {
+	    case 'vote':
+	        modalId = '#writeVoteModal';
+	        label = '투표 생성하기';
+	        break;
+	    case 'megazine':
+	        modalId = '#writeMegazineModal';
+	        label = '매거진 생성하기';
+	        break;
+	    case 'event':
+	        modalId = '#writeEventModal';
+	        label = '이벤트 생성하기';
+	        break;
+	    default:
+	        break;
+	}
+
+	if (modalId && label) {
+	    createBtn.dataset.bsTarget = modalId;
+
+	    const icon = document.createElement('i');
+	    icon.className = 'ti ti-plus fs-4';
+	    const text = document.createTextNode(label);
+
+	    createBtn.append(icon, text);
+	}
+	document.querySelector('.bar').appendChild(createBtn);
+	
+};
 
 
 

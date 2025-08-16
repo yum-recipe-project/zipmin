@@ -10,6 +10,7 @@
 		<title>집밥의민족</title>
 		<link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
 		<link rel="stylesheet" href="../assets/css/styles.min.css" />
+		<link rel="stylesheet" href="/css/admin/common/modal.css" />
 		<link rel="stylesheet" href="/css/admin/list-chomp.css" />
 		<link rel="stylesheet" href="/css/admin/modal/view-vote-modal.css" />
 		<link rel="stylesheet" href="/css/admin/modal/view-megazine-modal.css" />
@@ -22,6 +23,9 @@
 		<script src="/js/admin/modal/view-vote-modal.js"></script>
 		<script src="/js/admin/modal/view-megazine-modal.js"></script>
 		<script src="/js/admin/modal/view-event-modal.js"></script>
+		<script src="/js/admin/modal/write-vote-modal.js"></script>
+		<script src="/js/admin/modal/write-megazine-modal.js"></script>
+		<script src="/js/admin/modal/write-event-modal.js"></script>
 		<script src="/js/admin/modal/edit-vote-modal.js"></script>
 		<script src="/js/admin/modal/edit-megazine-modal.js"></script>
 		<script src="/js/admin/modal/edit-event-modal.js"></script>
@@ -125,6 +129,10 @@
 			<%@include file="../admin/modal/viewVoteModal.jsp" %>
 			<%@include file="../admin/modal/viewMegazineModal.jsp" %>
 			<%@include file="../admin/modal/viewEventModal.jsp" %>
+			
+			<%@include file="../admin/modal/writeVoteModal.jsp" %>
+			<%@include file="../admin/modal/writeMegazineModal.jsp" %>
+			<%@include file="../admin/modal/writeEventModal.jsp" %>
 			
 			<%@include file="../admin/modal/editVoteModal.jsp" %>
 			<%@include file="../admin/modal/editMegazineModal.jsp" %>

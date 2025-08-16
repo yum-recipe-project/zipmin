@@ -414,10 +414,10 @@ public class ChompService {
 	public MegazineCreateResponseDto createMegazine(MegazineCreateRequestDto megazineRequestDto) {
 		
 		// 입력값 검증
-	    if (megazineRequestDto == null || megazineRequestDto.getTitle() == null || megazineRequestDto.getClosedate() == null || megazineRequestDto.getContent() == null) {
+	    if (megazineRequestDto == null || megazineRequestDto.getTitle() == null || megazineRequestDto.getContent() == null || megazineRequestDto.getCategory() == null) {
 	    	throw new ApiException(MegazineErrorCode.MEGAZINE_INVALID_INPUT);
 	    }
-		
+	    
 	    // 매거진 생성
 	    Chomp megazine = chompMapper.toEntity(megazineRequestDto);
 	    try {

@@ -69,48 +69,48 @@ public class ChompCommentService {
 	
 	
 	// 투표의 목록을 조회하는 함수
-	public Page<VoteReadResponseDto> readVotePage(Pageable pageable) {
-		
-		Page<Chomp> votePage = chompRepository.findAll(pageable);
-		
-		List<VoteReadResponseDto> voteDtoList = new ArrayList<>();
-		Date today = new Date();
-		for (Chomp vote : votePage) {
-			VoteReadResponseDto voteDto = chompMapper.toVoteReadResponseDto(vote);
-			
-			// 투표수
-			long total = recordRepository.countByChompId(vote.getId());
-			voteDto.setTotal(total);
-			
-			// 댓글수
-			int commentCount = readCommentCount("vote", vote.getId());
-			voteDto.setCommentcount(commentCount);
-			
-			// 투표 상태
-			String status = (today.after(voteDto.getOpendate()) && today.before(voteDto.getClosedate())) ? "open" : "close";
-			voteDto.setStatus(status);
-			
-			// 투표 옵션
-			List<VoteChoice> choiceList = choiceRepository.findByChompId(vote.getId());
-			List<VoteChoiceReadResponseDto> choiceDtoList = new ArrayList<>();
-			for (VoteChoice choice : choiceList) {
-				VoteChoiceReadResponseDto choiceDto = choiceMapper.toReadResponseDto(choice);
-				
-				long count = recordRepository.countByChoiceId(choice.getId());
-				double rate = (total == 0) ? 0.0 : Math.round(((double) count / total) * 100) / 1.0;
-				
-				choiceDto.setCount((int) count);
-				choiceDto.setRate(rate);
-				
-				choiceDtoList.add(choiceDto);
-			}
-			voteDto.setChoiceList(choiceDtoList);
-			
-			voteDtoList.add(voteDto);
-		}
-		
-		return new PageImpl<>(voteDtoList, pageable, votePage.getTotalElements());
-	}
+//	public Page<VoteReadResponseDto> readVotePage(Pageable pageable) {
+//		
+//		Page<Chomp> votePage = chompRepository.findAll(pageable);
+//		
+//		List<VoteReadResponseDto> voteDtoList = new ArrayList<>();
+//		Date today = new Date();
+//		for (Chomp vote : votePage) {
+//			VoteReadResponseDto voteDto = chompMapper.toVoteReadResponseDto(vote);
+//			
+//			// 투표수
+//			long total = recordRepository.countByChompId(vote.getId());
+//			voteDto.setTotal(total);
+//			
+//			// 댓글수
+//			int commentCount = readCommentCount("vote", vote.getId());
+//			voteDto.setCommentcount(commentCount);
+//			
+//			// 투표 상태
+//			String status = (today.after(voteDto.getOpendate()) && today.before(voteDto.getClosedate())) ? "open" : "close";
+//			voteDto.setStatus(status);
+//			
+//			// 투표 옵션
+//			List<VoteChoice> choiceList = choiceRepository.findByChompId(vote.getId());
+//			List<VoteChoiceReadResponseDto> choiceDtoList = new ArrayList<>();
+//			for (VoteChoice choice : choiceList) {
+//				VoteChoiceReadResponseDto choiceDto = choiceMapper.toReadResponseDto(choice);
+//				
+//				long count = recordRepository.countByChoiceId(choice.getId());
+//				double rate = (total == 0) ? 0.0 : Math.round(((double) count / total) * 100) / 1.0;
+//				
+//				choiceDto.setCount((int) count);
+//				choiceDto.setRate(rate);
+//				
+//				choiceDtoList.add(choiceDto);
+//			}
+//			voteDto.setChoiceList(choiceDtoList);
+//			
+//			voteDtoList.add(voteDto);
+//		}
+//		
+//		return new PageImpl<>(voteDtoList, pageable, votePage.getTotalElements());
+//	}
 	
 	
 	

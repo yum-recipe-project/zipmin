@@ -166,10 +166,12 @@ public class ChompessorController {
 		    @Parameter(description = "페이지 크기", example = "10") @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<VoteReadResponseDto> votePage = chompCommentService.readVotePage(pageable);
+		// Page<VoteReadResponseDto> votePage = chompCommentService.readVotePage(pageable);
 		
-		return ResponseEntity.status(VoteSuccessCode.VOTE_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(VoteSuccessCode.VOTE_READ_LIST_SUCCESS, votePage));
+//		return ResponseEntity.status(VoteSuccessCode.VOTE_READ_LIST_SUCCESS.getStatus())
+//				.body(ApiResponse.success(VoteSuccessCode.VOTE_READ_LIST_SUCCESS, votePage));
+		
+		return null;
 	}
 	
 	

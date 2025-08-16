@@ -25,6 +25,8 @@ public class VoteReadResponseDto {
 	private List<VoteChoiceReadResponseDto> choiceList;
 	private boolean voted;
 	private int choiceId;
-	private long total;
+	
+	
+	private int recordcount;
 	private int commentcount;
 }

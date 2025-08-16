@@ -33,14 +33,14 @@ document.addEventListener('DOMContentLoaded', async function() {
 			document.querySelector('.vote_postdate').innerText = formatDate;
 			document.querySelector('.vote_total').innerText = result.data.total;
 			
-			// 사용자 투표 완료
-			if (result.data.voted) {
-				showRecord(result.data.choice_list, result.data.choice_id);
-			}
 			// 투표 종료
-			else if (now < opendate || now > closedate) {
+			if (now < opendate || now > closedate) {
 				showRecord(result.data.choice_list, result.data.choice_id);
 				document.getElementById('revoteBtn').style.display = 'none';
+			}
+			// 사용자 투표 완료
+			else if (result.data.voted) {
+				showRecord(result.data.choice_list, result.data.choice_id);
 			}
 			// 비로그인 상태 혹은 투표 미완료
 			else {

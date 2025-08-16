@@ -186,8 +186,6 @@ public class ChompService {
 				.orElseThrow(() -> new ApiException(VoteErrorCode.VOTE_NOT_FOUND));
 		
 		VoteReadResponseDto voteDto = chompMapper.toVoteReadResponseDto(vote);
-		long total = recordRepository.countByChompId(id);
-		voteDto.setTotal(total);
 		
 		List<VoteChoice> choiceList = choiceRepository.findByChompId(id);
 		List<VoteChoiceReadResponseDto> choiceDtoList = new ArrayList<>();
@@ -195,7 +193,7 @@ public class ChompService {
 			VoteChoiceReadResponseDto choiceDto = choiceMapper.toReadResponseDto(choice);
 			
 			long count = recordRepository.countByChoiceId(choice.getId());
-			double rate = (total == 0) ? 0.0 : Math.round(((double) count / total) * 100) / 1.0;
+			double rate = (voteDto.getRecordcount() == 0) ? 0.0 : Math.round(((double) count / voteDto.getRecordcount()) * 100) / 1.0;
 			
 			choiceDto.setCount((int) count);
 			choiceDto.setRate(rate);

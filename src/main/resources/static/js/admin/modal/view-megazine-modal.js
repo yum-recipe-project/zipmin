@@ -16,8 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			console.log(response);
 			
 			if (response.data.code === 'MEGAZINE_READ_SUCCESS') {
-				document.querySelector('.modal-header h5').textContent = response.data.data.title;
-				document.querySelector('.megazine_title').innerHTML = response.data.data.title;
+				document.querySelector('.megazine_title').innerText = response.data.data.title;
 				document.querySelector('.megazine_postdate').innerHTML = formatDate(response.data.data.closedate);
 				document.querySelector('.megazine_content').innerHTML = response.data.data.content;
 			}

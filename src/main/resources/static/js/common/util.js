@@ -55,6 +55,31 @@ function formatDateWithDay(isoString) {
 
 
 /**
+ * 날짜 기간을 포맷해주는 함수 (2025.08.15(금))
+ */
+function formatDatePeriod(opendateString, closedateString) {
+	
+	const opendate = new Date(opendateString);
+	const closedate = new Date(closedateString);
+	if (isNaN(opendate)) return '';
+	if (isNaN(closedate)) return '';
+
+	const openyear = opendate.getFullYear();
+	const openmonth = String(opendate.getMonth() + 1).padStart(2, '0');
+	const openday = String(opendate.getDate()).padStart(2, '0');
+
+	const closeyear = closedate.getFullYear();
+	const closemonth = String(closedate.getMonth() + 1).padStart(2, '0');
+	const closeday = String(closedate.getDate()).padStart(2, '0');
+
+	return `${openyear}년 ${openmonth}월 ${openday}일 - ${closeyear}년 ${closemonth}월 ${closeday}일`;
+
+}
+
+
+
+
+/**
  * 시간을 포맷해주는 함수 (13:45)
  */
 function formatTime(timeStr) {

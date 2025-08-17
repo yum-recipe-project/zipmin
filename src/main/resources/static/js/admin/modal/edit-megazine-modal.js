@@ -41,6 +41,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		modal.querySelectorAll('.is-invalid').forEach(el => {
 			el.classList.remove('is-invalid');
 		});
+		modal.querySelectorAll('p[id$="Hint"]').forEach(p => {
+			p.style.display = 'none';
+		});
 		
 	    const textarea = modal.querySelector('textarea');
 	    if (textarea) {

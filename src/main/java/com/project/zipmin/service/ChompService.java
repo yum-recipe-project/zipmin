@@ -579,29 +579,64 @@ public class ChompService {
 	
 	
 	
-	// ====
 	// 이벤트를 수정하는 함수
-	public EventUpdateResponseDto updateEvent(EventUpdateRequestDto eventRequestDto) {
+	public EventUpdateResponseDto updateEvent(EventUpdateRequestDto eventRequestDto, MultipartFile file) {
 		
 		// 입력값 검증
-		if (eventRequestDto == null || eventRequestDto.getId() == 0 || eventRequestDto.getTitle() == null || eventRequestDto.getContent() == null || eventRequestDto.getOpendate() == null || eventRequestDto.getClosedate() == null) {
+		if (eventRequestDto == null || eventRequestDto.getId() == 0
+				|| eventRequestDto.getTitle() == null || eventRequestDto.getContent() == null
+				|| eventRequestDto.getOpendate() == null || eventRequestDto.getClosedate() == null) {
 			throw new ApiException(EventErrorCode.EVENT_INVALID_INPUT);
 		}
-		
-		// 이벤트 존재 여부 판단
-		Chomp event = chompRepository.findById(eventRequestDto.getId())
-				.orElseThrow(() -> new ApiException(EventErrorCode.EVENT_NOT_FOUND));
 		
 	    // 기간 검증
 	    if (eventRequestDto.getOpendate().after(eventRequestDto.getClosedate())) {
 	    	throw new ApiException(EventErrorCode.EVENT_INVALID_PERIOD);
 	    }
 		
+		// 이벤트 존재 여부 판단
+		Chomp event = chompRepository.findById(eventRequestDto.getId())
+				.orElseThrow(() -> new ApiException(EventErrorCode.EVENT_NOT_FOUND));
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (event.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+				}
+				if (event.getUser().getRole().equals(Role.ROLE_ADMIN)) {
+					if (userService.readUserByUsername(username).getId() != event.getUser().getId()) {
+						throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+					}
+				}
+			}
+			// 일반 회원
+			else {
+				if (userService.readUserByUsername(username).getId() != event.getUser().getId()) {
+					throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+				}
+			}
+		}
+		
 		// 필요한 필드만 수정
 		event.setTitle(eventRequestDto.getTitle());
 		event.setContent(eventRequestDto.getContent());
 		event.setOpendate(eventRequestDto.getOpendate());
 		event.setClosedate(eventRequestDto.getClosedate());
+		
+		// 파일 저장
+        try {
+        	if (file != null && !file.isEmpty()) {
+        		System.err.println("file 잇음 " + file);
+        		String image = fileService.store(file);
+        		event.setImage(image);
+        	}
+        }
+        catch (Exception e) {
+            throw new ApiException(EventErrorCode.EVENT_FILE_UPLOAD_FAIL);
+        }
 		
 		// 이벤트 수정
 		try {

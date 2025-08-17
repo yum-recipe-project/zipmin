@@ -331,7 +331,6 @@ function renderChompList(chompList) {
 				case 'megazine' :
 					editBtn.dataset.bsToggle = 'modal';
 					editBtn.dataset.bsTarget = '#editMegazineModal';
-					// editBtn.dataset.id = chomp.id;
 					editBtn.addEventListener('click', function(event) {
 						event.preventDefault();
 						if (!isLoggedIn()) {
@@ -346,7 +345,18 @@ function renderChompList(chompList) {
 				case 'event' :
 					editBtn.dataset.bsToggle = 'modal';
 					editBtn.dataset.bsTarget = '#editEventModal';
-					editBtn.dataset.id = chomp.id;
+					editBtn.addEventListener('click', function(event) {
+						event.preventDefault();
+						if (!isLoggedIn()) {
+							redirectToLogin();
+							return;
+						}
+						document.getElementById('editEventId').value = chomp.id;
+						document.getElementById('editEventTitleInput').value = chomp.title;
+						document.getElementById('editEventOpendateInput').value = chomp.opendate.split("T")[0];
+						document.getElementById('editEventClosedateInput').value = chomp.closedate.split("T")[0];
+						document.getElementById('editEventContentInput').value = chomp.content;
+					});
 					break;
 			}
 			editBtn.addEventListener('click', (event) => {

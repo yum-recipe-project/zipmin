@@ -853,11 +853,11 @@ public class ChompessorController {
 		    throw new ApiException(MegazineErrorCode.MEGAZINE_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			// 관리자
-			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+//		// 권한 확인
+//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+//			// 관리자
+//			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
 //				if (userService.readUserById(id).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 //					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
 //				}
@@ -866,12 +866,12 @@ public class ChompessorController {
 //						throw new ApiException(UserErrorCode.USER_FORBIDDEN);
 //					}
 //				}
-			}
-			// 일반 회원
-			else {
-				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
-			}
-		}
+//			}
+//			// 일반 회원
+//			else {
+//				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+//			}
+//		}
 		
 		chompService.deleteMegazine(id);
 		
@@ -1075,7 +1075,8 @@ public class ChompessorController {
 	@PatchMapping("/events/{id}")
 	public ResponseEntity<?> editEvent(
 			@Parameter(description = "이벤트의 일련번호", required = true, example = "1") @PathVariable int id,
-			@Parameter(description = "이벤트 수정 요청 정보", required = true) @RequestBody EventUpdateRequestDto eventRequestDto) {
+			@Parameter(description = "이벤트 수정 요청 정보", required = true) @RequestPart EventUpdateRequestDto eventRequestDto,
+			@RequestPart(value = "file", required = false) MultipartFile file) {
 		
 		// 인증 여부 확인 (비로그인)
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -1083,13 +1084,13 @@ public class ChompessorController {
 		    throw new ApiException(EventErrorCode.EVENT_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 권한 없는 사용자의 접근 (괸리자 권한)
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
-		    throw new ApiException(EventErrorCode.EVENT_FORBIDDEN);
-		}
+//		// 권한 없는 사용자의 접근 (괸리자 권한)
+//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
+//		    throw new ApiException(EventErrorCode.EVENT_FORBIDDEN);
+//		}
 		
-		EventUpdateResponseDto eventResponseDto = chompService.updateEvent(eventRequestDto);
+		EventUpdateResponseDto eventResponseDto = chompService.updateEvent(eventRequestDto, file);
 		
 		return ResponseEntity.status(EventSuccessCode.EVENT_UPDATE_SUCCESS.getStatus())
 				.body(ApiResponse.success(EventSuccessCode.EVENT_UPDATE_SUCCESS, eventResponseDto));

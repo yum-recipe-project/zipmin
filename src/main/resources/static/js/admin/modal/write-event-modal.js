@@ -1,5 +1,5 @@
 /**
- * 매거진 작성 폼을 실시간으로 검증하는 함수
+ * 이벤트 작성 폼을 실시간으로 검증하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
 	
@@ -73,6 +73,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 		modal.querySelectorAll('.is-invalid').forEach(el => {
 			el.classList.remove('is-invalid');
+		});
+		modal.querySelectorAll('p[id$="Hint"]').forEach(p => {
+			p.style.display = 'none';
 		});
 		
 	    const textarea = modal.querySelector('textarea');

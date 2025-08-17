@@ -36,5 +36,4 @@ public interface KitchenRepository extends JpaRepository<Guide, Integer> {
 			countQuery = "SELECT COUNT(g) FROM Guide g")
 	Page<Guide> findByCategoryOrderByLikecount(@Param("category") String category, Pageable pageable);
 	
-	
 }

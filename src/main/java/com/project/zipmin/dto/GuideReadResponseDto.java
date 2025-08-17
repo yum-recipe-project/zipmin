@@ -17,8 +17,11 @@ public class GuideReadResponseDto {
 	private String category;
 	private Date postdate;
 	private String content;
+	private int userId;
 	
 	private long likecount;
 	private boolean likestatus;
 	
 }
+
+

@@ -168,9 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				if (response.data.code === 'EVENT_CREATE_SUCCESS') {
 					alertPrimary('이벤트 작성에 성공했습니다.');
 					
-					const modal = bootstrap.Modal.getInstance(document.getElementById('writeEventModal'));
-					if (modal) modal.hide();
-					
+					bootstrap.Modal.getInstance(document.getElementById('writeEventModal'))?.hide();
 					fetchChompList();
 				}
 			}

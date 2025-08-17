@@ -579,6 +579,7 @@ public class ChompService {
 	
 	
 	
+	
 	// 이벤트를 수정하는 함수
 	public EventUpdateResponseDto updateEvent(EventUpdateRequestDto eventRequestDto, MultipartFile file) {
 		

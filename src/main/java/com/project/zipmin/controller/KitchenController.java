@@ -30,6 +30,8 @@ public class KitchenController {
 	@Autowired
 	KitchenService kitchenService;
 	
+	
+	
 	@Autowired
 	LikeService likeService;
 	
@@ -37,14 +39,15 @@ public class KitchenController {
 	// 가이드 목록 조회
 	@GetMapping("/guides")
 	public ResponseEntity<?> listGuide(
+			// 키워드 추가할 것
 			@RequestParam(required = false) String category,
 		    @RequestParam String sort,
 		    @RequestParam int page,
 		    @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<GuideReadResponseDto> guidePage = null;
 		
+		Page<GuideReadResponseDto> guidePage = null;
 		switch (sort) {
 			case "new" -> guidePage = kitchenService.readGuidePageOrderByIdDesc(category, pageable);
 			case "hot" -> guidePage = kitchenService.readGuidePageOrderByLikecount(category, pageable);

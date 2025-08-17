@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			
 			category = this.getAttribute("data-tab");
 			page = 0;
-			
 			chompList = [];
 			
 			loadChompList(page);
@@ -46,7 +45,8 @@ function loadChompList(num) {
 	const parameters = new URLSearchParams({
 		category : category,
 		page : num,
-		size : size
+		size : size,
+		keyword : '' // 수정할것
 	}).toString();
 	
 	fetch(`/chomp?${parameters}`, {

@@ -163,8 +163,10 @@ public class SecurityConfig {
 				.requestMatchers("/mypage.do").permitAll()
 				.requestMatchers("/mypage/**").permitAll()
 				
+				.requestMatchers("/admin/login.do").permitAll()
+				// .requestMatchers("/admin/**").hasRole("ADMIN")
 				.requestMatchers("/admin/**").permitAll()
-				.requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**", "/assets/**").permitAll()
+				.requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**", "/assets/**", "/files/**").permitAll()
 				
 				// Swagger 관련 경로 모두 허용
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**"

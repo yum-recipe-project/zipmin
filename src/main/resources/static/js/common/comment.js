@@ -135,7 +135,8 @@ async function fetchCommentList(tablename, sort, size) {
 		}).toString();
 		
 		const response = await fetch(`/comments?${params}`, {
-			method: 'GET'
+			method: 'GET',
+			headers: getAuthHeaders()
 		});
 		
 		const result = await response.json();
@@ -765,12 +766,7 @@ async function deleteComment(id) {
 				'Authorization': `Bearer ${token}`
 			}
 			
-			const data = {
-				id: id
-			};
-			
 			const response = await instance.delete(`/comments/${id}`, {
-				data: data,
 				headers: headers
 			});
 			
@@ -835,7 +831,6 @@ async function writeSubcomment(tablename) {
 
 	try {
 		const token = localStorage.getItem('accessToken');
-		const payload = parseJwt(token);
 
 		const params = new URLSearchParams(window.location.search);
 		const id = params.get('id');

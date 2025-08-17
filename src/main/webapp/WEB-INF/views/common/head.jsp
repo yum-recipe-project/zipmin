@@ -7,9 +7,6 @@
 <link rel="stylesheet" href="/css/common/common.css">
 <link rel="stylesheet" href="/css/common/button.css">
 <link rel="stylesheet" href="/css/common/modal.css">
-<!-- <link rel="stylesheet" href="/css/common/comment.css">
-<link rel="stylesheet" href="/css/common/review.css">
-<link rel="stylesheet" href="/css/common/pagination.css"> -->
 <link rel="stylesheet" href="/css/common/header.css">
 <link rel="stylesheet" href="/css/common/footer.css">
 
@@ -22,8 +19,5 @@
 <script src="/js/common/ui-common.js"></script>
 <script src="/js/common/config.js"></script>
 <script src="/js/common/header.js" defer></script>
-<!-- <script src="/js/common/pagination.js"></script>
-<script src="/js/common/comment.js"></script>
-<script src="/js/common/review.js"></script> -->
 <script src="/js/common/util.js"></script>
 <script src="/js/common/jwt.js"></script>

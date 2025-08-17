@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -116,11 +117,14 @@ public class UserController {
 	})
 	@GetMapping("/users")
 	public ResponseEntity<?> readUserPage(
+			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
 			@Parameter(description = "조회할 페이지 번호", required = true) @RequestParam int page,
 			@Parameter(description = "페이지의 항목 수", required = true) @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<UserReadResponseDto> userPage = userService.readUserPage(pageable);
+		Page<UserReadResponseDto> userPage = userService.readUserPage(category, pageable);
+		
+		// 이거 관리자만 가능함 !!!! 추가하기
 		
 		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, userPage));
@@ -225,6 +229,20 @@ public class UserController {
 	@PostMapping("/users")
 	public ResponseEntity<?> createUser(
 			@Parameter(description = "사용자 생성 요청 정보", required = true) @RequestBody UserCreateRequestDto userRequestDto) {
+		
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		
+		// 권한 설정
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    userRequestDto.setRole(Role.ROLE_USER);
+		}
+		else {
+			String username = SecurityContextHolder.getContext().getAuthentication().getName();
+			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+				userRequestDto.setRole(Role.ROLE_ADMIN);
+			}
+		}
 		
 		UserCreateResponseDto userResponseDto  = userService.createUser(userRequestDto);
 
@@ -484,12 +502,26 @@ public class UserController {
 		
 		// 로그인 정보
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		userRequestDto.setId(userService.readUserByUsername(username).getId());
+		userRequestDto.setId(id);
 		
-		// 본인 확인
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
-			if (id != userService.readUserByUsername(username).getId()) {
-				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+		// 권한 확인
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserById(id).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+				}
+				if (userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
+					if (userService.readUserByUsername(username).getId() != id) {
+						throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+					}
+				}
+			}
+			// 일반 회원
+			else {
+				if (userService.readUserByUsername(username).getId() != id) {
+					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+				}
 			}
 		}
 		
@@ -567,10 +599,29 @@ public class UserController {
 		// 로그인 정보
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		
-		// 본인 확인
-		if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN)) {
-			if (id != userService.readUserByUsername(username).getId()) {
-				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+		// 권한 확인
+		if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (userService.readUserByUsername(username).getId() == id) {
+				throw new ApiException(UserErrorCode.USER_SUPER_ADMIN_FORBIDDEN);
+			}
+		}
+		else {
+			// 관리자
+			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserById(id).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+				}
+				if (userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
+					if (userService.readUserByUsername(username).getId() != id) {
+						throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+					}
+				}
+			}
+			// 일반 회원
+			else {
+				if (userService.readUserByUsername(username).getId() != id) {
+					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+				}
 			}
 		}
 		

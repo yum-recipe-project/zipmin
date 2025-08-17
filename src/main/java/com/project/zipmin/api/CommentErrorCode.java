@@ -12,6 +12,7 @@ public enum CommentErrorCode implements Code {
 	// 인증/인가
 	COMMENT_UNAUTHORIZED_ACCESS(HttpStatus.UNAUTHORIZED, "로그인되지 않은 사용자"),
 	COMMENT_FORBIDDEN(HttpStatus.FORBIDDEN, "권한 없는 사용자의 접근"),
+	COMMENT_SUPER_ADMIN_FORBIDDEN(HttpStatus.FORBIDDEN, "권한 없는 사용자의 접근"),
 	
 	// 입력값 오류
 	COMMENT_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
@@ -20,6 +21,7 @@ public enum CommentErrorCode implements Code {
 	COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 댓글을 찾을 수 없음"),
     COMMENT_CREATE_FAIL(HttpStatus.BAD_REQUEST, "댓글 작성 실패"),
     COMMENT_READ_LIST_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "댓글 목록 조회 실패"),
+    COMMENT_READ_COUNT_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "댓글 개수 조회 실패"),
     COMMENT_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "댓글 수정 실패"),
     COMMENT_DELETE_FAIL(HttpStatus.BAD_REQUEST, "댓글 삭제 실패"),
     

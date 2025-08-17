@@ -15,12 +15,36 @@ function parseJwt(token) {
 
 
 
+
+
 /**
  * 로그인 여부를 확인하는 함수
  */
 function isLoggedIn() {
 	return !!localStorage.getItem('accessToken');
 }
+
+
+
+
+
+/**
+ * 현재 로그인 상태에 따라 API 요청 헤더를 생성하는 함수
+ */
+function getAuthHeaders() {
+	
+    const headers = {
+        'Content-Type': 'application/json'
+    };
+
+    if (isLoggedIn()) {
+        const token = localStorage.getItem('accessToken');
+        headers.Authorization = `Bearer ${token}`;
+    }
+
+    return headers;
+}
+
 
 
 

@@ -1,0 +1,148 @@
+@charset "UTF-8";
+
+
+
+
+/* 모달창 */
+.modal-backdrop {
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-dialog {
+	margin-top: 44px;
+}
+
+.modal-content {
+	border: none;
+	border-radius: 12px;
+}
+
+
+
+
+
+/* 모달 헤더 */
+.modal-content .modal-header {
+	padding: 20px 20px 14px;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.modal-content .modal-header h5 {
+	color: #181a1c;
+	font-size: 18px;
+	font-weight: 600;
+}
+
+.modal-content .modal-header .btn-close {
+	background-size: 12px;
+}
+
+.modal-content .modal-header .btn-close:hover {
+	background-color: #F3F5F7;
+}
+
+.modal-content .modal-header .btn-close:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+
+
+
+
+/* 모달 바디 */
+.modal-content .modal-body {
+	padding: 20px !important;
+	 max-height: min(80vh, 720px);
+}
+
+.modal-content .modal-body label {
+	color: #181a1c;
+	font-size: 14px;
+	font-weight: 500;
+	margin-bottom: 8px;
+}
+
+.modal-content .modal-body h5 {
+	font-size: 20px;
+	font-weight: 600;
+}
+
+.modal-content .modal-body input {
+	color: #181a1c;
+}
+
+
+
+
+
+/* 폼 1 */
+.modal-content .modal-body .form-group:not(:first-child) {
+	margin-top: 24px;
+}
+
+.modal-content .modal-body .form-group p {
+	margin-top: 10px;
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 1.5;
+	color: #7E8082;
+}
+
+.modal-content .modal-body .form-group input.danger {
+	border: 1px solid #F45452;
+	background: rgb(254, 245, 245);
+}
+
+.modal-content .modal-body .form-group p.danger {
+	display: none;
+	margin-top: 4px;
+	font-size: 12px;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+	color: #F45452;
+}
+
+/* 폼 2 */
+textarea {
+    resize: none !important;
+    color: #181a1c !important;
+}
+
+#container .modal-content .modal-body .form-control {
+	border: 1px solid #DEE2E6;
+}
+
+#container .modal-content .modal-body .form-control:focus {
+	outline: none !important;
+    box-shadow: none !important;
+    border: 1px solid var(--point-color2);
+}
+
+
+
+
+
+/* 테이블 */
+.modal-content .modal-body .table {
+	margin-bottom: 25px !important;
+}
+
+.modal-content .modal-body .table_th {
+	color: red;
+	background: #F6F9FC;
+}
+
+.modal-content .modal-body tr {
+	text-align: center;
+}
+
+
+
+
+/* 모달 푸터 */
+.modal-content .modal-footer {
+	padding: 8px 20px;
+	border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+

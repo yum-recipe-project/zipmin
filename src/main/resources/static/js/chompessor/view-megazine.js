@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 		
 		if (result.code === 'MEGAZINE_READ_SUCCESS') {
 			document.querySelector('.megazine_title').innerText = result.data.title;
-			document.querySelector('.megazine_content').innerText = result.data.content;
+			document.querySelector('.megazine_content').innerHTML = result.data.content;
 			const date = new Date(result.data.postdate);
 			const formatDate = `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일`;
 			document.querySelector('.megazine_postdate').innerText = formatDate;
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 document.addEventListener('DOMContentLoaded', function() {
 	
 	const tablename = 'megazine';
-	let sort = 'new';
+	let sort = 'postdate-desc';
 	let size = 15;
 
 	// 정렬 버튼 클릭 시 초기화 후 댓글 목록 조회

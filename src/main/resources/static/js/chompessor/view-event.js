@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 document.addEventListener('DOMContentLoaded', function() {	
 	
 	const tablename = 'event';
-	let sort = 'new';
+	let sort = 'postdate-desc';
 	let size = 15;
 	
 	// 정렬 버튼 클릭 시 초기화 후 댓글 목록 조회

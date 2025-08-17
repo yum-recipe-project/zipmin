@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +22,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.dto.ChompReadResponseDto;
 import com.project.zipmin.dto.EventCreateRequestDto;
@@ -38,6 +41,7 @@ import com.project.zipmin.api.EventErrorCode;
 import com.project.zipmin.api.EventSuccessCode;
 import com.project.zipmin.api.MegazineErrorCode;
 import com.project.zipmin.api.MegazineSuccessCode;
+import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.api.VoteSuccessCode;
 import com.project.zipmin.dto.MegazineReadResponseDto;
@@ -48,8 +52,8 @@ import com.project.zipmin.dto.VoteCreateResponseDto;
 import com.project.zipmin.dto.VoteReadResponseDto;
 import com.project.zipmin.dto.VoteRecordCreateRequestDto;
 import com.project.zipmin.dto.VoteRecordCreateResponseDto;
-import com.project.zipmin.dto.VoteRecordDeleteRequestDto;
 import com.project.zipmin.entity.Role;
+import com.project.zipmin.service.ChompCommentService;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.UserService;
@@ -113,7 +117,8 @@ public class ChompessorController {
 	UserService userService;
 	@Autowired
 	CommentService commentService;
-
+	@Autowired
+	ChompCommentService chompCommentService;
 	
 	
 	// 쩝쩝박사 목록 조회
@@ -137,16 +142,40 @@ public class ChompessorController {
 	})
 	@GetMapping("/chomp")
 	public ResponseEntity<?> listChomp(
-			@Parameter(description = "카테고리", example = "all") @RequestParam String category,
+			@Parameter(description = "카테고리", example = "megazine") @RequestParam(required = false) String category,
+			@Parameter(description = "검색어", example = "가나다") @RequestParam(required = false) String keyword,
+			@Parameter(description = "정렬 순서", required = false, example = "new") @RequestParam(required = false) String sort,
 		    @Parameter(description = "페이지 번호", example = "0") @RequestParam int page,
 		    @Parameter(description = "페이지 크기", example = "10") @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<ChompReadResponseDto> chompPage = chompService.readChompPage(category, pageable);
+		Page<ChompReadResponseDto> chompPage = null;
+		
+		chompPage = chompService.readChompPage(category, keyword, sort, pageable);
 
 		return ResponseEntity.status(ChompSuccessCode.CHOMP_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(ChompSuccessCode.CHOMP_READ_LIST_SUCCESS, chompPage));
 	}
+	
+	
+	
+	
+	// 투표 목록 조회
+	@GetMapping("/votes")
+	public ResponseEntity<?> listVote(
+			@Parameter(description = "검색어", example = "가나다") @RequestParam String keyword,
+			@Parameter(description = "페이지 번호", example = "0") @RequestParam int page,
+		    @Parameter(description = "페이지 크기", example = "10") @RequestParam int size) {
+		
+		Pageable pageable = PageRequest.of(page, size);
+		// Page<VoteReadResponseDto> votePage = chompCommentService.readVotePage(pageable);
+		
+//		return ResponseEntity.status(VoteSuccessCode.VOTE_READ_LIST_SUCCESS.getStatus())
+//				.body(ApiResponse.success(VoteSuccessCode.VOTE_READ_LIST_SUCCESS, votePage));
+		
+		return null;
+	}
+	
 	
 	
 	
@@ -251,7 +280,7 @@ public class ChompessorController {
 		
 		// 권한 없는 사용자의 접근 (괸리자 권한)
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
 		    throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
 		}
 		
@@ -350,10 +379,24 @@ public class ChompessorController {
 		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 권한 없는 사용자의 접근 (괸리자 권한)
+		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
-		    throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserById(id).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+				}
+				if (userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
+					if (userService.readUserByUsername(username).getId() != id) {
+						throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+					}
+				}
+			}
+			// 일반 회원
+			else {
+				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+			}
 		}
 		
 		chompService.deleteVote(id);
@@ -524,7 +567,7 @@ public class ChompessorController {
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
 	@DeleteMapping("/votes/{voteId}/records")
-	public ResponseEntity<?> cancelVote(@PathVariable int voteId, @RequestBody VoteRecordDeleteRequestDto recordDto) {
+	public ResponseEntity<?> cancelVote(@PathVariable int voteId) {
 		
 		// 인증 여부 확인 (비로그인)
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -532,18 +575,36 @@ public class ChompessorController {
 		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
 		}
 		
+		// ******** 이거 아마 Service에서 할 수도 ***
 		// 권한 없는 사용자의 접근
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (userService.readUserByUsername(username).getId() != recordDto.getUserId()) {
-		    throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
-		}
+//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//		if (userService.readUserByUsername(username).getId() != recordDto.getUserId()) {
+//		    throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+//		}
 		
-		chompService.deleteVoteRecord(recordDto);
+		chompService.deleteVoteRecord(voteId);
 		
 		return ResponseEntity.status(VoteSuccessCode.VOTE_RECORD_DELETE_SUCCESS.getStatus())
 				.body(ApiResponse.success(VoteSuccessCode.VOTE_RECORD_DELETE_SUCCESS, null));
 	}
 	
+	
+	
+	// 매거진 목록 조회
+	@GetMapping("/megazines")
+	public ResponseEntity<?> listMegazine(
+			@Parameter(description = "검색어", example = "가나다") @RequestParam String keyword,
+			@Parameter(description = "페이지 번호", example = "0") @RequestParam int page,
+			@Parameter(description = "페이지 크기", example = "10") @RequestParam int size) {
+		
+		Pageable pageable = PageRequest.of(page, size);
+		// Page<MegazineReadResponseDto> megazinePage = chompCommentService.readMegazinePage(keyword, pageable);
+		
+		// return ResponseEntity.status(MegazineSuccessCode.MEGAZINE_READ_LIST_SUCCESS.getStatus())
+		// 		.body(ApiResponse.success(MegazineSuccessCode.MEGAZINE_READ_LIST_SUCCESS, megazinePage));
+		return null;
+	}
+
 	
 	
 	// 특정 매거진 조회
@@ -640,17 +701,22 @@ public class ChompessorController {
 		    throw new ApiException(MegazineErrorCode.MEGAZINE_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 권한 없는 사용자의 접근 (괸리자 권한)
+		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
-		    throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+			}
 		}
+		megazineRequestDto.setUserId(userService.readUserByUsername(username).getId());
 		
 		MegazineCreateResponseDto megazineResponseDto = chompService.createMegazine(megazineRequestDto);
 		
 		return ResponseEntity.status(MegazineSuccessCode.MEGAZINE_CREATE_SUCCESS.getStatus())
 				.body(ApiResponse.success(MegazineSuccessCode.MEGAZINE_CREATE_SUCCESS, megazineResponseDto));
 	}
+	
+	
 	
 	
 	
@@ -712,12 +778,6 @@ public class ChompessorController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(MegazineErrorCode.MEGAZINE_UNAUTHORIZED_ACCESS);
-		}
-		
-		// 권한 없는 사용자의 접근 (괸리자 권한)
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
-		    throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
 		}
 		
 		MegazineUpdateResponseDto megazineResponseDto = chompService.updateMegazine(megazineRequestDto);
@@ -793,16 +853,48 @@ public class ChompessorController {
 		    throw new ApiException(MegazineErrorCode.MEGAZINE_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 권한 없는 사용자의 접근 (괸리자 권한)
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
-		    throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
-		}
+//		// 권한 확인
+//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+//			// 관리자
+//			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+//				if (userService.readUserById(id).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+//					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+//				}
+//				if (userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
+//					if (userService.readUserByUsername(username).getId() != id) {
+//						throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+//					}
+//				}
+//			}
+//			// 일반 회원
+//			else {
+//				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+//			}
+//		}
 		
 		chompService.deleteMegazine(id);
 		
 		return ResponseEntity.status(MegazineSuccessCode.MEGAZINE_DELETE_SUCCESS.getStatus())
 				.body(ApiResponse.success(MegazineSuccessCode.MEGAZINE_DELETE_SUCCESS, null));
+	}
+	
+	
+	
+	
+	// 이벤트 목록 조회
+	@GetMapping("/events")
+	public ResponseEntity<?> listEvent(
+			@Parameter(description = "검색어", example = "가나다") @RequestParam String keyword,
+			@Parameter(description = "페이지 번호", example = "0") @RequestParam int page,
+			@Parameter(description = "페이지 크기", example = "10") @RequestParam int size) {
+		
+		Pageable pageable = PageRequest.of(page, size);
+		// Page<EventReadResponseDto> eventPage = chompCommentService.readEventPage(keyword, pageable);
+		
+//		return ResponseEntity.status(EventSuccessCode.EVENT_READ_LIST_SUCCESS.getStatus())
+//				.body(ApiResponse.success(EventSuccessCode.EVENT_READ_LIST_SUCCESS, eventPage));
+		return null;
 	}
 	
 	
@@ -899,21 +991,25 @@ public class ChompessorController {
 	})
 	@PostMapping("/events")
 	public ResponseEntity<?> writeEvent(
-			@Parameter(description = "이벤트 작성 요청 정보", required = true)  @RequestBody EventCreateRequestDto eventRequestDto) {
+			@Parameter(description = "이벤트 작성 요청 정보", required = true)  @RequestPart EventCreateRequestDto eventRequestDto,
+			@RequestPart(value = "file", required = false) MultipartFile file) {
 		
 		// 인증 여부 확인 (비로그인)
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(EventErrorCode.EVENT_UNAUTHORIZED_ACCESS);
 		}
-		
-		// 권한 없는 사용자의 접근 (괸리자 권한)
+
+		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
-		    throw new ApiException(EventErrorCode.EVENT_FORBIDDEN);
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+			}
 		}
-		
-		EventCreateResponseDto eventResponseDto = chompService.createEvent(eventRequestDto);
+		eventRequestDto.setUserId(userService.readUserByUsername(username).getId());
+	
+		EventCreateResponseDto eventResponseDto = chompService.createEvent(eventRequestDto, file);
 		
 		return ResponseEntity.status(EventSuccessCode.EVENT_CREATE_SUCCESS.getStatus())
 				.body(ApiResponse.success(EventSuccessCode.EVENT_CREATE_SUCCESS, eventResponseDto));
@@ -979,7 +1075,8 @@ public class ChompessorController {
 	@PatchMapping("/events/{id}")
 	public ResponseEntity<?> editEvent(
 			@Parameter(description = "이벤트의 일련번호", required = true, example = "1") @PathVariable int id,
-			@Parameter(description = "이벤트 수정 요청 정보", required = true) @RequestBody EventUpdateRequestDto eventRequestDto) {
+			@Parameter(description = "이벤트 수정 요청 정보", required = true) @RequestPart EventUpdateRequestDto eventRequestDto,
+			@RequestPart(value = "file", required = false) MultipartFile file) {
 		
 		// 인증 여부 확인 (비로그인)
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -987,13 +1084,13 @@ public class ChompessorController {
 		    throw new ApiException(EventErrorCode.EVENT_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 권한 없는 사용자의 접근 (괸리자 권한)
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
-		    throw new ApiException(EventErrorCode.EVENT_FORBIDDEN);
-		}
+//		// 권한 없는 사용자의 접근 (괸리자 권한)
+//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
+//		    throw new ApiException(EventErrorCode.EVENT_FORBIDDEN);
+//		}
 		
-		EventUpdateResponseDto eventResponseDto = chompService.updateEvent(eventRequestDto);
+		EventUpdateResponseDto eventResponseDto = chompService.updateEvent(eventRequestDto, file);
 		
 		return ResponseEntity.status(EventSuccessCode.EVENT_UPDATE_SUCCESS.getStatus())
 				.body(ApiResponse.success(EventSuccessCode.EVENT_UPDATE_SUCCESS, eventResponseDto));
@@ -1065,10 +1162,24 @@ public class ChompessorController {
 		    throw new ApiException(EventErrorCode.EVENT_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 권한 없는 사용자의 접근 (괸리자 권한)
+		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN)) {
-		    throw new ApiException(EventErrorCode.EVENT_FORBIDDEN);
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserById(id).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+				}
+				if (userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
+					if (userService.readUserByUsername(username).getId() != id) {
+						throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+					}
+				}
+			}
+			// 일반 회원
+			else {
+				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+			}
 		}
 		
 		chompService.deleteEvent(id);

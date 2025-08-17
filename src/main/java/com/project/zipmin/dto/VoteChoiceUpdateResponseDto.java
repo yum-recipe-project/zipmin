@@ -11,6 +11,6 @@ public class VoteChoiceUpdateResponseDto {
 	
 	private int id;
 	private String choice;
-	private int voteId;
+	private int chompId;
 	
 }

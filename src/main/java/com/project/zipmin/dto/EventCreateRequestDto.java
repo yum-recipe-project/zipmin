@@ -15,6 +15,8 @@ public class EventCreateRequestDto {
 	private Date opendate;
 	private Date closedate;
 	private String content;
-	private int chompId;
+	private String category;
+	private String image;
+	private Integer userId;
 	
 }

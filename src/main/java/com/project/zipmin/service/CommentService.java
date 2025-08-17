@@ -58,17 +58,35 @@ public class CommentService {
 	
 	
 	// 댓글 목록 조회 (오래된순)
-	public Page<CommentReadResponseDto> readCommentPageOrderByIdAsc(String tablename, Integer recodenum, Pageable pageable) {
+	public Page<CommentReadResponseDto> readCommentPageOrderByIdAsc(String tablename, Integer recodenum, String keyword, Pageable pageable) {
 		
 		// 입력값 검증
-		if (tablename == null || recodenum == null || pageable == null) {
+		if (pageable == null) {
 			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
 		}
 		
 		// 댓글 목록 조회
-		Page<Comment> commentPage;
+		Page<Comment> commentPage = null;
 		try {
-			commentPage = commentRepository.findByTablenameAndRecodenumOrderByIdAsc(tablename, recodenum, pageable);
+			boolean hasTable = tablename != null && !tablename.isBlank();
+	        boolean hasRecord = recodenum != null;
+	        boolean hasKeyword = keyword != null && !keyword.isBlank();
+
+	        if (!hasTable) {
+	        	// 전체
+	            commentPage = hasKeyword
+	                    ? commentRepository.findAllByContentContainingIgnoreCaseOrderByPostdateAscIdAsc(keyword, pageable)
+	                    : commentRepository.findAllByOrderByPostdateAscIdAsc(pageable);
+	        }
+	        else if (!hasRecord) {
+	            // 테이블만
+	            commentPage = hasKeyword
+	                    ? commentRepository.findAllByTablenameAndContentContainingIgnoreCaseOrderByPostdateAscIdAsc(tablename, keyword, pageable)
+	                    : commentRepository.findAllByTablenameOrderByPostdateAscIdAsc(tablename, pageable);
+	        } else {
+	        	// 테이블과 레코드
+	            commentPage = commentRepository.findAllByTablenameAndRecodenumOrderByComment_IdDescIdAsc(tablename, recodenum, pageable);
+	        }
 		}
 		catch (Exception e) {
 			throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);
@@ -79,6 +97,7 @@ public class CommentService {
 			CommentReadResponseDto commentDto = commentMapper.toReadResponseDto(comment);
 			commentDto.setNickname(comment.getUser().getNickname());
 			commentDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
+			commentDto.setReportcount(reportService.countReportByTablenameAndRecodenum("comments", comment.getId()));
 			
 			// 좋아요 여부 조회
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -96,17 +115,35 @@ public class CommentService {
 	
 	
 	// 댓글 목록 조회 (최신순)
-	public Page<CommentReadResponseDto> readCommentPageOrderByIdDesc(String tablename, Integer recodenum, Pageable pageable) {
+	public Page<CommentReadResponseDto> readCommentPageOrderByIdDesc(String tablename, Integer recodenum, String keyword, Pageable pageable) {
 
 		// 입력값 검증
-		if (tablename == null || recodenum == null || pageable == null) {
+		if (pageable == null) {
 			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
 		}
 		
 		// 댓글 목록 조회
 		Page<Comment> commentPage;
 		try {
-			commentPage = commentRepository.findByTablenameAndRecodenumOrderByIdDesc(tablename, recodenum, pageable);
+			boolean hasTable = tablename != null && !tablename.isBlank();
+	        boolean hasRecord = recodenum != null;
+	        boolean hasKeyword = keyword != null && !keyword.isBlank();
+
+	        if (!hasTable) {
+	        	// 전체
+	            commentPage = hasKeyword
+	                    ? commentRepository.findAllByContentContainingIgnoreCaseOrderByPostdateDescIdDesc(keyword, pageable)
+	                    : commentRepository.findAllByOrderByPostdateDescIdDesc(pageable);
+	        }
+	        else if (!hasRecord) {
+	            // 테이블만
+	            commentPage = hasKeyword
+	                    ? commentRepository.findAllByTablenameAndContentContainingIgnoreCaseOrderByPostdateDescIdDesc(tablename, keyword, pageable)
+	                    : commentRepository.findAllByTablenameOrderByPostdateDescIdDesc(tablename, pageable);
+	        } else {
+	        	// 테이블과 레코드
+	            commentPage = commentRepository.findAllByTablenameAndRecodenumOrderByComment_IdDescIdDesc(tablename, recodenum, pageable);
+	        }
 		}
 		catch (Exception e) {
 			throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);
@@ -117,6 +154,8 @@ public class CommentService {
 			CommentReadResponseDto commentDto = commentMapper.toReadResponseDto(comment);
 			commentDto.setNickname(comment.getUser().getNickname());
 			commentDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
+			commentDto.setRole(comment.getUser().getRole().toString());
+			commentDto.setReportcount(reportService.countReportByTablenameAndRecodenum("comments", comment.getId()));
 			
 			// 좋아요 여부 조회
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -134,17 +173,35 @@ public class CommentService {
 	
 	
 	// 댓글 목록 조회 (인기순)
-	public Page<CommentReadResponseDto> readCommentPageOrderByLikecount(String tablename, Integer recodenum, Pageable pageable) {
+	public Page<CommentReadResponseDto> readCommentPageOrderByLikecountDesc(String tablename, Integer recodenum, String keyword, Pageable pageable) {
 		
 		// 입력값 검증
-		if (tablename == null || recodenum == null || pageable == null) {
+		if (pageable == null) {
 			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
 		}
 		
 		// 댓글 목록 조회
 		Page<Comment> commentPage;
 		try {
-			commentPage = commentRepository.findByTablenameAndRecodenumOrderByLikecount(tablename, recodenum, pageable);
+			boolean hasTable = tablename != null && !tablename.isBlank();
+	        boolean hasRecord = recodenum != null;
+	        boolean hasKeyword = keyword != null && !keyword.isBlank();
+
+	        if (!hasTable) {
+	        	// 전체
+	            commentPage = hasKeyword
+	                    ? commentRepository.findAllByContentContainingIgnoreCaseOrderByLikecountDescIdDesc(keyword, pageable)
+	                    : commentRepository.findAllByOrderByLikecountDescIdDesc(pageable);
+	        }
+	        else if (!hasRecord) {
+	            // 테이블만
+	            commentPage = hasKeyword
+	                    ? commentRepository.findAllByTablenameAndContentContainingIgnoreCaseOrderByLikecountDescIdDesc(tablename, keyword, pageable)
+	                    : commentRepository.findAllByTablenameOrderByLikecountDescIdDesc(tablename, pageable);
+	        } else {
+	        	// 테이블과 레코드
+	            commentPage = commentRepository.findAllByTablenameAndRecodenumOrderByLikecountDescIdDesc(tablename, recodenum, pageable);
+	        }
 		}
 		catch (Exception e) {
 			throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);
@@ -155,6 +212,8 @@ public class CommentService {
 			CommentReadResponseDto commentDto = commentMapper.toReadResponseDto(comment);
 			commentDto.setNickname(comment.getUser().getNickname());
 			commentDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
+			commentDto.setRole(comment.getUser().getRole().toString());
+			commentDto.setReportcount(reportService.countReportByTablenameAndRecodenum("comments", comment.getId()));
 			
 			// 좋아요 여부 조회
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -171,12 +230,189 @@ public class CommentService {
 	
 	
 	
+	// 댓글 목록 조회 (비인기순)
+	public Page<CommentReadResponseDto> readCommentPageOrderByLikecountAsc(
+	        String tablename, Integer recodenum, String keyword, Pageable pageable) {
+
+	    if (pageable == null) {
+	        throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
+	    }
+
+	    Page<Comment> commentPage;
+	    try {
+	    	boolean hasTable = tablename != null && !tablename.isBlank();
+	    	boolean hasRecord = recodenum != null;
+	    	boolean hasKeyword = keyword != null && !keyword.isBlank();
+	    	
+	        if (!hasTable) {
+	        	// 전체
+	            commentPage = hasKeyword
+	                    ? commentRepository.findAllByContentContainingIgnoreCaseOrderByLikecountAscIdDesc(keyword, pageable)
+	                    : commentRepository.findAllByOrderByLikecountAscIdDesc(pageable);
+	        }
+	        else if (!hasRecord) {
+	        	// 테이블만
+	            commentPage = hasKeyword
+	                    ? commentRepository.findAllByTablenameAndContentContainingIgnoreCaseOrderByLikecountAscIdDesc(tablename, keyword, pageable)
+	                    : commentRepository.findAllByTablenameOrderByLikecountAscIdDesc(tablename, pageable);
+	        }
+	        else {
+	        	// 테이블과 레코드
+	            commentPage = commentRepository.findAllByTablenameAndRecodenumOrderByLikecountAscIdDesc(tablename, recodenum, pageable);
+	        }
+	    } catch (Exception e) {
+	        throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);
+	    }
+
+	    List<CommentReadResponseDto> commentDtoList = new ArrayList<>();
+	    for (Comment comment : commentPage) {
+	        CommentReadResponseDto commentDto = commentMapper.toReadResponseDto(comment);
+	        commentDto.setNickname(comment.getUser().getNickname());
+	        commentDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
+	        commentDto.setRole(comment.getUser().getRole().toString());
+	        commentDto.setReportcount(reportService.countReportByTablenameAndRecodenum("comments", comment.getId()));
+	        
+	        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
+	            String username = auth.getName();
+	            int userId = userService.readUserByUsername(username).getId();
+	            commentDto.setLikestatus(likeService.existsUserLike("comments", comment.getId(), userId));
+	        }
+	        commentDtoList.add(commentDto);
+	    }
+	    return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
+	}
+
 	
 	
-	// 목록 (신고순으로 정렬하는거 추가하기)
+	// 댓글 목록 조회 (신고순)
+	public Page<CommentReadResponseDto> readCommentPageOrderByReportcountDesc(
+	        String tablename, Integer recodenum, String keyword, Pageable pageable) {
+
+	    if (pageable == null) {
+	    	throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
+	    }
+
+	    Page<Comment> commentPage;
+	    try {
+	    	boolean hasTable = tablename != null && !tablename.isBlank();
+	    	boolean hasRecord = recodenum != null;
+	    	boolean hasKeyword = keyword != null && !keyword.isBlank();
+	    	
+	        if (!hasTable) {
+	        	// 전체
+	            commentPage = hasKeyword
+	                    ? commentRepository.findAllByContentContainingIgnoreCaseOrderByReportcountDescIdDesc(keyword, pageable)
+	                    : commentRepository.findAllByOrderByReportcountDescIdDesc(pageable);
+	        }
+	        else if (!hasRecord) {
+	        	// 테이블만
+	            commentPage = hasKeyword
+	                    ? commentRepository.findAllByTablenameAndContentContainingIgnoreCaseOrderByReportcountDescIdDesc(tablename, keyword, pageable)
+	                    : commentRepository.findAllByTablenameOrderByReportcountDescIdDesc(tablename, pageable);
+	        }
+	        else {
+	        	// 테이블과 레코드
+	            commentPage = commentRepository.findAllByTablenameAndRecodenumOrderByReportcountDescIdDesc(tablename, recodenum, pageable);
+	        }
+	    } catch (Exception e) {
+	        throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);
+	    }
+
+	    List<CommentReadResponseDto> commentDtoList = new ArrayList<>();
+	    for (Comment comment : commentPage) {
+	        CommentReadResponseDto commentDto = commentMapper.toReadResponseDto(comment);
+	        commentDto.setNickname(comment.getUser().getNickname());
+	        commentDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
+	        commentDto.setRole(comment.getUser().getRole().toString());
+	        commentDto.setReportcount(reportService.countReportByTablenameAndRecodenum("comments", comment.getId()));
+	        
+	        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
+	            String username = auth.getName();
+	            int userId = userService.readUserByUsername(username).getId();
+	            commentDto.setLikestatus(likeService.existsUserLike("comments", comment.getId(), userId));
+	        }
+	        commentDtoList.add(commentDto);
+	    }
+	    return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
+	}
 	
 	
 	
+	// 댓글 목록 조회 (미신고순)
+	public Page<CommentReadResponseDto> readCommentPageOrderByReportcountAsc(
+	        String tablename, Integer recodenum, String keyword, Pageable pageable) {
+
+	    if (pageable == null) {
+	    	throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
+	    }
+
+	    Page<Comment> commentPage;
+	    try {
+	    	boolean hasTable = tablename != null && !tablename.isBlank();
+	    	boolean hasRecord = recodenum != null;
+	    	boolean hasKeyword = keyword != null && !keyword.isBlank();
+	    	
+	        if (!hasTable) {
+	        	// 전체
+	            commentPage = hasKeyword
+	                    ? commentRepository.findAllByContentContainingIgnoreCaseOrderByReportcountAscIdDesc(keyword, pageable)
+	                    : commentRepository.findAllByOrderByReportcountAscIdDesc(pageable);
+	        }
+	        else if (!hasRecord) {
+	        	// 테이블만
+	            commentPage = hasKeyword
+	                    ? commentRepository.findAllByTablenameAndContentContainingIgnoreCaseOrderByReportcountAscIdDesc(tablename, keyword, pageable)
+	                    : commentRepository.findAllByTablenameOrderByReportcountAscIdDesc(tablename, pageable);
+	        }
+	        else {
+	        	// 테이블과 레코드
+	            commentPage = commentRepository.findAllByTablenameAndRecodenumOrderByReportcountAscIdDesc(tablename, recodenum, pageable);
+	        }
+	    } catch (Exception e) {
+	        throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);
+	    }
+
+	    List<CommentReadResponseDto> commentDtoList = new ArrayList<>();
+	    for (Comment comment : commentPage) {
+	        CommentReadResponseDto commentDto = commentMapper.toReadResponseDto(comment);
+	        commentDto.setNickname(comment.getUser().getNickname());
+	        commentDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("comments", comment.getId()));
+	        commentDto.setRole(comment.getUser().getRole().toString());
+	        commentDto.setReportcount(reportService.countReportByTablenameAndRecodenum("comments", comment.getId()));
+	        
+	        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
+	            String username = auth.getName();
+	            int userId = userService.readUserByUsername(username).getId();
+	            commentDto.setLikestatus(likeService.existsUserLike("comments", comment.getId(), userId));
+	        }
+	        commentDtoList.add(commentDto);
+	    }
+	    return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
+	}
+
+	
+	
+	
+	
+	// **** 수정 보완 필요 *** 댓글 수
+	public int readCommentCount(String tablename, Integer recodenum) {
+		
+		// 입력값 검증
+		if (tablename == null || recodenum == null) {
+			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
+		}
+		
+		try {
+			return commentRepository.countByTablenameAndRecodenum(tablename, recodenum);
+		}
+		catch (Exception e) {
+			throw new ApiException(CommentErrorCode.COMMENT_READ_COUNT_FAIL);
+		}
+		
+	}
 	
 	
 	
@@ -266,10 +502,20 @@ public class CommentService {
 		Comment comment = commentRepository.findById(commentDto.getId())
 				.orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
 		
-		// 소유자 검증 (관리자면 소유자 검증 무시)
-		if (!userService.readUserById(commentDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
-			if (comment.getUser().getId() != commentDto.getUserId()) {
-				throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (comment.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(CommentErrorCode.COMMENT_SUPER_ADMIN_FORBIDDEN);
+				}
+			}
+			// 일반 회원
+			else {
+				if (userService.readUserByUsername(username).getId() != comment.getUser().getId()) {
+					throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+				}
 			}
 		}
 		
@@ -290,27 +536,37 @@ public class CommentService {
 	
 	
 	// 댓글 삭제
-	public void deleteComment(CommentDeleteRequestDto commentDto) {
+	public void deleteComment(Integer id) {
 		
 		// 입력값 검증
-		if (commentDto == null || commentDto.getId() == null || commentDto.getUserId() == null) {
+		if (id == null) {
 			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
 		}
 		
 		// 댓글 존재 여부 판단
-		Comment comment = commentRepository.findById(commentDto.getId())
+		Comment comment = commentRepository.findById(id)
 				.orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
 		
-		// 소유자 검증 (관리자면 소유자 검증 무시)
-		if (!userService.readUserById(commentDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
-			if (comment.getUser().getId() != commentDto.getUserId()) {
-				throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (comment.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(CommentErrorCode.COMMENT_SUPER_ADMIN_FORBIDDEN);
+				}
+			}
+			// 일반 회원
+			else {
+				if (userService.readUserByUsername(username).getId() != comment.getUser().getId()) {
+					throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+				}
 			}
 		}
-	    
+
 		// 댓글 삭제
 		try {
-			commentRepository.deleteById(commentDto.getId());
+			commentRepository.deleteById(id);
 		}
 		catch (Exception e) {
 			throw new ApiException(CommentErrorCode.COMMENT_DELETE_FAIL);
@@ -327,12 +583,8 @@ public class CommentService {
 		Comment comment = commentRepository.findById(likeDto.getRecodenum())
 			    .orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
 		
-		// 소유자 검증
-		if (!userService.readUserById(likeDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
-			if (comment.getUser().getId() != likeDto.getUserId()) {
-				throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
-			}
-		}
+		// 좋아요 중복 작성 처리해야함 *****
+		
 		
 		// 좋아요 작성
 		try {
@@ -355,13 +607,6 @@ public class CommentService {
 		// 댓글 존재 여부 판단
 		Comment comment = commentRepository.findById(likeDto.getRecodenum())
 			    .orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
-		
-		// 소유자 검증
-		if (!userService.readUserById(likeDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
-			if (comment.getUser().getId() != likeDto.getUserId()) {
-				throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
-			}
-		}
 		
 		// 좋아요 취소
 		try {

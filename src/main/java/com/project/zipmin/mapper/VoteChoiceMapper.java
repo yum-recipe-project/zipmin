@@ -13,10 +13,10 @@ import com.project.zipmin.entity.VoteChoice;
 public interface VoteChoiceMapper {
 	
 	// Create
-	@Mapping(target = "vote.id", source = "voteId")
+	@Mapping(target = "chomp.id", source = "chompId")
 	VoteChoice toEntity(VoteChoiceCreateRequestDto choiceDto);
 	
-	@Mapping(target = "voteId", source = "vote.id")
+	@Mapping(target = "chompId", source = "chomp.id")
 	VoteChoiceCreateRequestDto toCreateRequestDto(VoteChoice choice);
 	
 	
@@ -34,10 +34,10 @@ public interface VoteChoiceMapper {
 	VoteChoice toEntity(VoteChoiceUpdateRequestDto choiceDto);
 	VoteChoiceUpdateRequestDto toUpdateRequestDto(VoteChoice choice);
 	
-	@Mapping(target = "vote.id", source = "voteId")
+	@Mapping(target = "chomp.id", source = "chompId")
 	VoteChoice toEntity(VoteChoiceUpdateResponseDto choiceDto);
 	
-	@Mapping(target = "voteId", source = "vote.id")
+	@Mapping(target = "chompId", source = "chomp.id")
 	VoteChoiceUpdateResponseDto toUpdateResponseDto(VoteChoice choice);
 	
 }

@@ -63,4 +63,7 @@ public class Comment {
 	@Formula("(SELECT COUNT(*) FROM likes l WHERE l.recodenum = id AND l.tablename = 'comments')")
 	private int likecount;
 	
+	@Formula("(SELECT COUNT(*) FROM report r WHERE r.recodenum = id AND r.tablename = 'comments')")
+	private int reportcount;
+	
 }

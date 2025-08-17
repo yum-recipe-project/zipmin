@@ -45,12 +45,24 @@ public class UserService {
 	
 
 	// 사용자 목록 조회
-	public Page<UserReadResponseDto> readUserPage(Pageable pageable) {
+	public Page<UserReadResponseDto> readUserPage(String category, Pageable pageable) {
 		
 		// 사용자 목록 조회
 		Page<User> userPage;
 		try {
-			userPage = userRepository.findAll(pageable);
+			if (category == null || category.isBlank()) {
+	            userPage = userRepository.findAll(pageable);
+	        }
+			else {
+				List<Role> roles = null;
+				if (category.equalsIgnoreCase("admin")) {
+				    roles = List.of(Role.ROLE_ADMIN, Role.ROLE_SUPER_ADMIN);
+				}
+				else if (category.equalsIgnoreCase("user")) {
+				    roles = List.of(Role.ROLE_USER);
+				}
+				userPage = userRepository.findByRoleIn(roles, pageable);
+	        }
 		}
 		catch (Exception e) {
 			throw new ApiException(UserErrorCode.USER_READ_LIST_FAIL);
@@ -122,13 +134,13 @@ public class UserService {
 	public UserCreateResponseDto createUser(UserCreateRequestDto userRequestDto) {
 		
 		// 입력값 검증
-		if (userRequestDto == null || userRequestDto.getUsername() == null || userRequestDto.getTel() == null || userRequestDto.getPassword() == null || userRequestDto.getNickname() == null || userRequestDto.getName() == null || userRequestDto.getEmail() == null) {
+		if (userRequestDto == null || userRequestDto.getUsername() == null || userRequestDto.getPassword() == null || userRequestDto.getNickname() == null || userRequestDto.getName() == null) {
 			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
 		}
 		
 		User user = userMapper.toEntity(userRequestDto);
 		user.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
-		user.setRole(Role.ROLE_USER);
+		user.setRole(userRequestDto.getRole());
 		
 		// 중복 아이디 검사
 		if (userRepository.existsByUsername(userRequestDto.getUsername())) {
@@ -136,12 +148,12 @@ public class UserService {
 		}
 		
 		// 중복 전화번호 검사
-		if (userRepository.existsByTel(userRequestDto.getTel())) {
+		if (userRequestDto.getTel() != null && userRepository.existsByTel(userRequestDto.getTel())) {
 			throw new ApiException(UserErrorCode.USER_TEL_DUPLICATED);
 		}
 		
 		// 중복 이메일 검사
-		if (userRepository.existsByEmail(userRequestDto.getEmail())) {
+		if (userRequestDto.getEmail() != null && userRepository.existsByEmail(userRequestDto.getEmail())) {
 			throw new ApiException(UserErrorCode.USER_EMAIL_DUPLICATED);
 		}
 		
@@ -171,6 +183,12 @@ public class UserService {
 				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
 
 		// 필요한 필드 수정
+		if (userDto.getUsername() != null) {
+			if (!userDto.getUsername().equals(user.getUsername()) && userRepository.existsByUsername(userDto.getUsername())) {
+				throw new ApiException(UserErrorCode.USER_USERNAME_DUPLICATED);
+			}
+			user.setUsername(userDto.getUsername());
+		}
 		if (userDto.getPassword() != null) {
 			user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		}

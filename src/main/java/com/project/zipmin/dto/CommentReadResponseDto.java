@@ -25,6 +25,8 @@ public class CommentReadResponseDto {
 	
 	private String nickname;
 	private long likecount;
+	private long reportcount;
 	private boolean likestatus;
+	private String role;
 	
 }

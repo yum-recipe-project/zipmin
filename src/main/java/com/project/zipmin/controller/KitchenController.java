@@ -46,12 +46,9 @@ public class KitchenController {
 		    @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
-		
 		Page<GuideReadResponseDto> guidePage = null;
-		switch (sort) {
-			case "new" -> guidePage = kitchenService.readGuidePageOrderByIdDesc(category, pageable);
-			case "hot" -> guidePage = kitchenService.readGuidePageOrderByLikecount(category, pageable);
-		}
+		
+		guidePage = kitchenService.readGuidePage(category, sort, pageable);
 		
         return ResponseEntity.status(KitchenSuccessCode.KITCHEN_READ_LIST_SUCCESS.getStatus())
                 .body(ApiResponse.success(KitchenSuccessCode.KITCHEN_READ_LIST_SUCCESS, guidePage));

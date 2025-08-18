@@ -111,66 +111,6 @@ public class KitchenService {
 		return new PageImpl<>(guideDtoList, sortedPageable, guidePage.getTotalElements());
 	}
 
-	public Page<GuideReadResponseDto> readGuidePage(String category, String sort, Pageable pageable) {
-		
-		// 입력값 검증
-		if (pageable == null) {
-			throw new ApiException(KitchenErrorCode.KITCHEN_INVALID_INPUT);
-		}
-		
-		// 정렬기준 문자열 객체로 변환
-		Sort sortSpec = Sort.by(Sort.Order.desc("id"));
-		
-		if(sort != null && !sort.isBlank()) {
-			switch (sort) {
-			case "new": {
-				sortSpec = Sort.by(Sort.Order.desc("id"));
-				break;
-			}
-			case "hot": {
-				sortSpec = Sort.by(Sort.Order.desc("likecount"), Sort.Order.desc("id"));
-				break;
-			}
-			default:
-				sortSpec = Sort.by(Sort.Order.desc("id"));
-			}
-		}
-		
-		// 기존 페이지 객체에 정렬 주입
-		Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
-		
-		// 가이드 목록 조회
-		Page<Guide> guidePage;
-		try {
-			guidePage = (category == null || category.isBlank())
-					? kitchenRepository.findAll(sortedPageable)
-					: kitchenRepository.findAllByCategory(category, sortedPageable);
-		}
-		catch (Exception e) {
-			throw new ApiException(KitchenErrorCode.KITCHEN_READ_LIST_FAIL);
-		}
-		
-		// dto 변경
-		List<GuideReadResponseDto> guideDtoList = new ArrayList<GuideReadResponseDto>();
-		for (Guide guide : guidePage) {
-			GuideReadResponseDto guideDto = guideMapper.toReadResponseDto(guide);
-			guideDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("guide", guide.getId()));
-			
-			// 좋아요 여부 조회
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
-			    String username = authentication.getName();
-			    int userId = userService.readUserByUsername(username).getId();
-			    guideDto.setLikestatus(likeService.existsUserLike("guide", guideDto.getId(), userId));
-			}
-			guideDtoList.add(guideDto);
-		}
-		
-		return new PageImpl<>(guideDtoList, sortedPageable, guidePage.getTotalElements());
-	}
-	
-	
-	
     // 특정 가이드 상세 조회
 	public GuideReadResponseDto readGuideById(int id) {
 	    Guide guide = kitchenRepository.findById(id)

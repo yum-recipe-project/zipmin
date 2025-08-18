@@ -49,11 +49,11 @@ public class KitchenService {
 		
 		if(sort != null && !sort.isBlank()) {
 			switch (sort) {
-			case "new": {
+			case "id-desc": {
 				sortSpec = Sort.by(Sort.Order.desc("id"));
 				break;
 			}
-			case "hot": {
+			case "likecount-desc": {
 				sortSpec = Sort.by(Sort.Order.desc("likecount"), Sort.Order.desc("id"));
 				break;
 			}

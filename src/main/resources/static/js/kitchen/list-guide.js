@@ -2,7 +2,7 @@
  * 전역 변수
  */
 let category = '';
-let sort = 'new';
+let sort = 'id-desc';
 let totalPages = 0;
 let page = 0;
 let keyword = '';

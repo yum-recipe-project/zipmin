@@ -272,8 +272,12 @@ create table guide (
     subtitle varchar2(300) not null,
     category varchar2(100) not null,
     postdate date default sysdate not null,
-    content varchar2(1000) not null
+    content varchar2(1000) not null,
+    user_id number not null
 );
+alter table guide
+    add constraint const_guide_users foreign key(user_id)
+    references users(id) on delete cascade;
 create sequence seq_guide_id
     increment by 1
     start with 1

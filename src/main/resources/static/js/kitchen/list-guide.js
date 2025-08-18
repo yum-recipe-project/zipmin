@@ -5,6 +5,7 @@ let category = '';
 let sort = 'new';
 let totalPages = 0;
 let page = 0;
+let keyword = '';
 const size = 10;
 let guideList = [];
 
@@ -47,6 +48,16 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 	});
 	
+
+	// 검색
+	document.querySelector('.search_form[data-type="kitchen"]').addEventListener('submit', function(e) {
+	    e.preventDefault();
+	    keyword = this.querySelector('.search_word').value.trim();
+	    page = 0;        
+	    guideList = [];
+	    fetchGuideList();
+	});
+	
 	fetchGuideList();
 });
 
@@ -62,6 +73,7 @@ async function fetchGuideList() {
 	try {
 		const params = new URLSearchParams({
 			category: category,
+			keyword: keyword, //추가 
 			sort: sort,
 			page: page,
 			size: size

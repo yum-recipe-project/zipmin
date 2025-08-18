@@ -30,8 +30,6 @@ public class KitchenController {
 	@Autowired
 	KitchenService kitchenService;
 	
-	
-	
 	@Autowired
 	LikeService likeService;
 	
@@ -41,6 +39,7 @@ public class KitchenController {
 	public ResponseEntity<?> listGuide(
 			// 키워드 추가할 것
 			@RequestParam(required = false) String category,
+			@RequestParam(required = false) String keyword, 
 		    @RequestParam String sort,
 		    @RequestParam int page,
 		    @RequestParam int size) {
@@ -48,7 +47,8 @@ public class KitchenController {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<GuideReadResponseDto> guidePage = null;
 		
-		guidePage = kitchenService.readGuidePage(category, sort, pageable);
+//		guidePage = kitchenService.readGuidePage(category, sort, pageable);
+		guidePage = kitchenService.readGuidePage(category, keyword, sort, pageable);
 		
         return ResponseEntity.status(KitchenSuccessCode.KITCHEN_READ_LIST_SUCCESS.getStatus())
                 .body(ApiResponse.success(KitchenSuccessCode.KITCHEN_READ_LIST_SUCCESS, guidePage));

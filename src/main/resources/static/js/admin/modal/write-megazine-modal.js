@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
 	
 	const modal = document.getElementById('writeMegazineModal');
-	modal.addEventListener('hidden.bs.modal', function () {
+	modal.addEventListener('hidden.bs.modal', function() {
 		
 	    const form = document.getElementById('writeMegazineForm');
 		

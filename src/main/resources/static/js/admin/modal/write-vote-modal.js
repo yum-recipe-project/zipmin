@@ -91,8 +91,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
-
 /**
  * 선택지 추가 버튼 클릭시 선택지를 추가하는 함수
  */
@@ -179,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					title: title.value.trim(),
 					opendate: opendate.value.trim(),
 					closedate: closedate.value.trim(),
-					choice_list: Array.from(choiceList).map(input => input.value.trim()),
+					choice_list: getChoiceList(),
 					category: 'vote'
 				};
 				
@@ -187,10 +185,10 @@ document.addEventListener('DOMContentLoaded', function() {
 					headers: getAuthHeaders()
 				});
 				
-				console.log(response);
-				
 				if (response.data.code === 'VOTE_CREATE_SUCCESS') {
-					alert('성공');
+					alertPrimary('투표 생성에 성공했습니다.');
+					bootstrap.Modal.getInstance(document.getElementById('writeVoteModal'))?.hide();
+					fetchChompList();
 				}
 				
 			}
@@ -206,14 +204,26 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 	})
 	
-	
-	
 });
 
 
 
 
-
+/**
+ * 선택지 목록을 객체 배열로 변환하는 함수
+ */
+function getChoiceList() {
+	const choiceList = [];
+	document.querySelectorAll('#writeVoteChoiceList input[name="choice"]').forEach(input => {
+		const value = input.value.trim();
+		if (value !== '') {
+			choiceList.push({
+				choice: value
+			});
+		}
+	});
+	return choiceList;
+}
 
 
 

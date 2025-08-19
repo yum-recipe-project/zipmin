@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -232,10 +233,20 @@ public class ChompService {
 	
 	
 	
-	// =====
+	
+	
 	// 투표를 작성하는 함수
 	public VoteCreateResponseDto createVote(VoteCreateRequestDto voteRequestDto) {
-
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+			}
+		}
+		voteRequestDto.setUserId(userService.readUserByUsername(username).getId());
+		
 		// 입력값 검증
 	    if (voteRequestDto == null || voteRequestDto.getTitle() == null || voteRequestDto.getOpendate() == null || voteRequestDto.getClosedate() == null || voteRequestDto.getCategory() == null || voteRequestDto.getChoiceList() == null) {
 	    	throw new ApiException(VoteErrorCode.VOTE_INVALID_INPUT);
@@ -307,6 +318,7 @@ public class ChompService {
 	// 투표를 삭제하는 함수
 	public void deleteVote(Integer id) {
 		
+		// 입력값 검증
 		if (id == null) {
 			throw new ApiException(VoteErrorCode.VOTE_INVALID_INPUT);
 		}
@@ -397,15 +409,16 @@ public class ChompService {
 		// 투표 기록 삭제
 		try {
 	        recordRepository.deleteByUserIdAndChompId(userId, chompId);
-	    }
+		}
 		catch (Exception e) {
-	        throw new ApiException(VoteErrorCode.VOTE_RECORD_DELETE_FAIL);
+			throw new ApiException(VoteErrorCode.VOTE_RECORD_DELETE_FAIL);
 	    }
 	}
 	
 	
 	
-	// =====
+	
+	
 	// 매거진의 상세 내용을 조회하는 함수
 	public MegazineReadResponseDto readMegazineById(int id) {
 		
@@ -423,9 +436,18 @@ public class ChompService {
 	// 매거진을 작성하는 함수
 	public MegazineCreateResponseDto createMegazine(MegazineCreateRequestDto megazineRequestDto) {
 		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+			}
+		}
+		megazineRequestDto.setUserId(userService.readUserByUsername(username).getId());
+		
 		// 입력값 검증
-	    if (megazineRequestDto == null || megazineRequestDto.getTitle() == null || megazineRequestDto.getContent() == null
-	    		|| megazineRequestDto.getCategory() == null || megazineRequestDto.getUserId() == null) {
+	    if (megazineRequestDto == null || megazineRequestDto.getTitle() == null
+	    		|| megazineRequestDto.getContent() == null || megazineRequestDto.getCategory() == null) {
 	    	throw new ApiException(MegazineErrorCode.MEGAZINE_INVALID_INPUT);
 	    }
 	    
@@ -480,8 +502,12 @@ public class ChompService {
 		}
 		
 		// 필요한 필드만 수정
-		megazine.setTitle(megazineRequestDto.getTitle());
-		megazine.setContent(megazineRequestDto.getContent());
+		if (megazineRequestDto.getTitle() != null) {
+			megazine.setTitle(megazineRequestDto.getTitle());
+		}
+		if (megazineRequestDto.getContent() != null) {
+			megazine.setContent(megazineRequestDto.getContent());
+		}
 		
 		// 매거진 수정
 		try {

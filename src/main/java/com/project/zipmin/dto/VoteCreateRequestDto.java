@@ -16,6 +16,7 @@ public class VoteCreateRequestDto {
 	private Date opendate;
 	private Date closedate;
 	private String category;
+	private int userId;
 	
 	private List<VoteChoiceCreateRequestDto> choiceList;
 	

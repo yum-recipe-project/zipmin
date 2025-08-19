@@ -99,17 +99,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
 				if (response.data.code === 'MEGAZINE_CREATE_SUCCESS') {
 					alertPrimary('매거진 작성에 성공했습니다.');
-					
-					const modal = bootstrap.Modal.getInstance(document.getElementById('writeMegazineModal'));
-					if (modal) modal.hide();
-					
+					bootstrap.Modal.getInstance(document.getElementById('writeMegazineModal'))?.hide();
 					fetchChompList();
 				}
 			}
 			catch (error) {
 				const code = error?.response?.data?.code;
 				
-				//***************** 여기 ㅈㄴ 추가하기 */
+				//***************** 여기 추가하기 */
 				
 				if (code === 'MEGAZINE_CREATE_FAIL') {
 					alertDanger('매거진 작성에 실패했습니다.');

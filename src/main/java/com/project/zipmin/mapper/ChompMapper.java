@@ -47,11 +47,16 @@ public interface ChompMapper {
 	@Mapping(target = "userId", source = "user.id")
 	MegazineCreateResponseDto toMegazineCreateResponseDto(Chomp chomp);
 	
-	
+	@Mapping(target = "user.id", source = "userId")
 	Chomp toEntity(VoteCreateRequestDto voteDto);
+	
+	@Mapping(target = "userId", source = "user.id")
 	VoteCreateRequestDto toVoteCreateRequestDto(Chomp chomp);
 	
+	@Mapping(target = "user.id", source = "userId")
 	Chomp toEntity(VoteCreateResponseDto voteDto);
+	
+	@Mapping(target = "userId", source = "user.id")
 	VoteCreateResponseDto toVoteCreateResponseDto(Chomp chomp);
 
 	@Mapping(target = "user.id", source = "userId")

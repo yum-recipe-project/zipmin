@@ -278,12 +278,6 @@ public class ChompessorController {
 		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 권한 없는 사용자의 접근 (괸리자 권한)
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-		    throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
-		}
-		
 		VoteCreateResponseDto voteResponseDto = chompService.createVote(voteRequestDto);
 		
 		return ResponseEntity.status(VoteSuccessCode.VOTE_CREATE_SUCCESS.getStatus())
@@ -700,15 +694,6 @@ public class ChompessorController {
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(MegazineErrorCode.MEGAZINE_UNAUTHORIZED_ACCESS);
 		}
-		
-		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
-			}
-		}
-		megazineRequestDto.setUserId(userService.readUserByUsername(username).getId());
 		
 		MegazineCreateResponseDto megazineResponseDto = chompService.createMegazine(megazineRequestDto);
 		

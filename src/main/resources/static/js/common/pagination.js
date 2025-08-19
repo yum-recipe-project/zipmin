@@ -3,14 +3,14 @@
  */
 function renderAdminPagination(fetchFunction) {
 	
-	if (totalPages === 0) {
-		return;
-	}
-	
 	const window = 5;
 	
 	const ul = document.querySelector('.pagination ul');
 	ul.innerHTML = '';
+	
+	if (totalPages === 0) {
+		return;
+	}
 	
 	let startPage = Math.floor(page / window) * window;
 	let endPage = Math.min(startPage + window - 1, totalPages - 1);

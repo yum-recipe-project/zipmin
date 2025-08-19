@@ -103,7 +103,8 @@ async function fetchChompList() {
 		console.log(result);
 		
 		if (result.code === 'CHOMP_READ_LIST_SUCCESS') {
-
+			
+			// 전역 변수 설정
 			totalPages = result.data.totalPages;
 			totalElements = result.data.totalElements;
 			page = result.data.number;
@@ -111,8 +112,20 @@ async function fetchChompList() {
 			
 			renderChompList(result.data.content);
 			renderAdminPagination(fetchChompList);
-			
 			document.querySelector('.total').innerText = `총 ${result.data.totalElements}개`;
+			
+			// 검색 결과 없음 표시
+			if (result.data.totalPages === 0) {
+				document.querySelector('.table_th').style.display = 'none';
+				document.querySelector('.search_empty')?.remove();
+				const table = document.querySelector('.fixed-table');
+				table.insertAdjacentElement('afterend', renderSearchEmpty());
+			}
+			// 검색 결과 표시
+			else {
+				document.querySelector('.search_empty')?.remove();
+				document.querySelector('.table_th').style.display = '';
+			}
 		}
 		
 		/*** 여기에 에러코드 더 추가해야함  */
@@ -557,6 +570,37 @@ async function deleteEvent(id) {
 	}
 
 }
+
+
+
+
+
+/**
+ * 검색 결과 없음 화면을 화면에 렌더링하는 함수
+ */
+function renderSearchEmpty() {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'search_empty';
+
+    const img = document.createElement('img');
+    img.src = '/images/common/search_empty.png';
+    wrapper.appendChild(img);
+
+    const h2 = document.createElement('h2');
+    h2.innerHTML = `'${keyword}'에 대한<br/>검색 결과가 없습니다`;
+    wrapper.appendChild(h2);
+
+    const span = document.createElement('span');
+    span.textContent = '단어의 철자가 정확한지 확인해보세요';
+    wrapper.appendChild(span);
+
+    return wrapper;
+}
+
+
+
+
+
 
 
 

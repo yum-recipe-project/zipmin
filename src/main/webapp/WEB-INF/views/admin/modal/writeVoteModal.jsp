@@ -30,7 +30,7 @@
 						<div id="writeVoteChoiceList" class="d-flex flex-column gap-2">
 							<input type="text" name="choice" class="form-control" placeholder="옵션을 입력해주세요" data-fixed="true">
 							<input type="text" name="choice" class="form-control" placeholder="옵션을 입력해주세요" data-fixed="true">
-							<button type="button" id="addChoiceBtn" class="btn btn-outline-secondary btn-sm d-block w-100 mt-2">선택지 추가</button>
+							<button type="button" id="addWriteVoteChoiceBtn" class="btn btn-outline-secondary btn-sm d-block w-100 mt-2">선택지 추가</button>
 						</div>
 						<p id="writeVoteChoiceHint" class="danger">선택지는 최소 2개 이상, 공백 및 중복은 불가합니다.</p>
 					</div>

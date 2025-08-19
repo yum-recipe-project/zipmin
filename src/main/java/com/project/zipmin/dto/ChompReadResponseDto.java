@@ -36,7 +36,6 @@ public class ChompReadResponseDto {
 	private String status;
 	private int commentcount;
 	
-	
-	// private List<VoteChoiceReadResponseDto> choiceList;
+	private List<VoteChoiceReadResponseDto> choiceList;
 	private int recordcount;
 }

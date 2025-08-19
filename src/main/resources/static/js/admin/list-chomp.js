@@ -336,10 +336,29 @@ function renderChompList(chompList) {
 					editBtn.dataset.bsToggle = 'modal';
 					editBtn.dataset.bsTarget = '#editVoteModal';
 					editBtn.dataset.id = chomp.id;
-					// editBtn.onclick = () => location.href = `/admin/editEvent.do?id=${chomp.event_dto.id}`;
-					editBtn.onclick = () => {
-						alert('하하');
-					}
+					editBtn.addEventListener('click', function(event) {
+						event.preventDefault();
+						document.getElementById('editVoteId').value = chomp.id;
+						document.getElementById('editVoteTitleInput').value = chomp.title;
+						document.getElementById('editVoteOpendateInput').value = chomp.opendate.split("T")[0];
+						document.getElementById('editVoteClosedateInput').value = chomp.closedate.split("T")[0];
+						
+						console.log(chomp);
+
+						const choiceList = document.getElementById('editVoteChoiceList');
+						const addChoiceBtn = document.getElementById('addEditVoteChoiceBtn');
+						let inputs = choiceList.querySelectorAll('input[name="choice"]');
+						
+						const needed = (chomp.choice_list || []).length;
+						while (inputs.length < needed) {
+							addChoiceBtn && addChoiceBtn.click();
+							inputs = choiceList.querySelectorAll('input[name="choice"]');
+						}
+						
+						chomp.choice_list.forEach((choice, index) => {
+						    if (inputs[index]) inputs[index].value = choice.choice || '';
+						});
+					})
 					break;
 				case 'megazine' :
 					editBtn.dataset.bsToggle = 'modal';

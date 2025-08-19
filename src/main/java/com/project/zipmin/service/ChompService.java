@@ -176,7 +176,15 @@ public class ChompService {
 			        : (today.after(chompDto.getOpendate()) && today.before(chompDto.getClosedate())) ? "open" : "close";
 			chompDto.setStatus(status);
 			
-			
+			if ("vote".equals(chompDto.getCategory())) {
+				List<VoteChoice> choiceList = choiceRepository.findByChompId(chompDto.getId());
+				List<VoteChoiceReadResponseDto> choiceDtoList = new ArrayList<>();
+				for (VoteChoice choice : choiceList) {
+					VoteChoiceReadResponseDto choiceDto = choiceMapper.toReadResponseDto(choice);
+					choiceDtoList.add(choiceDto);
+				}
+				chompDto.setChoiceList(choiceDtoList);
+			}
 			
 			chompDtoList.add(chompDto);
 		}

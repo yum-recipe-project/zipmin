@@ -83,6 +83,20 @@ document.addEventListener('DOMContentLoaded', function() {
 		modal.querySelectorAll('p[id*="Hint"]').forEach(p => {
 			p.style.display = 'none'
 		});
+		
+		const choiceList = modal.querySelector('#writeVoteChoiceList');
+			if (choiceList) {
+				choiceList.querySelectorAll('input[name="choice"]').forEach(function(input) {
+					const isFixed = input.dataset.fixed === 'true';
+					if (isFixed) {
+						input.value = '';
+					}
+					else {
+						const row = input.closest('.d-flex') || input.parentElement;
+						if (row) row.remove();
+					}
+				});
+			}
 	});
 	
 });
@@ -96,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 document.addEventListener('DOMContentLoaded', function () {
 	const choiceList = document.getElementById('writeVoteChoiceList');
-	const addChoiceBtn = document.getElementById('addChoiceBtn');
+	const addChoiceBtn = document.getElementById('addWriteVoteChoiceBtn');
 	
 	addChoiceBtn.addEventListener('click', function() {
 		const row = document.createElement('div');
@@ -121,7 +135,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		input.focus();
 	});
 });
-
 
 
 
@@ -177,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					title: title.value.trim(),
 					opendate: opendate.value.trim(),
 					closedate: closedate.value.trim(),
-					choice_list: getChoiceList(),
+					choice_list: getwriteVoteChoiceList(),
 					category: 'vote'
 				};
 				
@@ -209,10 +222,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+
 /**
  * 선택지 목록을 객체 배열로 변환하는 함수
  */
-function getChoiceList() {
+function getwriteVoteChoiceList() {
 	const choiceList = [];
 	document.querySelectorAll('#writeVoteChoiceList input[name="choice"]').forEach(input => {
 		const value = input.value.trim();

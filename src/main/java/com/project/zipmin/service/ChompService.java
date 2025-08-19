@@ -479,6 +479,7 @@ public class ChompService {
 			}
 		}
 		
+		
 		// 필요한 필드만 수정
 		megazine.setTitle(megazineRequestDto.getTitle());
 		megazine.setContent(megazineRequestDto.getContent());

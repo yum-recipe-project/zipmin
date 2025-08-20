@@ -23,6 +23,7 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ChompErrorCode;
 import com.project.zipmin.api.EventErrorCode;
 import com.project.zipmin.api.MegazineErrorCode;
+import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.ChompReadResponseDto;
 import com.project.zipmin.dto.EventCreateRequestDto;
@@ -365,7 +366,12 @@ public class ChompService {
 			for (VoteChoiceUpdateRequestDto choiceDto : voteRequestDto.getChoiceList()) {
 				choiceDto.setChompId(vote.getId());
 				VoteChoice choice = choiceMapper.toEntity(choiceDto);
-				choice = choiceRepository.save(choice);
+				try {
+					choice = choiceRepository.save(choice);
+				}
+				catch (Exception e) {
+					throw new ApiException(VoteErrorCode.VOTE_CHOICE_UPDATE_FAIL);
+				}
 	            choiceIdSet.add(choice.getId());
 	        }
 
@@ -473,21 +479,21 @@ public class ChompService {
 
 	
 	// 투표 기록을 삭제하는 함수
-	public void deleteVoteRecord(Integer chompId) {
+	public void deleteVoteRecord(Integer id) {
 		
 		// 입력값 검증
-	    if (chompId == null) {
+	    if (id == null) {
 	    	throw new ApiException(VoteErrorCode.VOTE_RECORD_INVALID_INPUT);
 	    }
 	    
 	    // 투표 기록 존재 여부 판단
 	    String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		UserReadResponseDto user = userService.readUserByUsername(username);
-		VoteRecord record = recordRepository.findByUserIdAndChompId(user.getId(), chompId)
+		VoteRecord record = recordRepository.findByUserIdAndChompId(user.getId(), id)
 				.orElseThrow(() -> new ApiException(VoteErrorCode.VOTE_RECORD_NOT_FOUND));
 		
 	    // 투표 기간 검사
-	    Chomp vote = chompRepository.findById(chompId)
+	    Chomp vote = chompRepository.findById(id)
 	    	    .orElseThrow(() -> new ApiException(VoteErrorCode.VOTE_NOT_FOUND));
 	    Date now = new Date();
 	    if (now.before(vote.getOpendate()) || now.after(vote.getClosedate())) {
@@ -673,6 +679,16 @@ public class ChompService {
 	// 이벤트를 작성하는 함수
 	public EventCreateResponseDto createEvent(EventCreateRequestDto eventRequestDto, MultipartFile file) {
 		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto user = userService.readUserByUsername(username);
+		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!user.getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+			}
+		}
+		eventRequestDto.setUserId(userService.readUserByUsername(username).getId());
+		
 		// 입력값 검증
 		if (eventRequestDto == null || eventRequestDto.getTitle() == null
 				|| eventRequestDto.getContent() == null || eventRequestDto.getOpendate() == null
@@ -809,9 +825,7 @@ public class ChompService {
 			}
 			// 일반 회원
 			else {
-				if (userService.readUserByUsername(username).getId() != event.getUser().getId()) {
-					throw new ApiException(EventErrorCode.EVENT_FORBIDDEN);
-				}
+				throw new ApiException(EventErrorCode.EVENT_FORBIDDEN);
 			}
 		}
 		

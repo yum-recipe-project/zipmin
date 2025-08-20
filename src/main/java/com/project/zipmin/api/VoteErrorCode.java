@@ -38,8 +38,7 @@ public enum VoteErrorCode implements Code {
 	VOTE_CHOICE_DELETE_FAIL(HttpStatus.BAD_REQUEST, "투표 옵션 삭제 실패"),
 	
 	// 비즈니스 로직
-	// VOTE_PATICIPATE_NOT_ALLOWED(HttpStatus.FORBIDDEN, "기간 외 참여 시도"),
-	VOTE_NOT_OPENED(HttpStatus.FORBIDDEN, "투표 시작 전 접근 시도"),
+	VOTE_NOT_OPENED(HttpStatus.FORBIDDEN, "투표 기간 외 접근 시도"),
 	VOTE_RECORD_DUPLICATE(HttpStatus.CONFLICT, "투표 중복 참여 시도"),
 	
 	// 기타

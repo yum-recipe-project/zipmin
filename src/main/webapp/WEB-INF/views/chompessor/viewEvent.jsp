@@ -10,10 +10,8 @@
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/chompessor/view-event.css">
 		<link rel="stylesheet" href="/css/common/comment.css">
-		<link rel="stylesheet" href="/css/common/review.css">
 		<script src="/js/chompessor/view-event.js"></script>
 		<script src="/js/common/comment.js"></script>
-		<script src="/js/common/review.js"></script>
 	</head>
 	
 	<body>
@@ -31,14 +29,14 @@
 								<span class="event_postdate"></span>
 							</div>
 							<span>댓글</span>
-							<span>235개</span>
+							<span class="event_commentcount"></span>
 						</div>
 					</div>
 					
 					<!-- 이벤트 내용 -->
 					<p class="event_content"></p>
 					<!-- 이벤트 이미지 -->
-					<img src="/images/common/test.png">
+					<img class="event_image" src="/images/common/test.png">
 					
 					
 					<!-- 목록 버튼 -->

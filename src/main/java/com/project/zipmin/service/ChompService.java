@@ -4,21 +4,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -27,12 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ChompErrorCode;
-import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.EventErrorCode;
 import com.project.zipmin.api.MegazineErrorCode;
 import com.project.zipmin.api.VoteErrorCode;
-import com.project.zipmin.dto.ChompCreateRequestDto;
-import com.project.zipmin.dto.ChompCreateResponseDto;
 import com.project.zipmin.dto.ChompReadResponseDto;
 import com.project.zipmin.dto.EventCreateRequestDto;
 import com.project.zipmin.dto.EventCreateResponseDto;
@@ -73,25 +64,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ChompService {
 	
-	@Autowired
-	private ChompRepository chompRepository;
-	@Autowired
-	private VoteChoiceRepository choiceRepository;
-	@Autowired
-	private VoteRecordRepository recordRepository;
+	private final ChompRepository chompRepository;
+	private final VoteChoiceRepository choiceRepository;
+	private final VoteRecordRepository recordRepository;
 	
-	@Autowired
-	private UserService userService;
-	
+	private final UserService userService;
 	private final FileService fileService;
-	
-    @Value("${app.upload.base-url:/files}")
-    private String baseUrl;
-	
-	
+    
 	private final ChompMapper chompMapper;
 	private final VoteChoiceMapper choiceMapper;
 	private final VoteRecordMapper recordMapper;
+	
+	@Value("${app.upload.public-path:/files}")
+	private String publicPath;
+	
+	
 	
 	
 	
@@ -105,7 +92,6 @@ public class ChompService {
 		
 		// 정렬 문자열을 객체로 변환
 		Sort sortSpec = Sort.by(Sort.Order.desc("id"));
-		
 		if (sort != null && !sort.isBlank()) {
 			switch (sort) {
 				case "id-desc":
@@ -170,18 +156,19 @@ public class ChompService {
 			throw new ApiException(ChompErrorCode.CHOMP_READ_LIST_FAIL);
 		}
 		
-		// 
+		// 쩝쩝박사 목록 응답 구성
 		Date today = new Date();
 		List<ChompReadResponseDto> chompDtoList = new ArrayList<>();
 		for (Chomp chomp : chompPage) {
 			ChompReadResponseDto chompDto = chompMapper.toReadResponseDto(chomp);
 			
 			// 상태
-			String status = ("megazine".equals(chompDto.getCategory()))
-			        ? null
-			        : (today.after(chompDto.getOpendate()) && today.before(chompDto.getClosedate())) ? "open" : "close";
-			chompDto.setStatus(status);
+			if ("megazine".equals(chompDto.getCategory())) {
+				Boolean isOpened = today.after(chompDto.getOpendate()) && today.before(chompDto.getClosedate());
+				chompDto.setOpened(isOpened);
+			}
 			
+			// 옵션 목록
 			if ("vote".equals(chompDto.getCategory())) {
 				List<VoteChoice> choiceList = choiceRepository.findByChompId(chompDto.getId());
 				List<VoteChoiceReadResponseDto> choiceDtoList = new ArrayList<>();
@@ -211,35 +198,52 @@ public class ChompService {
 		
 		VoteReadResponseDto voteDto = chompMapper.toVoteReadResponseDto(vote);
 		
-		List<VoteChoice> choiceList = choiceRepository.findByChompId(id);
-		List<VoteChoiceReadResponseDto> choiceDtoList = new ArrayList<>();
-		for (VoteChoice choice : choiceList) {
-			VoteChoiceReadResponseDto choiceDto = choiceMapper.toReadResponseDto(choice);
+		// 투표 옵션 목록 조회
+		try {
+			List<VoteChoice> choiceList = choiceRepository.findByChompId(id);
 			
-			long count = recordRepository.countByChoiceId(choice.getId());
-			double rate = (voteDto.getRecordcount() == 0) ? 0.0 : Math.round(((double) count / voteDto.getRecordcount()) * 100) / 1.0;
-			
-			choiceDto.setCount((int) count);
-			choiceDto.setRate(rate);
-			
-			choiceDtoList.add(choiceDto);
+			// 투표 옵션 목록 응답 구성
+			List<VoteChoiceReadResponseDto> choiceDtoList = new ArrayList<>();
+			for (VoteChoice choice : choiceList) {
+				VoteChoiceReadResponseDto choiceDto = choiceMapper.toReadResponseDto(choice);
+				
+				// 득표수
+				int recordCount = recordRepository.countByChoiceId(choice.getId());
+				choiceDto.setRecordcount(recordCount);
+				
+				// 비율
+				double recordRate = (voteDto.getRecordCount() == 0) ? 0.0 : Math.round(((double) recordCount / voteDto.getRecordCount()) * 100) / 1.0;
+				choiceDto.setRecordRate(recordRate);
+				
+				choiceDtoList.add(choiceDto);
+			}
+			voteDto.setChoiceList(choiceDtoList);
 		}
-		voteDto.setChoiceList(choiceDtoList);
+		catch (Exception e) {
+			throw new ApiException(VoteErrorCode.VOTE_CHOICE_READ_LIST_FAIL);
+		}
 		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getName())) {
-			String username = auth.getName();
-			UserReadResponseDto userDto = userService.readUserByUsername(username);
-			
-			Optional<VoteRecord> record = recordRepository.findByUserIdAndChompId(userDto.getId(), voteDto.getId());
-			
-			if (record.isPresent()) {
-				voteDto.setVoted(true);
-				voteDto.setChoiceId(record.get().getChoice().getId());
+		// 투표 기록 조회
+		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			if (authentication != null && authentication.isAuthenticated() && !authentication.getPrincipal().equals("anonymousUser")) {
+				String username = authentication.getName();
+				UserReadResponseDto userDto = userService.readUserByUsername(username);
+				
+				// 투표 기록
+				Optional<VoteRecord> record = recordRepository.findByUserIdAndChompId(userDto.getId(), voteDto.getId());
+				
+				if (record.isPresent()) {
+					voteDto.setVoted(true);
+					voteDto.setChoiceId(record.get().getChoice().getId());
+				}
+				else {
+					voteDto.setVoted(false);
+				}
 			}
-			else {
-				voteDto.setVoted(false);
-			}
+		}
+		catch (Exception e) {
+			throw new ApiException(VoteErrorCode.VOTE_RECORD_READ_FAIL);
 		}
 		
 		return voteDto;
@@ -256,7 +260,7 @@ public class ChompService {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+				throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
 			}
 		}
 		voteRequestDto.setUserId(userService.readUserByUsername(username).getId());
@@ -267,15 +271,13 @@ public class ChompService {
 	    		|| voteRequestDto.getCategory() == null || voteRequestDto.getChoiceList() == null) {
 	    	throw new ApiException(VoteErrorCode.VOTE_INVALID_INPUT);
 	    }
+	    if (voteRequestDto.getOpendate().after(voteRequestDto.getClosedate())) {
+	    	throw new ApiException(VoteErrorCode.VOTE_INVALID_PERIOD);
+	    }
 	    for (VoteChoiceCreateRequestDto choiceDto : voteRequestDto.getChoiceList()) {
 	    	if (choiceDto.getChoice() == null) {
 	    		throw new ApiException(VoteErrorCode.VOTE_CHOICE_INVALID_INPUT);
 	    	}
-	    }
-	    
-	    // 기간 검증
-	    if (voteRequestDto.getOpendate().after(voteRequestDto.getClosedate())) {
-	    	throw new ApiException(VoteErrorCode.VOTE_INVALID_PERIOD);
 	    }
 		
 	    // 투표 생성
@@ -345,13 +347,11 @@ public class ChompService {
 			}
 			// 일반 회원
 			else {
-				if (user.getId() != vote.getUser().getId()) {
-					throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
-				}
+				throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
 			}
 		}
 		
-		// 필요한 필드만 수정
+		// 변경 값 설정
 		vote.setTitle(voteRequestDto.getTitle());
 		vote.setOpendate(voteRequestDto.getOpendate());
 		vote.setClosedate(voteRequestDto.getClosedate());
@@ -380,7 +380,7 @@ public class ChompService {
 	    	return chompMapper.toVoteUpdateResponseDto(vote);
 	    }
 	    catch (Exception e) {
-	    	throw new ApiException(VoteErrorCode.VOTE_CREATE_FAIL);
+	    	throw new ApiException(VoteErrorCode.VOTE_UPDATE_FAIL);
 		}
 		
 	}
@@ -388,7 +388,7 @@ public class ChompService {
 	
 	
 	
-	// ========
+	
 	// 투표를 삭제하는 함수
 	public void deleteVote(Integer id) {
 		
@@ -397,9 +397,30 @@ public class ChompService {
 			throw new ApiException(VoteErrorCode.VOTE_INVALID_INPUT);
 		}
 		
-		// 투표 존재 여부 판단
+		// 투표 존재 여부 확인
 		Chomp vote = chompRepository.findById(id)
 				.orElseThrow(() -> new ApiException(VoteErrorCode.VOTE_NOT_FOUND));
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto user = userService.readUserByUsername(username);
+		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (user.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (vote.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+				}
+				if (vote.getUser().getRole().equals(Role.ROLE_ADMIN)) {
+					if (user.getId() != vote.getUser().getId()) {
+						throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+					}
+				}
+			}
+			// 일반 회원
+			else {
+				throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+			}
+		}
 		
 		// 투표 삭제
 		try {
@@ -413,7 +434,9 @@ public class ChompService {
 	
 	
 	
-	// 투표하는 함수
+	
+	
+	// 투표 기록을 작성하는 함수
 	public VoteRecordCreateResponseDto createVoteRecord(VoteRecordCreateRequestDto recordDto) {
 		
 		// 입력값 검증
@@ -430,11 +453,8 @@ public class ChompService {
 	    Chomp vote = chompRepository.findById(recordDto.getChompId())
 	    	    .orElseThrow(() -> new ApiException(VoteErrorCode.VOTE_NOT_FOUND));
 	    Date now = new Date();
-	    if (now.before(vote.getOpendate())) {
-	        throw new ApiException(VoteErrorCode.VOTE_NOT_STARTED);
-	    }
-	    if (now.after(vote.getClosedate())) {
-	        throw new ApiException(VoteErrorCode.VOTE_ALREADY_ENDED);
+	    if (now.before(vote.getOpendate()) || now.after(vote.getClosedate())) {
+	        throw new ApiException(VoteErrorCode.VOTE_NOT_OPENED);
 	    }
 	    
 	    // 투표 기록 저장
@@ -450,9 +470,9 @@ public class ChompService {
 	
 	
 	
+
 	
-	// ===
-	// 투표를 취소하는 함수
+	// 투표 기록을 삭제하는 함수
 	public void deleteVoteRecord(Integer chompId) {
 		
 		// 입력값 검증
@@ -460,28 +480,23 @@ public class ChompService {
 	    	throw new ApiException(VoteErrorCode.VOTE_RECORD_INVALID_INPUT);
 	    }
 	    
-	    // *************** 여기 로그인 한 사용자 아이디 정보 가져오기 ************
-	    int userId = 1;
-		
 	    // 투표 기록 존재 여부 판단
-		if (!recordRepository.existsByUserIdAndChompId(userId, chompId)) {
-	        throw new ApiException(VoteErrorCode.VOTE_RECORD_NOT_FOUND);
-	    }
+	    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto user = userService.readUserByUsername(username);
+		VoteRecord record = recordRepository.findByUserIdAndChompId(user.getId(), chompId)
+				.orElseThrow(() -> new ApiException(VoteErrorCode.VOTE_RECORD_NOT_FOUND));
 		
 	    // 투표 기간 검사
 	    Chomp vote = chompRepository.findById(chompId)
 	    	    .orElseThrow(() -> new ApiException(VoteErrorCode.VOTE_NOT_FOUND));
 	    Date now = new Date();
-	    if (now.before(vote.getOpendate())) {
-	        throw new ApiException(VoteErrorCode.VOTE_NOT_STARTED);
-	    }
-	    if (now.after(vote.getClosedate())) {
-	        throw new ApiException(VoteErrorCode.VOTE_ALREADY_ENDED);
+	    if (now.before(vote.getOpendate()) || now.after(vote.getClosedate())) {
+	        throw new ApiException(VoteErrorCode.VOTE_NOT_OPENED);
 	    }
 		
 		// 투표 기록 삭제
 		try {
-	        recordRepository.deleteByUserIdAndChompId(userId, chompId);
+	        recordRepository.delete(record);
 		}
 		catch (Exception e) {
 			throw new ApiException(VoteErrorCode.VOTE_RECORD_DELETE_FAIL);
@@ -511,8 +526,9 @@ public class ChompService {
 		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+		UserReadResponseDto user = userService.readUserByUsername(username);
+		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!user.getRole().equals(Role.ROLE_ADMIN.name())) {
 				throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
 			}
 		}
@@ -548,39 +564,34 @@ public class ChompService {
 			throw new ApiException(MegazineErrorCode.MEGAZINE_INVALID_INPUT);
 		}
 		
-		// 매거진 존재 여부 판단
+		// 매거진 존재 여부 확인
 		Chomp megazine = chompRepository.findById(megazineRequestDto.getId())
 				.orElseThrow(() -> new ApiException(MegazineErrorCode.MEGAZINE_NOT_FOUND));
 		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+		UserReadResponseDto user = userService.readUserByUsername(username);
+		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 			// 관리자
-			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+			if (user.getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (megazine.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
 					throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
 				}
 				if (megazine.getUser().getRole().equals(Role.ROLE_ADMIN)) {
-					if (userService.readUserByUsername(username).getId() != megazine.getUser().getId()) {
+					if (user.getId() != megazine.getUser().getId()) {
 						throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
 					}
 				}
 			}
 			// 일반 회원
 			else {
-				if (userService.readUserByUsername(username).getId() != megazine.getUser().getId()) {
-					throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
-				}
+				throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
 			}
 		}
 		
-		// 필요한 필드만 수정
-		if (megazineRequestDto.getTitle() != null) {
-			megazine.setTitle(megazineRequestDto.getTitle());
-		}
-		if (megazineRequestDto.getContent() != null) {
-			megazine.setContent(megazineRequestDto.getContent());
-		}
+		// 변경 값 설정
+		megazine.setTitle(megazineRequestDto.getTitle());
+		megazine.setContent(megazineRequestDto.getContent());
 		
 		// 매거진 수정
 		try {
@@ -608,6 +619,27 @@ public class ChompService {
 		Chomp megazine = chompRepository.findById(id)
 				.orElseThrow(() -> new ApiException(MegazineErrorCode.MEGAZINE_NOT_FOUND));
 		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto user = userService.readUserByUsername(username);
+		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (user.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (megazine.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+				}
+				if (megazine.getUser().getRole().equals(Role.ROLE_ADMIN)) {
+					if (user.getId() != megazine.getUser().getId()) {
+						throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+					}
+				}
+			}
+			// 일반 회원
+			else {
+				throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+			}
+		}
+		
 		// 매거진 삭제
 		try {
 			chompRepository.deleteById(id);
@@ -621,7 +653,6 @@ public class ChompService {
 	
 	
 	
-	
 	// 이벤트의 상세 내용을 조회하는 함수
 	public EventReadResponseDto readEventById(int id) {
 		
@@ -629,7 +660,7 @@ public class ChompService {
 				.orElseThrow(() -> new ApiException(EventErrorCode.EVENT_NOT_FOUND));
 		
 		EventReadResponseDto eventDto = chompMapper.toEventReadResponseDto(event);
-		eventDto.setImage(baseUrl + "/" + eventDto.getImage());
+		eventDto.setImage(publicPath + "/" + eventDto.getImage());
 		
 		return eventDto;
 		
@@ -643,15 +674,16 @@ public class ChompService {
 	public EventCreateResponseDto createEvent(EventCreateRequestDto eventRequestDto, MultipartFile file) {
 		
 		// 입력값 검증
-		if (eventRequestDto == null || eventRequestDto.getTitle() == null || file == null
+		if (eventRequestDto == null || eventRequestDto.getTitle() == null
 				|| eventRequestDto.getContent() == null || eventRequestDto.getOpendate() == null
 				|| eventRequestDto.getClosedate() == null || eventRequestDto.getCategory() == null) {
 			throw new ApiException(EventErrorCode.EVENT_INVALID_INPUT);
 		}
-		
-	    // 기간 검증
 	    if (eventRequestDto.getOpendate().after(eventRequestDto.getClosedate())) {
 	    	throw new ApiException(EventErrorCode.EVENT_INVALID_PERIOD);
+	    }
+	    if (file == null) {
+	    	throw new ApiException(EventErrorCode.EVENT_INVALID_FILE);
 	    }
 	    
         // 파일 저장
@@ -688,13 +720,11 @@ public class ChompService {
 				|| eventRequestDto.getOpendate() == null || eventRequestDto.getClosedate() == null) {
 			throw new ApiException(EventErrorCode.EVENT_INVALID_INPUT);
 		}
-		
-	    // 기간 검증
 	    if (eventRequestDto.getOpendate().after(eventRequestDto.getClosedate())) {
 	    	throw new ApiException(EventErrorCode.EVENT_INVALID_PERIOD);
 	    }
 		
-		// 이벤트 존재 여부 판단
+		// 이벤트 존재 여부 확인
 		Chomp event = chompRepository.findById(eventRequestDto.getId())
 				.orElseThrow(() -> new ApiException(EventErrorCode.EVENT_NOT_FOUND));
 		
@@ -704,23 +734,23 @@ public class ChompService {
 			// 관리자
 			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (event.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
-					throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+					throw new ApiException(EventErrorCode.EVENT_FORBIDDEN);
 				}
 				if (event.getUser().getRole().equals(Role.ROLE_ADMIN)) {
 					if (userService.readUserByUsername(username).getId() != event.getUser().getId()) {
-						throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+						throw new ApiException(EventErrorCode.EVENT_FORBIDDEN);
 					}
 				}
 			}
 			// 일반 회원
 			else {
 				if (userService.readUserByUsername(username).getId() != event.getUser().getId()) {
-					throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+					throw new ApiException(EventErrorCode.EVENT_FORBIDDEN);
 				}
 			}
 		}
 		
-		// 필요한 필드만 수정
+		// 변경 값 설정
 		event.setTitle(eventRequestDto.getTitle());
 		event.setContent(eventRequestDto.getContent());
 		event.setOpendate(eventRequestDto.getOpendate());
@@ -729,7 +759,6 @@ public class ChompService {
 		// 파일 저장
         try {
         	if (file != null && !file.isEmpty()) {
-        		System.err.println("file 잇음 " + file);
         		String image = fileService.store(file);
         		event.setImage(image);
         	}
@@ -750,7 +779,8 @@ public class ChompService {
 	
 	
 	
-	// ====
+	
+	
 	// 이벤트를 삭제하는 함수
 	public void deleteEvent(Integer id) {
 		
@@ -762,6 +792,28 @@ public class ChompService {
 		// 이벤트 존재 여부 판단
 		Chomp event = chompRepository.findById(id)
 				.orElseThrow(() -> new ApiException(EventErrorCode.EVENT_NOT_FOUND));
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (event.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(EventErrorCode.EVENT_FORBIDDEN);
+				}
+				if (event.getUser().getRole().equals(Role.ROLE_ADMIN)) {
+					if (userService.readUserByUsername(username).getId() != event.getUser().getId()) {
+						throw new ApiException(EventErrorCode.EVENT_FORBIDDEN);
+					}
+				}
+			}
+			// 일반 회원
+			else {
+				if (userService.readUserByUsername(username).getId() != event.getUser().getId()) {
+					throw new ApiException(EventErrorCode.EVENT_FORBIDDEN);
+				}
+			}
+		}
 		
 		// 이벤트 삭제
 		try {

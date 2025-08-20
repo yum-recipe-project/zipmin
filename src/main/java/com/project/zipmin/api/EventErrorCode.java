@@ -15,6 +15,7 @@ public enum EventErrorCode implements Code {
 	
 	// 입력값 오류
 	EVENT_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
+	EVENT_INVALID_FILE(HttpStatus.BAD_REQUEST, "파일이 유효하지 않음"),
 	EVENT_INVALID_PERIOD(HttpStatus.BAD_REQUEST, "이벤트 기간 설정이 유효하지 않음"),
 	
 	// 데이터 처리

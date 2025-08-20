@@ -19,5 +19,5 @@ public class MegazineReadResponseDto {
 	private String content;
 	private int userId;
 	
-	private int commentcount;
+	private int commentCount;
 }

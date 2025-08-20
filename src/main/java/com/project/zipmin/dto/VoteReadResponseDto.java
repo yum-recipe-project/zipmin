@@ -20,13 +20,12 @@ public class VoteReadResponseDto {
 	private String content;
 	private String category;
 	
-	// 수정해야함
-	private String status;
-	private List<VoteChoiceReadResponseDto> choiceList;
-	private boolean voted;
 	private int choiceId;
+	private List<VoteChoiceReadResponseDto> choiceList;
 	
+	private int recordCount;
+	private int commentCount;
 	
-	private int recordcount;
-	private int commentcount;
+	private boolean isOpened;
+	private boolean isVoted;
 }

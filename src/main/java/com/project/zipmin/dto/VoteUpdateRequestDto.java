@@ -16,7 +16,6 @@ public class VoteUpdateRequestDto {
 	private String title;
 	private Date opendate;
 	private Date closedate;
-	private String category;
 	
 	private List<VoteChoiceUpdateRequestDto> choiceList;
 }

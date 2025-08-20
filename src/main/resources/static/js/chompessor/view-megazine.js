@@ -3,34 +3,40 @@
  */
 document.addEventListener('DOMContentLoaded', async function() {
 	
-	const params = new URLSearchParams(window.location.search);
-	const id = params.get('id');
 	
 	// 매거진 정보 조회
 	try {
-		const response = await fetch(`/megazines/${id}`);
+		const id = new URLSearchParams(window.location.search).get('id');
+		
+		const response = await fetch(`/megazines/${id}`, {
+			headers: getAuthHeaders()
+		});
+		
 		const result = await response.json();
 		
 		if (result.code === 'MEGAZINE_READ_SUCCESS') {
 			document.querySelector('.megazine_title').innerText = result.data.title;
 			document.querySelector('.megazine_content').innerHTML = result.data.content;
-			const date = new Date(result.data.postdate);
-			const formatDate = `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일`;
-			document.querySelector('.megazine_postdate').innerText = formatDate;
+			document.querySelector('.megazine_postdate').innerText = `${formatDate(result.data.closedate)}`;
 		}
 		else if (result.code === 'MEGAZINE_NOT_FOUND') {
-			alert(result.message);
+			alert('해당 매거진을 찾을 수 없습니다.');
+			location.href = '/chompessor/listChomp.do';
+		}
+		else if (result.code === 'INTERNAL_SERVER_ERROR') {
+			alert('서버 내부 오류가 발생했습니다.');
 			location.href = '/chompessor/listChomp.do';
 		}
 		else {
-			alert(result.message);
-			location.href = '/chompessor/listChomp.do';
+			console.log(error);
 		}
 	}
 	catch(error) {
-		console.log('서버 요청 중 오류 발생');
+		console.log(error);
 	}
 });
+
+
 
 
 
@@ -71,11 +77,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+
+
 /**
  * 댓글을 작성하는 함수
  */
 document.addEventListener('DOMContentLoaded', function () {
-	
 	document.getElementById('writeCommentForm').addEventListener("submit", function (event) {
 		event.preventDefault();
 		writeComment('megazine');
@@ -85,11 +92,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+
+
 /**
  * 대댓글을 작성하는 함수
  */
 document.addEventListener('DOMContentLoaded', function () {
-	
 	document.getElementById('writeSubcommentForm').addEventListener('submit', function (event) {
 		event.preventDefault();
 		writeSubcomment('megazine');

@@ -11,5 +11,6 @@ public class VoteChoiceUpdateRequestDto {
 
 	private int id;
 	private String choice;
+	private int chompId;
 	
 }

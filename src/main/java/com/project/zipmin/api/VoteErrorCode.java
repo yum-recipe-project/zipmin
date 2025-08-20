@@ -30,7 +30,9 @@ public enum VoteErrorCode implements Code {
 	VOTE_RECORD_CREATE_FAIL(HttpStatus.BAD_REQUEST, "투표 기록 작성 실패"),
 	VOTE_RECORD_DELETE_FAIL(HttpStatus.BAD_REQUEST, "투표 기록 삭제 실패"),
 	
+	VOTE_CHOICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "해당 투표 옵션을 찾을 수 없음"),
 	VOTE_CHOICE_CREATE_FAIL(HttpStatus.BAD_REQUEST, "투표 옵션 작성 실패"),
+	VOTE_CHOICE_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "투표 옵션 수정 실패"),
 	VOTE_CHOICE_DELETE_FAIL(HttpStatus.BAD_REQUEST, "투표 옵션 삭제 실패"),
 	
 	// 비즈니스 로직

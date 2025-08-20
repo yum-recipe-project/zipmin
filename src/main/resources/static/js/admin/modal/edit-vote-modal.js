@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					choice_list: getEditVoteChoiceList(),
 				};
 				
-				const response = await instance.patch(`/votes/&{id}`, data, {
+				const response = await instance.patch(`/votes/${id}`, data, {
 					headers: getAuthHeaders()
 				});
 				
@@ -228,16 +228,24 @@ document.addEventListener('DOMContentLoaded', function() {
  * 선택지 목록을 객체 배열로 변환하는 함수
  */
 function getEditVoteChoiceList() {
+	
 	const choiceList = [];
 	document.querySelectorAll('#editVoteChoiceList input[name="choice"]').forEach(input => {
-		const value = input.value.trim();
-		if (value !== '') {
-			choiceList.push({
-				choice: value
-			});
+		
+		const id = input.dataset.id;
+		const choice = {
+			choice: input.value.trim()
 		}
+		
+		if (id !== undefined || id !== '') {
+			choice.id = id;
+		}
+		
+		choiceList.push(choice);
 	});
+	
 	return choiceList;
+	
 }
 
 

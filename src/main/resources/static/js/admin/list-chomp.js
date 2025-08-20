@@ -357,6 +357,7 @@ function renderChompList(chompList) {
 						
 						chomp.choice_list.forEach((choice, index) => {
 						    if (inputs[index]) inputs[index].value = choice.choice || '';
+							inputs[index].dataset.id = choice.id;
 						});
 					})
 					break;

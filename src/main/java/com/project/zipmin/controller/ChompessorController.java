@@ -52,8 +52,9 @@ import com.project.zipmin.dto.VoteCreateResponseDto;
 import com.project.zipmin.dto.VoteReadResponseDto;
 import com.project.zipmin.dto.VoteRecordCreateRequestDto;
 import com.project.zipmin.dto.VoteRecordCreateResponseDto;
+import com.project.zipmin.dto.VoteUpdateRequestDto;
+import com.project.zipmin.dto.VoteUpdateResponseDto;
 import com.project.zipmin.entity.Role;
-import com.project.zipmin.service.ChompCommentService;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.UserService;
@@ -117,8 +118,6 @@ public class ChompessorController {
 	UserService userService;
 	@Autowired
 	CommentService commentService;
-	@Autowired
-	ChompCommentService chompCommentService;
 	
 	
 	// 쩝쩝박사 목록 조회
@@ -157,24 +156,6 @@ public class ChompessorController {
 				.body(ApiResponse.success(ChompSuccessCode.CHOMP_READ_LIST_SUCCESS, chompPage));
 	}
 	
-	
-	
-	
-	// 투표 목록 조회
-	@GetMapping("/votes")
-	public ResponseEntity<?> listVote(
-			@Parameter(description = "검색어", example = "가나다") @RequestParam String keyword,
-			@Parameter(description = "페이지 번호", example = "0") @RequestParam int page,
-		    @Parameter(description = "페이지 크기", example = "10") @RequestParam int size) {
-		
-		Pageable pageable = PageRequest.of(page, size);
-		// Page<VoteReadResponseDto> votePage = chompCommentService.readVotePage(pageable);
-		
-//		return ResponseEntity.status(VoteSuccessCode.VOTE_READ_LIST_SUCCESS.getStatus())
-//				.body(ApiResponse.success(VoteSuccessCode.VOTE_READ_LIST_SUCCESS, votePage));
-		
-		return null;
-	}
 	
 	
 	
@@ -286,14 +267,28 @@ public class ChompessorController {
 
 	
 	
+	
+	
 	// 투표 수정 (관리자)
 	@PatchMapping("/votes/{id}")
 	public ResponseEntity<?> editVote(
-			@PathVariable int id) {
+			@PathVariable int id,
+			@RequestBody VoteUpdateRequestDto voteRequestDto) {
 		
-		return null;
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
+		}
+		
+		VoteUpdateResponseDto voteResponseDto = chompService.updateVote(voteRequestDto);
+		
+		return ResponseEntity.status(VoteSuccessCode.VOTE_UPDATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(VoteSuccessCode.VOTE_UPDATE_SUCCESS, voteResponseDto));
 	}
 
+	
+	
 	
 	
 	// 투표 삭제 (관리자)
@@ -582,22 +577,6 @@ public class ChompessorController {
 				.body(ApiResponse.success(VoteSuccessCode.VOTE_RECORD_DELETE_SUCCESS, null));
 	}
 	
-	
-	
-	// 매거진 목록 조회
-	@GetMapping("/megazines")
-	public ResponseEntity<?> listMegazine(
-			@Parameter(description = "검색어", example = "가나다") @RequestParam String keyword,
-			@Parameter(description = "페이지 번호", example = "0") @RequestParam int page,
-			@Parameter(description = "페이지 크기", example = "10") @RequestParam int size) {
-		
-		Pageable pageable = PageRequest.of(page, size);
-		// Page<MegazineReadResponseDto> megazinePage = chompCommentService.readMegazinePage(keyword, pageable);
-		
-		// return ResponseEntity.status(MegazineSuccessCode.MEGAZINE_READ_LIST_SUCCESS.getStatus())
-		// 		.body(ApiResponse.success(MegazineSuccessCode.MEGAZINE_READ_LIST_SUCCESS, megazinePage));
-		return null;
-	}
 
 	
 	
@@ -864,23 +843,6 @@ public class ChompessorController {
 				.body(ApiResponse.success(MegazineSuccessCode.MEGAZINE_DELETE_SUCCESS, null));
 	}
 	
-	
-	
-	
-	// 이벤트 목록 조회
-	@GetMapping("/events")
-	public ResponseEntity<?> listEvent(
-			@Parameter(description = "검색어", example = "가나다") @RequestParam String keyword,
-			@Parameter(description = "페이지 번호", example = "0") @RequestParam int page,
-			@Parameter(description = "페이지 크기", example = "10") @RequestParam int size) {
-		
-		Pageable pageable = PageRequest.of(page, size);
-		// Page<EventReadResponseDto> eventPage = chompCommentService.readEventPage(keyword, pageable);
-		
-//		return ResponseEntity.status(EventSuccessCode.EVENT_READ_LIST_SUCCESS.getStatus())
-//				.body(ApiResponse.success(EventSuccessCode.EVENT_READ_LIST_SUCCESS, eventPage));
-		return null;
-	}
 	
 	
 	

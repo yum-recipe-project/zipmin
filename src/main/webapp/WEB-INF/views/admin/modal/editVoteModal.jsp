@@ -39,7 +39,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">닫기</button>
-					<button type="submit" class="btn btn-info px-4 ms-6">작성하기</button>
+					<button type="submit" class="btn btn-info px-4 ms-6">수정하기</button>
 				</div>
 			</div>
 		</div>

@@ -2,8 +2,13 @@ package com.project.zipmin.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,6 +47,7 @@ import com.project.zipmin.dto.MegazineUpdateResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.VoteChoiceCreateRequestDto;
 import com.project.zipmin.dto.VoteChoiceReadResponseDto;
+import com.project.zipmin.dto.VoteChoiceUpdateRequestDto;
 import com.project.zipmin.dto.VoteCreateRequestDto;
 import com.project.zipmin.dto.VoteCreateResponseDto;
 import com.project.zipmin.dto.VoteReadResponseDto;
@@ -256,7 +262,9 @@ public class ChompService {
 		voteRequestDto.setUserId(userService.readUserByUsername(username).getId());
 		
 		// 입력값 검증
-	    if (voteRequestDto == null || voteRequestDto.getTitle() == null || voteRequestDto.getOpendate() == null || voteRequestDto.getClosedate() == null || voteRequestDto.getCategory() == null || voteRequestDto.getChoiceList() == null) {
+	    if (voteRequestDto == null || voteRequestDto.getTitle() == null
+	    		|| voteRequestDto.getOpendate() == null || voteRequestDto.getClosedate() == null
+	    		|| voteRequestDto.getCategory() == null || voteRequestDto.getChoiceList() == null) {
 	    	throw new ApiException(VoteErrorCode.VOTE_INVALID_INPUT);
 	    }
 	    for (VoteChoiceCreateRequestDto choiceDto : voteRequestDto.getChoiceList()) {
@@ -296,27 +304,85 @@ public class ChompService {
 	
 	
 	
-	// ====
-	// 투표를 수정하는 함수 (*********** 수정 필요 ************)
+	
+	
+	// 투표를 수정하는 함수
 	public VoteUpdateResponseDto updateVote(VoteUpdateRequestDto voteRequestDto) {
 		
 		// 입력값 검증
+		if (voteRequestDto == null || voteRequestDto.getId() == null
+				|| voteRequestDto.getTitle() == null || voteRequestDto.getOpendate() == null
+				|| voteRequestDto.getClosedate() == null || voteRequestDto.getChoiceList() == null) {
+			throw new ApiException(VoteErrorCode.VOTE_INVALID_INPUT);
+		}
+		if (voteRequestDto.getOpendate().after(voteRequestDto.getClosedate())) {
+			throw new ApiException(VoteErrorCode.VOTE_INVALID_PERIOD);
+		}
+	    for (VoteChoiceUpdateRequestDto choiceDto : voteRequestDto.getChoiceList()) {
+	    	if (choiceDto.getChoice() == null) {
+	    		throw new ApiException(VoteErrorCode.VOTE_CHOICE_INVALID_INPUT);
+	    	}
+	    }
 		
-		
-		
-		// 투표 존재 여부 판단
+		// 투표 존재 여부 확인
 		Chomp vote = chompRepository.findById(voteRequestDto.getId())
 				.orElseThrow(() -> new ApiException(VoteErrorCode.VOTE_NOT_FOUND));
 		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto user = userService.readUserByUsername(username);
+		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (user.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (vote.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+				}
+				if (vote.getUser().getRole().equals(Role.ROLE_ADMIN)) {
+					if (user.getId() != vote.getUser().getId()) {
+						throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+					}
+				}
+			}
+			// 일반 회원
+			else {
+				if (user.getId() != vote.getUser().getId()) {
+					throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+				}
+			}
+		}
+		
 		// 필요한 필드만 수정
-		
-		
+		vote.setTitle(voteRequestDto.getTitle());
+		vote.setOpendate(voteRequestDto.getOpendate());
+		vote.setClosedate(voteRequestDto.getClosedate());
 		
 		// 투표 수정
+		try {
+			vote = chompRepository.save(vote);
+			
+			// 투표 선택지 수정
+			Set<Integer> choiceIdSet = new HashSet<>();
+			for (VoteChoiceUpdateRequestDto choiceDto : voteRequestDto.getChoiceList()) {
+				choiceDto.setChompId(vote.getId());
+				VoteChoice choice = choiceMapper.toEntity(choiceDto);
+				choice = choiceRepository.save(choice);
+	            choiceIdSet.add(choice.getId());
+	        }
+
+	        // 선택지 삭제
+	        if (choiceIdSet.isEmpty()) {
+	            choiceRepository.deleteAllByChompId(voteRequestDto.getId());
+	        }
+	        else {
+	            choiceRepository.deleteAllByChompIdAndIdNotIn(voteRequestDto.getId(), choiceIdSet);
+	        }
+    		
+	    	return chompMapper.toVoteUpdateResponseDto(vote);
+	    }
+	    catch (Exception e) {
+	    	throw new ApiException(VoteErrorCode.VOTE_CREATE_FAIL);
+		}
 		
-		
-		
-		return null;
 	}
 	
 	
@@ -347,7 +413,6 @@ public class ChompService {
 	
 	
 	
-	// ====
 	// 투표하는 함수
 	public VoteRecordCreateResponseDto createVoteRecord(VoteRecordCreateRequestDto recordDto) {
 		

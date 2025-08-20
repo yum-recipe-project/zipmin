@@ -19,7 +19,7 @@
 				<div class="forum_header">
 					<h2>쩝쩝박사</h2>
 					<div class="tab">
-						<a class="btn_tab active" data-tab="all" href="">
+						<a class="btn_tab active" data-tab="" href="">
 							<span>전체</span>
 						</a>
 						<a class="btn_tab" data-tab="vote" href="">

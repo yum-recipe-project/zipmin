@@ -163,6 +163,11 @@ public class ChompService {
 		for (Chomp chomp : chompPage) {
 			ChompReadResponseDto chompDto = chompMapper.toReadResponseDto(chomp);
 			
+			// 이미지
+			if (chomp.getImage() != null) {
+				chompDto.setImage(publicPath + "/" + chompDto.getImage());
+			}
+			
 			// 상태
 			if (!"megazine".equals(chompDto.getCategory())) {
 				Boolean isOpened = today.after(chompDto.getOpendate()) && today.before(chompDto.getClosedate());
@@ -198,6 +203,7 @@ public class ChompService {
 				.orElseThrow(() -> new ApiException(VoteErrorCode.VOTE_NOT_FOUND));
 		
 		VoteReadResponseDto voteDto = chompMapper.toVoteReadResponseDto(vote);
+		voteDto.setImage(publicPath + "/" + voteDto.getImage());
 		voteDto.setRecordcount(recordRepository.countByChompId(id));
 		
 		// 투표 옵션 목록 조회
@@ -256,7 +262,7 @@ public class ChompService {
 	
 	
 	// 투표를 작성하는 함수
-	public VoteCreateResponseDto createVote(VoteCreateRequestDto voteRequestDto) {
+	public VoteCreateResponseDto createVote(VoteCreateRequestDto voteRequestDto, MultipartFile file) {
 		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -280,7 +286,18 @@ public class ChompService {
 	    	if (choiceDto.getChoice() == null) {
 	    		throw new ApiException(VoteErrorCode.VOTE_CHOICE_INVALID_INPUT);
 	    	}
+	    }if (file == null) {
+	    	throw new ApiException(EventErrorCode.EVENT_INVALID_FILE);
 	    }
+	    
+        // 파일 저장
+        try {
+        	String image = fileService.store(file);
+        	voteRequestDto.setImage(image);
+        }
+        catch (Exception e) {
+            throw new ApiException(EventErrorCode.EVENT_FILE_UPLOAD_FAIL);
+        }
 		
 	    // 투표 생성
 	    Chomp vote = chompMapper.toEntity(voteRequestDto);
@@ -311,7 +328,7 @@ public class ChompService {
 	
 	
 	// 투표를 수정하는 함수
-	public VoteUpdateResponseDto updateVote(VoteUpdateRequestDto voteRequestDto) {
+	public VoteUpdateResponseDto updateVote(VoteUpdateRequestDto voteRequestDto, MultipartFile file) {
 		
 		// 입력값 검증
 		if (voteRequestDto == null || voteRequestDto.getId() == null
@@ -357,6 +374,17 @@ public class ChompService {
 		vote.setTitle(voteRequestDto.getTitle());
 		vote.setOpendate(voteRequestDto.getOpendate());
 		vote.setClosedate(voteRequestDto.getClosedate());
+		
+		// 파일 저장
+        try {
+        	if (file != null && !file.isEmpty()) {
+        		String image = fileService.store(file);
+        		vote.setImage(image);
+        	}
+        }
+        catch (Exception e) {
+            throw new ApiException(EventErrorCode.EVENT_FILE_UPLOAD_FAIL);
+        }
 		
 		// 투표 수정
 		try {
@@ -520,7 +548,10 @@ public class ChompService {
 		Chomp megazine = chompRepository.findById(id)
 				.orElseThrow(() -> new ApiException(MegazineErrorCode.MEGAZINE_NOT_FOUND));
 		
-		return chompMapper.toMegazineReadResponseDto(megazine);
+		MegazineReadResponseDto megazineDto = chompMapper.toMegazineReadResponseDto(megazine);
+		megazineDto.setImage(publicPath + "/" + megazineDto.getImage());
+		
+		return megazineDto;
 		
 	}
 	
@@ -529,7 +560,7 @@ public class ChompService {
 	
 	
 	// 매거진을 작성하는 함수
-	public MegazineCreateResponseDto createMegazine(MegazineCreateRequestDto megazineRequestDto) {
+	public MegazineCreateResponseDto createMegazine(MegazineCreateRequestDto megazineRequestDto, MultipartFile file) {
 		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -546,6 +577,18 @@ public class ChompService {
 	    		|| megazineRequestDto.getContent() == null || megazineRequestDto.getCategory() == null) {
 	    	throw new ApiException(MegazineErrorCode.MEGAZINE_INVALID_INPUT);
 	    }
+	    if (file == null) {
+	    	throw new ApiException(EventErrorCode.EVENT_INVALID_FILE);
+	    }
+	    
+        // 파일 저장
+        try {
+        	String image = fileService.store(file);
+        	megazineRequestDto.setImage(image);
+        }
+        catch (Exception e) {
+            throw new ApiException(EventErrorCode.EVENT_FILE_UPLOAD_FAIL);
+        }
 	    
 	    // 매거진 생성
 	    Chomp megazine = chompMapper.toEntity(megazineRequestDto);
@@ -562,8 +605,8 @@ public class ChompService {
 	
 	
 	
-	// 매거진 수정
-	public MegazineUpdateResponseDto updateMegazine(MegazineUpdateRequestDto megazineRequestDto) {
+	// 매거진을 수정하는 함수
+	public MegazineUpdateResponseDto updateMegazine(MegazineUpdateRequestDto megazineRequestDto, MultipartFile file) {
 		
 		// 입력값 검증
 		if (megazineRequestDto == null || megazineRequestDto.getId() == null
@@ -599,6 +642,17 @@ public class ChompService {
 		// 변경 값 설정
 		megazine.setTitle(megazineRequestDto.getTitle());
 		megazine.setContent(megazineRequestDto.getContent());
+		
+		// 파일 저장
+        try {
+        	if (file != null && !file.isEmpty()) {
+        		String image = fileService.store(file);
+        		megazine.setImage(image);
+        	}
+        }
+        catch (Exception e) {
+            throw new ApiException(EventErrorCode.EVENT_FILE_UPLOAD_FAIL);
+        }
 		
 		// 매거진 수정
 		try {

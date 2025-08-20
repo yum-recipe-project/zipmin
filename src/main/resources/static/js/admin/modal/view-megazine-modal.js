@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				document.querySelector('.megazine_title').innerText = response.data.data.title;
 				document.querySelector('.megazine_postdate').innerHTML = formatDate(response.data.data.closedate);
 				document.querySelector('.megazine_content').innerHTML = response.data.data.content;
+				document.querySelector('.megazine_image').src = response.data.data.image;
 			}
 		}
 		catch (error) {

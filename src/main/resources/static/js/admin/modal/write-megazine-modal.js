@@ -11,6 +11,14 @@ document.addEventListener('DOMContentLoaded', function() {
 		document.getElementById('writeMegazineTitleHint').style.display = isTitleEmpty ? 'block' : 'none';
 	});
 	
+	// 이미지 실시간 검사
+	const image = document.getElementById('writeMegazineImageInput');
+	image.addEventListener('input', function() {
+		const isImageEmpty = this.value.trim() === '';
+		image.classList.toggle('is-invalid', isImageEmpty);
+		document.getElementById('writeMegazineImageHint').style.display = isImageEmpty ? 'block' : 'none';
+	});
+	
 	// 내용 실시간 검사
 	const content = document.getElementById('writeMegazineContentInput');
 	content.addEventListener('input', function() {
@@ -75,6 +83,14 @@ document.addEventListener('DOMContentLoaded', function() {
 			isValid = false;
 		}
 		
+		const image = document.getElementById('writeMegazineImageInput');
+		if (image.value.trim() === '') {
+			image.classList.add('is-invalid');
+			document.getElementById('writeMegazineImageHint').style.display = 'block';
+			image.focus();
+			isValid = false;
+		}
+		
 		const title = document.getElementById('writeMegazineTitleInput');
 		if (title.value.trim() === '') {
 			title.classList.add('is-invalid');
@@ -85,14 +101,24 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 		if (isValid) {
 			try {
-				const data = {
+				const formdata = new FormData();
+				formdata.append('megazineRequestDto', new Blob([JSON.stringify({
 					title: title.value.trim(),
 					content: content.value.trim(),
 					category: 'megazine'
-				};
+				})], { type: 'application/json' }));
+				
+				
+				const file = document.getElementById('writeMegazineImageInput'); 
+			    if (file.files.length > 0) {
+			        formdata.append('file', file.files[0]);
+			    }
 
-				const response = await instance.post('/megazines', data, {
-					headers: getAuthHeaders()
+				const response = await instance.post('/megazines', formdata, {
+					headers: {
+						...getAuthHeaders(),
+						'Content-Type': undefined
+					}
 				});
 
 				if (response.data.code === 'MEGAZINE_CREATE_SUCCESS') {

@@ -11,6 +11,14 @@ document.addEventListener('DOMContentLoaded', function() {
 		document.getElementById('writeVoteTitleHint').style.display = isTitleEmpty ? 'block' : 'none';
 	});
 	
+	// 이미지 실시간 검사
+	const image = document.getElementById('writeVoteImageInput');
+	image.addEventListener('input', function() {
+		const isImageEmpty = this.value.trim() === '';
+		image.classList.toggle('is-invalid', isImageEmpty);
+		document.getElementById('writeVoteImageHint').style.display = isImageEmpty ? 'block' : 'none';
+	});
+	
 	// 날짜 실시간 검사
 	const opendate = document.getElementById('writeVoteOpendateInput');
 	const closedate = document.getElementById('writeVoteClosedateInput');
@@ -176,6 +184,14 @@ document.addEventListener('DOMContentLoaded', function() {
 			isValid = false;
 		}
 		
+		const image = document.getElementById('writeVoteImageInput');
+		if (image.value.trim() === '') {
+			image.classList.add('is-invalid');
+			document.getElementById('writeVoteImageHint').style.display = 'block';
+			image.focus();
+			isValid = false;
+		}
+		
 		const title = document.getElementById('writeVoteTitleInput');
 		if (title.value.trim() === '') {
 			title.classList.add('is-invalid');
@@ -186,16 +202,25 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 		if (isValid) {
 			try {
-				const data = {
+				const formdata = new FormData();
+				formdata.append('voteRequestDto', new Blob([JSON.stringify({
 					title: title.value.trim(),
 					opendate: opendate.value.trim(),
 					closedate: closedate.value.trim(),
 					choice_list: getwriteVoteChoiceList(),
 					category: 'vote'
-				};
+				})], { type: 'application/json' }));
+
+			    const file = document.getElementById('writeVoteImageInput'); 
+			    if (file.files.length > 0) {
+			        formdata.append('file', file.files[0]);
+			    }
 				
-				const response = await instance.post('/votes', data, {
-					headers: getAuthHeaders()
+				const response = await instance.post('/votes', formdata, {
+					headers: {
+						...getAuthHeaders(),
+						'Content-Type': undefined
+					}
 				});
 				
 				if (response.data.code === 'VOTE_CREATE_SUCCESS') {

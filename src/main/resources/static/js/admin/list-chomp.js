@@ -125,6 +125,9 @@ async function fetchChompList() {
 				document.querySelector('.search_empty')?.remove();
 				document.querySelector('.table_th').style.display = '';
 			}
+			
+			// 스크롤 최상단 이동
+			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
 		else if (result.code === 'CHOMP_READ_LIST_FAIL') {
 			alertDanger('쩝쩝박사 목록 조회에 실패했습니다.');

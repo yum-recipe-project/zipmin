@@ -26,6 +26,9 @@
 					<div class="vote_result">
 						<ul class="record_list"></ul>
 					</div>
+					
+					<!-- 투표 이미지 -->
+					<img class="vote_image" src="/images/common/test.png">
 				</div>
 			</div>
 			<div class="modal-footer">

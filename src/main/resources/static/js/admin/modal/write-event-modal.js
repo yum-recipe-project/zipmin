@@ -142,7 +142,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 		if (isValid) {
 			try {
-
 				const formdata = new FormData();
 				formdata.append('eventRequestDto', new Blob([JSON.stringify({
 					title: title.value.trim(),

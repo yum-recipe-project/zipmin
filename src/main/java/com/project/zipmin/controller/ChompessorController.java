@@ -278,7 +278,9 @@ public class ChompessorController {
 	})
 	// 투표 작성 (관리자)
 	@PostMapping("/votes")
-	public ResponseEntity<?> writeVote(@Parameter(description = "투표 작성 요청 정보") @RequestBody VoteCreateRequestDto voteRequestDto) {
+	public ResponseEntity<?> writeVote(
+			@Parameter(description = "투표 작성 요청 정보") @RequestPart VoteCreateRequestDto voteRequestDto,
+			@Parameter(description = "이미지 파일", required = false) @RequestPart(value = "file", required = false) MultipartFile file) {
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -286,7 +288,7 @@ public class ChompessorController {
 		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
 		}
 		
-		VoteCreateResponseDto voteResponseDto = chompService.createVote(voteRequestDto);
+		VoteCreateResponseDto voteResponseDto = chompService.createVote(voteRequestDto, file);
 		
 		return ResponseEntity.status(VoteSuccessCode.VOTE_CREATE_SUCCESS.getStatus())
 				.body(ApiResponse.success(VoteSuccessCode.VOTE_CREATE_SUCCESS, voteResponseDto));
@@ -365,7 +367,8 @@ public class ChompessorController {
 	@PatchMapping("/votes/{id}")
 	public ResponseEntity<?> editVote(
 			@Parameter(description = "투표의 일련번호") @PathVariable int id,
-			@Parameter(description = "투표 수정 요청 정보") @RequestBody VoteUpdateRequestDto voteRequestDto) {
+			@Parameter(description = "투표 수정 요청 정보") @RequestPart VoteUpdateRequestDto voteRequestDto,
+			@Parameter(description = "이미지 파일", required = false) @RequestPart(value = "file", required = false) MultipartFile file) {
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -373,7 +376,7 @@ public class ChompessorController {
 		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
 		}
 		
-		VoteUpdateResponseDto voteResponseDto = chompService.updateVote(voteRequestDto);
+		VoteUpdateResponseDto voteResponseDto = chompService.updateVote(voteRequestDto, file);
 		
 		return ResponseEntity.status(VoteSuccessCode.VOTE_UPDATE_SUCCESS.getStatus())
 				.body(ApiResponse.success(VoteSuccessCode.VOTE_UPDATE_SUCCESS, voteResponseDto));
@@ -703,7 +706,9 @@ public class ChompessorController {
 	})
 	// 매거진 작성 (관리자)
 	@PostMapping("/megazines")
-	public ResponseEntity<?> writeMegazines(@Parameter(description = "매거진 작성 요청 정보") @RequestBody MegazineCreateRequestDto megazineRequestDto) {
+	public ResponseEntity<?> writeMegazines(
+			@Parameter(description = "매거진 작성 요청 정보") @RequestPart MegazineCreateRequestDto megazineRequestDto,
+			@Parameter(description = "이미지 파일", required = false) @RequestPart(value = "file", required = false) MultipartFile file) {
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -711,7 +716,7 @@ public class ChompessorController {
 		    throw new ApiException(MegazineErrorCode.MEGAZINE_UNAUTHORIZED_ACCESS);
 		}
 		
-		MegazineCreateResponseDto megazineResponseDto = chompService.createMegazine(megazineRequestDto);
+		MegazineCreateResponseDto megazineResponseDto = chompService.createMegazine(megazineRequestDto, file);
 		
 		return ResponseEntity.status(MegazineSuccessCode.MEGAZINE_CREATE_SUCCESS.getStatus())
 				.body(ApiResponse.success(MegazineSuccessCode.MEGAZINE_CREATE_SUCCESS, megazineResponseDto));
@@ -778,7 +783,8 @@ public class ChompessorController {
 	@PatchMapping("/megazines/{id}")
 	public ResponseEntity<?> editMegazine(
 			@Parameter(description = "매거진의 일련번호") @PathVariable int id,
-			@Parameter(description = "매거진 수정 요청 정보") @RequestBody MegazineUpdateRequestDto megazineRequestDto) {
+			@Parameter(description = "매거진 수정 요청 정보") @RequestPart MegazineUpdateRequestDto megazineRequestDto,
+			@Parameter(description = "이미지 파일", required = false) @RequestPart(value = "file", required = false) MultipartFile file) {
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -786,7 +792,7 @@ public class ChompessorController {
 		    throw new ApiException(MegazineErrorCode.MEGAZINE_UNAUTHORIZED_ACCESS);
 		}
 		
-		MegazineUpdateResponseDto megazineResponseDto = chompService.updateMegazine(megazineRequestDto);
+		MegazineUpdateResponseDto megazineResponseDto = chompService.updateMegazine(megazineRequestDto, file);
 		
 		return ResponseEntity.status(MegazineSuccessCode.MEGAZINE_UPDATE_SUCCESS.getStatus())
 				.body(ApiResponse.success(MegazineSuccessCode.MEGAZINE_UPDATE_SUCCESS, megazineResponseDto));

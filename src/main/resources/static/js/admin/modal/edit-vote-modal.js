@@ -186,17 +186,28 @@ document.addEventListener('DOMContentLoaded', function() {
 		if (isValid) {
 			try {
 				const id = document.getElementById('editVoteId').value;
+				const image = document.getElementById('editVoteImageInput');
 				
-				const data = {
+				const formdata = new FormData();
+				formdata.append('voteRequestDto', new Blob([JSON.stringify({
 					id: id,
 					title: title.value.trim(),
+					image: image.value.trim(),
 					opendate: opendate.value.trim(),
 					closedate: closedate.value.trim(),
 					choice_list: getEditVoteChoiceList(),
-				};
+				})], { type: 'application/json' }));
+
+			    const file = document.getElementById('editVoteImageInput'); 
+			    if (file.files.length > 0) {
+			        formdata.append('file', file.files[0]);
+			    }
 				
-				const response = await instance.patch(`/votes/${id}`, data, {
-					headers: getAuthHeaders()
+				const response = await instance.patch(`/votes/${id}`, formdata, {
+					headers: {
+						...getAuthHeaders(),
+						'Content-Type': undefined
+					}
 				});
 				
 				if (response.data.code === 'VOTE_UPDATE_SUCCESS') {

@@ -17,6 +17,12 @@
 					</div>
 					
 					<div class="form-group">
+						<label>이미지</label>
+						<input class="form-control" type="file" id="writeVoteImageInput">
+						<p id="writeVoteImageHint" class="danger">이미지를 입력해주세요.</p>
+					</div>
+					
+					<div class="form-group">
 						<label>기간</label>
 						<div class="d-flex gap-3">
 							<input type="date" id="writeVoteOpendateInput" class="form-control">

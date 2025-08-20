@@ -13,12 +13,11 @@ document.addEventListener('DOMContentLoaded', function() {
 				headers: getAuthHeaders()
 			});
 			
-			console.log(response);
-			
 			if (response.data.code === 'VOTE_READ_SUCCESS') {
 				document.querySelector('.vote_title').innerText = response.data.data.title;
 				document.querySelector('.vote_postdate').innerText = formatDatePeriod(response.data.data.opendate, response.data.data.closedate);
 				document.querySelector('.vote_total').innerText = response.data.data.recordcount;
+				document.querySelector('.vote_image').src = response.data.data.image;
 				
 				renderRecord(response.data.data.choice_list);
 			}

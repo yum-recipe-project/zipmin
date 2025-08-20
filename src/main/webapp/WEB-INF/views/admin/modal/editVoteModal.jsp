@@ -18,6 +18,11 @@
 					</div>
 					
 					<div class="form-group">
+						<label>이미지</label>
+						<input class="form-control" type="file" id="editVoteImageInput">
+					</div>
+					
+					<div class="form-group">
 						<label>기간</label>
 						<div class="d-flex gap-3">
 							<input type="date" id="editVoteOpendateInput" class="form-control">

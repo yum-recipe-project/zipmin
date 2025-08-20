@@ -39,26 +39,16 @@
 					<!-- 쩝쩝박사 정렬 요소 -->
 					<div class="forum_util">
 						<p>투표와 이벤트에 참여해보세요!</p>
-						<!-- <div class="forum_sort">
-							<button class="btn_sort active" data-sort="all">전체</button>
-							<button class="btn_sort" data-sort="open">진행중</button>
-							<button class="btn_sort" data-sort="close">진행종료</button>
-						</div> -->
+						<div class="forum_sort">
+							<button class="btn_sort active" data-sort="">전체</button>
+							<button class="btn_sort" data-sort="closedate-desc">최신순</button>
+							<button class="btn_sort" data-sort="closedate-asc">오래된순</button>
+						</div>
 					</div>
 					
 					<!-- 목록 -->
-					<c:if test="${ true }">
-						<ul class="forum_list" id="chomp"></ul>
-					</c:if>
+					<ul class="forum_list" id="chomp"></ul>
 				</div>
-				
-				<!-- 더보기 버튼 -->
-<!-- 				<div class="more_wrap">
-					<button class="btn_more">
-						<span>더보기</span>
-						<img src="/images/mypage/arrow_down.png">
-					</button>
-				</div> -->
 				
 				<!-- 페이지네이션 -->
 				<div class="pagination_wrap">

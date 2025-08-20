@@ -41,6 +41,21 @@ document.addEventListener('DOMContentLoaded', function() {
 			fetchChompList();
 		});
 	});
+	
+	// 정렬 버튼
+	document.querySelectorAll('.btn_sort').forEach(btn => {
+		btn.addEventListener('click', function(event) {
+			event.preventDefault();
+			document.querySelector('.btn_sort.active')?.classList.remove('active');
+			btn.classList.add('active');
+			
+			sort = btn.dataset.sort;
+			page = 0;
+			chompList = [];
+			
+			fetchChompList();
+		});
+	});
 
 	fetchChompList();
 });
@@ -80,6 +95,19 @@ async function fetchChompList() {
 			// 렌더링
 			renderChompList();
 			renderPagination(fetchChompList);
+			
+			// 검색 결과 없음 표시
+			if (result.data.totalPages === 0) {
+				document.querySelector('.forum_list').style.display = 'none';
+				document.querySelector('.search_empty')?.remove();
+				const content = document.querySelector('.forum_content');
+				content.insertAdjacentElement('afterend', renderSearchEmpty());
+			}
+			// 검색 결과 표시
+			else {
+				document.querySelector('.search_empty')?.remove();
+				document.querySelector('.forum_list').style.display = '';
+			}
 			
 			// 스크롤 최상단 이동
 			window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -188,5 +216,31 @@ function renderChompList() {
 		li.appendChild(a);
 		container.appendChild(li);
 	});
+}
+
+
+
+
+
+/**
+ * 검색 결과 없음 화면을 화면에 렌더링하는 함수
+ */
+function renderSearchEmpty() {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'search_empty';
+
+    const img = document.createElement('img');
+    img.src = '/images/common/search_empty.png';
+    wrapper.appendChild(img);
+
+    const h2 = document.createElement('h2');
+    h2.innerHTML = `'${keyword}'에 대한<br/>검색 결과가 없습니다`;
+    wrapper.appendChild(h2);
+
+    const span = document.createElement('span');
+    span.textContent = '단어의 철자가 정확한지 확인해보세요';
+    wrapper.appendChild(span);
+
+    return wrapper;
 }
 

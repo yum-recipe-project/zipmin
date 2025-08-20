@@ -95,8 +95,6 @@ document.addEventListener('DOMContentLoaded', function() {
 					headers: getAuthHeaders()
 				});
 
-				console.log(response);
-
 				if (response.data.code === 'MEGAZINE_CREATE_SUCCESS') {
 					alertPrimary('매거진 작성에 성공했습니다.');
 					bootstrap.Modal.getInstance(document.getElementById('writeMegazineModal'))?.hide();
@@ -106,13 +104,27 @@ document.addEventListener('DOMContentLoaded', function() {
 			catch (error) {
 				const code = error?.response?.data?.code;
 				
-				//***************** 여기 추가하기 */
-				
 				if (code === 'MEGAZINE_CREATE_FAIL') {
 					alertDanger('매거진 작성에 실패했습니다.');
 				}
-				
-				console.log(error);
+				else if (code === 'MEGAZINE_INVALID_INPUT') {
+					alertDanger('입력값이 유효하지 않습니다.');
+				}
+				else if (code === 'MEGAZINE_UNAUTHORIZED_ACCESS') {
+					alertDanger('로그인되지 않은 사용자입니다.');
+				}
+				else if (code === 'MEGAZINE_FORBIDDEN') {
+					alertDanger('접근 권한이 없습니다.');
+				}
+				else if (code === 'USER_NOT_FOUND') {
+					alertDanger('해당 사용자를 찾을 수 없습니다.');
+				}
+				else if (code === 'INTERNAL_SERVER_ERROR') {
+					alertDanger('서버 내부 오류가 발생했습니다.');
+				}
+				else {
+					console.log(error);
+				}
 			}
 		}
 		

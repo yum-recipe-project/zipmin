@@ -20,8 +20,20 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 		}
 		catch (error) {
-			/*****!!!!!!!! 에러코드 추가 */
-			console.log(error);
+			const code = error?.response?.data?.code;
+
+			if (code === 'MEGAZINE_READ_FAIL') {
+				alertDanger('매거진 조회에 실패했습니다.');
+			}
+			else if (code === 'MEGAZINE_NOT_FOUND') {
+				alertDanger('해당 매거진을 찾을 수 없습니다.');
+			}
+			else if (code === 'INTERNAL_SERVER_ERROR') {
+				alertDanger('서버 내부 오류가 발생했습니다.');
+			}
+			else {
+				console.log(error);
+			}
 		}
 	});
 	

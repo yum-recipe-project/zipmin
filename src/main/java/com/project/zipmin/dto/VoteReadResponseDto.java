@@ -23,8 +23,7 @@ public class VoteReadResponseDto {
 	private int choiceId;
 	private List<VoteChoiceReadResponseDto> choiceList;
 	
-	private int recordCount;
-	private int commentCount;
+	private int recordcount;
 	
 	private boolean isOpened;
 	private boolean isVoted;

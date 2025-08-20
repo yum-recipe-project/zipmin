@@ -209,9 +209,35 @@ document.addEventListener('DOMContentLoaded', function() {
 			catch (error) {
 				const code = error?.response?.data?.code;
 				
-				/******* 추가하기 !!!!!!!!!! ********/
 				if (code === 'VOTE_UPDATE_FAIL') {
-					alertDanger('투표 작성에 실패했습니다.');
+					alertDanger('투표 수정에 실패했습니다.');
+				}
+				else if (code === 'VOTE_INVALID_INPUT') {
+					alertDanger('입력값이 유효하지 않습니다.');
+				}
+				else if (code === 'VOTE_INVALID_PERIOD') {
+					alertDanger('투표 기간 설정이 유효하지 않습니다.');
+				}
+				else if (code === 'VOTE_CHOICE_INVALID_INPUT') {
+					alertDanger('입력값이 유효하지 않습니다.');
+				}
+				else if (code === 'EVENT_UNAUTHORIZED_ACCESS') {
+					alertDanger('로그인되지 않은 사용자입니다.');
+				}
+				else if (code === 'EVENT_FORBIDDEN') {
+					alertDanger('접근 권한이 없습니다.');
+				}
+				else if (code === 'VOTE_NOT_FOUND') {
+					alertDanger('해당 투표를 찾을 수 없습니다.');
+				}
+				else if (code === 'USER_NOT_FOUND') {
+					alertDanger('해당 사용자를 찾을 수 없습니다.');
+				}
+				else if (code === 'INTERNAL_SERVER_ERROR') {
+					alertDanger('서버 내부 오류가 발생했습니다.');
+				}
+				else {
+					console.log(error);
 				}
 			}
 		}

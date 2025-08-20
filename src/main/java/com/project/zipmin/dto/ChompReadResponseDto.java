@@ -26,6 +26,6 @@ public class ChompReadResponseDto {
 	
 	private boolean isOpened;
 	
-	private int commentCount;
-	private int recordCount;
+	private int commentcount;
+	private int recordcount;
 }

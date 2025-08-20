@@ -100,8 +100,6 @@ async function fetchChompList() {
 
 		const result = await response.json();
 		
-		console.log(result);
-		
 		if (result.code === 'CHOMP_READ_LIST_SUCCESS') {
 			
 			// 전역 변수 설정
@@ -110,7 +108,8 @@ async function fetchChompList() {
 			page = result.data.number;
 			chompList = result.data.content;
 			
-			renderChompList(result.data.content);
+			// 렌더링
+			renderChompList(chompList);
 			renderAdminPagination(fetchChompList);
 			document.querySelector('.total').innerText = `총 ${result.data.totalElements}개`;
 			
@@ -127,9 +126,12 @@ async function fetchChompList() {
 				document.querySelector('.table_th').style.display = '';
 			}
 		}
-		
-		/*** 여기에 에러코드 더 추가해야함  */
-		
+		else if (result.code === 'CHOMP_READ_LIST_FAIL') {
+			alertDanger('쩝쩝박사 목록 조회에 실패했습니다.');
+		}
+		else if (result.code === 'INTERNAL_SERVER_ERROR') {
+			alertDanger('서버 내부 오류가 발생했습니다.');
+		}
 	}
 	catch (error) {
 		console.log(error);
@@ -147,10 +149,7 @@ async function fetchChompList() {
 function renderAddChompButton(category) {
 	
 	const container = document.querySelector('.bar');
-	
-	// 기존 버튼 제거
-	const oldBtn = container.querySelector('.btn-info[data-bs-toggle="modal"]');
-	if (oldBtn) oldBtn.remove();
+	container.querySelector('.btn-info[data-bs-toggle="modal"]')?.remove();
 	
 	if (category === '') {
 		return;
@@ -159,12 +158,10 @@ function renderAddChompButton(category) {
 	const createBtn = document.createElement('button');
 	createBtn.type = 'button';
 	createBtn.className = 'btn btn-info m-1';
-	
-	
 	createBtn.dataset.bsToggle = 'modal';
+	
 	let modalId = '';
 	let label = '';
-
 	switch (category) {
 	    case 'vote':
 	        modalId = '#writeVoteModal';
@@ -287,12 +284,12 @@ function renderChompList(chompList) {
 		const statusSpan = document.createElement('span');
 		switch (chomp.category) {
 			case 'vote' :
-				statusSpan.className = `badge ${chomp.status === 'open' ? 'bg-primary-subtle text-primary' : 'bg-danger-subtle text-danger'} d-inline-flex align-items-center gap-1`;
-				statusSpan.innerHTML = chomp.status === 'open' ? '투표 진행중' : '투표 종료';
+				statusSpan.className = `badge ${chomp.opened ? 'bg-primary-subtle text-primary' : 'bg-danger-subtle text-danger'} d-inline-flex align-items-center gap-1`;
+				statusSpan.innerHTML = chomp.opened ? '투표 진행중' : '투표 종료';
 				break;
 			case 'event' :
-				statusSpan.className = `badge ${chomp.status === 'open' ? 'bg-primary-subtle text-primary' : 'bg-danger-subtle text-danger'} d-inline-flex align-items-center gap-1`;
-				statusSpan.innerHTML = chomp.status === 'open' ? '이벤트 진행중' : '이벤트 종료';
+				statusSpan.className = `badge ${chomp.opened ? 'bg-primary-subtle text-primary' : 'bg-danger-subtle text-danger'} d-inline-flex align-items-center gap-1`;
+				statusSpan.innerHTML = chomp.opened ? '행사 진행중' : '행사 종료';
 				break;
 		}
 		statusTd.appendChild(statusSpan);
@@ -343,8 +340,6 @@ function renderChompList(chompList) {
 						document.getElementById('editVoteOpendateInput').value = chomp.opendate.split("T")[0];
 						document.getElementById('editVoteClosedateInput').value = chomp.closedate.split("T")[0];
 						
-						console.log(chomp);
-
 						const choiceList = document.getElementById('editVoteChoiceList');
 						const addChoiceBtn = document.getElementById('addEditVoteChoiceBtn');
 						let inputs = choiceList.querySelectorAll('input[name="choice"]');
@@ -454,8 +449,7 @@ async function deleteMegazine(id) {
 		
 		if (response.data.code === 'MEGAZINE_DELETE_SUCCESS') {
 			alertPrimary('매거진이 성공적으로 삭제되었습니다.');
-			const trElement = document.querySelector(`.chomp_list tr[data-id='${id}']`);
-			if (trElement) trElement.remove();
+			fetchChompList();
 		}
 	}
 	catch (error) {
@@ -475,6 +469,9 @@ async function deleteMegazine(id) {
 		}
 		else if (code === 'MEGAZINE_NOT_FOUND') {
 			alertDanger('해당 매거진을 찾을 수 없습니다.');
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			alertDanger('해당 사용자를 찾을 수 없습니다.');
 		}
 		else if (code === 'INTERNAL_SERVER_ERROR') {
 			alertDanger('서버 내부 오류가 발생했습니다.');
@@ -507,8 +504,7 @@ async function deleteVote(id) {
 		
 		if (response.data.code === 'VOTE_DELETE_SUCCESS') {
 			alertPrimary('투표가 성공적으로 삭제되었습니다.');
-			const trElement = document.querySelector(`.chomp_list tr[data-id='${id}']`);
-			if (trElement) trElement.remove();
+			fetchChompList();
 		}
 	}
 	catch (error) {
@@ -527,7 +523,10 @@ async function deleteVote(id) {
 			alertDanger('접근 권한이 없습니다.');
 		}
 		else if (code === 'VOTE_NOT_FOUND') {
-			alertDanger('해당 매거진을 찾을 수 없습니다.');
+			alertDanger('해당 투표를 찾을 수 없습니다.');
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			alertDanger('해당 사용자를 찾을 수 없습니다.');
 		}
 		else if (code === 'INTERNAL_SERVER_ERROR') {
 			alertDanger('서버 내부 오류가 발생했습니다.');
@@ -538,6 +537,7 @@ async function deleteVote(id) {
 	}
 
 }
+
 
 
 
@@ -559,15 +559,14 @@ async function deleteEvent(id) {
 		
 		if (response.data.code === 'EVENT_DELETE_SUCCESS') {
 			alertPrimary('이벤트가 성공적으로 삭제되었습니다.');
-			const trElement = document.querySelector(`.chomp_list tr[data-id='${id}']`);
-			if (trElement) trElement.remove();
+			fetchChompList();
 		}
 	}
 	catch (error) {
 		const code = error?.response?.data?.code;
 		
 		if (code === 'EVENT_DELETE_FAIL') {
-			alertDanger('투표 삭제에 실패했습니다');
+			alertDanger('이벤트 삭제에 실패했습니다');
 		}
 		else if (code === 'EVENT_INVALID_INPUT') {
 			alertDanger('입력값이 유효하지 않습니다.');
@@ -579,7 +578,10 @@ async function deleteEvent(id) {
 			alertDanger('접근 권한이 없습니다.');
 		}
 		else if (code === 'EVENT_NOT_FOUND') {
-			alertDanger('해당 매거진을 찾을 수 없습니다.');
+			alertDanger('해당 이벤트를 찾을 수 없습니다.');
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			alertDanger('해당 사용자를 찾을 수 없습니다.');
 		}
 		else if (code === 'INTERNAL_SERVER_ERROR') {
 			alertDanger('서버 내부 오류가 발생했습니다.');

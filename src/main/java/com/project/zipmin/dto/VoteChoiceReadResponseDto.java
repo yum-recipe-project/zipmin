@@ -14,6 +14,6 @@ public class VoteChoiceReadResponseDto {
 	private int chompId;
 	
 	private int recordcount;
-	private double recordRate;
+	private double recordrate;
 	
 }

@@ -40,7 +40,6 @@ import com.project.zipmin.api.EventErrorCode;
 import com.project.zipmin.api.EventSuccessCode;
 import com.project.zipmin.api.MegazineErrorCode;
 import com.project.zipmin.api.MegazineSuccessCode;
-import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.api.VoteSuccessCode;
 import com.project.zipmin.dto.MegazineReadResponseDto;
@@ -53,11 +52,9 @@ import com.project.zipmin.dto.VoteRecordCreateRequestDto;
 import com.project.zipmin.dto.VoteRecordCreateResponseDto;
 import com.project.zipmin.dto.VoteUpdateRequestDto;
 import com.project.zipmin.dto.VoteUpdateResponseDto;
-import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.UserService;
-import com.project.zipmin.swagger.ChompInvalidInputResponse;
 import com.project.zipmin.swagger.ChompReadListFailResponse;
 import com.project.zipmin.swagger.ChompReadListSuccessResponse;
 import com.project.zipmin.swagger.EventCreateFailResponse;
@@ -87,7 +84,6 @@ import com.project.zipmin.swagger.MegazineUnauthorizedAccessResponse;
 import com.project.zipmin.swagger.MegazineUpdateFailResponse;
 import com.project.zipmin.swagger.MegazineUpdateSuccessResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
-import com.project.zipmin.swagger.VoteChoiceDeleteFailResponse;
 import com.project.zipmin.swagger.VoteChoiceInvalidInputResponse;
 import com.project.zipmin.swagger.VoteCreateFailResponse;
 import com.project.zipmin.swagger.VoteCreateSuccessResponse;
@@ -113,7 +109,6 @@ import com.project.zipmin.swagger.VoteUpdateFailResponse;
 import com.project.zipmin.swagger.VoteUpdateSuccessResponse;
 
 @RestController
-
 @Tag(name = "Chompessor API", description = "쩝쩝박사 관련 API")
 public class ChompessorController {
 	
@@ -269,6 +264,12 @@ public class ChompessorController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = VoteForbiddenResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "500",
 				description = "서버 내부 오류",
 				content = @Content(
@@ -296,7 +297,7 @@ public class ChompessorController {
 	
 	
 	@Operation(
-	    summary = "투표 삭제"
+	    summary = "투표 수정"
 	)
 	@ApiResponses(value = {
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -341,6 +342,12 @@ public class ChompessorController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = VoteForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 투표를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteNotFoundResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
 				description = "해당 사용자를 찾을 수 없음",

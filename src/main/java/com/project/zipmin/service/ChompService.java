@@ -164,7 +164,7 @@ public class ChompService {
 			ChompReadResponseDto chompDto = chompMapper.toReadResponseDto(chomp);
 			
 			// 상태
-			if ("megazine".equals(chompDto.getCategory())) {
+			if (!"megazine".equals(chompDto.getCategory())) {
 				Boolean isOpened = today.after(chompDto.getOpendate()) && today.before(chompDto.getClosedate());
 				chompDto.setOpened(isOpened);
 			}
@@ -198,6 +198,7 @@ public class ChompService {
 				.orElseThrow(() -> new ApiException(VoteErrorCode.VOTE_NOT_FOUND));
 		
 		VoteReadResponseDto voteDto = chompMapper.toVoteReadResponseDto(vote);
+		voteDto.setRecordcount(recordRepository.countByChompId(id));
 		
 		// 투표 옵션 목록 조회
 		try {
@@ -209,12 +210,12 @@ public class ChompService {
 				VoteChoiceReadResponseDto choiceDto = choiceMapper.toReadResponseDto(choice);
 				
 				// 득표수
-				int recordCount = recordRepository.countByChoiceId(choice.getId());
-				choiceDto.setRecordcount(recordCount);
+				int recordcount = recordRepository.countByChoiceId(choice.getId());
+				choiceDto.setRecordcount(recordcount);
 				
 				// 비율
-				double recordRate = (voteDto.getRecordCount() == 0) ? 0.0 : Math.round(((double) recordCount / voteDto.getRecordCount()) * 100) / 1.0;
-				choiceDto.setRecordRate(recordRate);
+				double recordrate = (voteDto.getRecordcount() == 0) ? 0.0 : Math.round(((double) recordcount / voteDto.getRecordcount()) * 100) / 1.0;
+				choiceDto.setRecordrate(recordrate);
 				
 				choiceDtoList.add(choiceDto);
 			}

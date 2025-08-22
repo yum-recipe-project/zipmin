@@ -15,6 +15,5 @@ public class CommentUpdateRequestDto {
 	
 	private Integer id;
 	private String content;
-	private Integer userId;
 	
 }

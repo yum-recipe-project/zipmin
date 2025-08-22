@@ -59,13 +59,13 @@
 					<table class="table text-nowrap mb-0 align-middle fixed-table">
 					    <thead class="text-dark fs-4">
 					    	<colgroup>
-					    		<col style="width:4%">
-					    		<col style="width:10%">
-					    		<col style="width:26%">
-					    		<col style="width:12%">
+					    		<col style="width:8%">
+					    		<col style="width:9%">
+					    		<col style="width:22%">
+					    		<col style="width:14%">
 					    		<col style="width:15%">
 					    		<col style="width:11%">
-					    		<col style="width:11%">
+					    		<col style="width:10%">
 					    		<col style="width:11%">
 					    	</colgroup>
 					        <tr>
@@ -81,19 +81,19 @@
 					            </th>
 					        </tr>
 					        <tr class="table_th">
-					            <th>
+					            <th class="sort_btn desc" data-key="id">
 					                <h6 class="fs-4 fw-semibold mb-0">No</h6>
 					            </th>
 					            <th>
 					                <h6 class="fs-4 fw-semibold mb-0">게시판명</h6>
 					            </th>
-					            <th>
+					            <th class="sort_btn" data-key="content">
 					                <h6 class="fs-4 fw-semibold mb-0">내용</h6>
 					            </th>
 					            <th>
 					                <h6 class="fs-4 fw-semibold mb-0">작성자</h6>
 					            </th>
-					            <th class="sort_btn desc" data-key="postdate">
+					            <th class="sort_btn" data-key="postdate">
 					                <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
 					            </th>
 					            <th class="sort_btn" data-key="likecount">

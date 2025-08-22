@@ -1,77 +1,43 @@
 /**
- * 댓글 작성 폼의 포커스 여부에 따라 입력창을 활성화하는 함수
+ * 댓글 폼값을 검증하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
+	
+	// 댓글을 작성하는 폼값 검증 및 포커스
 	const writeCommentContent = document.getElementById('writeCommentContent');
 	const commentContentBorder = document.querySelector('.comment_input');
+	const writeCommentButton = document.querySelector('#writeCommentForm button[type="submit"]');
 	writeCommentContent.addEventListener('focus', function() {
 		commentContentBorder.classList.add('focus');
 	});
 	writeCommentContent.addEventListener('blur', function() {
 		commentContentBorder.classList.remove('focus');
 	});
-});
-
-
-
-
-
-/**
- * 댓글 작성 폼값을 검증하고 버튼을 활성화하는 함수
- */
-document.addEventListener('DOMContentLoaded', function() {
-	const writeCommentContent = document.getElementById('writeCommentContent');
-	const writeCommentButton = document.querySelector('#writeCommentForm button[type="submit"]');
 	writeCommentContent.addEventListener('input', function() {
-		const isCommentContentEmpty = writeCommentContent.value.trim() === "";
+		const isCommentContentEmpty = writeCommentContent.value.trim() === '';
 		writeCommentButton.classList.toggle('disable', isCommentContentEmpty);
 		writeCommentButton.disabled = isCommentContentEmpty;
 	});
-});
-
-
-
-
-
-/**
- * 댓글을 수정하는 모달창의 폼값을 검증하는 함수
- */
-document.addEventListener('DOMContentLoaded', function() {
+	
+	// 댓글을 수정하는 모달창의 폼값 검증
 	const editCommentContent = document.getElementById('editCommentContent');
 	const editCommentButton = document.querySelector('#editCommentForm button[type="submit"]');
 	editCommentContent.addEventListener('input', function() {
 		const isCommentContentEmpty = editCommentContent.value.trim() === "";
 		editCommentButton.classList.toggle('disabled', isCommentContentEmpty);
 	});
-});
-
-
-
-
-
-/**
- * 댓글을 신고하는 모달창의 신고 사유를 선택했는지 검증하는 함수
- */
-document.addEventListener('DOMContentLoaded', function() {
+	
+	// 댓글을 신고하는 모달창의 폼값 검증
 	const reasonRadio = document.querySelectorAll('#reportCommentForm input[name="reason"]');
 	const submitButton = document.querySelector('#reportCommentForm button[type="submit"]');
-
 	reasonRadio.forEach(function(radio) {
         radio.addEventListener('change', function() {
 			const isChecked = Array.from(reasonRadio).some(radio => radio.checked);
 			submitButton.classList.toggle('disabled', !isChecked);
         });
     });
-});
-
-
-
-
-
-/**
- * 대댓글을 입력하는 모달창의 내용 입력창의 폼값을 검증하는 함수
- */
-document.addEventListener('DOMContentLoaded', function() {
+	
+	// 대댓글을 작성하는 모달창의 폼값 검증
 	const writeSubcommentContent = document.getElementById('writeSubcommentContent');
 	const writeSubcommentButton = document.querySelector('#writeSubcommentForm button[type="submit"]');
 	writeSubcommentContent.addEventListener('input', function() {
@@ -90,22 +56,14 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', async function () {
 	
 	if (isLoggedIn()) {
-		const token = localStorage.getItem('accessToken');
-		const payload = parseJwt(token);
-		document.getElementById('logout_state').style.display = 'none';
+		const payload = getPayload();
 		document.getElementById('login_state').style.display = 'block';
+		document.getElementById('logout_state').style.display = 'none';
 		document.querySelector('.login_user span').innerText = payload.nickname;
 	}
 	else {
-		document.getElementById('logout_state').style.display = 'block';
 		document.getElementById('login_state').style.display = 'none';
-	}
-
-	try {
-		await instance.get('/dummy');
-	}
-	catch (error) {
-		console.log(error);
+		document.getElementById('logout_state').style.display = 'block';
 	}
 	
 });
@@ -115,14 +73,63 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 
 /**
- * 서버에서 댓글 데이터를 가져오는 함수
+ * 전역변수
  */
 let totalPages = 0;
+let totalElements = 0;
 let page = 0;
+const size = 15;
+let tablename = '';
+let sort = '';
 let commentList = [];
 
-async function fetchCommentList(tablename, sort, size) {
 
+
+
+
+/**
+ * 쩝쩝박사 목록 검색 필터를 설정하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	
+	// 요청명에 따라 tablename 설정
+	const pathname = location.pathname;
+	const match = pathname.match(/\/view([A-Za-z]+)\.do$/i);
+	tablename = match ? match[1].toLowerCase() : null;
+	
+	// 정렬 버튼
+	document.querySelectorAll('.btn_sort_small').forEach(btn => {
+		btn.addEventListener('click', function(event) {
+			event.preventDefault();
+			document.querySelector('.btn_sort_small.active')?.classList.remove('active');
+			btn.classList.add('active');
+			
+			sort = btn.dataset.sort;
+			page = 0;
+			commentList = [];
+			
+			fetchCommentList();
+		});
+	});
+	
+	// 더보기 버튼 클릭 시 다음 페이지 로드
+	document.querySelector('.btn_more').addEventListener('click', function () {
+		page = page + 1;
+		fetchCommentList();
+	});
+	
+	fetchCommentList();
+});
+
+
+
+
+
+/**
+ * 서버에서 댓글 목록 데이터를 가져오는 함수
+ */
+async function fetchCommentList() {
+	
 	try {
 		const id = new URLSearchParams(window.location.search).get('id');
 		
@@ -142,21 +149,31 @@ async function fetchCommentList(tablename, sort, size) {
 		const result = await response.json();
 		
 		if (result.code === 'COMMENT_READ_LIST_SUCCESS') {
-			const newCommentList = result.data.content;
 			
-			commentList = [...commentList, ...newCommentList];
-			newCommentList.filter(comment => comment.comm_id === null)
-				.forEach(comment => {
-					document.querySelector('.comment_list').append(renderComment(comment));
-			});
-			
-			page = result.data.number + 1;
+			// 전역변수 설정
 			totalPages = result.data.totalPages;
-					
-			document.querySelector('.comment_count span:last-of-type').innerText = result.data.totalElements;
+			totalElements = result.data.totalElements;
+			commentList = [...commentList, ...result.data.content];
+			
+			// 렌더링
+			renderCommentList(commentList);
+			document.querySelector('.comment_count span:last-of-type').innerText = totalElements;
 			
 			// 더보기 버튼 제어
-			document.querySelector('.btn_more').style.display = page >= totalPages ? 'none' : 'block';
+			document.querySelector('.btn_more').style.display = page >= totalPages - 1 ? 'none' : 'block';
+			
+			// 검색 결과 없음 표시
+			if (result.data.totalPages === 0) {
+				document.querySelector('.comment_list').style.display = 'none';
+				document.querySelector('.list_empty')?.remove();
+				const content = document.querySelector('.comment_write');
+				content.insertAdjacentElement('afterend', renderListEmpty());
+			}
+			// 검색 결과 표시
+			else {
+				document.querySelector('.list_empty')?.remove();
+				document.querySelector('.comment_list').style.display = '';
+			}
 		}
 		else if (result.code === 'COMMENT_INVALID_INPUT') {
 			alert('입력값이 유효하지 않습니다.');
@@ -177,67 +194,251 @@ async function fetchCommentList(tablename, sort, size) {
 
 
 /**
- * 댓글을 화면에 렌더링하는 함수
- *
- * @param {Object} comment - 댓글 객체
- * @returns {string} 댓글의 HTML 문자열
+ * 댓글 목록을 화면에 렌더링하는 함수
  */
-function renderComment(comment) {
-	const subcommentList = commentList.filter(data => data.comm_id === comment.id);
+function renderCommentList(commentList) {
+	
+	const container = document.querySelector('.comment_list');
+	container.innerHTML = '';
+	
+	commentList.forEach(comment => {
+		// 리스트
+		const commentLi = document.createElement('li');
+		commentLi.className = 'comment';
+		commentLi.dataset.id = comment.id;
+		
+		// 상단 정보
+		const infoDiv = document.createElement('div');
+		infoDiv.className = 'comment_info';
+		
+		// 작성자 정보
+		const writerDiv = document.createElement('div');
+		writerDiv.className = 'comment_writer';
+		const img = document.createElement('img');
+		img.src = '/images/common/test.png';
+		const nameSpan = document.createElement('span');
+		nameSpan.textContent = comment.nickname;
+		const dateSpan = document.createElement('span');
+		dateSpan.textContent = formatDate(comment.postdate);
+		writerDiv.append(img, nameSpan, dateSpan);
+		
+		// 기능 버튼
+		const actionDiv = document.createElement('div');
+		actionDiv.className = 'comment_action';
+		
+		const payload = isLoggedIn() ? getPayload() : null;
+		const canAction =
+			payload?.role === 'ROLE_SUPER_ADMIN' ||
+			(payload?.role === 'ROLE_ADMIN' && comment.role === 'ROLE_USER') ||
+			(payload?.id === comment.user_id);
+		
+		if (canAction) {
+			// 수정 버튼
+			const editLink = document.createElement('a');
+			editLink.href = 'javascript:void(0);';
+			editLink.dataset.bsToggle = 'modal';
+			editLink.dataset.bsTarget = '#editCommentModal';
+			editLink.textContent = '수정';
+			editLink.addEventListener('click', function(event) {
+				if (!isLoggedIn()) {
+					event.preventDefault();
+					redirectToLogin();
+					return;
+				}
+				document.getElementById('editCommentContent').value = comment.content;
+				document.getElementById('editCommentId').value = comment.id;
+			});
 
-	const commentLi = document.createElement('li');
-	commentLi.className = 'comment';
-	commentLi.dataset.id = comment.id;
-
-	const infoDiv = document.createElement('div');
-	infoDiv.className = 'comment_info';
-	infoDiv.append(
-		renderWriterInfo(comment.nickname, comment.postdate, false),
-		renderActionLink(comment.id, comment.content, comment.user_id, false)
-	);
-
-	const contentP = document.createElement('p');
-	contentP.className = 'comment_content';
-	contentP.textContent = comment.content;
-
-	const toolDiv = document.createElement('div');
-	toolDiv.className = 'comment_tool';
-	toolDiv.appendChild(renderLikeButton(comment.id, comment.likecount, comment.likestatus));
-
-	const replyBtn = document.createElement('a');
-	replyBtn.className = 'btn_outline_small write_subcomment_btn';
-	replyBtn.dataset.bsToggle = 'modal';
-	replyBtn.dataset.bsTarget = '#writeSubcommentModal';
-	replyBtn.href = 'javascript:void(0);';
-	replyBtn.addEventListener('click', function () {
-		if (!isLoggedIn()) {
-			redirectToLogin();
-			bootstrap.Modal.getInstance(document.getElementById('writeSubcommentModal')).hide();
-			return;
+			// 삭제 버튼
+			const deleteLink = document.createElement('a');
+			deleteLink.href = 'javascript:void(0);';
+			deleteLink.textContent = '삭제';
+			deleteLink.addEventListener('click', function(event) {
+				if (!isLoggedIn()) {
+					event.preventDefault();
+					redirectToLogin();
+					return;
+				}
+				deleteComment(comment.id);
+			});
+			
+			actionDiv.append(editLink, deleteLink);
 		}
-		document.getElementById('writeSubcommentCommId').value = comment.id;
+
+		// 신고 버튼
+		const reportLink = document.createElement('a');
+		reportLink.href = 'javascript:void(0);';
+		reportLink.textContent = '신고';
+		reportLink.dataset.bsToggle = 'modal';
+		reportLink.dataset.bsTarget = '#reportCommentModal';
+		reportLink.addEventListener('click', function(event) {
+			if (!isLoggedIn()) {
+				event.preventDefault();
+				redirectToLogin();
+				return;
+			}
+			document.getElementById('reportCommentId').value = comment.id;
+		});
+		actionDiv.append(reportLink);
+		
+		infoDiv.append(writerDiv, actionDiv);
+		
+		// 본문
+		const contentP = document.createElement('p');
+		contentP.className = 'comment_content';
+		contentP.textContent = comment.content;
+		
+		// 툴바
+		const toolDiv = document.createElement('div');
+		toolDiv.className = 'comment_tool';
+		toolDiv.appendChild(renderLikeButton(comment.id, comment.likecount, comment.liked));
+		
+		// 대댓글 작성 버튼
+		const replyBtn = document.createElement('a');
+		replyBtn.className = 'btn_outline_small write_subcomment_btn';
+		replyBtn.dataset.bsToggle = 'modal';
+		replyBtn.dataset.bsTarget = '#writeSubcommentModal';
+		replyBtn.addEventListener('click', function (event) {
+			if (!isLoggedIn()) {
+				event.preventDefault();
+				redirectToLogin();
+				return;
+			}
+			document.getElementById('writeSubcommentCommId').value = comment.id;
+		});
+		const replySpan = document.createElement('span');
+		replySpan.textContent = '답글 쓰기';
+		replyBtn.appendChild(replySpan);
+		toolDiv.appendChild(replyBtn);
+	
+		commentLi.append(infoDiv, contentP, toolDiv);
+	
+		container.appendChild(commentLi);
+		container.appendChild(renderSubcommentList(comment.subcomment_list));
 	});
+}
 
-	const replySpan = document.createElement('span');
-	replySpan.textContent = '답글 쓰기';
-	replyBtn.appendChild(replySpan);
 
-	toolDiv.appendChild(replyBtn);
 
-	commentLi.append(infoDiv, contentP, toolDiv);
 
-	const subList = document.createElement('ul');
-	subList.className = 'subcomment_list';
 
+/**
+ * 대댓글을 생성하는 함수
+ */
+function renderSubcommentList(subcommentList) {
+	
+	const subcommentUl = document.createElement('ul');
+	subcommentUl.className = 'subcomment_list';
+	
+	if (subcommentList === null) return;
+	
 	subcommentList.forEach(subcomment => {
-		const subLi = renderSubcomment(subcomment);
-		subList.appendChild(subLi);
+		// 리스트
+		const subcommentLi = document.createElement('li');
+		subcommentLi.className = 'subcomment';
+		subcommentLi.dataset.id = subcomment.id;
+	
+		const arrowImg = document.createElement('img');
+		arrowImg.className = 'subcomment_arrow';
+		arrowImg.src = '/images/chompessor/arrow_right.png';
+	
+		const innerDiv = document.createElement('div');
+		innerDiv.className = 'subcomment_inner';
+	
+		// 상단 정보
+		const infoDiv = document.createElement('div');
+		infoDiv.className = 'subcomment_info';
+		
+		// 작성자 정보
+		const writerDiv = document.createElement('div');
+		writerDiv.className = 'subcomment_writer';
+		const img = document.createElement('img');
+		img.src = '/images/common/test.png';
+		const nameSpan = document.createElement('span');
+		nameSpan.textContent = subcomment.nickname;
+		const dateSpan = document.createElement('span');
+		dateSpan.textContent = formatDate(subcomment.postdate);
+		writerDiv.append(img, nameSpan, dateSpan);
+		
+		// 기능 버튼
+		const actionDiv = document.createElement('div');
+		actionDiv.className = 'subcomment_action';
+
+		const payload = isLoggedIn() ? getPayload() : null;
+		const canAction =
+			payload?.role === 'ROLE_SUPER_ADMIN' ||
+			(payload?.role === 'ROLE_ADMIN' && subcomment.role === 'ROLE_USER') ||
+			(payload?.id === subcomment.user_id);
+
+		if (canAction) {
+			// 수정 버튼
+			const editLink = document.createElement('a');
+			editLink.href = 'javascript:void(0);';
+			editLink.dataset.bsToggle = 'modal';
+			editLink.dataset.bsTarget = '#editCommentModal';
+			editLink.textContent = '수정';
+			editLink.addEventListener('click', function(event) {
+				if (!isLoggedIn()) {
+					event.preventDefault();
+					redirectToLogin();
+					return;
+				}
+				document.getElementById('editCommentContent').value = subcomment.content;
+				document.getElementById('editCommentId').value = subcomment.id;
+			});
+
+			// 삭제 버튼
+			const deleteLink = document.createElement('a');
+			deleteLink.href = 'javascript:void(0);';
+			deleteLink.textContent = '삭제';
+			deleteLink.addEventListener('click', function(event) {
+				if (!isLoggedIn()) {
+					event.preventDefault();
+					redirectToLogin();
+					return;
+				}
+				deleteComment(subcomment.id);
+			});
+			
+			actionDiv.append(editLink, deleteLink);
+		}
+
+		// 신고 버튼
+		const reportLink = document.createElement('a');
+		reportLink.href = 'javascript:void(0);';
+		reportLink.textContent = '신고';
+		reportLink.dataset.bsToggle = 'modal';
+		reportLink.dataset.bsTarget = '#reportCommentModal';
+		reportLink.addEventListener('click', function(event) {
+			if (!isLoggedIn()) {
+				event.preventDefault();
+				redirectToLogin();
+				return;
+			}
+			document.getElementById('reportCommentId').value = subcomment.id;
+		});
+		actionDiv.append(reportLink);
+
+		infoDiv.append(writerDiv, actionDiv);
+	
+		// 본문
+		const contentP = document.createElement('p');
+		contentP.className = 'subcomment_content';
+		contentP.textContent = subcomment.content;
+	
+		// 툴바
+		const toolDiv = document.createElement('div');
+		toolDiv.className = 'comment_tool';
+		toolDiv.appendChild(renderLikeButton(subcomment.id, subcomment.likecount, subcomment.liked));
+	
+		innerDiv.append(infoDiv, contentP, toolDiv);
+		subcommentLi.append(arrowImg, innerDiv);
+	
+		subcommentUl.appendChild(subcommentLi);
+		
 	});
-
-	const fragment = document.createDocumentFragment();
-	fragment.append(commentLi, subList);
-
-	return fragment;
+	
+	return subcommentUl;
 }
 
 
@@ -247,13 +448,13 @@ function renderComment(comment) {
 /**
  * 좋아요 버튼을 생성하는 함수
  */
-function renderLikeButton(id, likecount, likestatus) {
+function renderLikeButton(id, likecount, isLiked) {
 	
 	const button = document.createElement('button');
 	button.className = 'btn_tool like_btn';
 
 	const img = document.createElement('img');
-	img.src = likestatus ? '/images/common/thumb_up_full.png' : '/images/common/thumb_up_empty.png';
+	img.src = isLiked ? '/images/common/thumb_up_full.png' : '/images/common/thumb_up_empty.png';
 
 	const count = document.createElement('p');
 	count.textContent = likecount;
@@ -269,15 +470,8 @@ function renderLikeButton(id, likecount, likestatus) {
 		}
 		
 		// 좋아요 취소
-		if (likestatus) {
+		if (isLiked) {
 			try {
-				const token = localStorage.getItem('accessToken');
-				
-				const headers = {
-					'Content-Type': 'application/json',
-					'Authorization': `Bearer ${token}`
-				};
-				
 				const data = {
 					tablename: 'comments',
 					recodenum: id,
@@ -285,18 +479,17 @@ function renderLikeButton(id, likecount, likestatus) {
 				
 				const response = await instance.delete(`/comments/${id}/likes`, {
 					data: data,
-					headers: headers
+					headers: getAuthHeaders()
 				});
 				
 				if (response.data.code === 'COMMENT_UNLIKE_SUCCESS') {
-					likestatus = false;
+					isLiked = false;
 					img.src = '/images/common/thumb_up_empty.png';
 					count.textContent = Number(count.textContent) - 1;
 				}
 			}
 			catch (error) {
 				const code = error?.response?.data?.code;
-				const message = error?.response?.data?.message;
 				
 				if (code === 'COMMENT_UNLIKE_FAIL') {
 					alert('댓글 좋아요 취소에 실패했습니다.');
@@ -323,38 +516,31 @@ function renderLikeButton(id, likecount, likestatus) {
 					alert('서버 내부에서 오류가 발생했습니다.');
 				}
 				else {
-					alert(message);
+					console.log(error);
 				}
 			}
 		}
+		
 		// 좋아요
 		else {
 			try {
-				const token = localStorage.getItem('accessToken');
-				
-				const headers = {
-					'Content-Type': 'application/json',
-					'Authorization': `Bearer ${token}`
-				}
-				
 				const data = {
 					tablename: 'comments',
 					recodenum: id
 				}
 				
 				const response = await instance.post(`/comments/${id}/likes`, data, {
-					headers: headers
+					headers: getAuthHeaders()
 				});
 				
 				if (response.data.code === 'COMMENT_LIKE_SUCCESS') {
-					likestatus = true;
+					isLiked = true;
 					img.src = '/images/common/thumb_up_full.png';
 					count.textContent = Number(count.textContent) + 1;
 				}
 			}
 			catch (error) {
 				const code = error?.response?.data?.code;
-				const message = error?.response?.data?.message;
 				
 				if (code === 'COMMENT_LIKE_FAIL') {
 					alert('댓글 좋아요에 실패했습니다.');
@@ -381,7 +567,7 @@ function renderLikeButton(id, likecount, likestatus) {
 					alert('서버 내부 오류가 발생했습니다.');
 				}
 				else {
-					alert(message);
+					console.log(error);
 				}
 			}
 		}
@@ -394,206 +580,74 @@ function renderLikeButton(id, likecount, likestatus) {
 
 
 
-/**
- * 수정과 신고와 삭제 동작의 링크를 생성하는 함수
- */
-function renderActionLink(id, content, userId, isSub) {
-
-	const token = localStorage.getItem('accessToken');
-	
-	const actionDiv = document.createElement('div');
-	actionDiv.className = isSub ? 'subcomment_action' : 'comment_action';
-
-	if (token && parseJwt(token).id === userId) {
-		const editLink = document.createElement('a');
-		editLink.href = 'javascript:void(0);';
-		editLink.dataset.bsToggle = 'modal';
-		editLink.dataset.bsTarget = '#editCommentModal';
-		editLink.textContent = '수정';
-		editLink.addEventListener('click', () => {
-			if (!isLoggedIn()) {
-				redirectToLogin();
-				bootstrap.Modal.getInstance(document.getElementById('editCommentModal')).hide();
-				return;
-			}
-			document.getElementById('editCommentContent').value = content;
-			document.getElementById('editCommentId').value = id;
-		});
-	
-		const deleteLink = document.createElement('a');
-		deleteLink.href = 'javascript:void(0);';
-		deleteLink.textContent = '삭제';
-		deleteLink.addEventListener('click', async () => {
-			if (!isLoggedIn()) {
-				redirectToLogin();
-			}
-			await deleteComment(id);
-		});
-		
-		actionDiv.append(editLink, deleteLink);
-	}
-	
-	const reportLink = document.createElement('a');
-	reportLink.href = 'javascript:void(0);';
-	reportLink.textContent = '신고';
-	reportLink.dataset.bsToggle = 'modal';
-	reportLink.dataset.bsTarget = '#reportCommentModal';
-	
-	reportLink.addEventListener('click', () => {
-
-		if (!isLoggedIn()) {
-			redirectToLogin();
-			bootstrap.Modal.getInstance(document.getElementById('reportCommentModal')).hide();
-			return;
-		}
-		document.getElementById('reportCommentId').value = id;
-	});
-	
-	actionDiv.append(reportLink);
-
-	return actionDiv;
-}
-
-
-
-
-
-/**
- * 댓글과 대댓글의 작성자 정보 영역을 생성하는 함수
- */
-function renderWriterInfo(nickname, postdate, isSub) {
-	
-	const wrapperDiv = document.createElement('div');
-	wrapperDiv.className = isSub ? 'subcomment_writer' : 'comment_writer';
-
-	const img = document.createElement('img');
-	img.src = '/images/common/test.png';
-
-	const nameSpan = document.createElement('span');
-	nameSpan.textContent = nickname;
-
-	const dateSpan = document.createElement('span');
-	dateSpan.textContent = formatDate(postdate);
-
-	wrapperDiv.append(img, nameSpan, dateSpan);
-	return wrapperDiv;
-}
-
-
-
-
-
-/**
- * 대댓글을 생성하는 함수
- */
-function renderSubcomment(subcomment) {
-	const subLi = document.createElement('li');
-	subLi.className = 'subcomment';
-	subLi.dataset.id = subcomment.id;
-
-	const arrowImg = document.createElement('img');
-	arrowImg.className = 'subcomment_arrow';
-	arrowImg.src = '/images/chompessor/arrow_right.png';
-
-	const innerDiv = document.createElement('div');
-	innerDiv.className = 'subcomment_inner';
-
-	const infoDiv = document.createElement('div');
-	infoDiv.className = 'subcomment_info';
-	infoDiv.append(
-		renderWriterInfo(subcomment.nickname, subcomment.postdate, true),
-		renderActionLink(subcomment.id, subcomment.content, subcomment.user_id, true)
-	);
-
-	const contentP = document.createElement('p');
-	contentP.className = 'subcomment_content';
-	contentP.textContent = subcomment.content;
-
-	const toolDiv = document.createElement('div');
-	toolDiv.className = 'comment_tool';
-	toolDiv.appendChild(renderLikeButton(subcomment.id, subcomment.likecount, subcomment.likestatus));
-
-	innerDiv.append(infoDiv, contentP, toolDiv);
-	subLi.append(arrowImg, innerDiv);
-
-	return subLi;
-}
-
-
-
-
 
 /**
  * 댓글을 작성하는 함수
  */
-async function writeComment(tablename) {
-	
-	if (!isLoggedIn()) {
-		redirectToLogin();
-	}
-	
-	try {
-		const token = localStorage.getItem('accessToken');
+document.addEventListener('DOMContentLoaded', function () {
+	document.getElementById('writeCommentForm').addEventListener("submit", async function (event) {
 		
-		const params = new URLSearchParams(window.location.search);
-		const id = params.get('id');
+		event.preventDefault();
 		
-		const headers = {
-			'Content-Type': 'application/json',
-			'Authorization': `Bearer ${token}`
+		if (!isLoggedIn()) {
+			redirectToLogin();
 		}
 		
-		const data = {
-			content: document.getElementById('writeCommentContent').value.trim(),
-			tablename: tablename,
-			recodenum: Number(id)
-		};
-		
-		const response = await instance.post('/comments', data, {
-			headers: headers
-		});
-		
-		if (response.data.code === 'COMMENT_CREATE_SUCCESS') {
-			const newComment = response.data.data;
+		// 댓글 작성
+		try {
+			const id = new URLSearchParams(window.location.search).get('id');
 			
-			document.getElementById("writeCommentContent").value = '';
-			const submitBtn = document.querySelector("#writeCommentForm button[type='submit']");
-			submitBtn.disabled = true;
-			submitBtn.classList.add('disable');
+			const data = {
+				content: document.getElementById('writeCommentContent').value.trim(),
+				tablename: tablename,
+				recodenum: Number(id)
+			}; 
+			
+			const response = await instance.post('/comments', data, {
+				headers: getAuthHeaders()
+			});
+			
+			if (response.data.code === 'COMMENT_CREATE_SUCCESS') {
+				alertPrimary('댓글 작성에 성공했습니다.');
+				
+				document.getElementById("writeCommentContent").value = '';
+				const submitBtn = document.querySelector("#writeCommentForm button[type='submit']");
+				submitBtn.disabled = true;
+				submitBtn.classList.add('disable');
+					
+				page = 0;
+				fetchCommentList();
+			}
+		}
+		catch (error) {
+			const code = error?.response?.data?.code;
+			
+			if (code === 'COMMENT_CREATE_FAIL') {
+				alert('댓글 생성에 실패했습니다.');
+			}
+			else if (code === 'COMMENT_INVALID_INPUT') {
+				alert('입력값이 유효하지 않습니다.');
+			}
+			else if (code === 'COMMENT_UNAUTHORIZED') {
+				alert('로그인되지 않은 사용자입니다.');
+			}
+			else if (code === 'COMMENT_FORBIDDEN') {
+				alert('접근 권한이 없습니다.');
+			}
+			else if (code === 'COMMENT_NOT_FOUND') {
+				alert('해당 댓글을 찾을 수 없습니다.');
+			}
+			else if (code === 'INTERNAL_SERVER_ERROR') {
+				alert('서버 내부 오류가 발생했습니다.');
+			}
+			else {
+				console.log(error);
+			}
+		}
+	});
+	
+});
 
-			commentList.unshift(newComment);
-
-			const commentEl = renderComment(newComment);
-			document.querySelector('.comment_list').prepend(commentEl);
-		}
-	}
-	catch (error) {
-		const code = error?.response?.data?.code;
-		const message = error?.response?.data?.message;
-		
-		if (code === 'COMMENT_CREATE_FAIL') {
-			alert('댓글 생성에 실패했습니다.');
-		}
-		else if (code === 'COMMENT_INVALID_INPUT') {
-			alert('입력값이 유효하지 않습니다.');
-		}
-		else if (code === 'COMMENT_UNAUTHORIZED') {
-			alert('로그인되지 않은 사용자입니다.');
-		}
-		else if (code === 'COMMENT_FORBIDDEN') {
-			alert('접근 권한이 없습니다.');
-		}
-		else if (code === 'COMMENT_NOT_FOUND') {
-			alert('해당 댓글을 찾을 수 없습니다.');
-		}
-		else if (code === 'INTERNAL_SERVER_ERROR') {
-			alert('서버 내부 오류가 발생했습니다.');
-		}
-		else {
-			alert(message);
-		}
-	}
-}
 
 
 
@@ -616,13 +670,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		const reason = document.querySelector('input[name="reason"]:checked')?.value;
 		
 		try {
-			const token = localStorage.getItem('accessToken');
-			
-			const headers = {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${token}`
-			}
-
 			const data = {
 				tablename: 'comments',
 				recodenum: commId,
@@ -630,17 +677,16 @@ document.addEventListener('DOMContentLoaded', function() {
 			};
 			
 			const response = await instance.post(`/comments/${commId}/reports`, data, {
-				headers: headers
+				headers: getAuthHeaders()
 			});
 			
 			if (response.data.code === 'COMMENT_REPORT_SUCCESS') {
-				alert('신고 처리되었습니다.');
+				alertPrimary('신고 처리되었습니다.');
 			}
 			
 		}
 		catch (error) {
 			const code = error?.response?.data?.code;
-			const message = error?.response?.data?.message;
 
 			if (code === 'COMMENT_REPORT_FAIL') {
 				alert('댓글 신고에 실패했습니다.');
@@ -652,7 +698,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				alert('입력값이 유효하지 않습니다.');
 			}
 			else if (code === 'REPORT_DUPLICATE') {
-				alert('이미 신고한 댓글입니다.');
+				alertDanger('이미 신고한 댓글입니다.');
 			}
 			else if (code === 'COMMENT_UNAUTHORIZED_ACCESS') {
 				alert('로그인되지 않은 사용자입니다.');
@@ -664,11 +710,11 @@ document.addEventListener('DOMContentLoaded', function() {
 				alert('댓글을 찾을 수 없습니다.');
 			}
 			else {
-				alert(message);
+				console.log(error);
 			}
 		}
 		
-		bootstrap.Modal.getInstance(document.getElementById('reportCommentModal')).hide();
+		bootstrap.Modal.getInstance(document.getElementById('reportCommentModal'))?.hide();
 	});
 });
 
@@ -694,33 +740,30 @@ document.addEventListener('DOMContentLoaded', function() {
 		const content = document.getElementById('editCommentContent').value.trim();
 
 		try {
-			const token = localStorage.getItem('accessToken');
-			
-			const headers = {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${token}`
-			}
-			
 			const data = {
 				id: id,
 				content: content
 			};
 			
 			const response = await instance.patch(`/comments/${id}`, data, {
-				headers: headers
+				headers: getAuthHeaders()
 			});
 			
 			if (response.data.code === 'COMMENT_UPDATE_SUCCESS') {
-				const contentEl = document.querySelector(`.comment[data-id='${id}'] .comment_content, .subcomment[data-id='${id}'] .subcomment_content`);
-				if (contentEl) {
-				  contentEl.textContent = response.data.data.content;
+				bootstrap.Modal.getInstance(document.getElementById('editCommentModal'))?.hide();
+				
+				alertPrimary('댓글이 성공적으로 수정되었습니다.');
+				
+				if (document.querySelector(`.comment[data-id='${id}'] .comment_content`)) {
+					document.querySelector(`.comment[data-id='${id}'] .comment_content`).textContent = response.data.data.content;
 				}
-				bootstrap.Modal.getInstance(document.getElementById('editCommentModal')).hide();
+				if (document.querySelector(`.subcomment[data-id='${id}'] .subcomment_content`)) {
+					document.querySelector(`.subcomment[data-id='${id}'] .subcomment_content`).textContent = response.data.data.content;
+				}
 			}
 		}
 		catch (error) {
 			const code = error?.response?.data?.code;
-			const message = error?.response?.data?.message;
 			
 			if (code === 'COMMENT_UPDATE_FAIL') {
 				alert('댓글 수정에 실패했습니다.');
@@ -741,7 +784,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				alert('서버 내부 오류가 발생했습니다.');
 			}
 			else {
-				alert(message);
+				console.log(error);
 			}
 		}
 			
@@ -771,13 +814,12 @@ async function deleteComment(id) {
 			});
 			
 			if (response.data.code === 'COMMENT_DELETE_SUCCESS') {
-				const commentEl = document.querySelector(`.comment[data-id='${id}']`);
+				alertPrimary('댓글을 성공적으로 삭제했습니다.');
+
+				const commentEl = document.querySelector(`.comment[data-id='${id}']`)
+				commentEl?.remove();
+
 				const subcommentListEl = commentEl?.nextElementSibling;
-
-				if (commentEl) {
-					commentEl.remove();
-				}
-
 				if (subcommentListEl && subcommentListEl.classList.contains('subcomment_list')) {
 					subcommentListEl.remove();
 				}
@@ -827,81 +869,83 @@ async function deleteComment(id) {
 /**
  * 대댓글을 작성하는 함수
  */
-async function writeSubcomment(tablename) {
-
-	try {
-		const token = localStorage.getItem('accessToken');
-
-		const params = new URLSearchParams(window.location.search);
-		const id = params.get('id');
+document.addEventListener('DOMContentLoaded', function () {
+	document.getElementById('writeSubcommentForm').addEventListener('submit', async function (event) {
 		
-		const headers = {
-			'Content-Type': 'application/json',
-			'Authorization': `Bearer ${token}`
+		event.preventDefault();
+		
+		if (!isLoggedIn()) {
+			redirectToLogin();
 		}
+		
+		try {
+			const params = new URLSearchParams(window.location.search);
+			const id = params.get('id');
 
-		const data = {
-			content: document.getElementById('writeSubcommentContent').value.trim(),
-			tablename: tablename,
-			recodenum: Number(id),
-			comm_id: document.getElementById('writeSubcommentCommId').value
-		};
+			const data = {
+				content: document.getElementById('writeSubcommentContent').value.trim(),
+				tablename: tablename,
+				recodenum: Number(id),
+				comm_id: document.getElementById('writeSubcommentCommId').value
+			};
+	
+			const response = await instance.post('/comments', data, {
+				headers: getAuthHeaders()
+			});
+	
+			if (response.data.code === 'COMMENT_CREATE_SUCCESS') {
+				alert('댓글이 성공적으로 작성되었습니다.');
+				bootstrap.Modal.getInstance(document.getElementById('writeSubcommentModal'))?.hide();
+				fetchCommentList();
+			}
+		}
+		catch (error) {
+			console.log(error);
+			const code = error?.response?.data?.code;
+			const message = error?.response?.data?.message;
+	
+			if (code === 'COMMENT_CREATE_FAIL') {
+				alert('댓글 생성에 실패했습니다.');
+			}
+			else if (code === 'COMMENT_INVALID_INPUT') {
+				alert('입력값이 유효하지 않습니다.');
+			}
+			else if (code === 'COMMENT_UNAUTHORIZED') {
+				alert('로그인되지 않은 사용자입니다.');
+			}
+			else if (code === 'COMMENT_FORBIDDEN') {
+				alert('접근 권한이 없습니다.');
+			}
+			else if (code === 'COMMENT_NOT_FOUND') {
+				alert('해당 댓글을 찾을 수 없습니다.');
+			}
+			else if (code === 'INTERNAL_SERVER_ERROR') {
+				alert('서버 내부 오류가 발생했습니다.');
+			}
+			else {
+				alert(message);
+			}
+		}
+	});
+	
+});
 
-		const response = await instance.post('/comments', data, {
-			headers: headers
-		});
 
-		if (response.data.code === 'COMMENT_CREATE_SUCCESS') {
-			const newSubcomment = response.data.data;
-			const parentCommentId = newSubcomment.comm_id;
 
-			bootstrap.Modal.getInstance(document.getElementById('writeSubcommentModal')).hide();
 
-			document.getElementById("writeSubcommentContent").value = '';
 
-			commentList.push(newSubcomment);
+/**
+ * 목록 결과 없음 화면을 화면에 렌더링하는 함수
+ */
+function renderListEmpty() {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'list_empty';
+	
+    const span = document.createElement('span');
+    span.textContent = '작성된 댓글이 없습니다';
+    wrapper.appendChild(span);
 
-			const subList = document.querySelector(`.comment[data-id='${parentCommentId}']`).nextElementSibling;
-			subList.appendChild(renderSubcomment(newSubcomment));
-		}
-	}
-	catch (error) {
-		console.log(error);
-		const code = error?.response?.data?.code;
-		const message = error?.response?.data?.message;
-
-		if (code === 'COMMENT_CREATE_FAIL') {
-			alert('댓글 생성에 실패했습니다.');
-		}
-		else if (code === 'COMMENT_INVALID_INPUT') {
-			alert('입력값이 유효하지 않습니다.');
-		}
-		else if (code === 'COMMENT_UNAUTHORIZED') {
-			alert('로그인되지 않은 사용자입니다.');
-		}
-		else if (code === 'COMMENT_FORBIDDEN') {
-			alert('접근 권한이 없습니다.');
-		}
-		else if (code === 'COMMENT_NOT_FOUND') {
-			alert('해당 댓글을 찾을 수 없습니다.');
-		}
-		else if (code === 'INTERNAL_SERVER_ERROR') {
-			alert('서버 내부 오류가 발생했습니다.');
-		}
-		else {
-			alert(message);
-		}
-	}
+    return wrapper;
 }
-
-
-
-
-
-
-
-
-
-
 
 

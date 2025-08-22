@@ -6,7 +6,7 @@ let page = 0;
 const size = 15;
 let keyword = '';
 let category = '';
-let sortKey = 'postdate';
+let sortKey = 'id';
 let sortOrder = 'desc';
 let commentList = [];
 
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			page = 0;
 			keyword = '';
 			document.getElementById('text-srh').value = '';
-			sortKey = 'postdate';
+			sortKey = 'id';
 			sortOrder = 'desc';
 			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
 			document.querySelector(`.sort_btn[data-key="${sortKey}"]`).classList.add(sortOrder);
@@ -92,7 +92,7 @@ async function fetchCommentList() {
 			sort: sortKey + '-' + sortOrder
 		}).toString();
 		
-		const response = await fetch(`/comments?${params}`, {
+		const response = await fetch(`/admin/comments?${params}`, {
 			method: 'GET',
 			headers: getAuthHeaders()
 		});
@@ -111,7 +111,6 @@ async function fetchCommentList() {
 		
 		
 		// 여기에 에러코드 추가 !!!!!
-		
 		
 	}
 	catch (error) {
@@ -151,7 +150,7 @@ function renderCommentList(commentList) {
 			tableH6.textContent = '레시피'
 			break;
 		case 'guide':
-			tableH6.textContent = '가이드'
+			tableH6.textContent = '키친가이드'
 			break;
 		case 'vote':
 			tableH6.textContent = '투표'

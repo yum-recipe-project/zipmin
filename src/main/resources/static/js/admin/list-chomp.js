@@ -16,7 +16,7 @@ let chompList = [];
 
 
 /**
- * 쩝쩝박사 목록을 검색하는 함수
+ * 쩝쩝박사 목록 검색 필터를 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
 	
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
 			document.querySelector(`.sort_btn[data-key="${sortKey}"]`).classList.add(sortOrder);
 			
-			commentList = [];
+			chompList = [];
 			renderAddChompButton(category);
 			fetchChompList();
 		});
@@ -595,33 +595,6 @@ async function deleteEvent(id) {
 	}
 
 }
-
-
-
-
-
-/**
- * 검색 결과 없음 화면을 화면에 렌더링하는 함수
- */
-function renderSearchEmpty() {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'search_empty';
-
-    const img = document.createElement('img');
-    img.src = '/images/common/search_empty.png';
-    wrapper.appendChild(img);
-
-    const h2 = document.createElement('h2');
-    h2.innerHTML = `'${keyword}'에 대한<br/>검색 결과가 없습니다`;
-    wrapper.appendChild(h2);
-
-    const span = document.createElement('span');
-    span.textContent = '단어의 철자가 정확한지 확인해보세요';
-    wrapper.appendChild(span);
-
-    return wrapper;
-}
-
 
 
 

@@ -1,15 +1,15 @@
 package com.project.zipmin.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
-import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.LikeErrorCode;
+import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
+import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.entity.Like;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.mapper.LikeMapper;
@@ -21,21 +21,22 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LikeService {
 	
-	@Autowired
-	private LikeRepository likeRepository;
+	private final LikeRepository likeRepository;
 	
-	@Autowired
-	private UserService userService;
+	private final UserService userService;
 	
 	private final LikeMapper likeMapper;
 
+	
+	
 	
 	
 	// 좋아요 작성
 	public LikeCreateResponseDto createLike(LikeCreateRequestDto likeDto) {
 		
 		// 입력값 검증
-		if (likeDto == null || likeDto.getTablename() == null || likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+		if (likeDto == null || likeDto.getTablename() == null
+				|| likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
 			throw new ApiException(LikeErrorCode.LIKE_INVALID_INPUT);
 		}
 		
@@ -44,9 +45,8 @@ public class LikeService {
 	    	throw new ApiException(LikeErrorCode.LIKE_DUPLICATE);
 	    }
 		
-		Like like = likeMapper.toEntity(likeDto);
-		
 		// 좋아요 저장
+	    Like like = likeMapper.toEntity(likeDto);
 		try {
 			like = likeRepository.save(like);
 			return likeMapper.toResponseDto(like);
@@ -59,11 +59,14 @@ public class LikeService {
 	
 	
 	
+	
+	
 	// 좋아요 삭제
 	public void deleteLike(LikeDeleteRequestDto likeDto) {
 		
 		// 입력값 검증
-		if (likeDto == null || likeDto.getTablename() == null || likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+		if (likeDto == null || likeDto.getTablename() == null
+				|| likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
 			throw new ApiException(LikeErrorCode.LIKE_INVALID_INPUT);
 		}
 		
@@ -71,9 +74,27 @@ public class LikeService {
 		Like like = likeRepository.findByTablenameAndRecodenumAndUserId(likeDto.getTablename(), likeDto.getRecodenum(), likeDto.getUserId())
 				.orElseThrow(() -> new ApiException(LikeErrorCode.LIKE_NOT_FOUND));
 		
-		// 소유자 검증
-		if (like.getUser().getId() != likeDto.getUserId()) {
-			throw new ApiException(LikeErrorCode.LIKE_FORBIDDEN);
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto user = userService.readUserByUsername(username);
+		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (user.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (like.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(LikeErrorCode.LIKE_FORBIDDEN);
+				}
+				if (like.getUser().getRole().equals(Role.ROLE_ADMIN)) {
+					if (user.getId() != like.getUser().getId()) {
+						throw new ApiException(LikeErrorCode.LIKE_FORBIDDEN);
+					}
+				}
+			}
+			// 일반 회원
+			else {
+				if (user.getId() != like.getUser().getId()) {
+					throw new ApiException(LikeErrorCode.LIKE_FORBIDDEN);
+				}
+			}
 		}
 		
 		// 좋아요 삭제
@@ -88,6 +109,8 @@ public class LikeService {
 	
 	
 	
+	
+	
 	// 좋아요 표시 여부 확인
 	public boolean existsUserLike(String tablename, Integer recodenum, Integer userId) {
 		
@@ -96,14 +119,33 @@ public class LikeService {
 			throw new ApiException(LikeErrorCode.LIKE_INVALID_INPUT);
 		}
 
-		return likeRepository.existsByTablenameAndRecodenumAndUserId(tablename, recodenum, userId);
+		try {
+			return likeRepository.existsByTablenameAndRecodenumAndUserId(tablename, recodenum, userId);
+		}
+		catch (Exception e) {
+			throw new ApiException(LikeErrorCode.LIKE_EXIST_FAIL);
+		}
 	}
 
 	
 	
-	// 테이블 이름과 일련번호를 이용해 좋아요 수 조회
-	public long countLikesByTablenameAndRecodenum(String tablename, int recodenum) {
-		return likeRepository.countByTablenameAndRecodenum(tablename, recodenum);
+	
+	
+	// 좋아요 수 조회
+	public int countLike(String tablename, Integer recodenum) {
+		
+		// 입력값 검증
+		if (tablename == null || recodenum == null) {
+			throw new ApiException(LikeErrorCode.LIKE_INVALID_INPUT);
+		}
+		
+		// 좋아요 수 조회
+		try {
+			return likeRepository.countByTablenameAndRecodenum(tablename, recodenum);
+		}
+		catch (Exception e) {
+			throw new ApiException(LikeErrorCode.LIKE_COUNT_FAIL);
+		}
 	}
 	
 	

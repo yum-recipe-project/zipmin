@@ -223,7 +223,7 @@ function renderChompList() {
 
 
 /**
- * 검색 결과 없음 화면을 화면에 렌더링하는 함수
+ * 검색 결과 없음 화면을 렌더링하는 함수
  */
 function renderSearchEmpty() {
     const wrapper = document.createElement('div');

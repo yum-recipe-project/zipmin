@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 			
 			// 투표 종료
 			const now = new Date();
-			if (now < new Date(result.data.opendate) || now > new Date(result.data.opendate)) {
+			if (now < new Date(result.data.opendate) || now > new Date(result.data.closedate)) {
 				renderRecord(result.data.choice_list, result.data.choice_id);
 				document.getElementById('revoteBtn').style.display = 'none';
 			}
@@ -193,9 +193,11 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 			const data = {
 				user_id: payload.id,
-				vote_id: voteId,
+				chomp_id: voteId,
 				choice_id: checked.value
 			};
+			
+			console.log(data);
 			
 			try {
 				const response = await instance.post(`/votes/${voteId}/records`, data);
@@ -263,7 +265,7 @@ async function cancelVote() {
 		
 		const data = {
 			user_id: Number(userId),
-			vote_id: Number(voteId)
+			chomp_id: Number(voteId)
 		};
 		
 		try {

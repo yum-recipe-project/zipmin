@@ -83,7 +83,7 @@ public class ChompService {
 	
 	
 	
-	// 쩝쩝박사 목록 조회 (최신순)
+	// 쩝쩝박사 목록 조회
 	public Page<ChompReadResponseDto> readChompPage(String category, String keyword, String sort, Pageable pageable) {
 		
 		// 입력값 검증
@@ -126,7 +126,6 @@ public class ChompService {
 					sortSpec = Sort.by(Sort.Order.asc("recordcount"), Sort.Order.desc("id"));
 					break;
 				default:
-					sortSpec = Sort.by(Sort.Order.desc("id"));
 					break;
 		    }
 		}
@@ -147,7 +146,7 @@ public class ChompService {
 	                    : chompRepository.findAll(sortedPageable);
 	        }
 			else {
-				// 카테고리만
+				// 카테고리
 				chompPage = hasKeyword
 	                    ? chompRepository.findAllByCategoryAndTitleContainingIgnoreCase(category, keyword, sortedPageable)
 	                    : chompRepository.findAllByCategory(category, sortedPageable);
@@ -479,6 +478,8 @@ public class ChompService {
 	    	throw new ApiException(VoteErrorCode.VOTE_RECORD_INVALID_INPUT);
 	    }
 	    
+	    // *** 투표 존재 여부 확인 추가 ***
+	    
 	    // 중복 투표 검사
 	    if (recordRepository.existsByUserIdAndChompId(recordDto.getUserId(), recordDto.getChompId())) {
 	    	throw new ApiException(VoteErrorCode.VOTE_RECORD_DUPLICATE);
@@ -590,7 +591,7 @@ public class ChompService {
             throw new ApiException(EventErrorCode.EVENT_FILE_UPLOAD_FAIL);
         }
 	    
-	    // 매거진 생성
+	    // 매거진 저장
 	    Chomp megazine = chompMapper.toEntity(megazineRequestDto);
 	    try {
 	    	megazine = chompRepository.save(megazine);

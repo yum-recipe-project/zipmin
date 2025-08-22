@@ -436,6 +436,9 @@ public class CommentService {
 		try {
 		    return likeService.createLike(likeDto);
 		}
+		catch (ApiException e) {
+		    throw e;
+		}
 		catch (Exception e) {
 		    throw new ApiException(CommentErrorCode.COMMENT_LIKE_FAIL);
 		}
@@ -463,6 +466,9 @@ public class CommentService {
 		// 좋아요 취소
 		try {
 			likeService.deleteLike(likeDto);
+		}
+		catch (ApiException e) {
+		    throw e;
 		}
 		catch (Exception e) {
 			throw new ApiException(CommentErrorCode.COMMENT_UNLIKE_FAIL);
@@ -493,6 +499,9 @@ public class CommentService {
 		try {
 			return reportService.createReport(reportDto);
 		}
+		catch (ApiException e) {
+		    throw e;
+		}
 		catch (Exception e) {
 		    throw new ApiException(CommentErrorCode.COMMENT_REPORT_FAIL);
 		}
@@ -519,6 +528,9 @@ public class CommentService {
 		// 신고 취소
 		try {
 			reportService.deleteReport(reportDto);
+		}
+		catch (ApiException e) {
+		    throw e;
 		}
 		catch (Exception e) {
 		    throw new ApiException(CommentErrorCode.COMMENT_UNREPORT_FAIL);

@@ -57,6 +57,7 @@ import com.project.zipmin.swagger.LikeCountFailResponse;
 import com.project.zipmin.swagger.LikeCreateFailResponse;
 import com.project.zipmin.swagger.LikeDeleteFailResponse;
 import com.project.zipmin.swagger.LikeDuplicatedResponse;
+import com.project.zipmin.swagger.LikeExistFailResponse;
 import com.project.zipmin.swagger.LikeForbiddenResponse;
 import com.project.zipmin.swagger.LikeInvalidInputResponse;
 import com.project.zipmin.swagger.LikeNotFoundResponse;
@@ -121,10 +122,10 @@ public class CommentController {
 						schema = @Schema(implementation = ReportCountFailResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
-				description = "",
+				description = "좋아요 여부 확인 실패",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = ReportCountFailResponse.class))),
+						schema = @Schema(implementation = LikeExistFailResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
 				description = "입력값이 유효하지 않음",

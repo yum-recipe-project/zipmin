@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
 /**
  * 서버에서 쩝쩝박사 목록 데이터를 가져오는 함수
  */
-async function fetchChompList() {
+async function fetchChompList(scrollTop = true) {
 	
 	try {
 		const params = new URLSearchParams({
@@ -111,7 +111,7 @@ async function fetchChompList() {
 			// 렌더링
 			renderChompList(chompList);
 			renderAdminPagination(fetchChompList);
-			document.querySelector('.total').innerText = `총 ${result.data.totalElements}개`;
+			document.querySelector('.total').innerText = `총 ${totalElements}개`;
 			
 			// 검색 결과 없음 표시
 			if (result.data.totalPages === 0) {
@@ -127,7 +127,9 @@ async function fetchChompList() {
 			}
 			
 			// 스크롤 최상단 이동
-			window.scrollTo({ top: 0, behavior: 'smooth' });
+			if (scrollTop) {
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			}
 		}
 		else if (result.code === 'CHOMP_READ_LIST_FAIL') {
 			alertDanger('쩝쩝박사 목록 조회에 실패했습니다.');
@@ -214,7 +216,6 @@ function renderChompList(chompList) {
 		const noTd = document.createElement('td');
 		const noH6 = document.createElement('h6');
 		noH6.className = 'fw-semibold mb-0';
-		
 		const offset = page * size + index;
 		if (sortKey === 'id' && sortOrder === 'asc') {
 			noH6.textContent = offset + 1;
@@ -434,25 +435,13 @@ function renderChompList(chompList) {
 async function deleteMegazine(id) {
 	
 	try {
-		const token = localStorage.getItem('accessToken');
-
-		const headers = {
-			'Content-Type': 'application/json',
-			'Authorization': `Bearer ${token}`
-		}
-
-		const data = {
-			id: id
-		};
-
 		const response = await instance.delete(`/megazines/${id}`, {
-			data: data,
-			headers: headers
+			headers: getAuthHeaders()
 		});
 		
 		if (response.data.code === 'MEGAZINE_DELETE_SUCCESS') {
 			alertPrimary('매거진이 성공적으로 삭제되었습니다.');
-			fetchChompList();
+			fetchChompList(false);
 		}
 	}
 	catch (error) {
@@ -496,18 +485,13 @@ async function deleteMegazine(id) {
 async function deleteVote(id) {
 	
 	try {
-		const data = {
-			id: id
-		};
-
 		const response = await instance.delete(`/votes/${id}`, {
-			data: data,
 			headers: getAuthHeaders()
 		});
 		
 		if (response.data.code === 'VOTE_DELETE_SUCCESS') {
 			alertPrimary('투표가 성공적으로 삭제되었습니다.');
-			fetchChompList();
+			fetchChompList(false);
 		}
 	}
 	catch (error) {
@@ -551,10 +535,6 @@ async function deleteVote(id) {
 async function deleteEvent(id) {
 	
 	try {
-		const data = {
-			id: id
-		};
-
 		const response = await instance.delete(`/events/${id}`, {
 			data: data,
 			headers: getAuthHeaders()
@@ -562,7 +542,7 @@ async function deleteEvent(id) {
 		
 		if (response.data.code === 'EVENT_DELETE_SUCCESS') {
 			alertPrimary('이벤트가 성공적으로 삭제되었습니다.');
-			fetchChompList();
+			fetchChompList(false);
 		}
 	}
 	catch (error) {
@@ -595,14 +575,3 @@ async function deleteEvent(id) {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-

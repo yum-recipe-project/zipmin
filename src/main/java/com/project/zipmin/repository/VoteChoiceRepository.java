@@ -1,5 +1,6 @@
 package com.project.zipmin.repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,5 +15,5 @@ public interface VoteChoiceRepository extends JpaRepository<VoteChoice, Integer>
 	
 	
 	void deleteAllByChompId(int chompId);
-	
+	void deleteAllByChompIdAndIdNotIn(int chompId, Collection<Integer> ids);
 }

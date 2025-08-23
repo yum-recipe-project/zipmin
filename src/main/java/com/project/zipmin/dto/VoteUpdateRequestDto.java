@@ -12,11 +12,10 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class VoteUpdateRequestDto {
 	
-	private int id;
+	private Integer id;
 	private String title;
 	private Date opendate;
 	private Date closedate;
-	private String category;
 	
-	private List<VoteChoiceReadResponseDto> choiceList;
+	private List<VoteChoiceUpdateRequestDto> choiceList;
 }

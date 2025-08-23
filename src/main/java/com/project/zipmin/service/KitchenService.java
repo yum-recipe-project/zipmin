@@ -60,7 +60,7 @@ public class KitchenService {
 		List<GuideReadResponseDto> guideDtoList = new ArrayList<GuideReadResponseDto>();
 		for (Guide guide : guidePage) {
 			GuideReadResponseDto guideDto = guideMapper.toReadResponseDto(guide);
-			guideDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("guide", guide.getId()));
+			guideDto.setLikecount(likeService.countLike("guide", guide.getId()));
 			
 			// 좋아요 여부 조회
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -99,7 +99,7 @@ public class KitchenService {
 		List<GuideReadResponseDto> guideDtoList = new ArrayList<GuideReadResponseDto>();
 		for (Guide guide : guidePage) {
 			GuideReadResponseDto guideDto = guideMapper.toReadResponseDto(guide);
-			guideDto.setLikecount(likeService.countLikesByTablenameAndRecodenum("guide", guide.getId()));
+			guideDto.setLikecount(likeService.countLike("guide", guide.getId()));
 			
 			// 좋아요 여부 조회
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

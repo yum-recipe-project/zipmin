@@ -17,6 +17,12 @@
 					</div>
 					
 					<div class="form-group">
+						<label>이미지</label>
+						<input class="form-control" type="file" id="writeMegazineImageInput">
+						<p id="writeMegazineImageHint" class="danger">이미지를 입력해주세요.</p>
+					</div>
+					
+					<div class="form-group">
 						<label>내용</label>
 						<textarea class="form-control" id="writeMegazineContentInput" name="content" style="height: 200px;" placeholder="내용을 입력해주세요"></textarea>
 						<p id="writeMegazineContentHint" class="danger">내용을 입력해주세요.</p>

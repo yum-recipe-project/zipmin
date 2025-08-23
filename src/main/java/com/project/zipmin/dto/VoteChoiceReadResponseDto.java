@@ -13,7 +13,7 @@ public class VoteChoiceReadResponseDto {
 	private String choice;
 	private int chompId;
 	
-	private int count;
-	private double rate;
+	private int recordcount;
+	private double recordrate;
 	
 }

@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -58,6 +59,7 @@ public class Comment {
 
 	@Builder.Default
 	@OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
+	@OrderBy("id ASC")
 	private List<Comment> subcomment = new ArrayList<Comment>();
 	
 	@Formula("(SELECT COUNT(*) FROM likes l WHERE l.recodenum = id AND l.tablename = 'comments')")

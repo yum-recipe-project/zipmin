@@ -21,9 +21,9 @@ public enum ReportErrorCode implements Code {
 	REPORT_READ_LIST_FAIL(HttpStatus.BAD_REQUEST, "신고 목록 조회 실패"),
 	REPORT_CREATE_FAIL(HttpStatus.BAD_REQUEST, "신고 작성 실패"),
 	REPORT_DELETE_FAIL(HttpStatus.BAD_REQUEST, "신고 삭제 실패"),
-	REPORT_READ_COUNT_FAIL(HttpStatus.BAD_REQUEST, "신고 개수 조회 실패"),
 	
-	// 비즈니스 로직
+	REPORT_COUNT_FAIL(HttpStatus.BAD_REQUEST, "신고 집계 실패"),
+	REPORT_EXIST_FAIL(HttpStatus.BAD_REQUEST, "신고 존재 여부 확인 실패"),
 	REPORT_DUPLICATE(HttpStatus.CONFLICT, "신고 중복 작성 시도"),
 	
 	// 기타

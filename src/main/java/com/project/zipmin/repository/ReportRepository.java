@@ -15,6 +15,6 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
 	
 	boolean existsByTablenameAndRecodenumAndUserId(String tablename, int recodenum, int userId);
 	
-	long countByTablenameAndRecodenum(String tablename, int recodenum);
+	int countByTablenameAndRecodenum(String tablename, int recodenum);
 	
 }

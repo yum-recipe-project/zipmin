@@ -21,3 +21,4 @@
 <script src="/js/common/header.js" defer></script>
 <script src="/js/common/util.js"></script>
 <script src="/js/common/jwt.js"></script>
+<script src="/js/common/pagination.js"></script>

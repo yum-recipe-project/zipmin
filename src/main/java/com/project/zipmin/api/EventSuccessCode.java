@@ -12,7 +12,6 @@ public enum EventSuccessCode implements Code {
 	// 데이터 처리
 	EVENT_CREATE_SUCCESS(HttpStatus.CREATED, "이벤트 작성 성공"),
 	EVENT_READ_SUCCESS(HttpStatus.OK, "이벤트 조회 성공"),
-	EVENT_READ_LIST_SUCCESS(HttpStatus.OK, "이벤트 목록 조회 성공"),
 	EVENT_UPDATE_SUCCESS(HttpStatus.OK, "이벤트 수정 성공"),
 	EVENT_DELETE_SUCCESS(HttpStatus.OK, "이벤트 삭제 성공");
 	

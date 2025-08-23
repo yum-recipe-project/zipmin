@@ -27,6 +27,14 @@ public class RecipeReadResponseDto {
 	private List<RecipeStockReadResponseDto> stockList;
 	private List<RecipeStepReadResponseDto> stepList;
 	
-	private Double rate;
+	private int commentcount;
+	private int likecount;
+	private int reportcount;
+	private int reviewcount;
+	private Double reviewscore;
 	
+	private String nickname;
+	
+	// 냉파용 (수정 필요)
+	private Double rate;
 }

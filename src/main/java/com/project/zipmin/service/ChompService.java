@@ -23,7 +23,6 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ChompErrorCode;
 import com.project.zipmin.api.EventErrorCode;
 import com.project.zipmin.api.MegazineErrorCode;
-import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.ChompReadResponseDto;
 import com.project.zipmin.dto.EventCreateRequestDto;
@@ -175,7 +174,7 @@ public class ChompService {
 			
 			// 옵션 목록
 			if ("vote".equals(chompDto.getCategory())) {
-				List<VoteChoice> choiceList = choiceRepository.findByChompId(chompDto.getId());
+				List<VoteChoice> choiceList = choiceRepository.findAllByChompId(chompDto.getId());
 				List<VoteChoiceReadResponseDto> choiceDtoList = new ArrayList<>();
 				for (VoteChoice choice : choiceList) {
 					VoteChoiceReadResponseDto choiceDto = choiceMapper.toReadResponseDto(choice);
@@ -207,7 +206,7 @@ public class ChompService {
 		
 		// 투표 옵션 목록 조회
 		try {
-			List<VoteChoice> choiceList = choiceRepository.findByChompId(id);
+			List<VoteChoice> choiceList = choiceRepository.findAllByChompId(id);
 			
 			// 투표 옵션 목록 응답 구성
 			List<VoteChoiceReadResponseDto> choiceDtoList = new ArrayList<>();

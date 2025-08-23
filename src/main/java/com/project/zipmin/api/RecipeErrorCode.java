@@ -39,8 +39,8 @@ public enum RecipeErrorCode implements Code {
     RECIPE_CATEGORY_DELETE_FAIL(HttpStatus.BAD_REQUEST, "카테고리 삭제 실패"),
     
     RECIPE_STOCK_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 재료를 찾을 수 없음"),
-    RECIPE_STOCK_CREATE_FAIL(HttpStatus.BAD_REQUEST, "레시피 재료 작성 실패"),
     RECIPE_STOCK_READ_LIST_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "레시피 재료 목록 조회 실패"),
+    RECIPE_STOCK_CREATE_FAIL(HttpStatus.BAD_REQUEST, "레시피 재료 작성 실패"),
     RECIPE_STOCK_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "레시피 재료 수정 실패"),
     RECIPE_STOCK_DELETE_FAIL(HttpStatus.BAD_REQUEST, "레시피 재료 삭제 실패"),
     

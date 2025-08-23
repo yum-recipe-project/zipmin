@@ -32,6 +32,6 @@ public interface RecipeCategoryMapper {
 	RecipeCategory toEntity(RecipeCategoryReadResponseDto categoryDto);
 	
 	@Mapping(target = "recipeId", source = "recipe.id")
-	RecipeCategoryReadResponseDto toReadRequestDto(RecipeCategory category);
+	RecipeCategoryReadResponseDto toReadResponseDto(RecipeCategory category);
 	
 }

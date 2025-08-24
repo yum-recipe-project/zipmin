@@ -4,16 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.method.P;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.EventErrorCode;
 import com.project.zipmin.api.RecipeErrorCode;
 import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.RecipeCategoryCreateRequestDto;
@@ -56,16 +61,21 @@ public class RecipeService {
 	private final RecipeStepRepository stepRepository;
 	
 	private final UserService userService;
+	private final FileService fileService;
 	
 	private final RecipeMapper recipeMapper;
 	private final RecipeCategoryMapper categoryMapper;
 	private final RecipeStockMapper stockMapper;
 	private final RecipeStepMapper stepMapper;
 	
+	@Value("${app.upload.public-path:/files}")
+	private String publicPath;
 	
 	
 	
 	
+	
+	// 레시피 목록 조회
 	public Page<RecipeReadResponseDto> readRecipePage(List<String> categoryList, String keyword, String sort, Pageable pageable) {
 		
 		// 입력값 검증
@@ -273,9 +283,9 @@ public class RecipeService {
 	
 	
 	// 레시피를 작성하는 함수
-	public RecipeCreateResponseDto createRecipe(RecipeCreateRequestDto recipeRequestDto) {
+	public RecipeCreateResponseDto createRecipe(RecipeCreateRequestDto recipeRequestDto, MultipartFile recipeImage, MultiValueMap<String, MultipartFile> stepImageMap) {
 		
-		// 입력값 검증
+		// 입력값 검증 (레시피)
 		if (recipeRequestDto == null || recipeRequestDto.getTitle() == null
 				|| recipeRequestDto.getImage() == null || recipeRequestDto.getIntroduce() == null
 				|| recipeRequestDto.getCooklevel() == null || recipeRequestDto.getCooktime() == null
@@ -283,36 +293,117 @@ public class RecipeService {
 				|| recipeRequestDto.getUserId() == null) {
 			throw new ApiException(RecipeErrorCode.RECIPE_INVALID_INPUT);
 		}
-		// *** 여기에 입력값 검증 추가 ***
+		if (recipeImage == null) {
+			throw new ApiException(RecipeErrorCode.RECIPE_INVALID_INPUT);
+		}
+		// 입력값 검증 (카테고리)
+		if (recipeRequestDto.getCategoryDtoList() == null) {
+			throw new ApiException(RecipeErrorCode.RECIPE_CATEGORY_INVALID_INPUT);
+		}
+		for (RecipeCategoryCreateRequestDto categoryDto : recipeRequestDto.getCategoryDtoList()) {
+			if (categoryDto.getType() == null || categoryDto.getTag() == null) {
+				throw new ApiException(RecipeErrorCode.RECIPE_CATEGORY_INVALID_INPUT);
+			}
+		}
+		// 입력값 검증 (재료)
+		if (recipeRequestDto.getStockDtoList() == null) {
+			throw new ApiException(RecipeErrorCode.RECIPE_STOCK_INVALID_INPUT);
+		}
+		for (RecipeStockCreateRequestDto stockDto : recipeRequestDto.getStockDtoList()) {
+			if (stockDto.getName() == null || stockDto.getAmount() == null || stockDto.getUnit() == null) {
+				throw new ApiException(RecipeErrorCode.RECIPE_STOCK_INVALID_INPUT);
+			}
+		}
+		// 입력값 검증 (조리순서)
+		if (recipeRequestDto.getStepDtoList() == null) {
+			throw new ApiException(RecipeErrorCode.RECIPE_STEP_INVALID_INPUT);
+		}
+		for (RecipeStepCreateRequestDto stepDto : recipeRequestDto.getStepDtoList()) {
+			if (stepDto.getContent() == null) {
+				throw new ApiException(RecipeErrorCode.RECIPE_CATEGORY_INVALID_INPUT);
+			}
+		}
 		
-		Recipe recipe = recipeMapper.toEntity(recipeRequestDto);
+		// 레시피 파일 저장
+		try {
+			String image = fileService.store(recipeImage);
+			recipeRequestDto.setImage(image);
+		}
+		catch (Exception e) {
+			throw new ApiException(EventErrorCode.EVENT_FILE_UPLOAD_FAIL);
+		}
 		
 		// 레시피 저장
+		Recipe recipe = recipeMapper.toEntity(recipeRequestDto);
 		try {
 			recipe = recipeRepository.save(recipe);
 			RecipeCreateResponseDto recipeResponseDto = recipeMapper.toCreateResponseDto(recipe);
+			
 			
 			// 카테고리 저장
 			List<RecipeCategoryCreateResponseDto> categoryDtoList = new ArrayList<>();
 			for (RecipeCategoryCreateRequestDto categoryDto : recipeRequestDto.getCategoryDtoList()) {
 				categoryDto.setRecipeId(recipeResponseDto.getId());
-				categoryDtoList.add(createCategory(categoryDto));
+				RecipeCategory category = categoryMapper.toEntity(categoryDto);
+				
+				// 카테고리 저장
+				try {
+					category = categoryRepository.save(category);
+				}
+				catch (Exception e) {
+					throw new ApiException(RecipeErrorCode.RECIPE_CATEGORY_CREATE_FAIL);
+				}
+				
+				categoryDtoList.add(categoryMapper.toCreateResponseDto(category));
 			}
 			recipeResponseDto.setCategoryDto(categoryDtoList);
-
+			
 			// 재료 저장
 			List<RecipeStockCreateResponseDto> stockDtoList = new ArrayList<>();
 			for (RecipeStockCreateRequestDto stockDto : recipeRequestDto.getStockDtoList()) {
 				stockDto.setRecipeId(recipeResponseDto.getId());
-				stockDtoList.add(createStock(stockDto));
+				RecipeStock stock = stockMapper.toEntity(stockDto);				
+				
+				try {
+					stock = stockRepository.save(stock);
+				}
+				catch (Exception e) {
+					throw new ApiException(RecipeErrorCode.RECIPE_STOCK_CREATE_FAIL);
+				}
+				
+				stockDtoList.add(stockMapper.toCreateResponseDto(stock));
 			}
 			recipeResponseDto.setStockDto(stockDtoList);
 			
 			// 조리 과정 저장
 			List<RecipeStepCreateResponseDto> stepDtoList = new ArrayList<>();
-			for (RecipeStepCreateRequestDto stepDto : recipeRequestDto.getStepDtoList()) {
+			for (int i = 0; i < recipeRequestDto.getStepDtoList().size(); i++) {
+				RecipeStepCreateRequestDto stepDto = recipeRequestDto.getStepDtoList().get(i);
 				stepDto.setRecipeId(recipeResponseDto.getId());
-				stepDtoList.add(createStep(stepDto));
+				
+				// 조리 과정 파일 저장
+				String key = "stepImage[" + i + "]";
+				MultipartFile stepImage = (stepImageMap != null) ? stepImageMap.getFirst(key) : null;
+				try {
+					if (stepImage != null && !stepImage.isEmpty()) {
+						String image = fileService.store(stepImage);
+						stepDto.setImage(image);
+					}
+				}
+				catch (Exception e) {
+					throw new ApiException(EventErrorCode.EVENT_FILE_UPLOAD_FAIL);
+				}
+				
+				// 조리 과정 저장
+				RecipeStep step = stepMapper.toEntity(stepDto);
+				try {
+					step = stepRepository.save(step);
+				}
+				catch (Exception e) {
+					throw new ApiException(RecipeErrorCode.RECIPE_STEP_CREATE_FAIL);
+				}
+				
+				stepDtoList.add(stepMapper.toCreateResponseDto(step));
 			}
 			recipeResponseDto.setStepDto(stepDtoList);
 			
@@ -322,7 +413,7 @@ public class RecipeService {
 			throw new ApiException(RecipeErrorCode.RECIPE_CREATE_FAIL);
 		}
 	}
-
+	
 	
 	
 	
@@ -368,95 +459,6 @@ public class RecipeService {
 		}
 		catch (Exception e) {
 			throw new ApiException(RecipeErrorCode.RECIPE_DELETE_FAIL);
-		}
-	}
-	
-
-
-	
-	
-	// 레시피 카테고리 작성
-	public RecipeCategoryCreateResponseDto createCategory(RecipeCategoryCreateRequestDto categoryDto) {
-		
-		// 입력값 검증
-		if (categoryDto == null || categoryDto.getType() == null || categoryDto.getTag() == null || categoryDto.getRecipeId() == null) {
-			throw new ApiException(RecipeErrorCode.RECIPE_CATEGORY_INVALID_INPUT);
-		}
-		
-		// 레시피 존재 여부 판단
-		if (!recipeRepository.existsById(categoryDto.getRecipeId())) {
-			throw new ApiException(RecipeErrorCode.RECIPE_NOT_FOUND);
-		}
-		
-		RecipeCategory category = categoryMapper.toEntity(categoryDto);
-		
-		// 카테고리 저장
-		try {
-			category = categoryRepository.save(category);
-			return categoryMapper.toCreateResponseDto(category);
-		}
-		catch (Exception e) {
-			throw new ApiException(RecipeErrorCode.RECIPE_CATEGORY_CREATE_FAIL);
-		}
-
-	}
-	
-	
-	
-
-	
-	
-	// 재료 작성
-	public RecipeStockCreateResponseDto createStock(RecipeStockCreateRequestDto stockDto) {
-		
-		// 입력값 검증
-		if (stockDto == null || stockDto.getName() == null || stockDto.getAmount() == null || stockDto.getUnit() == null || stockDto.getRecipeId() == null) {
-			throw new ApiException(RecipeErrorCode.RECIPE_STOCK_INVALID_INPUT);
-		}
-		
-		// 레시피 존재 여부 판단
-		if (!recipeRepository.existsById(stockDto.getRecipeId())) {
-			throw new ApiException(RecipeErrorCode.RECIPE_NOT_FOUND);
-		}
-		
-		RecipeStock stock = stockMapper.toEntity(stockDto);
-		
-		// 재료 저장
-		try {
-			stock = stockRepository.save(stock);
-			return stockMapper.toCreateResponseDto(stock);
-		}
-		catch (Exception e) {
-			throw new ApiException(RecipeErrorCode.RECIPE_STOCK_CREATE_FAIL);
-		}
-	}
-	
-
-		
-	
-	
-	// 조리 과정 작성
-	public RecipeStepCreateResponseDto createStep(RecipeStepCreateRequestDto stepDto) {
-		
-		// 입력값 검증
-		if (stepDto == null || stepDto.getContent() == null || stepDto.getRecipeId() == null) {
-			throw new ApiException(RecipeErrorCode.RECIPE_STEP_INVALID_INPUT);
-		}
-		
-		// 레시피 존재 여부 판단
-		if (!recipeRepository.existsById(stepDto.getRecipeId())) {
-			throw new ApiException(RecipeErrorCode.RECIPE_NOT_FOUND);
-		}
-		
-		RecipeStep step = stepMapper.toEntity(stepDto);
-		
-		// 조리 과정 저장
-		try {
-			step = stepRepository.save(step);
-			return stepMapper.toCreateResponseDto(step);
-		}
-		catch (Exception e) {
-			throw new ApiException(RecipeErrorCode.RECIPE_STEP_CREATE_FAIL);
 		}
 	}
 

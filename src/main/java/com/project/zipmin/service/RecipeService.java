@@ -231,7 +231,6 @@ public class RecipeService {
 			throw new ApiException(RecipeErrorCode.RECIPE_CATEGORY_READ_LIST_FAIL);
 		}
 		
-		
 		// 레시피 재료 목록 조회
 		try {
 			List<RecipeStock> stockList = stockRepository.findAllByRecipeId(id);

@@ -68,14 +68,38 @@ document.addEventListener('DOMContentLoaded', async function() {
 			document.querySelectorAll('.review_count[data-id]').forEach(reviewcount => { reviewcount.innerText = result.data.reviewcount; });
 			document.querySelectorAll('.comment_count[data-id]').forEach(commentcount => { commentcount.innerText = result.data.commentcount; });
 			
-			// 구독자 정보 렌더링
+			// ***** 구독자 정보 렌더링 *****
 		}
 		
-		/***** 에러 코드 추가 필요 *****/
 		if (result.code === 'RECIPE_READ_FAIL') {
-			alert('');
+			alert('레시피 조회에 실패했습니다.');
+			location.href = '/recipe/listRecipe.do';
 		}
-		else if (result.code === 'INTERNAL_SERVER_ERROR') {
+		else if (result.code === 'RECIPE_CATEGORY_READ_LIST_FAIL') {
+			alert('레시피 조회에 실패했습니다.');
+			location.href = '/recipe/listRecipe.do';
+		}
+		else if (result.code === 'RECIPE_STOCK_READ_LIST_FAIL') {
+			alert('레시피 조회에 실패했습니다.');
+			location.href = '/recipe/listRecipe.do';
+		}
+		else if (result.code === 'RECIPE_STEP_READ_LIST_FAIL') {
+			alert('레시피 조회에 실패했습니다.');
+			location.href = '/recipe/listRecipe.do';
+		}
+		else if (result.code === 'USER_INVALID_INPUT') {
+			alert('입력값이 유효하지 않습니다.');
+			location.href = '/recipe/listRecipe.do';
+		}
+		else if (result.code === 'RECIPE_NOT_FOUND') {
+			alert('해당 레시피를 찾을 수 없습니다.');
+			location.href = '/recipe/listRecipe.do';
+		}
+		else if (result.code === 'USER_NOT_FOUND') {
+			alert('해당 사용자를 찾을 수 없습니다.');
+			location.href = '/recipe/listRecipe.do';
+		}
+ 		else if (result.code === 'INTERNAL_SERVER_ERROR') {
 			alert('서버 내부 오류가 발생했습니다.');
 			location.href = '/recipe/listRecipe.do';
 		}

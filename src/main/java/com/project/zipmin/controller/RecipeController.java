@@ -30,8 +30,21 @@ import com.project.zipmin.dto.RecipeCreateResponseDto;
 import com.project.zipmin.dto.RecipeReadResponseDto;
 import com.project.zipmin.service.RecipeService;
 import com.project.zipmin.service.UserService;
+import com.project.zipmin.swagger.InternalServerErrorResponse;
+import com.project.zipmin.swagger.RecipeCategoryReadListFailResponse;
+import com.project.zipmin.swagger.RecipeNotFoundResponse;
+import com.project.zipmin.swagger.RecipeReadSuccessResponse;
+import com.project.zipmin.swagger.RecipeStepReadListFailResponse;
+import com.project.zipmin.swagger.RecipeStockReadListFailResponse;
+import com.project.zipmin.swagger.UserInvalidInputResponse;
+import com.project.zipmin.swagger.UserNotFoundResponse;
+import com.project.zipmin.swagger.VoteUpdateSuccessResponse;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 public class RecipeController {
@@ -69,7 +82,60 @@ public class RecipeController {
 	
 	
 	
-	// 특정 레시피 조회
+	@Operation(
+		    summary = "레시피 조회"
+		)
+		@ApiResponses(value = {
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(
+					responseCode = "200",
+					description = "레시피 조회 성공",
+					content = @Content(
+							mediaType = "application/json",
+							schema = @Schema(implementation = RecipeReadSuccessResponse.class))),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(
+					responseCode = "400",
+					description = "레시피 카테고리 조회 실패",
+					content = @Content(
+							mediaType = "application/json",
+							schema = @Schema(implementation = RecipeCategoryReadListFailResponse.class))),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(
+					responseCode = "400",
+					description = "레시피 재료 조회 실패",
+					content = @Content(
+							mediaType = "application/json",
+							schema = @Schema(implementation = RecipeStockReadListFailResponse.class))),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(
+					responseCode = "400",
+					description = "레시피 조리과정 조회 실패",
+					content = @Content(
+							mediaType = "application/json",
+							schema = @Schema(implementation = RecipeStepReadListFailResponse.class))),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(
+					responseCode = "400",
+					description = "입력값이 유효하지 않음",
+					content = @Content(
+							mediaType = "application/json",
+							schema = @Schema(implementation = UserInvalidInputResponse.class))),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(
+					responseCode = "404",
+					description = "해당 레시피를 찾을 수 없음",
+					content = @Content(
+							mediaType = "application/json",
+							schema = @Schema(implementation = RecipeNotFoundResponse.class))),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(
+					responseCode = "404",
+					description = "해당 사용자를 찾을 수 없음",
+					content = @Content(
+							mediaType = "application/json",
+							schema = @Schema(implementation = UserNotFoundResponse.class))),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(
+					responseCode = "500",
+					description = "서버 내부 오류",
+					content = @Content(
+							mediaType = "application/json",
+							schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
+	// 레시피 조회
 	@GetMapping("/recipes/{id}")
 	public ResponseEntity<?> viewRecipe(@Parameter(description = "레시피의 일련번호") @PathVariable int id) {
 		

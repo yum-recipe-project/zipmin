@@ -260,8 +260,53 @@ function renderRecipeList(recipeList) {
 
 
 
-
-
+/**
+ * 레시피를 삭제하는 함수
+ */
+async function deleteRecipe(id) {
+	
+	try {
+		const response = await instance.delete(`/recipes/${id}`, {
+			headers: getAuthHeaders()
+		});
+		
+		if (response.data.code === 'RECIPE_DELETE_SUCCESS') {
+			alertPrimary('레시피가 성공적으로 삭제되었습니다.');
+			fetchRecipeList(false);
+		}
+	}
+	catch (error) {
+		const code = error?.response?.data?.code;
+		
+		if (code === 'RECIPE_DELETE_FAIL') {
+			alertDanger('레시피 삭제에 실패했습니다.');
+		}
+		else if (code === 'RECIPE_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'RECIPE_UNAUTHORIZED_ACCESS') {
+			alertDanger('로그인되지 않은 사용자입니다.');
+		}
+		else if (code === 'RECIPE_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (code === 'RECIPE_NOT_FOUND') {
+			alertDanger('해당 레시피를 찾을 수 없습니다.');
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			alertDanger('해당 사용자를 찾을 수 없습니다.');
+		}
+		else if (code == 'INTERNAL_SERVER_ERROR') {
+			alertDanger('서버 내부 오류가 발생했습니다.');
+		}
+		else {
+			console.log(error);
+		}
+	}
+}
 
 
 

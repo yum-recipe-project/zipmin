@@ -1,5 +1,6 @@
 package com.project.zipmin.entity;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -37,6 +39,7 @@ public class Recipe {
 	private String image;
 	private String title;
 	private String introduce;
+	private Date postdate;
 	private String cooklevel;
 	private String cooktime;
 	private String spicy;
@@ -64,6 +67,13 @@ public class Recipe {
 	@Formula("(SELECT COUNT(*) FROM review r WHERE r.recipe_id = id)")
 	private int reviewcount;
 	
-	@Formula("(SELECT NVL(AVG(r.score), 0) FROM review r WHERE r.recipe_id = id)")
+	@Formula("(SELECT NVL(ROUND(AVG(r.score), 1), 0) FROM review r WHERE r.recipe_id = id)")
 	private double reviewscore;
+	
+	@PrePersist
+    public void prePersist() {
+        if (this.postdate == null) {
+            this.postdate = new Date();
+        }
+    }
 }

@@ -259,7 +259,7 @@ function renderCommentList(commentList) {
 	reportCount.className = 'fw-semibold mb-0';
 	reportCount.textContent = comment.reportcount;
 	
-	// 신고 보기 버튼
+	// 신고 보기
 	if ((comment.reportcount ?? 0) > 0) {
 		reportCount.className = 'fw-semibold mb-0 view';
 		reportCount.dataset.bsToggle = 'modal';

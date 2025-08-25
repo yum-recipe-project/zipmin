@@ -16,6 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -39,10 +40,7 @@ public class Comment {
 	@SequenceGenerator(name = "seq_comments_id", sequenceName = "SEQ_COMMENTS_ID", allocationSize = 1)
 	private int id;
 	
-	@CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
 	private Date postdate;
-	
 	private String content;
 	private String tablename;
 	private int recodenum;
@@ -67,5 +65,12 @@ public class Comment {
 	
 	@Formula("(SELECT COUNT(*) FROM report r WHERE r.recodenum = id AND r.tablename = 'comments')")
 	private int reportcount;
+	
+	@PrePersist
+    public void prePersist() {
+        if (this.postdate == null) {
+            this.postdate = new Date();
+        }
+    }
 	
 }

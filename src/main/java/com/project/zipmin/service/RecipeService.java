@@ -39,6 +39,7 @@ import com.project.zipmin.entity.RecipeCategory;
 import com.project.zipmin.entity.RecipeStep;
 import com.project.zipmin.entity.RecipeStock;
 import com.project.zipmin.entity.Role;
+import com.project.zipmin.entity.User;
 import com.project.zipmin.mapper.RecipeCategoryMapper;
 import com.project.zipmin.mapper.RecipeMapper;
 import com.project.zipmin.mapper.RecipeStepMapper;
@@ -98,6 +99,12 @@ public class RecipeService {
 					break;
 				case "title-asc":
 					sortSpec = Sort.by(Sort.Order.asc("title"), Sort.Order.desc("id"));
+					break;
+				case "postdate-desc":
+					sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id"));
+					break;
+				case "postdate-asc":
+					sortSpec = Sort.by(Sort.Order.asc("postdate"), Sort.Order.asc("id"));
 					break;
 				case "commentcount-desc":
 					sortSpec = Sort.by(Sort.Order.desc("commentcount"), Sort.Order.desc("id"));
@@ -166,6 +173,12 @@ public class RecipeService {
 		List<RecipeReadResponseDto> recipeDtoList = new ArrayList<RecipeReadResponseDto>();
 		for (Recipe recipe : recipePage) {
 			RecipeReadResponseDto recipeDto = recipeMapper.toReadResponseDto(recipe);
+			
+			// 작성자
+			UserReadResponseDto userDto = userService.readUserById(recipeDto.getId());
+			recipeDto.setUsername(userDto.getUsername());
+			recipeDto.setNickname(userDto.getNickname());
+			
 			recipeDtoList.add(recipeDto);
 		}
 		

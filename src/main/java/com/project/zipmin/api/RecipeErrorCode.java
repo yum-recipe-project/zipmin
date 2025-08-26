@@ -23,25 +23,21 @@ public enum RecipeErrorCode implements Code {
 	RECIPE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 레시피를 찾을 수 없음"),
     RECIPE_CREATE_FAIL(HttpStatus.BAD_REQUEST, "레시피 작성 실패"),
     RECIPE_READ_LIST_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "레시피 목록 조회 실패"),
-    RECIPE_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "레시피 수정 실패"),
     RECIPE_DELETE_FAIL(HttpStatus.BAD_REQUEST, "레시피 삭제 실패"),
     
     RECIPE_STEP_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 조리 과정을 찾을 수 없음"),
     RECIPE_STEP_CREATE_FAIL(HttpStatus.BAD_REQUEST, "조리 과정 작성 실패"),
     RECIPE_STEP_READ_LIST_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "조리 과정 목록 조회 실패"),
-    RECIPE_STEP_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "조리 과정 수정 실패"),
     RECIPE_STEP_DELETE_FAIL(HttpStatus.BAD_REQUEST, "조리 과정 삭제 실패"),
     
     RECIPE_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 카테고리를 찾을 수 없음"),
     RECIPE_CATEGORY_CREATE_FAIL(HttpStatus.BAD_REQUEST, "카테고리 작성 실패"),
     RECIPE_CATEGORY_READ_LIST_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "카테고리 목록 조회 실패"),
-    RECIPE_CATEGORY_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "카테고리 수정 실패"),
     RECIPE_CATEGORY_DELETE_FAIL(HttpStatus.BAD_REQUEST, "카테고리 삭제 실패"),
     
     RECIPE_STOCK_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 재료를 찾을 수 없음"),
-    RECIPE_STOCK_CREATE_FAIL(HttpStatus.BAD_REQUEST, "레시피 재료 작성 실패"),
     RECIPE_STOCK_READ_LIST_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "레시피 재료 목록 조회 실패"),
-    RECIPE_STOCK_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "레시피 재료 수정 실패"),
+    RECIPE_STOCK_CREATE_FAIL(HttpStatus.BAD_REQUEST, "레시피 재료 작성 실패"),
     RECIPE_STOCK_DELETE_FAIL(HttpStatus.BAD_REQUEST, "레시피 재료 삭제 실패"),
     
     RECIPE_LIKE_FAIL(HttpStatus.BAD_REQUEST, "레시피 좋아요 실패"),

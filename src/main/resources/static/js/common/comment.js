@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 		const payload = parseJwt(localStorage.getItem('accessToken'));
 		document.getElementById('login_state').style.display = 'block';
 		document.getElementById('logout_state').style.display = 'none';
-		document.querySelector('.login_user span').innerText = payload.nickname;
+		document.getElementById('writeCommentNickname').innerText = payload.nickname;
 	}
 	else {
 		document.getElementById('login_state').style.display = 'none';
@@ -168,10 +168,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	tablename = match ? match[1].toLowerCase() : null;
 	
 	// 정렬 버튼
-	document.querySelectorAll('.btn_sort_small').forEach(btn => {
+	document.querySelectorAll('.comment_order .btn_sort_small').forEach(btn => {
 		btn.addEventListener('click', function(event) {
 			event.preventDefault();
-			document.querySelector('.btn_sort_small.active')?.classList.remove('active');
+			document.querySelector('.comment_order .btn_sort_small.active')?.classList.remove('active');
 			btn.classList.add('active');
 			
 			sort = btn.dataset.sort;
@@ -217,6 +217,8 @@ async function fetchCommentList() {
 		});
 		
 		const result = await response.json();
+		
+		console.log(result);
 		
 		if (result.code === 'COMMENT_READ_LIST_SUCCESS') {
 			

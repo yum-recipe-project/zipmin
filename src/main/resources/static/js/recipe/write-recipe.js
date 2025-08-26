@@ -365,12 +365,12 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 			
 			try {
-				const token = localStorage.getItem('accessToken');
-				const payload = parseJwt(token);
+				const payload = parseJwt(localStorage.getItem('accessToken'));
 				
-				const data = {
-					image_url: "https://example.com/recipe.jpg",
-					title: form.title.value,
+				const formdata = new FormData();
+				formdata.append('recipeRequestDto', new Blob([JSON.stringify({
+					title: form.title.value.trim(),
+					image: form.image.value.trim(),
 					introduce: form.introduce.value,
 					cooklevel: form.cooklevel.value,
 					cooktime: form.cooktime.value,
@@ -379,7 +379,6 @@ document.addEventListener('DOMContentLoaded', function() {
 					tip: form.tip.value,
 					youtube_url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
 					user_id: payload.id,
-					
 					category_dto_list: [
 						{ type: '종류별', tag: form.categoryType.value },
 						{ type: '상황별', tag: form.categoryCase.value },
@@ -387,13 +386,25 @@ document.addEventListener('DOMContentLoaded', function() {
 						{ type: '방법별', tag: form.categoryWay.value }
 					],
 					
-					stock_dto_list: getIngredientList(),
+					stock_dto_list: getStockList(),
 					step_dto_list: getStepList(),
-				};
+										
+				})], { type: 'application/json' }));
 				
-				console.log(data);
 				
-				const response = await instance.post('/recipes', data);
+				const recipeImage = document.getElementById('writeRecipeImageInput'); 
+			    if (recipeImage.files.length > 0) {
+			        formdata.append('recipeImage', recipeImage.files[0]);
+			    }
+				
+				console.log(formdata);
+				
+				const response = await instance.post('/recipes', formdata, {
+					headers: {
+						...getAuthHeaders(),
+						'Content-Type': undefined
+					}
+				});
 						
 				if (response.data.code === 'RECIPE_CREATE_SUCCESS') {
 					alert('맛있는 레시피가 등록되었어요!');
@@ -414,23 +425,22 @@ document.addEventListener('DOMContentLoaded', function() {
 /**
  * 
  */
-function getIngredientList() {
-	const ingredientList = [];
+function getStockList() {
+	const stockList = [];
 	document.querySelectorAll('.ingredient_row').forEach(row => {
 		const rawAmount = row.querySelector('.ingredient_amount_input').value;
-		const parsed = rawAmount.match(/^(\d+)(.*)$/); // 숫자 + 단위 구분
+		const parsed = rawAmount.match(/^(\d+)(.*)$/);
 		const amount = parsed ? parsed[1].trim() : '';
 		const unit = parsed ? parsed[2].trim() : '';
 
-		ingredientList.push({
+		stockList.push({
 			name: row.querySelector('.ingredient_input').value,
-			// 이거 수정 필요
 			amount: amount,
 			unit: unit,
 			note: row.querySelector('.ingredient_note_input').value,
 		});
 	});
-	return ingredientList;
+	return stockList;
 }
 
 

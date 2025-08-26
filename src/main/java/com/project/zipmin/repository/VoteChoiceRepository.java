@@ -11,7 +11,7 @@ import com.project.zipmin.entity.VoteChoice;
 @Repository
 public interface VoteChoiceRepository extends JpaRepository<VoteChoice, Integer> {
 	
-	List<VoteChoice> findByChompId(int chompId);
+	List<VoteChoice> findAllByChompId(int chompId);
 	
 	
 	void deleteAllByChompId(int chompId);

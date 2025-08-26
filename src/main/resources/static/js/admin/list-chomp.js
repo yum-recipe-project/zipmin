@@ -4,7 +4,7 @@
 let totalPages = 0;
 let totalElements = 0;
 let page = 0;
-const size = 15;
+const size = 20;
 let keyword = '';
 let category = '';
 let sortKey = 'id'
@@ -536,7 +536,6 @@ async function deleteEvent(id) {
 	
 	try {
 		const response = await instance.delete(`/events/${id}`, {
-			data: data,
 			headers: getAuthHeaders()
 		});
 		

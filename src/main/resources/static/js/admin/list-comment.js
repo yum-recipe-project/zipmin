@@ -259,7 +259,7 @@ function renderCommentList(commentList) {
 	reportCount.className = 'fw-semibold mb-0';
 	reportCount.textContent = comment.reportcount;
 	
-	// 신고 보기 버튼
+	// 신고 보기
 	if ((comment.reportcount ?? 0) > 0) {
 		reportCount.className = 'fw-semibold mb-0 view';
 		reportCount.dataset.bsToggle = 'modal';
@@ -338,8 +338,6 @@ async function deleteComment(id) {
 			headers: getAuthHeaders()
 		});
 		
-		console.log(response);
-		
 		if (response.data.code === 'COMMENT_DELETE_SUCCESS') {
 			alertPrimary('댓글이 성공적으로 삭제되었습니다.');
 			fetchCommentList(false);
@@ -358,9 +356,6 @@ async function deleteComment(id) {
 			alertDanger('로그인되지 않은 사용자입니다.');
 		}
 		else if (code === 'COMMENT_FORBIDDEN') {
-			alertDanger('접근 권한이 없습니다.');
-		}
-		else if (code === 'COMMENT_SUPER_ADMIN_FORBIDDEN') {
 			alertDanger('접근 권한이 없습니다.');
 		}
 		else if (code === 'COMMENT_NOT_FOUND') {

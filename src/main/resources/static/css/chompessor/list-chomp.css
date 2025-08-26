@@ -85,6 +85,7 @@
 	height: 291px;
 	margin-bottom: 16px;
 	border-radius: 4px;
+	border: 1px solid #ddd;
 }
 
 #container .content .forum_content .forum_list .forum .forum_thumbnail img {

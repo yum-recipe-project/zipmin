@@ -536,7 +536,6 @@ async function deleteEvent(id) {
 	
 	try {
 		const response = await instance.delete(`/events/${id}`, {
-			data: data,
 			headers: getAuthHeaders()
 		});
 		

@@ -74,6 +74,7 @@ async function fetchClassList() {
 	try {
 		const params = new URLSearchParams({
 			category: category,
+			approval: 'APPROVED',
 			status: status,
 			keyword : keyword,
 			page : page,

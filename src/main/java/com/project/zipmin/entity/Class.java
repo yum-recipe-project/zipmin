@@ -2,6 +2,8 @@ package com.project.zipmin.entity;
 
 import java.util.Date;
 
+import org.hibernate.annotations.Formula;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -48,6 +50,9 @@ public class Class {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")
 	private User user;
+	
+	@Formula("(SELECT COUNT(*) FROM class_apply ca WHERE ca.class_id = id)")
+	private int applycount;
 	
 	@PrePersist
     public void prePersist() {

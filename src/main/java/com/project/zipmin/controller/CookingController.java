@@ -67,13 +67,14 @@ public class CookingController {
 	public ResponseEntity<?> listClass(
 			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
 			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
-			@Parameter(description = "상태", required = false) @RequestParam(required = false) String status,
+			@Parameter(description = "승인 상태", required = false) @RequestParam(required = false) String approval,
+			@Parameter(description = "진행 상태", required = false) @RequestParam(required = false) String status,
 			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
 		    @Parameter(description = "페이지 번호") @RequestParam int page,
 		    @Parameter(description = "페이지 크기") @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<ClassReadResponseDto> classPage = cookingService.readClassPage(category, keyword, status, sort, pageable);
+		Page<ClassReadResponseDto> classPage = cookingService.readClassPage(category, keyword, approval, status, sort, pageable);
 		
 		return ResponseEntity.status(ClassSuccessCode.CLASS_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_READ_LIST_SUCCESS, classPage));

@@ -24,11 +24,9 @@ public class CommentReadResponseDto {
 	private Integer commId;
 	private Integer userId;
 	
-	
-	// 수정
+	private String username;
 	private String nickname;
 	private String role;
-	
 	
 	private int likecount;
 	private int reportcount;

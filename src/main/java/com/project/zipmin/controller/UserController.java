@@ -702,8 +702,8 @@ public class UserController {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<ClassMyApplyReadResponseDto> applyPage = cookingService.readApplyClassPageByUserId(id, sort, pageable);
 		
-		return ResponseEntity.status(ClassSuccessCode.COOKING_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(ClassSuccessCode.COOKING_READ_LIST_SUCCESS, applyPage));
+		return ResponseEntity.status(ClassSuccessCode.CLASS_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(ClassSuccessCode.CLASS_READ_LIST_SUCCESS, applyPage));
 	}
 	
 	

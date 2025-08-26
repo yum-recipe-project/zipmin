@@ -224,6 +224,7 @@ public class CommentService {
 			CommentReadResponseDto commentDto = commentMapper.toReadResponseDto(comment);
 			
 			// 닉네임 좋아요수 신고수
+			commentDto.setUsername(comment.getUser().getUsername());
 			commentDto.setNickname(comment.getUser().getNickname());
 			commentDto.setLikecount(likeService.countLike("comments", comment.getId()));
 			commentDto.setReportcount(reportService.countReport("comments", comment.getId()));

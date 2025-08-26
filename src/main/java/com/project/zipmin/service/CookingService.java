@@ -29,6 +29,7 @@ import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.ClassScheduleReadResponseDto;
 import com.project.zipmin.dto.ClassTargetReadResponseDto;
 import com.project.zipmin.dto.ClassTutorReadResponseDto;
+import com.project.zipmin.entity.Approval;
 import com.project.zipmin.entity.Class;
 import com.project.zipmin.entity.ClassApply;
 import com.project.zipmin.entity.ClassSchedule;
@@ -75,7 +76,7 @@ public class CookingService {
 	
 	
 	// 클래스 목록 조회
-	public Page<ClassReadResponseDto> readClassPage(String category, String keyword, String status, String sort, Pageable pageable) {
+	public Page<ClassReadResponseDto> readClassPage(String category, String keyword, String approval, String status, String sort, Pageable pageable) {
 		
 		// 입력값 검증
 		if (pageable == null) {
@@ -92,6 +93,12 @@ public class CookingService {
 				case "id-asc":
 					sortSpec = Sort.by(Sort.Order.asc("id"));
 					break;
+				case "postdate-desc":
+					sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id"));
+					break;
+				case "postdate-asc":
+					sortSpec = Sort.by(Sort.Order.asc("postdate"), Sort.Order.asc("id"));
+					break;
 				case "eventdate-desc":
 					sortSpec = Sort.by(Sort.Order.desc("eventdate"), Sort.Order.desc("id"));
 					break;
@@ -104,6 +111,12 @@ public class CookingService {
 				case "title-asc":
 					sortSpec = Sort.by(Sort.Order.asc("title"), Sort.Order.desc("id"));
 					break;
+				case "applycount-desc":
+					sortSpec = Sort.by(Sort.Order.desc("applycount"), Sort.Order.desc("id"));
+					break;
+				case "applycount-asc":
+					sortSpec = Sort.by(Sort.Order.asc("applycount"), Sort.Order.desc("id"));
+					break;
 				default:
 					break;
 		    }
@@ -112,56 +125,120 @@ public class CookingService {
 		// 기존 페이지 객체에 정렬 주입
 		Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
 		
-		System.err.println("status = " + status);
-		
 		// 쿠킹클래스 목록 조회
 		Page<Class> classPage = null;
 		
 		try {
 			boolean hasCategory = category != null && !category.isBlank();
 			boolean hasKeyword = keyword != null && !keyword.isBlank();
+			boolean hasApproval = approval != null && !approval.isBlank();
 			boolean hasStatus = status != null && !status.isBlank();
 			Date today = new Date();
 			
-			if (!hasCategory) {
-				// 전체
-				if (!hasStatus) {
-					classPage = hasKeyword
-							? classRepository.findAllByTitleContainingIgnoreCase(keyword, sortedPageable)
-							: classRepository.findAll(sortedPageable);
+			// 승인 상태
+			Integer approvalCode = null;
+			if (hasApproval) {
+				try {
+					approvalCode = Approval.valueOf(approval).getCode();
 				}
-				else {
-					// 상태
-					if (status.equals("open")) {
-						classPage = hasKeyword
-								? classRepository.findAllByTitleContainingIgnoreCaseAndNoticedateAfter(keyword, today, sortedPageable)
-								: classRepository.findAllByNoticedateAfter(today, sortedPageable);
-					}
-					else if (status.equals("close")) {
-						classPage = hasKeyword
-								? classRepository.findAllByTitleContainingIgnoreCaseAndNoticedateBefore(keyword, today, sortedPageable)
-								: classRepository.findAllByNoticedateBefore(today, sortedPageable);
-					}
+				catch (Exception e) {
+					throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
 				}
 			}
-			else {
-				// 카테고리
+			
+			if (!hasCategory) {
+				// 전체 카테고리
 				if (!hasStatus) {
-					classPage = hasKeyword
-							? classRepository.findAllByCategoryAndTitleContainingIgnoreCase(category, keyword, sortedPageable)
-							: classRepository.findAllByCategory(category, sortedPageable);
-				}
-				else {
-					// 상태
-					if (status.equals("open")) {
+					// 진행 상태 없음
+					if (!hasApproval) {
+						// 승인 상태 없음
 						classPage = hasKeyword
-								? classRepository.findAllByCategoryAndTitleContainingIgnoreCaseAndNoticedateAfter(category, keyword, today, sortedPageable)
-								: classRepository.findAllByCategoryAndNoticedateAfter(category, today, sortedPageable);
+								? classRepository.findAllByTitleContainingIgnoreCase(keyword, sortedPageable)
+								: classRepository.findAll(sortedPageable);
 					}
-					else if (status.equals("close")) {
+					else {
+						// 승인 상태 있음
 						classPage = hasKeyword
-								? classRepository.findAllByCategoryAndTitleContainingIgnoreCaseAndNoticedateBefore(category, keyword, today, sortedPageable)
-								: classRepository.findAllByCategoryAndNoticedateBefore(category, today, sortedPageable);
+								? classRepository.findAllByApprovalAndTitleContainingIgnoreCase(approvalCode, keyword, sortedPageable)
+								: classRepository.findAllByApproval(approvalCode, sortedPageable);
+	                }
+	            }
+				else {
+					// 진행 상태 있음
+					if ("open".equals(status)) {
+						if (!hasApproval) {
+							classPage = hasKeyword
+									? classRepository.findAllByTitleContainingIgnoreCaseAndNoticedateAfter(keyword, today, sortedPageable)
+									: classRepository.findAllByNoticedateAfter(today, sortedPageable);
+							}
+						else {
+							classPage = hasKeyword
+									? classRepository.findAllByApprovalAndTitleContainingIgnoreCaseAndNoticedateAfter(approvalCode, keyword, today, sortedPageable)
+									: classRepository.findAllByApprovalAndNoticedateAfter(approvalCode, today, sortedPageable);
+						}
+					}
+					else if ("close".equals(status)) {
+						if (!hasApproval) {
+							classPage = hasKeyword
+									? classRepository.findAllByTitleContainingIgnoreCaseAndNoticedateBefore(keyword, today, sortedPageable)
+									: classRepository.findAllByNoticedateBefore(today, sortedPageable);
+						}
+						else {
+							classPage = hasKeyword
+									? classRepository.findAllByApprovalAndTitleContainingIgnoreCaseAndNoticedateBefore(approvalCode, keyword, today, sortedPageable)
+									: classRepository.findAllByApprovalAndNoticedateBefore(approvalCode, today, sortedPageable);
+						}
+					}
+					else {
+						throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
+					}
+	            }
+			}
+			else {
+				// 카테고리 지정
+				if (!hasStatus) {
+					// 진행 상태 없음
+					if (!hasApproval) {
+						// 승인 상태 없음
+						classPage = hasKeyword
+								? classRepository.findAllByCategoryAndTitleContainingIgnoreCase(category, keyword, sortedPageable)
+								: classRepository.findAllByCategory(category, sortedPageable);
+					}
+					else {
+						// 승인 상태 있음
+						classPage = hasKeyword
+								? classRepository.findAllByCategoryAndApprovalAndTitleContainingIgnoreCase(category, approvalCode, keyword, sortedPageable)
+								: classRepository.findAllByCategoryAndApproval(category, approvalCode, sortedPageable);
+					}
+	            }
+				else {
+					// 진행 상태 있음
+					if ("open".equals(status)) {
+						if (!hasApproval) {
+							classPage = hasKeyword
+									? classRepository.findAllByCategoryAndTitleContainingIgnoreCaseAndNoticedateAfter(category, keyword, today, sortedPageable)
+									: classRepository.findAllByCategoryAndNoticedateAfter(category, today, sortedPageable);
+						}
+						else {
+							classPage = hasKeyword
+									? classRepository.findAllByCategoryAndApprovalAndTitleContainingIgnoreCaseAndNoticedateAfter(category, approvalCode, keyword, today, sortedPageable)
+									: classRepository.findAllByCategoryAndApprovalAndNoticedateAfter(category, approvalCode, today, sortedPageable);
+						}
+					}
+					else if ("close".equals(status)) {
+						if (!hasApproval) {
+							classPage = hasKeyword
+									? classRepository.findAllByCategoryAndTitleContainingIgnoreCaseAndNoticedateBefore(category, keyword, today, sortedPageable)
+									: classRepository.findAllByCategoryAndNoticedateBefore(category, today, sortedPageable);
+						}
+						else {
+							classPage = hasKeyword
+									? classRepository.findAllByCategoryAndApprovalAndTitleContainingIgnoreCaseAndNoticedateBefore(category, approvalCode, keyword, today, sortedPageable)
+									: classRepository.findAllByCategoryAndApprovalAndNoticedateBefore(category, approvalCode, today, sortedPageable);
+						}
+					}
+					else {
+						throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
 					}
 				}
 			}
@@ -175,6 +252,11 @@ public class CookingService {
 		List<ClassReadResponseDto> classDtoList = new ArrayList<>();
 		for (Class classs : classPage) {
 			ClassReadResponseDto classDto = classMapper.toReadResponseDto(classs);
+			
+			// 신청자
+			classDto.setUsername(classs.getUser().getUsername());			
+			classDto.setNickname(classs.getUser().getNickname());			
+			// classDto.setUsername(classs.getUser().getUsername());	
 			
 			// 이미지
 			if (classs.getImage() != null) {

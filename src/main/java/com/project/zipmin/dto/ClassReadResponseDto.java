@@ -38,4 +38,8 @@ public class ClassReadResponseDto {
 	
 	
 	private boolean isOpened;
+	private String username;
+	private String nickname;
+	
+	private int applycount;
 }

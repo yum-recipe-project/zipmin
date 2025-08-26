@@ -112,8 +112,10 @@ public class CookingService {
 		// 기존 페이지 객체에 정렬 주입
 		Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
 		
+		System.err.println("status = " + status);
+		
 		// 쿠킹클래스 목록 조회
-		Page<Class> classPage;
+		Page<Class> classPage = null;
 		
 		try {
 			boolean hasCategory = category != null && !category.isBlank();
@@ -130,15 +132,15 @@ public class CookingService {
 				}
 				else {
 					// 상태
-					if (status == "open") {
-						classPage = hasKeyword
-								? classRepository.findAllByTitleContainingIgnoreCaseAndNoticedateBefore(keyword, today, sortedPageable)
-								: classRepository.findAllByNoticedateBefore(today, sortedPageable);
-					}
-					else {
+					if (status.equals("open")) {
 						classPage = hasKeyword
 								? classRepository.findAllByTitleContainingIgnoreCaseAndNoticedateAfter(keyword, today, sortedPageable)
 								: classRepository.findAllByNoticedateAfter(today, sortedPageable);
+					}
+					else if (status.equals("close")) {
+						classPage = hasKeyword
+								? classRepository.findAllByTitleContainingIgnoreCaseAndNoticedateBefore(keyword, today, sortedPageable)
+								: classRepository.findAllByNoticedateBefore(today, sortedPageable);
 					}
 				}
 			}
@@ -151,15 +153,15 @@ public class CookingService {
 				}
 				else {
 					// 상태
-					if (status == "open") {
-						classPage = hasKeyword
-								? classRepository.findAllByCategoryAndTitleContainingIgnoreCaseAndNoticedateBefore(category, keyword, today, sortedPageable)
-								: classRepository.findAllByCategoryAndNoticedateBefore(category, today, sortedPageable);
-					}
-					else {
+					if (status.equals("open")) {
 						classPage = hasKeyword
 								? classRepository.findAllByCategoryAndTitleContainingIgnoreCaseAndNoticedateAfter(category, keyword, today, sortedPageable)
 								: classRepository.findAllByCategoryAndNoticedateAfter(category, today, sortedPageable);
+					}
+					else if (status.equals("close")) {
+						classPage = hasKeyword
+								? classRepository.findAllByCategoryAndTitleContainingIgnoreCaseAndNoticedateBefore(category, keyword, today, sortedPageable)
+								: classRepository.findAllByCategoryAndNoticedateBefore(category, today, sortedPageable);
 					}
 				}
 			}

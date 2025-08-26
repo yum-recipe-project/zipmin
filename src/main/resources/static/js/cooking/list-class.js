@@ -3,7 +3,7 @@
  */
 let totalPages = 0;
 let page = 0;
-const size = 16;
+const size = 10;
 let keyword = '';
 let category = '';
 let status = '';
@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 	
 	// 카테고리
-	/*
 	document.querySelectorAll('.btn_tab').forEach(tab => {
 		tab.addEventListener('click', function (event) {
 			event.preventDefault();
@@ -44,7 +43,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			fetchClassList();
 		});
 	});
-	*/
 	
 	// 상태 버튼
 	document.querySelectorAll('.btn_sort').forEach(btn => {
@@ -101,6 +99,7 @@ async function fetchClassList() {
 			// 렌더링
 			renderClassList(classList);
 			renderPagination(fetchClassList);
+			document.querySelector('.class_util .total').innerText = `총 ${result.data.totalElements}개`;
 			
 			// 검색 결과 없음 표시
 			if (result.data.totalPages === 0) {
@@ -112,7 +111,7 @@ async function fetchClassList() {
 			// 검색 결과 표시
 			else {
 				document.querySelector('.search_empty')?.remove();
-				document.querySelector('.forum_list').style.display = '';
+				document.querySelector('.class_list').style.display = '';
 			}
 			
 			// 스크롤 최상단 이동

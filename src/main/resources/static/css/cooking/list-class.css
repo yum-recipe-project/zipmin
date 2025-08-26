@@ -9,83 +9,95 @@
 
 
 
-/* 클래스 */
-#container .content .class_wrap {
-	padding-bottom: 80px;
-}
+
 
 /* 클래스 헤더 */
-#container .content .class_wrap .class_header {
+#container .content .class_header {
+	margin: 0px auto;
 	display: flex;
 	flex-direction: column;
-	padding-top: 56px;
-	padding-bottom: 32px;
+	flex: 1 1 auto;
+	box-sizing: border-box;
+	padding: 40px 0;
 }
 
-#container .content .class_wrap .class_header h2 {
-	text-align: center;
-	font-weight: 600;
+#container .content .class_header h2 {
+	font-weight: 700;
 	line-height: 1.5;
 	letter-spacing: -0.03em;
 	font-size: 32px;
-	margin-bottom: 40px;
+	margin-bottom: 20px;
+}
+
+#container .content .class_header .tab {
+	flex-wrap: wrap;
+	height: auto;
+	margin: -2px;
+	padding: 12px 0;
+}
+
+#container .content .class_header .tab a {
+	margin: 4px;
 }
 
 
 
-/* 내용 */
-#container .content .class_wrap .class_content {
-	margin-top: 32px;
+
+
+/* 쿠킹클래스 목록 (정렬요소) */
+#container .content .class_content {
+	padding-bottom: 40px;	
 }
 
-#container .content .class_wrap .class_content .class_util {
-	font-size: 14px;
+#container .content .class_content .class_util {
+	font-size: 16px;
 	line-height: 20px;
 	letter-spacing: -.2px;
-	font-weight: 400;
+	font-weight: 600;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	margin-top: -8px;
 	margin-bottom: 16px;
-	color: var(--txt-color-500);
 }
 
-#container .content .class_wrap .class_content .class_util .class_sort {
+#container .content .class_content .class_sort {
 	display: flex;
 	gap: 16px;
 }
 
 
 
+
+
 /* 목록 */
-#container .content .class_wrap .class_content .class_list {
+#container .content .class_content .class_list {
 	display: flex !important;
 	flex-wrap: wrap;
 	gap: 40px;
 }
 
-#container .content .class_wrap .class_content .class_list .class {
+#container .content .class_content .class_list .class {
 	width: calc(50% - 20px);
 	position: relative;
 	display: block;
 }
 
-#container .content .class_wrap .class_content .class_list .class .class_thumbnail {
+#container .content .class_content .class_list .class .class_thumbnail {
 	height: 291px;
 	margin-bottom: 16px;
 	border-radius: 4px;
 	border: 1px solid #ddd;
 }
 
-#container .content .class_wrap .class_content .class_list .class .class_thumbnail img {
+#container .content .class_content .class_list .class .class_thumbnail img {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
 	border-radius: 4px;
 }
 
-#container .content .class_wrap .class_content .class_list .class .class_info h5 {
+#container .content .class_content .class_list .class .class_info h5 {
 	font-size: 20px;
 	font-weight: 500;
 	line-height: 28px;
@@ -93,7 +105,7 @@
 	overflow: hidden;
 }
 
-#container .content .class_wrap .class_content .class_list .class .class_info p.date {
+#container .content .class_content .class_list .class .class_info p.date {
 	font-size: 14px;
 	font-weight: 400;
 	line-height: 20px;
@@ -106,7 +118,7 @@
 	color: var(--txt-color-500);
 }
 
-#container .content .class_wrap .class_content .class_list .class .class_info p.flag {
+#container .content .class_content .class_list .class .class_info p.flag {
 	position: absolute;
 	top: 8px;
 	left: 8px;
@@ -126,7 +138,7 @@
     letter-spacing: -.2px;
 }
 
-#container .content .class_wrap .class_content .class_list .class .class_info p.flag.open {
+#container .content .class_content .class_list .class .class_info p.flag.open {
 	background: #00B968;
 	color: #FFF;
 }
@@ -135,4 +147,35 @@
 
 
 
+/* 목록 없음 표시 */
+#container .content .search_empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 70px;
+}
 
+#container .content .search_empty img {
+	margin-top: 40px !important;
+	width: 88px;
+}
+
+#container .content .search_empty h2 {
+	text-align: center !important;
+	padding-top: 16px !important;
+	padding-bottom: 16px !important;
+	font-weight: 900;
+	line-height: 1.3;
+	letter-spacing: -0.02em;
+	font-size: 24px;
+}
+
+#container .content .search_empty span {
+	text-align: center !important;
+	margin-bottom: 32px !important;
+	color: #7E8082;
+	font-weight: 400;
+	line-height: 1.5;
+	letter-spacing: -0.025em;
+	font-size: 16px;
+}

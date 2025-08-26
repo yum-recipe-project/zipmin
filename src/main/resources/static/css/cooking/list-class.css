@@ -75,6 +75,7 @@
 	height: 291px;
 	margin-bottom: 16px;
 	border-radius: 4px;
+	border: 1px solid #ddd;
 }
 
 #container .content .class_wrap .class_content .class_list .class .class_thumbnail img {
@@ -125,12 +126,11 @@
     letter-spacing: -.2px;
 }
 
-
-
-/* 더보기 버튼 */
-#container .content .class_wrap .class_content .more_class_btn {
-	margin-top: 40px;
+#container .content .class_wrap .class_content .class_list .class .class_info p.flag.open {
+	background: #00B968;
+	color: #FFF;
 }
+
 
 
 

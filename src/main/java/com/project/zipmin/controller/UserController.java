@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.CommentErrorCode;
-import com.project.zipmin.api.CookingSuccessCode;
+import com.project.zipmin.api.ClassSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
@@ -702,8 +702,8 @@ public class UserController {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<ClassMyApplyReadResponseDto> applyPage = cookingService.readApplyClassPageByUserId(id, sort, pageable);
 		
-		return ResponseEntity.status(CookingSuccessCode.COOKING_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(CookingSuccessCode.COOKING_READ_LIST_SUCCESS, applyPage));
+		return ResponseEntity.status(ClassSuccessCode.COOKING_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(ClassSuccessCode.COOKING_READ_LIST_SUCCESS, applyPage));
 	}
 	
 	

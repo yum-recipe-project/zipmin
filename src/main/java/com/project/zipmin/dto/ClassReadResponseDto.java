@@ -13,9 +13,10 @@ import lombok.Data;
 public class ClassReadResponseDto {
 	
 	private int id;
-	private int userId;
 	private String title;
+	private String category;
 	private String place;
+	private Date postdate;
 	private Date eventdate;
 	private Date starttime;
 	private Date endtime;
@@ -25,10 +26,16 @@ public class ClassReadResponseDto {
 	private String image;
 	private String introduce;
 	private int approval;
+	private int userId;
 	
-	// target 등등
+	// target 등등 (수정 필요)
 	private List<ClassTargetReadResponseDto> targetList;
 	private List<ClassScheduleReadResponseDto> scheduleList;
 	private List<ClassTutorReadResponseDto> tutorList;
 	private boolean applystatus;
+	
+	
+	
+	
+	private boolean isOpened;
 }

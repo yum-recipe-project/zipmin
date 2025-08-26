@@ -93,7 +93,7 @@ async function fetchChompList() {
 			chompList = result.data.content;
 			
 			// 렌더링
-			renderChompList();
+			renderChompList(chompList);
 			renderPagination(fetchChompList);
 			
 			// 검색 결과 없음 표시
@@ -132,7 +132,7 @@ async function fetchChompList() {
 /**
  * 카테고리에 일치하는 목록을 렌더링 하는 함수
  */
-function renderChompList() {
+function renderChompList(chompList) {
 	const container = document.getElementById('chomp');
 	container.innerHTML = '';
 
@@ -217,30 +217,3 @@ function renderChompList() {
 		container.appendChild(li);
 	});
 }
-
-
-
-
-
-/**
- * 검색 결과 없음 화면을 렌더링하는 함수
- */
-function renderSearchEmpty() {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'search_empty';
-
-    const img = document.createElement('img');
-    img.src = '/images/common/search_empty.png';
-    wrapper.appendChild(img);
-
-    const h2 = document.createElement('h2');
-    h2.innerHTML = `'${keyword}'에 대한<br/>검색 결과가 없습니다`;
-    wrapper.appendChild(h2);
-
-    const span = document.createElement('span');
-    span.textContent = '단어의 철자가 정확한지 확인해보세요';
-    wrapper.appendChild(span);
-
-    return wrapper;
-}
-

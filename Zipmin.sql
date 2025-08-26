@@ -162,6 +162,7 @@ create table recipe (
     image varchar2(50) not null,
     title varchar2(200) not null,
     introduce varchar2(300) not null,
+    postdate date default sysdate not null,
     cooklevel varchar2(30) not null,
     cooktime varchar2(30) not null,
     spicy varchar2(30) not null,

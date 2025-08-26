@@ -298,12 +298,13 @@ public class RecipeService {
 	// 레시피를 작성하는 함수
 	public RecipeCreateResponseDto createRecipe(RecipeCreateRequestDto recipeRequestDto, MultipartFile recipeImage, MultiValueMap<String, MultipartFile> stepImageMap) {
 		
+		System.err.println(recipeRequestDto);
+		
 		// 입력값 검증 (레시피)
 		if (recipeRequestDto == null || recipeRequestDto.getTitle() == null
-				|| recipeRequestDto.getImage() == null || recipeRequestDto.getIntroduce() == null
-				|| recipeRequestDto.getCooklevel() == null || recipeRequestDto.getCooktime() == null
-				|| recipeRequestDto.getSpicy() == null || recipeRequestDto.getPortion() == null
-				|| recipeRequestDto.getUserId() == null) {
+				|| recipeRequestDto.getIntroduce() == null || recipeRequestDto.getCooklevel() == null
+				|| recipeRequestDto.getCooktime() == null || recipeRequestDto.getSpicy() == null
+				|| recipeRequestDto.getPortion() == null || recipeRequestDto.getUserId() == null) {
 			throw new ApiException(RecipeErrorCode.RECIPE_INVALID_INPUT);
 		}
 		if (recipeImage == null) {

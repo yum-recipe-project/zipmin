@@ -33,8 +33,8 @@
 					<!-- 네비게이션 바 -->
 					<div class="nav_wrap">
 						<a href="/admin/home.do"><span>메인</span></a>
-						<a href=""><img src="/images/cooking/arrow_right.png"><span>댓글/리뷰</span></a>
-						<a href="/admin/listReview.do" class="active"><img src="/images/cooking/arrow_right.png"><span>리뷰</span></a>
+						<a href=""><img src="/images/cooking/arrow_right.png"><span>게시판</span></a>
+						<a href="/admin/listRecipe.do" class="active"><img src="/images/cooking/arrow_right.png"><span>레시피</span></a>
 					</div>
 					
 					<!-- 제목 -->

@@ -38,15 +38,15 @@
 }
 
 #container .content .recipe_info_wrap .thumbnail_field input {
-    width: 80px;
-    height: 80px;
+    height: 150px;
     border: 1px dashed #BBB;
-    border-radius: 4px;
+    border-radius: 7px;
     cursor: pointer;
     background: url(/images/recipe/thumbnail.png) no-repeat center;
     background-size: 40px;
     text-indent: -9999px;
     overflow: hidden;
+    
 }
 
 #container .content .recipe_info_wrap .thumbnail_field input.danger {

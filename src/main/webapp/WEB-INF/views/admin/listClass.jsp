@@ -60,11 +60,11 @@
 					    	<colgroup>
 					    		<col style="width:8%">
 					    		<col style="width:9%">
-					    		<col style="width:24%">
+					    		<col style="width:23%">
 					    		<col style="width:10%">
 					    		<col style="width:10%">
 					    		<col style="width:11%">
-					    		<col style="width:11%">
+					    		<col style="width:12%">
 					    		<col style="width:10%">
 					    		<col style="width:7%">
 					    	</colgroup>
@@ -103,7 +103,7 @@
 					            <th>
 					                <h6 class="fs-4 fw-semibold mb-0">신청자</h6>
 					            </th>
-					            <th class="sort_btn desc" data-key="postdate">
+					            <th class="sort_btn" data-key="postdate">
 					                <h6 class="fs-4 fw-semibold mb-0">신청일</h6>
 					            </th>
 					            <th class="sort_btn" data-key="eventdate">

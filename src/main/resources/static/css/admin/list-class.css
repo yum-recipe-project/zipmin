@@ -278,6 +278,21 @@
 
 
 
+
+/* 뱃지 */
+.badge {
+    font-size: 12.25px;
+}
+
+.text-bg-gray {
+    color: #666 !important;
+    background-color: #eee !important;
+}
+
+
+
+
+
 /* 목록 없음 표시 */
 .body-wrapper .container-fluid .search_empty {
 	display: flex;

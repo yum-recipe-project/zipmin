@@ -146,7 +146,7 @@ function renderSearchEmpty() {
     wrapper.appendChild(img);
 
     const h2 = document.createElement('h2');
-    h2.innerHTML = `'${keyword}'에 대한<br/>검색 결과가 없습니다`;
+    h2.innerHTML = keyword ? `'${keyword}' 에 대한<br/>검색 결과가 없습니다` : '검색 결과가 없습니다';
     wrapper.appendChild(h2);
 
     const span = document.createElement('span');

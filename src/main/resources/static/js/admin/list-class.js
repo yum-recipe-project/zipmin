@@ -238,11 +238,7 @@ function renderClassList(classList) {
 		
 		// 상태
 		// ***** 더 제대로 일단 이거 버튼으로 승인 등등 할 수 있어야 함 *****
-		const statusTd = document.createElement('td');
-		const statusSpan = document.createElement('span');
-		statusSpan.className = `badge ${classs.opened ? 'bg-primary-subtle text-primary' : 'bg-danger-subtle text-danger'} d-inline-flex align-items-center gap-1`;
-		statusSpan.innerHTML = classs.opened ? '투표 진행중' : '투표 종료';
-		statusTd.appendChild(statusSpan);
+		const statusTd = renderClassStatus(classs);
 		
 		// 참여자수
 		const totalTd = document.createElement('td');
@@ -300,6 +296,129 @@ function renderClassList(classList) {
 		container.appendChild(tr);
 	});
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * 
+ */
+function renderClassStatus(classs) {
+	const td = document.createElement('td');
+	td.className = 'text-center';
+	
+	// 드롭다운을 만드는 함수
+	function makeDropdown(approval) {
+		const wrap = document.createElement('div');
+		wrap.className = 'dropdown d-inline-block';
+		
+		const btn = document.createElement('button');
+		btn.type = 'button';
+		switch (approval) {
+			case 1:
+				btn.className = 'btn btn-sm dropdown-toggle bg-primary-subtle text-primary';
+				btn.textContent = '승인';
+				break;
+			case 2:
+				btn.className = 'btn btn-sm dropdown-toggle bg-warning-subtle text-warning';
+				btn.textContent = '대기';
+				break;
+			case 0:
+				btn.className = 'btn btn-sm dropdown-toggle bg-danger-subtle text-danger';
+				btn.textContent = '미승인';
+				break;
+		}
+		btn.setAttribute('data-bs-toggle', 'dropdown');
+		btn.setAttribute('aria-expanded', 'false');
+		
+		const menu = document.createElement('ul');
+		menu.className = 'dropdown-menu shadow-sm';
+		
+		// 승인
+		const liApprove = document.createElement('li');
+		const btnApprove = document.createElement('button');
+		btnApprove.type = 'button';
+		btnApprove.className = 'dropdown-item';
+		btnApprove.textContent = '승인';
+		btnApprove.addEventListener('click', () => onApprove(classs.id));
+		liApprove.appendChild(btnApprove);
+		menu.appendChild(liApprove);
+
+		// 반려
+		const liReject = document.createElement('li');
+		const btnReject = document.createElement('button');
+		btnReject.type = 'button';
+		btnReject.className = 'dropdown-item';
+		btnReject.textContent = '미승인';
+		btnReject.addEventListener('click', () => onApprove(classs.id));
+		liReject.appendChild(btnReject);
+		menu.appendChild(liReject);
+
+		// 대기
+		const liPending = document.createElement('li');
+		const btnPending = document.createElement('button');
+		btnPending.type = 'button';
+		btnPending.className = 'dropdown-item';
+		btnPending.textContent = '대기';
+		btnPending.addEventListener('click', () => onApprove(classs.id));
+		liPending.appendChild(btnPending);
+		menu.appendChild(liPending);
+		
+		wrap.appendChild(btn);
+		wrap.appendChild(menu);
+		return wrap;
+	}
+
+	// 단일 버튼(확정 상태용)
+	function makeButton() {
+		const span = document.createElement('span');
+		span.type = 'button';
+		span.className = 'badge text-bg-gray';
+		switch (classs.approval) {
+			case 1:
+				span.textContent = '승인';
+				break;
+			case 2:
+				span.textContent = '대기 만료';
+				break;
+			case 0:
+				span.textContent = '미승인';
+				break;
+		}
+		span.disabled = true;
+		return span;
+	}
+	
+	// 분기 렌더링
+	if (classs.opened) {
+		td.appendChild(makeDropdown(classs.approval));
+	}
+	else {
+		td.appendChild(makeButton());
+	}
+	
+	return td;
+}
+
+// onApprove/onReject/onClose/onDelete는 기존에 정의된 핸들러 사용
+ function onApprove(id) { 
+	
+  }
+ function onReject(id)  { }
+ function onClose(id)   {  }
+ function onDelete(id)  {  }
+
+
+
 
 
 

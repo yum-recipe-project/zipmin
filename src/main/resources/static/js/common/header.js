@@ -30,6 +30,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+
+
 /**
  * 헤더에 로그인한 사용자의 정보를 표시하는 함수
  */
@@ -126,7 +128,6 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 document.addEventListener('DOMContentLoaded', function() {
 	
-	// 추후에 키친가이드에서 가져와야 함 (수정 필요)
 	const tipList = [
 	  '닭 잡내 안나게 손질하는 법',
 	  '라면 맛있게 끓이는 꿀팁',
@@ -136,6 +137,21 @@ document.addEventListener('DOMContentLoaded', function() {
 	  '양파 썰 때 눈물 안 나는 법',
 	  '냄비 탄 자국 제거하는 방법'
 	];
+	
+	/*
+	try {
+		const params = new URLSearchParams({
+			page: page,
+			size: size,
+			// random: true
+		}).toString();
+		
+		
+	}
+	catch (error) {
+		console.log(error);
+	}
+	*/
 	
 	const display = document.querySelector('.tip_text');
 	

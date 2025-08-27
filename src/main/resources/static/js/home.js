@@ -1,4 +1,17 @@
 /**
+ * 전역 변수
+ */
+const page = 0;
+const size = 6;
+let sort = 'likecount-desc';
+let recipeList = [];
+let guideList = [];
+
+
+
+
+
+/**
  * 룰렛을 돌리는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
@@ -62,25 +75,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+
+
 /**
- * 드롭다운 동작 및 정렬방식 변경하는 함수
+ * 카테고리로 레시피를 검색하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	document.querySelectorAll('.category_list').forEach(ul => {
+		ul.addEventListener('click', (event) => {
+			const li = event.target.closest('li');
+			if (!li) return;
+			
+			const category = (li.querySelector('p')?.textContent).trim().replace(/^['"]|['"]$/g, '');
+			if (!category) return;
+			
+			location.href = '/recipe/listRecipe.do?category=' + category;
+		});
+	});
+});
+
+
+
+
+
+
+
+/**
+ * 레시피 목록 검색 필터를 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', function () {
-	let sort = 'hot';
 
-	const dropdown = document.querySelector('.dropdown');
-	const sortButton = document.getElementById('recipeSortBtn');
-	const sortItems = document.querySelectorAll('.dropdown_menu li');
-
-	sortButton.addEventListener('click', function () {
-		dropdown.classList.toggle('active');
-	});
-
-	sortItems.forEach((item, index) => {
+	// 드롭다운 정렬
+	document.querySelectorAll('.dropdown_menu li').forEach((item, index) => {
 		item.addEventListener('click', async function () {
-			sort = index === 0 ? 'hot' : 'score';
-			dropdown.classList.remove('active');
-			sortButton.innerHTML = `${this.textContent} <div class="btn_img"></div>`;
+			sort = index === 0 ? 'likecount-desc' : 'reviewscore-desc';
+			document.querySelector('.dropdown').classList.remove('active');
+			document.getElementById('recipeSortBtn').innerHTML = `${this.textContent} <div class="btn_img"></div>`;
 
 			await fetchRecipeList(sort);
 		});
@@ -89,6 +119,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	fetchRecipeList(sort);
 	fetchGuideList(sort);
 });
+
+
 
 
 

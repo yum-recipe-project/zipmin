@@ -146,11 +146,11 @@ function renderSearchEmpty() {
     wrapper.appendChild(img);
 
     const h2 = document.createElement('h2');
-    h2.innerHTML = keyword ? `'${keyword}' 에 대한<br/>검색 결과가 없습니다` : '검색 결과가 없습니다';
+    h2.innerHTML = keyword ? `'${keyword}' 에 대한<br/>검색 결과가 없습니다` : '결과가 없습니다';
     wrapper.appendChild(h2);
 
     const span = document.createElement('span');
-    span.textContent = '단어의 철자가 정확한지 확인해보세요';
+    span.textContent = keyword ? '단어의 철자가 정확한지 확인해보세요' : '조건을 변경하거나 초기화해 보세요';
     wrapper.appendChild(span);
 
     return wrapper;

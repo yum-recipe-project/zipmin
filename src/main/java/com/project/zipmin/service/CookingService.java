@@ -421,6 +421,12 @@ public class CookingService {
 			}
 		}
 		
+		// 클래스 기간 검증
+		Date now = new Date();
+		if (now.after(classs.getNoticedate())) {
+	        throw new ApiException(ClassErrorCode.CLASS_ALREADY_ENDED);
+	    }
+		
 		// 승인 상태
 		Integer approvalCode = null;
 		try {

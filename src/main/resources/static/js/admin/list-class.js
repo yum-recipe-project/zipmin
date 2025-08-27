@@ -77,9 +77,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById('listClassApproval').addEventListener('change', function () {
 		if (this.checked) {
 			document.getElementById('listClassStatus').checked = false;
-			status = '';
 		}
 		approval = this.checked ? 'PENDING' : '';
+		status = this.checked ? 'open' : '';
 		page = 0;
 		fetchClassList();
 	});
@@ -88,7 +88,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById('listClassStatus').addEventListener('change', function () {
 		if (this.checked) {
 			document.getElementById('listClassApproval').checked = false;
-			approval = '';
 		}
 		approval = this.checked ? 'APPROVED' : '';
 		status = this.checked ? 'open' : '';
@@ -99,7 +98,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 	fetchClassList();
 });
-
 
 
 
@@ -127,8 +125,6 @@ async function fetchClassList(scrollTop = true) {
 		});
 		
 		const result = await response.json();
-		
-		console.log(result);
 		
 		if (result.code === 'CLASS_READ_LIST_SUCCESS') {
 			
@@ -161,8 +157,21 @@ async function fetchClassList(scrollTop = true) {
 				window.scrollTo({ top: 0, behavior: 'smooth' });
 			}
 		}
-		
-		/***** 에러 코드 추가 *****/
+		else if (result.code === 'CLASS_READ_LIST_FAIL') {
+			alertDanger('쿠킹클래스 목록 조회에 실패했습니다.');
+		}
+		else if (result.code === 'CLASS_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (result.code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (result.code === 'USER_NOT_FOUND') {
+			alertDanger('해당 사용자를 찾을 수 없습니다.');
+		}
+		else if (result.code === 'INTERNAL_SERVER_ERROR') {
+			alertDanger('서버 내부에서 오류가 발생했습니다.');
+		}
 	}
 	catch (error) {
 		console.log(error);
@@ -205,7 +214,6 @@ function renderClassList(classList) {
 		categoryTd.appendChild(categoryH6);
 		
 		// 제목
-		// ***** 세부 내용 더 추가하기 *****
 		const titleTd = document.createElement('td');
 		const titleH6 = document.createElement('h6');
 		titleH6.className = 'fw-semibold mb-0 view';
@@ -237,7 +245,6 @@ function renderClassList(classList) {
 		periodTd.appendChild(periodH6);
 		
 		// 상태
-		// ***** 더 제대로 일단 이거 버튼으로 승인 등등 할 수 있어야 함 *****
 		const statusTd = renderClassStatus(classs);
 		
 		// 참여자수
@@ -249,19 +256,12 @@ function renderClassList(classList) {
 		totalCount.className = 'fw-semibold mb-0';
 		totalCount.textContent = classs.applycount;
 		
-		// 참여자 보기
+		// 참여자수 조회
 		if ((classs.applycount ?? 0) > 0) {
 			totalCount.className = 'fw-semibold mb-0 view';
 			totalCount.dataset.bsToggle = 'modal';
 			totalCount.dataset.bsTarget = '#listClassApplyModal';
 			totalCount.dataset.class_id = classs.id;
-			totalCount.addEventListener('click', (event) => {
-				if (!isLoggedIn()) {
-					event.preventDefault();
-					redirectToLogin();
-					return;
-				}
-			});
 		}
 		totalWrap.appendChild(totalCount);
 		totalTd.appendChild(totalWrap);
@@ -271,7 +271,7 @@ function renderClassList(classList) {
 		const btnWrap = document.createElement('div');
 		btnWrap.className = 'd-flex justify-content-end gap-2';
 
-		// 기능 버튼 조건
+		// 기능 권한
 		const token = localStorage.getItem('accessToken');
 		const payload = parseJwt(token);
 		const canAction =
@@ -280,7 +280,6 @@ function renderClassList(classList) {
 		    (payload.id === classs.user_id);
 			
 		if (canAction) {
-			
 			// 삭제 버튼
 			const deleteBtn = document.createElement('button');
 			deleteBtn.type = 'button';
@@ -302,24 +301,21 @@ function renderClassList(classList) {
 
 
 
-
-
-
 /**
- * 
+ * 쿠킹클래스 상태를 화면에 렌더링하는 함수
  */
 function renderClassStatus(classs) {
 	const td = document.createElement('td');
 	td.className = 'text-center';
 	
-	// 드롭다운을 만드는 함수
-	function makeDropdown(approval) {
+	// 드롭다운
+	if (classs.opened) {
 		const wrap = document.createElement('div');
 		wrap.className = 'dropdown d-inline-block';
 		
 		const btn = document.createElement('button');
 		btn.type = 'button';
-		switch (approval) {
+		switch (classs.approval) {
 			case 1:
 				btn.className = 'btn btn-sm dropdown-toggle bg-primary-subtle text-primary';
 				btn.textContent = '승인';
@@ -369,13 +365,11 @@ function renderClassStatus(classs) {
 		liPending.appendChild(btnPending);
 		menu.appendChild(liPending);
 		
-		wrap.appendChild(btn);
-		wrap.appendChild(menu);
-		return wrap;
+		wrap.append(btn, menu);
+		td.appendChild(wrap)
 	}
-
-	// 단일 버튼(확정 상태용)
-	function makeButton() {
+	// 버튼
+	else {
 		const span = document.createElement('span');
 		span.type = 'button';
 		span.className = 'badge text-bg-gray';
@@ -391,20 +385,11 @@ function renderClassStatus(classs) {
 				break;
 		}
 		span.disabled = true;
-		return span;
-	}
-	
-	// 분기 렌더링
-	if (classs.opened) {
-		td.appendChild(makeDropdown(classs.approval));
-	}
-	else {
-		td.appendChild(makeButton());
+		td.appendChild(span);
 	}
 	
 	return td;
 }
-
 
 
 
@@ -448,6 +433,9 @@ async function editClassApproval(id, approval) {
 		else if (code === 'CLASS_FORBIDDEN') {
 			alertDanger('접근 권한이 없습니다.');
 		}
+		else if (code === 'CLASS_ALREADY_ENDED') {
+			alertDanger('쿠킹클래스가 상태 변경 기간이 종료되었습니다.');
+		}
 		else if (code === 'CLASS_NOT_FOUND') {
 			alertDanger('해당 클래스를 찾을 수 없습니다.');
 		}
@@ -463,9 +451,6 @@ async function editClassApproval(id, approval) {
 	}
 	
 }
-
-
-
 
 
 

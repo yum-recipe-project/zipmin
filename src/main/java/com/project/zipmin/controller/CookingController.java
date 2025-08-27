@@ -63,6 +63,15 @@ public class CookingController {
 	UserService userService;
 	
 	
+	
+	
+	
+	// 200 CLASS_READ_LIST_SUCCESS
+	// 400 CLASS_READ_LIST_FAIL
+	// 400 CLASS_INVALID_INPUT
+	// 400 USER_INVALID_INPUT
+	// 404 USER_NOT_FOUND
+	// 500
 
 	// 쿠킹클래스 목록 조회
 	@GetMapping("/classes")
@@ -152,6 +161,7 @@ public class CookingController {
 	// 400 USER_INVALID_INPUT
 	// 401 로그인되지 않은 사용자 CLASS_UNAUTHRIZED
 	// 403 CLASS_FORBIDDEN
+	// 403 CLASS_ALREADY_ENDED
 	// 404 CLASS_NOT_FOUND
 	// 404 USER_NOT_FOUND
 	// 500 서버 내부 오류

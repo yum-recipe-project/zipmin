@@ -453,6 +453,9 @@ async function deleteMegazine(id) {
 		else if (code === 'MEGAZINE_INVALID_INPUT') {
 			alealertDangerrt('입력값이 유효하지 않습니다.');
 		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alealertDangerrt('입력값이 유효하지 않습니다.');
+		}
 		else if (code === 'MEGAZINE_UNAUTHORIZED') {
 			alertDanger('로그인되지 않은 사용자입니다.');
 		}

@@ -6,6 +6,7 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.CommentSuccessCode;
+import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.api.ClassErrorCode;
 import com.project.zipmin.api.ClassSuccessCode;
 import com.project.zipmin.dto.ClassApplyCreateRequestDto;
@@ -102,8 +103,7 @@ public class CookingController {
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
 	@GetMapping("/classes/{id}")
-	public ResponseEntity<?> viewClass(
-			@PathVariable int id) {
+	public ResponseEntity<?> viewClass(@Parameter(description = "클래스의 일련번호") @PathVariable int id) {
 		
 		ClassReadResponseDto classDto = cookingService.readClassById(id);
 		
@@ -125,20 +125,36 @@ public class CookingController {
 			@PathVariable int id) {
 		return 0;
 	}
-
-	// 특정 클래스 수정 (관리자)
-	@PatchMapping("/classes/{id}")
-	public int editClass(
-			@PathVariable int id) {
-		// 구현 안할듯
-		return 0;
-	}
-
-	// 특정 클래스 삭제 (관리자)
+	
+	
+	
+	
+	
+	// 쿠킹클래스긴 함
+	// 200 클래스 삭제 성공 CLASS_DELETE_SUCCESS
+	// 400 클래스 삭제 실패 CLASS_DELETE_FAIL
+	// 400 입력값이 유효하지 않음 CLASS_INVALID_INPUT
+	// 400 입력값이 유효하지 않음 USER_INVALID_INPUT
+	// 401 로그인되지 않은 사용자 CLASS_UNAUTHRIZED
+	// 403 권한 없는 사용자의 접근 CLASS_FORBIDDEN
+	// 404 해당 클래스를 찾을 수 없음 CLASS_NOT_FOUND
+	// 404 해당 사용자를 찾을 수 없음 USER_NOT_FOUND
+	// 500 서버 내부 오류
+	
+	// 클래스 삭제
 	@DeleteMapping("/classes/{id}")
-	public int deleteGuide(
-			@PathVariable int id) {
-		return 0;
+	public ResponseEntity<?> deleteClass(@Parameter(description = "클래스의 일련번호") @PathVariable int id) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
+		}
+		
+		cookingService.deleteClass(id);
+		
+		return ResponseEntity.status(ClassSuccessCode.CLASS_DELETE_SUCCESS.getStatus())
+				.body(ApiResponse.success(ClassSuccessCode.CLASS_DELETE_SUCCESS, null));
 	}
 	
 	

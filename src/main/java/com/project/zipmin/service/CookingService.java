@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.method.P;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ClassErrorCode;
+import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.ClassApplyCreateRequestDto;
 import com.project.zipmin.dto.ClassApplyCreateResponseDto;
 import com.project.zipmin.dto.ClassApplyDeleteRequestDto;
@@ -29,6 +31,7 @@ import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.ClassScheduleReadResponseDto;
 import com.project.zipmin.dto.ClassTargetReadResponseDto;
 import com.project.zipmin.dto.ClassTutorReadResponseDto;
+import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.entity.Approval;
 import com.project.zipmin.entity.Class;
 import com.project.zipmin.entity.ClassApply;
@@ -342,6 +345,60 @@ public class CookingService {
 		
 		return classDto;
 	}
+	
+	
+	
+	
+	
+	// 클래스 삭제
+	public void deleteClass(Integer id) {
+		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
+		}
+		
+		// 클래스 여부 확인
+		Class classs = classRepository.findById(id)
+				.orElseThrow(() -> new ApiException(ClassErrorCode.CLASS_NOT_FOUND));
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto user = userService.readUserByUsername(username);
+		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (user.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (classs.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
+				}
+				if (classs.getUser().getRole().equals(Role.ROLE_ADMIN)) {
+					if (user.getId() != classs.getUser().getId()) {
+						throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
+					}
+				}
+			}
+			// 일반 회원
+			else {
+				if (user.getId() != classs.getUser().getId()) {
+					throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
+				}
+			}
+		}
+		
+		// 클래스 삭제
+		try {
+			classRepository.deleteById(id);
+		}
+		catch (Exception e) {
+			throw new ApiException(ClassErrorCode.CLASS_DELETE_FAIL);
+		}
+		
+	}
+
+	
+	
+	
+	
 	
 	
 	

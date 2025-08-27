@@ -154,12 +154,12 @@ function renderRecipeList(recipeList) {
 		// 제목
 		const titleTd = document.createElement('td');
 		const titleH6 = document.createElement('h6');
-		titleH6.className = 'fw-semibold mb-1 view text-start';
+		titleH6.className = 'fw-semibold mb-1 view';
 		titleH6.textContent = recipe.title;
 		titleH6.dataset.bsToggle = 'modal';
 		titleH6.dataset.bsTarget = '#viewRecipeModal';
 		const subInfo = document.createElement('small');
-		subInfo.className = 'text-muted d-block text-start';
+		subInfo.className = 'text-muted d-block';
 		subInfo.textContent = `${recipe.cooklevel} · ${recipe.cooktime} · ${recipe.spicy}`;
 		titleTd.append(titleH6, subInfo);
 		

@@ -218,8 +218,6 @@ async function fetchCommentList() {
 		
 		const result = await response.json();
 		
-		console.log(result);
-		
 		if (result.code === 'COMMENT_READ_LIST_SUCCESS') {
 			
 			// 전역변수 설정

@@ -710,16 +710,21 @@ commit;
 
 
 -- CLASSES 테이블 더미데이터
-INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '홈메이드 김치 담그기 클래스', 'kimchi.jpg', '전통 방식으로 김치를 직접 담가보는 클래스입니다.', '서울 강남구', TO_DATE('2025-07-05', 'YYYY-MM-DD'), TO_DATE('1970-01-01 10:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 12:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-01', 'YYYY-MM-DD'), 10, '앞치마, 밀폐용기', 1, 4);
-INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '프렌치 디저트 클래스', 'dessert.jpg', '마카롱과 에끌레어를 직접 만들어 보는 시간!', '서울 마포구', TO_DATE('2025-08-10', 'YYYY-MM-DD'), TO_DATE('1970-01-01 14:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 16:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-05', 'YYYY-MM-DD'), 8, '고무장갑, 에코백', 0, 5);
-INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '한식 요리 입문 클래스', 'korean_food.jpg', '된장찌개, 불고기 등 한식을 처음 접하는 분들을 위한 클래스입니다.', '서울 종로구', TO_DATE('2025-08-12', 'YYYY-MM-DD'), TO_DATE('1970-01-01 11:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 13:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-07', 'YYYY-MM-DD'), 12, '필기도구', 1, 4);
-INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '홈카페 음료 만들기', 'homecafe.jpg', '시그니처 커피와 티를 집에서도 만들어보세요!', '서울 송파구', TO_DATE('2025-08-15', 'YYYY-MM-DD'), TO_DATE('1970-01-01 15:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 17:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-10', 'YYYY-MM-DD'), 6, '텀블러, 필기도구', 1, 4);
-INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '비건 베이킹 클래스', 'vegan_baking.jpg', '계란, 우유 없이 건강한 디저트를 만들어보는 수업입니다.', '서울 관악구', TO_DATE('2025-08-18', 'YYYY-MM-DD'), TO_DATE('1970-01-01 13:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 15:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-13', 'YYYY-MM-DD'), 7, '앞치마, 밀폐용기', 0, 5);
-INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '이탈리안 파스타 만들기', 'pasta.jpg', '생면부터 소스까지 직접 만들어보는 본격 파스타 클래스!', '서울 성동구', TO_DATE('2025-08-20', 'YYYY-MM-DD'), TO_DATE('1970-01-01 10:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 12:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-15', 'YYYY-MM-DD'), 9, '앞치마, 밀가루 안 튀는 옷', 1, 5);
-INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '어린이 쿠킹 클래스', 'kids_cook.jpg', '아이와 함께하는 안전한 요리 시간!', '서울 서초구', TO_DATE('2025-08-22', 'YYYY-MM-DD'), TO_DATE('1970-01-01 10:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 11:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-17', 'YYYY-MM-DD'), 5, '아이용 앞치마, 물티슈', 0, 4);
-INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '저염식 식단 클래스', 'low_salt.jpg', '건강한 저염식 식단을 직접 만들고 먹어보는 클래스', '서울 동작구', TO_DATE('2025-08-25', 'YYYY-MM-DD'), TO_DATE('1970-01-01 13:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 15:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-20', 'YYYY-MM-DD'), 10, '텀블러, 앞치마', 1, 5);
-INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '아시아 요리 탐방', 'asia_cuisine.jpg', '동남아 요리 레시피와 식재료를 배워보는 클래스입니다.', '서울 중구', TO_DATE('2025-07-28', 'YYYY-MM-DD'), TO_DATE('1970-01-01 14:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 16:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-23', 'YYYY-MM-DD'), 8, '앞치마, 필기도구', 1, 5);
-INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '계절김치 마스터 클래스', 'seasonal_kimchi.jpg', '제철 채소로 김치를 만들어보는 마스터 클래스입니다.', '서울 은평구', TO_DATE('2025-08-30', 'YYYY-MM-DD'), TO_DATE('1970-01-01 11:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 13:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-25', 'YYYY-MM-DD'), 6, '앞치마, 밀폐용기, 고무장갑', 0, 4);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '홈메이드 김치 담그기 클래스', '한식', '3da3de744fc54c26a64874e63e9f33a1.png', '전통 방식으로 김치를 직접 담가보는 클래스입니다.', '서울 강남구', TO_DATE('202509-05', 'YYYY-MM-DD'), TO_DATE('2025-10-05', 'YYYY-MM-DD'), TO_DATE('1970-01-01 10:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 12:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-10-01', 'YYYY-MM-DD'), 10, '앞치마, 밀폐용기', 1, 4);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '프렌치 디저트 클래스', '제과제빵', '8d777a9dce334083a54b23838d015256.png', '마카롱과 에끌레어를 직접 만들어 보는 시간!', '서울 마포구', TO_DATE('2025-09-10', 'YYYY-MM-DD'), TO_DATE('2025-10-10', 'YYYY-MM-DD'), TO_DATE('1970-01-01 14:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 16:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-10-05', 'YYYY-MM-DD'), 8, '고무장갑, 에코백', 1, 5);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '한식 요리 입문 클래스', '한식', 'c2defe47f25f4e66b06f003381853240.png', '된장찌개, 불고기 등 한식을 처음 접하는 분들을 위한 클래스입니다.', '서울 종로구', TO_DATE('2025-02-12', 'YYYY-MM-DD'), TO_DATE('2025-03-12', 'YYYY-MM-DD'), TO_DATE('1970-01-01 11:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 13:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-03-07', 'YYYY-MM-DD'), 12, '필기도구', 1, 4);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '홈카페 음료 만들기', '음료', '48c1829104184028942ba9d4f3ce191f.png', '시그니처 커피와 티를 집에서도 만들어보세요!', '서울 송파구', TO_DATE('2025-04-05', 'YYYY-MM-DD'), TO_DATE('2025-08-15', 'YYYY-MM-DD'), TO_DATE('1970-01-01 15:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 17:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-8-10', 'YYYY-MM-DD'), 6, '텀블러, 필기도구', 1, 4);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '비건 베이킹 클래스', '제과제빵', '1dffc77f041844e09882e93f585252ba.png', '계란, 우유 없이 건강한 디저트를 만들어보는 수업입니다.', '서울 관악구', TO_DATE('2025-01-05', 'YYYY-MM-DD'), TO_DATE('2025-04-18', 'YYYY-MM-DD'), TO_DATE('1970-01-01 13:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 15:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-03-13', 'YYYY-MM-DD'), 7, '앞치마, 밀폐용기', 1, 5);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '이탈리안 파스타 만들기', '양식', '50201b9ea1b04d6f9dc5b70abe88bb27.png', '생면부터 소스까지 직접 만들어보는 본격 파스타 클래스!', '서울 성동구', TO_DATE('2025-09-05', 'YYYY-MM-DD'), TO_DATE('2025-10-20', 'YYYY-MM-DD'), TO_DATE('1970-01-01 10:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 12:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-10-15', 'YYYY-MM-DD'), 9, '앞치마, 밀가루 안 튀는 옷', 1, 5);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '어린이 쿠킹 클래스', '제과제빵', '2520a137733246bbab6d4b346e2ca570.png', '아이와 함께하는 안전한 요리 시간!', '서울 서초구', TO_DATE('2025-08-22', 'YYYY-MM-DD'), TO_DATE('2025-10-22', 'YYYY-MM-DD'), TO_DATE('1970-01-01 10:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 11:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-10-17', 'YYYY-MM-DD'), 5, '아이용 앞치마, 물티슈', 1, 4);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '저염식 식단 클래스', '기타', 'db88094f5ca441008102f1d9ae30fe3a.png', '건강한 저염식 식단을 직접 만들고 먹어보는 클래스', '서울 동작구', TO_DATE('2025-10-07', 'YYYY-MM-DD'), TO_DATE('2025-10-25', 'YYYY-MM-DD'), TO_DATE('1970-01-01 13:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 15:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-10-20', 'YYYY-MM-DD'), 10, '텀블러, 앞치마', 1, 5);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '아시아 요리 탐방', '한식', 'd6af8c9efe3c4b32b7f02825fa4d917b.png', '동남아 요리 레시피와 식재료를 배워보는 클래스입니다.', '서울 중구', TO_DATE('2025-10-05', 'YYYY-MM-DD'), TO_DATE('2025-10-28', 'YYYY-MM-DD'), TO_DATE('1970-01-01 14:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 16:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-10-23', 'YYYY-MM-DD'), 8, '앞치마, 필기도구', 1, 5);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '계절김치 마스터 클래스', '한식', 'd4b0f9451ff64553ab9c950b579a91c2.png', '제철 채소로 김치를 만들어보는 마스터 클래스입니다.', '서울 은평구', TO_DATE('2025-04-05', 'YYYY-MM-DD'), TO_DATE('2025-08-30', 'YYYY-MM-DD'), TO_DATE('1970-01-01 11:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 13:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-25', 'YYYY-MM-DD'), 6, '앞치마, 밀폐용기, 고무장갑', 0, 4);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '중식 면 요리 클래스', '중식', '155dbb43df4a486099948cce2b8f4b0f.png', '짜장면과 짬뽕을 직접 만들어보는 중식 클래스입니다.', '서울 용산구', TO_DATE('2025-02-05', 'YYYY-MM-DD'), TO_DATE('2025-09-02', 'YYYY-MM-DD'), TO_DATE('1970-01-01 11:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 13:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-25', 'YYYY-MM-DD'), 12, '앞치마, 조리도구', 2, 4);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '일식 초밥 마스터 클래스', '일식', '7e68811848c74c1ead7bda02816d1ada.png', '정통 초밥부터 롤 초밥까지 배우는 클래스입니다.', '서울 강서구', TO_DATE('2025-08-24', 'YYYY-MM-DD'), TO_DATE('2025-09-05', 'YYYY-MM-DD'), TO_DATE('1970-01-01 17:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 19:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-30', 'YYYY-MM-DD'), 10, '손수건, 장갑', 2, 5);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '홈메이드 케이크 클래스', '제과제빵', 'f71a640510f3482b903fedcaa3e1943c.png', '생크림 케이크와 데코레이션 기법을 배우는 클래스입니다.', '서울 노원구', TO_DATE('2025-04-09', 'YYYY-MM-DD'), TO_DATE('2025-09-08', 'YYYY-MM-DD'), TO_DATE('1970-01-01 14:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 16:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-09-01', 'YYYY-MM-DD'), 8, '앞치마, 밀폐용기', 1, 4);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '건강 주스와 스무디 클래스', '음료', '15eeb5289ed64063a99a25a490b8c5e0.png', '제철 과일과 채소로 건강한 주스를 만들어보는 클래스입니다.', '서울 강북구', TO_DATE('2025-03-11', 'YYYY-MM-DD'), TO_DATE('2025-04-12', 'YYYY-MM-DD'), TO_DATE('1970-01-01 10:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 12:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-04-07', 'YYYY-MM-DD'), 6, '텀블러, 손수건', 1, 5);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '저칼로리 샐러드 클래스', '기타', '99ff0cd05d6747e59e7e2f44a6f77348.png', '다이어트에 좋은 다양한 샐러드 레시피를 배웁니다.', '서울 서대문구', TO_DATE('2025-02-05', 'YYYY-MM-DD'), TO_DATE('2025-09-15', 'YYYY-MM-DD'), TO_DATE('1970-01-01 18:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 19:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-09-10', 'YYYY-MM-DD'), 9, '밀폐용기, 필기도구', 0, 4);
 commit;
 
 
@@ -736,6 +741,16 @@ INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '홈카페 취미�
 INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '커피 애호가', 4);
 INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '비건 식단 관심자', 5);
 INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '건강식에 관심 있는 사람', 5);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '중식 요리에 관심 있는 성인',6);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '일식 초밥을 배우고 싶은 사람', 7);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '케이크 만들기를 배우고 싶은 초보자', 8);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '건강 음료에 관심 있는 사람', 9);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '다이어트 식단 관심자', 10);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '건강식에 관심 있는 사람', 11);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '중식 요리에 관심 있는 성인',12);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '일식 초밥을 배우고 싶은 사람', 13);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '케이크 만들기를 배우고 싶은 초보자', 14);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '건강 음료에 관심 있는 사람', 15);
 commit;
 
 
@@ -748,6 +763,12 @@ INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com
 INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor4.jpg', '정우진', '푸드 스타일리스트 경력 5년', 4);
 INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor5.jpg', '최수진', '비건 요리 전문가, 6년 강의', 5);
 INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor6.jpg', '한지훈', '프렌치 레스토랑 헤드 셰프, 12년 경력', 6);
+INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor7.jpg', '왕웨이', '20년 경력의 중식 셰프', 10);
+INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor8.jpg', '사토 히로시', '15년 경력의 일식 초밥 장인', 11);
+INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor9.jpg', '박혜진', '제과제빵 강사, 8년 경력', 12);
+INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor10.jpg', '이승철', '건강 음료 전문가, 6년 강의', 13);
+INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor11.jpg', '정지영', '영양사 겸 쿠킹클래스 강사', 14);
+INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor12.jpg', '마르코 로시', '이탈리안 셰프, 14년 경력', 15);
 commit;
 
 
@@ -764,6 +785,12 @@ INSERT INTO class_schedule VALUES (seq_class_schedule_id.NEXTVAL, TO_DATE('1970-
 INSERT INTO class_schedule VALUES (seq_class_schedule_id.NEXTVAL, TO_DATE('1970-01-01 16:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 17:00', 'YYYY-MM-DD HH24:MI'), '음료 만들기 실습', 4);
 INSERT INTO class_schedule VALUES (seq_class_schedule_id.NEXTVAL, TO_DATE('1970-01-01 13:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 14:30', 'YYYY-MM-DD HH24:MI'), '비건 재료 소개', 5);
 INSERT INTO class_schedule VALUES (seq_class_schedule_id.NEXTVAL, TO_DATE('1970-01-01 14:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 15:30', 'YYYY-MM-DD HH24:MI'), '비건 디저트 실습', 5);
+INSERT INTO class_schedule VALUES (seq_class_schedule_id.NEXTVAL, TO_DATE('1970-01-01 11:00','YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 12:00','YYYY-MM-DD HH24:MI'), '짜장면 기초 설명', 10);
+INSERT INTO class_schedule VALUES (seq_class_schedule_id.NEXTVAL, TO_DATE('1970-01-01 12:00','YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 13:00','YYYY-MM-DD HH24:MI'), '짬뽕 실습', 10);
+INSERT INTO class_schedule VALUES (seq_class_schedule_id.NEXTVAL, TO_DATE('1970-01-01 17:00','YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 18:00','YYYY-MM-DD HH24:MI'), '초밥 재료 준비', 14);
+INSERT INTO class_schedule VALUES (seq_class_schedule_id.NEXTVAL, TO_DATE('1970-01-01 18:00','YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 19:00','YYYY-MM-DD HH24:MI'), '초밥 만들기 실습', 14);
+INSERT INTO class_schedule VALUES (seq_class_schedule_id.NEXTVAL, TO_DATE('1970-01-01 14:00','YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 15:30','YYYY-MM-DD HH24:MI'), '케이크 시트 굽기', 15);
+INSERT INTO class_schedule VALUES (seq_class_schedule_id.NEXTVAL, TO_DATE('1970-01-01 15:30','YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 16:30','YYYY-MM-DD HH24:MI'), '생크림 데코레이션', 15);
 commit;
 
 

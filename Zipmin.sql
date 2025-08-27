@@ -494,9 +494,11 @@ commit;
 create table classes (
     id number primary key,
     title varchar2(200) not null,
+    category varchar2(50) not null,
     image varchar2(200) not null,
     introduce varchar2(1000) not null,
     place varchar2(100) not null,
+    postdate date default sysdate not null,
     eventdate date not null,
     starttime date not null,
     endtime date not null,

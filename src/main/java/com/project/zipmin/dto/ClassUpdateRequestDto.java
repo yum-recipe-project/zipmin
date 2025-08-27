@@ -1,16 +1,19 @@
 package com.project.zipmin.dto;
 
 import java.util.Date;
-import java.util.List;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.project.zipmin.entity.User;
 
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ClassReadResponseDto {
+public class ClassUpdateRequestDto {
 	
 	private int id;
 	private String title;
@@ -25,21 +28,8 @@ public class ClassReadResponseDto {
 	private String need;
 	private String image;
 	private String introduce;
-	private int approval;
-	private int userId;
+	// private String approval;
+	private Integer userId;
 	
-	// target 등등 (수정 필요)
-	private List<ClassTargetReadResponseDto> targetList;
-	private List<ClassScheduleReadResponseDto> scheduleList;
-	private List<ClassTutorReadResponseDto> tutorList;
-	private boolean applystatus;
-	
-	
-	
-	
-	private boolean isOpened;
-	private String username;
-	private String nickname;
-	
-	private int applycount;
 }
+

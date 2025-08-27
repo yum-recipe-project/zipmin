@@ -156,6 +156,19 @@
 	margin-left: auto;
 } 
 
+.body-wrapper .container-fluid .form-check {
+	margin-bottom: 0;
+}
+
+.body-wrapper .container-fluid .form-check.ms-10 {
+	margin-left: 40px;
+}
+
+.body-wrapper .container-fluid .form-check .form-check-label {
+	color: #5A6A85;
+	font-size: 14px;
+}
+
 .body-wrapper .container-fluid table {
 	margin-top: 40px;
 	width: 1120px;
@@ -216,12 +229,6 @@
 }
 
 
-/* 뱃지 */
-.badge {
-    font-size: 12.25px;
-}
-
-
 
 
 
@@ -267,6 +274,21 @@
 .body-wrapper .container-fluid th.sort_btn.desc::after {
     opacity: 0.6;
 }
+
+
+
+
+
+/* 뱃지 */
+.badge {
+    font-size: 12.25px;
+}
+
+.text-bg-gray {
+    color: #666 !important;
+    background-color: #eee !important;
+}
+
 
 
 

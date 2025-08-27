@@ -75,9 +75,6 @@ public class RecipeController {
 			@RequestParam int page,
 			@RequestParam int size) {
 		
-		// *** 팔로우만 보기 기능도 구현 필요 ***
-		// *** 카테고리는 아마 배열이나 맵으로 처리해야 할듯 ***
-		
 		Pageable pageable = PageRequest.of(page, size);
 		Page<RecipeReadResponseDto> recipePage = recipeService.readRecipePage(categoryList, keyword, sort, pageable);
 		

@@ -26,6 +26,7 @@ import com.project.zipmin.dto.ClassApplyDeleteRequestDto;
 import com.project.zipmin.dto.ClassApplyReadResponseDto;
 import com.project.zipmin.dto.ClassApplyUpdateRequestDto;
 import com.project.zipmin.dto.ClassApplyUpdateResponseDto;
+import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
 import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.ClassScheduleReadResponseDto;
@@ -358,7 +359,7 @@ public class CookingService {
 			throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
 		}
 		
-		// 클래스 여부 확인
+		// 클래스 존재 여부 확인
 		Class classs = classRepository.findById(id)
 				.orElseThrow(() -> new ApiException(ClassErrorCode.CLASS_NOT_FOUND));
 		
@@ -396,6 +397,50 @@ public class CookingService {
 	}
 
 	
+	
+	
+	
+	// 클래스 승인 수정
+	public void updateClassApproval(ClassApprovalUpdateRequestDto classDto) {
+		
+		// 입력값 검증
+		if (classDto == null || classDto.getId() == null || classDto.getApproval() == null) {
+			throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
+		}
+		
+		// 클래스 존재 여부 확인
+		Class classs = classRepository.findById(classDto.getId())
+				.orElseThrow(() -> new ApiException(ClassErrorCode.CLASS_NOT_FOUND));
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto user = userService.readUserByUsername(username);
+		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!user.getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
+			}
+		}
+		
+		// 승인 상태
+		Integer approvalCode = null;
+		try {
+			approvalCode = Approval.valueOf(classDto.getApproval()).getCode();
+		}
+		catch (Exception e) {
+			throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
+		}
+		
+		// 변경 값 설정
+		classs.setApproval(approvalCode);
+		
+		// 클래스 수정
+		try {
+			classs = classRepository.save(classs);
+		}
+		catch (Exception e) {
+			throw new ApiException(ClassErrorCode.CLASS_UPDATE_APPROVAL_FAIL);
+		}
+	}
 	
 	
 	

@@ -345,7 +345,7 @@ function renderClassStatus(classs) {
 		btnApprove.type = 'button';
 		btnApprove.className = 'dropdown-item';
 		btnApprove.textContent = '승인';
-		btnApprove.addEventListener('click', () => onApprove(classs.id));
+		btnApprove.addEventListener('click', () => editClassApproval(classs.id, 'APPROVED'));
 		liApprove.appendChild(btnApprove);
 		menu.appendChild(liApprove);
 
@@ -355,7 +355,7 @@ function renderClassStatus(classs) {
 		btnReject.type = 'button';
 		btnReject.className = 'dropdown-item';
 		btnReject.textContent = '미승인';
-		btnReject.addEventListener('click', () => onApprove(classs.id));
+		btnReject.addEventListener('click', () => editClassApproval(classs.id, 'REJECTED'));
 		liReject.appendChild(btnReject);
 		menu.appendChild(liReject);
 
@@ -365,7 +365,7 @@ function renderClassStatus(classs) {
 		btnPending.type = 'button';
 		btnPending.className = 'dropdown-item';
 		btnPending.textContent = '대기';
-		btnPending.addEventListener('click', () => onApprove(classs.id));
+		btnPending.addEventListener('click', () => editClassApproval(classs.id, 'PENDING'));
 		liPending.appendChild(btnPending);
 		menu.appendChild(liPending);
 		
@@ -405,13 +405,67 @@ function renderClassStatus(classs) {
 	return td;
 }
 
-// onApprove/onReject/onClose/onDelete는 기존에 정의된 핸들러 사용
- function onApprove(id) { 
+
+
+
+
+
+/**
+ * 클래스의 승인 여부를 수정하는 함수
+ */
+async function editClassApproval(id, approval) {
 	
-  }
- function onReject(id)  { }
- function onClose(id)   {  }
- function onDelete(id)  {  }
+	try {
+		const data = {
+			id: id,
+			approval: approval
+		}
+		
+		const response = await instance.patch(`/classes/${id}/approval`, data, {
+			headers: getAuthHeaders()
+		});
+		
+		if (response.data.code === 'CLASS_UPDATE_APPROVAL_SUCCESS') {
+			alertPrimary('쿠킹클래스의 상태 변경에 성공했습니다.');
+			fetchClassList(false);
+		}
+	}
+	catch (error) {
+		const code = error?.response?.data?.code;
+		
+		if (code === 'CLASS_UPDATE_APPROVAL_FAIL') {
+			alertDanger('쿠킹클래스의 상태 변경에 실패했습니다.');
+		}
+		else if (code === 'CLASS_INVALID_INPUT') {
+			alealertDangerrt('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alealertDangerrt('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'CLASS_UNAUTHORIZED') {
+			alertDanger('로그인되지 않은 사용자입니다.');
+		}
+		else if (code === 'CLASS_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (code === 'CLASS_NOT_FOUND') {
+			alertDanger('해당 클래스를 찾을 수 없습니다.');
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			alertDanger('해당 사용자를 찾을 수 없습니다.');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alertDanger('서버 내부에서 오류가 발생했습니다.');
+		}
+		else {
+			console.log(error);
+		}
+	}
+	
+}
+
+
+
 
 
 
@@ -457,7 +511,7 @@ async function deleteClass(id) {
 			alertDanger('해당 사용자를 찾을 수 없습니다.');
 		}
 		else if (code === 'INTERNAL_SERVER_ERROR') {
-			alertDanger('서버 내부 오류가 발생했습니다.');
+			alertDanger('서버 내부에서 오류가 발생했습니다.');
 		}
 		else {
 			console.log(error);

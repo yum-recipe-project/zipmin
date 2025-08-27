@@ -15,6 +15,7 @@ import com.project.zipmin.dto.ClassApplyDeleteRequestDto;
 import com.project.zipmin.dto.ClassApplyReadResponseDto;
 import com.project.zipmin.dto.ClassApplyUpdateRequestDto;
 import com.project.zipmin.dto.ClassApplyUpdateResponseDto;
+import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.ClassScheduleReadResponseDto;
 import com.project.zipmin.dto.ClassTutorReadResponseDto;
@@ -113,24 +114,71 @@ public class CookingController {
 
 	
 	
-	// 새 클래스 신청
+	
+	
+	// 클래스 작성
 	@PostMapping("/classes")
-	public int writeClass() {
-		return 0;
-	}
-
-	// 클래스 승인 및 거절 (관리자)
-	@PatchMapping("/classes/{id}/status")
-	public int updateClassStatus(
-			@PathVariable int id) {
-		return 0;
+	public ResponseEntity<?> writeClass() {
+		
+		return null;
 	}
 	
 	
 	
 	
 	
-	// 쿠킹클래스긴 함
+	// 클래스 수정
+	@PatchMapping("/classes/{id}")
+	public ResponseEntity<?> editClass(
+			@Parameter(description = "클래스의 일련번호") @PathVariable int id
+			// ***** 수정 요청 정보 추가 *****
+			) {
+		
+		// ***** 관리자는 만료되기 전 수정 가능 *****
+		// ***** 일반 사용자는 대기 상태인 경우에만 수정 가능 *****
+		
+		return null;
+	}
+	
+	
+	
+	
+	
+	
+	
+	// 200 CLASS_UPDATE_APPROVAL_SUCCESS
+	// 400 CLASS_UPDATE_APPROVAL_FAIL
+	// 400 CLASS_INVALID_INPUT
+	// 400 USER_INVALID_INPUT
+	// 401 로그인되지 않은 사용자 CLASS_UNAUTHRIZED
+	// 403 CLASS_FORBIDDEN
+	// 404 CLASS_NOT_FOUND
+	// 404 USER_NOT_FOUND
+	// 500 서버 내부 오류
+	
+	// 클래스 승인 수정 (관리자)
+	@PatchMapping("/classes/{id}/approval")
+	public ResponseEntity<?>  updateClassApproval(
+			@Parameter(description = "클래스의 일련번호") @PathVariable int id,
+			@Parameter(description = "승인 상태") @RequestBody ClassApprovalUpdateRequestDto classDto) {
+	
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
+		}
+		
+		// ***** UpdateResponseDto 받아야 할 수도 있음 *****
+		cookingService.updateClassApproval(classDto);
+		
+		return ResponseEntity.status(ClassSuccessCode.CLASS_UPDATE_APPROVAL_SUCCESS.getStatus())
+				.body(ApiResponse.success(ClassSuccessCode.CLASS_UPDATE_APPROVAL_SUCCESS, null));
+	}
+	
+	
+	
+	
+	
 	// 200 클래스 삭제 성공 CLASS_DELETE_SUCCESS
 	// 400 클래스 삭제 실패 CLASS_DELETE_FAIL
 	// 400 입력값이 유효하지 않음 CLASS_INVALID_INPUT

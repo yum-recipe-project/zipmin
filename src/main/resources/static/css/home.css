@@ -141,98 +141,75 @@
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* 레시피 랭킹 */
 #container .recipe_ranking {
 	margin: 0px auto;
 	padding: 36px 108px;
 	width: 1160px;
-	height: 385px;
 	position: relative;
 }
 
-
-#container .recipe_ranking::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 108px; 
-    width: calc(100% - 216px); 
-    border-bottom: 2px solid var(--line-color2);
-}
-
-/* 랭킹 헤더 */
+/* 레시피 헤더 */
 #container .recipe_ranking .ranking_header {
-	padding: 36px;
-    background: #FF9078;
-    width: 944px;
-    height: 150px;
-    border-radius: 8px 8px 0 0;
-    display: flex;
-    justify-content: space-between;
-}
-
-#container .recipe_ranking .ranking_header span {
-	font-size: 14px;
-	color: #fff;
-	font-weight: 300;
+	position: relative;
+	padding-bottom: 30px;
 }
 
 #container .recipe_ranking .ranking_header h2 {
 	font-size: 24px;
-	color: #fff;
 	font-weight: 700;
+	color: var(--txt-color-600);
+}
+
+#container .recipe_ranking .ranking_header span {
+	font-size: 14px;
+	font-weight: 300;
+	color: var(--txt-color-500);
 }
 
 #container .recipe_ranking .ranking_header .btn_sort {
-	color: #fff;
 	display: flex;
 	font-size: 14px;
 	font-weight: 300;
-	padding-top: 20px;
+	align-items: center;
+	
+	position: absolute;
+	right: 0;
+	top: 0;
 }
 
 #container .recipe_ranking .ranking_header .btn_sort .btn_img { 
     width: 20px; 
     height:20px;
-    background:#fff; 
-	-webkit-mask-box-image:url('/images/common/arrow_down.png');
-	mask-image: url('/images/common/arrow_down.png');
+    background:var(--txt-color-500); 
+	-webkit-mask-box-image:url('/images/mypage/arrow_right.png');
+	mask-image: url('/images/mypage/arrow_right.png');
 	background-position:center;  background-size:cover;  position:relative; 
 }
 
 
-.dropdown_menu {
-    display: none;
-    position: absolute;
-    background: white;
-    border: 1px solid #ddd;
-    list-style: none;
-    margin-top: 5px;
-    width: 150px;
-    z-index: 999;
-}
-
-.dropdown_menu li {
-    padding: 10px;
-    cursor: pointer;
-}
-
-.dropdown_menu li:hover {
-    background: #f0f0f0;
-}
-
-.dropdown.active .dropdown_menu {
-    display: block;
-}
-
-
-/* 랭킹 리스트 */
+/* 레시피 랭킹 리스트 */
 #container .recipe_ranking .recipe_list {
     display: flex;
-    gap: 12px;
-    padding: 0 34px;
-    position: absolute;
-	bottom: 25px;
+    gap: 25px;
 }
 
 #container .recipe_ranking .recipe_list .recipe_card {
@@ -254,7 +231,7 @@
 
 #container .recipe_ranking .recipe_list .recipe_card span {
 	font-size: 12px;
-	color: var(--txt-color-400);
+	color: var(--point-color2);
 }
 
 #container .recipe_ranking .recipe_list .image {
@@ -267,7 +244,19 @@
 
 
 
-/* 키친 가이드 랭킹 */
+
+
+
+
+
+
+
+
+
+
+
+
+/* 키친가이드 랭킹 */
 #container .guide_ranking {
 	margin: 0px auto;
 	padding: 36px 108px;
@@ -275,7 +264,7 @@
 	position: relative;
 }
 
-/* 키친 가이드 헤더 */
+/* 키친가이드 헤더 */
 #container .guide_ranking .ranking_header {
 	position: relative;
 	padding-bottom: 30px;
@@ -304,48 +293,59 @@
 	top: 0;
 }
 
-#container .guide_ranking .ranking_header .btn_sort .btn_img { 
-    width: 20px; 
-    height:20px;
-    background:var(--txt-color-500); 
-	-webkit-mask-box-image:url('/images/mypage/arrow_right.png');
-	mask-image: url('/images/mypage/arrow_right.png');
-	background-position:center;  background-size:cover;  position:relative; 
+
+
+
+
+
+
+
+
+
+
+#container .clear_recipe {
+	padding: 14px;
+	width: 100%;
+	height: auto;  
+	background: #F4F8FE;
+	border-radius: 4px;
 }
 
-
-/* 키친가이드 랭킹 리스트 */
-#container .guide_ranking .guide_list {
-    display: flex;
-    gap: 25px;
+#container .clear_recipe .pick {
+	font-size: 16px;
+	line-height: 26px;
+	letter-spacing: -0.4px;
+	font-weight: 700;
+	margin-bottom: 16px;
 }
 
-#container .guide_ranking .guide_list .guide_card {
-    width: 136px;
-    text-align: left;
+#container .clear_recipe ul {
+	display: flex;
+	flex-wrap: wrap;  
+	padding: 0;  
+	margin: 0;  
+	gap: 13px; 
+	list-style: none;
 }
 
-#container .guide_ranking .guide_list .guide_card p {
-	font-size: 14px;
-	margin: 0;
-    text-align: left;
-    display: -webkit-box; 
-    -webkit-box-orient: vertical;
-    overflow: hidden; 
-    -webkit-line-clamp: 2;
-    text-overflow: ellipsis;
-    line-height: 1.3;
+#container .clear_recipe li {
+	width: calc(50% - 6.5px);  
+	padding: 0;
 }
 
-#container .guide_ranking .guide_list .guide_card span {
-	font-size: 12px;
-	color: var(--point-color2);
+#container .clear_recipe .recipe {
+	padding: 15px;
+	display: flex;
+	background: #fff;
+	border: 1px solid var(--line-color2);
+	border-radius: 4px;
+	width: 100%;  
+	height: 50px;
+	align-items: center;
+	gap: 10px;
 }
 
-#container .guide_ranking .guide_list .image {
-	background: #ddd;
-    width: 100%;
-    height: 136px;
-    margin-bottom: 8px;
+#container .clear_recipe .recipe span {
+	font-weight: 700;
 }
 

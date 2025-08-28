@@ -125,24 +125,15 @@
 				
 				<!-- 레시피 랭킹  -->
 				<div class="recipe_ranking">
-					
 					<!-- 랭킹 헤더 -->
 					<div class="ranking_header">
-						<div class="txt">
-							<span>집밥은 역시 집밥의 민족</span>
-					        <h2>현재 뜨고 있는 레시피</h2>
-						</div>
-					    <div class="dropdown">
-					        <button class="btn_sort" id="recipeSortBtn">
-					            찜 많은 순
-					            <div class="btn_img"></div>
-					        </button>
-					        <ul class="dropdown_menu">
-					            <li>찜 많은 순</li>
-					            <li>별점 높은 순</li>
-					        </ul>
-					    </div>
-				    </div>
+						<h2>현재 뜨고 있는 레시피</h2>
+						<span>집밥은 역시 집밥의 민족</span>
+						<button class="btn_sort" onclick="location.href='/recipe/listRecipe.do'">
+							더보기
+							<div class="btn_img"></div>
+						</button>
+					</div>
 				    
 				    <!-- 랭킹 리스트 -->
 					<ul class="recipe_list"></ul>
@@ -162,6 +153,48 @@
 				    
 				    <!-- 랭킹 리스트 -->
 					<ul class="guide_list"></ul>
+					
+					<!-- 레시피 추천 -->
+					<div class="clear_recipe">
+						<ul class="pick_list">
+							<li>
+								<div class="recipe">
+									<span>1</span>
+									<p>김치볶음밥</p>
+								</div>
+							</li>
+							<li>
+								<div class="recipe">
+									<span>1</span>
+									<p>김치볶음밥</p>
+								</div>
+							</li>
+							<li>
+								<div class="recipe">
+									<span>1</span>
+									<p>김치볶음밥</p>
+								</div>
+							</li>
+							<li>
+								<div class="recipe">
+									<span>1</span>
+									<p>김치볶음밥</p>
+								</div>
+							</li>
+							<li>
+								<div class="recipe">
+									<span>1</span>
+									<p>김치볶음밥</p>
+								</div>
+							</li>
+							<li>
+								<div class="recipe">
+									<span>1</span>
+									<p>김치볶음밥</p>
+								</div>
+							</li>
+						</ul>
+					</div>
 				</div>
 			
 				<h2>마이페이지</h2>
@@ -172,7 +205,6 @@
 				<button onclick="location.href='/admin/home.do';">관리자 페이지</button>
 				<br/><br/>
 				
-			</div>
 		</main>
 		
 		<%@include file="common/footer.jsp" %>

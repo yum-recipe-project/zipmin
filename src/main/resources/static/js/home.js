@@ -1,9 +1,6 @@
 /**
  * 전역 변수
  */
-const page = 0;
-const size = 6;
-let sort = 'likecount-desc';
 let recipeList = [];
 let guideList = [];
 
@@ -105,23 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 document.addEventListener('DOMContentLoaded', function () {
 	
-	// 드롭다운 동작
-	document.getElementById('recipeSortBtn').addEventListener('click', function () {
-		document.querySelector('.dropdown').classList.toggle('active');
-	});
 
-	// 드롭다운 정렬
-	document.querySelectorAll('.dropdown_menu li').forEach((item, index) => {
-		item.addEventListener('click', async function () {
-			sort = index === 0 ? 'likecount-desc' : 'reviewscore-desc';
-			document.querySelector('.dropdown').classList.remove('active');
-			document.getElementById('recipeSortBtn').innerHTML = `${this.textContent} <div class="btn_img"></div>`;
-
-			recipeList = [];
-			
-			fetchRecipeList();
-		});
-	});
 
 	fetchRecipeList();
 	fetchGuideList();
@@ -137,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
 async function fetchRecipeList() {
 	try {
 		const params = new URLSearchParams({
-			sort: sort,
+			sort: 'likecount-desc',
 			page: 0,
 			size: 6
 		}).toString();
@@ -160,45 +141,6 @@ async function fetchRecipeList() {
 		console.error(error);
 	}
 }
-
-
-
-/**
- * 레시피 목록을 화면에 렌더링 하는 함수
- */
-function renderRecipeList(recipeList) {
-	const container = document.querySelector('.recipe_list');
-	container.innerHTML = '';
-
-	recipeList.forEach(recipe => {
-		const li = document.createElement('li');
-		
-		const a = document.createElement('a');
-		a.href = `/recipe/viewRecipe.do?id=${recipe.id}`;
-
-		const card = document.createElement('div');
-		card.className = 'recipe_card';
-		
-		const imageDiv = document.createElement('div');
-		imageDiv.className = 'image';
-		imageDiv.style.backgroundImage = `url(${recipe.image})`;
-		
-		const titleP = document.createElement('p');
-		titleP.textContent = recipe.title;
-		
-		const infoSpan = document.createElement('span');
-		infoSpan.textContent = `${recipe.cooklevel} / ${recipe.cooktime} / ${recipe.spicy}`;
-		
-		card.appendChild(imageDiv);
-		card.appendChild(titleP);
-		card.appendChild(infoSpan);
-		
-		a.appendChild(card);
-		li.appendChild(a);
-		container.appendChild(li);
-	});
-}
-
 
 
 
@@ -242,30 +184,31 @@ async function fetchGuideList() {
 /**
  * 
  */
-function renderGuideList(guideList) {
-	const container = document.querySelector('.guide_list');
+function renderRecipeList(recipeList) {
+	const container = document.querySelector('.recipe_list');
 	container.innerHTML = '';
 	
-	guideList.forEach(guide => {
+	recipeList.forEach(recipe => {
 		const li = document.createElement('li');
 		
 		const a = document.createElement('a');
-		a.href = `/kitchen/viewGuide.do?id=${guide.id}`;
+		a.href = `/kitchen/viewRecipe.do?id=${recipe.id}`;
 		
 		const card = document.createElement('div');
-		card.className = 'guide_card';
+		card.className = 'recipe_card';
 		
 		const imageDiv = document.createElement('div');
 		imageDiv.className = 'image';
-		imageDiv.style.backgroundImage = `url('${guide.imageUrl}')`;
+		imageDiv.style.backgroundImage = `url('${recipe.image}')`;
 		imageDiv.style.backgroundSize = 'cover';
 		imageDiv.style.backgroundPosition = 'center';
 		
 		const titleP = document.createElement('p');
-		titleP.textContent = guide.title;
+		titleP.textContent = recipe.title;
 		
+		/***** 정보 추가 *****/
 		const scrapSpan = document.createElement('span');
-		scrapSpan.textContent = `스크랩 ${guide.likecount}`;
+		scrapSpan.textContent = `스크랩 ${recipe.likecount}`;
 		
 		card.appendChild(imageDiv);
 		card.appendChild(titleP);
@@ -277,3 +220,11 @@ function renderGuideList(guideList) {
 	});
 	
 }
+
+
+
+
+function renderGuideList(guideList) {
+}
+
+

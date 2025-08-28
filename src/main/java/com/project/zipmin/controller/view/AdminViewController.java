@@ -36,36 +36,6 @@ public class AdminViewController {
 		return "admin/listChomp";
 	}
 	
-	@GetMapping("/admin/listVote.do")
-	public String adminListVote() {
-		return "admin/listVote";
-	}
-	
-	@GetMapping("/admin/listMegazine.do")
-	public String adminListMegazine() {
-		return "admin/listMegazine";
-	}
-	
-	@GetMapping("/admin/writeMegazine.do")
-	public String adminWriteMegazine() {
-		return "admin/writeMegazine";
-	}
-	
-	@GetMapping("/admin/viewMegazine.do")
-	public String adminViewMegazine() {
-		return "admin/viewMegazine";
-	}
-	
-	@GetMapping("/admin/editMegazine.do")
-	public String adminEditMegazine() {
-		return "admin/editMegazine";
-	}
-	
-	@GetMapping("/admin/listEvent.do")
-	public String adminListEvent() {
-		return "admin/listEvent";
-	}
-	
 	@GetMapping("/admin/listComment.do")
 	public String adminListComment() {
 		return "admin/listComment";
@@ -74,6 +44,11 @@ public class AdminViewController {
 	@GetMapping("/admin/listReview.do")
 	public String adminListReview() {
 		return "admin/listReview";
+	}
+	
+	@GetMapping("/admin/listClass.do")
+	public String adminListClass() {
+		return "admin/listClass";
 	}
 	
 }

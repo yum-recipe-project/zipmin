@@ -1,6 +1,7 @@
 package com.project.zipmin.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -23,10 +24,13 @@ public class CommentReadResponseDto {
 	private Integer commId;
 	private Integer userId;
 	
+	private String username;
 	private String nickname;
-	private long likecount;
-	private long reportcount;
-	private boolean likestatus;
 	private String role;
+	
+	private int likecount;
+	private int reportcount;
+	private boolean isLiked;
+	private List<CommentReadResponseDto> subcommentList;
 	
 }

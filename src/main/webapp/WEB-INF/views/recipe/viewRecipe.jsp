@@ -8,11 +8,15 @@
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/recipe/view-recipe.css">
+		<link rel="stylesheet" href="/css/common/comment.css">
+		<link rel="stylesheet" href="/css/common/review.css">
 		<script src="/js/recipe/view-recipe.js"></script>
 		<script src="/js/modal/report-recipe-modal.js"></script>
 		<script src="/js/modal/add-memo-modal.js"></script>
 		<script src="/js/modal/support-recipe-modal.js"></script>
 		<script src="/js/modal/top-up-point-modal.js"></script>
+		<script src="/js/common/comment.js"></script>
+		<script src="/js/common/review.js"></script>
 	</head>
 	<body>
 		<%@include file="../common/header.jsp" %>
@@ -67,8 +71,7 @@
 						
 						<!-- 버튼 -->
 						<div class="btn_wrap">
-							<button class="btn_icon" data-bs-toggle="modal" data-bs-target="#reportRecipeModal"
-								onclick="openReportRecipeModal();">
+							<button class="btn_icon" data-bs-toggle="modal" data-bs-target="#reportRecipeModal">
 								<img src="/images/recipe/siren.png">
 							</button>
 							<button class="btn_icon" onclick="">
@@ -85,8 +88,7 @@
 						<h3>재료</h3>
 						<!-- 장보기메모에 재료 담기 버튼 -->
 						<div class="save_ingredient_btn">
-							<button class="btn_tool" data-bs-toggle="modal" data-bs-target="#addMemoModal"
-								onclick="">
+							<button class="btn_tool" data-bs-toggle="modal" data-bs-target="#addMemoModal">
 								<img src="/images/recipe/pen.png"> 장보기메모에 재료 담기
 							</button>
 						</div>
@@ -94,11 +96,11 @@
 						<!-- 양 -->
 						<div class="recipe_serving">
 							<select id="servingInput" name="">
-								<option value="1">1인분</option>
-								<option value="2">2인분</option>
-								<option value="3">3인분</option>
-								<option value="4">4인분</option>
-								<option value="5">5인분</option>
+								<option value="1인분">1인분</option>
+								<option value="2인분">2인분</option>
+								<option value="3인분">3인분</option>
+								<option value="4인분">4인분</option>
+								<option value="5인분">5인분</option>
 							</select>
 							<p>레시피의 용량을 단순히 인분에 맞춰 계산한 것이므로, 실제 조리 시 정확하지 않을 수 있습니다.</p>
 						</div>

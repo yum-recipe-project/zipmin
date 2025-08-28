@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <form id="editCommentForm" method="post" >
-	<input type="hidden" name="id">
+	<input type="hidden" id="editCommentId">
 	<div class="modal" id="editCommentModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -13,7 +13,8 @@
 				<div class="modal-body">
 					<div class="form-group">
 						<label>내용</label>
-						<textarea class="form-control" name="content" style="height: 90px;"></textarea>
+						<textarea class="form-control" id="editCommentContentInput" name="content" style="height: 90px;"></textarea>
+						<p id="editCommentContentHint" class="danger">내용을 입력해주세요.</p>
 					</div>
 				</div>
 				<div class="modal-footer">

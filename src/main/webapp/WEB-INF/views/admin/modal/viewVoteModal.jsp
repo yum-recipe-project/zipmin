@@ -11,7 +11,7 @@
 			<div class="modal-body">
 				<div class="vote_wrap">
 					<div class="vote_header">
-						<span>아이스크림</span>
+						<span>투표</span>
 						<h2 class="vote_title"></h2>
 						<div class="vote_info">
 							<div class="period">
@@ -26,6 +26,9 @@
 					<div class="vote_result">
 						<ul class="record_list"></ul>
 					</div>
+					
+					<!-- 투표 이미지 -->
+					<img class="vote_image" src="/images/common/test.png">
 				</div>
 			</div>
 			<div class="modal-footer">

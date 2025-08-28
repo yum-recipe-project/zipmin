@@ -1,5 +1,6 @@
 package com.project.zipmin.dto;
 
+import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -15,6 +16,7 @@ public class RecipeCreateResponseDto {
 	private String image;
 	private String title;
 	private String introduce;
+	private Date postdate;
 	private String cooklevel;
 	private String cooktime;
 	private String spicy;

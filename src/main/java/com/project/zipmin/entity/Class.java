@@ -2,12 +2,15 @@ package com.project.zipmin.entity;
 
 import java.util.Date;
 
+import org.hibernate.annotations.Formula;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -30,7 +33,9 @@ public class Class {
 	private int id;
 	
 	private String title;
+	private String category;
 	private String place;
+	private Date postdate;
 	private Date eventdate;
 	private Date starttime;
 	private Date endtime;
@@ -45,5 +50,15 @@ public class Class {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")
 	private User user;
+	
+	@Formula("(SELECT COUNT(*) FROM class_apply ca WHERE ca.class_id = id)")
+	private int applycount;
+	
+	@PrePersist
+    public void prePersist() {
+        if (this.postdate == null) {
+            this.postdate = new Date();
+        }
+    }
 	
 }

@@ -18,6 +18,11 @@
 					</div>
 					
 					<div class="form-group">
+						<label>이미지</label>
+						<input class="form-control" type="file" id="editMegazineImageInput">
+					</div>
+					
+					<div class="form-group">
 						<label>내용</label>
 						<textarea class="form-control" id="editMegazineContentInput" name="content" style="height: 200px;" placeholder="내용을 입력해주세요"></textarea>
 						<p id="editMegazineContentHint" class="danger">내용을 입력해주세요.</p>

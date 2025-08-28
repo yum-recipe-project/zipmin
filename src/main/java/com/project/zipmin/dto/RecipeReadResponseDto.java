@@ -1,5 +1,6 @@
 package com.project.zipmin.dto;
 
+import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -15,6 +16,7 @@ public class RecipeReadResponseDto {
 	private String image;
 	private String title;
 	private String introduce;
+	private Date postdate;
 	private String cooklevel;
 	private String cooktime;
 	private String spicy;
@@ -27,6 +29,15 @@ public class RecipeReadResponseDto {
 	private List<RecipeStockReadResponseDto> stockList;
 	private List<RecipeStepReadResponseDto> stepList;
 	
-	private Double rate;
+	private int commentcount;
+	private int likecount;
+	private int reportcount;
+	private int reviewcount;
+	private Double reviewscore;
 	
+	private String username;
+	private String nickname;
+	
+	// 냉파용 (수정 필요)
+	private Double rate;
 }

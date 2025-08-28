@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 		
 		const result = await response.json();
 		
-		if (result.code === 'COOKING_READ_SUCCESS') {
+		if (result.code === 'CLASS_READ_SUCCESS') {
 			
 			console.log(result);
 			
@@ -60,19 +60,19 @@ document.addEventListener('DOMContentLoaded', async function() {
 			renderScheduleList(result.data.schedule_list);
 			renderTutorList(result.data.tutor_list);
 		}
-		else if (result.code === 'COOKING_NOT_FOUND') {
+		else if (result.code === 'CLASS_NOT_FOUND') {
 			alert('해당 쿠킹클래스를 찾을 수 없습니다.');
 			location.href = '/cooking/listClass.do';
 		}
-		else if (result.code === 'COOKING_TARGET_READ_LIST_FAIL') {
+		else if (result.code === 'CLASS_TARGET_READ_LIST_FAIL') {
 			alert('교육대상 목록 조회에 실패했습니다.');
 			location.href = '/cooking/listClass.do';
 		}
-		else if (result.code === 'COOKING_SCHEDULE_READ_LIST_FAIL') {
+		else if (result.code === 'CLASS_SCHEDULE_READ_LIST_FAIL') {
 			alert('교육일정 목록 조회에 실패했습니다.');
 			location.href = '/cooking/listClass.do';
 		}
-		else if (result.code === 'COOKING_TUTOR_READ_LIST_FAIL') {
+		else if (result.code === 'CLASS_TUTOR_READ_LIST_FAIL') {
 			alert('강사 목록 조회에 실패했습니다.');
 			location.href = '/cooking/listClass.do';
 		}

@@ -142,7 +142,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 		if (isValid) {
 			try {
-
 				const formdata = new FormData();
 				formdata.append('eventRequestDto', new Blob([JSON.stringify({
 					title: title.value.trim(),
@@ -167,7 +166,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 				if (response.data.code === 'EVENT_CREATE_SUCCESS') {
 					alertPrimary('이벤트 작성에 성공했습니다.');
-					
 					bootstrap.Modal.getInstance(document.getElementById('writeEventModal'))?.hide();
 					fetchChompList();
 				}
@@ -175,16 +173,38 @@ document.addEventListener('DOMContentLoaded', function() {
 			catch (error) {
 				const code = error?.response?.data?.code;
 				
-				//***************** 여기 ㅈㄴ 추가하기 */
-				
 				if (code === 'EVENT_CREATE_FAIL') {
 					alertDanger('이벤트 작성에 실패했습니다.');
 				}
-				
-				console.log(error);
+				else if (code === 'EVENT_INVALID_INPUT') {
+					alertDanger('입력값이 유효하지 않습니다.');
+				}
+				else if (code === 'EVENT_INVALID_PERIOD') {
+					alertDanger('이벤트 기간 설정이 유효하지 않습니다.');
+				}
+				else if (code === 'EVENT_INVALID_FILE') {
+					alertDanger('이미지 파일이 유효하지 않습니다.');
+				}
+				else if (code === 'EVENT_UNAUTHORIZED_ACCESS') {
+					alertDanger('로그인되지 않은 사용자입니다.');
+				}
+				else if (code === 'EVENT_FORBIDDEN') {
+					alertDanger('접근 권한이 없습니다.');
+				}
+				else if (code === 'USER_NOT_FOUND') {
+					alertDanger('해당 사용자를 찾을 수 없습니다.');
+				}
+				else if (code === 'EVENT_FILE_UPLOAD_FAIL') {
+					alertDanger('이벤트 파일 업로드에 실패했습니다.');
+				}
+				else if (code === 'INTERNAL_SERVER_ERROR') {
+					alertDanger('서버 내부 오류가 발생했습니다.');
+				}
+				else {
+					console.log(error);
+				}
 			}
 		}
-		
 	});
 	
 });

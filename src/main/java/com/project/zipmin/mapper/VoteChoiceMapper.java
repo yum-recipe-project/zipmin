@@ -22,16 +22,19 @@ public interface VoteChoiceMapper {
 	
 	
 	// Read
+	@Mapping(target = "chomp.id", source = "chompId")
 	VoteChoice toEntity(VoteChoiceReadResponseDto choiceDto);
-	
-	@Mapping(target = "count", ignore = true)
-	@Mapping(target = "rate", ignore = true)
+
+	@Mapping(target = "chompId", source = "chomp.id")
 	VoteChoiceReadResponseDto toReadResponseDto(VoteChoice choice);
 	
 	
 	
 	// Update
+	@Mapping(target = "chomp.id", source = "chompId")
 	VoteChoice toEntity(VoteChoiceUpdateRequestDto choiceDto);
+	
+	@Mapping(target = "chompId", source = "chomp.id")
 	VoteChoiceUpdateRequestDto toUpdateRequestDto(VoteChoice choice);
 	
 	@Mapping(target = "chomp.id", source = "chompId")

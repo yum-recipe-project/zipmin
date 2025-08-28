@@ -24,6 +24,8 @@
 					
 					<!-- 매거진 내용 -->
 					<p class="megazine_content"></p>
+					<!-- 매거진 이미지 -->
+					<img class="megazine_image" src="/images/common/test.png">
 				</div>
 			</div>
 			<div class="modal-footer">

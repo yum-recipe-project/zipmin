@@ -23,8 +23,42 @@
 	line-height: 1.5;
 	letter-spacing: -0.03em;
 	font-size: 32px;
-	margin-bottom: 20px;
+	margin-bottom: 34px;
 }
+
+#container .content .recipe_header .btn_block {
+	display: flex;
+	gap: 4px;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	background: #FFF;
+	border-radius: 8px;
+	border: 1px solid rgb(26, 124, 255);
+	padding: 12px 16px;
+	font-size: 16px;
+	line-height: 24px;
+	box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 3px 10px rgba(0, 0, 0, 0.05), 0px 5px 20px rgba(0, 0, 0, 0.05);
+	margin-bottom: 24px !important;
+}
+
+#container .content .recipe_header .btn_block span {
+	line-height: 1.4;
+	letter-spacing: -0.02em;
+	font-size: 14px;
+}
+
+#container .content .recipe_header .btn_block span b {
+	font-weight: 700;
+	color: #1A7CFF;
+}
+
+#container .content .recipe_header .btn_block img {
+	width: 24px;
+	height: 24px;
+}
+
+
 
 #container .content .recipe_header .tab {
 	flex-wrap: wrap;
@@ -37,26 +71,140 @@
 	margin: 4px;
 }
 
+
+
+
 /* 레시피 헤더(카테고리) */
-#container .content .recipe_header .recipe_menu {
+#container .content .recipe_header .category_title {
+	flex: 1 1 0%;
 	display: flex;
-	gap: 10px;
+	align-items: center;
+	width: 100%;
+	height: 60px;
 }
 
-#container .content .recipe_header .recipe_menu .category {
-	display: flex;
-	gap: 3px;
-	align-items: center;
+#container .content .recipe_header .category_title .category_type {
+    width: 99px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.2px;
+    font-weight: 700;
+    color: rgb(24, 26, 28);
+    cursor: pointer;
 }
-#container .content .recipe_header .recipe_menu .category img {
+
+#container .content .recipe_header .category_title .category_type img {
 	width: 24px;
 	height: 24px;
+	margin-right: 8px;
 }
-#container .content .recipe_header .recipe_menu .category p {
+
+#container .content .recipe_header .category_title .category_type p {
 	font-size: 14px;
 	font-weight: 600;
 }
 
+#container .content .recipe_header .category_title .divider {
+	background: rgba(0, 0, 0, 0.3);
+	width: 1px;
+	height: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+#container .content .recipe_header .category_title .tab {
+	margin-left: 10px;
+	gap: 3px;
+}
+
+#container .content .recipe_header .category_title .tab .btn_tab {
+	padding: 0 20px;
+}
+
+#container .content .recipe_header .category_content {
+	height: 240px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: rgb(255, 255, 255);
+    display: none;
+}
+
+#container .content .recipe_header .category_content.is-open {
+	display: block;
+}
+
+#container .content .recipe_header .hidden {
+	display: none !important;
+}
+
+#container .content .recipe_header .category_content .category_content_list {
+	flex: 1 1 0%;
+	display: flex;
+	align-items: center;
+	width: 100%;
+	height: 60px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: rgb(255, 255, 255);
+}
+
+#container .content .recipe_header .category_content .category_content_list .category_type {
+    width: 45px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.2px;
+    font-weight: 700;
+    color: rgb(24, 26, 28);
+    cursor: pointer;
+}
+
+#container .content .recipe_header .category_content .category_content_list .category_type img {
+	width: 24px;
+	height: 24px;
+	margin-right: 8px;
+}
+
+#container .content .recipe_header .category_content .category_content_list .category_type p {
+	font-size: 14px;
+	font-weight: 600;
+}
+
+#container .content .recipe_header .category_content .category_content_list .divider {
+	background: rgba(0, 0, 0, 0.3);
+	width: 1px;
+	height: 10px;
+	margin-left: 10px;
+	margin-right: 12px;
+}
+
+#container .content .recipe_header .category_content .category_content_list ul {
+	display: flex;
+}
+
+#container .content .recipe_header .category_content .category_content_list ul li {
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+	font-weight: 400;
+	color: rgb(24, 26, 28);
+	position: relative;
+	display: flex;
+	cursor: pointer;
+	padding: 6px;
+	margin-right: 8px;
+	word-break: keep-all;
+	white-space: nowrap;
+}
+
+#container .content .recipe_header .category_content .category_content_list ul li.active {
+	color: var(--point-color2);
+	font-weight: 700;
+}
 
 
 
@@ -80,90 +228,18 @@
 	color: var(--txt-color-500);
 }
 
-#container .content .recipe_content .sort_wrap {
+#container .content .sort_wrap {
 	display: flex;
 	gap: 30px;
-}
-#container .content .recipe_content .follower_btn {
-	display: flex;
-	gap: 10px;
-	align-items: center;
+	margin-left:auto
+	
 }
 
-#container .content .recipe_content .sort_wrap .recipe_sort {
+
+#container .content .sort_wrap .recipe_sort {
 	display: flex;
 	gap: 16px;
 }
-
-#container .content .recipe_content .recipe_util .follow_filter {
-    position: relative;
-}
-
-#container .content .recipe_content .recipe_util .follow_filter::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: -15px;
-    width: 2px;
-    height: 12px;
-    background-color: var(--txt-color-500);
-    transform: translateY(-50%);
-}
-#container .content .recipe_content .recipe_util .follow_filter.active {
-    color: var(--txt-color-600);
-}
-
-
-/* 팔로워 버튼 */
-.toggle-switch {
-    position: relative;
-    display: inline-block;
-    width: 40px;
-    height: 20px;
-}
-
-.toggle-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    border-radius: 20px;
-    transition: 0.3s;
-}
-
-/* 슬라이더 내부 원 */
-.slider::before {
-    content: "";
-    position: absolute;
-    height: 14px;
-    width: 14px; 
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    border-radius: 50%;
-    transition: 0.3s;
-}
-
-.toggle-switch input:checked + .slider {
-    background-color: var(--point-color2);
-}
-
-.toggle-switch input:checked + .slider::before {
-    transform: translateX(20px);
-}
-
-
-
-
 
 
 
@@ -188,6 +264,7 @@
 	width: 258px;
 	margin-bottom: 16px;
 	border-radius: 4px;
+	border: 1px solid #ddd;
 }
 
 #container .content .recipe_content .recipe_list .recipe .recipe_thumbnail img {
@@ -199,13 +276,21 @@
 
 
 /* 레시피 목록 (레시피 정보) */
+#container .content .recipe_content .recipe_list .recipe .recipe_info {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	gap: 5px;
+}
+
 #container .content .recipe_content .recipe_list .recipe .recipe_info h5 {
-	font-size: 14px;
+	font-size: 18px;
 	font-weight: 600;
 	line-height: 28px;
 	letter-spacing: -.4px;
 	overflow: hidden;
-	margin-bottom: 5px;
 }
 
 #container .content .recipe_content .recipe_list .recipe .recipe_info .recipe_details {
@@ -217,17 +302,17 @@
 #container .content .recipe_content .recipe_list .recipe .recipe_info .recipe_details .details_item {
 	display: flex;
 	align-items: center;
-	gap: 3px;
+	gap: 4px;
 }
 
 #container .content .recipe_content .recipe_list .recipe .recipe_info .recipe_details .details_item img {
-	width: 14px;
-	height: 14px;
+	width: 16px;
+	height: 16px;
 }
 
 #container .content .recipe_content .recipe_list .recipe .recipe_info .recipe_details .details_item p {
 	color: var(--txt-color-500);
-	font-size: 12px;
+	font-size: 14px;
 }
 
 /* 레시피 목록 (별점) */
@@ -236,8 +321,9 @@
 }
 #container .content .recipe_content .recipe_list .recipe .recipe_info .recipe_score p {
 	color: var(--txt-color-500);
-	font-size: 12px;
-	margin-left: 4px;
+	font-size: 14px;
+	margin-left: 7px;
+	font-weight: 600;
 }
 
 #container .content .recipe_content .recipe_list .recipe .recipe_info .recipe_score .star {
@@ -245,15 +331,46 @@
 	align-items: center;
 }
 #container .content .recipe_content .recipe_list .recipe .recipe_info .recipe_score .star img {
-	height: 13px;
-	width: 13px;
+	height: 14px;
+	width: 14px;
 }
 
 
 
 
 
-/* 더보기 버튼 */
-.more_wrap {
-	margin-bottom: 80px;
+
+
+
+/* 목록 없음 표시 */
+#container .content .search_empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 70px;
+}
+
+#container .content .search_empty img {
+	margin-top: 40px !important;
+	width: 88px;
+}
+
+#container .content .search_empty h2 {
+	text-align: center !important;
+	padding-top: 16px !important;
+	padding-bottom: 16px !important;
+	font-weight: 900;
+	line-height: 1.3;
+	letter-spacing: -0.02em;
+	font-size: 24px;
+}
+
+#container .content .search_empty span {
+	text-align: center !important;
+	margin-bottom: 32px !important;
+	color: #7E8082;
+	font-weight: 400;
+	line-height: 1.5;
+	letter-spacing: -0.025em;
+	font-size: 16px;
 }

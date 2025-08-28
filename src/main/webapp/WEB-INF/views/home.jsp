@@ -34,7 +34,7 @@
 						<h2>카테고리로 레시피 검색!</h2>
 						<br/>
 						<ul class="category_list">
-							<li onclick="location.href=''">
+							<li>
 								<img class="image" src="/images/home/bap.png">
 								<p>밥/죽/떡</p>
 							</li>

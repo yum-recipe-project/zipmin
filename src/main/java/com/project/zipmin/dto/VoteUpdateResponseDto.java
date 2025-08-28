@@ -17,6 +17,7 @@ public class VoteUpdateResponseDto {
 	private Date opendate;
 	private Date closedate;
 	private String category;
+	private int userId;
 	
 	private List<VoteChoiceReadResponseDto> choiceList;
 }

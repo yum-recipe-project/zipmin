@@ -8,6 +8,6 @@ import com.project.zipmin.entity.RecipeStock;
 
 public interface RecipeStockRepository extends JpaRepository<RecipeStock, Integer> {
 
-	List<RecipeStock> findByRecipeId(int recipeId);
+	List<RecipeStock> findAllByRecipeId(int recipeId);
 	
 }

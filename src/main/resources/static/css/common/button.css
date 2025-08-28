@@ -233,6 +233,31 @@
 
 
 
+/* 닫기 버튼 */
+.btn_tab_close {
+	flex: none;
+	display: inline-flex;
+	align-items: center;
+	height: 36px;
+	padding: 0 12px 0 20px;
+	border-radius: 44px;
+	font-size: 14px;
+    font-weight: 500;
+	color: #FFF;
+	background: var(--txt-color-600);
+    border: 1px solid var(--txt-color-600);
+	line-height: 20px;
+	letter-spacing: -0.2px;
+	gap: 5px;
+}
+
+.btn_tab_close img {
+	width: 20px;
+	height: 20px;
+}
+
+
+
 /* 더보기 버튼 */
 .btn_more {
     display: none;

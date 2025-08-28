@@ -50,7 +50,6 @@ public class Chomp {
 	@Formula("(SELECT COUNT(*) FROM vote_record vr WHERE vr.chomp_id = id)")
 	private int recordcount;
 
-	
 	@PrePersist
     public void prePersist() {
         if (this.closedate == null) {

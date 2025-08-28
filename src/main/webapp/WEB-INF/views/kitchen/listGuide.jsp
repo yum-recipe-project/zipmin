@@ -33,8 +33,8 @@
 					<div class="guide_util">
 						<p class="total"></p>
 						<div class="guide_sort">
-							<button class="btn_sort active" data-sort="new">최신순</button>
-							<button class="btn_sort" data-sort="hot">인기순</button>
+							<button class="btn_sort active" data-sort="id-desc">최신순</button>
+							<button class="btn_sort" data-sort="likecount-desc">인기순</button>
 						</div>
 					</div>
 					

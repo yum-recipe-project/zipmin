@@ -1,4 +1,17 @@
 /**
+ * 전역 변수
+ */
+const page = 0;
+const size = 6;
+let sort = 'likecount-desc';
+let recipeList = [];
+let guideList = [];
+
+
+
+
+
+/**
  * 룰렛을 돌리는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
@@ -52,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		} else {
 			const result = randomList[(index - 1 + randomList.length) % randomList.length];
 			link.innerHTML = `${result} 레시피 보러가기&nbsp;&nbsp;→`;
-			link.href = `/recipes?search=${encodeURIComponent(result)}`;
+			link.href = `/recipe/listRecipe.do?keyword=${encodeURIComponent(result)}`;
 			link.classList.add('show');
 		}
 	}
@@ -62,40 +75,66 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+
+
 /**
- * 드롭다운 동작 및 정렬방식 변경하는 함수
+ * 카테고리로 레시피를 검색하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	document.querySelectorAll('.category_list').forEach(ul => {
+		ul.addEventListener('click', (event) => {
+			const li = event.target.closest('li');
+			if (!li) return;
+			
+			const category = (li.querySelector('p')?.textContent).trim().replace(/^['"]|['"]$/g, '');
+			if (!category) return;
+			
+			location.href = '/recipe/listRecipe.do?category=' + category;
+		});
+	});
+});
+
+
+
+
+
+
+
+/**
+ * 레시피 목록 검색 필터를 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', function () {
-	let sort = 'hot';
-
-	const dropdown = document.querySelector('.dropdown');
-	const sortButton = document.getElementById('recipeSortBtn');
-	const sortItems = document.querySelectorAll('.dropdown_menu li');
-
-	sortButton.addEventListener('click', function () {
-		dropdown.classList.toggle('active');
+	
+	// 드롭다운 동작
+	document.getElementById('recipeSortBtn').addEventListener('click', function () {
+		document.querySelector('.dropdown').classList.toggle('active');
 	});
 
-	sortItems.forEach((item, index) => {
+	// 드롭다운 정렬
+	document.querySelectorAll('.dropdown_menu li').forEach((item, index) => {
 		item.addEventListener('click', async function () {
-			sort = index === 0 ? 'hot' : 'score';
-			dropdown.classList.remove('active');
-			sortButton.innerHTML = `${this.textContent} <div class="btn_img"></div>`;
+			sort = index === 0 ? 'likecount-desc' : 'reviewscore-desc';
+			document.querySelector('.dropdown').classList.remove('active');
+			document.getElementById('recipeSortBtn').innerHTML = `${this.textContent} <div class="btn_img"></div>`;
 
-			await fetchRecipeList(sort);
+			recipeList = [];
+			
+			fetchRecipeList();
 		});
 	});
 
-	fetchRecipeList(sort);
-	fetchGuideList(sort);
+	fetchRecipeList();
+	fetchGuideList();
 });
+
+
 
 
 
 /**
  * 서버에서 레시피를 가져오는 함수
  */
-async function fetchRecipeList(sort) {
+async function fetchRecipeList() {
 	try {
 		const params = new URLSearchParams({
 			sort: sort,
@@ -103,11 +142,19 @@ async function fetchRecipeList(sort) {
 			size: 6
 		}).toString();
 
-		const response = await fetch(`/recipes?${params}`);
+		const response = await fetch(`/recipes?${params}`, {
+			method: 'GET',
+			headers: getAuthHeaders()
+		});
+		
 		const result = await response.json();
 
 		if (result.code === 'RECIPE_READ_LIST_SUCCESS') {
-			renderRecipeList(result.data.content);
+			// 전역변수 설정
+			recipeList = result.data.content;			
+						
+			// 렌더링
+			renderRecipeList(recipeList);
 		}
 	} catch (error) {
 		console.error(error);
@@ -119,11 +166,11 @@ async function fetchRecipeList(sort) {
 /**
  * 레시피 목록을 화면에 렌더링 하는 함수
  */
-function renderRecipeList(list) {
+function renderRecipeList(recipeList) {
 	const container = document.querySelector('.recipe_list');
 	container.innerHTML = '';
 
-	list.forEach(recipe => {
+	recipeList.forEach(recipe => {
 		const li = document.createElement('li');
 		
 		const a = document.createElement('a');
@@ -159,19 +206,29 @@ function renderRecipeList(list) {
 /**
  * 서버에서 키친가이드를 가져오는 함수
  */
-async function fetchGuideList(sort) {
+async function fetchGuideList() {
 	try {
 		const params = new URLSearchParams({
-			sort: sort,
+			sort: 'likecount-desc',
 			page: 0,
 			size: 6
 		}).toString();
 
-		const response = await fetch(`/guides?${params}`);
+		const response = await fetch(`/guides?${params}`, {
+			method: 'GET',
+			headers: getAuthHeaders()
+		});
+		
 		const result = await response.json();
+		
+		console.log(result);
 
 		if (result.code === 'KITCHEN_READ_LIST_SUCCESS') {
-			renderGuideList(result.data.content);
+			// 전역변수 설정
+			guideList = result.data.content;			
+			
+			// 렌더링
+			renderGuideList(guideList);
 		}
 	} catch (error) {
 		console.error(error);
@@ -181,14 +238,15 @@ async function fetchGuideList(sort) {
 
 
 
+
 /**
  * 
  */
-function renderGuideList(list) {
+function renderGuideList(guideList) {
 	const container = document.querySelector('.guide_list');
 	container.innerHTML = '';
 	
-	list.forEach(guide => {
+	guideList.forEach(guide => {
 		const li = document.createElement('li');
 		
 		const a = document.createElement('a');

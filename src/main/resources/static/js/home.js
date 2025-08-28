@@ -203,7 +203,7 @@ async function fetchGuideList(sort) {
 		const result = await response.json();
 
 		if (result.code === 'KITCHEN_READ_LIST_SUCCESS') {
-			renderGuideList(result.data.content);
+			// renderGuideList(result.data.content);
 		}
 	} catch (error) {
 		console.error(error);

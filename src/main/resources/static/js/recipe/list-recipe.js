@@ -7,8 +7,7 @@ let page = 0;
 const size = 20;
 let keyword = '';
 let categoryList = [];
-let sortKey = 'id';
-let sortOrder = 'desc';
+let sort = 'postdate-desc';
 let recipeList = [];
 
 
@@ -22,22 +21,16 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 	// 검색
 	const searchForm = document.querySelector('.search_form[data-type="recipe"]');
-	searchForm.addEventListener('submit', function(event) {
+	searchForm.addEventListener('submit', function (event) {
 		event.preventDefault();
-		keyword = searchForm.querySelector('.search_word').value.trim();
+		keyword = searchForm.querySelector('.search_word')?.value.trim();
 		page = 0;
 		fetchRecipeList();
 	});
 	
-	// ***** 카테고리 *****
-	
-	
-	
-	
-	
-	// 정렬 버튼
+	// 정렬
 	document.querySelectorAll('.btn_sort').forEach(btn => {
-		btn.addEventListener('click', function(event) {
+		btn.addEventListener('click', function (event) {
 			event.stopPropagation();
 			document.querySelector('.btn_sort.active')?.classList.remove('active');
 			btn.classList.add('active');
@@ -50,45 +43,45 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 	});
 	
-	fetchRecipeList();
-
-
-
-
-/**
- * 카테고리 동작
- */
+	// 카테고리
 	const categoryMenu = document.querySelector('.category_menu');
-	if (!categoryMenu) return;
-	
-	const categoryTitle   = categoryMenu.querySelector('.category_title');
-	const categoryContent = categoryMenu.querySelector('.category_content');
-	const categoryTab = categoryTitle.querySelector('.tab');
-	
-	// 그룹 키 부여
-	const categoryContentList = Array.from(categoryMenu.querySelectorAll('.category_content_list'));
-	categoryContentList.forEach((box, i) => {
-		const key = (box.querySelector('.category_type p')?.textContent || `group-${i}`).trim();
-		box.dataset.group = key;
+	const categoryTitle = document.querySelector('.category_title .category_type');
+	const categoryContent = document.querySelector('.category_content');
+	const categoryTab = document.querySelector('.category_title .tab');
+	const categoryContentList = categoryMenu
+		? Array.from(categoryMenu.querySelectorAll('.category_content_list')) : [];
+
+	// 카테고리 내용 토글
+	categoryTitle.addEventListener('click', function (event) {
+		if (event.target.closest('.tab')) return;
+		categoryContent.classList.toggle('is-open');
 	});
 	
-	// 그룹별 선택 라벨
+	// 카테고리 그룹별 선택값 초기화
 	const state = {};
-	categoryContentList.forEach(b => (state[b.dataset.group] = null));
+	categoryContentList.forEach(list => (state[list.dataset.group] = null));
+
+	// 카테고리 파라미터 제거
+	function removeCategorySearchParams() {
+		const url = new URL(location.href);
+		if (url.searchParams.has('category')) {
+			url.searchParams.delete('category');
+			history.replaceState(null, '', url);
+		}
+	}
 	
-	// 유틸
-	const selectedCount = () => Object.values(state).filter(Boolean).length;
-	const allTab = categoryTab.querySelector('.btn_tab');   // "전체" 탭(a.btn_tab)
-	const showAll = (show) => {
-		if (!allTab) return;
-		allTab.style.display = show ? '' : 'none';
-		allTab.classList.toggle('active', show);
-	};
+	// 카테고리 선택 목록 초기화 (전체 탭 표시)
+	function showInitPill(isShow) {
+		const allTab = categoryTab?.querySelector('.btn_tab');
+		allTab.style.display = isShow ? '' : 'none';
+		allTab.classList.toggle('active', isShow);
+	}
 	
-	// pill 추가 및 교체
-	function upsertPill(groupKey, label) {
-		showAll(false);
+	// 카테고리 선택 목록 생성 및 교체
+	function showCategoryPill(groupKey, label) {
+		showInitPill(false);
 		let pill = categoryTab.querySelector(`.btn_tab_close[data-key="${groupKey}"]`);
+		// 생성
 		if (!pill) {
 			pill = document.createElement('a');
 			pill.href = '';
@@ -97,227 +90,309 @@ document.addEventListener('DOMContentLoaded', function() {
 			pill.innerHTML = `<span>${label}</span><img src="/images/common/close.png" alt="닫기">`;
 			categoryTab.appendChild(pill);
 		}
+		// 교체
 		else {
 			pill.classList.add('active');
-			const span = pill.querySelector('span');
-			if (span) span.textContent = label;
+			pill.querySelector('span').textContent = label;
 		}
 	}
 	
-	// 그룹 해제 & pill 제거
+	// 파라미터 카테고리를 한번만 반영하고 즉시 제거하는 함수
+	function useCategorySearchParamsOnce() {
+		const raw = new URLSearchParams(location.search).get('category');
+		if (!raw) return;
+		
+		const cleaned = raw.replace(/^['"]|['"]$/g, '').trim();
+		if (!cleaned) return;
+		
+		// 내부 헬퍼: 특정 그룹과 라벨 적용
+		const apply = (groupKey, label) => {
+			const box = categoryContentList.find(b => b.dataset.group === groupKey);
+			if (!box) return false;
+			const ul = box.querySelector('ul');
+			if (!ul) return false;
+			
+			const li = Array.from(ul.querySelectorAll('li')).find(x => x.textContent.trim() === label);
+			if (!li) return false;
+			
+			ul.querySelectorAll('li.active').forEach(x => x.classList.remove('active'));
+			li.classList.add('active');
+			
+			state[groupKey] = label;
+			showCategoryPill(groupKey, label);
+			showInitPill(false);
+			return true;
+		};
+		
+		// 내부 헬퍼: 라벨만으로 매칭 가능한 그룹 찾기
+		const findGroupsByLabel = (label) => {
+			const hits = [];
+			categoryContentList.forEach(b => {
+				const ok = Array.from(b.querySelectorAll('ul li')).some(li => li.textContent.trim() === label);
+				if (ok) hits.push(b.dataset.group);
+			});
+			return hits;
+		};
+		
+		// 파싱
+		let groupKey = null;
+		let label = cleaned;
+		const idx = cleaned.indexOf(':');
+		if (idx !== -1) {
+			groupKey = cleaned.slice(0, idx).trim();
+			label = cleaned.slice(idx + 1).trim();
+		}
+		
+		// 적용 시도
+		let applied = false;
+		if (groupKey) {
+			applied = apply(groupKey, label);
+		}
+		if (!applied) {
+			const groups = findGroupsByLabel(label);
+			if (groups.length > 0) {
+				applied = apply(groups[0], label);
+			}
+		}
+		
+		// 1회만 사용하고 URL에서 제거
+		if (applied) {
+			removeCategorySearchParams();
+		}
+	}
+
+	// 지정한 그룹의 선택을 해제하고 선택이 하나도 없으면 전체를 다시 표시
 	function clearGroup(groupKey) {
 		const box = categoryContentList.find(b => b.dataset.group === groupKey);
 		if (box) box.querySelectorAll('ul li.active').forEach(li => li.classList.remove('active'));
 		state[groupKey] = null;
-		
-		const pill = categoryTab.querySelector(`.btn_tab_close[data-key="${groupKey}"]`);
-		if (pill) pill.remove();
-		
-		if (selectedCount() === 0) showAll(true);
+		categoryTab?.querySelector(`.btn_tab_close[data-key="${groupKey}"]`)?.remove();
+		if (Object.values(state).filter(Boolean).length === 0) showInitPill(true);
 	}
 	
-	// 카테고리 토글
-	categoryTitle.addEventListener('click', (e) => {
-	  if (e.target.closest('.tab')) return;
-	  const open = categoryContent.style.display === 'block';
-	  categoryContent.style.display = open ? 'none' : 'block';
-	});
-	
-	// 그룹별 단일 선택
+	// 그룹별 카테고리 단일 선택
 	categoryContentList.forEach(box => {
 		const groupKey = box.dataset.group;
 		const ul = box.querySelector('ul');
 		if (!ul) return;
 		
-		ul.addEventListener('click', (e) => {
-			const li = e.target.closest('li');
+		ul.addEventListener('click', function(event) {
+			const li = event.target.closest('li');
 			if (!li) return;
 			
-			const wasActive = li.classList.contains('active');
-			ul.querySelectorAll('li.active').forEach(x => x.classList.remove('active'));
-			
-			if (wasActive) {
-				// 해제
+			 const wasActive = li.classList.contains('active');
+			 ul.querySelectorAll('li.active').forEach(x => x.classList.remove('active'));
+			 
+			 if (wasActive) {
 				clearGroup(groupKey);
 			}
 			else {
-				// 새 선택
 				li.classList.add('active');
 				const label = li.textContent.trim();
 				state[groupKey] = label;
-				upsertPill(groupKey, label);
+				showCategoryPill(groupKey, label);
 			}
 			
-			// 선택 변경 시 첫 페이지부터 로딩
-			window.page = 0;
+			removeCategorySearchParams();
+
+			page = 0;
 			fetchRecipeList();
 		});
 	});
 	
-
-	// 탭 클릭 처리
-	categoryTab.addEventListener('click', (e) => {
-		e.stopPropagation();
-		
-		const closeImg = e.target.closest('.btn_tab_close img');
-		const pill     = e.target.closest('.btn_tab_close');
-		const all      = e.target.closest('.btn_tab');
-		
-		// X 클릭 → 해당 그룹 해제
-		if (closeImg && pill) {
-			e.preventDefault();
-			const key = pill.dataset.key;
-			if (key) {
-				clearGroup(key);
-				page = 0;
-				fetchRecipeList();
-			}
-			return;
-		}
-		
-		// pill 자체 클릭은 네비게이션 막기
-		if (pill) {
-			e.preventDefault();
-			return;
-		}
-		
-		// "전체" 클릭 → 모든 선택 초기화 후 목록 로딩
-		if (all) {
-			e.preventDefault();
-			lists.forEach(b => clearGroup(b.dataset.group));
-			showAll(true);
-			page = 0;
-			fetchRecipeList();
-			return;
-		}
-	});
-	
-	showAll(selectedCount() === 0);
-
-	// 최초 로딩
-	fetchRecipeList();
-
-	
-	
-	
-	
-	
-	// 현재 UI로부터 categoryList 계산
-		function getCategoryList() {
+	// 카테고리 선택 목록에서 선택한 카테고리 제거
+	if (categoryTab) {
+		categoryTab.addEventListener('click', function(event) {
+			event.stopPropagation();
 			
-			// 상단 pill에서 읽기
-			const pills = Array.from(categoryTab.querySelectorAll('.btn_tab_close span')).map(el => el.textContent.trim()).filter(Boolean);
-			if (pills.length) return pills;
+			const closeImg = event.target.closest('.btn_tab_close img');
+			const pill = event.target.closest('.btn_tab_close');
 			
-			// 없으면 좌측 목록의 active에서 읽기
-			const actives = Array.from(categoryMenu.querySelectorAll('.category_content_list li.active')).map(li => li.textContent.trim());
-			if (actives.length) return actives;
-			
-			// 3) 초기 진입: 쿼리스트링(category) 1개만
-			const q = new URLSearchParams(location.search).get('category');
-			return q ? [q.replace(/^['"]|['"]$/g, '')] : [];
-		}
-	
-	
-	/**
-	 * 서버에서 레시피 목록 데이터를 가져오는 함수
-	 */
-	async function fetchRecipeList() {
-		
-		try {
-			categoryList = getCategoryList();
-			
-			const params = new URLSearchParams();
-			categoryList.forEach(category => params.append('categoryList', category));
-			params.append('sort', `${sortKey}-${sortOrder}`);
-			params.append('keyword', keyword);
-			params.append('page', page);
-			params.append('size', size);
-			
-			const response = await fetch(`/recipes?${params.toString()}`, {
-				method: 'GET',
-				headers: getAuthHeaders()
-			});
-			
-			const result = await response.json();
-			
-			console.log(result);
-			
-			if (result.code === 'RECIPE_READ_LIST_SUCCESS') {
-				
-				// 전역 변수 설정
-				totalPages = result.data.totalPages;
-				totalElements = result.data.totalElements;
-				page = result.data.number;
-				recipeList = result.data.content;
-				
-				// 렌더링
-				renderRecipeList(recipeList);
-				// renderPagination(fetchRecipeList);
-				document.querySelector('.total').innerText = `총 ${totalElements}개`;
-				
-				// 검색 결과 없음 표시
-				if (result.data.totalPages === 0) {
-					document.querySelector('.recipe_list').style.display = 'none';
-					document.querySelector('.search_empty')?.remove();
-					const table = document.querySelector('.recipe_content');
-					table.insertAdjacentElement('afterend', renderSearchEmpty());
+			if (closeImg && pill) {
+				event.preventDefault();
+				const key = pill.dataset.key;
+				if (key) {
+					clearGroup(key);
+					removeCategorySearchParams();
+					page = 0;
+					fetchRecipeList();
 				}
-				// 검색 결과 표시
-				else {
-					document.querySelector('.search_empty')?.remove();
-					document.querySelector('.recipe_list').style.display = '';
-				}
-	
-				// 스크롤 최상단 이동
-				window.scrollTo({ top: 0, behavior: 'smooth' });
+				return;
 			}
 			
-			/***** 에러코드 추가 *****/
-			
-		}
-		catch (error) {
-			console.log(error);
-		}
-		
+			if (pill) {
+				event.preventDefault();
+				return;
+			}
+		});
 	}
+
+	// 초기 로딩
+	useCategorySearchParamsOnce();
+	showInitPill(Object.values(state).filter(Boolean).length === 0);
+	fetchRecipeList();
 });
 
 
 
 
 
+/**
+ * 레시피 목록 데이터를 가져오는 함수
+ */
+async function fetchRecipeList() {
+	
+	try {
+		
+		// 현재 UI에서 categoryList 계산
+		let categoryList = [];
+		const categoryTab = document.querySelector('.category_title .tab');
+		const categoryMenu = document.querySelector('.category_menu');
+		if (categoryTab) {
+			const pills = Array.from(categoryTab.querySelectorAll('.btn_tab_close span'))
+				.map(el => el.textContent.trim())
+				.filter(Boolean);
+			if (pills.length) categoryList = pills;
+		}
+		if (categoryList.length === 0 && categoryMenu) {
+			const actives = Array.from(categoryMenu.querySelectorAll('.category_content_list li.active'))
+				.map(li => li.textContent.trim());
+			if (actives.length) categoryList = actives;
+		}
+		
+		const params = new URLSearchParams();
+		categoryList.forEach(c => params.append('categoryList', c));
+		params.append('sort', sort);
+		params.append('keyword', keyword ?? '');
+		params.append('page', String(page));
+		params.append('size', String(size));
+		
+		const response = await fetch(`/recipes?${params.toString()}`, {
+			method: 'GET',
+			headers: getAuthHeaders()
+		});
+		
+		const result = await response.json();
+		
+		if (result.code === 'RECIPE_READ_LIST_SUCCESS') {
+			// 전역변수 설정
+			totalPages = result.data.totalPages;
+			totalElements = result.data.totalElements;
+			page = result.data.number;
+			recipeList = result.data.content;
+			
+			// 렌더링
+			renderRecipeList(recipeList);
+			renderPagination(fetchRecipeList);
+			document.querySelector('.total').innerText = `총 ${totalElements}개`;
+			
+			// 결과 없음 표시
+			if (result.data.totalPages === 0) {
+				document.querySelector('.recipe_list').style.display = 'none';
+				document.querySelector('.search_empty')?.remove();
+				const content = document.querySelector('.recipe_content');
+				content.insertAdjacentElement('afterend', renderSearchEmpty());
+			}
+			else {
+				document.querySelector('.search_empty')?.remove();
+				document.querySelector('.recipe_list').style.display = '';
+			}
+			
+			// 스크롤 상단 이동
+			scrollTo({ top: 0, behavior: 'smooth' });
+		}
+		
+		// ****** TODO: 에러코드 분기 ******
+		
+	}
+	catch (error) {
+		console.error(error);
+	}
+}
 
 
-
-
-
-
-
-
-
-
+  
+  
+  
 /**
  * 쩝쩝박사 목록을 화면에 렌더링하는 함수
  */
 function renderRecipeList(recipeList) {
+	const container = document.querySelector('.recipe_list');
+	container.innerHTML = '';
 	
+	recipeList.forEach(recipe => {
+		// li
+		const li = document.createElement('li');
+		li.className = 'recipe';
+		
+		// a
+		const a = document.createElement('a');
+		a.href = `/recipe/viewRecipe.do?id=${recipe.id}`;
+		
+		// 썸네일
+		const thumb = document.createElement('div');
+		thumb.className = 'recipe_thumbnail';
+		const img = document.createElement('img');
+		img.src = recipe.image;
+		img.loading = 'lazy';
+		thumb.appendChild(img);
+		
+		// 정보
+		const info = document.createElement('div');
+		info.className = 'recipe_info';
+		
+		const h5 = document.createElement('h5');
+		h5.textContent = recipe.title;
+		
+		// 상세(난이도/시간/매움)
+		const details = document.createElement('div');
+		details.className = 'recipe_details';
+		
+		const detailData = [
+			{ icon: '/images/recipe/level.png', alt: '난이도', text: recipe.cooklevel },
+			{ icon: '/images/recipe/time.png',  alt: '조리시간', text: recipe.cooktime },
+			{ icon: '/images/recipe/spicy.png', alt: '매운맛',   text: recipe.spicy }
+		];
+		for (const d of detailData) {
+			const box = document.createElement('div');
+			box.className = 'details_item';
+			const i = document.createElement('img');
+			i.src = d.icon; i.alt = d.alt;
+			const p = document.createElement('p');
+			p.textContent = d.text;
+			box.append(i, p);
+			details.appendChild(box);
+		}
+		// 별점
+		const scoreBox = document.createElement('div');
+		scoreBox.className = 'recipe_score';
+		
+		const starWrap = document.createElement('div');
+		starWrap.className = 'star';
+		
+		const full = Math.floor(recipe.reviewscore);
+		const empty = 5 - full;
+		for (let i = 0; i < full; i++) {
+			const s = document.createElement('img');
+			s.src = '/images/recipe/star_full.png';
+			s.loading = 'lazy';
+			starWrap.appendChild(s);
+		}
+		for (let i = 0; i < empty; i++) {
+			const s = document.createElement('img');
+			s.src = '/images/recipe/star_empty.png';
+			s.loading = 'lazy';
+			starWrap.appendChild(s);
+		}
+		
+		const scoreText = document.createElement('p');
+		scoreText.textContent = `${recipe.reviewscore} (${recipe.reviewcount})`;
+		
+		scoreBox.append(starWrap, scoreText);
+		info.append(h5, details, scoreBox);
+		a.append(thumb, info);
+		li.appendChild(a);
+		container.appendChild(li);
+	});
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -179,6 +179,9 @@ public class RecipeService {
 			recipeDto.setUsername(userDto.getUsername());
 			recipeDto.setNickname(userDto.getNickname());
 			
+			// 이미지
+			recipeDto.setImage(publicPath + "/" + recipeDto.getImage());	
+			
 			recipeDtoList.add(recipeDto);
 		}
 		
@@ -262,6 +265,10 @@ public class RecipeService {
 			List<RecipeStockReadResponseDto> stockDtoList = new ArrayList<>();
 			for (RecipeStock stock : stockList) {
 				RecipeStockReadResponseDto stockDto = stockMapper.toReadResponseDto(stock);
+				
+				// 이미지
+				recipeDto.setImage(publicPath + "/" + recipeDto.getImage());	
+				
 				stockDtoList.add(stockDto);
 			}
 			

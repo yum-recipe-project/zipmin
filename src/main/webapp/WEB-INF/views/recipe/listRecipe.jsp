@@ -7,7 +7,9 @@
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/recipe/list-recipe.css">
+		<link rel="stylesheet" href="/css/common/pagination.css">
 		<script src="/js/recipe/list-recipe.js"></script>
+		<script src="/js/common/pagination.js"></script>
 	</head>
 	<body>
 		<%@include file="../common/header.jsp" %>
@@ -47,7 +49,7 @@
 							</div>
 						</div>
 						<div class="category_content">
-							<div class="category_content_list">
+							<div class="category_content_list" data-group="종류별">
 								<div class="category_type">
 									<p>종류별</p>
 								</div>
@@ -73,7 +75,7 @@
 									<li>기타</li>
 								</ul>
 							</div>
-							<div class="category_content_list">
+							<div class="category_content_list" data-group="상황별">
 								<div class="category_type">
 									<p>상황별</p>
 								</div>
@@ -97,7 +99,7 @@
 									<li>기타</li>
 								</ul>
 							</div>
-							<div class="category_content_list">
+							<div class="category_content_list" data-group="재료별">
 								<div class="category_type">
 									<p>재료별</p>
 								</div>
@@ -121,7 +123,7 @@
 									<li>기타</li>
 								</ul>
 							</div>
-							<div class="category_content_list">
+							<div class="category_content_list" data-group="방법별">
 								<div class="category_type">
 									<p>방법별</p>
 								</div>
@@ -154,53 +156,7 @@
 					</div>
 					
 					<!-- 레시피 목록 -->
-					<ul class="recipe_list">
-						<li class="recipe">
-							<a href="/recipe/viewRecipe.do">
-								<div class="recipe_thumbnail">
-									<img src="/images/common/test.png">
-								</div>
-								<div class="recipe_info">
-									<h5>마법의 카레 가루</h5>
-									
-									<!-- 레시피 정보 -->
-									<div class="recipe_details">
-										<div class="details_item">
-											<img src="/images/recipe/level.png">
-											<p>초급</p>
-										</div>
-										<div class="details_item">
-											<img src="/images/recipe/time.png">
-											<p>40분</p>
-										</div>
-										<div class="details_item">
-											<img src="/images/recipe/spicy.png">
-											<p>매움</p>
-										</div>
-									</div>
-									
-									<!-- 레시피 별점 -->
-									<div class="recipe_score">
-										<!-- 리뷰 별점 -->
-										<div class="star">
-											<%-- <c:forEach> --%>
-												<img src="/images/recipe/star_full.png">
-												<img src="/images/recipe/star_full.png">
-												<img src="/images/recipe/star_full.png">
-												<img src="/images/recipe/star_full.png">
-											<%-- </c:forEach> --%>
-											<%-- <c:forEach> --%>
-												<img src="/images/recipe/star_empty.png">
-											<%-- </c:forEach> --%>
-										</div>
-										<p>4.0 (30)</p>
-									</div>
-								</div>
-							</a>
-						</li>
-					</ul>
-					
-					
+					<ul class="recipe_list"></ul>
 				
 				</div>
 				

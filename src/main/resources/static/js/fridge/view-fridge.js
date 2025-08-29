@@ -390,25 +390,42 @@ async function deleteFridge(id) {
 
 
 document.addEventListener('DOMContentLoaded', async function() {
-	
-	const token = localStorage.getItem('accessToken');
-	const headers = {
-		'Content-Type': 'application/json'
-	};
-
-	if (isLoggedIn()) {
-		headers['Authorization'] = `Bearer ${token}`;
-	}
 
 	try {
-		const response = await instance.get('/fridges/pick', { headers: headers });
+		const response = await instance.get('/fridges/pick', {
+			headers: getAuthHeaders()
+		});
 		
 		if (response.data.code === 'FRIDGE_PICK_LIST_SUCCESS') {
-			createPickList(response.data.data)
+			
+			
+			renderPickList(response.data.data);
+			
+			// 검색 결과 없음 표시
+			if (response.data.data.length === 0) {
+				document.querySelector('.pick_title').style.display = 'none';
+				document.querySelector('.pick_list').style.display = 'none';
+				document.querySelector('.pick_list_empty')?.remove();
+				const content = document.querySelector('.pick_list');
+				content.insertAdjacentElement('afterend', renderListEmpty());
+			}
+			// 검색 결과 표시
+			else {
+				document.querySelector('.pick_list_empty')?.remove();
+				document.querySelector('.pick_title').style.display = '';
+				docyment.querySelector('.pick_list').style.display = '';
+			}
+			
+			
+			
+			
+			
+			
 		}
 	}
 	catch (error) {
 		
+		/***** TODO : 에러코드 추가하기 *****/
 	}
 	
 });
@@ -416,13 +433,13 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
 /**
- * 냉장고 재료로 만들 수 있는 레시피 목록을 생성하는 함수
+ * 냉장고 재료로 만들 수 있는 레시피 목록을 화면에 렌더링하는 함수
  */
-async function createPickList(list) {
+async function renderPickList(pickList) {
 	const container = document.querySelector('.pick_list');
 	container.innerHTML = '';
 
-	list.forEach((recipe, index) => {
+	pickList.forEach((recipe, index) => {
 		const li = document.createElement('li');
 		
 		const recipeDiv = document.createElement('div');
@@ -449,6 +466,26 @@ async function createPickList(list) {
 		container.appendChild(li);
 	});
 }
+
+
+
+
+
+
+/**
+ * 냉장고 파먹기 목록 결과 없음 화면을 화면에 렌더링하는 함수
+ */
+function renderListEmpty() {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'pick_list_empty';
+	
+    const span = document.createElement('span');
+    span.textContent = '냉장고 속 재료로 만들 수 있는 요리가 없습니다';
+    wrapper.appendChild(span);
+
+    return wrapper;
+}
+
 
 
 

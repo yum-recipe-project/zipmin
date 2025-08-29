@@ -1,19 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<style>
-.tip_text {
-  display: inline-block;
-  transition: transform 0.5s ease, opacity 0.5s ease;
-}
-
-.tip_text.slide-up {
-  transform: translateY(-100%);
-  opacity: 0;
-}
-</style>
 
 <header id="header">
+
 	<!-- 헤더 상단 -->
 	<div class="header_top">
 		<div class="inner">

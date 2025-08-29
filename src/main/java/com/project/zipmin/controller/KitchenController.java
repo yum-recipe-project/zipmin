@@ -40,7 +40,7 @@ public class KitchenController {
 			// 키워드 추가할 것
 			@RequestParam(required = false) String category,
 			@RequestParam(required = false) String keyword, 
-		    @RequestParam String sort,
+		    @RequestParam(required = false) String sort,
 		    @RequestParam int page,
 		    @RequestParam int size) {
 		

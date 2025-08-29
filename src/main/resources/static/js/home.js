@@ -78,8 +78,9 @@ document.addEventListener('DOMContentLoaded', function() {
  * 카테고리로 레시피를 검색하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	document.querySelectorAll('.category_list').addEventListener('click', function(event) {
-		const category = (event.target.closest('li').querySelector('p')?.textContent).trim().replace(/^['"]|['"]$/g, '');
+	document.querySelector('.category_list').addEventListener('click', function(event) {
+		const li = event.target.closest('li');
+		const category = (li.querySelector('p')?.textContent).trim().replace(/^['"]|['"]$/g, '');
 		location.href = `/recipe/listRecipe.do?category=${category}`;
 	});
 });
@@ -96,7 +97,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 	// 서버에서 레시피 조회
 	try {
 		const params = new URLSearchParams({
-			sort: 'likecount-desc',
+			sort: 'reviewscore-desc',
 			page: 0,
 			size: 5
 		}).toString();

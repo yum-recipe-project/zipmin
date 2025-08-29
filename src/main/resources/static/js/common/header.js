@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
  * 헤더에 로그인한 사용자의 정보를 표시하는 함수
  */
 document.addEventListener('DOMContentLoaded', async function() {
+	
 	if (!isLoggedIn()) {
 		setLoginState(false);
 		return;
@@ -52,15 +53,15 @@ document.addEventListener('DOMContentLoaded', async function() {
 	catch (error) {
 		setLoginState(false);
 	}
+	
 });
+
+
 
 
 
 /**
  * 로그인 상태에 따라 헤더 표시를 변경하는 함수
- * 
- * @param {boolean} isLoggedIn - 로그인 여부
- * @param {String} nickname - 사용자 닉네임
  */
 function setLoginState(isLoggedIn, nickname = '') {
 	const logoutState = document.querySelector(".logout_state");
@@ -80,11 +81,13 @@ function setLoginState(isLoggedIn, nickname = '') {
 
 
 
+
+
 /**
  * 로그아웃을 하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	document.getElementById("logout").addEventListener("click", async function(event) {
+	document.getElementById("logout").addEventListener('click', async function(event) {
 		event.preventDefault();
 		
 		if (!isLoggedIn()) {
@@ -94,9 +97,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		try {
 			const response = await instance.post('/logout');
 			
-			if (response.data.code === "USER_LOGOUT_SUCCESS") {
+			if (response.data.code === 'USER_LOGOUT_SUCCESS') {
 				localStorage.removeItem("accessToken");
-				window.location.href = "/";
+				window.location.href = '/';
 			}
 		}
 		catch (error) {
@@ -123,54 +126,51 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+
+
 /**
- * 
+ * 키친가이드 팁을 보여주는 함수
  */
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
 	
-	const tipList = [
-	  '닭 잡내 안나게 손질하는 법',
-	  '라면 맛있게 끓이는 꿀팁',
-	  '김치 오래 보관하는 방법',
-	  '스팸 기름 덜 나는 법',
-	  '달걀 껍데기 쉽게 까는 팁',
-	  '양파 썰 때 눈물 안 나는 법',
-	  '냄비 탄 자국 제거하는 방법'
-	];
-	
-	/*
+	// 서버에서 키친가이드 조회
+	let tipList = [];
 	try {
 		const params = new URLSearchParams({
-			page: page,
-			size: size,
-			// random: true
+			page: 0,
+			size: 100
 		}).toString();
+
+		const response = await fetch(`/guides?${params}`, {
+			method: 'GET',
+			headers: getAuthHeaders()
+		});
 		
+		const result = await response.json();
 		
+		if (result.code === 'KITCHEN_READ_LIST_SUCCESS') {
+			tipList = result.data.content;			
+		}
+		
+		/***** TODO: 에러코드 추가하기 *****/
 	}
 	catch (error) {
-		console.log(error);
+		console.error(error);
 	}
-	*/
 	
-	const display = document.querySelector('.tip_text');
-	
+	// 키친팁 변경 동작
 	function changeTip() {
-		display.classList.add('slide-up');
+		document.querySelector('.tip_text').classList.add('slide-up');
 		
 		setTimeout(() => {
 			const randomList = tipList[Math.floor(Math.random() * tipList.length)];
-			// 추후에 링크도 넣어야 함
-			display.innerHTML = `${randomList}&nbsp;&nbsp;→`;
-			display.classList.remove('slide-up');
+			document.querySelector('.cook_tip a').href = `/kitchen/viewGuide/do?${randomList.id}`;
+			document.querySelector('.tip_text').innerHTML = `${randomList.title}&nbsp;&nbsp;→`;
+			document.querySelector('.tip_text').classList.remove('slide-up');
 		}, 500);
 	}
+	
 	changeTip();
 	setInterval(changeTip, 10000);
 	
 });
-
-
-
-
-

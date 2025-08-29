@@ -120,7 +120,7 @@ async function fetchRecipeList() {
 		const params = new URLSearchParams({
 			sort: 'likecount-desc',
 			page: 0,
-			size: 6
+			size: 5
 		}).toString();
 
 		const response = await fetch(`/recipes?${params}`, {
@@ -180,51 +180,119 @@ async function fetchGuideList() {
 
 
 
-
 /**
- * 
+ * 쩝쩝박사 목록을 화면에 렌더링하는 함수
  */
 function renderRecipeList(recipeList) {
 	const container = document.querySelector('.recipe_list');
 	container.innerHTML = '';
 	
 	recipeList.forEach(recipe => {
+		// li
 		const li = document.createElement('li');
+		li.className = 'recipe';
 		
+		// a
 		const a = document.createElement('a');
-		a.href = `/kitchen/viewRecipe.do?id=${recipe.id}`;
+		a.href = `/recipe/viewRecipe.do?id=${recipe.id}`;
 		
-		const card = document.createElement('div');
-		card.className = 'recipe_card';
+		// 썸네일
+		const thumb = document.createElement('div');
+		thumb.className = 'recipe_thumbnail';
+		const img = document.createElement('img');
+		img.src = recipe.image;
+		img.loading = 'lazy';
+		thumb.appendChild(img);
 		
-		const imageDiv = document.createElement('div');
-		imageDiv.className = 'image';
-		imageDiv.style.backgroundImage = `url('${recipe.image}')`;
-		imageDiv.style.backgroundSize = 'cover';
-		imageDiv.style.backgroundPosition = 'center';
+		// 정보
+		const info = document.createElement('div');
+		info.className = 'recipe_info';
 		
-		const titleP = document.createElement('p');
-		titleP.textContent = recipe.title;
+		const h5 = document.createElement('h5');
+		h5.textContent = recipe.title;
 		
-		/***** 정보 추가 *****/
-		const scrapSpan = document.createElement('span');
-		scrapSpan.textContent = `스크랩 ${recipe.likecount}`;
+		// 상세(난이도/시간/매움)
+		const details = document.createElement('div');
+		details.className = 'recipe_details';
 		
-		card.appendChild(imageDiv);
-		card.appendChild(titleP);
-		card.appendChild(scrapSpan);
+		const detailData = [
+			{ icon: '/images/recipe/level.png', alt: '난이도', text: recipe.cooklevel },
+			{ icon: '/images/recipe/time.png',  alt: '조리시간', text: recipe.cooktime.split(' ')[0] },
+			{ icon: '/images/recipe/spicy.png', alt: '매운맛',   text: recipe.spicy }
+		];
+		for (const d of detailData) {
+			const box = document.createElement('div');
+			box.className = 'details_item';
+			const i = document.createElement('img');
+			i.src = d.icon; i.alt = d.alt;
+			const p = document.createElement('p');
+			p.textContent = d.text;
+			box.append(i, p);
+			details.appendChild(box);
+		}
+		// 별점
+		const scoreBox = document.createElement('div');
+		scoreBox.className = 'recipe_score';
 		
-		a.appendChild(card);
+		const starWrap = document.createElement('div');
+		starWrap.className = 'star';
+		
+		const full = Math.floor(recipe.reviewscore);
+		const empty = 5 - full;
+		for (let i = 0; i < full; i++) {
+			const s = document.createElement('img');
+			s.src = '/images/recipe/star_full.png';
+			s.loading = 'lazy';
+			starWrap.appendChild(s);
+		}
+		for (let i = 0; i < empty; i++) {
+			const s = document.createElement('img');
+			s.src = '/images/recipe/star_empty.png';
+			s.loading = 'lazy';
+			starWrap.appendChild(s);
+		}
+		
+		const scoreText = document.createElement('p');
+		scoreText.textContent = `${recipe.reviewscore} (${recipe.reviewcount})`;
+		
+		scoreBox.append(starWrap, scoreText);
+		info.append(h5, details, scoreBox);
+		a.append(thumb, info);
 		li.appendChild(a);
 		container.appendChild(li);
 	});
-	
 }
 
 
 
 
+
+/**
+ * 키친가이드 목록을 화면에 렌더링하는 함수
+ */
 function renderGuideList(guideList) {
+	const container = document.querySelector('.guide_list');
+	container.innerHTML = '';
+	
+	guideList.forEach((guide, index) => {
+		const li = document.createElement('li');
+		li.addEventListener('click', function() {
+			location.href = `/kitchen/viewGuide.do?id=${guide.id}`;
+		});
+		
+		const guideDiv = document.createElement('div');
+		guideDiv.className = 'guide';
+		
+		// 번호
+		const span = document.createElement('span');
+		span.textContent = index + 1;
+		
+		// 제목		
+		const p = document.createElement('p');
+		p.textContent = guide.title;
+		
+		guideDiv.append(span, p);
+		li.appendChild(guideDiv);
+		container.appendChild(li);
+	});
 }
-
-

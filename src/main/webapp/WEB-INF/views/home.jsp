@@ -150,51 +150,10 @@
 				            <div class="btn_img"></div>
 				        </button>
 				    </div>
-				    
 				    <!-- 랭킹 리스트 -->
-					<ul class="guide_list"></ul>
-					
-					<!-- 레시피 추천 -->
-					<div class="clear_recipe">
-						<ul class="pick_list">
-							<li>
-								<div class="recipe">
-									<span>1</span>
-									<p>김치볶음밥</p>
-								</div>
-							</li>
-							<li>
-								<div class="recipe">
-									<span>1</span>
-									<p>김치볶음밥</p>
-								</div>
-							</li>
-							<li>
-								<div class="recipe">
-									<span>1</span>
-									<p>김치볶음밥</p>
-								</div>
-							</li>
-							<li>
-								<div class="recipe">
-									<span>1</span>
-									<p>김치볶음밥</p>
-								</div>
-							</li>
-							<li>
-								<div class="recipe">
-									<span>1</span>
-									<p>김치볶음밥</p>
-								</div>
-							</li>
-							<li>
-								<div class="recipe">
-									<span>1</span>
-									<p>김치볶음밥</p>
-								</div>
-							</li>
-						</ul>
-					</div>
+				    <div class="guide_list_wrap">
+						<ul class="guide_list"></ul>
+				    </div>
 				</div>
 			
 				<h2>마이페이지</h2>

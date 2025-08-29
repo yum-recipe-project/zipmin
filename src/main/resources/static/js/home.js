@@ -78,16 +78,9 @@ document.addEventListener('DOMContentLoaded', function() {
  * 카테고리로 레시피를 검색하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	document.querySelectorAll('.category_list').forEach(ul => {
-		ul.addEventListener('click', (event) => {
-			const li = event.target.closest('li');
-			if (!li) return;
-			
-			const category = (li.querySelector('p')?.textContent).trim().replace(/^['"]|['"]$/g, '');
-			if (!category) return;
-			
-			location.href = '/recipe/listRecipe.do?category=' + category;
-		});
+	document.querySelectorAll('.category_list').addEventListener('click', function(event) {
+		const category = (event.target.closest('li').querySelector('p')?.textContent).trim().replace(/^['"]|['"]$/g, '');
+		location.href = `/recipe/listRecipe.do?category=${category}`;
 	});
 });
 
@@ -95,27 +88,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
-
 /**
- * 레시피 목록 검색 필터를 설정하는 함수
+ * 서버에서 레시피와 키친가이드 목록 데이터를 가져오는 함수
  */
-document.addEventListener('DOMContentLoaded', function () {
-	
+document.addEventListener('DOMContentLoaded', async function () {
 
-
-	fetchRecipeList();
-	fetchGuideList();
-});
-
-
-
-
-
-/**
- * 서버에서 레시피를 가져오는 함수
- */
-async function fetchRecipeList() {
+	// 서버에서 레시피 조회
 	try {
 		const params = new URLSearchParams({
 			sort: 'likecount-desc',
@@ -131,24 +109,17 @@ async function fetchRecipeList() {
 		const result = await response.json();
 
 		if (result.code === 'RECIPE_READ_LIST_SUCCESS') {
-			// 전역변수 설정
 			recipeList = result.data.content;			
-						
-			// 렌더링
 			renderRecipeList(recipeList);
 		}
+		
+		/***** TODO: 에러코드 추가하기 *****/
+		
 	} catch (error) {
 		console.error(error);
 	}
-}
 
-
-
-
-/**
- * 서버에서 키친가이드를 가져오는 함수
- */
-async function fetchGuideList() {
+	// 서버에서 키친가이드 조회
 	try {
 		const params = new URLSearchParams({
 			sort: 'likecount-desc',
@@ -163,19 +134,19 @@ async function fetchGuideList() {
 		
 		const result = await response.json();
 		
-		console.log(result);
-
 		if (result.code === 'KITCHEN_READ_LIST_SUCCESS') {
-			// 전역변수 설정
 			guideList = result.data.content;			
-			
-			// 렌더링
 			renderGuideList(guideList);
 		}
-	} catch (error) {
+		
+		/***** TODO: 에러코드 추가하기 *****/
+	}
+	catch (error) {
 		console.error(error);
 	}
-}
+	
+});
+
 
 
 
@@ -188,77 +159,73 @@ function renderRecipeList(recipeList) {
 	container.innerHTML = '';
 	
 	recipeList.forEach(recipe => {
-		// li
 		const li = document.createElement('li');
 		li.className = 'recipe';
+		li.addEventListener('click', function() {
+			location.href = `/recipe/viewRecipe.do?id=${recipe.id}`;
+		});
 		
-		// a
-		const a = document.createElement('a');
-		a.href = `/recipe/viewRecipe.do?id=${recipe.id}`;
-		
-		// 썸네일
-		const thumb = document.createElement('div');
-		thumb.className = 'recipe_thumbnail';
+		// 이미지
+		const imageDiv = document.createElement('div');
+		imageDiv.className = 'recipe_image';
 		const img = document.createElement('img');
 		img.src = recipe.image;
 		img.loading = 'lazy';
-		thumb.appendChild(img);
+		imageDiv.appendChild(img);
 		
 		// 정보
-		const info = document.createElement('div');
-		info.className = 'recipe_info';
-		
+		const infoDiv = document.createElement('div');
+		infoDiv.className = 'recipe_info';
 		const h5 = document.createElement('h5');
 		h5.textContent = recipe.title;
 		
-		// 상세(난이도/시간/매움)
-		const detail = document.createElement('div');
-		detail.className = 'recipe_detail';
+		// 상세 정보
+		const detailDiv = document.createElement('div');
+		detailDiv.className = 'recipe_detail';
 		
 		const detailData = [
 			{ icon: '/images/recipe/level.png', alt: '난이도', text: recipe.cooklevel },
 			{ icon: '/images/recipe/time.png',  alt: '조리시간', text: recipe.cooktime.split(' ')[0] },
 			{ icon: '/images/recipe/spicy.png', alt: '매운맛',   text: recipe.spicy }
 		];
-		for (const d of detailData) {
-			const box = document.createElement('div');
-			box.className = 'detail_item';
-			const i = document.createElement('img');
-			i.src = d.icon; i.alt = d.alt;
+		for (const data of detailData) {
+			const itemDiv = document.createElement('div');
+			itemDiv.className = 'detail_item';
+			const img = document.createElement('img');
+			img.src = data.icon;
 			const p = document.createElement('p');
-			p.textContent = d.text;
-			box.append(i, p);
-			detail.appendChild(box);
+			p.textContent = data.text;
+			itemDiv.append(img, p);
+			detailDiv.appendChild(itemDiv);
 		}
-		// 별점
-		const scoreBox = document.createElement('div');
-		scoreBox.className = 'recipe_score';
 		
-		const starWrap = document.createElement('div');
-		starWrap.className = 'star';
+		// 별점
+		const scoreDiv = document.createElement('div');
+		scoreDiv.className = 'recipe_score';
+		const starDiv = document.createElement('div');
+		starDiv.className = 'star';
 		
 		const full = Math.floor(recipe.reviewscore);
 		const empty = 5 - full;
 		for (let i = 0; i < full; i++) {
-			const s = document.createElement('img');
-			s.src = '/images/recipe/star_full.png';
-			s.loading = 'lazy';
-			starWrap.appendChild(s);
+			const img = document.createElement('img');
+			img.src = '/images/recipe/star_full.png';
+			img.loading = 'lazy';
+			starDiv.appendChild(img);
 		}
 		for (let i = 0; i < empty; i++) {
-			const s = document.createElement('img');
-			s.src = '/images/recipe/star_empty.png';
-			s.loading = 'lazy';
-			starWrap.appendChild(s);
+			const img = document.createElement('img');
+			img.src = '/images/recipe/star_empty.png';
+			img.loading = 'lazy';
+			starDiv.appendChild(img);
 		}
 		
-		const scoreText = document.createElement('p');
-		scoreText.textContent = `${recipe.reviewscore} (${recipe.reviewcount})`;
+		const scoreP = document.createElement('p');
+		scoreP.textContent = `${recipe.reviewscore} (${recipe.reviewcount})`;
+		scoreDiv.append(starDiv, scoreP);
 		
-		scoreBox.append(starWrap, scoreText);
-		info.append(h5, detail, scoreBox);
-		a.append(thumb, info);
-		li.appendChild(a);
+		infoDiv.append(h5, detailDiv, scoreDiv);
+		li.append(imageDiv, infoDiv);
 		container.appendChild(li);
 	});
 }

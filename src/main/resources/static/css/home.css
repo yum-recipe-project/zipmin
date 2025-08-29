@@ -101,7 +101,7 @@
 	gap: 36px 38px;
 	align-items: center;
 	margin-top: 36px;
-	padding-bottom: 40px;
+	padding-bottom: 50px;
 	border-bottom: 2px solid var(--line-color2);
 }
 
@@ -110,6 +110,7 @@
 	height: 60px;
 	border-radius: 50%;
 	margin-bottom: 8px;
+	cursor: pointer;
 }
 
 #container .category_menu .category_list p {
@@ -173,7 +174,7 @@
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
-	padding-bottom: 36px;
+	padding-bottom: 50px;
 	border-bottom: 2px solid var(--line-color2);
 	cursor: pointer;
 }
@@ -184,19 +185,19 @@
 }
 
 /* 키친가이드 랭킹 > 랭킹 리스트 > 이미지 */
-#container .recipe_ranking .recipe_list .recipe .recipe_thumbnail {
+#container .recipe_ranking .recipe_list .recipe .recipe_image {
 	width: 170px;
 	height: 170px;
 	margin-bottom: 16px;
-	border-radius: 4px;
+	border-radius: 8px;
 	border: 1px solid #ddd;
 }
 
-#container .recipe_ranking .recipe_list .recipe .recipe_thumbnail img {
+#container .recipe_ranking .recipe_list .recipe .recipe_image img {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
-	border-radius: 4px;
+	border-radius: 8px;
 }
 
 

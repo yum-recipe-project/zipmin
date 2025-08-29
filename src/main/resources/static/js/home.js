@@ -212,8 +212,8 @@ function renderRecipeList(recipeList) {
 		h5.textContent = recipe.title;
 		
 		// 상세(난이도/시간/매움)
-		const details = document.createElement('div');
-		details.className = 'recipe_details';
+		const detail = document.createElement('div');
+		detail.className = 'recipe_detail';
 		
 		const detailData = [
 			{ icon: '/images/recipe/level.png', alt: '난이도', text: recipe.cooklevel },
@@ -222,13 +222,13 @@ function renderRecipeList(recipeList) {
 		];
 		for (const d of detailData) {
 			const box = document.createElement('div');
-			box.className = 'details_item';
+			box.className = 'detail_item';
 			const i = document.createElement('img');
 			i.src = d.icon; i.alt = d.alt;
 			const p = document.createElement('p');
 			p.textContent = d.text;
 			box.append(i, p);
-			details.appendChild(box);
+			detail.appendChild(box);
 		}
 		// 별점
 		const scoreBox = document.createElement('div');
@@ -256,7 +256,7 @@ function renderRecipeList(recipeList) {
 		scoreText.textContent = `${recipe.reviewscore} (${recipe.reviewcount})`;
 		
 		scoreBox.append(starWrap, scoreText);
-		info.append(h5, details, scoreBox);
+		info.append(h5, detail, scoreBox);
 		a.append(thumb, info);
 		li.appendChild(a);
 		container.appendChild(li);

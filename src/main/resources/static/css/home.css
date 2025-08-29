@@ -1,13 +1,18 @@
 @charset "UTF-8";
 
+
+
+
+
+/* 메인배너 */
 #container .main_banner {
-    position: relative;
+	position: relative;
 	margin: 0 auto !important;
 	width: 100%;
 	overflow: hidden;
-    background: linear-gradient(rgb(210, 233, 252), rgb(244, 248, 254));
-    height: 330px;
-    padding-top: 20px;
+	background: linear-gradient(rgb(210, 233, 252), rgb(244, 248, 254));
+	height: 330px;
+	padding-top: 20px;
 }
 
 #container .main_banner .banner_inner {
@@ -73,87 +78,44 @@
 
 
 
-/* 카테고리 메뉴 */
+
+
+/* 레시피 카테고리 */
 #container .category_menu {
 	margin: 0px auto;
-	padding: 0 108px;
+	padding: 50px 108px 0 108px;
 	width: 1160px;
 }
 
-/* 카테고리 메뉴 (종류별) */
-#container .category_menu .type {
-	margin-top: 36px;
-}
 
-#container .category_menu .type h2 {
+#container .category_menu h2 {
 	font-size: 24px;
 	font-weight: 700;
 	margin-bottom: 12px;
 }
 
-#container .category_menu .type .category_list {
+/* 레시피 카테고리 > 카테고리 목록 */
+#container .category_menu .category_list {
 	display: flex;
-	gap: 0 38px;
+	flex-wrap: wrap;
+	gap: 36px 38px;
 	align-items: center;
-}
-
-#container .category_menu .type .category_list .image {
-	width: 60px;
-	height: 60px;
-	border-radius: 50%;
-	margin-bottom: 8px;
-}
-
-#container .category_menu .type .category_list p {
-	font-size: 14px;
-	text-align: center;
-}
-
-/* 카테고리 메뉴 (상황별) */
-#container .category_menu .case {
 	margin-top: 36px;
-	padding-bottom: 36px;
+	padding-bottom: 40px;
 	border-bottom: 2px solid var(--line-color2);
 }
 
-#container .category_menu .case h2 {
-	font-size: 24px;
-	font-weight: 700;
-	margin-bottom: 12px;
-}
-
-#container .category_menu .case .category_list {
-	display: flex;
-	gap: 0 38px;
-	align-items: center;
-}
-
-#container .category_menu .case .category_list .image {
+#container .category_menu .category_list .image {
 	width: 60px;
 	height: 60px;
 	border-radius: 50%;
 	margin-bottom: 8px;
 }
 
-#container .category_menu .case .category_list p {
+#container .category_menu .category_list p {
 	font-size: 14px;
 	text-align: center;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -162,55 +124,51 @@
 /* 레시피 랭킹 */
 #container .recipe_ranking {
 	margin: 0px auto;
-	padding: 36px 108px 0 108px;
+	padding: 40px 108px 0 108px;
 	width: 1160px;
 	position: relative;
 }
 
-/* 레시피 헤더 */
-#container .recipe_ranking .ranking_header {
+/* 랭킹 헤더 (레시피와 키친가이드 공통) */
+#container .ranking_header {
 	position: relative;
 	padding-bottom: 30px;
 }
 
-#container .recipe_ranking .ranking_header h2 {
+#container .ranking_header h2 {
 	font-size: 24px;
 	font-weight: 700;
 	color: var(--txt-color-600);
 }
 
-#container .recipe_ranking .ranking_header span {
+#container .ranking_header span {
 	font-size: 14px;
 	font-weight: 300;
 	color: var(--txt-color-500);
 }
 
-#container .recipe_ranking .ranking_header .btn_sort {
+#container .ranking_header .btn_sort {
 	display: flex;
 	font-size: 14px;
 	font-weight: 300;
 	align-items: center;
-	
 	position: absolute;
 	right: 0;
 	top: 0;
 }
 
-#container .recipe_ranking .ranking_header .btn_sort .btn_img { 
-    width: 20px; 
-    height:20px;
-    background:var(--txt-color-500);
-    -webkit-mask-box-image:url('/images/mypage/arrow_right.png');
+#container .ranking_header .btn_sort .btn_img { 
+	width: 18px; 
+	height:18px;
+	background:var(--txt-color-500);
+	-webkit-mask-box-image:url('/images/mypage/arrow_right.png');
 	mask-image: url('/images/mypage/arrow_right.png');
 	background-position:center;
 	background-size:cover;
 	position:relative; 
 }
 
-
-
-
-/* 레시피 목록 (레시피 이미지) */
+/* 키친가이드 랭킹 > 랭킹 리스트 */
 #container .recipe_ranking .recipe_list {
 	display: flex;
 	flex-wrap: wrap;
@@ -225,6 +183,7 @@
 	display: block;
 }
 
+/* 키친가이드 랭킹 > 랭킹 리스트 > 이미지 */
 #container .recipe_ranking .recipe_list .recipe .recipe_thumbnail {
 	width: 170px;
 	height: 170px;
@@ -241,7 +200,7 @@
 }
 
 
-/* 레시피 목록 (레시피 정보) */
+/* 키친가이드 랭킹 > 랭킹 리스트 > 레시피 정보 */
 #container .recipe_ranking .recipe_list .recipe .recipe_info {
 	display: flex;
 	flex-direction: column;
@@ -259,32 +218,34 @@
 	overflow: hidden;
 }
 
-#container .recipe_ranking .recipe_list .recipe .recipe_info .recipe_details {
+/* 키친가이드 랭킹 > 랭킹 리스트 > 레시피 정보 > 상세 정보 */
+#container .recipe_ranking .recipe_list .recipe .recipe_info .recipe_detail {
 	display: flex;
 	align-items: center;
 	gap: 10px;
 }
 
-#container .recipe_ranking .recipe_list .recipe .recipe_info .recipe_details .details_item {
+#container .recipe_ranking .recipe_list .recipe .recipe_info .recipe_detail .detail_item {
 	display: flex;
 	align-items: center;
 	gap: 5px;
 }
 
-#container .recipe_ranking .recipe_list .recipe .recipe_info .recipe_details .details_item img {
+#container .recipe_ranking .recipe_list .recipe .recipe_info .recipe_detail .detail_item img {
 	width: 14px;
 	height: 14px;
 }
 
-#container .recipe_ranking .recipe_list .recipe .recipe_info .recipe_details .details_item p {
+#container .recipe_ranking .recipe_list .recipe .recipe_info .recipe_detail .detail_item p {
 	color: var(--txt-color-500);
 	font-size: 14px;
 }
 
-/* 레시피 목록 (별점) */
+/* 키친가이드 랭킹 > 랭킹 리스트 > 레시피 정보 > 별점 */
 #container .recipe_ranking .recipe_list .recipe .recipe_info .recipe_score {
 	display: flex;
 }
+
 #container .recipe_ranking .recipe_list .recipe .recipe_info .recipe_score p {
 	color: var(--txt-color-500);
 	font-size: 14px;
@@ -305,65 +266,15 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 /* 키친가이드 랭킹 */
 #container .guide_ranking {
 	margin: 0px auto;
-	padding: 36px 108px 80px 108px;
+	padding: 40px 108px 80px 108px;
 	width: 1160px;
 	position: relative;
 }
 
-/* 키친가이드 랭킹 - 랭킹 헤더 */
-#container .guide_ranking .ranking_header {
-	position: relative;
-	padding-bottom: 30px;
-}
-
-#container .guide_ranking .ranking_header h2 {
-	font-size: 24px;
-	font-weight: 700;
-	color: var(--txt-color-600);
-}
-
-#container .guide_ranking .ranking_header span {
-	font-size: 14px;
-	font-weight: 300;
-	color: var(--txt-color-500);
-}
-
-#container .guide_ranking .ranking_header .btn_sort {
-	display: flex;
-	font-size: 14px;
-	font-weight: 300;
-	align-items: center;
-	position: absolute;
-	right: 0;
-	top: 0;
-}
-
-#container .guide_ranking .ranking_header .btn_sort .btn_img { 
-	width: 18px; 
-	height:18px;
-	background:var(--txt-color-500);
-	-webkit-mask-box-image:url('/images/mypage/arrow_right.png');
-	mask-image: url('/images/mypage/arrow_right.png');
-	background-position:center;
-	background-size:cover;
-	position:relative; 
-}
-
-/* 키친가이드 랭킹 - 랭킹 리스트 */
+/* 키친가이드 랭킹 > 랭킹 목록 */
 #container .guide_list_wrap {
 	padding: 14px;
 	width: 100%;
@@ -402,4 +313,3 @@
 #container .guide_list_wrap .guide_list li .guide span {
 	font-weight: 700;
 }
-

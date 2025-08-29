@@ -70,6 +70,15 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	}
 	
+	// 검색어 파라미터 제거
+	function removeKeywordSearchParams() {
+		const url = new URL(location.href);
+		if (url.searchParams.has('keyword')) {
+			url.searchParams.delete('keyword');
+			history.replaceState(null, '', url);
+		}
+	}
+	
 	// 카테고리 선택 목록 초기화 (전체 탭 표시)
 	function showInitPill(isShow) {
 		const allTab = categoryTab?.querySelector('.btn_tab');
@@ -98,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 	
 	// 파라미터 카테고리를 한번만 반영하고 즉시 제거하는 함수
-	function useCategorySearchParamsOnce() {
+	function useCategorySearchParamOnce() {
 		const raw = new URLSearchParams(location.search).get('category');
 		if (!raw) return;
 		
@@ -159,6 +168,23 @@ document.addEventListener('DOMContentLoaded', function() {
 		if (applied) {
 			removeCategorySearchParams();
 		}
+	}
+	
+	// 검색어 파라미터를 한번만 반영하고 즉시 제거
+	function useKeywordSearchParamOnce() {
+		const raw = new URLSearchParams(location.search).get('keyword');
+		if (!raw) return;
+		
+		const cleaned = raw.replace(/^['"]|['"]$/g, '').trim();
+		if (!cleaned) return;
+		
+		// 검색창에 넣고 전역 keyword도 세팅
+		const input = searchForm.querySelector('.search_word');
+		if (input) input.value = cleaned;
+		keyword = cleaned;
+		
+		// 1회만 사용하고 URL에서 제거
+		removeKeywordSearchParams();
 	}
 
 	// 지정한 그룹의 선택을 해제하고 선택이 하나도 없으면 전체를 다시 표시
@@ -228,7 +254,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	// 초기 로딩
-	useCategorySearchParamsOnce();
+	useCategorySearchParamOnce();
+	useKeywordSearchParamOnce();
 	showInitPill(Object.values(state).filter(Boolean).length === 0);
 	fetchRecipeList();
 });

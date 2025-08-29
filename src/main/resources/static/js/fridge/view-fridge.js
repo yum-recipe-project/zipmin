@@ -389,6 +389,12 @@ async function deleteFridge(id) {
 
 
 
+
+
+
+/**
+ * 서버에서 냉장고 파먹기 목록을 가져오는 함수
+ */
 document.addEventListener('DOMContentLoaded', async function() {
 
 	try {
@@ -398,7 +404,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 		
 		if (response.data.code === 'FRIDGE_PICK_LIST_SUCCESS') {
 			
-			
+			// 렌더링
 			renderPickList(response.data.data);
 			
 			// 검색 결과 없음 표시
@@ -415,12 +421,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 				document.querySelector('.pick_title').style.display = '';
 				docyment.querySelector('.pick_list').style.display = '';
 			}
-			
-			
-			
-			
-			
-			
 		}
 	}
 	catch (error) {
@@ -429,6 +429,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 	}
 	
 });
+
+
 
 
 
@@ -466,7 +468,6 @@ async function renderPickList(pickList) {
 		container.appendChild(li);
 	});
 }
-
 
 
 

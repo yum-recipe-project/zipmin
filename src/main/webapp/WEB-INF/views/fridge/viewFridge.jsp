@@ -19,23 +19,6 @@
 		<main id="container">
 			<div class="content">
 				
-				<!-- 냉장고 파먹기 -->
-				<div class="pick_wrap">
-					<div class="pick_header">
-						<h2>냉장고 파먹기</h2>
-					</div>
-					<div class="pick_content">
-						<!-- 레시피 추천 -->
-						<div class="pick_recipe">
-							<p class="pick_title">냉장고 속 재료로 만들 수 있는 요리</p>
-							<ul class="pick_list"></ul>
-						</div>
-					</div>
-				</div>
-				
-				
-				
-				
 				<!-- 냉장고 -->
 				<div class="fridge_wrap">
 					<div class="fridge_header">
@@ -126,9 +109,21 @@
 				</div>
 			
 				
+				<!-- 냉장고 파먹기 -->
+				<div class="pick_wrap">
+					<div class="pick_header">
+						<h2>냉장고 파먹기</h2>
+					</div>
+					<div class="pick_content">
+						<!-- 레시피 추천 -->
+						<div class="pick_recipe">
+							<p class="pick_title">냉장고 속 재료로 만들 수 있는 요리</p>
+							<ul class="pick_list"></ul>
+						</div>
+					</div>
+				</div>
 				
-				
-				
+				<!-- 내 주변 마트 -->
 				<div class="mart_wrap">
 					<div class="mart_header">
 						<h2>내 주변 마트</h2>
@@ -137,49 +132,11 @@
 							<button class="btn_icon"><img src="/images/fridge/arrow_forward.png" class="right"></button>
 						</div>
 					</div>
-					
-					
 					<div class="mart_content">
-						<div class="map">
-							지도
-						</div>
-						
+						<!-- 지도 -->
+						<div class="map">지도</div>
 						<!-- 마트 목록 -->
 						<ul class="mart_list">
-							<li>
-								<div class="mart_box">
-									<div class="mart_txt">
-										<span>이마트</span>
-										<div class="ping">
-											<img src="/images/fridge/location.png">
-											<p>0.8km</p>
-										</div>
-									</div>
-								</div>
-							</li>
-							
-							<li>
-								<div class="mart_box">
-									<div class="mart_txt">
-										<span>이마트</span>
-										<div class="ping">
-											<img src="/images/fridge/location.png">
-											<p>0.8km</p>
-										</div>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="mart_box">
-									<div class="mart_txt">
-										<span>이마트</span>
-										<div class="ping">
-											<img src="/images/fridge/location.png">
-											<p>0.8km</p>
-										</div>
-									</div>
-								</div>
-							</li>
 							<li>
 								<div class="mart_box">
 									<div class="mart_txt">
@@ -203,9 +160,7 @@
 								</div>
 							</li>
 						</ul>
-						
 					</div>
-					
 				</div>
 				
 

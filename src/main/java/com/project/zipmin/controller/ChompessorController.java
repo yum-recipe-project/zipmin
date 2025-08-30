@@ -981,7 +981,7 @@ public class ChompessorController {
 	@PostMapping("/events")
 	public ResponseEntity<?> writeEvent(
 			@Parameter(description = "이벤트 작성 요청 정보") @RequestPart EventCreateRequestDto eventRequestDto,
-			@Parameter(description = "이미지 파일", required = false) @RequestPart(value = "file", required = false) MultipartFile file) {
+			@Parameter(description = "이미지 파일", required = false) @RequestPart(required = false) MultipartFile file) {
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -1069,7 +1069,7 @@ public class ChompessorController {
 	public ResponseEntity<?> editEvent(
 			@Parameter(description = "이벤트의 일련번호") @PathVariable int id,
 			@Parameter(description = "이벤트 수정 요청 정보") @RequestPart EventUpdateRequestDto eventRequestDto,
-			@Parameter(description = "이미지 파일", required = false) @RequestPart(value = "file", required = false) MultipartFile file) {
+			@Parameter(description = "이미지 파일", required = false) @RequestPart(required = false) MultipartFile file) {
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

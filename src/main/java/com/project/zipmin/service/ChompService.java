@@ -162,7 +162,7 @@ public class ChompService {
 			ChompReadResponseDto chompDto = chompMapper.toReadResponseDto(chomp);
 			
 			// 이미지
-			if (chomp.getImage() != null) {
+			if (chompDto.getImage() != null) {
 				chompDto.setImage(publicPath + "/" + chompDto.getImage());
 			}
 			
@@ -605,7 +605,7 @@ public class ChompService {
 	
 	
 	
-	// 매거진을 수정하는 함수
+	// 매거진 수정
 	public MegazineUpdateResponseDto updateMegazine(MegazineUpdateRequestDto megazineRequestDto, MultipartFile file) {
 		
 		// 입력값 검증
@@ -613,6 +613,7 @@ public class ChompService {
 				|| megazineRequestDto.getContent() == null || megazineRequestDto.getTitle() == null) {
 			throw new ApiException(MegazineErrorCode.MEGAZINE_INVALID_INPUT);
 		}
+		// ***** TODO : 파일 수정 추가 *****
 		
 		// 매거진 존재 여부 확인
 		Chomp megazine = chompRepository.findById(megazineRequestDto.getId())
@@ -860,7 +861,7 @@ public class ChompService {
 			throw new ApiException(EventErrorCode.EVENT_INVALID_INPUT);
 		}
 		
-		// 이벤트 존재 여부 판단
+		// 이벤트 존재 여부 확인
 		Chomp event = chompRepository.findById(id)
 				.orElseThrow(() -> new ApiException(EventErrorCode.EVENT_NOT_FOUND));
 		

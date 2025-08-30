@@ -23,30 +23,13 @@
 				<div class="fridge_wrap">
 					<div class="fridge_header">
 						<h2>나의 냉장고</h2>
+						<span id="addUserFridge" data-bs-toggle="modal" data-bs-target="#addIngredientModal">
+							<img src="/images/cooking/add_circle.png">
+							냉장고 채우기
+						</span>
 					</div>
-					
 					<div class="fridge_content">
-					
-						<!-- 냉장고 -->
 						<div id="ingredient_swiper_container" class="fridge"></div>
-						
-						<!-- 작성 버튼 -->
-						<button class="btn_primary" data-bs-toggle="modal" data-bs-target="#addIngredientModal">냉장고 채우기</button>
-		
-						<!-- 재료 표 -->
-						<table class="ingredient_list">
-						    <thead>
-						        <tr>
-						            <th width="330px">재료</th>
-						            <th width="216px">용량</th>
-						            <th width="216px">소비기한</th>
-						            <th width="122px">종류</th>
-						            <th width="60px"></th>
-						        </tr>
-						    </thead>
-						    <tbody class="ingredient_body"></tbody>
-						</table>
-						
 					</div>
 				</div>
 				

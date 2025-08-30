@@ -10,26 +10,41 @@
 
 
 
+/* 나의 냉장고 > 헤더 */
+#container .fridge_wrap {
+	margin: 0 0 80px 0;
+}
 
-
-/* 냉장고 헤더 */
-#container .content .fridge_wrap .fridge_header {
+#container .fridge_wrap .fridge_header {
 	margin: 0px auto;
 	display: flex;
-	flex-direction: column;
+	gap: 20px;
 	flex: 1 1 auto;
 	box-sizing: border-box;
 	padding: 40px 0;
 }
 
-#container .content .fridge_wrap .fridge_header h2 {
+#container .fridge_wrap .fridge_header h2 {
 	font-weight: 700;
 	line-height: 1.5;
 	letter-spacing: -0.03em;
 	font-size: 32px;
 }
 
+#container .fridge_wrap .fridge_header span {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--point-color2);
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	cursor: pointer;
+}
 
+#container .fridge_wrap .fridge_header span img {
+	width: 18px;
+	height: 18px;
+}
 
 /* 냉장고 */
 #container .content .fridge_wrap .fridge_content .fridge {
@@ -107,33 +122,31 @@
 	margin-bottom: 20px;
 }
 
-
-
-/* 냉장고 (재료 표) */
-#container .content .fridge_wrap .fridge_content .ingredient_list thead th {
-	text-align: left;
-	background: #F9F9F9;
-	padding: 16px;
-	height: 50px;
-	border-bottom: 1px solid var(--line-color2);
-	font-size: 14px;
+/* 나의 냉장고 > 목록 없음 */
+#container .fridge_wrap .fridge_content .fridge_empty_wrap {
+	padding: 14px;
+	width: 100%;
+	height: auto;  
+	background: #F4F8FE;
+	border-radius: 4px;
 }
 
-#container .content .fridge_wrap .fridge_content .ingredient_list tbody tr {
-	height: 50px;
-	border-bottom: 1px solid var(--line-color2);
-	font-size: 14px;
+#container .fridge_wrap .fridge_content .fridge_list_empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 20px;
+	margin-top: 20px;
 }
 
-#container .content .fridge_wrap .fridge_content .ingredient_list tbody tr td {
-	padding: 16px;
-}
-
-#container .content .fridge_wrap .fridge_content .ingredient_list .delete_btn {
-	background: none;
-	border: none;
-	width:25px;
-	height: 25px;
+#container .fridge_wrap .fridge_content .fridge_list_empty span {
+	text-align: center !important;
+	color: #7E8082;
+	font-weight: 400;
+	line-height: 1.5;
+	letter-spacing: -0.025em;
+	font-size: 16px;
+	white-space: pre-line;
 }
 
 
@@ -200,13 +213,6 @@
 
 
 
-
-
-
-
-
-
-
 /* 냉장고 파먹기 */
 #container .pick_wrap {
 	margin: 0 0 80px 0;
@@ -257,6 +263,7 @@
 #container .pick_wrap .pick_content .pick_recipe li {
 	width: calc(50% - 6.5px);  
 	padding: 0;
+	cursor: pointer;
 }
 
 #container .pick_wrap .pick_content .pick_recipe .recipe {

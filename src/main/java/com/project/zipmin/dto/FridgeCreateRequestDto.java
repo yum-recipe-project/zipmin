@@ -17,9 +17,6 @@ public class FridgeCreateRequestDto {
 	
 	private String image;
 	private String name;
-	private Integer amount;
-	private String unit;
-	private Date expdate;
 	private String category;
 	private Integer userId;
 	

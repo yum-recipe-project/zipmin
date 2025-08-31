@@ -28,6 +28,7 @@
 					
 				</div>
 				<div class="modal-body body-wide">
+					<!-- 냉장고 재료 목록 -->
 					<div class="tab_content">
 						<div class="fridge_util">
 							<p class="fridge_total"></p>
@@ -35,9 +36,34 @@
 						</div>
 						<ul class="fridge_list"></ul>
 					</div>
+					
+					<!-- 냉장고 재료 하단 시트 -->
+					<div class="fridge_sheet" id="fridgeSheet" aria-hidden="true">
+						<div class="sheet_grip"></div>
+						<div class="sheet_head">
+							<div class="sheet_info">
+								<div class="sheet_title"></div>
+								<div class="sheet_category">고기</div>
+							</div>
+							<button type="button" class="btn btn-sm btn-outline-danger">닫기</button>
+						</div>
+						<div>
+							<div class="form-group">
+								<label>양</label>
+								<input type="text" id="sheetAmount" class="form-control" placeholder="예: 300g">
+							</div>
+							<div class="form-group">
+								<label>마감일</label>
+								<input type="date" id="sheetExpdate" class="form-control">
+							</div>
+							<div class="sheet_action">
+								<button type="button" class="btn" id="sheetCloseBtn">닫기</button>
+								<button type="button" class="btn btn-primary" id="addUserFridgeBtn">냉장고 채우기</button>
+							</div>
+						</div>
+					</div>
 				</div>
-				
-				<div class="modal-footer footer-wide"></div>
+					
 			</div>
 		</div>
 	</div>

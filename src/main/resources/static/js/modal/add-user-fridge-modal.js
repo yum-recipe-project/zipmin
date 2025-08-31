@@ -217,6 +217,7 @@ async function fetchLikeFridgeList() {
 
 
 
+
 /**
  * 냉장고 목록을 화면에 렌더링하는 함수
  */
@@ -226,6 +227,10 @@ function renderFridgeList(fridgeList, fetchFunction) {
 	
 	fridgeList.forEach(fridge => {
 		const li = document.createElement('li');
+		li.addEventListener('click', function(event) {
+			event.preventDefault();
+			openFridgeSheet(fridge);
+		});
 		
 		const box = document.createElement('div');
 		box.className = 'fridge';
@@ -259,6 +264,70 @@ function renderFridgeList(fridgeList, fetchFunction) {
 
 
 
+
+/**
+ * 냉장고 시트를 여는 함수
+ */
+function openFridgeSheet(fridge) {
+	const sheet = document.getElementById('fridgeSheet');
+	if (!sheet) return;
+	
+	// 데이터 채우기
+	// sheet.dataset.id = String(fridge?.id ?? '');
+	
+	sheet.querySelector('.sheet_title').textContent = fridge.name;
+	sheet.querySelector('.sheet_category').textContent = fridge.category;
+	
+	// 폼 초기화
+	document.getElementById('sheetAmount').value = '';
+	document.getElementById('sheetExpdate').value = '';
+	document.getElementById('sheetExpdate').value = '';
+	
+	// 에러 힌트 초기화
+	sheet.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+	sheet.querySelectorAll('.danger').forEach(el => (el.style.display = 'none'));
+	
+	// 표시
+	sheet.classList.add('is-open');
+	sheet.setAttribute('aria-hidden', 'false');
+}
+
+
+
+
+
+/**
+ * 냉장고 시트를 닫는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	// 버튼 클릭시 모달 닫기
+	document.getElementById('sheetCloseBtn').addEventListener('click', function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		closeFridgeSheet();
+	});
+	
+	// 모달 닫히면 시트 닫기
+	document.getElementById('addUserFridgeModal')?.addEventListener('hidden.bs.modal', closeFridgeSheet);
+	document.getElementById('addFridgeModal')?.addEventListener('hidden.bs.modal', closeFridgeSheet);
+	
+	function closeFridgeSheet() {
+		const sheet = document.getElementById('fridgeSheet');
+		if (!sheet) return;
+		
+		sheet.classList.remove('is-open');
+		sheet.setAttribute('aria-hidden', 'true');
+	}
+});
+
+
+
+
+
+
+/**
+ * 
+ */
 async function createFridgeLike(fridge, fetchFunction) {
 	
 	// 좋아요 취소
@@ -324,13 +393,6 @@ async function createFridgeLike(fridge, fetchFunction) {
 	}
 	
 }
-
-
-
-
-
-
-
 
 
 

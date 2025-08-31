@@ -134,8 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					alertPrimary('냉장고 작성에 성공했습니다.');
 					bootstrap.Modal.getInstance(document.getElementById('addFridgeModal'))?.hide();
 					bootstrap.Modal.getInstance(document.getElementById('addUserFridgeModal'))?.show();
-					// ***** TODO: 동작 추가 *****
-					
+					fetchAddFridgeList();
 				}
 			}
 			catch (error) {

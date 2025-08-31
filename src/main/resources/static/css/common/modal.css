@@ -786,7 +786,7 @@
 
 /* 하단 시트 */
 #container .modal-content .modal-body .fridge_sheet {
-	position: sticky;
+	position: absolute;
 	bottom: 0;
 	left: 0;
 	right: 0;

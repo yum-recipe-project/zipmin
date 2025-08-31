@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
+import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.FridgeErrorCode;
 import com.project.zipmin.api.FridgeSuccessCode;
 import com.project.zipmin.dto.FridgeCreateRequestDto;
@@ -29,6 +30,9 @@ import com.project.zipmin.dto.FridgeCreateResponseDto;
 import com.project.zipmin.dto.FridgeReadResponseDto;
 import com.project.zipmin.dto.FridgeUpdateRequestDto;
 import com.project.zipmin.dto.FridgeUpdateResponseDto;
+import com.project.zipmin.dto.LikeCreateRequestDto;
+import com.project.zipmin.dto.LikeCreateResponseDto;
+import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.RecipeReadResponseDto;
 import com.project.zipmin.dto.UserFridgeReadResponseDto;
 import com.project.zipmin.service.FridgeService;
@@ -166,6 +170,52 @@ public class FridgeController {
 	}
 	
 	
+	
+	
+	
+	
+	
+	// 냉장고 좋아요
+	@PostMapping("/fridges/{id}/likes")
+	public ResponseEntity<?> likeFridge(
+			@Parameter(description = "냉장고의 일련번호") @PathVariable int id,
+			@Parameter(description = "냉장고 좋아요 작성 요청 정보") @RequestBody LikeCreateRequestDto likeRequestDto) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED_ACCESS);
+		}
+		likeRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
+		
+		LikeCreateResponseDto likeResponseDto = fridgeService.likeFridge(likeRequestDto);
+		
+		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_LIKE_SUCCESS.getStatus())
+				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_LIKE_SUCCESS, likeResponseDto));
+	}
+	
+	
+	
+	
+	
+	// 냉장고 좋아요 취소
+	@DeleteMapping("/fridges/{id}/likes")
+	public ResponseEntity<?> unlikeFridge(
+			@Parameter(description = "냉장고의 일련번호") @PathVariable int id,
+			@Parameter(description = "냉장고 좋아요 삭제 요청 정보") @RequestBody LikeDeleteRequestDto likeDto) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED_ACCESS);
+		}
+		likeDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
+		
+		fridgeService.unlikeFridge(likeDto);
+		
+		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_UNLIKE_SUCCESS.getStatus())
+				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_UNLIKE_SUCCESS, null));
+	}
 	
 	
 	

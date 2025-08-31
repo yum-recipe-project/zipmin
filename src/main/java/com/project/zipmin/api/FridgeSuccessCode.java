@@ -23,7 +23,12 @@ public enum FridgeSuccessCode implements Code {
 	USER_FRIDGE_DELETE_SUCCESS(HttpStatus.OK, "사용자 냉장고 삭제 성공"),
 	
 	FRIDGE_PICK_LIST_SUCCESS(HttpStatus.OK, "냉장고 파먹기 성공"),
-	USER_FRIDGE_PICK_LIST_SUCCESS(HttpStatus.OK, "사용자 냉장고 파먹기 성공");
+	USER_FRIDGE_PICK_LIST_SUCCESS(HttpStatus.OK, "사용자 냉장고 파먹기 성공"),
+	
+	FRIDGE_LIKE_SUCCESS(HttpStatus.OK, "댓글 좋아요 성공"),
+	FRIDGE_UNLIKE_SUCCESS(HttpStatus.OK, "댓글 좋아요 취소 성공");
+	
+	
 	private final HttpStatus status;
 	private final String message;
 	

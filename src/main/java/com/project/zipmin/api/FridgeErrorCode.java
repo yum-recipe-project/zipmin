@@ -33,6 +33,10 @@ public enum FridgeErrorCode implements Code {
     USER_FRIDGE_READ_LIST_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "사용자 냉장고 목록 조회 실패"),
     USER_FRIDGE_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "사용자 냉장고 수정 실패"),
     USER_FRIDGE_DELETE_FAIL(HttpStatus.BAD_REQUEST, "사용자 냉장고 삭제 실패"),
+    
+    
+    FRIDGE_LIKE_FAIL(HttpStatus.BAD_REQUEST, "냉장고 좋아요 실패"),
+    FRIDGE_UNLIKE_FAIL(HttpStatus.BAD_REQUEST, "냉장고 좋아요 삭제 실패"),
 
     // 기타
 	FRIDGE_UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "예외 처리되지 않은 내부 오류");

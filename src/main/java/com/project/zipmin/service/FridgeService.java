@@ -19,12 +19,16 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.FridgeErrorCode;
 import com.project.zipmin.dto.FridgeCreateRequestDto;
 import com.project.zipmin.dto.FridgeCreateResponseDto;
 import com.project.zipmin.dto.FridgeReadResponseDto;
 import com.project.zipmin.dto.FridgeUpdateRequestDto;
 import com.project.zipmin.dto.FridgeUpdateResponseDto;
+import com.project.zipmin.dto.LikeCreateRequestDto;
+import com.project.zipmin.dto.LikeCreateResponseDto;
+import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.LikeReadResponseDto;
 import com.project.zipmin.dto.UserFridgeReadResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
@@ -421,6 +425,73 @@ public class FridgeService {
 		
 		return userFridgeDtoList;
 	}
+	
+	
+	
+	// 냉장고 좋아요
+	public LikeCreateResponseDto likeFridge(LikeCreateRequestDto likeDto) {
+		
+		// 입력값 검증
+		if (likeDto == null || likeDto.getTablename() == null
+				|| likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
+		}
+		
+		// 냉장고 존재 여부 확인
+		if (fridgeRepository.existsById(likeDto.getRecodenum())) {
+			new ApiException(FridgeErrorCode.FRIDGE_NOT_FOUND);
+		}
+		
+		// 좋아요 저장
+		try {
+		    return likeService.createLike(likeDto);
+		}
+		catch (ApiException e) {
+		    throw e;
+		}
+		catch (Exception e) {
+		    throw new ApiException(FridgeErrorCode.FRIDGE_LIKE_FAIL);
+		}
+		
+	}
+	
+	
+	
+	
+	// 냉장고 좋아요 취소
+	public void unlikeFridge(LikeDeleteRequestDto likeDto) {
+		
+		// 입력값 검증
+		if (likeDto == null || likeDto.getTablename() == null
+				|| likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
+		}
+		
+		// 냉장고 존재 여부 확인
+		if (fridgeRepository.existsById(likeDto.getRecodenum())) {
+			new ApiException(FridgeErrorCode.FRIDGE_NOT_FOUND);
+		}
+		
+		// 좋아요 저장
+		try {
+			likeService.deleteLike(likeDto);
+		}
+		catch (ApiException e) {
+			throw e;
+		}
+		catch (Exception e) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_UNLIKE_FAIL);
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

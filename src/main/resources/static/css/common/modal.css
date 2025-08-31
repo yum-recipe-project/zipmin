@@ -751,6 +751,16 @@
 	height: 48px;
 	border-radius: 50%;
 	border: 1px solid var(--line-color3);
+	
+	display: inline-block;
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	border: 1px solid var(--line-color3);
+	background-color: #fff;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 65%;
 }
 
 #container .modal-content .modal-body .fridge_list h3 {

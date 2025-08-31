@@ -21,8 +21,12 @@ import com.project.zipmin.dto.FridgeCreateResponseDto;
 import com.project.zipmin.dto.FridgeReadResponseDto;
 import com.project.zipmin.dto.FridgeUpdateRequestDto;
 import com.project.zipmin.dto.FridgeUpdateResponseDto;
+import com.project.zipmin.dto.UserFridgeReadResponseDto;
+import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.entity.Fridge;
 import com.project.zipmin.entity.Role;
+import com.project.zipmin.entity.User;
+import com.project.zipmin.entity.UserFridge;
 import com.project.zipmin.mapper.FridgeMapper;
 import com.project.zipmin.mapper.UserFridgeMapper;
 import com.project.zipmin.repository.FridgeRepository;
@@ -129,24 +133,12 @@ public class FridgeService {
 	
 	
 	// 냉장고 작성
-	public FridgeCreateResponseDto createFridge(FridgeCreateRequestDto fridgeDto, MultipartFile file) {
+	public FridgeCreateResponseDto createFridge(FridgeCreateRequestDto fridgeDto) {
 		
 		// 입력값 검증
 		if (fridgeDto == null || fridgeDto.getImage() == null || fridgeDto.getName() == null
 				|| fridgeDto.getCategory() == null || fridgeDto.getUserId() == null) {
 			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
-		}
-		if (file == null) {
-			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
-		}
-		
-		// 파일 저장
-		try {
-			String image = fileService.store(file);
-			fridgeDto.setImage(image);
-		}
-		catch (Exception e) {
-			throw new ApiException(FridgeErrorCode.FRIDGE_FILE_UPLOAD_FAIL);
 		}
 		
 		// 냉장고 저장
@@ -274,6 +266,65 @@ public class FridgeService {
 		}
 		
 	}
+	
+	
+	
+	
+	// 사용자 냉장고 목록 조회
+	public List<UserFridgeReadResponseDto> readUserFridgeList(Integer id) {
+		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(FridgeErrorCode.USER_FRIDGE_INVALID_INPUT);
+		}
+		
+		// 권한 확인
+		UserReadResponseDto userDto = userService.readUserById(id);
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userDto.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+					throw new ApiException(FridgeErrorCode.USER_FRIDGE_FORBIDDEN);
+				}
+				if (userDto.getRole().equals(Role.ROLE_ADMIN.name())) {
+					if (userService.readUserByUsername(username).getId() != userDto.getId()) {
+						throw new ApiException(FridgeErrorCode.USER_FRIDGE_FORBIDDEN);
+					}
+				}
+			}
+			// 일반 회원
+			else {
+				if (userService.readUserByUsername(username).getId() != userDto.getId()) {
+					throw new ApiException(FridgeErrorCode.USER_FRIDGE_FORBIDDEN);
+				}
+			}
+		}
+		
+		// 사용자 냉장고 목록 조회
+		List<UserFridge> userFridgeList;
+		try {
+			userFridgeList = userFridgeRepository.findAllByUserId(id);
+		}
+		catch (Exception e) {
+			throw new ApiException(FridgeErrorCode.USER_FRIDGE_READ_LIST_FAIL);
+		}
+		
+		// 사용자 냉장고 목록 응답 구성
+		List<UserFridgeReadResponseDto> userFridgeDtoList = new ArrayList<UserFridgeReadResponseDto>();
+		for (UserFridge userFridge : userFridgeList) {
+			UserFridgeReadResponseDto userFridgeDto = userFridgeMapper.toReadResponseDto(userFridge);
+			
+			userFridgeDto.setName(userFridge.getFridge().getName());
+			userFridgeDto.setImage(publicPath + "/" + userFridge.getFridge().getImage());
+			userFridgeDto.setCategory(userFridge.getFridge().getCategory());
+			
+			userFridgeDtoList.add(userFridgeDto);
+		}
+		
+		return userFridgeDtoList;
+	}
+	
 	
 	
 	

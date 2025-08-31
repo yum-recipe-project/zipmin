@@ -11,7 +11,6 @@
 				</div>
 				
 				<div class="modal-body">
-				
 					<!-- 이미지 선택 영역 -->
 					<div class="form-image image_field">
 						<label>이미지</label>
@@ -22,7 +21,7 @@
 								<img src="/images/common/arrow_down.png">
 							</button>
 						</div>
-						<p class="danger">이미지를 입력해주세요.</p>
+						<p class="danger">이미지를 선택해주세요.</p>
 					</div>
 					
 					<!-- 이미지 목록 영역 -->
@@ -42,7 +41,8 @@
 						</ul>
 						<input type="hidden" name="image">
 					</div>
-				
+					
+								
 					<div class="form-group name_field">
 						<label>재료명</label>
 						<input type="text" name="name" placeholder="재료명 입력" class="form-control">
@@ -52,7 +52,7 @@
 					<div class="form-group category_field">
 						<label>카테고리</label>
 						<select class="form-select">
-				            <option value="">- 카테고리를 선택하세요 -</option>
+				            <option value="" disabled selected hidden="true">카테고리 선택</option>
 				            <option value="육류">육류</option>
 				            <option value="채소류">채소류</option>
 				            <option value="소스류">소스류</option>
@@ -61,6 +61,7 @@
 				        <input type="hidden" name="category">
 				        <p class="danger">카테고리를 입력해주세요.</p>
 					</div>
+
 
 				</div>
 				<div class="modal-footer">

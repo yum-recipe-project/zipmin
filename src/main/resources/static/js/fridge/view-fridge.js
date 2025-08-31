@@ -22,18 +22,21 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
 /**
- * 
+ * 서버에서 나의 냉장고 목록을 가져오는 함수
  */
 document.addEventListener('DOMContentLoaded', async function() {
 	
 	try {
-		const response = await instance.get('/fridges', {
+		const token = localStorage.getItem('accessToken');
+		const id = parseJwt(token).id;
+		
+		const response = await instance.get(`users/${id}/fridges`, {
 			headers: getAuthHeaders()
 		});
 		
 		console.log(response);
 		
-		if (response.data.code === 'FRIDGE_READ_LIST_SUCCESS') {
+		if (response.data.code === 'USER_FRIDGE_READ_LIST_SUCCESS') {
 			// 렌더링
 			renderFridgeSwiper(response.data.data);
 			
@@ -56,7 +59,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 		
 		/***** TODO : 에러 코드 수정하기 *****/
 		
-		if (code === 'FRIDGE_READ_LIST_FAIL') {
+		if (code === 'USER_FRIDGE_READ_LIST_FAIL') {
 			alert('냉장고 목록 조회에 실패했습니다');
 		}
 		else {
@@ -65,6 +68,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 	}
 	
 });
+
+
 
 
 
@@ -170,9 +175,10 @@ function renderFridgeSwiper(list) {
 /**
  * 냉장고 재료를 생성하는 함수
  */
+/*
 document.addEventListener('DOMContentLoaded', function() {
 	
-	const form = document.getElementById('addIngredientForm');
+	const form = document.getElementById('addFridgeForm');
 	form.addEventListener('submit', async function(event) {
 		event.preventDefault();
 		let isValid = true;
@@ -194,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		if (form.amount.value.trim() === '') {
 			form.amount.classList.add('danger');
 			document.querySelector('.amount_field p').style.display = 'block';
-			form.amount.focus();
+			form.category.focus();
 			isValid = false;
 		}
 		
@@ -289,7 +295,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	});
 });
-
+*/
 
 
 
@@ -406,7 +412,9 @@ document.addEventListener('DOMContentLoaded', async function() {
 async function renderPickList(pickList) {
 	const container = document.querySelector('.pick_list');
 	container.innerHTML = '';
-
+	
+	if (pickList === null) return;
+	
 	pickList.forEach((recipe, index) => {
 		const li = document.createElement('li');
 		

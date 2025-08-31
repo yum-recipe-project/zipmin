@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,6 +30,7 @@ import com.project.zipmin.dto.FridgeReadResponseDto;
 import com.project.zipmin.dto.FridgeUpdateRequestDto;
 import com.project.zipmin.dto.FridgeUpdateResponseDto;
 import com.project.zipmin.dto.RecipeReadResponseDto;
+import com.project.zipmin.dto.UserFridgeReadResponseDto;
 import com.project.zipmin.service.FridgeService;
 import com.project.zipmin.service.UserService;
 
@@ -72,11 +74,18 @@ public class FridgeController {
 	
 	
 	
+	// 201 FRIDGE_CREATE_SUCCESS
+	// 400 FRIDGE_CREATE_FAIL
+	// 400 FRIDGE_INVALID_INPUT
+	// 400 USER_INVALID_INPUT
+	// 401 FRIDGE_UNAUTHORIZED_ACCESS
+	// 404 USER_NOT_FOUND
+	// 500
+	
 	// 냉장고 작성
 	@PostMapping("/fridges")
 	public ResponseEntity<?> createFridge(
-			@Parameter(description = "냉장고 작성 요청 정보") @RequestPart  FridgeCreateRequestDto fridgeRequestDto,
-			@Parameter(description = "이미지 파일", required = false) @RequestPart(required = false) MultipartFile file) {
+			@Parameter(description = "냉장고 작성 요청 정보") @RequestBody FridgeCreateRequestDto fridgeRequestDto) {
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -85,7 +94,7 @@ public class FridgeController {
 		}
 		fridgeRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 		
-		FridgeCreateResponseDto fridgeResponseDto = fridgeService.createFridge(fridgeRequestDto, file);
+		FridgeCreateResponseDto fridgeResponseDto = fridgeService.createFridge(fridgeRequestDto);
 		
 		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_CREATE_SUCCESS.getStatus())
 				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_CREATE_SUCCESS, fridgeResponseDto));
@@ -134,6 +143,31 @@ public class FridgeController {
 		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_DELETE_SUCCESS.getStatus())
 				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_DELETE_SUCCESS, null));
 	}
+	
+	
+	
+	
+	
+	// 사용자 냉장고 조회
+	@GetMapping("/users/{id}/fridges")
+	public ResponseEntity<?> readUserFridge(
+			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED_ACCESS);
+		}
+		
+		List<UserFridgeReadResponseDto> fridgeList = fridgeService.readUserFridgeList(id);
+
+		return ResponseEntity.status(FridgeSuccessCode.USER_FRIDGE_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(FridgeSuccessCode.USER_FRIDGE_READ_LIST_SUCCESS, fridgeList));
+	}
+	
+	
+	
+	
 	
 	
 	

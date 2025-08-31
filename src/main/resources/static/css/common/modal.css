@@ -837,8 +837,22 @@
 	font-size: 16px;
 	font-weight: 900;
 	color: var(--txt-color-500);
+	line-height: 1.5;
 }
 
+#container .modal-content .modal-body .fridge_sheet .sheet_head button {
+	background: #fff;
+	border: 1px solid #FA896B;
+	color: #FA896B;
+	font-size: 12px;
+	padding: 4px 12px;
+	height: 32px;
+}
+
+#container .modal-content .modal-body .fridge_sheet .sheet_head button:hover {
+	color: #fff;
+	background: #FA896B;
+}
 
 #container .modal-content .modal-body .fridge_sheet .sheet_action {
 	display: flex;
@@ -876,6 +890,8 @@
     border-radius: 36px;
     color: #FFF;
 }
+
+
 
 
 

@@ -45,7 +45,7 @@
 								<div class="sheet_title"></div>
 								<div class="sheet_category">고기</div>
 							</div>
-							<button type="button" class="btn btn-sm btn-outline-danger">닫기</button>
+							<button type="button" id="deleteFridgeBtn" class="btn">삭제</button>
 						</div>
 						<div>
 							<div class="form-group">

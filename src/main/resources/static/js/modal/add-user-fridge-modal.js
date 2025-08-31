@@ -22,8 +22,13 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 	// 클릭 검색
 	const searchBox = document.querySelector('.search_box[data-type="fridge"]');
+	searchBox.addEventListener('click', function(event) {
+		event.preventDefault();
+		closeFridgeSheet();
+	});
 	searchBox.querySelector('.search_btn')?.addEventListener('click', function () {
 		keyword = searchBox.querySelector('.search_word')?.value.trim();
+		closeFridgeSheet();
 		fetchFridgeList();
 	});
 	
@@ -33,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		if (event.key === 'Enter') {
 			event.preventDefault();
 			keyword = searchBox.querySelector('.search_word').value.trim();
+			closeFridgeSheet();
 			fetchFridgeList();
 		}
 	});
@@ -50,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	tabItems.forEach((item) => {
 		item.addEventListener('click', function(event) {
 			event.preventDefault();
+			closeFridgeSheet();
 			
 			tabItems.forEach(button => button.classList.remove('active'));
 			this.classList.add('active');
@@ -229,7 +236,13 @@ function renderFridgeList(fridgeList, fetchFunction) {
 		const li = document.createElement('li');
 		li.addEventListener('click', function(event) {
 			event.preventDefault();
-			openFridgeSheet(fridge);
+			closeFridgeSheet();
+			if (fetchFunction == fetchAddFridgeList) {
+				openFridgeSheet(fridge, true);
+			}
+			else {
+				openFridgeSheet(fridge, false);
+			}
 		});
 		
 		const box = document.createElement('div');
@@ -253,6 +266,7 @@ function renderFridgeList(fridgeList, fetchFunction) {
 		btn.src = fridge.liked ? '/images/recipe/star_full.png' : '/images/recipe/star_empty.png';
 		btn.addEventListener('click', function(event) {
 			event.preventDefault();
+			closeFridgeSheet();
 			createFridgeLike(fridge, fetchFunction);
 		});
 		
@@ -268,15 +282,13 @@ function renderFridgeList(fridgeList, fetchFunction) {
 /**
  * 냉장고 시트를 여는 함수
  */
-function openFridgeSheet(fridge) {
+function openFridgeSheet(fridge, isShow) {
 	const sheet = document.getElementById('fridgeSheet');
 	if (!sheet) return;
 	
-	// 데이터 채우기
-	// sheet.dataset.id = String(fridge?.id ?? '');
-	
 	sheet.querySelector('.sheet_title').textContent = fridge.name;
 	sheet.querySelector('.sheet_category').textContent = fridge.category;
+	document.getElementById('deleteFridgeBtn').style.display = isShow ? 'block' : 'none';
 	
 	// 폼 초기화
 	document.getElementById('sheetAmount').value = '';
@@ -311,15 +323,15 @@ document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById('addUserFridgeModal')?.addEventListener('hidden.bs.modal', closeFridgeSheet);
 	document.getElementById('addFridgeModal')?.addEventListener('hidden.bs.modal', closeFridgeSheet);
 	
-	function closeFridgeSheet() {
-		const sheet = document.getElementById('fridgeSheet');
-		if (!sheet) return;
-		
-		sheet.classList.remove('is-open');
-		sheet.setAttribute('aria-hidden', 'true');
-	}
 });
 
+function closeFridgeSheet() {
+	const sheet = document.getElementById('fridgeSheet');
+	if (!sheet) return;
+	
+	sheet.classList.remove('is-open');
+	sheet.setAttribute('aria-hidden', 'true');
+}
 
 
 

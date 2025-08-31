@@ -95,7 +95,7 @@ async function fetchFridgeList() {
 		if (result.code === 'FRIDGE_READ_LIST_SUCCESS') {
 			
 			// 렌더링
-			renderFridgeList(result.data.content);
+			renderFridgeList(result.data.content, fetchFridgeList);
 			document.querySelector('#addUserFridgeForm .fridge_total').textContent = `총 ${result.data.totalElements}개`;
 			document.querySelector('#addUserFridgeForm .tab_button_wrap').style.display = 'none';
 			document.querySelector('#addUserFridgeForm .btn-dark').style.display = 'none';
@@ -140,7 +140,7 @@ async function fetchAddFridgeList() {
 		if (response.data.code === 'FRIDGE_READ_LIST_SUCCESS') {
 			
 			// 렌더링
-			renderFridgeList(response.data.data);
+			renderFridgeList(response.data.data, fetchAddFridgeList);
 			document.querySelector('#addUserFridgeForm .fridge_total').textContent = `총 ${response.data.data.length}개`;
 			document.querySelector('#addUserFridgeForm .tab_button_wrap').style.display = 'flex';
 			document.querySelector('#addUserFridgeForm .btn-dark').style.display = 'block';
@@ -188,7 +188,7 @@ async function fetchLikeFridgeList() {
 		if (response.data.code === 'FRIDGE_READ_LIST_SUCCESS') {
 			
 			// 렌더링
-			renderFridgeList(response.data.data);
+			renderFridgeList(response.data.data, fetchLikeFridgeList);
 			document.querySelector('#addUserFridgeForm .fridge_total').textContent = `총 ${response.data.data.length}개`;
 			document.querySelector('#addUserFridgeForm .tab_button_wrap').style.display = 'flex';
 			document.querySelector('#addUserFridgeForm .btn-dark').style.display = 'none';
@@ -217,13 +217,10 @@ async function fetchLikeFridgeList() {
 
 
 
-
-
-
 /**
  * 냉장고 목록을 화면에 렌더링하는 함수
  */
-function renderFridgeList(fridgeList) {
+function renderFridgeList(fridgeList, fetchFunction) {
 	const container = document.querySelector('#addUserFridgeForm .fridge_list');
 	container.innerHTML = '';
 	
@@ -233,9 +230,9 @@ function renderFridgeList(fridgeList) {
 		const box = document.createElement('div');
 		box.className = 'fridge';
 		
-		const img = document.createElement('img');
+		const img = document.createElement('span');
 		img.classList = 'fridge_image';
-		img.src = fridge.image;
+		img.style.backgroundImage = `url("${fridge.image}")`;
 		
 		const info = document.createElement('div');
 		const h3 = document.createElement('h3');
@@ -248,10 +245,96 @@ function renderFridgeList(fridgeList) {
 		
 		const btn = document.createElement('img');
 		btn.classList = 'fridge_like';
-		btn.src = fridge.liked ? '/images/recipe/star.png' : '/images/recipe/star_empty.png';
-		// btn.onclick = () => addFridge(fridge); // 필요한 액션 바인딩
+		btn.src = fridge.liked ? '/images/recipe/star_full.png' : '/images/recipe/star_empty.png';
+		btn.addEventListener('click', function(event) {
+			event.preventDefault();
+			createFridgeLike(fridge, fetchFunction);
+		});
 		
 		li.append(box, btn);
 		container.appendChild(li);
 	});
 }
+
+
+
+
+async function createFridgeLike(fridge, fetchFunction) {
+	
+	// 좋아요 취소
+	if (fridge.liked) {
+		try {
+			const data = {
+				tablename: 'fridge',
+				recodenum: fridge.id,
+			}
+
+			const response = await instance.delete(`/fridges/${fridge.id}/likes`, {
+				data: data,
+				headers: getAuthHeaders()
+			});
+
+			if (response.data.code === 'FRIDGE_UNLIKE_SUCCESS') {
+				alertPrimary('냉장고 좋아요 취소에 성공했습니다.');
+				fetchFunction();
+			}
+		}
+		catch(error) {
+			const code = error?.response?.data?.code;
+			
+			/**** TODO : 에러코드 추가하기 ****/
+			
+			if (code === 'FRIDGE_UNLIKE_FAIL') {
+				alertDanger('냉장고 좋아요 취소에 실패했습니다.');
+			}
+			else {
+				console.log(error);
+			}
+		}
+	}
+	// 좋아요
+	else {
+		try {
+			const data = {
+				tablename: 'fridge',
+				recodenum: fridge.id,
+			}
+			
+			const response = await instance.post(`/fridges/${fridge.id}/likes`, data, {
+				headers: getAuthHeaders()
+			});
+	
+			if (response.data.code === 'FRIDGE_LIKE_SUCCESS') {
+				alertPrimary('냉장고 좋아요에 성공했습니다.');
+				fetchFunction();
+			}
+		}
+		catch (error) {
+			const code = error?.response?.data?.code;
+						
+			/**** TODO : 에러코드 추가하기 ****/
+			
+			if (code === 'FRIDGE_LIKE_FAIL') {
+				alertDanger('냉장고 좋아요에 실패했습니다.');
+			}
+			else {
+				console.log(error);
+			}
+		}
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

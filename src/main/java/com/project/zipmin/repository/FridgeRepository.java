@@ -1,5 +1,8 @@
 package com.project.zipmin.repository;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +16,8 @@ public interface FridgeRepository extends JpaRepository<Fridge, Integer> {
 	
 	Page<Fridge> findAllByCategory(String category, Pageable pageable);
 	Page<Fridge> findAllByCategoryAndNameContainingIgnoreCase(String category, String keyword, Pageable pageable);
+
+	List<Fridge> findAllByUserId(int userId);
+	
+	List<Fridge> findAllByIdIn(List<Integer> idList);
 }

@@ -1,7 +1,9 @@
 package com.project.zipmin.service;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -9,6 +11,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.method.P;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,9 +25,11 @@ import com.project.zipmin.dto.FridgeCreateResponseDto;
 import com.project.zipmin.dto.FridgeReadResponseDto;
 import com.project.zipmin.dto.FridgeUpdateRequestDto;
 import com.project.zipmin.dto.FridgeUpdateResponseDto;
+import com.project.zipmin.dto.LikeReadResponseDto;
 import com.project.zipmin.dto.UserFridgeReadResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.entity.Fridge;
+import com.project.zipmin.entity.Like;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.entity.User;
 import com.project.zipmin.entity.UserFridge;
@@ -32,6 +38,7 @@ import com.project.zipmin.mapper.UserFridgeMapper;
 import com.project.zipmin.repository.FridgeRepository;
 import com.project.zipmin.repository.UserFridgeRepository;
 
+import io.jsonwebtoken.lang.Collections;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -45,6 +52,7 @@ public class FridgeService {
 	private final RecipeService recipeService;
 	private final UserService userService;
 	private final FileService fileService;
+	private final LikeService likeService;
 	
 	private final FridgeMapper fridgeMapper;
 	private final UserFridgeMapper userFridgeMapper;
@@ -117,9 +125,12 @@ public class FridgeService {
 		for (Fridge fridge : fridgePage) {
 			FridgeReadResponseDto fridgeDto = fridgeMapper.toReadResponseDto(fridge);
 			
-			// 이미지
-			if (fridgeDto.getImage() != null ) {
-				fridgeDto.setImage(publicPath + "/" + fridgeDto.getImage());
+			// 좋아요 여부
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
+				String username = authentication.getName();
+				int userId = userService.readUserByUsername(username).getId();
+				fridgeDto.setLiked(likeService.existsUserLike("fridge", fridgeDto.getId(), userId));
 			}
 			
 			fridgeDtoList.add(fridgeDto);
@@ -127,6 +138,92 @@ public class FridgeService {
 		
 		return new PageImpl<>(fridgeDtoList, pageable, fridgePage.getTotalElements());
 	}
+	
+	
+	
+	
+	
+	
+	// 특정 사용자가 등록한 냉장고 조회
+	public List<FridgeReadResponseDto> readFridgeListByUserId(Integer userId) {
+		
+		// 입력값 검증
+		if (userId == null) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
+		}
+		
+		// 냉장고 목록 조회
+		List<Fridge> fridgeList = new ArrayList<>();
+		try {
+			fridgeList = fridgeRepository.findAllByUserId(userId);
+		}
+		catch (Exception e) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_READ_LIST_FAIL);
+		}
+		
+		// 냉장고 목록 응답 구성
+		List<FridgeReadResponseDto> fridgeDtoList = new ArrayList<>();
+		for (Fridge fridge : fridgeList) {
+			FridgeReadResponseDto fridgeDto = fridgeMapper.toReadResponseDto(fridge);
+			
+			// 좋아요 여부
+			fridgeDto.setLiked(likeService.existsUserLike("fridge", fridgeDto.getId(), userId));
+			
+			fridgeDtoList.add(fridgeDto);
+		}
+		
+		return fridgeDtoList;
+	}
+	
+	
+	
+	
+	
+	// 특정 사용자가 좋아요 한 냉장고 조회
+	public List<FridgeReadResponseDto> readLikedFridgeListByUserId(Integer userId) {
+		
+		// 입력값 검증
+		if (userId == null) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
+		}
+		
+		List<LikeReadResponseDto> likeDtoList = likeService.readLikeListByTablenameAndUserId("fridge", userId);
+		
+		List<Integer> idList = likeDtoList.stream()
+				.map(LikeReadResponseDto::getRecodenum)
+				.collect(Collectors.toCollection(LinkedHashSet::new))
+				.stream().toList();
+		
+		if (idList.isEmpty()) {
+            return Collections.emptyList();
+        }
+		
+		// 냉장고 목록 조회
+		List<Fridge> fridgeList = null;
+		try {
+			fridgeList = fridgeRepository.findAllByIdIn(idList);
+		}
+		catch (Exception e) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_READ_LIST_FAIL);
+		}
+		
+		// 냉장고 목록 응답 구성
+		List<FridgeReadResponseDto> fridgeDtoList = new ArrayList<>();
+		for (Fridge fridge : fridgeList) {
+			FridgeReadResponseDto fridgeDto = fridgeMapper.toReadResponseDto(fridge);
+			
+			// 좋아요 여부
+			fridgeDto.setLiked(likeService.existsUserLike("fridge", fridgeDto.getId(), userId));
+			
+			fridgeDtoList.add(fridgeDto);
+		}
+		
+		return fridgeDtoList;
+	}
+	
+	
+	
+	
 	
 	
 	

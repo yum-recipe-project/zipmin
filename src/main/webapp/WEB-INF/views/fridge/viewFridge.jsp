@@ -11,6 +11,7 @@
 		<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 		<script src="/js/fridge/view-fridge.js"></script>
 		<script src="/js/modal/add-fridge-modal.js"></script>
+		<script src="/js/modal/add-user-fridge-modal.js"></script>
 	</head>
 	
 	<body>

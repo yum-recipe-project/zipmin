@@ -11,13 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class FridgeReadResponseDto {
+public class LikeReadResponseDto {
 	
-	private int id;
-	private String image;
-	private String name;
-	private String category;
-	private int userId;
+	private Integer id;
+	private String tablename;
+	private Integer recodenum;
+	private Integer userId;
 	
-	private boolean isLiked;
 }

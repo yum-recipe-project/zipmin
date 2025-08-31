@@ -42,13 +42,14 @@
 						<input type="hidden" name="image">
 					</div>
 					
-								
+					<!-- 재료명 -->			
 					<div class="form-group name_field">
 						<label>재료명</label>
 						<input type="text" name="name" placeholder="재료명 입력" class="form-control">
 						<p class="danger">재료명을 입력해주세요.</p>
 					</div>
 					
+					<!-- 카테고리 -->
 					<div class="form-group category_field">
 						<label>카테고리</label>
 						<select class="form-select">

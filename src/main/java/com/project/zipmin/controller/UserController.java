@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.CommentErrorCode;
+import com.project.zipmin.api.FridgeSuccessCode;
 import com.project.zipmin.api.ClassSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
@@ -32,6 +33,7 @@ import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.CommentReadMyResponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
+import com.project.zipmin.dto.FridgeReadResponseDto;
 import com.project.zipmin.dto.UserReadRequestDto;
 import com.project.zipmin.dto.FundDTO;
 import com.project.zipmin.dto.UserPasswordCheckRequestDto;
@@ -46,6 +48,7 @@ import com.project.zipmin.entity.User;
 import com.project.zipmin.mapper.UserMapper;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.CookingService;
+import com.project.zipmin.service.FridgeService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.UserCorrectPassworResponse;
@@ -85,10 +88,12 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 	
 	private final UserService userService;
-	@Autowired
-	private CommentService commentService;	
-	@Autowired
-	private CookingService cookingService;	
+	private final CommentService commentService;	
+	private final CookingService cookingService;	
+	private final FridgeService fridgeService;
+	
+	
+	
 
 	
 	// 사용자 목록 조회 (관리자)
@@ -711,10 +716,10 @@ public class UserController {
 	// 개설한 쿠킹클래스
 	@GetMapping("/users/{id}/classes")
 	public ResponseEntity<?> listUserClass(
-			@Parameter(description = "사용자의 일련번호", required = true, example = "1") @PathVariable Integer id,
-			@Parameter(description = "정렬 방식", required = true, example = "end") @RequestParam String sort,
-			@Parameter(description = "조회할 페이지 번호", required = true, example = "1") @RequestParam int page,
-			@Parameter(description = "페이지의 항목 수", required = true, example = "10") @RequestParam int size) {
+			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
+			@Parameter(description = "정렬") @RequestParam String sort,
+			@Parameter(description = "조회할 페이지 번호") @RequestParam int page,
+			@Parameter(description = "페이지의 항목 수") @RequestParam int size) {
 		
 		// 입력값 검증
 		if (id == null) {
@@ -743,6 +748,58 @@ public class UserController {
 		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, classPage));
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	// 등록한 냉장고
+	@GetMapping("/users/{id}/add-fridges")
+	public ResponseEntity<?> listAddFridgeList(
+			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
+		}
+		
+		// ***** TODO : 권한 확인 *****
+		
+		List<FridgeReadResponseDto> fridgeList = fridgeService.readFridgeListByUserId(id);
+		
+		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS, fridgeList));
+	}
+	
+	
+	
+	
+	
+	// 좋아요한 냉장고
+	@GetMapping("/users/{id}/liked-fridges")
+	public ResponseEntity<?> listLikedFridgeList(
+			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
+		}
+		
+		// ***** TODO : 권한 확인 *****
+		
+		List<FridgeReadResponseDto> fridgeList = fridgeService.readLikedFridgeListByUserId(id);
+		
+		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS, fridgeList));
+	}
+	
+	
+	
 	
 	
 	

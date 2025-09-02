@@ -6,6 +6,7 @@ import org.mapstruct.Mapping;
 import com.project.zipmin.dto.UserFridgeCreateRequestDto;
 import com.project.zipmin.dto.UserFridgeCreateResponseDto;
 import com.project.zipmin.dto.UserFridgeReadResponseDto;
+import com.project.zipmin.dto.UserFridgeUpdateRequestDto;
 import com.project.zipmin.dto.UserFridgeUpdateResponseDto;
 import com.project.zipmin.dto.UserUpdateRequestDto;
 import com.project.zipmin.entity.UserFridge;
@@ -51,11 +52,11 @@ public interface UserFridgeMapper {
 	// Update
 	@Mapping(target = "fridge.id", source = "fridgeId")
 	@Mapping(target = "user.id", source = "userId")
-	UserFridge toEntity(UserUpdateRequestDto userFridgeDto);
+	UserFridge toEntity(UserFridgeUpdateRequestDto userFridgeDto);
 	
 	@Mapping(target = "fridgeId", source = "fridge.id")
 	@Mapping(target = "userId", source ="user.id")
-	UserUpdateRequestDto toUpdateRequestDto(UserFridge userFridge);
+	UserFridgeUpdateRequestDto toUpdateRequestDto(UserFridge userFridge);
 	
 	@Mapping(target = "fridge.id", source = "fridgeId")
 	@Mapping(target = "user.id", source = "userId")

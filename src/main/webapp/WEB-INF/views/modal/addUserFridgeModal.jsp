@@ -48,13 +48,17 @@
 							<button type="button" id="deleteFridgeBtn" class="btn">삭제</button>
 						</div>
 						<div>
+							<input type="hidden" id="sheetFridgeIdInput">
 							<div class="form-group">
 								<label>양</label>
-								<input type="text" id="sheetAmount" class="form-control" placeholder="예: 300g">
+								<input type="text" id="sheetAmountInput" class="form-control" placeholder="예: 300g">
+								<p id="sheetAmountHint1" class="danger">양을 입력해주세요</p>
+								<p id="sheetAmountHint2" class="danger">입력 형식이 올바르지 않습니다</p>
 							</div>
 							<div class="form-group">
-								<label>마감일</label>
-								<input type="date" id="sheetExpdate" class="form-control">
+								<label>유통기한</label>
+								<input type="date" id="sheetExpdateInput" class="form-control">
+								<p id="sheetExpdateHint" class="danger">유통기간을 입력해주세요</p>
 							</div>
 							<div class="sheet_action">
 								<button type="button" class="btn" id="sheetCloseBtn">닫기</button>

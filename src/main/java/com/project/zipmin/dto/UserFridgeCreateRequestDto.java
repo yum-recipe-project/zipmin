@@ -15,11 +15,10 @@ import lombok.NoArgsConstructor;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UserFridgeCreateRequestDto {
 	
-	private int id;
-	private int amount;
+	private Integer amount;
 	private String unit;
 	private Date expdate;
-	private int fridgeId;
-	private int userId;
+	private Integer fridgeId;
+	private Integer userId;
 	
 }

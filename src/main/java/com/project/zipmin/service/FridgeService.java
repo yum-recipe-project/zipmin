@@ -321,9 +321,13 @@ public class FridgeService {
 	// 사용자 냉장고 작성
 	public UserFridgeCreateResponseDto createUserFridge(UserFridgeCreateRequestDto userFridgeDto) {
 		
+		System.err.println(userFridgeDto);
+		
 		// 입력값 검증
 		// TODO : 입력값 검증 추가
-		if (userFridgeDto == null) {
+		if (userFridgeDto == null || userFridgeDto.getAmount() == null
+				|| userFridgeDto.getUnit() == null || userFridgeDto.getExpdate() == null
+				|| userFridgeDto.getFridgeId() == null) {
 			throw new ApiException(FridgeErrorCode.USER_FRIDGE_INVALID_INPUT);
 		}
 		

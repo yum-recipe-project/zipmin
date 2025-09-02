@@ -266,7 +266,6 @@ function renderFridgeList(fridgeList, fetchFunction) {
 		btn.src = fridge.liked ? '/images/recipe/star_full.png' : '/images/recipe/star_empty.png';
 		btn.addEventListener('click', function(event) {
 			event.preventDefault();
-			event.stopPropagation();
 			closeFridgeSheet();
 			createFridgeLike(fridge, fetchFunction);
 		});
@@ -289,12 +288,12 @@ function openFridgeSheet(fridge, isShow) {
 	
 	sheet.querySelector('.sheet_title').textContent = fridge.name;
 	sheet.querySelector('.sheet_category').textContent = fridge.category;
+	document.getElementById('sheetFridgeIdInput').value = fridge.id;
 	document.getElementById('deleteFridgeBtn').style.display = isShow ? 'block' : 'none';
 	
 	// 폼 초기화
-	document.getElementById('sheetAmount').value = '';
-	document.getElementById('sheetExpdate').value = '';
-	document.getElementById('sheetExpdate').value = '';
+	document.getElementById('sheetAmountInput').value = '';
+	document.getElementById('sheetExpdateInput').value = '';
 	
 	// 에러 힌트 초기화
 	sheet.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
@@ -336,6 +335,79 @@ function closeFridgeSheet() {
 
 
 
+/**
+ * TODO : 실시간 검증 + 폼값 촉리화
+ */
+
+
+/**
+ * 사용자 냉장고를 생성하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	
+	document.getElementById('addUserFridgeBtn').addEventListener('click', async function(event) {
+		event.preventDefault();
+		let isValid = true;
+		
+		// 폼값 검사
+		const sheetExpdateInput = document.getElementById('sheetExpdateInput');
+		if (sheetExpdateInput.value.trim() === '') {
+			sheetExpdateInput.classList.add('is-invalid');
+			document.getElementById('sheetExpdateHint').style.display = 'block';
+			sheetExpdateInput.focus();
+			isValid = false;
+		}
+		
+		const sheetAmountInput = document.getElementById('sheetAmountInput');
+		const match = sheetAmountInput.value.trim().match(/^(\d+)([a-zA-Z가-힣]+)$/);
+		if (sheetAmountInput.value.trim() === '') {
+			sheetAmountInput.classList.add('is-invalid');
+			document.getElementById('sheetAmountHint1').style.display = 'block';
+			sheetAmountInput.focus();
+			isValid = false;
+		}
+		else if (!match) {
+			sheetAmountInput.classList.add('is-invalid');
+			document.getElementById('sheetAmountHint2').style.display = 'block';
+			sheetAmountInput.focus();
+			isValid = false;
+		}
+		
+		// 사용자 냉장고 작성
+		if (isValid) { 
+			try {
+				const id = parseJwt(localStorage.getItem('accessToken')).id;
+				
+				const data = {
+				    amount: match[1],
+				    unit: match[2],
+				    expdate: sheetExpdateInput.value.trim(),
+					fridge_id: document.getElementById('sheetFridgeIdInput').value
+				}
+				
+				const response = await instance.post(`/users/${id}/fridges`, data, {
+					headers: getAuthHeaders()
+				});
+				
+				if (response.data.code === 'USER_FRIDGE_CREATE_SUCCESS') {
+					fetchUserFridgeList();
+				}
+			}
+			catch(error) {
+				console.log(error);
+				
+				/**** TODO 에러코드 추가 */
+			}
+		}
+		
+	});
+	
+});
+
+
+
+
+
 
 
 /**
@@ -357,7 +429,6 @@ async function createFridgeLike(fridge, fetchFunction) {
 			});
 
 			if (response.data.code === 'FRIDGE_UNLIKE_SUCCESS') {
-				alertPrimary('냉장고 좋아요 취소에 성공했습니다.');
 				fetchFunction();
 			}
 		}
@@ -387,7 +458,6 @@ async function createFridgeLike(fridge, fetchFunction) {
 			});
 	
 			if (response.data.code === 'FRIDGE_LIKE_SUCCESS') {
-				alertPrimary('냉장고 좋아요에 성공했습니다.');
 				fetchFunction();
 			}
 		}

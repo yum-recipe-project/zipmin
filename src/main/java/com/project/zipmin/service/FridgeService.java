@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.CommentErrorCode;
+import com.project.zipmin.api.EventErrorCode;
 import com.project.zipmin.api.FridgeErrorCode;
 import com.project.zipmin.dto.FridgeCreateRequestDto;
 import com.project.zipmin.dto.FridgeCreateResponseDto;
@@ -30,7 +31,11 @@ import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.LikeReadResponseDto;
+import com.project.zipmin.dto.UserFridgeCreateRequestDto;
+import com.project.zipmin.dto.UserFridgeCreateResponseDto;
 import com.project.zipmin.dto.UserFridgeReadResponseDto;
+import com.project.zipmin.dto.UserFridgeUpdateRequestDto;
+import com.project.zipmin.dto.UserFridgeUpdateResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.entity.Fridge;
 import com.project.zipmin.entity.Like;
@@ -147,230 +152,6 @@ public class FridgeService {
 	
 	
 	
-	
-	// 특정 사용자가 등록한 냉장고 조회
-	public List<FridgeReadResponseDto> readFridgeListByUserId(Integer userId) {
-		
-		// 입력값 검증
-		if (userId == null) {
-			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
-		}
-		
-		// 냉장고 목록 조회
-		List<Fridge> fridgeList = new ArrayList<>();
-		try {
-			fridgeList = fridgeRepository.findAllByUserId(userId);
-		}
-		catch (Exception e) {
-			throw new ApiException(FridgeErrorCode.FRIDGE_READ_LIST_FAIL);
-		}
-		
-		// 냉장고 목록 응답 구성
-		List<FridgeReadResponseDto> fridgeDtoList = new ArrayList<>();
-		for (Fridge fridge : fridgeList) {
-			FridgeReadResponseDto fridgeDto = fridgeMapper.toReadResponseDto(fridge);
-			
-			// 좋아요 여부
-			fridgeDto.setLiked(likeService.existsUserLike("fridge", fridgeDto.getId(), userId));
-			
-			fridgeDtoList.add(fridgeDto);
-		}
-		
-		return fridgeDtoList;
-	}
-	
-	
-	
-	
-	
-	// 특정 사용자가 좋아요 한 냉장고 조회
-	public List<FridgeReadResponseDto> readLikedFridgeListByUserId(Integer userId) {
-		
-		// 입력값 검증
-		if (userId == null) {
-			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
-		}
-		
-		List<LikeReadResponseDto> likeDtoList = likeService.readLikeListByTablenameAndUserId("fridge", userId);
-		
-		List<Integer> idList = likeDtoList.stream()
-				.map(LikeReadResponseDto::getRecodenum)
-				.collect(Collectors.toCollection(LinkedHashSet::new))
-				.stream().toList();
-		
-		if (idList.isEmpty()) {
-            return Collections.emptyList();
-        }
-		
-		// 냉장고 목록 조회
-		List<Fridge> fridgeList = null;
-		try {
-			fridgeList = fridgeRepository.findAllByIdIn(idList);
-		}
-		catch (Exception e) {
-			throw new ApiException(FridgeErrorCode.FRIDGE_READ_LIST_FAIL);
-		}
-		
-		// 냉장고 목록 응답 구성
-		List<FridgeReadResponseDto> fridgeDtoList = new ArrayList<>();
-		for (Fridge fridge : fridgeList) {
-			FridgeReadResponseDto fridgeDto = fridgeMapper.toReadResponseDto(fridge);
-			
-			// 좋아요 여부
-			fridgeDto.setLiked(likeService.existsUserLike("fridge", fridgeDto.getId(), userId));
-			
-			fridgeDtoList.add(fridgeDto);
-		}
-		
-		return fridgeDtoList;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// 냉장고 작성
-	public FridgeCreateResponseDto createFridge(FridgeCreateRequestDto fridgeDto) {
-		
-		// 입력값 검증
-		if (fridgeDto == null || fridgeDto.getImage() == null || fridgeDto.getName() == null
-				|| fridgeDto.getCategory() == null || fridgeDto.getUserId() == null) {
-			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
-		}
-		
-		// 냉장고 저장
-		Fridge fridge = fridgeMapper.toEntity(fridgeDto);
-		try {
-			fridge = fridgeRepository.save(fridge);
-			return fridgeMapper.toCreateResponseDto(fridge);
-		}
-		catch (Exception e) {
-			throw new ApiException(FridgeErrorCode.FRIDGE_CREATE_FAIL);
-		}
-		
-	}
-	
-	
-	
-	
-	
-	// 냉장고 수정 (관리자)
-	public FridgeUpdateResponseDto updateFridge(FridgeUpdateRequestDto fridgeDto, MultipartFile file) {
-		
-		// 입력값 검증
-		if (fridgeDto == null || fridgeDto.getId() == null
-				|| fridgeDto.getImage() == null || fridgeDto.getName() == null
-				||  fridgeDto.getCategory() == null || fridgeDto.getUserId() == null) {
-			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
-		}
-		
-		// 냉장고 존재 여부 확인
-		Fridge fridge = fridgeRepository.findById(fridgeDto.getId())
-				.orElseThrow(() -> new ApiException(FridgeErrorCode.FRIDGE_NOT_FOUND));
-		
-		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			// 관리자
-			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				if (fridge.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
-					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
-				}
-				if (fridge.getUser().getRole().equals(Role.ROLE_ADMIN)) {
-					if (userService.readUserByUsername(username).getId() != fridge.getUser().getId()) {
-						throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
-					}
-				}
-			}
-			// 일반 회원
-			else {
-				if (userService.readUserByUsername(username).getId() != fridge.getUser().getId()) {
-					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
-				}
-			}
-		}
-		
-		// 변경 값 설정
-		fridge.setName(fridgeDto.getName());
-		fridge.setCategory(fridgeDto.getCategory());
-		
-		// 파일 저장
-		try {
-			if (file != null && !file.isEmpty()) {
-				String image = fileService.store(file);
-				fridge.setImage(image);
-			}
-		}
-		catch (Exception e) {
-			throw new ApiException(FridgeErrorCode.FRIDGE_FILE_UPLOAD_FAIL);
-		}
-		
-		// 냉장고 수정
-		try {
-			fridge = fridgeRepository.save(fridge);
-			return fridgeMapper.toUpdateResponseDto(fridge);
-		}
-		catch (Exception e) {
-			throw new ApiException(FridgeErrorCode.FRIDGE_UPDATE_FAIL);
-		}
-		
-	}
-	
-	
-	
-	
-	
-	// 냉장고 삭제
-	public void deleteFridge(Integer id) {
-		
-		// 입력값 검증
-		if (id == null) {
-			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
-		}
-		
-		// 냉장고 존재 여부 확인
-		Fridge fridge = fridgeRepository.findById(id)
-				.orElseThrow(() -> new ApiException(FridgeErrorCode.FRIDGE_NOT_FOUND));
-		
-		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			// 관리자
-			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				if (fridge.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
-					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
-				}
-				if (fridge.getUser().getRole().equals(Role.ROLE_ADMIN)) {
-					if (userService.readUserByUsername(username).getId() != fridge.getUser().getId()) {
-						throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
-					}
-				}
-			}
-			// 일반 회원
-			else {
-				if (userService.readUserByUsername(username).getId() != fridge.getUser().getId()) {
-					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
-				}
-			}
-		}
-		
-		// 냉장고 삭제
-		try {
-			fridgeRepository.deleteById(id);
-		}
-		catch (Exception e) {
-			throw new ApiException(FridgeErrorCode.FRIDGE_DELETE_FAIL);
-		}
-		
-	}
-	
-	
-	
-	
 	// 사용자 냉장고 목록 조회
 	public List<UserFridgeReadResponseDto> readUserFridgeList(Integer id) {
 		
@@ -428,6 +209,344 @@ public class FridgeService {
 	
 	
 	
+	
+	
+	// 작성한 냉장고 목록 조회
+	public List<FridgeReadResponseDto> readCreatedFridgeList(Integer userId) {
+		
+		// 입력값 검증
+		if (userId == null) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
+		}
+		
+		// 냉장고 목록 조회
+		List<Fridge> fridgeList = new ArrayList<>();
+		try {
+			fridgeList = fridgeRepository.findAllByUserId(userId);
+		}
+		catch (Exception e) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_READ_LIST_FAIL);
+		}
+		
+		// 냉장고 목록 응답 구성
+		List<FridgeReadResponseDto> fridgeDtoList = new ArrayList<>();
+		for (Fridge fridge : fridgeList) {
+			FridgeReadResponseDto fridgeDto = fridgeMapper.toReadResponseDto(fridge);
+			
+			// 좋아요 여부
+			fridgeDto.setLiked(likeService.existsUserLike("fridge", fridgeDto.getId(), userId));
+			
+			fridgeDtoList.add(fridgeDto);
+		}
+		
+		return fridgeDtoList;
+	}
+	
+	
+	
+	
+	
+	// 좋아요한 냉장고 목록 조회
+	public List<FridgeReadResponseDto> readLikedFridgeList(Integer userId) {
+		
+		// 입력값 검증
+		if (userId == null) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
+		}
+		
+		// 좋아요 일련번호 목록 조회
+		List<LikeReadResponseDto> likeDtoList = likeService.readLikeListByTablenameAndUserId("fridge", userId);
+		List<Integer> idList = likeDtoList.stream()
+				.map(LikeReadResponseDto::getRecodenum)
+				.collect(Collectors.toCollection(LinkedHashSet::new))
+				.stream().toList();
+		
+		if (idList.isEmpty()) {
+            return Collections.emptyList();
+        }
+		
+		// 냉장고 목록 조회
+		List<Fridge> fridgeList = null;
+		try {
+			fridgeList = fridgeRepository.findAllByIdIn(idList);
+		}
+		catch (Exception e) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_READ_LIST_FAIL);
+		}
+		
+		// 냉장고 목록 응답 구성
+		List<FridgeReadResponseDto> fridgeDtoList = new ArrayList<>();
+		for (Fridge fridge : fridgeList) {
+			FridgeReadResponseDto fridgeDto = fridgeMapper.toReadResponseDto(fridge);
+			
+			// 좋아요 여부
+			fridgeDto.setLiked(likeService.existsUserLike("fridge", fridgeDto.getId(), userId));
+			
+			fridgeDtoList.add(fridgeDto);
+		}
+		
+		return fridgeDtoList;
+	}
+	
+	
+	
+	
+	
+	
+	
+	// 냉장고 작성
+	public FridgeCreateResponseDto createFridge(FridgeCreateRequestDto fridgeDto) {
+		
+		// 입력값 검증
+		if (fridgeDto == null || fridgeDto.getImage() == null || fridgeDto.getName() == null
+				|| fridgeDto.getCategory() == null || fridgeDto.getUserId() == null) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
+		}
+		
+		// 냉장고 저장
+		Fridge fridge = fridgeMapper.toEntity(fridgeDto);
+		try {
+			fridge = fridgeRepository.save(fridge);
+			return fridgeMapper.toCreateResponseDto(fridge);
+		}
+		catch (Exception e) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_CREATE_FAIL);
+		}
+		
+	}
+	
+	
+	
+	
+	// 사용자 냉장고 작성
+	public UserFridgeCreateResponseDto createUserFridge(UserFridgeCreateRequestDto userFridgeDto) {
+		
+		// 입력값 검증
+		// TODO : 입력값 검증 추가
+		if (userFridgeDto == null) {
+			throw new ApiException(FridgeErrorCode.USER_FRIDGE_INVALID_INPUT);
+		}
+		
+		// 사용자 냉장고 저장
+		UserFridge userFridge = userFridgeMapper.toEntity(userFridgeDto);
+		try {
+			userFridge = userFridgeRepository.save(userFridge);
+			return userFridgeMapper.toCreateResponseDto(userFridge);
+		}
+		catch (Exception e) {
+			throw new ApiException(FridgeErrorCode.USER_FRIDGE_CREATE_FAIL);
+		}
+	}
+	
+	
+	
+	
+	
+	// 냉장고 수정 (관리자)
+	public FridgeUpdateResponseDto updateFridge(FridgeUpdateRequestDto fridgeDto) {
+		
+		// 입력값 검증
+		if (fridgeDto == null || fridgeDto.getId() == null
+				|| fridgeDto.getImage() == null || fridgeDto.getName() == null
+				||  fridgeDto.getCategory() == null || fridgeDto.getUserId() == null) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
+		}
+		
+		// 냉장고 존재 여부 확인
+		Fridge fridge = fridgeRepository.findById(fridgeDto.getId())
+				.orElseThrow(() -> new ApiException(FridgeErrorCode.FRIDGE_NOT_FOUND));
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (fridge.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
+				}
+				if (fridge.getUser().getRole().equals(Role.ROLE_ADMIN)) {
+					if (userService.readUserByUsername(username).getId() != fridge.getUser().getId()) {
+						throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
+					}
+				}
+			}
+			// 일반 회원
+			else {
+				if (userService.readUserByUsername(username).getId() != fridge.getUser().getId()) {
+					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
+				}
+			}
+		}
+		
+		// 변경 값 설정
+		fridge.setName(fridgeDto.getName());
+		fridge.setCategory(fridgeDto.getCategory());
+		fridge.setImage(fridgeDto.getImage());
+		
+		// 냉장고 수정
+		try {
+			fridge = fridgeRepository.save(fridge);
+			return fridgeMapper.toUpdateResponseDto(fridge);
+		}
+		catch (Exception e) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_UPDATE_FAIL);
+		}
+		
+	}
+	
+	
+	
+	
+	// 사용자 냉장고 수정
+	public UserFridgeUpdateResponseDto updateUserFridge(UserFridgeUpdateRequestDto userFridgeRequestDto) {
+		
+		// 입력값 검증
+		if (userFridgeRequestDto == null || userFridgeRequestDto.getId() == null
+				|| userFridgeRequestDto.getAmount() == null || userFridgeRequestDto.getUnit() == null
+				|| userFridgeRequestDto.getExpdate() == null || userFridgeRequestDto.getFridgeId() == null
+				|| userFridgeRequestDto.getUserId() == null) {
+			throw new ApiException(FridgeErrorCode.USER_FRIDGE_INVALID_INPUT);
+		}
+		
+		// 사용자 냉장고 존재 여부 확인
+		UserFridge userFridge = userFridgeRepository.findById(userFridgeRequestDto.getId())
+				.orElseThrow(() -> new ApiException(FridgeErrorCode.USER_FRIDGE_NOT_FOUND));
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto user = userService.readUserByUsername(username);
+		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (user.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userFridge.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(FridgeErrorCode.USER_FRIDGE_FORBIDDEN);
+				}
+				if (userFridge.getUser().getRole().equals(Role.ROLE_ADMIN)) {
+					if (user.getId() != userFridge.getUser().getId()) {
+						throw new ApiException(FridgeErrorCode.USER_FRIDGE_FORBIDDEN);
+					}
+				}
+			}
+			// 일반 회원
+			else {
+				if (user.getId() != userFridge.getUser().getId()) {
+					throw new ApiException(FridgeErrorCode.USER_FRIDGE_FORBIDDEN);
+				}
+			}
+		}
+		
+		// 변경 값 설정
+		userFridge.setAmount(userFridgeRequestDto.getAmount());
+		userFridge.setUnit(userFridgeRequestDto.getUnit());
+		userFridge.setExpdate(userFridgeRequestDto.getExpdate());
+		
+		// 사용자 냉장고 수정
+		try {
+			userFridge = userFridgeRepository.save(userFridge);
+			return userFridgeMapper.toUpdateResponseDto(userFridge);
+		}
+		catch (Exception e) {
+			throw new ApiException(FridgeErrorCode.USER_FRIDGE_UPDATE_FAIL);
+		}
+	}
+	
+	
+	
+	
+	
+	// 냉장고 삭제
+	public void deleteFridge(Integer id) {
+		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
+		}
+		
+		// 냉장고 존재 여부 확인
+		Fridge fridge = fridgeRepository.findById(id)
+				.orElseThrow(() -> new ApiException(FridgeErrorCode.FRIDGE_NOT_FOUND));
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (fridge.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
+				}
+				if (fridge.getUser().getRole().equals(Role.ROLE_ADMIN)) {
+					if (userService.readUserByUsername(username).getId() != fridge.getUser().getId()) {
+						throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
+					}
+				}
+			}
+			// 일반 회원
+			else {
+				if (userService.readUserByUsername(username).getId() != fridge.getUser().getId()) {
+					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
+				}
+			}
+		}
+		
+		// 냉장고 삭제
+		try {
+			fridgeRepository.deleteById(id);
+		}
+		catch (Exception e) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_DELETE_FAIL);
+		}
+		
+	}
+	
+	
+	// 사용자 냉장고 삭제
+	public void deleteUserFridge(Integer id) {
+		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
+		}
+		
+		// 사용자 냉장고 존재 여부 확인
+		UserFridge userFridge = userFridgeRepository.findById(id)
+				.orElseThrow(() -> new ApiException(FridgeErrorCode.USER_FRIDGE_NOT_FOUND));
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto user = userService.readUserByUsername(username);
+		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (user.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userFridge.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(FridgeErrorCode.USER_FRIDGE_FORBIDDEN);
+				}
+				if (userFridge.getUser().getRole().equals(Role.ROLE_ADMIN)) {
+					if (user.getId() != userFridge.getUser().getId()) {
+						throw new ApiException(FridgeErrorCode.USER_FRIDGE_FORBIDDEN);
+					}
+				}
+			}
+			// 일반 회원
+			else {
+				if (user.getId() != userFridge.getUser().getId()) {
+					throw new ApiException(FridgeErrorCode.USER_FRIDGE_FORBIDDEN);
+				}
+			}
+		}
+		
+		// 사용자 냉장고 삭제
+		try {
+			userFridgeRepository.deleteById(id);
+		}
+		catch (Exception e) {
+			throw new ApiException(FridgeErrorCode.USER_FRIDGE_DELETE_FAIL);
+		}
+	}
+	
+	
+	
+	
+	
 	// 냉장고 좋아요
 	public LikeCreateResponseDto likeFridge(LikeCreateRequestDto likeDto) {
 		
@@ -454,6 +573,7 @@ public class FridgeService {
 		}
 		
 	}
+	
 	
 	
 	

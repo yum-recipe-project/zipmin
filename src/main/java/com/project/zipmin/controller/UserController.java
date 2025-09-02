@@ -129,7 +129,13 @@ public class UserController {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<UserReadResponseDto> userPage = userService.readUserPage(category, pageable);
 		
-		// 이거 관리자만 가능함 !!!! 추가하기
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+			}
+		}
 		
 		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, userPage));
@@ -750,53 +756,6 @@ public class UserController {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	// 등록한 냉장고
-	@GetMapping("/users/{id}/add-fridges")
-	public ResponseEntity<?> listAddFridgeList(
-			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id) {
-		
-		// 로그인 여부 확인
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
-		}
-		
-		// ***** TODO : 권한 확인 *****
-		
-		List<FridgeReadResponseDto> fridgeList = fridgeService.readFridgeListByUserId(id);
-		
-		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS, fridgeList));
-	}
-	
-	
-	
-	
-	
-	// 좋아요한 냉장고
-	@GetMapping("/users/{id}/liked-fridges")
-	public ResponseEntity<?> listLikedFridgeList(
-			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id) {
-		
-		// 로그인 여부 확인
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
-		}
-		
-		// ***** TODO : 권한 확인 *****
-		
-		List<FridgeReadResponseDto> fridgeList = fridgeService.readLikedFridgeListByUserId(id);
-		
-		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS, fridgeList));
-	}
 	
 	
 	

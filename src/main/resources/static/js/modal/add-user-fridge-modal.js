@@ -140,7 +140,7 @@ async function fetchAddFridgeList() {
 		const token = localStorage.getItem('accessToken');
 		const id = parseJwt(token).id;
 		
-		const response = await instance.get(`/users/${id}/add-fridges`, {
+		const response = await instance.get(`/users/${id}/created-fridges`, {
 			headers: getAuthHeaders()
 		});
 		
@@ -266,6 +266,7 @@ function renderFridgeList(fridgeList, fetchFunction) {
 		btn.src = fridge.liked ? '/images/recipe/star_full.png' : '/images/recipe/star_empty.png';
 		btn.addEventListener('click', function(event) {
 			event.preventDefault();
+			event.stopPropagation();
 			closeFridgeSheet();
 			createFridgeLike(fridge, fetchFunction);
 		});

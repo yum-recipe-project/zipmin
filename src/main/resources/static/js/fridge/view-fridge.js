@@ -44,7 +44,7 @@ async function fetchUserFridgeList() {
 		
 		if (response.data.code === 'USER_FRIDGE_READ_LIST_SUCCESS') {
 			// 렌더링
-			renderFridgeSwiper(response.data.data);
+			renderUserFridgeList(response.data.data);
 			
 			// 검색 결과 없음 표시
 			if (response.data.data.length === 0) {
@@ -73,6 +73,85 @@ async function fetchUserFridgeList() {
 		}
 	}
 }
+
+
+
+
+
+/**
+ *  
+ */
+function renderUserFridgeList(userFridgeList) {
+	const container = document.querySelector('.fridge_list');
+	container.innerHTML = "";
+	userFridgeList.forEach(userFridge => {
+		const li = document.createElement('li');
+		li.className = 'fridge';
+		li.dataset.id = userFridge.id;
+		
+		const divInfo = document.createElement('div');
+		divInfo.className = 'fridge_info';
+		
+		const spanImage = document.createElement('span');
+		spanImage.className = 'image';
+		spanImage.style.backgroundImage = `url("${userFridge.image}")`;
+		
+		const divDetail = document.createElement('div');
+		divDetail.className = 'detail';
+		
+		const h4Name = document.createElement('h4');
+		h4Name.className = 'name';
+		h4Name.textContent = userFridge.name;
+		// TODO : 보관 방법 표시
+		h4Name.style.setProperty('--dot-color', 'red');
+		
+		const pCategory = document.createElement('p');
+		pCategory.className = 'info';
+		const bCat = document.createElement('b');
+		bCat.textContent = '카테고리';
+		const spanCat = document.createElement('span');
+		spanCat.className = 'category';
+		spanCat.textContent = userFridge.category;
+		pCategory.append(bCat, document.createTextNode('  '), spanCat);
+		
+		const pExpdate = document.createElement('p');
+		pExpdate.className = 'info';
+		const bExp = document.createElement('b');
+		bExp.textContent = '유통기한';
+		const spanExp = document.createElement('span');
+		spanExp.className = 'expdate';
+		spanExp.textContent = `${formatDate(userFridge.expdate)}`;
+		pExpdate.append(bExp, document.createTextNode('  '), spanExp);
+		
+		const tabWrap = document.createElement('div');
+		tabWrap.className = 'tab_wrap';
+		
+		const btnEdit = document.createElement('button');
+		btnEdit.className = 'btn_tab tab_sm';
+		btnEdit.type = 'button';
+		btnEdit.textContent = '수정';
+		// btnEdit.dataset.id = item.id ?? "";
+		// TODO : 수정 동작
+		
+		const btnDelete = document.createElement('button');
+		btnDelete.className = 'btn_sort sort_sm';
+		btnDelete.type = 'button';
+		btnDelete.textContent = '삭제';
+		// btnDelete.dataset.id = item.id ?? "";
+		// TODO: 삭제 동작
+		
+		tabWrap.append(btnEdit, btnDelete);
+		divDetail.append(h4Name, pCategory, pExpdate);
+		divInfo.append(spanImage, divDetail, tabWrap);
+		li.appendChild(divInfo);
+		container.appendChild(li);
+  });
+}
+
+
+
+
+
 
 
 

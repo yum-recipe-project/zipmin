@@ -60,14 +60,10 @@ public class FridgeService {
 	
 	private final RecipeService recipeService;
 	private final UserService userService;
-	private final FileService fileService;
 	private final LikeService likeService;
 	
 	private final FridgeMapper fridgeMapper;
 	private final UserFridgeMapper userFridgeMapper;
-	
-	@Value("${app.upload.public-path:/files}")
-	private String publicPath;
 	
 	
 	
@@ -198,7 +194,7 @@ public class FridgeService {
 			UserFridgeReadResponseDto userFridgeDto = userFridgeMapper.toReadResponseDto(userFridge);
 			
 			userFridgeDto.setName(userFridge.getFridge().getName());
-			userFridgeDto.setImage(publicPath + "/" + userFridge.getFridge().getImage());
+			userFridgeDto.setImage(userFridge.getFridge().getImage());
 			userFridgeDto.setCategory(userFridge.getFridge().getCategory());
 			
 			userFridgeDtoList.add(userFridgeDto);

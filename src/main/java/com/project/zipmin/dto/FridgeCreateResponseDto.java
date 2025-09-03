@@ -17,6 +17,7 @@ public class FridgeCreateResponseDto {
 	private String image;
 	private String name;
 	private String category;
+	private String zone;
 	private int userId;
 	
 }

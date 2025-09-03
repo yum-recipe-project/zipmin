@@ -1,7 +1,5 @@
 package com.project.zipmin.dto;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -18,6 +16,7 @@ public class FridgeCreateRequestDto {
 	private String image;
 	private String name;
 	private String category;
+	private String zone;
 	private Integer userId;
 	
 }

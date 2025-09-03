@@ -25,5 +25,6 @@ public class UserFridgeReadResponseDto {
 	private String name;
 	private String image;
 	private String category;
+	private String zone;
 	
 }

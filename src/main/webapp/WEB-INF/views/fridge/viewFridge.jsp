@@ -38,29 +38,7 @@
 								<p>실온</p>
 							</div>
 						</div>
-						<ul class="fridge_list">
-							<li class="fridge">
-								<div class="fridge_info">
-									<span class="image"></span>
-									<div class="detail">
-										<h4 class="name">바나나 한송이</h4>
-										<p class="info"><b>카테고리</b>&nbsp;&nbsp;<span class="category">육류</span></p>
-										<p class="info"><b>유통기한</b>&nbsp;&nbsp;<span class="expdate">2025년 11월 11일</span></p>
-									</div>
-									<div class="tab_wrap">
-										<button class="btn_tab tab_sm">수정</button>
-										<button class="btn_sort sort_sm">삭제</button>
-									</div>
-								</div>
-							</li>
-						</ul>
-						
-						
-						<!-- <div id="ingredient_swiper_container" class="fridge"></div> -->
-						
-						
-						
-						
+						<ul class="fridge_list"></ul>
 					</div>
 				</div>
 				

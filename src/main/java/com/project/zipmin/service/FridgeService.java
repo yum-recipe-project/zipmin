@@ -31,6 +31,8 @@ import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.LikeReadResponseDto;
+import com.project.zipmin.dto.RecipeReadResponseDto;
+import com.project.zipmin.dto.RecipeStockReadResponseDto;
 import com.project.zipmin.dto.UserFridgeCreateRequestDto;
 import com.project.zipmin.dto.UserFridgeCreateResponseDto;
 import com.project.zipmin.dto.UserFridgeReadResponseDto;
@@ -196,6 +198,7 @@ public class FridgeService {
 			userFridgeDto.setName(userFridge.getFridge().getName());
 			userFridgeDto.setImage(userFridge.getFridge().getImage());
 			userFridgeDto.setCategory(userFridge.getFridge().getCategory());
+			userFridgeDto.setZone(userFridge.getFridge().getZone());
 			
 			userFridgeDtoList.add(userFridgeDto);
 		}
@@ -285,6 +288,43 @@ public class FridgeService {
 	}
 	
 	
+	
+	
+	
+	
+	
+	// 냉장고 파먹기 목록 조회
+	public List<RecipeReadResponseDto> readPickList(Integer id) {
+		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
+		}
+		
+		List<RecipeReadResponseDto> pickDtoList = new ArrayList<>();
+		
+		// 레시피 목록 조회
+		List<RecipeReadResponseDto> recipeDtoList = recipeService.readRecipeList();
+		List<UserFridgeReadResponseDto> userFridgeDtoList = readUserFridgeList(id);
+		
+		for (RecipeReadResponseDto recipeDto : recipeDtoList) {
+			List<RecipeStockReadResponseDto> stockDtoList = recipeDto.getStockList();
+		    long count = stockDtoList.stream()
+		            .filter(stock -> userFridgeDtoList.stream()
+		                .anyMatch(fridge -> fridge.getName().equals(stock.getName()))
+		            ).count();
+		    
+		    double rate = (count * 100.0) / stockDtoList.size();
+		    
+		    if (rate >= 70.0) {
+		    	recipeDto.setRate(rate);
+		    	pickDtoList.add(recipeDto);
+		    }
+		}
+		
+		return pickDtoList;
+	}
+
 	
 	
 	
@@ -504,7 +544,7 @@ public class FridgeService {
 		
 		// 입력값 검증
 		if (id == null) {
-			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
+			throw new ApiException(FridgeErrorCode.USER_FRIDGE_INVALID_INPUT);
 		}
 		
 		// 사용자 냉장고 존재 여부 확인
@@ -612,43 +652,5 @@ public class FridgeService {
 	
 	
 	
-	
-	
-	
-	
-	
-	// 냉장고 파먹기
-	/*
-	public List<RecipeReadResponseDto> readPickList(Integer userId) {
-		
-		// 입력값 검증
-		if (userId == null) {
-			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
-		}
-		
-		List<RecipeReadResponseDto> pickDtoList = new ArrayList<>();
-		
-		// 레시피 목록 조회
-		List<RecipeReadResponseDto> recipeDtoList = recipeService.readRecipeList();
-		List<FridgeReadResponseDto> fridgeDtoList = readFridgeList(userId);
-		
-		for (RecipeReadResponseDto recipeDto : recipeDtoList) {
-			List<RecipeStockReadResponseDto> stockDtoList = recipeDto.getStockList();
-		    long count = stockDtoList.stream()
-		            .filter(stock -> fridgeDtoList.stream()
-		                .anyMatch(fridge -> fridge.getName().equals(stock.getName()))
-		            ).count();
-		    
-		    double rate = (count * 100.0) / stockDtoList.size();
-		    
-		    if (rate >= 70.0) {
-		    	recipeDto.setRate(rate);
-		    	pickDtoList.add(recipeDto);
-		    }
-		}
-		
-		return pickDtoList;
-	}
-	*/
 
 }

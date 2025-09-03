@@ -273,6 +273,38 @@ public class FridgeController {
 	
 	
 	
+	// 냉장고 파먹기 목록 조회
+	@GetMapping("/users/{id}/picked-fridges")
+	public ResponseEntity<?> pickFridge(
+			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserByUsername(username).getId() != id) {
+					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
+				}
+			}
+		}
+		
+		List<RecipeReadResponseDto> recipeList = fridgeService.readPickList(id);
+		
+		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_PICK_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_PICK_LIST_SUCCESS, recipeList));
+		
+	}
+	
+	
+	
+	
+	
 	@Operation(
 	    summary = "냉장고 작성"
 	)
@@ -478,6 +510,7 @@ public class FridgeController {
 	
 	
 	
+	
 	// 사용자 냉장고 삭제
 	@DeleteMapping("/users/{userId}/fridges/{fridgeId}")
 	public ResponseEntity<?> deleteFridge(
@@ -572,35 +605,6 @@ public class FridgeController {
 		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_UNLIKE_SUCCESS.getStatus())
 				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_UNLIKE_SUCCESS, null));
 	}
-	
-	
-	
-	
-	
-	
-	
-	// 냉장고 파먹기
-	@GetMapping("/fridges/pick")
-	public ResponseEntity<?> pickFridge() {
-		
-		// 인증 여부 확인 (비로그인)
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED_ACCESS);
-		}
-		
-		// 로그인 정보
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		int userId = userService.readUserByUsername(username).getId();
-		
-		// List<RecipeReadResponseDto> recipeList = fridgeService.readPickList(userId);
-		List<RecipeReadResponseDto> recipeList = null;
-		
-		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_PICK_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_PICK_LIST_SUCCESS, recipeList));
-		
-	}
-	
 	
 	
 

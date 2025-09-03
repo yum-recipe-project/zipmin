@@ -21,7 +21,7 @@
 	gap: 20px;
 	flex: 1 1 auto;
 	box-sizing: border-box;
-	padding: 40px 0;
+	padding: 40px 0 20px 0;
 }
 
 #container .fridge_wrap .fridge_header h2 {
@@ -101,8 +101,8 @@
 #container .fridge_wrap .fridge_content .fridge_list {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 18px;
-	margin-top: 24px;
+	gap: 19px;
+	margin-top: 12px;
 }
 
 #container .fridge_wrap .fridge_content .fridge_list .fridge {
@@ -110,7 +110,7 @@
 	display: block;
 	border: 1px solid var(--line-color1);
 	border-radius: 5px;
-	padding: 20px;
+	padding: 15px;
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
@@ -153,8 +153,8 @@
 #container .fridge_wrap .fridge_content .fridge_list .fridge .fridge_info .detail .name::after {
 	content: '';
 	display: inline-box;
-	width: 10px;
-	height: 10px;
+	width: 8px;
+	height: 8px;
 	border-radius: 50%;
 	background-color: var(--dot-color, rgb(108, 169, 190));
 }
@@ -284,6 +284,7 @@
 	height: auto;  
 	background: #F4F8FE;
 	border-radius: 4px;
+	margin-top: 20px;
 }
 
 #container .fridge_wrap .fridge_content .fridge_list_empty {

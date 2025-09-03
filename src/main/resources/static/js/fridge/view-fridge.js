@@ -20,8 +20,9 @@ document.addEventListener('DOMContentLoaded', async function() {
  * 
  */
 document.addEventListener('DOMContentLoaded', async function() {
-
+	
 	fetchUserFridgeList();
+	
 });
 
 
@@ -32,6 +33,8 @@ document.addEventListener('DOMContentLoaded', async function() {
  * 서버에서 나의 냉장고 목록을 가져오는 함수
  */
 async function fetchUserFridgeList() {
+	
+	// 사용자 냉장고 목록 조회
 	try {
 		const token = localStorage.getItem('accessToken');
 		const id = parseJwt(token).id;
@@ -40,38 +43,55 @@ async function fetchUserFridgeList() {
 			headers: getAuthHeaders()
 		});
 		
-		console.log(response);
-		
 		if (response.data.code === 'USER_FRIDGE_READ_LIST_SUCCESS') {
 			// 렌더링
 			renderUserFridgeList(response.data.data);
 			
 			// 검색 결과 없음 표시
 			if (response.data.data.length === 0) {
-				document.querySelector('.fridge').style.display = 'none';
-				document.querySelector('.fridge_list_empty')?.remove();
-				const content = document.querySelector('.fridge');
-				content.insertAdjacentElement('afterend', renderFridgeListEmpty());
+				document.querySelector('.fridge_list').style.display = 'none';
+				document.querySelector('.fridge_zone').style.display = 'none';
+				document.querySelector('.fridge_empty_wrap')?.remove();
+				const content = document.querySelector('.fridge_list');
+				content.insertAdjacentElement('afterend', renderUserFridgeListEmpty());
 			}
 			// 검색 결과 표시
 			else {
-				document.querySelector('.fridge_list_empty')?.remove();
-				document.querySelector('.fridge').style.display = '';
+				document.querySelector('.fridge_empty_wrap')?.remove();
+				document.querySelector('.fridge_list').style.display = '';
+				document.querySelector('.fridge_zone').style.display = '';
 			}
 		}
 	}
 	catch (error) {
 		const code = error?.response?.data?.code;
 		
-		/***** TODO : 에러 코드 수정하기 *****/
-		
 		if (code === 'USER_FRIDGE_READ_LIST_FAIL') {
-			alert('냉장고 목록 조회에 실패했습니다');
+			alertDanger('냉장고 목록 조회에 실패했습니다.');
+		}
+		else if (code === 'USER_FRIDGE_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'USER_FRIDGE_UNAUTHORIZED_ACCESS') {
+			alertDanger('로그인되지 않은 사용자입니다.');
+		}
+		else if (code === 'USER_FRIDGE_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			alertDanger('해당 사용자를 찾을 수 없습니다.');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alertDanger('서버 내부에서 오류가 발생했습니다.');
 		}
 		else {
-			console.log('서버 요청 중 오류 발생');
+			console.log(error);
 		}
 	}
+	
 }
 
 
@@ -79,11 +99,12 @@ async function fetchUserFridgeList() {
 
 
 /**
- *  
+ *  나의 냉장고 목록을 화면에 렌더링하는 함수
  */
 function renderUserFridgeList(userFridgeList) {
 	const container = document.querySelector('.fridge_list');
-	container.innerHTML = "";
+	container.innerHTML = '';
+	
 	userFridgeList.forEach(userFridge => {
 		const li = document.createElement('li');
 		li.className = 'fridge';
@@ -101,18 +122,27 @@ function renderUserFridgeList(userFridgeList) {
 		
 		const h4Name = document.createElement('h4');
 		h4Name.className = 'name';
-		h4Name.textContent = userFridge.name;
-		// TODO : 보관 방법 표시
-		h4Name.style.setProperty('--dot-color', 'red');
+		h4Name.textContent = `${userFridge.name} ${userFridge.amount}${userFridge.unit}`;
+		switch (userFridge.zone) {
+			case '냉장' :
+				h4Name.style.setProperty('--dot-color', 'rgb(157, 233, 252)');
+				break;
+			case '냉동' :
+				h4Name.style.setProperty('--dot-color', 'rgb(108, 169, 190)');
+				break;
+			case '상온' :
+				h4Name.style.setProperty('--dot-color', 'rgb(250, 216, 166)');
+				break;
+		}
 		
 		const pCategory = document.createElement('p');
 		pCategory.className = 'info';
 		const bCat = document.createElement('b');
-		bCat.textContent = '카테고리';
+		bCat.textContent = `카테고리`;
 		const spanCat = document.createElement('span');
 		spanCat.className = 'category';
 		spanCat.textContent = userFridge.category;
-		pCategory.append(bCat, document.createTextNode('  '), spanCat);
+		pCategory.append(bCat, document.createTextNode('\u00A0\u00A0'), spanCat);
 		
 		const pExpdate = document.createElement('p');
 		pExpdate.className = 'info';
@@ -121,7 +151,7 @@ function renderUserFridgeList(userFridgeList) {
 		const spanExp = document.createElement('span');
 		spanExp.className = 'expdate';
 		spanExp.textContent = `${formatDate(userFridge.expdate)}`;
-		pExpdate.append(bExp, document.createTextNode('  '), spanExp);
+		pExpdate.append(bExp, document.createTextNode('\u00A0\u00A0'), spanExp);
 		
 		const tabWrap = document.createElement('div');
 		tabWrap.className = 'tab_wrap';
@@ -130,15 +160,16 @@ function renderUserFridgeList(userFridgeList) {
 		btnEdit.className = 'btn_tab tab_sm';
 		btnEdit.type = 'button';
 		btnEdit.textContent = '수정';
-		// btnEdit.dataset.id = item.id ?? "";
-		// TODO : 수정 동작
+		// ***** TODO : 수정 기능 *****
 		
 		const btnDelete = document.createElement('button');
 		btnDelete.className = 'btn_sort sort_sm';
 		btnDelete.type = 'button';
 		btnDelete.textContent = '삭제';
-		// btnDelete.dataset.id = item.id ?? "";
-		// TODO: 삭제 동작
+		btnDelete.addEventListener('click', function(event) {
+			event.preventDefault();
+			deleteUserFridge(userFridge.id);
+		});
 		
 		tabWrap.append(btnEdit, btnDelete);
 		divDetail.append(h4Name, pCategory, pExpdate);
@@ -152,105 +183,33 @@ function renderUserFridgeList(userFridgeList) {
 
 
 
+/**
+ * 나의 냉장고 목록 결과 없음 화면을 화면에 렌더링하는 함수
+ */
+function renderUserFridgeListEmpty() {
+	const wrapper = document.createElement('div');
+	wrapper.className = 'fridge_empty_wrap';
+	
+    const div = document.createElement('div');
+    div.className = 'fridge_list_empty';
+	
+    const span = document.createElement('span');
+    span.textContent = '냉장고에 재료를 추가해보세요';
+    div.appendChild(span);
+	wrapper.appendChild(div);
 
+    return wrapper;
+}
 
 
 
 
 /**
- * 냉장고 목록 데이터를 카테고리별로 분류하여 화면에 렌더링하는 함수
+ * 냉장고 재료를 수정하는 함수
  */
-function renderFridgeSwiper(list) {
-	const container = document.getElementById('ingredient_swiper_container');
-	container.innerHTML = '';
-
-	const categories = ['육류', '채소류', '소스류'];
-	const categoryIcons = {
-		'육류': '/images/fridge/meat.png',
-		'채소류': '/images/fridge/vegetables.png',
-		'소스류': '/images/fridge/sauce.png'
-	};
-	const categoryMap = {};
-
-	// 고정 카테고리 요소 생성
-	categories.forEach(category => {
-		const wrapper = document.createElement('div');
-		wrapper.className = 'ingredient_swiper';
-
-		const categoryDiv = document.createElement('div');
-		categoryDiv.className = 'category';
-
-		const categoryImg = document.createElement('div');
-		categoryImg.className = 'ingredient_img';
-		const img = document.createElement('img');
-		img.src = categoryIcons[category] || '/images/fridge/default.png';
-		categoryImg.appendChild(img);
-
-		const categoryName = document.createElement('span');
-		categoryName.textContent = category;
-
-		categoryDiv.append(categoryImg, categoryName);
-
-		const swiper = document.createElement('div');
-		swiper.className = 'swiper';
-
-		const swiperWrapper = document.createElement('div');
-		swiperWrapper.className = 'swiper-wrapper';
-		swiperWrapper.dataset.category = category;
-
-		swiper.appendChild(swiperWrapper);
-		wrapper.append(categoryDiv, swiper);
-		container.appendChild(wrapper);
-
-		categoryMap[category] = swiperWrapper;
-	});
-
-	// 재료 목록 렌더링
-	list.forEach(item => {
-		const wrapper = categoryMap[item.category];
-		if (!wrapper) return;
-
-		const slide = document.createElement('div');
-		slide.className = 'swiper-slide';
-
-		const ingredient = document.createElement('div');
-		ingredient.className = 'ingredient';
-		ingredient.dataset.id = item.id;
-
-		const ingredientImg = document.createElement('div');
-		ingredientImg.className = 'ingredient_img';
-
-		const img = document.createElement('img');
-		img.src = item.image || '/images/common/test.png';
-		ingredientImg.appendChild(img);
-
-		const nameSpan = document.createElement('span');
-		nameSpan.textContent = item.name;
-
-		const date = new Date(item.expdate);
-		const dateP = document.createElement('p');
-		dateP.textContent = `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
-
-		ingredient.append(ingredientImg, nameSpan, dateP);
-		slide.appendChild(ingredient);
-
-		wrapper.appendChild(slide);
-	});
-
-	// 스와이퍼 초기화
-	document.querySelectorAll('.swiper').forEach(el => {
-		new Swiper('.swiper', {
-			slidesPerView: 'auto',
-			spaceBetween: 12,
-			scrollbar: {
-				el: el.querySelector('.swiper-scrollbar'),
-				draggable: true,
-			},
-		});
-	});
-
+async function updateUserFridge() {
+	// TODO : 기능 구현
 }
-
 
 
 
@@ -259,63 +218,51 @@ function renderFridgeSwiper(list) {
 /**
  * 냉장고 재료를 삭제하는 함수
  */
-async function deleteUserFridge(id) {
+async function deleteUserFridge(fridgeId) {
 	
+	// 사용자 냉장고 삭제
 	try {
-		const data = {
-			id: id
-		};
+		const userId = parseJwt(localStorage.getItem('accessToken')).id;
 		
-		const response = await instance.delete(`/fridges/${id}`, {data});
+		const response = await instance.delete(`/users/${userId}/fridges/${fridgeId}`, {
+			headers: getAuthHeaders()
+		});
 		
-		if (response.data.code === 'FRIDGE_DELETE_SUCCESS') {
-			// 테이블에서 목록 삭제
-			const row = document.querySelector(`tr[data-id='${id}']`);
-			if (row) {
-				row.remove();
-			}
-
-			// 스와이퍼에서 삭제
-			const swiper = document.querySelector(`.ingredient[data-id='${id}']`);
-			if (swiper) {
-				const slide = swiper.closest('.swiper-slide');
-				if (slide) {
-					slide.remove();
-				}
-			}
+		if (response.data.code === 'USER_FRIDGE_DELETE_SUCCESS') {
+			alertPrimary('냉장고 재료 삭제에 성공했습니다.');
+			fetchUserFridgeList();
 		}
 	}
 	catch (error) {
 		const code = error?.response?.data?.code;
-		const message = error?.response?.data?.message;
 		
-		if (code === 'FRIDGE_DELETE_FAIL') {
-			alert(message);
+		// TODO : 에러코드 작성하기
+		if (code === 'USER_FRIDGE_DELETE_FAIL') {
+			alertDanger('냉장고 재료 삭제에 실패했습니다.')
 		}
-		else if (code === 'FRIDGE_INVALID_INPUT') {
-			alert(message);
+		else if (code === 'USER_FRIDGE_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
 		}
-		else if (code === 'FRIDGE_UNAUTHORIZED') {
-			alert(message);
+		else if (code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
 		}
-		else if (code === 'FRIDGE_FORBIDDEN') {
-			alert(message);
+		else if (code === 'USER_FRIDGE_UNAUTHORIZED_ACCESS') {
+			alertDanger('로그인되지 않은 사용자입니다.');
 		}
-		else if (code === 'FRIDGE_NOT_FOUND') {
-			alert(message);
+		else if (code === 'USER_FRIDGE_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			alertDanger('해당 사용자를 찾을 수 없습니다.');
 		}
 		else if (code === 'INTERNAL_SERVER_ERROR') {
-			alert(message);
+			alertDanger('서버 내부에서 오류가 발생했습니다.');
 		}
 		else {
-			console.log('서버 요청 중 오류 발생');
+			console.log(error);
 		}
 	}
 }
-
-
-
-
 
 
 
@@ -327,7 +274,9 @@ async function deleteUserFridge(id) {
 document.addEventListener('DOMContentLoaded', async function() {
 
 	try {
-		const response = await instance.get('/fridges/pick', {
+		const id = parseJwt(localStorage.getItem('accessToken')).id;
+		
+		const response = await instance.get(`/users/${id}/picked-fridges`, {
 			headers: getAuthHeaders()
 		});
 		
@@ -403,27 +352,6 @@ async function renderPickList(pickList) {
 
 
 
-/**
- * 나의 냉장고 목록 결과 없음 화면을 화면에 렌더링하는 함수
- */
-function renderFridgeListEmpty() {
-	const wrapper = document.createElement('div');
-	wrapper.className = 'fridge_empty_wrap';
-	
-    const div = document.createElement('div');
-    div.className = 'fridge_list_empty';
-	
-    const span = document.createElement('span');
-    span.textContent = '냉장고에 재료를 추가해보세요';
-    div.appendChild(span);
-	wrapper.appendChild(div);
-
-    return wrapper;
-}
-
-
-
-
 
 /**
  * 냉장고 파먹기 목록 결과 없음 화면을 화면에 렌더링하는 함수
@@ -438,8 +366,3 @@ function renderPickListEmpty() {
 
     return wrapper;
 }
-
-
-
-
-

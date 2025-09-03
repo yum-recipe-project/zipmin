@@ -15,6 +15,14 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
 
+/**
+ * TODO 실시간 폼값 검사 UserFridgeEdit
+ */
+
+
+
+
+
 
 /**
  * 
@@ -160,7 +168,18 @@ function renderUserFridgeList(userFridgeList) {
 		btnEdit.className = 'btn_tab tab_sm';
 		btnEdit.type = 'button';
 		btnEdit.textContent = '수정';
-		// ***** TODO : 수정 기능 *****
+		btnEdit.dataset.bsToggle = 'modal';
+		btnEdit.dataset.bsTarget = '#editUserFridgeModal';
+		btnEdit.addEventListener('click', function(event) {
+			event.preventDefault();
+			const form = document.getElementById('editUserFridgeForm');
+			form.id.value = userFridge.id;
+			form.amount.value = userFridge.amount + userFridge.unit;
+			form.expdate.value = userFridge.expdate.slice(0, 10);
+			form.querySelector('.fridge_image').style.backgroundImage = `url("${userFridge.image}")`;
+			form.querySelector('.fridge_name').textContent = userFridge.name;
+			form.querySelector('.fridge_category').textContent = userFridge.category;
+		});
 		
 		const btnDelete = document.createElement('button');
 		btnDelete.className = 'btn_sort sort_sm';
@@ -207,9 +226,66 @@ function renderUserFridgeListEmpty() {
 /**
  * 냉장고 재료를 수정하는 함수
  */
-async function updateUserFridge() {
-	// TODO : 기능 구현
-}
+document.addEventListener('DOMContentLoaded', function() {
+	
+	const form = document.getElementById('editUserFridgeForm');
+	form.addEventListener('submit', async function(event) {
+		event.preventDefault();
+		let isValid = true;
+		
+		// 폼값 검사
+		if (form.expdate.value.trim() === '') {
+			form.expdate.classList.add('is-invalid');
+			form.querySelector('.expdate_field p').style.display = 'block';
+			form.expdate.focus();
+			isValid = false;
+		}
+
+		const sheetAmountInput = form.amount;
+		const match = sheetAmountInput.value.trim().match(/^(\d+)([a-zA-Z가-힣]+)$/);
+		if (sheetAmountInput.value.trim() === '') {
+			sheetAmountInput.classList.add('is-invalid');
+			document.getElementById('editUserFridgeAmountHint1').style.display = 'block';
+			sheetAmountInput.focus();
+			isValid = false;
+		}
+		else if (!match) {
+			sheetAmountInput.classList.add('is-invalid');
+			document.getElementById('editUserFridgeAmountHint2').style.display = 'block';
+			sheetAmountInput.focus();
+			isValid = false;
+		}
+		
+		if (isValid) {
+			try {
+				const userId = parseJwt(localStorage.getItem('accessToken')).id;
+				const fridgeId = form.id.value;
+								
+				const data = {
+					id: fridgeId,
+				    amount: match[1],
+				    unit: match[2],
+				    expdate: form.expdate.value.trim(),
+					fridge_id: fridgeId
+				}
+				
+				const response = await instance.patch(`/users/${userId}/fridges/${fridgeId}`, data, {
+					headers: getAuthHeaders()
+				});
+				
+				if (response.data.code === 'USER_FRIDGE_UPDATE_SUCCESS') {
+					bootstrap.Modal.getInstance(document.getElementById('editUserFridgeModal'))?.hide();
+					alertPrimary('냉장고 재료 수정에 성공했습니다')
+					fetchUserFridgeList();
+				}
+								
+			}
+			catch(error) {
+				console.log(error);
+			}
+		}
+	});
+})
 
 
 
@@ -236,7 +312,6 @@ async function deleteUserFridge(fridgeId) {
 	catch (error) {
 		const code = error?.response?.data?.code;
 		
-		// TODO : 에러코드 작성하기
 		if (code === 'USER_FRIDGE_DELETE_FAIL') {
 			alertDanger('냉장고 재료 삭제에 실패했습니다.')
 		}
@@ -296,13 +371,46 @@ document.addEventListener('DOMContentLoaded', async function() {
 			else {
 				document.querySelector('.pick_list_empty')?.remove();
 				document.querySelector('.pick_title').style.display = '';
-				docyment.querySelector('.pick_list').style.display = '';
+				document.querySelector('.pick_list').style.display = '';
 			}
 		}
 	}
 	catch (error) {
-		
-		/***** TODO : 에러코드 추가하기 *****/
+		const code = error?.response?.data?.code;
+
+		if (code === 'FRIDGE_PICK_LIST_SUCCESS') {
+			alertDanger('냉장고 파먹기 목록 조회에 실패했습니다.')
+		}
+		else if (code === 'USER_FRIDGE_READ_LIST_FAIL') {
+			alertDanger('나의 냉장고 목록 조회에 실패했습니다.')
+		}
+		else if (code === 'RECIPE_READ_LIST_FAIL') {
+			alertDanger('레시피 목록 조회에 실패했습니다.')
+		}
+		else if (code === 'RECIPE_STOCK_READ_LIST_FAIL') {
+			alertDanger('레시피 재로 목록 조회에 실패했습니다.')
+		}
+		else if (code === 'USER_FRIDGE_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'USER_FRIDGE_UNAUTHORIZED_ACCESS') {
+			alertDanger('로그인되지 않은 사용자입니다.');
+		}
+		else if (code === 'USER_FRIDGE_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			alertDanger('해당 사용자를 찾을 수 없습니다.');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alertDanger('서버 내부에서 오류가 발생했습니다.');
+		}
+		else {
+			console.log(error);
+		}
 	}
 	
 });

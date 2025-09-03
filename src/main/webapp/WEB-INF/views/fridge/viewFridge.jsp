@@ -163,6 +163,7 @@
 			<!-- 냉장고 채우기 모달 -->
 			<%@include file="../modal/addFridgeModal.jsp" %>
 			<%@include file="../modal/addUserFridgeModal.jsp" %>
+			<%@include file="../modal/editUserFridgeModal.jsp" %>
 		
 		</main>
 		

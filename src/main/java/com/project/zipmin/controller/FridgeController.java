@@ -272,6 +272,14 @@ public class FridgeController {
 	
 	
 	
+	// FRIDGE_PICK_LIST_SUCCESS
+	// USER_FRIDGE_READ_LIST_FAIL
+	// USER_FRIDGE_UNAUTHORIZED_ACCESS
+	// USER_INVALID_INPUT
+	// USER_NOT_FOUND
+	// USER_FRDIGE_INVALID_INPUT
+	// RECIPE_READ_LIST_FAIL
+	// RECIPE_STOCK_READ_LIST_FAIL
 	
 	// 냉장고 파먹기 목록 조회
 	@GetMapping("/users/{id}/picked-fridges")
@@ -281,7 +289,7 @@ public class FridgeController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(FridgeErrorCode.USER_FRIDGE_UNAUTHORIZED_ACCESS);
 		}
 		
 		// 권한 확인
@@ -289,7 +297,7 @@ public class FridgeController {
 		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (userService.readUserByUsername(username).getId() != id) {
-					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
+					throw new ApiException(FridgeErrorCode.USER_FRIDGE_FORBIDDEN);
 				}
 			}
 		}
@@ -438,7 +446,7 @@ public class FridgeController {
 	
 	
 	// 사용자 냉장고 수정
-	@PostMapping("/users/{userId}/fridges/{fridgeId}")
+	@PatchMapping("/users/{userId}/fridges/{fridgeId}")
 	public ResponseEntity<?> updateUserFridge(
 			@Parameter(description = "사용자의 일련번호") @PathVariable Integer userId,
 			@Parameter(description = "냉장고의 일련번호") @PathVariable int fridgeId,
@@ -449,11 +457,12 @@ public class FridgeController {
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(FridgeErrorCode.USER_FRIDGE_UNAUTHORIZED_ACCESS);
 		}
+		userFridgeRequestDto.setUserId(userId);
 		
 		UserFridgeUpdateResponseDto userFridgeResponseDto = fridgeService.updateUserFridge(userFridgeRequestDto);
 		
-		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_UPDATE_SUCCESS.getStatus())
-				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_UPDATE_SUCCESS, userFridgeResponseDto));
+		return ResponseEntity.status(FridgeSuccessCode.USER_FRIDGE_UPDATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(FridgeSuccessCode.USER_FRIDGE_UPDATE_SUCCESS, userFridgeResponseDto));
 	}
 	
 	

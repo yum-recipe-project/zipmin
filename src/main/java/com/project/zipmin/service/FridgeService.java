@@ -291,14 +291,12 @@ public class FridgeService {
 	
 	
 	
-	
-	
 	// 냉장고 파먹기 목록 조회
 	public List<RecipeReadResponseDto> readPickList(Integer id) {
 		
 		// 입력값 검증
 		if (id == null) {
-			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
+			throw new ApiException(FridgeErrorCode.USER_FRIDGE_INVALID_INPUT);
 		}
 		
 		List<RecipeReadResponseDto> pickDtoList = new ArrayList<>();

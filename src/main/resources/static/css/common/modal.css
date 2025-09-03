@@ -958,6 +958,44 @@
 
 
 
+
+/* 나의 냉장고 수정 */
+#container .modal-content .modal-body .fridge {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+
+#container .modal-content .modal-body .fridge_image {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	border: 1px solid var(--line-color3);
+	
+	display: inline-block;
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	border: 1px solid var(--line-color3);
+	background-color: #fff;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 65%;
+}
+
+#container .modal-content .modal-body h3 {
+	font-weight: 700;
+	font-size: 16px;
+}
+
+#container .modal-content .modal-body p {
+	color: var(--txt-color-500);
+	margin-top: 5px;
+	font-size: 14px;
+}
+
+
+
 /* 모달 푸터 */
 #container .modal-content .modal-footer {
 	padding: 8px 20px;

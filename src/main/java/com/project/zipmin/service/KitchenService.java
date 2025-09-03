@@ -37,6 +37,7 @@ public class KitchenService {
 	@Autowired
 	private final GuideMapper guideMapper;
 	
+	// 가이드 목록 조회
 	public Page<GuideReadResponseDto> readGuidePage(String category, String keyword, String sort, Pageable pageable) {
 		
 		// 입력값 검증
@@ -100,13 +101,16 @@ public class KitchenService {
 			
 			// 좋아요 여부 조회
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			
 			if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
 			    String username = authentication.getName();
 			    int userId = userService.readUserByUsername(username).getId();
+			    
 			    guideDto.setLikestatus(likeService.existsUserLike("guide", guideDto.getId(), userId));
 			}
 			guideDtoList.add(guideDto);
 		}
+		
 		
 		return new PageImpl<>(guideDtoList, sortedPageable, guidePage.getTotalElements());
 	}

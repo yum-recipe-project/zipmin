@@ -69,19 +69,24 @@ document.addEventListener('DOMContentLoaded', function() {
  * 서버에서 키친가이드 목록 데이터를 가져오는 함수
  */
 async function fetchGuideList() {
+	const token = localStorage.getItem('accessToken');
+	const payload = parseJwt(token);
+	
 	
 	try {
 		const params = new URLSearchParams({
 			category: category,
-			keyword: keyword, //추가 
+			keyword: keyword,  
 			sort: sort,
 			page: page,
 			size: size
 		});
 		
 		const response = await fetch(`/guides?${params}`, {
-			method: 'GET'
+			method: 'GET',
+			headers: getAuthHeaders()
 		});
+		
 		const result = await response.json();
 		
 		if (result.code === 'KITCHEN_READ_LIST_SUCCESS') {
@@ -135,10 +140,16 @@ function renderGuideList(guideList) {
         const subtitleSpan = document.createElement('span');
         subtitleSpan.textContent = guide.subtitle;
 
-        const favBtn = document.createElement('button');
-        favBtn.className = 'favorite_btn';
+//        const favBtn = document.createElement('button');
+//        favBtn.className = 'favorite_btn';
+		
+//        guideTop.append(subtitleSpan, favBtn);
+		
+	    const favBtn = renderLikeButton(guide.id, guide.likestatus);
 
-        guideTop.append(subtitleSpan, favBtn);
+	    guideTop.append(subtitleSpan, favBtn);
+			
+			
 
         const titleSpan = document.createElement('span');
         titleSpan.textContent = guide.title;
@@ -177,11 +188,13 @@ function renderGuideList(guideList) {
         li.appendChild(a);
         container.appendChild(li);
     });
+	
+	
 
 	/******** 이거 수정 필요 *********/
 	/*** Dto에 likestatus를 저장해두었으므로 필요없음 ***/
 	/*** 위 코드의 favBtn을 적절히 표시하고 그 버튼 눌렀을 때의 백엔드 처리를 만들기 ****/
-    initFavoriteButtons(); 
+//    initFavoriteButtons(); 
 }
 
 
@@ -201,6 +214,19 @@ function initFavoriteButtons() {
             button.classList.toggle("active");
         });
     });
+}
+
+function renderLikeButton(id, likestatus) {
+	
+	const button = document.createElement('button');
+	button.className = 'btn_tool like_btn';
+
+	const img = document.createElement('img');
+	img.src = likestatus ? '/images/common/star_full.png' : '/images/common/star_outline.png';
+	
+	button.append(img);
+
+	return button;
 }
 
 

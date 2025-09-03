@@ -37,7 +37,6 @@ public class KitchenController {
 	// 가이드 목록 조회
 	@GetMapping("/guides")
 	public ResponseEntity<?> listGuide(
-			// 키워드 추가할 것
 			@RequestParam(required = false) String category,
 			@RequestParam(required = false) String keyword, 
 		    @RequestParam String sort,
@@ -47,7 +46,6 @@ public class KitchenController {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<GuideReadResponseDto> guidePage = null;
 		
-//		guidePage = kitchenService.readGuidePage(category, sort, pageable);
 		guidePage = kitchenService.readGuidePage(category, keyword, sort, pageable);
 		
         return ResponseEntity.status(KitchenSuccessCode.KITCHEN_READ_LIST_SUCCESS.getStatus())

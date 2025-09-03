@@ -8,5 +8,10 @@
     "name": "app.upload.dir",
     "type": "java.lang.String",
     "description": "A description for 'app.upload.dir'"
+  },
+  {
+    "name": "app.upload.public-path",
+    "type": "java.lang.String",
+    "description": "A description for 'app.upload.public-path'"
   }
 ]}

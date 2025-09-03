@@ -22,7 +22,7 @@
 				<div class="vote_wrap">
 					<!-- 투표 헤더 -->
 					<div class="vote_header">
-						<span>아이스크림</span>
+						<span>투표</span>
 						<h2 class="vote_title"></h2>
 						<div class="vote_info">
 							<div class="period">

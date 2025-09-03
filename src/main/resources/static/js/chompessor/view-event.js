@@ -16,10 +16,9 @@ document.addEventListener('DOMContentLoaded', async function() {
 		if (result.code === 'EVENT_READ_SUCCESS') {
 			document.querySelector('.event_title').innerText = result.data.title;
 			document.querySelector('.event_content').innerText = result.data.content;
-			const opendate = new Date(result.data.opendate);
-			const closedate = new Date(result.data.closedate);
-			const formatDate = `${opendate.getFullYear()}년 ${String(opendate.getMonth() + 1).padStart(2, '0')}월 ${String(opendate.getDate()).padStart(2, '0')}일 - ${closedate.getFullYear()}년 ${String(closedate.getMonth() + 1).padStart(2, '0')}월 ${String(closedate.getDate()).padStart(2, '0')}일`;
-			document.querySelector('.event_postdate').innerText = formatDate;
+			document.querySelector('.event_postdate').innerText = `${formatDatePeriod(result.data.opendate, result.data.closedate)}`;
+			document.querySelector('.event_commentcount').innerText = `${result.data.commentcount}개`;
+			document.querySelector('.event_image').src = result.data.image;
 		}
 		else if (result.code === 'EVENT_NOT_FOUND') {
 			alert(result.message);

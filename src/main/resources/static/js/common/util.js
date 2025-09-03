@@ -135,6 +135,32 @@ function capitalizeFirst(str) {
 
 
 /**
+ * 검색 결과 없음 화면을 화면에 렌더링하는 함수
+ */
+function renderSearchEmpty() {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'search_empty';
+
+    const img = document.createElement('img');
+    img.src = '/images/common/search_empty.png';
+    wrapper.appendChild(img);
+
+    const h2 = document.createElement('h2');
+    h2.innerHTML = keyword ? `'${keyword}' 에 대한<br/>검색 결과가 없습니다` : '결과가 없습니다';
+    wrapper.appendChild(h2);
+
+    const span = document.createElement('span');
+    span.textContent = keyword ? '단어의 철자가 정확한지 확인해보세요' : '조건을 변경하거나 초기화해 보세요';
+    wrapper.appendChild(span);
+
+    return wrapper;
+}
+
+
+
+
+
+/**
  * 
  */
 function alertPrimary(message) {

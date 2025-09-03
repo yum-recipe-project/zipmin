@@ -48,6 +48,23 @@ function getAuthHeaders() {
 
 
 
+
+/**
+ * 페이로드를 얻는 함수
+ */
+function getPayload() {
+	
+	const token = localStorage.getItem('accessToken');
+	const payload = parseJwt(token);
+	
+	return payload;
+}
+
+
+
+
+
+
 /**
  * 토큰 만료 여부를 확인하는 함수
  * 

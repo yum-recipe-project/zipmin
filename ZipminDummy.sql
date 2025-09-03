@@ -65,14 +65,14 @@ commit;
 
 
 -- RECIPE 테이블 더미데이터
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/bulgogi.jpg', '소불고기', '달콤짭짤한 불고기 요리', '하', '30분 이내', '매움', '2인분', '고기 재울 때 키위나 배를 갈아 넣으면 부드러워져요!', null, 4);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/wrap.jpg', '쌈밥', '야채와 함께 먹는 건강한 쌈밥', '중', '20분 이내', '보통', '1인분', '고기를 굽기 전 밑간하면 더 맛있어요.', null, 4);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/mayomyeon.jpg', '마요네즈 비빔면 두줄까지는 워드랩 가능한지 테스트를 해볼게요', '매콤 고소한 초간단 비빔면', '아주 매움', '10분 이내', '상', '1인분', '불닭소스를 조절해서 맵기 조절 가능해요.', null, 4);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/kimchi_fried_rice.jpg', '김치볶음밥', '집에 있는 재료로 간단하게!', '상', '15분 이내', '아주 매움', '1인분', '김치는 꼭 볶아서 써야 깊은 맛이 나요!', null, 4);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/jjajang.jpg', '짜장면', '달콤 짭짤한 중식의 기본', '중', '30분 이내', '보통', '2인분', '춘장을 충분히 볶아야 맛이 살아나요.', null, 4);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/dakgalbi.jpg', '닭갈비', '매콤한 맛의 대표 주자', '중', '40분 이내', '아주 매움', '3인분', '고구마를 넣으면 단맛이 더해져요.', null, 4);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/eggtamago.jpg', '계란말이', '도시락 단골 반찬', '하', '10분 이내', '매움', '1인분', '육수나 우유를 조금 넣으면 부드러워져요.', null, 4);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '/images/recipe/tteokbokki.jpg', '떡볶이', '매콤달콤 국민 간식', '하', '20분 이내', '보통', '2인분', '고추장에 설탕 대신 올리고당을 써보세요.', null, 4);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'f9b4c2ad4cde4b98b6bc674cf4cdd6f8.png', '소불고기', '달콤짭짤한 불고기 요리', TO_DATE('25/09/10', 'RR/MM/DD'), '하', '30분 이내', '매움', '2인분', '고기 재울 때 키위나 배를 갈아 넣으면 부드러워져요!', null, 4);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '02a10c1a4ecb433b9a9aa9d149f78820.png', '쌈밥', '야채와 함께 먹는 건강한 쌈밥', TO_DATE('25/08/10', 'RR/MM/DD'), '중', '20분 이내', '보통', '1인분', '고기를 굽기 전 밑간하면 더 맛있어요.', null, 4);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '43a38f4891a546c7a7eddcf0a5989601.png', '마요네즈 비빔면', '매콤 고소한 초간단 비빔면', TO_DATE('25/08/10', 'RR/MM/DD'), '상', '10분 이내', '아주 매움', '1인분', '불닭소스를 조절해서 맵기 조절 가능해요.', null, 4);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '7780168c8edb461d9a3a4b20120bc020.png', '김치볶음밥', '집에 있는 재료로 간단하게!', TO_DATE('25/08/07', 'RR/MM/DD'), '상', '15분 이내', '아주 매움', '1인분', '김치는 꼭 볶아서 써야 깊은 맛이 나요!', null, 4);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '549769edc39a4a96a7f111e430a47fc3.png', '짜장면', '달콤 짭짤한 중식의 기본', TO_DATE('25/08/23', 'RR/MM/DD'), '중', '30분 이내', '보통', '2인분', '춘장을 충분히 볶아야 맛이 살아나요.', null, 4);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '20955a20a0d34cf78f09498bee1e0aec.png', '닭갈비', '매콤한 맛의 대표 주자', TO_DATE('25/08/24', 'RR/MM/DD'), '중', '40분 이내', '아주 매움', '3인분', '고구마를 넣으면 단맛이 더해져요.', null, 4);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '5c19518434aa403c8aa70a4fb09e385d.png', '계란말이', '도시락 단골 반찬', TO_DATE('25/07/10', 'RR/MM/DD'), '하', '10분 이내', '매움', '1인분', '육수나 우유를 조금 넣으면 부드러워져요.', null, 4);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '382eb18bea8d4578b69c1b5dd53bc7ba.png', '떡볶이', '매콤달콤 국민 간식', TO_DATE('25/06/10', 'RR/MM/DD'), '하', '20분 이내', '보통', '2인분', '고추장에 설탕 대신 올리고당을 써보세요.', null, 4);
 commit;
 
 
@@ -83,8 +83,10 @@ commit;
 
 -- RECIPE_CATEGORY 테이블 더미데이터
 -- 소불고기
-INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '종류별', '메인요리', 1);
-INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '재료별', '소고기', 1);
+insert into recipe_category values (seq_recipe_category_id.NEXTVAL, '종류별', '메인반찬', 1);
+insert into recipe_category values (seq_recipe_category_id.NEXTVAL, '상황별', '일상', 1);
+insert into recipe_category values (seq_recipe_category_id.NEXTVAL, '재료별', '소고기', 1);
+insert into recipe_category values (seq_recipe_category_id.NEXTVAL, '방법별', '비빔', 1);
 
 -- 쌈밥
 INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '상황별', '도시락', 2);
@@ -174,29 +176,29 @@ commit;
 
 
 -- CHOMP 테이블 더미데이터
-insert into chomp values (seq_chomp_id.NEXTVAL, '여름 인기 녹차 아이스크림', TO_DATE('25/06/01','RR/MM/DD'), TO_DATE('25/07/31','RR/MM/DD'), null, null, 'vote', 1); -- 1
-insert into chomp values (seq_chomp_id.NEXTVAL, '녹차 디저트 페어링', sysdate, sysdate, '녹차의 고소함과 쌉싸름함을 살리기 위해 당도 낮은 디저트와 짝을 지었습니다: 말차 파운드 케이크, 팥앙금, 구운 아몬드와 피칸, 70% 다크초콜릿이 잘 어울립니다. 아이스크림은 서빙 5분 전 냉장에서 숨을 돌리면 향이 열리고 질감이 부드러워집니다. 함께 마실 음료는 무가당 보리차나 진한 말차라떼를 추천하며, 차갑게 식힌 접시에 담아 녹는 속도를 늦추세요.', null, 'megazine', 2); -- 2
-insert into chomp values (seq_chomp_id.NEXTVAL, '가을 녹차 페스티벌', TO_DATE('25/09/20','RR/MM/DD'), TO_DATE('25/10/05','RR/MM/DD'), '행사장 시음 부스 운영, 말차 아이스크림 라이브 쿠킹 쇼와 원재료 토크 세션, 스탬프 투어 완주 굿즈 증정, 현장 한정 1+1 쿠폰으로 다양한 메뉴를 합리적으로 즐길 수 있습니다.', 'faa4a7217446465c811b5be1cb11b466.jpg', 'event', 3); -- 3
-insert into chomp values (seq_chomp_id.NEXTVAL, '딸기 아이스크림 선호도', TO_DATE('25/05/01','RR/MM/DD'), TO_DATE('25/06/30','RR/MM/DD'), null, null, 'vote', 1); -- 4
-insert into chomp values (seq_chomp_id.NEXTVAL, '저칼로리 아이스크림 비교', sysdate, sysdate, '세 가지 저칼로리 제품을 100ml 기준 열량, 당류, 단백질, 공기함량(overrun), 식감으로 비교했습니다. 감미료는 에리스리톨과 알룰로스 조합이 뒷맛이 깔끔했고, 레시틴 기반 유화제가 안정적이었습니다. 고형분이 낮을수록 얼음결이 커지므로 24시간 숙성 후 섭취하면 질감이 개선됩니다. 다이어트 중이라면 1회 제공량 80ml를 권장합니다.', null, 'megazine', 1); -- 5
-insert into chomp values (seq_chomp_id.NEXTVAL, '홈메이드 녹차 젤라토', sysdate, sysdate, '우유 500ml, 생크림 200ml, 설탕 90g, 말차 10~12g, 소금 한 꼬집을 사용합니다. 80도C까지 가열해 설탕과 말차를 완전히 녹인 뒤 차게 식혀 4시간 숙성하세요. 아이스크림 메이커가 없으면 지퍼백 이중 포장 후 냉동고에서 30분 간격으로 꺼내 흔들어 얼음결을 깨면 됩니다. 덩어리가 지면 체에 한 번 거르면 색과 질감이 한층 고와집니다.', null, 'megazine', 1); -- 6
-insert into chomp values (seq_chomp_id.NEXTVAL, '프리미엄 vs 가성비', sysdate, sysdate, '프리미엄 라인은 우유 고형분과 생크림 함량이 높고 일본산 또는 국내산 고급 말차를 사용해 향이 길게 남습니다. 가성비 라인은 당도와 바닐라향이 강해 첫맛은 또렷하지만 여운은 짧습니다. 원재료표에서 포도당 시럽 비율, 합성착향료 여부, 고형분 수치를 확인하면 품질을 가늠할 수 있습니다. 예산이 허락하면 프리미엄 1스쿱, 일상 간식으론 가성비 라인을 추천합니다.', null, 'megazine', 2); -- 7
-insert into chomp values (seq_chomp_id.NEXTVAL, '비건 아이스크림 가이드', sysdate, sysdate, '비건 아이스크림은 코코넛밀크, 오트밀크, 아몬드밀크 베이스가 대표적입니다. 코코넛은 향이 뚜렷하고 질감이 진하며, 오트는 곡물 향과 점성이 좋아 녹차와 조화롭습니다. 점도 조절은 구아검이나 잔탄검이 무난합니다. 라벨에서 동물성 유래 성분, 팜유, 카라기난 사용 여부를 확인하고, 견과 알레르기가 있다면 아몬드 베이스는 피하세요.', null, 'megazine', 3); -- 8
-insert into chomp values (seq_chomp_id.NEXTVAL, '여름 디저트 핫플', sysdate, sysdate, '여름철 인기 매장은 대기 시간, 시그니처 메뉴, 가격대가 명확합니다. 시그니처는 말차 소프트, 말차 브라우니 선데, 말차 샌드 쿠키 등이며 오후 3시 이후 대기가 길어지므로 오픈 시간대 방문을 추천합니다. 테이크아웃 시 냉매팩을 준비하면 녹는 속도를 줄일 수 있고, 사진은 콘이 녹기 전 10초가 골든타임입니다.', null, 'megazine', 3); -- 9
-insert into chomp values (seq_chomp_id.NEXTVAL, '편의점 신상 모음', sysdate, sysdate, '편의점 신상 녹차 라인업을 용량 대비 가격, 당류, 우유 함량, 말차 함량 기준으로 비교했습니다. 진한 녹차향을 원하면 우유 함량이 높은 제품을, 가벼운 간식은 샤베트 타입을 추천합니다. 포장 뒷면에서 당류 15g 이하 제품을 우선 선택하고, 한정판은 출시 첫 주에 구매하는 것이 안전합니다.', null, 'megazine', 2); -- 10
-insert into chomp values (seq_chomp_id.NEXTVAL, '녹차 바닐라 믹스의 매력', sysdate, sysdate, '녹차와 바닐라를 7:3으로 섞으면 녹차의 쌉싸름함이 중심을 잡고, 5:5는 가장 부드러운 밸런스를 만듭니다. 가정에서는 두 스쿱을 한 볼에 담아 주걱으로 두 번만 가볍게 섞어 스월 무늬를 살리세요. 토핑은 코코아 닙스나 볶은 콩가루가 잘 어울리고, 바삭함을 더하려면 얇은 웨이퍼를 곁들이면 좋습니다.', null, 'megazine', 1); -- 11
-insert into chomp values (seq_chomp_id.NEXTVAL, '제철 과일과 녹차 아이스크림 페어링', sysdate, sysdate, '산미 있는 복숭아·자두는 말차의 쌉싸름함을 부드럽게 잡아주고, 당도가 높은 멜론·바나나는 고소한 풍미를 강화합니다. 과일은 차갑게, 아이스크림은 서빙 5분 전 냉장 숙성 후 담아 온도 대비를 만들면 향이 확 살아납니다.', null, 'megazine', 2); -- 12
-insert into chomp values (seq_chomp_id.NEXTVAL, '여름에 가장 맛있는 과일', TO_DATE('25/05/15','RR/MM/DD'), TO_DATE('25/08/15','RR/MM/DD'), null, null, 'vote', 2); -- 13
-insert into chomp values (seq_chomp_id.NEXTVAL, '홈카페 말차 플로트 레시피', sysdate, sysdate, '진한 말차 2작은술을 60ml의 뜨거운 물에 푼 뒤, 차갑게 식힌 탄산수 200ml와 섞고 녹차 아이스크림 1스쿱을 띄우면 청량한 플로트가 완성됩니다. 거품이 과하면 얼음 2개로 탄산을 눌러 주고, 마무리는 레몬 제스트 한 꼬집.', null, 'megazine', 1); -- 14
-insert into chomp values (seq_chomp_id.NEXTVAL, '초코 아이스크림 위크', TO_DATE('25/10/10','RR/MM/DD'), TO_DATE('25/10/20','RR/MM/DD'), '카카오 원산지별 초코 아이스크림 테이스팅 플라이트, 시그니처 토핑 무료 업그레이드, SNS 해시태그 인증 추첨 혜택, 멤버십 더블 포인트, 매일 17시 타임세일로 한정 수량 특별가를 제공합니다.', 'e6ecf3d0dd174c7f8d99c8229e2931d0.jpg', 'event', 3); -- 15
-insert into chomp values (seq_chomp_id.NEXTVAL, '연말 디저트 대전', TO_DATE('25/12/10','RR/MM/DD'), TO_DATE('25/12/31','RR/MM/DD'), '셰프 팝업 디저트 쇼케이스와 페어링 클래스, 연말 기프트 패키지 및 한정 콜라보 메뉴 출시, 사전 예매자 웰컴 드링크 제공, 스탬프 랠리 완주 시 경품을 증정합니다.', 'fb66d08e8757491089dc0a9353b6e067.jpg', 'event', 1); -- 16
-insert into chomp values (seq_chomp_id.NEXTVAL, '편의점 한정판 캘린더 가이드', sysdate, sysdate, '신상 아이스크림은 보통 화요일 입고 비중이 높고, 한정판은 첫 주 수량이 핵심입니다. 출시 알림은 브랜드 앱 푸시를 켜 두고, 인기 제품은 개점 직후 방문이 안전합니다. 보관 이동은 보냉 파우치와 소형 아이스팩 조합이 효율적입니다.', null, 'megazine', 1); -- 17
-insert into chomp values (seq_chomp_id.NEXTVAL, '초코 vs 바닐라', TO_DATE('25/04/01','RR/MM/DD'), TO_DATE('25/05/01','RR/MM/DD'), null, null, 'vote', 2); -- 18
-insert into chomp values (seq_chomp_id.NEXTVAL, '녹차 아이스크림 건강 체크포인트', sysdate, sysdate, '말차의 카테킨이 주는 쌉싸름함은 당도 체감을 낮춰주지만, 실제 당류는 라벨(100ml 기준 15g 이하 권장)로 확인하세요. 1회 제공량은 80~100ml가 적당하며, 단백질을 올리고 싶다면 무가당 그릭요거트를 한 스푼 곁들이면 포만감이 좋아집니다.', null, 'megazine', 1); -- 19
-insert into chomp values (seq_chomp_id.NEXTVAL, '여름 한정 시식회', TO_DATE('25/07/01','RR/MM/DD'), TO_DATE('25/07/15','RR/MM/DD'), '여름 신상 아이스크림 전 라인업 시식 존 운영, 테이스팅 패스 보유 시 전 메뉴 1회 시식, 어린이 체험 부스와 포토존, 보냉팩 무료 증정, 위생 수칙 준수로 안심하고 즐길 수 있는 행사입니다.', '43323102bad648819914a4bb2bb8f5b9.jpg', 'event', 2); -- 20
-insert into chomp values (seq_chomp_id.NEXTVAL, '최애 녹차 브랜드', TO_DATE('25/08/01','RR/MM/DD'), TO_DATE('25/09/30','RR/MM/DD'), null, null, 'vote', 2); -- 21
-insert into chomp values (seq_chomp_id.NEXTVAL, '가을에 어울리는 아이스크림', TO_DATE('25/09/01','RR/MM/DD'), TO_DATE('25/10/15','RR/MM/DD'), null, null, 'vote', 3); -- 22
-insert into chomp values (seq_chomp_id.NEXTVAL, '애들아 ..', TO_DATE('25/09/01','RR/MM/DD'), TO_DATE('25/10/15','RR/MM/DD'), '이벤트 참여해라..', '56f11b8ad8d746c980552d200cf885ce.jpg', 'event', 3); -- 23
+insert into chomp values (seq_chomp_id.NEXTVAL, '여름 인기 녹차 아이스크림', TO_DATE('25/06/01','RR/MM/DD'), TO_DATE('25/07/31','RR/MM/DD'), null, 'cac5d395f6c24f819d5c68c63f08554a.png', 'vote', 1); -- 1
+insert into chomp values (seq_chomp_id.NEXTVAL, '녹차 디저트 페어링', sysdate, sysdate, '녹차의 고소함과 쌉싸름함을 살리기 위해 당도 낮은 디저트와 짝을 지었습니다: 말차 파운드 케이크, 팥앙금, 구운 아몬드와 피칸, 70% 다크초콜릿이 잘 어울립니다. 아이스크림은 서빙 5분 전 냉장에서 숨을 돌리면 향이 열리고 질감이 부드러워집니다. 함께 마실 음료는 무가당 보리차나 진한 말차라떼를 추천하며, 차갑게 식힌 접시에 담아 녹는 속도를 늦추세요.', '08f7e410262b48a0b1686f3c13a3c519.png', 'megazine', 2); -- 2
+insert into chomp values (seq_chomp_id.NEXTVAL, '가을 녹차 페스티벌', TO_DATE('25/08/20','RR/MM/DD'), TO_DATE('25/10/05','RR/MM/DD'), '행사장 시음 부스 운영, 말차 아이스크림 라이브 쿠킹 쇼와 원재료 토크 세션, 스탬프 투어 완주 굿즈 증정, 현장 한정 1+1 쿠폰으로 다양한 메뉴를 합리적으로 즐길 수 있습니다.', 'b777264e55bb4591863b5e5376e55660.png', 'event', 3); -- 3
+insert into chomp values (seq_chomp_id.NEXTVAL, '딸기 아이스크림 선호도', TO_DATE('25/05/01','RR/MM/DD'), TO_DATE('25/06/30','RR/MM/DD'), null, 'efc53ccd7a2045f5bb2604379c064a9c.png', 'vote', 1); -- 4
+insert into chomp values (seq_chomp_id.NEXTVAL, '저칼로리 아이스크림 비교', sysdate, sysdate, '세 가지 저칼로리 제품을 100ml 기준 열량, 당류, 단백질, 공기함량(overrun), 식감으로 비교했습니다. 감미료는 에리스리톨과 알룰로스 조합이 뒷맛이 깔끔했고, 레시틴 기반 유화제가 안정적이었습니다. 고형분이 낮을수록 얼음결이 커지므로 24시간 숙성 후 섭취하면 질감이 개선됩니다. 다이어트 중이라면 1회 제공량 80ml를 권장합니다.', '150a50f4d8294f1d8b3987aea149693b.png', 'megazine', 1); -- 5
+insert into chomp values (seq_chomp_id.NEXTVAL, '홈메이드 녹차 젤라토', sysdate, sysdate, '우유 500ml, 생크림 200ml, 설탕 90g, 말차 10~12g, 소금 한 꼬집을 사용합니다. 80도C까지 가열해 설탕과 말차를 완전히 녹인 뒤 차게 식혀 4시간 숙성하세요. 아이스크림 메이커가 없으면 지퍼백 이중 포장 후 냉동고에서 30분 간격으로 꺼내 흔들어 얼음결을 깨면 됩니다. 덩어리가 지면 체에 한 번 거르면 색과 질감이 한층 고와집니다.', '7195ef26fea0410eb352f112c0a4c00a.png', 'megazine', 1); -- 6
+insert into chomp values (seq_chomp_id.NEXTVAL, '프리미엄 vs 가성비', sysdate, sysdate, '프리미엄 라인은 우유 고형분과 생크림 함량이 높고 일본산 또는 국내산 고급 말차를 사용해 향이 길게 남습니다. 가성비 라인은 당도와 바닐라향이 강해 첫맛은 또렷하지만 여운은 짧습니다. 원재료표에서 포도당 시럽 비율, 합성착향료 여부, 고형분 수치를 확인하면 품질을 가늠할 수 있습니다. 예산이 허락하면 프리미엄 1스쿱, 일상 간식으론 가성비 라인을 추천합니다.', 'b77ce47493ae44b79a2bb6c0bcbbe3ac.png', 'megazine', 2); -- 7
+insert into chomp values (seq_chomp_id.NEXTVAL, '비건 아이스크림 가이드', sysdate, sysdate, '비건 아이스크림은 코코넛밀크, 오트밀크, 아몬드밀크 베이스가 대표적입니다. 코코넛은 향이 뚜렷하고 질감이 진하며, 오트는 곡물 향과 점성이 좋아 녹차와 조화롭습니다. 점도 조절은 구아검이나 잔탄검이 무난합니다. 라벨에서 동물성 유래 성분, 팜유, 카라기난 사용 여부를 확인하고, 견과 알레르기가 있다면 아몬드 베이스는 피하세요.', '4649da54ef6d4e4f8ffe593780783c3f.png', 'megazine', 3); -- 8
+insert into chomp values (seq_chomp_id.NEXTVAL, '여름 디저트 핫플', sysdate, sysdate, '여름철 인기 매장은 대기 시간, 시그니처 메뉴, 가격대가 명확합니다. 시그니처는 말차 소프트, 말차 브라우니 선데, 말차 샌드 쿠키 등이며 오후 3시 이후 대기가 길어지므로 오픈 시간대 방문을 추천합니다. 테이크아웃 시 냉매팩을 준비하면 녹는 속도를 줄일 수 있고, 사진은 콘이 녹기 전 10초가 골든타임입니다.', 'd38ee61faf014ab0a26ca40624fcde6f.png', 'megazine', 3); -- 9
+insert into chomp values (seq_chomp_id.NEXTVAL, '편의점 신상 모음', sysdate, sysdate, '편의점 신상 녹차 라인업을 용량 대비 가격, 당류, 우유 함량, 말차 함량 기준으로 비교했습니다. 진한 녹차향을 원하면 우유 함량이 높은 제품을, 가벼운 간식은 샤베트 타입을 추천합니다. 포장 뒷면에서 당류 15g 이하 제품을 우선 선택하고, 한정판은 출시 첫 주에 구매하는 것이 안전합니다.', '483c58d9cbbd4aad9600328e8dd9617a.png', 'megazine', 2); -- 10
+insert into chomp values (seq_chomp_id.NEXTVAL, '녹차 바닐라 믹스의 매력', sysdate, sysdate, '녹차와 바닐라를 7:3으로 섞으면 녹차의 쌉싸름함이 중심을 잡고, 5:5는 가장 부드러운 밸런스를 만듭니다. 가정에서는 두 스쿱을 한 볼에 담아 주걱으로 두 번만 가볍게 섞어 스월 무늬를 살리세요. 토핑은 코코아 닙스나 볶은 콩가루가 잘 어울리고, 바삭함을 더하려면 얇은 웨이퍼를 곁들이면 좋습니다.', '3bb20b725781418ab3cf707c370756bf.png', 'megazine', 1); -- 11
+insert into chomp values (seq_chomp_id.NEXTVAL, '제철 과일과 녹차 아이스크림 페어링', sysdate, sysdate, '산미 있는 복숭아·자두는 말차의 쌉싸름함을 부드럽게 잡아주고, 당도가 높은 멜론·바나나는 고소한 풍미를 강화합니다. 과일은 차갑게, 아이스크림은 서빙 5분 전 냉장 숙성 후 담아 온도 대비를 만들면 향이 확 살아납니다.', '4cd1ddb682364ff08b4f3cf797f0f424.png', 'megazine', 2); -- 12
+insert into chomp values (seq_chomp_id.NEXTVAL, '여름에 가장 맛있는 과일', TO_DATE('25/05/15','RR/MM/DD'), TO_DATE('25/08/15','RR/MM/DD'), null, '28509811794d4202816294ac39bcceac.png', 'vote', 2); -- 13
+insert into chomp values (seq_chomp_id.NEXTVAL, '홈카페 말차 플로트 레시피', sysdate, sysdate, '진한 말차 2작은술을 60ml의 뜨거운 물에 푼 뒤, 차갑게 식힌 탄산수 200ml와 섞고 녹차 아이스크림 1스쿱을 띄우면 청량한 플로트가 완성됩니다. 거품이 과하면 얼음 2개로 탄산을 눌러 주고, 마무리는 레몬 제스트 한 꼬집.', 'db0a1d4621d64619bae32bc6ed4fb086.png', 'megazine', 1); -- 14
+insert into chomp values (seq_chomp_id.NEXTVAL, '초코 아이스크림 위크', TO_DATE('24/10/10','RR/MM/DD'), TO_DATE('25/10/20','RR/MM/DD'), '카카오 원산지별 초코 아이스크림 테이스팅 플라이트, 시그니처 토핑 무료 업그레이드, SNS 해시태그 인증 추첨 혜택, 멤버십 더블 포인트, 매일 17시 타임세일로 한정 수량 특별가를 제공합니다.', '2271a7258613449dbf0d2b3e880823a0.png', 'event', 3); -- 15
+insert into chomp values (seq_chomp_id.NEXTVAL, '연말 디저트 대전', TO_DATE('25/01/10','RR/MM/DD'), TO_DATE('25/12/31','RR/MM/DD'), '셰프 팝업 디저트 쇼케이스와 페어링 클래스, 연말 기프트 패키지 및 한정 콜라보 메뉴 출시, 사전 예매자 웰컴 드링크 제공, 스탬프 랠리 완주 시 경품을 증정합니다.', '28161bedec094fcb98c4bcb31a9afc8a.png', 'event', 1); -- 16
+insert into chomp values (seq_chomp_id.NEXTVAL, '편의점 한정판 캘린더 가이드', sysdate, sysdate, '신상 아이스크림은 보통 화요일 입고 비중이 높고, 한정판은 첫 주 수량이 핵심입니다. 출시 알림은 브랜드 앱 푸시를 켜 두고, 인기 제품은 개점 직후 방문이 안전합니다. 보관 이동은 보냉 파우치와 소형 아이스팩 조합이 효율적입니다.', '336aac66cc3a4f9cb6768c055f1717e9.png', 'megazine', 1); -- 17
+insert into chomp values (seq_chomp_id.NEXTVAL, '초코 vs 바닐라', TO_DATE('25/04/01','RR/MM/DD'), TO_DATE('25/05/01','RR/MM/DD'), null, 'a53c4ba4f5ba4b8a846ca2ed949e901a.png', 'vote', 2); -- 18
+insert into chomp values (seq_chomp_id.NEXTVAL, '녹차 아이스크림 건강 체크포인트', sysdate, sysdate, '말차의 카테킨이 주는 쌉싸름함은 당도 체감을 낮춰주지만, 실제 당류는 라벨(100ml 기준 15g 이하 권장)로 확인하세요. 1회 제공량은 80~100ml가 적당하며, 단백질을 올리고 싶다면 무가당 그릭요거트를 한 스푼 곁들이면 포만감이 좋아집니다.', '0b4497fe0f334f17b653efa5b06502d4.png', 'megazine', 1); -- 19
+insert into chomp values (seq_chomp_id.NEXTVAL, '여름 한정 시식회', TO_DATE('25/07/01','RR/MM/DD'), TO_DATE('25/07/15','RR/MM/DD'), '여름 신상 아이스크림 전 라인업 시식 존 운영, 테이스팅 패스 보유 시 전 메뉴 1회 시식, 어린이 체험 부스와 포토존, 보냉팩 무료 증정, 위생 수칙 준수로 안심하고 즐길 수 있는 행사입니다.', 'c4fe85957dbe4180adea4a2b582fcb18.png', 'event', 2); -- 20
+insert into chomp values (seq_chomp_id.NEXTVAL, '최애 녹차 브랜드', TO_DATE('25/08/01','RR/MM/DD'), TO_DATE('25/09/30','RR/MM/DD'), null, '0459c0dd517d496c883c32b67bff7a62.png', 'vote', 2); -- 21
+insert into chomp values (seq_chomp_id.NEXTVAL, '가을에 어울리는 아이스크림', TO_DATE('25/04/01','RR/MM/DD'), TO_DATE('25/10/15','RR/MM/DD'), null, '7c9a1851931548e9b485a7c72e327697.png', 'vote', 3); -- 22
+insert into chomp values (seq_chomp_id.NEXTVAL, '애들아 ..', TO_DATE('25/04/01','RR/MM/DD'), TO_DATE('25/10/15','RR/MM/DD'), '이벤트 참여해라..', '65e091f4b97d4ba9b31d367b40cfde2f.png', 'event', 3); -- 23
 commit;
 
 
@@ -708,16 +710,21 @@ commit;
 
 
 -- CLASSES 테이블 더미데이터
-INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '홈메이드 김치 담그기 클래스', 'kimchi.jpg', '전통 방식으로 김치를 직접 담가보는 클래스입니다.', '서울 강남구', TO_DATE('2025-07-05', 'YYYY-MM-DD'), TO_DATE('1970-01-01 10:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 12:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-01', 'YYYY-MM-DD'), 10, '앞치마, 밀폐용기', 1, 4);
-INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '프렌치 디저트 클래스', 'dessert.jpg', '마카롱과 에끌레어를 직접 만들어 보는 시간!', '서울 마포구', TO_DATE('2025-08-10', 'YYYY-MM-DD'), TO_DATE('1970-01-01 14:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 16:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-05', 'YYYY-MM-DD'), 8, '고무장갑, 에코백', 0, 5);
-INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '한식 요리 입문 클래스', 'korean_food.jpg', '된장찌개, 불고기 등 한식을 처음 접하는 분들을 위한 클래스입니다.', '서울 종로구', TO_DATE('2025-08-12', 'YYYY-MM-DD'), TO_DATE('1970-01-01 11:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 13:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-07', 'YYYY-MM-DD'), 12, '필기도구', 1, 4);
-INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '홈카페 음료 만들기', 'homecafe.jpg', '시그니처 커피와 티를 집에서도 만들어보세요!', '서울 송파구', TO_DATE('2025-08-15', 'YYYY-MM-DD'), TO_DATE('1970-01-01 15:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 17:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-10', 'YYYY-MM-DD'), 6, '텀블러, 필기도구', 1, 4);
-INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '비건 베이킹 클래스', 'vegan_baking.jpg', '계란, 우유 없이 건강한 디저트를 만들어보는 수업입니다.', '서울 관악구', TO_DATE('2025-08-18', 'YYYY-MM-DD'), TO_DATE('1970-01-01 13:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 15:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-13', 'YYYY-MM-DD'), 7, '앞치마, 밀폐용기', 0, 5);
-INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '이탈리안 파스타 만들기', 'pasta.jpg', '생면부터 소스까지 직접 만들어보는 본격 파스타 클래스!', '서울 성동구', TO_DATE('2025-08-20', 'YYYY-MM-DD'), TO_DATE('1970-01-01 10:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 12:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-15', 'YYYY-MM-DD'), 9, '앞치마, 밀가루 안 튀는 옷', 1, 5);
-INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '어린이 쿠킹 클래스', 'kids_cook.jpg', '아이와 함께하는 안전한 요리 시간!', '서울 서초구', TO_DATE('2025-08-22', 'YYYY-MM-DD'), TO_DATE('1970-01-01 10:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 11:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-17', 'YYYY-MM-DD'), 5, '아이용 앞치마, 물티슈', 0, 4);
-INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '저염식 식단 클래스', 'low_salt.jpg', '건강한 저염식 식단을 직접 만들고 먹어보는 클래스', '서울 동작구', TO_DATE('2025-08-25', 'YYYY-MM-DD'), TO_DATE('1970-01-01 13:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 15:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-20', 'YYYY-MM-DD'), 10, '텀블러, 앞치마', 1, 5);
-INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '아시아 요리 탐방', 'asia_cuisine.jpg', '동남아 요리 레시피와 식재료를 배워보는 클래스입니다.', '서울 중구', TO_DATE('2025-07-28', 'YYYY-MM-DD'), TO_DATE('1970-01-01 14:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 16:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-23', 'YYYY-MM-DD'), 8, '앞치마, 필기도구', 1, 5);
-INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '계절김치 마스터 클래스', 'seasonal_kimchi.jpg', '제철 채소로 김치를 만들어보는 마스터 클래스입니다.', '서울 은평구', TO_DATE('2025-08-30', 'YYYY-MM-DD'), TO_DATE('1970-01-01 11:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 13:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-25', 'YYYY-MM-DD'), 6, '앞치마, 밀폐용기, 고무장갑', 0, 4);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '홈메이드 김치 담그기 클래스', '한식', '3da3de744fc54c26a64874e63e9f33a1.png', '전통 방식으로 김치를 직접 담가보는 클래스입니다.', '서울 강남구', TO_DATE('202509-05', 'YYYY-MM-DD'), TO_DATE('2025-10-05', 'YYYY-MM-DD'), TO_DATE('1970-01-01 10:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 12:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-10-01', 'YYYY-MM-DD'), 10, '앞치마, 밀폐용기', 1, 4);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '프렌치 디저트 클래스', '제과제빵', '8d777a9dce334083a54b23838d015256.png', '마카롱과 에끌레어를 직접 만들어 보는 시간!', '서울 마포구', TO_DATE('2025-09-10', 'YYYY-MM-DD'), TO_DATE('2025-10-10', 'YYYY-MM-DD'), TO_DATE('1970-01-01 14:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 16:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-10-05', 'YYYY-MM-DD'), 8, '고무장갑, 에코백', 1, 5);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '한식 요리 입문 클래스', '한식', 'c2defe47f25f4e66b06f003381853240.png', '된장찌개, 불고기 등 한식을 처음 접하는 분들을 위한 클래스입니다.', '서울 종로구', TO_DATE('2025-02-12', 'YYYY-MM-DD'), TO_DATE('2025-03-12', 'YYYY-MM-DD'), TO_DATE('1970-01-01 11:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 13:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-03-07', 'YYYY-MM-DD'), 12, '필기도구', 1, 4);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '홈카페 음료 만들기', '음료', '48c1829104184028942ba9d4f3ce191f.png', '시그니처 커피와 티를 집에서도 만들어보세요!', '서울 송파구', TO_DATE('2025-04-05', 'YYYY-MM-DD'), TO_DATE('2025-08-15', 'YYYY-MM-DD'), TO_DATE('1970-01-01 15:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 17:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-8-10', 'YYYY-MM-DD'), 6, '텀블러, 필기도구', 1, 4);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '비건 베이킹 클래스', '제과제빵', '1dffc77f041844e09882e93f585252ba.png', '계란, 우유 없이 건강한 디저트를 만들어보는 수업입니다.', '서울 관악구', TO_DATE('2025-01-05', 'YYYY-MM-DD'), TO_DATE('2025-04-18', 'YYYY-MM-DD'), TO_DATE('1970-01-01 13:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 15:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-03-13', 'YYYY-MM-DD'), 7, '앞치마, 밀폐용기', 1, 5);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '이탈리안 파스타 만들기', '양식', '50201b9ea1b04d6f9dc5b70abe88bb27.png', '생면부터 소스까지 직접 만들어보는 본격 파스타 클래스!', '서울 성동구', TO_DATE('2025-09-05', 'YYYY-MM-DD'), TO_DATE('2025-10-20', 'YYYY-MM-DD'), TO_DATE('1970-01-01 10:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 12:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-10-15', 'YYYY-MM-DD'), 9, '앞치마, 밀가루 안 튀는 옷', 1, 5);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '어린이 쿠킹 클래스', '제과제빵', '2520a137733246bbab6d4b346e2ca570.png', '아이와 함께하는 안전한 요리 시간!', '서울 서초구', TO_DATE('2025-08-22', 'YYYY-MM-DD'), TO_DATE('2025-10-22', 'YYYY-MM-DD'), TO_DATE('1970-01-01 10:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 11:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-10-17', 'YYYY-MM-DD'), 5, '아이용 앞치마, 물티슈', 1, 4);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '저염식 식단 클래스', '기타', 'db88094f5ca441008102f1d9ae30fe3a.png', '건강한 저염식 식단을 직접 만들고 먹어보는 클래스', '서울 동작구', TO_DATE('2025-10-07', 'YYYY-MM-DD'), TO_DATE('2025-10-25', 'YYYY-MM-DD'), TO_DATE('1970-01-01 13:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 15:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-10-20', 'YYYY-MM-DD'), 10, '텀블러, 앞치마', 1, 5);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '아시아 요리 탐방', '한식', 'd6af8c9efe3c4b32b7f02825fa4d917b.png', '동남아 요리 레시피와 식재료를 배워보는 클래스입니다.', '서울 중구', TO_DATE('2025-10-05', 'YYYY-MM-DD'), TO_DATE('2025-10-28', 'YYYY-MM-DD'), TO_DATE('1970-01-01 14:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 16:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-10-23', 'YYYY-MM-DD'), 8, '앞치마, 필기도구', 1, 5);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '계절김치 마스터 클래스', '한식', 'd4b0f9451ff64553ab9c950b579a91c2.png', '제철 채소로 김치를 만들어보는 마스터 클래스입니다.', '서울 은평구', TO_DATE('2025-04-05', 'YYYY-MM-DD'), TO_DATE('2025-08-30', 'YYYY-MM-DD'), TO_DATE('1970-01-01 11:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 13:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-25', 'YYYY-MM-DD'), 6, '앞치마, 밀폐용기, 고무장갑', 0, 4);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '중식 면 요리 클래스', '중식', '155dbb43df4a486099948cce2b8f4b0f.png', '짜장면과 짬뽕을 직접 만들어보는 중식 클래스입니다.', '서울 용산구', TO_DATE('2025-02-05', 'YYYY-MM-DD'), TO_DATE('2025-09-02', 'YYYY-MM-DD'), TO_DATE('1970-01-01 11:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 13:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-25', 'YYYY-MM-DD'), 12, '앞치마, 조리도구', 2, 4);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '일식 초밥 마스터 클래스', '일식', '7e68811848c74c1ead7bda02816d1ada.png', '정통 초밥부터 롤 초밥까지 배우는 클래스입니다.', '서울 강서구', TO_DATE('2025-08-24', 'YYYY-MM-DD'), TO_DATE('2025-09-05', 'YYYY-MM-DD'), TO_DATE('1970-01-01 17:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 19:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-30', 'YYYY-MM-DD'), 10, '손수건, 장갑', 2, 5);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '홈메이드 케이크 클래스', '제과제빵', 'f71a640510f3482b903fedcaa3e1943c.png', '생크림 케이크와 데코레이션 기법을 배우는 클래스입니다.', '서울 노원구', TO_DATE('2025-04-09', 'YYYY-MM-DD'), TO_DATE('2025-09-08', 'YYYY-MM-DD'), TO_DATE('1970-01-01 14:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 16:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-09-01', 'YYYY-MM-DD'), 8, '앞치마, 밀폐용기', 1, 4);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '건강 주스와 스무디 클래스', '음료', '15eeb5289ed64063a99a25a490b8c5e0.png', '제철 과일과 채소로 건강한 주스를 만들어보는 클래스입니다.', '서울 강북구', TO_DATE('2025-03-11', 'YYYY-MM-DD'), TO_DATE('2025-04-12', 'YYYY-MM-DD'), TO_DATE('1970-01-01 10:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 12:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-04-07', 'YYYY-MM-DD'), 6, '텀블러, 손수건', 1, 5);
+INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '저칼로리 샐러드 클래스', '기타', '99ff0cd05d6747e59e7e2f44a6f77348.png', '다이어트에 좋은 다양한 샐러드 레시피를 배웁니다.', '서울 서대문구', TO_DATE('2025-02-05', 'YYYY-MM-DD'), TO_DATE('2025-09-15', 'YYYY-MM-DD'), TO_DATE('1970-01-01 18:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 19:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-09-10', 'YYYY-MM-DD'), 9, '밀폐용기, 필기도구', 0, 4);
 commit;
 
 
@@ -734,6 +741,16 @@ INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '홈카페 취미�
 INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '커피 애호가', 4);
 INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '비건 식단 관심자', 5);
 INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '건강식에 관심 있는 사람', 5);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '중식 요리에 관심 있는 성인',6);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '일식 초밥을 배우고 싶은 사람', 7);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '케이크 만들기를 배우고 싶은 초보자', 8);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '건강 음료에 관심 있는 사람', 9);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '다이어트 식단 관심자', 10);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '건강식에 관심 있는 사람', 11);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '중식 요리에 관심 있는 성인',12);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '일식 초밥을 배우고 싶은 사람', 13);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '케이크 만들기를 배우고 싶은 초보자', 14);
+INSERT INTO class_target VALUES (seq_class_target_id.NEXTVAL, '건강 음료에 관심 있는 사람', 15);
 commit;
 
 
@@ -746,6 +763,12 @@ INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com
 INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor4.jpg', '정우진', '푸드 스타일리스트 경력 5년', 4);
 INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor5.jpg', '최수진', '비건 요리 전문가, 6년 강의', 5);
 INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor6.jpg', '한지훈', '프렌치 레스토랑 헤드 셰프, 12년 경력', 6);
+INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor7.jpg', '왕웨이', '20년 경력의 중식 셰프', 10);
+INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor8.jpg', '사토 히로시', '15년 경력의 일식 초밥 장인', 11);
+INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor9.jpg', '박혜진', '제과제빵 강사, 8년 경력', 12);
+INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor10.jpg', '이승철', '건강 음료 전문가, 6년 강의', 13);
+INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor11.jpg', '정지영', '영양사 겸 쿠킹클래스 강사', 14);
+INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor12.jpg', '마르코 로시', '이탈리안 셰프, 14년 경력', 15);
 commit;
 
 
@@ -762,6 +785,12 @@ INSERT INTO class_schedule VALUES (seq_class_schedule_id.NEXTVAL, TO_DATE('1970-
 INSERT INTO class_schedule VALUES (seq_class_schedule_id.NEXTVAL, TO_DATE('1970-01-01 16:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 17:00', 'YYYY-MM-DD HH24:MI'), '음료 만들기 실습', 4);
 INSERT INTO class_schedule VALUES (seq_class_schedule_id.NEXTVAL, TO_DATE('1970-01-01 13:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 14:30', 'YYYY-MM-DD HH24:MI'), '비건 재료 소개', 5);
 INSERT INTO class_schedule VALUES (seq_class_schedule_id.NEXTVAL, TO_DATE('1970-01-01 14:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 15:30', 'YYYY-MM-DD HH24:MI'), '비건 디저트 실습', 5);
+INSERT INTO class_schedule VALUES (seq_class_schedule_id.NEXTVAL, TO_DATE('1970-01-01 11:00','YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 12:00','YYYY-MM-DD HH24:MI'), '짜장면 기초 설명', 10);
+INSERT INTO class_schedule VALUES (seq_class_schedule_id.NEXTVAL, TO_DATE('1970-01-01 12:00','YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 13:00','YYYY-MM-DD HH24:MI'), '짬뽕 실습', 10);
+INSERT INTO class_schedule VALUES (seq_class_schedule_id.NEXTVAL, TO_DATE('1970-01-01 17:00','YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 18:00','YYYY-MM-DD HH24:MI'), '초밥 재료 준비', 14);
+INSERT INTO class_schedule VALUES (seq_class_schedule_id.NEXTVAL, TO_DATE('1970-01-01 18:00','YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 19:00','YYYY-MM-DD HH24:MI'), '초밥 만들기 실습', 14);
+INSERT INTO class_schedule VALUES (seq_class_schedule_id.NEXTVAL, TO_DATE('1970-01-01 14:00','YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 15:30','YYYY-MM-DD HH24:MI'), '케이크 시트 굽기', 15);
+INSERT INTO class_schedule VALUES (seq_class_schedule_id.NEXTVAL, TO_DATE('1970-01-01 15:30','YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 16:30','YYYY-MM-DD HH24:MI'), '생크림 데코레이션', 15);
 commit;
 
 

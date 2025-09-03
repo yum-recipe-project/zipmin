@@ -117,3 +117,13 @@
 	line-height: 32px;
 	letter-spacing: -0.4px;  
 }
+
+
+
+
+.modal-body .vote_wrap img {
+  width: 500px;
+  height: auto;
+  max-width: 100%;
+  display: block;
+}

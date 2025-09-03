@@ -6,14 +6,16 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.CommentSuccessCode;
-import com.project.zipmin.api.CookingErrorCode;
-import com.project.zipmin.api.CookingSuccessCode;
+import com.project.zipmin.api.VoteErrorCode;
+import com.project.zipmin.api.ClassErrorCode;
+import com.project.zipmin.api.ClassSuccessCode;
 import com.project.zipmin.dto.ClassApplyCreateRequestDto;
 import com.project.zipmin.dto.ClassApplyCreateResponseDto;
 import com.project.zipmin.dto.ClassApplyDeleteRequestDto;
 import com.project.zipmin.dto.ClassApplyReadResponseDto;
 import com.project.zipmin.dto.ClassApplyUpdateRequestDto;
 import com.project.zipmin.dto.ClassApplyUpdateResponseDto;
+import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.ClassScheduleReadResponseDto;
 import com.project.zipmin.dto.ClassTutorReadResponseDto;
@@ -25,9 +27,11 @@ import com.project.zipmin.swagger.CookingReadSuccessResponse;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
@@ -49,6 +53,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
+@Tag(name = "Cooking API", description = "쿠킹클래스 관련 API")
 public class CookingController {
 	
 	@Autowired
@@ -58,11 +63,32 @@ public class CookingController {
 	UserService userService;
 	
 	
+	
+	
+	
+	// 200 CLASS_READ_LIST_SUCCESS
+	// 400 CLASS_READ_LIST_FAIL
+	// 400 CLASS_INVALID_INPUT
+	// 400 USER_INVALID_INPUT
+	// 404 USER_NOT_FOUND
+	// 500
 
 	// 쿠킹클래스 목록 조회
 	@GetMapping("/classes")
-	public List<ClassReadResponseDto> listClass() {
-		return null;
+	public ResponseEntity<?> listClass(
+			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
+			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
+			@Parameter(description = "승인 상태", required = false) @RequestParam(required = false) String approval,
+			@Parameter(description = "진행 상태", required = false) @RequestParam(required = false) String status,
+			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
+		    @Parameter(description = "페이지 번호") @RequestParam int page,
+		    @Parameter(description = "페이지 크기") @RequestParam int size) {
+		
+		Pageable pageable = PageRequest.of(page, size);
+		Page<ClassReadResponseDto> classPage = cookingService.readClassPage(category, keyword, approval, status, sort, pageable);
+		
+		return ResponseEntity.status(ClassSuccessCode.CLASS_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(ClassSuccessCode.CLASS_READ_LIST_SUCCESS, classPage));
 	}
 
 	
@@ -87,43 +113,106 @@ public class CookingController {
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
 	@GetMapping("/classes/{id}")
-	public ResponseEntity<?> viewClass(
-			@PathVariable int id) {
+	public ResponseEntity<?> viewClass(@Parameter(description = "클래스의 일련번호") @PathVariable int id) {
 		
 		ClassReadResponseDto classDto = cookingService.readClassById(id);
 		
-		return ResponseEntity.status(CookingSuccessCode.COOKING_READ_SUCCESS.getStatus())
-				.body(ApiResponse.success(CookingSuccessCode.COOKING_READ_SUCCESS, classDto));
+		return ResponseEntity.status(ClassSuccessCode.CLASS_READ_SUCCESS.getStatus())
+				.body(ApiResponse.success(ClassSuccessCode.CLASS_READ_SUCCESS, classDto));
 	}
 
 	
 	
-	// 새 클래스 신청
+	
+	
+	// 클래스 작성
 	@PostMapping("/classes")
-	public int writeClass() {
-		return 0;
+	public ResponseEntity<?> writeClass() {
+		
+		return null;
 	}
-
-	// 클래스 승인 및 거절 (관리자)
-	@PatchMapping("/classes/{id}/status")
-	public int updateClassStatus(
-			@PathVariable int id) {
-		return 0;
-	}
-
-	// 특정 클래스 수정 (관리자)
+	
+	
+	
+	
+	
+	// 클래스 수정
 	@PatchMapping("/classes/{id}")
-	public int editClass(
-			@PathVariable int id) {
-		// 구현 안할듯
-		return 0;
+	public ResponseEntity<?> editClass(
+			@Parameter(description = "클래스의 일련번호") @PathVariable int id
+			// ***** 수정 요청 정보 추가 *****
+			) {
+		
+		// ***** 관리자는 만료되기 전 수정 가능 *****
+		// ***** 일반 사용자는 대기 상태인 경우에만 수정 가능 *****
+		
+		return null;
 	}
-
-	// 특정 클래스 삭제 (관리자)
+	
+	
+	
+	
+	
+	
+	
+	// 200 CLASS_UPDATE_APPROVAL_SUCCESS
+	// 400 CLASS_UPDATE_APPROVAL_FAIL
+	// 400 CLASS_INVALID_INPUT
+	// 400 USER_INVALID_INPUT
+	// 401 로그인되지 않은 사용자 CLASS_UNAUTHRIZED
+	// 403 CLASS_FORBIDDEN
+	// 403 CLASS_ALREADY_ENDED
+	// 404 CLASS_NOT_FOUND
+	// 404 USER_NOT_FOUND
+	// 500 서버 내부 오류
+	
+	// 클래스 승인 수정 (관리자)
+	@PatchMapping("/classes/{id}/approval")
+	public ResponseEntity<?>  updateClassApproval(
+			@Parameter(description = "클래스의 일련번호") @PathVariable int id,
+			@Parameter(description = "승인 상태") @RequestBody ClassApprovalUpdateRequestDto classDto) {
+	
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
+		}
+		
+		// ***** UpdateResponseDto 받아야 할 수도 있음 *****
+		cookingService.updateClassApproval(classDto);
+		
+		return ResponseEntity.status(ClassSuccessCode.CLASS_UPDATE_APPROVAL_SUCCESS.getStatus())
+				.body(ApiResponse.success(ClassSuccessCode.CLASS_UPDATE_APPROVAL_SUCCESS, null));
+	}
+	
+	
+	
+	
+	
+	// 200 클래스 삭제 성공 CLASS_DELETE_SUCCESS
+	// 400 클래스 삭제 실패 CLASS_DELETE_FAIL
+	// 400 입력값이 유효하지 않음 CLASS_INVALID_INPUT
+	// 400 입력값이 유효하지 않음 USER_INVALID_INPUT
+	// 401 로그인되지 않은 사용자 CLASS_UNAUTHRIZED
+	// 403 권한 없는 사용자의 접근 CLASS_FORBIDDEN
+	// 404 해당 클래스를 찾을 수 없음 CLASS_NOT_FOUND
+	// 404 해당 사용자를 찾을 수 없음 USER_NOT_FOUND
+	// 500 서버 내부 오류
+	
+	// 클래스 삭제
 	@DeleteMapping("/classes/{id}")
-	public int deleteGuide(
-			@PathVariable int id) {
-		return 0;
+	public ResponseEntity<?> deleteClass(@Parameter(description = "클래스의 일련번호") @PathVariable int id) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
+		}
+		
+		cookingService.deleteClass(id);
+		
+		return ResponseEntity.status(ClassSuccessCode.CLASS_DELETE_SUCCESS.getStatus())
+				.body(ApiResponse.success(ClassSuccessCode.CLASS_DELETE_SUCCESS, null));
 	}
 	
 	
@@ -155,8 +244,8 @@ public class CookingController {
 		
 		applyPage = cookingService.readApplyPageById(id, sort, pageable);
 		
-		return ResponseEntity.status(CookingSuccessCode.COOKING_APPLY_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(CookingSuccessCode.COOKING_APPLY_READ_LIST_SUCCESS, applyPage));
+		return ResponseEntity.status(ClassSuccessCode.CLASS_APPLY_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(ClassSuccessCode.CLASS_APPLY_READ_LIST_SUCCESS, applyPage));
 	}
 	
 	
@@ -170,7 +259,7 @@ public class CookingController {
 		// 인증 여부 확인 (비로그인)
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(CookingErrorCode.COOKING_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
 		}
 		
 		// 로그인 정보
@@ -179,8 +268,8 @@ public class CookingController {
 		
 		ClassApplyCreateResponseDto applyResponseDto = cookingService.createApply(applyRequestDto);
 		
-		return ResponseEntity.status(CookingSuccessCode.COOKING_APPLY_CREATE_SUCCESS.getStatus())
-				.body(ApiResponse.success(CookingSuccessCode.COOKING_APPLY_CREATE_SUCCESS, applyResponseDto));
+		return ResponseEntity.status(ClassSuccessCode.CLASS_APPLY_CREATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(ClassSuccessCode.CLASS_APPLY_CREATE_SUCCESS, applyResponseDto));
 	}
 	
 	
@@ -194,7 +283,7 @@ public class CookingController {
 		// 인증 여부 확인 (비로그인)
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(CookingErrorCode.COOKING_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
 		}
 		
 		// 로그인 정보
@@ -203,8 +292,8 @@ public class CookingController {
 		
 		cookingService.deleteApply(applyDto);
 		
-		return ResponseEntity.status(CookingSuccessCode.COOKING_APPLY_DELETE_SUCCESS.getStatus())
-				.body(ApiResponse.success(CookingSuccessCode.COOKING_APPLY_DELETE_SUCCESS, null));
+		return ResponseEntity.status(ClassSuccessCode.CLASS_APPLY_DELETE_SUCCESS.getStatus())
+				.body(ApiResponse.success(ClassSuccessCode.CLASS_APPLY_DELETE_SUCCESS, null));
 	}
 	
 	
@@ -221,7 +310,7 @@ public class CookingController {
 		// 인증 여부 확인 (비로그인)
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(CookingErrorCode.COOKING_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
 		}
 		
 		// 로그인 정보
@@ -237,8 +326,8 @@ public class CookingController {
 		
 		ClassApplyUpdateResponseDto applyResponseDto = cookingService.updateApply(applyRequestDto);
 		
-		return ResponseEntity.status(CookingSuccessCode.COOKING_APPLY_UPDATE_SUCCESS.getStatus())
-				.body(ApiResponse.success(CookingSuccessCode.COOKING_APPLY_UPDATE_SUCCESS, applyResponseDto));
+		return ResponseEntity.status(ClassSuccessCode.CLASS_APPLY_UPDATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(ClassSuccessCode.CLASS_APPLY_UPDATE_SUCCESS, applyResponseDto));
 	}
 	
 	

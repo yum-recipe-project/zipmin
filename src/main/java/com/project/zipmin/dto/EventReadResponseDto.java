@@ -19,7 +19,6 @@ public class EventReadResponseDto {
 	private String image;
 	private int userId;
 	
-	private String status;
 	private int commentcount;
 	
 }

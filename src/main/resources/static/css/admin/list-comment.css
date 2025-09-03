@@ -262,10 +262,6 @@
 	text-align: center;
 }
 
-.report-count {
-	transition: opacity .12s ease;
-}
-
 .report-cell {
 	position: relative;
 	display: inline-block;
@@ -290,6 +286,54 @@
 	opacity: 1;
 	pointer-events: auto;
 }
+
+.view {
+    transition: color 0.2s ease, text-decoration 0.2s ease;
+    cursor: pointer;
+}
+
+.view:hover {
+    color: #5D87FF;
+    text-decoration: underline;
+}
+
+
+
+
+
+
+/* 목록 없음 표시 */
+.body-wrapper .container-fluid .search_empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.body-wrapper .container-fluid .search_empty img {
+	margin-top: 40px !important;
+	width: 88px;
+}
+
+.body-wrapper .container-fluid .search_empty h2 {
+	text-align: center !important;
+	padding-top: 16px !important;
+	padding-bottom: 16px !important;
+	font-weight: 900;
+	line-height: 1.3;
+	letter-spacing: -0.02em;
+	font-size: 24px;
+}
+
+.body-wrapper .container-fluid .search_empty span {
+	text-align: center !important;
+	margin-bottom: 32px !important;
+	color: #7E8082;
+	font-weight: 400;
+	line-height: 1.5;
+	letter-spacing: -0.025em;
+	font-size: 16px;
+}
+
 
 
 

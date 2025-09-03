@@ -336,8 +336,12 @@ function closeFridgeSheet() {
 
 
 /**
- * TODO : 실시간 검증 + 폼값 촉리화
+ * TODO : 실시간 검증 + 폼값 초기화
  */
+
+
+
+
 
 
 /**
@@ -390,6 +394,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				});
 				
 				if (response.data.code === 'USER_FRIDGE_CREATE_SUCCESS') {
+					bootstrap.Modal.getInstance(document.getElementById('addUserFridgeModal'))?.hide();
 					fetchUserFridgeList();
 				}
 			}

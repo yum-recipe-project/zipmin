@@ -14,8 +14,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.KitchenErrorCode;
 import com.project.zipmin.dto.GuideReadResponseDto;
+import com.project.zipmin.dto.LikeCreateRequestDto;
+import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.entity.Guide;
 import com.project.zipmin.mapper.GuideMapper;
 import com.project.zipmin.repository.KitchenRepository;
@@ -116,15 +119,40 @@ public class KitchenService {
 	}
 	
 	
-	
-	
-	
     // 특정 가이드 상세 조회
 	public GuideReadResponseDto readGuideById(int id) {
 	    Guide guide = kitchenRepository.findById(id)
 	            .orElseThrow(() -> new IllegalArgumentException("해당 가이드를 찾을 수 없습니다. ID: " + id));
 
 	    return guideMapper.toReadResponseDto(guide);
+	}
+
+	
+	// 가이드 좋아요
+	public LikeCreateResponseDto likeGuide(LikeCreateRequestDto likeDto) {
+		
+		// 입력값 검증
+		if (likeDto == null || likeDto.getTablename() == null
+				|| likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
+		}
+		
+		// 댓글 존재 여부 확인
+		if (kitchenRepository.existsById(likeDto.getRecodenum())) {
+			new ApiException(CommentErrorCode.COMMENT_NOT_FOUND);
+		}
+		
+		// 좋아요 저장
+		try {
+		    return likeService.createLike(likeDto);
+		}
+		catch (ApiException e) {
+		    throw e;
+		}
+		catch (Exception e) {
+		    throw new ApiException(CommentErrorCode.COMMENT_LIKE_FAIL);
+		}
+		
 	}
 
 	

@@ -5,22 +5,31 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
+import com.project.zipmin.api.CommentErrorCode;
+import com.project.zipmin.api.CommentSuccessCode;
 import com.project.zipmin.api.KitchenSuccessCode;
 import com.project.zipmin.dto.GuideReadResponseDto;
 import com.project.zipmin.dto.GuideResponseDTO;
+import com.project.zipmin.dto.LikeCreateRequestDto;
+import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.service.KitchenService;
 import com.project.zipmin.service.LikeService;
+import com.project.zipmin.service.UserService;
 
 import io.swagger.v3.oas.annotations.Parameter;
 
@@ -33,6 +42,8 @@ public class KitchenController {
 	@Autowired
 	LikeService likeService;
 	
+	@Autowired
+	UserService userService;
 
 	// 가이드 목록 조회
 	@GetMapping("/guides")
@@ -97,11 +108,26 @@ public class KitchenController {
 	
 	// 특정 가이드 좋아요 (저장)
 	@PostMapping("/guides/{id}/likes")
-	public int likeGuide(
-			@PathVariable int guideId) {
-		return 0;
+	public ResponseEntity<?> likeGuide(
+			@PathVariable int guideId,
+			@RequestBody LikeCreateRequestDto likeRequestDto) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			// *** todo: 키친가이드 에러코드로 변경 ***
+		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
+		}
+		
+		likeRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
+		
+		LikeCreateResponseDto likeResponseDto = kitchenService.likeGuide(likeRequestDto);
+					
+		// *** todo: 키친가이드 에러코드로 변경 ***
+		return ResponseEntity.status(CommentSuccessCode.COMMENT_LIKE_SUCCESS.getStatus())
+				.body(ApiResponse.success(CommentSuccessCode.COMMENT_LIKE_SUCCESS, likeResponseDto));
 	}
-	
+
 	
 	
 	

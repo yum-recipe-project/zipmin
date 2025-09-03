@@ -217,6 +217,14 @@ function renderLikeButton(id, likestatus) {
 	img.src = likestatus ? '/images/common/star_full.png' : '/images/recipe/star_empty.png';
 	
 	button.append(img);
+	
+	// 좋아요 버튼 동작
+	button.addEventListener('click', (event) => {
+	    event.preventDefault();
+	    likestatus = !likestatus;
+	    img.src = likestatus ? '/images/common/star_full.png' : '/images/recipe/star_empty.png';
+	});
+
 
 	return button;
 }

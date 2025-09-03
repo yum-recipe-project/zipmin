@@ -140,17 +140,9 @@ function renderGuideList(guideList) {
         const subtitleSpan = document.createElement('span');
         subtitleSpan.textContent = guide.subtitle;
 
-//        const favBtn = document.createElement('button');
-//        favBtn.className = 'favorite_btn';
-		
-//        guideTop.append(subtitleSpan, favBtn);
-		
 	    const favBtn = renderLikeButton(guide.id, guide.likestatus);
-
 	    guideTop.append(subtitleSpan, favBtn);
 			
-			
-
         const titleSpan = document.createElement('span');
         titleSpan.textContent = guide.title;
 
@@ -219,10 +211,10 @@ function initFavoriteButtons() {
 function renderLikeButton(id, likestatus) {
 	
 	const button = document.createElement('button');
-	button.className = 'btn_tool like_btn';
+	button.className = 'favorite_btn';
 
 	const img = document.createElement('img');
-	img.src = likestatus ? '/images/common/star_full.png' : '/images/common/star_outline.png';
+	img.src = likestatus ? '/images/common/star_full.png' : '/images/recipe/star_empty.png';
 	
 	button.append(img);
 

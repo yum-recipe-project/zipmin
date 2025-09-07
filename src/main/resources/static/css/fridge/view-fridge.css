@@ -18,7 +18,8 @@
 #container .fridge_wrap .fridge_header {
 	margin: 0px auto;
 	display: flex;
-	gap: 20px;
+	align-items: center;
+	gap: 30px;
 	flex: 1 1 auto;
 	box-sizing: border-box;
 	padding: 40px 0 20px 0;
@@ -31,20 +32,12 @@
 	font-size: 32px;
 }
 
-#container .fridge_wrap .fridge_header span {
-	font-size: 14px;
-	font-weight: 600;
-	color: var(--point-color2);
-	display: flex;
-	align-items: center;
-	gap: 5px;
-	cursor: pointer;
+#container .fridge_wrap .fridge_header .btn_tab {
+	background: var(--point-color2);
+	color: #fff;
+	padding: 0 15px;
 }
 
-#container .fridge_wrap .fridge_header span img {
-	width: 18px;
-	height: 18px;
-}
 
 
 
@@ -120,6 +113,7 @@
 #container .fridge_wrap .fridge_content .fridge_list .fridge .fridge_info {
 	display: flex;
 	align-items: center;
+	gap: 15px;
 }
 
 #container .fridge_wrap .fridge_content .fridge_list .fridge .fridge_info .image {
@@ -133,13 +127,18 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: 65%;
-    margin-right: 15px;
 }
 
 #container .fridge_wrap .fridge_content .fridge_list .fridge .fridge_info .detail {
-	margin-right: auto;
+	flex: 1;
 }
 
+#container .fridge_wrap .fridge_content .fridge_list .fridge .fridge_info .detail .title {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
 
 #container .fridge_wrap .fridge_content .fridge_list .fridge .fridge_info .detail .name {
 	display: inline-flex;
@@ -167,14 +166,7 @@
 /* 나의 냉장고 > 냉장고 목록 > 버튼 */
 #container .fridge_wrap .fridge_content .fridge_list .fridge .fridge_info .tab_wrap {
 	display: flex;
-	flex-direction: column;
-	gap: 5px;
-}
-
-#container .fridge_wrap .fridge_content .fridge_list .fridge .fridge_info .tab_sm {
-	height: 26px;
-	font-size: 12px;
-	padding: 0 10px;
+	gap: 8px;
 }
 
 #container .fridge_wrap .fridge_content .fridge_list .fridge .fridge_info .sort_sm  {
@@ -188,11 +180,10 @@
 	position: absolute;
 	left: 0;
 	right: 0;
-	width: 20px;
 	margin: 0 auto;
-	bottom: 0px;
-	width: 22px;
-	height: 1px;
+	bottom: 1px;
+	width: 20px;
+	height: 2px;
 	background: var(--txt-color-400);
 	border-radius: 2px;
 }

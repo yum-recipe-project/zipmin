@@ -118,6 +118,9 @@ function renderUserFridgeList(userFridgeList) {
 		const divDetail = document.createElement('div');
 		divDetail.className = 'detail';
 		
+		const divTitle = document.createElement('div');
+		divTitle.className = 'title';
+		
 		const h4Name = document.createElement('h4');
 		h4Name.className = 'name';
 		h4Name.textContent = `${userFridge.name} ${userFridge.amount}${userFridge.unit}`;
@@ -132,30 +135,13 @@ function renderUserFridgeList(userFridgeList) {
 				h4Name.style.setProperty('--dot-color', 'rgb(250, 216, 166)');
 				break;
 		}
-		
-		const pCategory = document.createElement('p');
-		pCategory.className = 'info';
-		const bCat = document.createElement('b');
-		bCat.textContent = `카테고리`;
-		const spanCat = document.createElement('span');
-		spanCat.className = 'category';
-		spanCat.textContent = userFridge.category;
-		pCategory.append(bCat, document.createTextNode('\u00A0\u00A0'), spanCat);
-		
-		const pExpdate = document.createElement('p');
-		pExpdate.className = 'info';
-		const bExp = document.createElement('b');
-		bExp.textContent = '유통기한';
-		const spanExp = document.createElement('span');
-		spanExp.className = 'expdate';
-		spanExp.textContent = `${formatDate(userFridge.expdate)}`;
-		pExpdate.append(bExp, document.createTextNode('\u00A0\u00A0'), spanExp);
+		divTitle.appendChild(h4Name);
 		
 		const tabWrap = document.createElement('div');
 		tabWrap.className = 'tab_wrap';
 		
 		const btnEdit = document.createElement('button');
-		btnEdit.className = 'btn_tab tab_sm';
+		btnEdit.className = 'btn_sort sort_sm';
 		btnEdit.type = 'button';
 		btnEdit.textContent = '수정';
 		btnEdit.dataset.bsToggle = 'modal';
@@ -181,8 +167,28 @@ function renderUserFridgeList(userFridgeList) {
 		});
 		
 		tabWrap.append(btnEdit, btnDelete);
-		divDetail.append(h4Name, pCategory, pExpdate);
-		divInfo.append(spanImage, divDetail, tabWrap);
+		divTitle.appendChild(tabWrap);
+		
+		const pCategory = document.createElement('p');
+		pCategory.className = 'info';
+		const bCat = document.createElement('b');
+		bCat.textContent = `카테고리`;
+		const spanCat = document.createElement('span');
+		spanCat.className = 'category';
+		spanCat.textContent = userFridge.category;
+		pCategory.append(bCat, document.createTextNode('\u00A0\u00A0'), spanCat);
+		
+		const pExpdate = document.createElement('p');
+		pExpdate.className = 'info';
+		const bExp = document.createElement('b');
+		bExp.textContent = '유통기한';
+		const spanExp = document.createElement('span');
+		spanExp.className = 'expdate';
+		spanExp.textContent = `${formatDate(userFridge.expdate)}`;
+		pExpdate.append(bExp, document.createTextNode('\u00A0\u00A0'), spanExp);
+		
+		divDetail.append(divTitle, pCategory, pExpdate);
+		divInfo.append(spanImage, divDetail);
 		li.appendChild(divInfo);
 		container.appendChild(li);
   });

@@ -576,9 +576,8 @@ async function deleteFridge(id) {
 			headers: getAuthHeaders()
 		});
 		
-		console.log(response);
-		
 		if (response.data.code === 'FRIDGE_DELETE_SUCCESS') {
+			alertPrimary('냉장고 삭제에 성공했습니다.');
 			fetchCreatedFridgeList();
 		}
 	}
@@ -588,6 +587,24 @@ async function deleteFridge(id) {
 		if (code === 'FRIDGE_DELETE_FAIL') {
 			alertDanger('냉장고 삭제에 실패했습니다.');
 		}
+		else if (code === 'FRIDGE_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'FRIDGE_UNAUTHORIZED_ACCESS') {
+			alertDanger('로그인되지 않은 사용자입니다.');
+		}
+		else if (code === 'FRIDGE_FORDBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (code === 'FRIDGE_NOT_FOUND') {
+			alertDanger('해당 냉장고를 찾을 수 없습니다.');
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			alertDanger('해당 사용자를 찾을 수 없습니다.');
+		}
 		else if (code === 'INTERNAL_SERVER_ERROR') {
 			alertDanger('서버 내부에서 오류가 발생했습니다.');
 		}
@@ -595,7 +612,6 @@ async function deleteFridge(id) {
 			console.log(error);
 		}
 	}
-	
 }
 
 

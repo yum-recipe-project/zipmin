@@ -25,11 +25,7 @@
 				<div class="fridge_wrap">
 					<div class="fridge_header">
 						<h2>나의 냉장고</h2>
-						<span id="addUserFridge" data-bs-toggle="modal" data-bs-target="#writeUserFridgeModal">
-							<img src="/images/cooking/add_circle.png">
-							냉장고 채우기
-						</span>
-						<button type="button" class="btn btn_tab btn_primary">냉장고 채우기</button>
+						<button type="button" class="btn btn_tab" data-bs-toggle="modal" data-bs-target="#writeUserFridgeModal">냉장고 채우기</button>
 					</div>
 					<div class="fridge_content">
 						<div class="fridge_subtitle">

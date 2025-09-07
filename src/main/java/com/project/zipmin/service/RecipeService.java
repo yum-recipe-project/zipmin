@@ -267,10 +267,6 @@ public class RecipeService {
 			List<RecipeStockReadResponseDto> stockDtoList = new ArrayList<>();
 			for (RecipeStock stock : stockList) {
 				RecipeStockReadResponseDto stockDto = stockMapper.toReadResponseDto(stock);
-				
-				// 이미지
-				recipeDto.setImage(publicPath + "/" + recipeDto.getImage());	
-				
 				stockDtoList.add(stockDto);
 			}
 			
@@ -288,6 +284,12 @@ public class RecipeService {
 			List<RecipeStepReadResponseDto> stepDtoList = new ArrayList<>();
 			for (RecipeStep step : stepList) {
 				RecipeStepReadResponseDto stepDto = stepMapper.toReadResponseDto(step);
+				
+				// 이미지
+				if (stepDto.getImage() != null) {
+					stepDto.setImage(publicPath + "/" + stepDto.getImage());	
+				}
+				
 				stepDtoList.add(stepDto);
 			}
 			

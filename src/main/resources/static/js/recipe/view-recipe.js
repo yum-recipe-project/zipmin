@@ -46,6 +46,10 @@ document.addEventListener('DOMContentLoaded', async function() {
 	
 	const basicForm = document.getElementById('viewRecipeBasicForm');
 	const stockForm = document.getElementById('viewRecipeStockForm');
+	const tipForm = document.getElementById('viewRecipeTipForm');
+	const supportForm = document.getElementById('viewRecipeSupportForm');
+	const reviewCommentForm = document.getElementById('viewRecipeReviewCommentForm');
+	
 	
 	// 레시피 정보 조회
 	try {
@@ -77,17 +81,19 @@ document.addEventListener('DOMContentLoaded', async function() {
 			renderStockList(result.data.stock_list);
 			renderMemoList(result.data.stock_list);
 			
-			document.getElementById('tip').innerText = result.data.tip;
-			document.querySelectorAll('.nickname[data-id]').forEach(nickname => nickname.innerText = result.data.nickname);
-			
 			// 조리 순서
 			renderStepList(result.data.step_list);
 			
-			// 리뷰 수
-			document.querySelectorAll('.review_count[data-id]').forEach(reviewcount => { reviewcount.innerText = result.data.reviewcount; });
-			document.querySelectorAll('.comment_count[data-id]').forEach(commentcount => { commentcount.innerText = result.data.commentcount; });
+			// 레시피 팁
+			tipForm.querySelector('.recipe_tip p').innerText = result.data.tip;
 			
-			// ***** 구독자 정보 렌더링 *****
+			// 구독 및 후원
+			supportForm.querySelector('.recipe_writer h5').innerText = result.data.nickname;
+			supportForm.querySelector('.recipe_writer p').innerText = `구독자 ${result.data.follower}명`;
+			
+			// 리뷰 수
+			reviewCommentForm.querySelector('.review_count').innerText = result.data.reviewcount;
+			reviewCommentForm.querySelector('.comment_count').innerText = result.data.commentcount;
 		}
 		
 		if (result.code === 'RECIPE_READ_FAIL') {
@@ -132,6 +138,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
 
+
 /**
  * 레시피의 인분 변경시 레시피 재료 목록의 용량을 계산하는 함수
  */
@@ -155,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /**
- * 
+ * 레시피 카테고리 목록을 화면에 렌더링하는 함수
  */
 function renderCategoryList(categoryList) {
 	const basicForm = document.getElementById('viewRecipeBasicForm');
@@ -179,7 +186,7 @@ function renderCategoryList(categoryList) {
 
 
 /**
- * 재료 목록 렌더링
+ * 레시피 재료 목록을 화면에 렌더링하는 함수
  */
 function renderStockList(stockList) {
 	const stockForm = document.getElementById('viewRecipeStockForm');
@@ -260,87 +267,39 @@ function renderMemoList(stockList) {
 
 
 /**
- * 조리 순서 렌더링
+ * 레시피 조리 과정을 화면에 렌더링하는 함수
  */
 function renderStepList(stepList) {
-	const stepElement = document.getElementById('step');
-	stepElement.innerHTML = '';
+	const stepForm = document.getElementById('viewRecipeStepForm');
+	const container = stepForm.querySelector('.step_list');
+	container.innerHTML = '';
 
     stepList.forEach((step, index) => {
 		const li = document.createElement('li');
 		
-		// 설명 div
-		const descDiv = document.createElement('div');
-		descDiv.className = 'description';
+		const contentDiv = document.createElement('div');
+		contentDiv.className = 'step_content';
 		
 		const h5 = document.createElement('h5');
 		h5.textContent = `STEP${index + 1}`;
-		descDiv.appendChild(h5);
+		contentDiv.appendChild(h5);
 		
 		const p = document.createElement('p');
+		p.textContent = step.content;
+		contentDiv.appendChild(p);
+		li.appendChild(contentDiv);
 		
-		const span = document.createElement('span');
-		span.className = 'hidden';
-		span.textContent = `${index + 1}. `;
-		p.appendChild(span);
-		
-		const descText = document.createTextNode(step.content);
-		p.appendChild(descText);
-		
-		descDiv.appendChild(p);
-		li.appendChild(descDiv);
-		
-		// 이미지 div
-		const imgDiv = document.createElement('div');
-		imgDiv.className = 'image';
+		const imageDiv = document.createElement('div');
+		imageDiv.className = 'step_image';
 		
 		const img = document.createElement('img');
-		img.src = step.image ? step.image : '/images/common/test.png';
-		imgDiv.appendChild(img);
+		img.src = step.image;
+		imageDiv.appendChild(img);
 		
-		li.appendChild(imgDiv);
+		if (step.image) {
+			li.appendChild(imageDiv);
+		}
 		
-		stepElement.appendChild(li);
+		container.appendChild(li);
 	});
 }
-
-
-
-
-
-/**
- * 구독자 정보 렌더링
- */
-/*
-function renderFollowSection(followerCount, isFollow) {
-    // 구독자 수
-    const followerElement = document.getElementById("follower");
-    if (followerElement) {
-        followerElement.innerText = followerCount;
-    }
-
-    // 구독 버튼
-    const followButton = document.getElementById("followButton");
-    if (followButton) {
-        // 버튼 클래스 토글
-        followButton.classList.remove("btn_outline", "btn_dark");
-        if (isFollow) {
-            followButton.classList.add("btn_outline");
-            followButton.innerText = "구독 중";
-        } else {
-            followButton.classList.add("btn_dark");
-            followButton.innerText = "구독";
-        }
-    }
-}
-*/
-
-
-
-
-
-
-
-
-
-

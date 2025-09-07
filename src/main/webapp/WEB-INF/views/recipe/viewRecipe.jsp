@@ -110,49 +110,47 @@
 						<table class="stock_list">
 							<thead>
 								<tr>
-									<th width="25%">재료</th>
-									<th width="25%">용량</th>
-									<th width="50%">비고</th>
+									<th width="33%">재료</th>
+									<th width="33%">용량</th>
+									<th width="33%">비고</th>
 								</tr>
 							</thead>
 							<tbody class="stock"></tbody>
 						</table>
 					</div>
 					
-					<div class="recipe_step">
+					<div id="viewRecipeStepForm" class="recipe_step">
 						<!-- 제목 -->
 						<h3>조리 순서</h3>
-						<ul class="step_list" id="step"></ul>
+						<ul class="step_list"></ul>
 					</div>
 					
 					<!-- 요리팁 -->
-					<div class="recipe_tip">
-						<h3>주의사항</h3>
-						<p id="tip"></p>
+					<div id="viewRecipeTipForm">
+						<div class="recipe_tip">
+							<h3>주의사항</h3>
+							<p></p>
+						</div>
 					</div>
 					
-					<!-- 구독 및 후원 -->
-					<div class="recipe_util">
-						<div class="profile">
+					<!-- 후원 -->
+					<div id="viewRecipeSupportForm" class="recipe_support">
+						<div class="recipe_writer">
 							<img src="/images/common/test.png">
 							<div>
-								<h5 class="nickname" data-id="2"></h5>
-								<p>구독자 <em id="follower">45</em>명</p>
+								<h5>알 수 없는 사용자</h5>
+								<p>구독자 0명</p>
 							</div>
 						</div>
 						<div class="btn_wrap">
-							<button class="btn_outline" type="button" data-bs-toggle="modal" data-bs-target="#supportRecipeModal"
-								onclick="openSupportRecipeModal();">
-								레시피 후원하기
-							</button>
-							
-							<button id="followButton" class="btn_dark" type="submit" onclick="">구독</button>
+							<button class="btn_outline" type="button" data-bs-toggle="modal" data-bs-target="#supportRecipeModal">레시피 후원하기</button>
+							<button type="button" class="btn_dark">구독</button>
 						</div>
 					</div>
 				</div>
 				
 				<!-- 탭 메뉴 버튼 -->
-				<div class="tab_button_wrap">
+				<div id="viewRecipeReviewCommentForm" class="tab_button_wrap">
 					<div class="tab_button">
 						<button class="active">리뷰 (<em class="review_count" data-id="1"></em>)</button>
 						<button>댓글 (<em class="comment_count" data-id="1"></em>)</button>

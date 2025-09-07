@@ -1,13 +1,4 @@
 /**
- * 레시피를 후원하는 모달창을 여는 함수
- */
-function openSupportRecipeModal() {
-	
-}
-
-
-
-/**
  * 레시피를 후원하는 모달창에 데이터를 꽂는 함수
  */
 document.addEventListener("DOMContentLoaded", function() {

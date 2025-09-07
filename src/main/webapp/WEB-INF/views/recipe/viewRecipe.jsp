@@ -24,7 +24,7 @@
 		<main id="container">
 			<div class="content">
 				<div class="recipe_wrap">
-					<div id="basic" class="recipe_header">
+					<div id="viewRecipeBasicForm" class="recipe_header">
 						<!-- 제목 -->
 						<h2 class="recipe_title"></h2>
 						
@@ -86,19 +86,17 @@
 						</div>
 					</div>
 					
-					<div class="recipe_ingredient">
-						<!-- 제목 -->
+					<div id="viewRecipeStockForm" class="recipe_stock">
 						<h3>재료</h3>
+						
 						<!-- 장보기메모에 재료 담기 버튼 -->
-						<div class="save_ingredient_btn">
-							<button class="btn_tool" data-bs-toggle="modal" data-bs-target="#addMemoModal">
-								<img src="/images/recipe/pen.png"> 장보기메모에 재료 담기
-							</button>
-						</div>
+						<button class="btn_tool" data-bs-toggle="modal" data-bs-target="#addMemoModal">
+							<img src="/images/recipe/pen.png"> 장보기메모에 재료 담기
+						</button>
 						
 						<!-- 양 -->
-						<div class="recipe_serving">
-							<select id="servingInput" name="">
+						<div class="recipe_portion">
+							<select>
 								<option value="1인분">1인분</option>
 								<option value="2인분">2인분</option>
 								<option value="3인분">3인분</option>
@@ -109,7 +107,7 @@
 						</div>
 						
 						<!-- 재료 표 -->
-						<table class="ingredient_list">
+						<table class="stock_list">
 							<thead>
 								<tr>
 									<th width="25%">재료</th>
@@ -117,7 +115,7 @@
 									<th width="50%">비고</th>
 								</tr>
 							</thead>
-							<tbody id="ingredient"></tbody>
+							<tbody class="stock"></tbody>
 						</table>
 					</div>
 					

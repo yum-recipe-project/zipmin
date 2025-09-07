@@ -130,20 +130,19 @@
 
 
 /* 레시피 재료 */
-#container .content .recipe_wrap .recipe_ingredient {
+#container .recipe_wrap .recipe_stock {
 	padding: 40px 0;
 	position: relative;
 	
 }
 
-/* 레시피 재료 (제목) */
-#container .content .recipe_wrap .recipe_ingredient h3 {
+#container .recipe_wrap .recipe_stock h3 {
 	font-size: 24px;
 	font-weight: 600;
 }
 
-/* 레시피 재료 (재료 저장) */
-#container .content .recipe_wrap .recipe_ingredient .save_ingredient_btn {
+/* 레시피 재료 > 재료 저장 */
+#container .recipe_wrap .recipe_stock .btn_tool {
 	position: absolute;
 	top: 40px;
 	right: 0;
@@ -154,15 +153,15 @@
 	margin-left: auto;
 }
 
-/* 레시피 재료 (양) */
-#container .content .recipe_wrap .recipe_ingredient .recipe_serving {
+/* 레시피 재료 > 양 */
+#container .recipe_wrap .recipe_stock .recipe_portion {
 	display: flex;
 	align-items: center;
 	gap: 10px;
 	margin-top: 40px;
 }
 
-#container .content .recipe_wrap .recipe_ingredient .recipe_serving select {
+#container .recipe_wrap .recipe_stock .recipe_portion select {
 	width: auto;
 	padding: 0 45px 0 12px;
 	height: 42px;
@@ -176,18 +175,18 @@
 	background-size: 24px;
 }
 
-#container .content .recipe_wrap .recipe_ingredient .recipe_serving p {
+#container .recipe_wrap .recipe_stock .recipe_portion p {
 	color: var(--txt-color-500);
 	font-size: 12px;
 	font-weight: 400;
 }
 
-/* 레시피 재료 (재료 표) */
-#container .content .recipe_wrap .recipe_ingredient .ingredient_list {
+/* 레시피 재료 > 재료 목록 */
+#container .content .recipe_wrap .recipe_stock .stock_list {
 	margin-top: 8px;
 }
 
-#container .content .recipe_wrap .recipe_ingredient .ingredient_list thead th {
+#container .recipe_wrap .recipe_stock .stock_list thead th {
 	text-align: left;
 	background: #F9F9F9;
 	padding: 16px;
@@ -196,15 +195,21 @@
 	font-size: 14px;
 }
 
-#container .content .recipe_wrap .recipe_ingredient .ingredient_list tbody tr {
+#container .recipe_wrap .recipe_stock .stock_list tbody tr {
 	height: 50px;
 	border-bottom: 1px solid var(--line-color2);
 	font-size: 14px;
 }
 
-#container .content .recipe_wrap .recipe_ingredient .ingredient_list tbody tr td {
+#container .recipe_wrap .recipe_stock .stock_list tbody tr td {
 	padding: 16px;
 }
+
+
+
+
+
+
 
 
 
@@ -409,11 +414,11 @@
 		margin-top: 16px !important;
 	}
 	
-	.recipe_ingredient .ingredient_list {
+	.recipe_stock .ingredient_list {
 		margin-top: 40px !important;
 	}
 	
-	.recipe_ingredient .ingredient_list th {
+	.recipe_stock .ingredient_list th {
 		border-top: 1px solid var(--line-color2) !important;
 	}
 	

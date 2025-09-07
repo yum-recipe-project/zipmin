@@ -1,4 +1,13 @@
 /**
+ * 전역 변수
+ */
+let originPortion = 0;
+
+
+
+
+
+/**
  * 탭 메뉴 클릭 시 탭 메뉴를 활성화하고 해당하는 내용을 표시하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
@@ -35,8 +44,8 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 document.addEventListener('DOMContentLoaded', async function() {
 	
-	const basic = document.getElementById('basic');
-	
+	const basicForm = document.getElementById('viewRecipeBasicForm');
+	const stockForm = document.getElementById('viewRecipeStockForm');
 	
 	// 레시피 정보 조회
 	try {
@@ -53,22 +62,23 @@ document.addEventListener('DOMContentLoaded', async function() {
 		if (result.code === 'RECIPE_READ_SUCCESS') {
 			
 			// 기본 정보
-			basic.querySelector('.recipe_title').innerText = result.data.title;
-			basic.querySelector('.recipe_cooklevel').innerText = result.data.cooklevel;
-			basic.querySelector('.recipe_cooktime').innerText = result.data.cooktime;
-			basic.querySelector('.recipe_spicy').innerText = result.data.spicy;
-			basic.querySelector('.recipe_writer img').src = result.data.avatar;
-			basic.querySelector('.recipe_writer span').innerText = result.data.nickname;
-			basic.querySelector('.recipe_introduce').innerText = result.data.introduce;
+			basicForm.querySelector('.recipe_title').innerText = result.data.title;
+			basicForm.querySelector('.recipe_cooklevel').innerText = result.data.cooklevel;
+			basicForm.querySelector('.recipe_cooktime').innerText = result.data.cooktime;
+			basicForm.querySelector('.recipe_spicy').innerText = result.data.spicy;
+			basicForm.querySelector('.recipe_writer img').src = result.data.avatar;
+			basicForm.querySelector('.recipe_writer span').innerText = result.data.nickname;
+			basicForm.querySelector('.recipe_introduce').innerText = result.data.introduce;
 			renderCategoryList(result.data.category_list);
+			
+			// 재료
+			originPortion = parseInt(result.data.portion, 10);
+			stockForm.querySelector('.recipe_portion select').value = result.data.portion;
+			renderStockList(result.data.stock_list);
+			renderMemoList(result.data.stock_list);
 			
 			document.getElementById('tip').innerText = result.data.tip;
 			document.querySelectorAll('.nickname[data-id]').forEach(nickname => nickname.innerText = result.data.nickname);
-			
-			// 재료
-			document.getElementById('servingInput').value = result.data.portion;
-			renderStockList(result.data.stock_list);
-			renderMemoList(result.data.stock_list);
 			
 			// 조리 순서
 			renderStepList(result.data.step_list);
@@ -123,10 +133,33 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
 /**
+ * 레시피의 인분 변경시 레시피 재료 목록의 용량을 계산하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+
+	const stockForm = document.getElementById('viewRecipeStockForm');
+	stockForm.querySelector('.recipe_portion select').addEventListener('change', function() {
+		const portion = parseInt(stockForm.querySelector('.recipe_portion select').value, 10);
+		stockForm.querySelectorAll('.stock_list td.amount').forEach(td => {
+			const originAmount = parseFloat(td.dataset.amount);
+			const unit = td.dataset.unit;			
+			const amount = Math.round((originAmount / originPortion) * portion * 100) / 100;
+			td.textContent = `${amount}${unit}`;
+		});
+	});
+	
+});
+
+
+
+
+
+/**
  * 
  */
 function renderCategoryList(categoryList) {
-	const container = document.getElementById('basic').querySelector('.recipe_category');
+	const basicForm = document.getElementById('viewRecipeBasicForm');
+	const container = basicForm.querySelector('.recipe_category');
 	container.innerHTML = '';
 	
 	categoryList.forEach(category => {
@@ -149,28 +182,32 @@ function renderCategoryList(categoryList) {
  * 재료 목록 렌더링
  */
 function renderStockList(stockList) {
-	const ingredientElement = document.getElementById('ingredient');
-	ingredientElement.innerHTML = '';
+	const stockForm = document.getElementById('viewRecipeStockForm');
+	const container = stockForm.querySelector('.stock');
+	container.innerHTML = '';
 	
-	stockList.forEach(ingredient => {
+	stockList.forEach(stock => {
 		const tr = document.createElement('tr');
 		
 		// 이름
 		const tdName = document.createElement('td');
-		tdName.textContent = ingredient.name;
+		tdName.textContent = stock.name;
 		tr.appendChild(tdName);
 		
 		// 양
 		const tdAmount = document.createElement('td');
-		tdAmount.textContent = `${ingredient.amount}${ingredient.unit}`;
+		tdAmount.className = 'amount';
+		tdAmount.dataset.amount = stock.amount;
+		tdAmount.dataset.unit = stock.unit;
+		tdAmount.textContent = `${stock.amount}${stock.unit}`;
 		tr.appendChild(tdAmount);
 		
 		// 비고
 		const tdNote = document.createElement('td');
-		tdNote.textContent = ingredient.note || '';
+		tdNote.textContent = stock.note;
 		tr.appendChild(tdNote);
 		
-		ingredientElement.appendChild(tr);
+		container.appendChild(tr);
 	});
 }
 

@@ -30,8 +30,8 @@
 						
 						<!-- 유틸 버튼 -->
 						<div class="btn_wrap">
-							<button class="btn_icon">
-								<img src="/images/recipe/star_181a1c.png">
+							<button class="btn_icon like">
+								<img src="/images/recipe/star_empty_181a1c.png">
 							</button>
 							<button class="btn_icon print" onclick="window.print();">
 								<img src="/images/recipe/print.png">
@@ -71,19 +71,6 @@
 						
 						<!-- 카테고리 -->
 						<div class="recipe_category"></div>
-						
-						<!-- 버튼 -->
-						<div class="btn_wrap">
-							<button class="btn_icon" data-bs-toggle="modal" data-bs-target="#reportRecipeModal">
-								<img src="/images/recipe/siren.png">
-							</button>
-							<button class="btn_icon" onclick="">
-								<img src="/images/recipe/youtube.png">
-							</button>
-							<button class="btn_icon print" onclick="window.print();">
-								<img src="/images/recipe/print.png">
-							</button>
-						</div>
 					</div>
 					
 					<div id="viewRecipeStockForm" class="recipe_stock">

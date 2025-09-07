@@ -74,6 +74,10 @@ document.addEventListener('DOMContentLoaded', async function() {
 			basicForm.querySelector('.recipe_writer img').src = result.data.avatar;
 			basicForm.querySelector('.recipe_writer span').innerText = result.data.nickname;
 			basicForm.querySelector('.recipe_introduce').innerText = result.data.introduce;
+			if (result.data.liked) {
+				basicForm.querySelector('.btn_icon.like img').src = '/images/recipe/star_full_1a7ce2.png'
+			 	basicForm.querySelector('.btn_icon.like').classList.add('active');
+			}
 			renderCategoryList(result.data.category_list);
 			
 			// 재료
@@ -89,6 +93,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 			tipForm.querySelector('.recipe_tip p').innerText = result.data.tip;
 			
 			// 구독 및 후원
+			supportForm.querySelector('.recipe_writer img').src = result.data.avatar;
 			supportForm.querySelector('.recipe_writer h5').innerText = result.data.nickname;
 			supportForm.querySelector('.recipe_writer p').innerText = `구독자 ${result.data.follower}명`;
 			

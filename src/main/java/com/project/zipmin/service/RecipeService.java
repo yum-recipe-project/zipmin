@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.method.P;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,6 +64,7 @@ public class RecipeService {
 	
 	private final UserService userService;
 	private final FileService fileService;
+	private final LikeService likeService;
 	
 	private final RecipeMapper recipeMapper;
 	private final RecipeCategoryMapper categoryMapper;
@@ -241,6 +243,15 @@ public class RecipeService {
 		UserReadResponseDto userDto = userService.readUserById(recipeDto.getUserId());
 		recipeDto.setNickname(userDto.getNickname());
 		recipeDto.setAvatar(userDto.getAvatar());
+		recipeDto.setFollower(likeService.countLike("users", recipeDto.getUserId()));
+		
+		// 좋아요 여부
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
+			String username = authentication.getName();
+			int userId = userService.readUserByUsername(username).getId();
+			recipeDto.setLiked(likeService.existsUserLike("recipe", recipeDto.getId(), userId));
+		}
 		
 		// 레시피 카테고리 조회
 		try {

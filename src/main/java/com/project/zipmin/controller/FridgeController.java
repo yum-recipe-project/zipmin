@@ -362,6 +362,14 @@ public class FridgeController {
 	
 	
 	
+	// USER_FRIDGE_CREATE_SUCCESS
+	// USER_FRIDGE_CREATE_FAIL
+	// USER_FRIDGE_INVALID_INPUT
+	// USER_INVALID_INPUT
+	// USER_FRIDGE_UNAUTHORIZED_ACCESS
+	// USER_FRIDGE_FORBIDDEN
+	// USER_NOT_FOUND
+	
 	// 사용자 냉장고 작성
 	@PostMapping("/users/{id}/fridges")
 	public ResponseEntity<?> createUserFridge(
@@ -444,6 +452,16 @@ public class FridgeController {
 	
 	
 	
+	
+	
+	// USER_FRIDGE_UPDATE_FAIL
+	// USER_FRIDGE_INVALID_INPUT
+	// USER_INVALID_INPUT
+	// USER_FRIDGE_UNAUTHORIZED_ACCESS
+	// USER_FRIDGE_FORBIDDEN
+	// USER_FRIDGE_NOT_FOUND
+	// USER_NOT_FOUND
+	// INTERNAL_SERVER_ERROR
 	
 	// 사용자 냉장고 수정
 	@PatchMapping("/users/{userId}/fridges/{fridgeId}")
@@ -595,6 +613,18 @@ public class FridgeController {
 	
 	
 	
+	
+	// FRIDGE_UNLIKE_SUCCESS
+	// FRIDGE_UNLIKE_FAIL
+	// LIKE_DELETE_FAIL
+	// FRIDGE_INVALID_INPUT
+	// USER_INVALID_INPUT
+	// LIKE_INVALID_INPUT
+	// FRIDGE_UNAUTHORIZED_ACCESS
+	// LIKE_FORBIDDEN
+	// FRIDGE_NOT_FOUND
+	// USER_NOT_FOUND
+	// LIKE_NOT_FOUND
 	
 	// 냉장고 좋아요 취소
 	@DeleteMapping("/fridges/{id}/likes")

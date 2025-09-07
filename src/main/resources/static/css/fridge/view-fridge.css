@@ -153,8 +153,8 @@
 #container .fridge_wrap .fridge_content .fridge_list .fridge .fridge_info .detail .name::after {
 	content: '';
 	display: inline-box;
-	width: 8px;
-	height: 8px;
+	width: 10px;
+	height: 10px;
 	border-radius: 50%;
 	background-color: var(--dot-color, rgb(108, 169, 190));
 }

@@ -10,8 +10,9 @@
 		<link rel="stylesheet" href="/css/fridge/view-fridge.css">
 		<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 		<script src="/js/fridge/view-fridge.js"></script>
-		<script src="/js/modal/add-fridge-modal.js"></script>
-		<script src="/js/modal/add-user-fridge-modal.js"></script>
+		<script src="/js/modal/write-fridge-modal.js"></script>
+		<script src="/js/modal/write-user-fridge-modal.js"></script>
+		<script src="/js/modal/edit-user-fridge-modal.js"></script>
 	</head>
 	
 	<body>
@@ -24,10 +25,11 @@
 				<div class="fridge_wrap">
 					<div class="fridge_header">
 						<h2>나의 냉장고</h2>
-						<span id="addUserFridge" data-bs-toggle="modal" data-bs-target="#addUserFridgeModal">
+						<span id="addUserFridge" data-bs-toggle="modal" data-bs-target="#writeUserFridgeModal">
 							<img src="/images/cooking/add_circle.png">
 							냉장고 채우기
 						</span>
+						<button type="button" class="btn btn_tab btn_primary">냉장고 채우기</button>
 					</div>
 					<div class="fridge_content">
 						<div class="fridge_subtitle">
@@ -41,8 +43,6 @@
 						<ul class="fridge_list"></ul>
 					</div>
 				</div>
-				
-				
 							
 				<div class="memo_wrap">
 				
@@ -161,8 +161,8 @@
 			</div>
 			
 			<!-- 냉장고 채우기 모달 -->
-			<%@include file="../modal/addFridgeModal.jsp" %>
-			<%@include file="../modal/addUserFridgeModal.jsp" %>
+			<%@include file="../modal/writeFridgeModal.jsp" %>
+			<%@include file="../modal/writeUserFridgeModal.jsp" %>
 			<%@include file="../modal/editUserFridgeModal.jsp" %>
 		
 		</main>

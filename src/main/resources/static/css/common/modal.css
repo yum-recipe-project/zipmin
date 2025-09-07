@@ -16,6 +16,8 @@
 #container .modal-content {
 	border: none;
 	border-radius: 12px;
+	transform: translateZ(0);
+	position: relative;
 }
 
 
@@ -65,7 +67,6 @@
 	background: #f5f5f5;
 	overflow-y: auto;
 	height: 600px;
-	position: relative;
 	border-radius: 0 0 12px 12px;
 }
 
@@ -346,9 +347,9 @@
 #container .modal-content .modal-body .form-radio {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
 	padding: 12px 0;
 	border-top: 1px solid var(--line-color1);
+	gap: 10px;
 }
 
 #container .modal-content .modal-body .form-radio:first-child {
@@ -367,7 +368,6 @@
 	display: inline-block;
 	font-size: 16px;
 	font-weight: 400;
-	width: 350px;
 }
 
 #container .modal-content .modal-body .form-radio input[type='radio'] + label:before {
@@ -599,7 +599,7 @@
 
 
 /* 검색창 */
-#container .modal-content .modal-body .search_box {
+#container .modal-content .modal-body .search_form {
 	width: 100%;
 	padding: 0px 20px;
 	border-radius: 20px;
@@ -610,7 +610,7 @@
 	margin-bottom: 20px;
 }
 
-#container .modal-content .modal-body .search_box .search_word {
+#container .modal-content .modal-body .search_form .search_word {
 	border: 0px;
 	padding: 0px;
 	margin: 0px;
@@ -629,14 +629,14 @@
 	background: #f5f5f5;
 }
 
-#container .modal-content .modal-body .search_box .search_btn {
+#container .modal-content .modal-body .search_form .search_btn {
 	background: #f5f5f5;
 	border: 0px;
 	padding: 0px;
 	margin: 0px;
 }
 
-#container .modal-content .modal-body .search_box .search_btn img {
+#container .modal-content .modal-body .search_form .search_btn img {
 	overflow: hidden;
 	width: 24px;
 	height: 24px;
@@ -725,6 +725,7 @@
 #container .modal-content .modal-body .fridge_total {
 	color: var(--txt-color-500);
 	font-weight: 600;
+	line-height: 36px;
 }
 
 #container .modal-content .modal-body .fridge_list {
@@ -785,29 +786,28 @@
 
 
 /* 하단 시트 */
-#container .modal-content .modal-body .fridge_sheet {
-	position: absolute;
+#container .modal-content .fridge_sheet {
+	position: fixed;
 	bottom: 0;
 	left: 0;
 	right: 0;
 	background: #fff;
 	border-top: 1px solid var(--line-color3);
 	box-shadow: 0 -8px 24px rgba(0,0,0,0.08);
-	transform: translateY(110%);
-	transition: transform .25s ease;
 	pointer-events: none;
 	visibility: hidden;
 	z-index: 5;
 	padding: 15px 30px 30px 30px;
+	border-radius: 0 0 15px 15px;
 }
 
-#container .modal-content .modal-body .fridge_sheet.is-open {
+#container .modal-content .fridge_sheet.is-open {
 	transform: translateY(0);
 	pointer-events: auto;
 	visibility: visible;
 }
 
-#container .modal-content .modal-body .fridge_sheet .sheet_grip {
+#container .modal-content .fridge_sheet .sheet_grip {
 	width: 40px;
 	height: 4px;
 	border-radius: 999px;
@@ -815,32 +815,32 @@
 	margin: 0 auto 16px;
 }
 
-#container .modal-content .modal-body .fridge_sheet .sheet_head {
+#container .modal-content .fridge_sheet .sheet_head {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	margin-bottom: 20px;
 }
 
-#container .modal-content .modal-body .fridge_sheet .sheet_info {
+#container .modal-content .fridge_sheet .sheet_info {
 	display: flex;
 	gap: 15px;
 	align-items: center;
 }
 
-#container .modal-content .modal-body .fridge_sheet .sheet_title {
+#container .modal-content .fridge_sheet .sheet_title {
 	font-size: 24px;
 	font-weight: 900;
 }
 
-#container .modal-content .modal-body .fridge_sheet .sheet_category {
+#container .modal-content .fridge_sheet .sheet_category {
 	font-size: 16px;
 	font-weight: 900;
 	color: var(--txt-color-500);
 	line-height: 1.5;
 }
 
-#container .modal-content .modal-body .fridge_sheet .sheet_head button {
+#container .modal-content .fridge_sheet .sheet_head button {
 	background: #fff;
 	border: 1px solid #FA896B;
 	color: #FA896B;
@@ -849,19 +849,19 @@
 	height: 32px;
 }
 
-#container .modal-content .modal-body .fridge_sheet .sheet_head button:hover {
+#container .modal-content .fridge_sheet .sheet_head button:hover {
 	color: #fff;
 	background: #FA896B;
 }
 
-#container .modal-content .modal-body .fridge_sheet .sheet_action {
+#container .modal-content .fridge_sheet .sheet_action {
 	display: flex;
 	gap: 8px;
 	justify-content: flex-end;
 	margin-top: 30px;
 }
 
-#container .modal-content .modal-body .fridge_sheet .sheet_action button:first-child {
+#container .modal-content .fridge_sheet .sheet_action button:first-child {
 	width: 20%;
 	display: inline-flex;
 	align-items: center;
@@ -877,7 +877,7 @@
     color: #FFF;
 }
 
-#container .modal-content .modal-body .fridge_sheet .sheet_action button:last-child {
+#container .modal-content .fridge_sheet .sheet_action button:last-child {
 	width: 80%;
 	display: inline-flex;
 	align-items: center;
@@ -955,6 +955,13 @@
 	color: #FFF;
 }
 
+
+
+
+#container .modal-content .modal-body .zone_field .form-radio {
+	border: none;
+	padding: 0;
+}
 
 
 

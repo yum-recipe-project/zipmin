@@ -223,6 +223,17 @@
 	font-weight: 600;
 }
 
+#container .recipe_wrap .recipe_step .btn_tool {
+	position: absolute;
+	top: 40px;
+	right: 0;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	width: fit-content;
+	margin-left: auto;
+}
+
 /* 조리 순서 > 목록 */
 #container .recipe_wrap .recipe_step .step_list li {
 	display: flex;
@@ -332,12 +343,12 @@
 
 
 /* 탭 메뉴 버튼 */
-#container .content .tab_button_wrap {
+#container .tab_button_wrap {
 	border-bottom: 1px solid var(--point-color1);
 	position: relative;
 }
 
-#container .content .tab_button_wrap .tab_button {
+#container .tab_button_wrap .tab_button {
 	margin: 0px auto;
 	padding: 0 108px;
 	width: 1160px;
@@ -349,7 +360,7 @@
 	align-items: center;
 }
 
-#container .content .tab_button_wrap .tab_button button {
+#container .tab_button_wrap .tab_button button {
 	width: 472px;
 	height: 56px;
 	border: none;
@@ -359,7 +370,7 @@
 	font-weight: 600;
 }
 
-#container .content .tab_button_wrap .tab_button button.active {
+#container .tab_button_wrap .tab_button button.active {
 	background: #FFF;
 	border-top: 2px solid var(--point-color1);
 	border-left: 2px solid var(--point-color1);
@@ -367,6 +378,9 @@
 	border-bottom: none;
 	color: var(--txt-color-600);
 }
+
+
+
 
 
 /* 댓글 */

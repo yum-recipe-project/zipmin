@@ -122,6 +122,11 @@
 					<div id="viewRecipeStepForm" class="recipe_step">
 						<!-- 제목 -->
 						<h3>조리 순서</h3>
+						
+						<!-- 장보기메모에 재료 담기 버튼 -->
+						<button id="togglePhotoButton" class="btn_tool"><img src="/images/recipe/photo_999.png">사진 숨기기</button>
+						
+						<!-- 조리 과정 목록 -->
 						<ul class="step_list"></ul>
 					</div>
 					

@@ -2,6 +2,7 @@
  * 전역 변수
  */
 let originPortion = 0;
+let photoMode = true;
 
 
 
@@ -303,3 +304,36 @@ function renderStepList(stepList) {
 		container.appendChild(li);
 	});
 }
+
+
+
+
+
+/**
+ * 레시피 재료 목록의 사진 토글하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const stepForm = document.getElementById('viewRecipeStepForm');
+	
+	document.getElementById('togglePhotoButton').addEventListener('click', function(event) {
+		event.preventDefault();
+		photoMode = !photoMode;
+		
+		if (photoMode) {
+			document.getElementById('togglePhotoButton').innerHTML = '<img src="/images/recipe/photo_999.png">사진 숨기기';
+			stepForm.querySelectorAll('.step_list .step_image').forEach(step => {
+				step.style.display = 'block';
+			});
+		}
+		else {
+			document.getElementById('togglePhotoButton').innerHTML = '<img src="/images/recipe/photo_999.png">사진 보기';
+			stepForm.querySelectorAll('.step_list .step_image').forEach(step => {
+				step.style.display = 'none';
+			});
+		}
+	});
+});
+
+
+
+

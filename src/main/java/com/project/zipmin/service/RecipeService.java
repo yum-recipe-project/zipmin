@@ -238,7 +238,9 @@ public class RecipeService {
 		
 		// 레시피 응답 구성
 		RecipeReadResponseDto recipeDto = recipeMapper.toReadResponseDto(recipe);
-		recipeDto.setNickname(userService.readUserById(recipeDto.getId()).getNickname());
+		UserReadResponseDto userDto = userService.readUserById(recipeDto.getUserId());
+		recipeDto.setNickname(userDto.getNickname());
+		recipeDto.setAvatar(userDto.getAvatar());
 		
 		// 레시피 카테고리 조회
 		try {

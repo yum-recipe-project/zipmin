@@ -35,8 +35,10 @@ public class RecipeReadResponseDto {
 	private int reviewcount;
 	private Double reviewscore;
 	
+	// 작성자 정보
 	private String username;
 	private String nickname;
+	private String avatar;
 	
 	// 냉파용 (수정 필요)
 	private Double rate;

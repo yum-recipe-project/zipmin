@@ -24,50 +24,53 @@
 		<main id="container">
 			<div class="content">
 				<div class="recipe_wrap">
-					<div class="recipe_header">
+					<div id="basic" class="recipe_header">
 						<!-- 제목 -->
-						<h2 id="title"></h2>
+						<h2 class="recipe_title"></h2>
 						
-						<!-- 스크랩 버튼 -->
-						<div class="save_recipe_btn">
-							<button class="btn_tool" onclick="">
-								<img src="/images/recipe/bookmark.png"> 저장
+						<!-- 유틸 버튼 -->
+						<div class="btn_wrap">
+							<button class="btn_icon">
+								<img src="/images/recipe/star_181a1c.png">
+							</button>
+							<button class="btn_icon print" onclick="window.print();">
+								<img src="/images/recipe/print.png">
+							</button>
+							<button class="btn_icon" data-bs-toggle="modal" data-bs-target="#reportRecipeModal">
+								<img src="/images/recipe/siren.png">
 							</button>
 						</div>
 						
 						<!-- 레시피 정보 -->
 						<div class="recipe_info">
-							<div class="recipe_info_item">
+							<div class="info">
 								<img src="/images/recipe/level.png">
-								<p id="level"></p>
+								<p class="recipe_cooklevel"></p>
 							</div>
-							<div class="recipe_info_item">
+							<div class="info">
 								<img src="/images/recipe/time.png">
-								<p id="time"></p>
+								<p class="recipe_cooktime"></p>
 							</div>
-							<div class="recipe_info_item">
+							<div class="info">
 								<img src="/images/recipe/spicy.png">
-								<p id="spicy"></p>
+								<p class="recipe_spicy"></p>
 							</div>
 						</div>
 						
 						<!-- 작성자 -->
 						<div class="recipe_writer">
-							<a class="nickname" href="">
+							<button type="button" class="btn_nickname">
 								<img src="/images/common/test.png">
-								<span class="nickname" data-id="1"></span>
-							</a>
-							<c:if test="${ true }">
-								<a href="">팔로우</a>
-							</c:if>
+								<span>알 수 없는 사용자</span>
+							</button>
+							<button type="button" class="btn_text">팔로우</button>
 						</div>
 						
 						<!-- 소개 -->
-						<p id="introduce" class="recipe_introduce"></p>
+						<p class="recipe_introduce"></p>
 						
 						<!-- 카테고리 -->
-						<div id="category" class="recipe_category">
-						</div>
+						<div class="recipe_category"></div>
 						
 						<!-- 버튼 -->
 						<div class="btn_wrap">

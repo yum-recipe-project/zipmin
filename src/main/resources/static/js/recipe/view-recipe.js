@@ -35,6 +35,9 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 document.addEventListener('DOMContentLoaded', async function() {
 	
+	const basic = document.getElementById('basic');
+	
+	
 	// 레시피 정보 조회
 	try {
 		const id = new URLSearchParams(window.location.search).get('id');
@@ -45,16 +48,22 @@ document.addEventListener('DOMContentLoaded', async function() {
 		
 		const result = await response.json();
 		
+		console.log(result);
+		
 		if (result.code === 'RECIPE_READ_SUCCESS') {
 			
-			// 레시피 정보
-			document.getElementById('title').innerText = result.data.title;
-			document.getElementById('level').innerText = result.data.cooklevel;
-			document.getElementById('time').innerText = result.data.cooktime;
-			document.getElementById('spicy').innerText = result.data.spicy;
-			document.getElementById('introduce').innerText = result.data.introduce;
+			// 기본 정보
+			basic.querySelector('.recipe_title').innerText = result.data.title;
+			basic.querySelector('.recipe_cooklevel').innerText = result.data.cooklevel;
+			basic.querySelector('.recipe_cooktime').innerText = result.data.cooktime;
+			basic.querySelector('.recipe_spicy').innerText = result.data.spicy;
+			basic.querySelector('.recipe_writer img').src = result.data.avatar;
+			basic.querySelector('.recipe_writer span').innerText = result.data.nickname;
+			basic.querySelector('.recipe_introduce').innerText = result.data.introduce;
+			renderCategoryList(result.data.category_list);
+			
 			document.getElementById('tip').innerText = result.data.tip;
-			document.querySelectorAll('.nickname[data-id]').forEach(nickname => { nickname.innerText = result.data.nickname; });
+			document.querySelectorAll('.nickname[data-id]').forEach(nickname => nickname.innerText = result.data.nickname);
 			
 			// 재료
 			document.getElementById('servingInput').value = result.data.portion;
@@ -109,6 +118,28 @@ document.addEventListener('DOMContentLoaded', async function() {
 	}
 	
 });
+
+
+
+
+/**
+ * 
+ */
+function renderCategoryList(categoryList) {
+	const container = document.getElementById('basic').querySelector('.recipe_category');
+	container.innerHTML = '';
+	
+	categoryList.forEach(category => {
+		const span  = document.createElement('span');
+		span.textContent = `# ${category.tag}`;
+		span.addEventListener('click', function(event) {
+			event.preventDefault();
+			location.href = `/recipe/listRecipe.do?category=${category.tag}`;
+		});
+		
+		container.appendChild(span);
+	});
+}
 
 
 

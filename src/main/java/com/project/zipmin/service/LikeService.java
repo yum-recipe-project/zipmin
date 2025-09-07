@@ -1,5 +1,8 @@
 package com.project.zipmin.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +12,7 @@ import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
+import com.project.zipmin.dto.LikeReadResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.entity.Like;
 import com.project.zipmin.entity.Role;
@@ -158,5 +162,44 @@ public class LikeService {
 	public int selectLikeCountByTable(String tablename, int recodenum) {
 	    return (int) likeRepository.countByTablenameAndRecodenum(tablename, recodenum);
 	}
+	
+	
+	
+	
+	
+	// 특정 사용자가 특정 테이블에 좋아요 한 목록
+	public List<LikeReadResponseDto> readLikeListByTablenameAndUserId(String tablename, Integer userId) {
+		
+		// 입력값 검증
+		if (tablename == null || userId == null) {
+			throw new ApiException(LikeErrorCode.LIKE_INVALID_INPUT);
+		}
+		
+		// 좋아요 목록 조회
+		List<Like> likeList = null;
+		try {
+			likeList = likeRepository.findAllByTablenameAndUserId(tablename, userId);
+		}
+		catch (Exception e) {
+			throw new ApiException(LikeErrorCode.LIKE_READ_LIST_FAIL);
+		}
+		
+		// 좋아요 목록 응답 구성
+		List<LikeReadResponseDto> likeDtoList = new ArrayList<>();
+		for (Like like : likeList) {
+			LikeReadResponseDto likeDto = likeMapper.toReadResponseDto(like);
+			likeDtoList.add(likeDto);
+		}
+		
+		return likeDtoList;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

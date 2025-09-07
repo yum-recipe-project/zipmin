@@ -8,16 +8,10 @@
 
 
 -- 테이블과 시퀀스 일괄 삭제
--- drop table event;
--- drop sequence seq_event_id;
--- drop table megazine;
--- drop sequence seq_megazine_id;
 drop table vote_record;
 drop sequence seq_vote_record_id;
 drop table vote_choice;
 drop sequence seq_vote_choice_id;
--- drop table vote;
--- drop sequence seq_vote_id;
 drop table chomp;
 drop sequence seq_chomp_id;
 
@@ -37,6 +31,9 @@ drop sequence seq_report_id;
 drop table likes;
 drop sequence seq_likes_id;
 
+-- 삭제 예정
+drop table user_fridge;
+drop sequence seq_user_fridge_id;
 drop table fridge;
 drop sequence seq_fridge_id;
 
@@ -132,10 +129,8 @@ create table fridge (
     id number primary key,
     image varchar2(300),
     name varchar2(300) not null,
-    amount number,
-    unit varchar2(30),
-    expdate date,
     category varchar2(50),
+    zone varchar2(300) not null,
     user_id number not null
 );
 alter table fridge
@@ -148,7 +143,38 @@ create sequence seq_fridge_id
     nomaxvalue
     nocycle
     nocache;
-COMMIT;
+commit;
+
+
+
+
+
+
+-- USER_FRIDGE 테이블
+-- drop table user_fridge;
+-- drop sequence seq_user_fridge_id;
+create table user_fridge (
+    id number primary key,
+    amount number,
+    unit varchar2(30),
+    expdate date,
+    fridge_id number not null,
+    user_id number not null
+);
+alter table user_fridge
+    add constraint const_user_fridge_fridge foreign key(fridge_id)
+    references fridge(id) on delete cascade;
+alter table user_fridge
+    add constraint const_user_fridge_users foreign key(user_id)
+    references users(id) on delete cascade;
+create sequence seq_user_fridge_id
+    increment by 1
+    start with 1
+    minvalue 1
+    nomaxvalue
+    nocycle
+    nocache;
+commit;
 
 
 

@@ -18,6 +18,7 @@ public enum LikeErrorCode implements Code {
 	
 	// 데이터 처리
 	LIKE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 좋아요를 찾을 수 없음"),
+	LIKE_READ_LIST_FAIL(HttpStatus.BAD_REQUEST, "좋아요 목록 조회 실패"),
 	LIKE_CREATE_FAIL(HttpStatus.BAD_REQUEST, "좋아요 작성 실패"),
 	LIKE_DELETE_FAIL(HttpStatus.BAD_REQUEST, "좋아요 삭제 실패"),
 	

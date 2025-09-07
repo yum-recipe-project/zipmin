@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 		
 		setTimeout(() => {
 			const randomList = tipList[Math.floor(Math.random() * tipList.length)];
-			document.querySelector('.cook_tip a').href = `/kitchen/viewGuide/do?${randomList.id}`;
+			document.querySelector('.cook_tip a').href = `/kitchen/viewGuide.do?id=${randomList.id}`;
 			document.querySelector('.tip_text').innerHTML = `${randomList.title}&nbsp;&nbsp;→`;
 			document.querySelector('.tip_text').classList.remove('slide-up');
 		}, 500);

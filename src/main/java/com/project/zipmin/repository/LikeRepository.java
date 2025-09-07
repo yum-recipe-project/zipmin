@@ -1,5 +1,6 @@
 package com.project.zipmin.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.project.zipmin.entity.Like;
 
 public interface LikeRepository extends JpaRepository<Like, Integer> {
+	
+	List<Like> findAllByTablenameAndUserId(String tablename, int userId);
 	
 	Optional<Like> findByTablenameAndRecodenumAndUserId(String tablename, int recodenum, int userId);
 	

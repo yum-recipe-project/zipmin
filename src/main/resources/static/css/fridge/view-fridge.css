@@ -8,26 +8,196 @@
 
 
 
-/* 냉장고 헤더 */
-#container .content .fridge_wrap .fridge_header {
-	margin: 0px auto;
-	display: flex;
-	flex-direction: column;
-	flex: 1 1 auto;
-	box-sizing: border-box;
-	padding: 40px 0;
+
+
+/* 나의 냉장고 > 헤더 */
+#container .fridge_wrap {
+	margin: 0 0 80px 0;
 }
 
-#container .content .fridge_wrap .fridge_header h2 {
+#container .fridge_wrap .fridge_header {
+	margin: 0px auto;
+	display: flex;
+	align-items: center;
+	gap: 30px;
+	flex: 1 1 auto;
+	box-sizing: border-box;
+	padding: 40px 0 20px 0;
+}
+
+#container .fridge_wrap .fridge_header h2 {
 	font-weight: 700;
 	line-height: 1.5;
 	letter-spacing: -0.03em;
 	font-size: 32px;
 }
 
+#container .fridge_wrap .fridge_header .btn_tab {
+	background: var(--point-color2);
+	color: #fff;
+	padding: 0 15px;
+}
 
 
-/* 냉장고 */
+
+
+
+/* 나의 냉장고 > 부제목 */
+#container .fridge_wrap .fridge_content .fridge_subtitle {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+#container .fridge_wrap .fridge_content .fridge_subtitle h3 {
+	font-size: 24px;
+	font-weight: 700;
+	color: var(--txt-color-600);
+}
+
+#container .fridge_wrap .fridge_content .fridge_subtitle .fridge_zone {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+}
+
+#container .fridge_wrap .fridge_content .fridge_subtitle .fridge_zone p {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--txt-color-500);
+}
+
+#container .fridge_wrap .fridge_content .fridge_subtitle .fridge_zone p::before {
+	content: '';
+	display: inline-box;
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+}
+
+#container .fridge_wrap .fridge_content .fridge_subtitle .fridge_zone p:nth-of-type(1)::before {
+	background-color: rgb(157, 233, 252);
+}
+
+#container .fridge_wrap .fridge_content .fridge_subtitle .fridge_zone p:nth-of-type(2)::before {
+	background-color: rgb(108, 169, 190);
+}
+
+#container .fridge_wrap .fridge_content .fridge_subtitle .fridge_zone p:nth-of-type(3)::before {
+	background-color: rgb(250, 216, 166);
+}
+
+/* 나의 냉장고 > 냉장고 목록 */
+#container .fridge_wrap .fridge_content .fridge_list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 19px;
+	margin-top: 12px;
+}
+
+#container .fridge_wrap .fridge_content .fridge_list .fridge {
+	width: calc(33% - 10px);
+	display: block;
+	border: 1px solid var(--line-color1);
+	border-radius: 5px;
+	padding: 15px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+/* 나의 냉장고 > 냉장고 목록 > 정보 */
+#container .fridge_wrap .fridge_content .fridge_list .fridge .fridge_info {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+}
+
+#container .fridge_wrap .fridge_content .fridge_list .fridge .fridge_info .image {
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	border: 1px solid var(--line-color1);
+	background-image: url('/images/fridge/carrot.png');
+	background-color: #fff;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 65%;
+}
+
+#container .fridge_wrap .fridge_content .fridge_list .fridge .fridge_info .detail {
+	flex: 1;
+}
+
+#container .fridge_wrap .fridge_content .fridge_list .fridge .fridge_info .detail .title {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+#container .fridge_wrap .fridge_content .fridge_list .fridge .fridge_info .detail .name {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	font-weight: 700;
+	font-size: 18px;
+	margin-bottom: 5px;
+}
+
+#container .fridge_wrap .fridge_content .fridge_list .fridge .fridge_info .detail .name::after {
+	content: '';
+	display: inline-box;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background-color: var(--dot-color, rgb(108, 169, 190));
+}
+
+#container .fridge_wrap .fridge_content .fridge_list .fridge .fridge_info .detail .info {
+	font-size: 12px;
+	color: var(--txt-color-500);
+}
+
+/* 나의 냉장고 > 냉장고 목록 > 버튼 */
+#container .fridge_wrap .fridge_content .fridge_list .fridge .fridge_info .tab_wrap {
+	display: flex;
+	gap: 8px;
+}
+
+#container .fridge_wrap .fridge_content .fridge_list .fridge .fridge_info .sort_sm  {
+	font-size: 12px;
+	position: relative;
+	display: inline-block;
+}
+
+#container .fridge_wrap .fridge_content .fridge_list .fridge .fridge_info .sort_sm::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+	bottom: 1px;
+	width: 20px;
+	height: 2px;
+	background: var(--txt-color-400);
+	border-radius: 2px;
+}
+
+
+
+
+
+
+
+
+
+/*
+
 #container .content .fridge_wrap .fridge_content .fridge {
 	width: 100%;
 }
@@ -95,51 +265,46 @@
 	width: 136px;
 }
 
+*/
 
-/* 냉장고 (버튼) */
-.btn_primary {
+
+/* 나의 냉장고 > 목록 없음 */
+#container .fridge_wrap .fridge_content .fridge_empty_wrap {
+	padding: 14px;
 	width: 100%;
-	margin-top: 30px;
+	height: auto;  
+	background: #F4F8FE;
+	border-radius: 4px;
+	margin-top: 20px;
+}
+
+#container .fridge_wrap .fridge_content .fridge_list_empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	margin-bottom: 20px;
+	margin-top: 20px;
 }
 
-
-
-/* 냉장고 (재료 표) */
-#container .content .fridge_wrap .fridge_content .ingredient_list thead th {
-	text-align: left;
-	background: #F9F9F9;
-	padding: 16px;
-	height: 50px;
-	border-bottom: 1px solid var(--line-color2);
-	font-size: 14px;
-}
-
-#container .content .fridge_wrap .fridge_content .ingredient_list tbody tr {
-	height: 50px;
-	border-bottom: 1px solid var(--line-color2);
-	font-size: 14px;
-}
-
-#container .content .fridge_wrap .fridge_content .ingredient_list tbody tr td {
-	padding: 16px;
-}
-
-#container .content .fridge_wrap .fridge_content .ingredient_list .delete_btn {
-	background: none;
-	border: none;
-	width:25px;
-	height: 25px;
+#container .fridge_wrap .fridge_content .fridge_list_empty span {
+	text-align: center !important;
+	color: #7E8082;
+	font-weight: 400;
+	line-height: 1.5;
+	letter-spacing: -0.025em;
+	font-size: 16px;
+	white-space: pre-line;
 }
 
 
 
 
-/* 냉장고 파먹기 */
-#container .content .clear_wrap {
-	margin: 80px 0;
-}
-#container .content .clear_wrap .clear_header {
+
+
+
+
+/* 메모 헤더 */
+#container .content .memo_wrap .memo_header {
 	margin: 0px auto;
 	display: flex;
 	flex-direction: column;
@@ -148,7 +313,7 @@
 	padding: 40px 0;
 }
 
-#container .content .clear_wrap .clear_header h2 {
+#container .content .memo_wrap .memo_header h2 {
 	font-weight: 700;
 	line-height: 1.5;
 	letter-spacing: -0.03em;
@@ -157,8 +322,67 @@
 
 
 
-/* 냉장고 파먹기 (레시피 추천) */
-#container .content .clear_wrap .clear_content .clear_recipe {
+/* 메모 (재료 표) */
+#container .content .memo_wrap .memo_content .ingredient_list thead th {
+	text-align: left;
+	background: #F9F9F9;
+	padding: 16px;
+	height: 50px;
+	border-bottom: 1px solid var(--line-color2);
+	font-size: 14px;
+}
+
+#container .content .memo_wrap .memo_content .ingredient_list tbody tr {
+	height: 50px;
+	border-bottom: 1px solid var(--line-color2);
+	font-size: 14px;
+}
+
+#container .content .memo_wrap .memo_content .ingredient_list tbody tr td {
+	padding: 16px;
+}
+
+#container .content .memo_wrap .memo_content .ingredient_list .delete_btn {
+	background: none;
+	border: none;
+	width:25px;
+	height: 25px;
+}
+
+/* 메모 (버튼) */
+#container .memo_content .btn_wrap {
+	margin-top: 16px;
+	margin-left: auto;
+}
+
+
+
+
+
+
+/* 냉장고 파먹기 */
+#container .pick_wrap {
+	margin: 0 0 80px 0;
+}
+
+#container .pick_wrap .pick_header {
+	margin: 0px auto;
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	box-sizing: border-box;
+	padding: 40px 0;
+}
+
+#container .pick_wrap .pick_header h2 {
+	font-weight: 700;
+	line-height: 1.5;
+	letter-spacing: -0.03em;
+	font-size: 32px;
+}
+
+/* 냉장고 파먹기 > 추천 목록 */
+#container .pick_wrap .pick_content .pick_recipe {
 	padding: 14px;
 	width: 100%;
 	height: auto;  
@@ -166,7 +390,7 @@
 	border-radius: 4px;
 }
 
-#container .content .clear_wrap .clear_content .clear_recipe .pick {
+#container .pick_wrap .pick_content .pick_recipe .pick_title {
 	font-size: 16px;
 	line-height: 26px;
 	letter-spacing: -0.4px;
@@ -174,7 +398,7 @@
 	margin-bottom: 16px;
 }
 
-#container .content .clear_wrap .clear_content .clear_recipe ul {
+#container .pick_wrap .pick_content .pick_recipe ul {
 	display: flex;
 	flex-wrap: wrap;  
 	padding: 0;  
@@ -183,12 +407,13 @@
 	list-style: none;
 }
 
-#container .content .clear_wrap .clear_content .clear_recipe li {
+#container .pick_wrap .pick_content .pick_recipe li {
 	width: calc(50% - 6.5px);  
 	padding: 0;
+	cursor: pointer;
 }
 
-#container .content .clear_wrap .clear_content .clear_recipe .recipe {
+#container .pick_wrap .pick_content .pick_recipe .recipe {
 	padding: 15px;
 	display: flex;
 	background: #fff;
@@ -200,11 +425,11 @@
 	gap: 10px;
 }
 
-#container .content .clear_wrap .clear_content .clear_recipe .recipe span {
+#container .pick_wrap .pick_content .pick_recipe .recipe span {
 	font-weight: 700;
 }
 
-#container .content .clear_wrap .clear_content .clear_recipe .recipe .flag {
+#container .pick_wrap .pick_content .pick_recipe .recipe .flag {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -220,7 +445,108 @@
     letter-spacing: -.2px;
 }
 
+/* 냉장고 파먹기 > 목록 없음 */
+#container .pick_wrap .pick_content .pick_recipe .pick_list_empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
 
+#container .pick_wrap .pick_content .pick_recipe .pick_list_empty span {
+	text-align: center !important;
+	color: #7E8082;
+	font-weight: 400;
+	line-height: 1.5;
+	letter-spacing: -0.025em;
+	font-size: 16px;
+	white-space: pre-line;
+}
+
+
+
+
+
+/* 내 주변 마트 */
+#container .mart_wrap {
+	padding: 0 0 80px 0;
+}
+
+#container .mart_wrap .mart_header {
+	margin: 0px auto;
+	display: flex;
+	justify-content: space-between;
+	box-sizing: border-box;
+	padding: 40px 0;
+}
+
+#container .mart_wrap .mart_header h2 {
+	font-weight: 700;
+	line-height: 1.5;
+	letter-spacing: -0.03em;
+	font-size: 32px;
+}
+
+/* 내 주변 마트 > 헤더 버튼 */
+#container .mart_wrap .mart_header .btn_icon img {
+	width: 60%;
+}
+
+#container .mart_wrap .mart_header .btn_icon .left {
+	margin-left: 5px;
+}
+
+#container .mart_wrap .mart_header .btn_icon .right {
+	margin-left: 2px;
+}
+
+/* 내 주변 마트 > 지도 */
+#container .mart_wrap .mart_content {
+	display: flex;
+	gap: 16px;
+}
+#container .mart_wrap .mart_content .map {
+	height: 448px;
+	width: 794px;
+	background: #ddd;
+}
+
+/* 내 주변 마트 > 마트 목록 */
+#container .mart_wrap .mart_content .mart_list {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+#container .mart_wrap .mart_content .mart_list .mart_box {
+    display: flex;
+    height: 80px;
+    width: 270px;
+    border: 1px solid var(--line-color2);
+    border-radius: 4px;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box; 
+}
+
+#container .mart_wrap .mart_content .mart_list .mart_box .mart_txt span {
+	font-size: 16px;
+	font-weight: 600;
+}
+#container .mart_wrap .mart_content .mart_list .mart_box .mart_txt .ping {
+	margin-top: 2px;
+	display: flex;
+	align-items: center;
+	gap: 3px;
+}
+#container .mart_wrap .mart_content .mart_list .mart_box .mart_txt .ping p {
+	font-size: 14px;
+	color: var(--txt-color-500);
+}
+#container .mart_wrap .mart_content .mart_list .mart_box .mart_txt .ping img {
+	width: 14px;
+	height: 14px;
+}
 
 
     

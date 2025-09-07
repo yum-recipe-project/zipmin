@@ -1,5 +1,7 @@
 package com.project.zipmin.dto;
 
+import java.util.Date;
+
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -11,12 +13,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class FridgeCreateRequestDto {
+public class UserFridgeUpdateResponseDto {
 	
-	private String image;
-	private String name;
-	private String category;
-	private String zone;
-	private Integer userId;
+	private int id;
+	private int amount;
+	private String unit;
+	private Date expdate;
+	private int fridgeId;
+	private int userId;
 	
 }

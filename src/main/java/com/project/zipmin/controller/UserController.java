@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.CommentErrorCode;
+import com.project.zipmin.api.FridgeSuccessCode;
 import com.project.zipmin.api.ClassSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
@@ -32,6 +33,7 @@ import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.CommentReadMyResponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
+import com.project.zipmin.dto.FridgeReadResponseDto;
 import com.project.zipmin.dto.UserReadRequestDto;
 import com.project.zipmin.dto.FundDTO;
 import com.project.zipmin.dto.UserPasswordCheckRequestDto;
@@ -46,6 +48,7 @@ import com.project.zipmin.entity.User;
 import com.project.zipmin.mapper.UserMapper;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.CookingService;
+import com.project.zipmin.service.FridgeService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.UserCorrectPassworResponse;
@@ -85,10 +88,12 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 	
 	private final UserService userService;
-	@Autowired
-	private CommentService commentService;	
-	@Autowired
-	private CookingService cookingService;	
+	private final CommentService commentService;	
+	private final CookingService cookingService;	
+	private final FridgeService fridgeService;
+	
+	
+	
 
 	
 	// 사용자 목록 조회 (관리자)
@@ -124,7 +129,13 @@ public class UserController {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<UserReadResponseDto> userPage = userService.readUserPage(category, pageable);
 		
-		// 이거 관리자만 가능함 !!!! 추가하기
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+			}
+		}
 		
 		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, userPage));
@@ -711,10 +722,10 @@ public class UserController {
 	// 개설한 쿠킹클래스
 	@GetMapping("/users/{id}/classes")
 	public ResponseEntity<?> listUserClass(
-			@Parameter(description = "사용자의 일련번호", required = true, example = "1") @PathVariable Integer id,
-			@Parameter(description = "정렬 방식", required = true, example = "end") @RequestParam String sort,
-			@Parameter(description = "조회할 페이지 번호", required = true, example = "1") @RequestParam int page,
-			@Parameter(description = "페이지의 항목 수", required = true, example = "10") @RequestParam int size) {
+			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
+			@Parameter(description = "정렬") @RequestParam String sort,
+			@Parameter(description = "조회할 페이지 번호") @RequestParam int page,
+			@Parameter(description = "페이지의 항목 수") @RequestParam int size) {
 		
 		// 입력값 검증
 		if (id == null) {
@@ -743,6 +754,11 @@ public class UserController {
 		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, classPage));
 	}
+	
+	
+	
+	
+	
 	
 	
 	

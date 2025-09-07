@@ -1,5 +1,7 @@
 package com.project.zipmin.entity;
 
+import java.util.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -20,18 +22,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Entity
-@Table(name = "FRIDGE")
-public class Fridge {
+@Table(name = "USER_FRIDGE")
+public class UserFridge {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_fridge_id")
-	@SequenceGenerator(name = "seq_fridge_id", sequenceName = "SEQ_FRIDGE_ID", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_user_fridge_id")
+	@SequenceGenerator(name = "seq_user_fridge_id", sequenceName = "SEQ_USER_FRIDGE_ID", allocationSize = 1)
 	private int id;
 	
-	private String image;
-	private String name;
-	private String category;
-	private String zone;
+	private int amount;
+	private String unit;
+	private Date expdate;
+	
+	// private int fridgeId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "FRIDGE_ID")
+	private Fridge fridge;	
 	
 	// private int userId;
 	@ManyToOne(fetch = FetchType.LAZY)

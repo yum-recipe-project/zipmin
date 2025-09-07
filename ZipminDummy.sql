@@ -3,7 +3,7 @@ insert into users values (seq_user_id.NEXTVAL, 'admin', '$2a$10$B.Qdm3ECeo/PYL2P
 insert into users values (seq_user_id.NEXTVAL, 'admin1', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '관리자1', '집밥의민족', null, null, null, 0, 0, 'ROLE_ADMIN', 1, null, null, null, null);
 insert into users values (seq_user_id.NEXTVAL, 'admin2', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '관리자2', '집밥의민족', null, null, null, 0, 0, 'ROLE_ADMIN', 1, null, null, null, null);
 insert into users values (seq_user_id.NEXTVAL, 'harim', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '정하림', '아잠만', '010-0000-0000', 'qazwsx9445@naver.com', null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'dayeoung', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '부다영', '김뿌영', '010-0000-0000', 'dyboo1347@gmail.com', null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'dayeong', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '부다영', '김뿌영', '010-0000-0000', 'dyboo1347@gmail.com', null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
 insert into users values (seq_user_id.NEXTVAL, 'user1',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자1',  '사용자1',  '010-0000-0000', 'user1@gmail.com',  null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
 insert into users values (seq_user_id.NEXTVAL, 'user2',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자2',  '사용자2',  '010-0000-0000', 'user2@gmail.com',  null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
 insert into users values (seq_user_id.NEXTVAL, 'user3',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자3',  '사용자3',  '010-0000-0000', 'user3@gmail.com',  null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
@@ -40,26 +40,25 @@ commit;
 
 
 -- FRIDGE 테이블 더미데이터
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭가슴살', 100, 'g', TO_DATE('25/07/20', 'RR/MM/DD'), '육류', 4);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '소고기', 300, 'g', TO_DATE('25/07/22', 'RR/MM/DD'), '육류', 4);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '돼지고기', 200, 'g', TO_DATE('25/07/18', 'RR/MM/DD'), '육류', 4);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '상추', 1, '팩', TO_DATE('25/07/16', 'RR/MM/DD'), '채소류', 4);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '당근', 2, '개', TO_DATE('25/07/19', 'RR/MM/DD'), '채소류', 4);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '양파', 1, '망', TO_DATE('25/07/21', 'RR/MM/DD'), '채소류', 4);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '가지', 1, '개', TO_DATE('25/07/23', 'RR/MM/DD'), '채소류', 4);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/ketchup.png', '케찹', 1, '병', TO_DATE('25/12/01', 'RR/MM/DD'), '소스류', 4);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '간장', 1, '병', TO_DATE('25/10/10', 'RR/MM/DD'), '소스류', 4);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/mayonnaise.png', '마요네즈', 1, '병', TO_DATE('25/11/15', 'RR/MM/DD'), '소스류', 4);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '소고기', 300, 'g', TO_DATE('25/07/20', 'RR/MM/DD'), '육류', 4);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '간장', 100, 'ml', TO_DATE('25/10/10', 'RR/MM/DD'), '소스류', 4);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '돼지고기', 200, 'g', TO_DATE('25/07/22', 'RR/MM/DD'), '육류', 4);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '상추', 1, '팩', TO_DATE('25/07/16', 'RR/MM/DD'), '채소류', 4);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, null, '밥', 1, '공기', TO_DATE('25/07/15', 'RR/MM/DD'), '기타', 2);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/mayonnaise.png', '마요네즈', 1, '병', TO_DATE('25/11/15', 'RR/MM/DD'), '소스류', 4);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, null, '면', 1, '개', TO_DATE('25/07/17', 'RR/MM/DD'), '기타', 2);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '닭가슴살', '육류', '냉장', 4);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '오이', '채소류', '냉장', 4);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/mayonnaise.png', '꿀', '소스류', '상온', 4);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '얼음', '기타', '냉동', 4);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '소고기', '육류', '냉장', 4);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '간장', '소스류', '실온', 4);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '양파', '채소류', '냉장', 4);
 commit;
 
 
+
+
+
+-- USER_FRIDGE 테이블 더미데이터
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 3, '조각', TO_DATE('25/09/10', 'RR/MM/DD'), 1, 4);
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 2, '개', TO_DATE('25/08/10', 'RR/MM/DD'), 2, 4);
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 600, 'g', TO_DATE('25/08/10', 'RR/MM/DD'), 5, 4);
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '병', TO_DATE('25/08/10', 'RR/MM/DD'), 6, 4);
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '개', TO_DATE('25/08/10', 'RR/MM/DD'), 7, 4);
 
 
 
@@ -67,7 +66,7 @@ commit;
 -- RECIPE 테이블 더미데이터
 INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '468e70a253c3463eae3d0de7e46dfd23.png', '소불고기', '달콤짭짤한 불고기 요리', TO_DATE('25/09/10', 'RR/MM/DD'), '하', '30분 이내', '매움', '2인분', '고기 재울 때 키위나 배를 갈아 넣으면 부드러워져요!', null, 4);
 INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '08d967c50662482e9dae8bb1c2cb76ac.png', '쌈밥', '야채와 함께 먹는 건강한 쌈밥', TO_DATE('25/08/10', 'RR/MM/DD'), '중', '20분 이내', '보통', '1인분', '고기를 굽기 전 밑간하면 더 맛있어요.', null, 4);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '08d967c50662482e9dae8bb1c2cb76ac.png', '마요네즈 비빔면', '매콤 고소한 초간단 비빔면', TO_DATE('25/08/10', 'RR/MM/DD'), '상', '10분 이내', '아주 매움', '1인분', '불닭소스를 조절해서 맵기 조절 가능해요.', null, 4);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'df3e2e68808c470a88aaf29322f4347d.png', '마요네즈 비빔면', '매콤 고소한 초간단 비빔면', TO_DATE('25/08/10', 'RR/MM/DD'), '상', '10분 이내', '아주 매움', '1인분', '불닭소스를 조절해서 맵기 조절 가능해요.', null, 4);
 INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'b476ce2deebf434785f961fc60ab13c4.png', '김치볶음밥', '집에 있는 재료로 간단하게!', TO_DATE('25/08/07', 'RR/MM/DD'), '상', '15분 이내', '아주 매움', '1인분', '김치는 꼭 볶아서 써야 깊은 맛이 나요!', null, 4);
 INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '849ecad1b6a84ae7869c29d6e7a7fed3.png', '짜장면', '달콤 짭짤한 중식의 기본', TO_DATE('25/08/23', 'RR/MM/DD'), '중', '30분 이내', '보통', '2인분', '춘장을 충분히 볶아야 맛이 살아나요.', null, 4);
 INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '63d708c6a5e34178a04151023cfe23da.png', '닭갈비', '매콤한 맛의 대표 주자', TO_DATE('25/08/24', 'RR/MM/DD'), '중', '40분 이내', '아주 매움', '3인분', '고구마를 넣으면 단맛이 더해져요.', null, 4);
@@ -75,7 +74,7 @@ INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '7ff82e049e184df0900f1b0d59ac8
 INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '2690844ba7ca4522aa7a568015becb9b.png', '떡볶이', '매콤달콤 국민 간식', TO_DATE('25/06/10', 'RR/MM/DD'), '하', '20분 이내', '보통', '2인분', '고추장에 설탕 대신 올리고당을 써보세요.', null, 4);
 commit;
 
-
+-- test.png 08d967c50662482e9dae8bb1c2cb76ac.png
 
 
 
@@ -662,6 +661,8 @@ insert into likes values (seq_likes_id.NEXTVAL, 5, 'event', 1);
 insert into likes values (seq_likes_id.NEXTVAL, 6, 'event', 2);
 insert into likes values (seq_likes_id.NEXTVAL, 7, 'event', 3);
 insert into likes values (seq_likes_id.NEXTVAL, 4, 'event', 4);
+insert into likes values (seq_likes_id.NEXTVAL, 4, 'fridge', 1);
+insert into likes values (seq_likes_id.NEXTVAL, 5, 'fridge', 2);
 commit;
 
 

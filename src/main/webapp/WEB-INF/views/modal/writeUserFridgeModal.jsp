@@ -20,8 +20,8 @@
 				
 				<!-- 탭 메뉴 버튼 -->
 				<div class="tab_button_wrap">
-					<button class="tab_button active" data-tab="like-fridge">즐겨찾기</button>
-					<button class="tab_button" data-tab="add-fridge">직접 등록</button>
+					<button class="tab_button active" data-tab="liked-fridge">즐겨찾기</button>
+					<button class="tab_button" data-tab="created-fridge">직접 등록</button>
 				</div>
 			</div>
 			
@@ -30,7 +30,10 @@
 				<div class="tab_content">
 					<div class="fridge_util">
 						<p class="fridge_total"></p>
-						<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#writeFridgeModal">재료 등록</button>
+						<div class="btn_wrap">
+							<button type="button" class="btn btn-dark-outline" id="toggleDeleteModeButton">관리</button>
+							<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#writeFridgeModal">재료 등록</button>
+						</div>
 					</div>
 					<ul class="fridge_list"></ul>
 				</div>
@@ -44,7 +47,6 @@
 								<div class="sheet_title"></div>
 								<div class="sheet_category">고기</div>
 							</div>
-							<button type="button" id="deleteFridgeButton" class="btn">삭제</button>
 						</div>
 						<div>
 							<input type="hidden" name="fridgeId">
@@ -60,7 +62,7 @@
 								<p id="sheetExpdateHint" class="danger">유통기간을 입력해주세요</p>
 							</div>
 							<div class="sheet_action">
-								<button type="button" class="btn" id="sheetCloseBtn">닫기</button>
+								<button type="button" class="btn" id="sheetCloseButton">닫기</button>
 								<button type="submit" class="btn btn-primary">냉장고 채우기</button>
 							</div>
 						</div>

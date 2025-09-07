@@ -68,17 +68,14 @@ document.addEventListener('DOMContentLoaded', function() {
 	// 냉장고 작성 모달
 	const modal = document.getElementById('writeFridgeModal');
 	modal.addEventListener('hidden.bs.modal', function() {
+		
 		// 폼 초기화
 		const form = document.getElementById('writeFridgeForm');
 		if (form) form.reset()
 		
 		// 유효성 표시 제거
-		form.querySelectorAll('.is-invalid').forEach(input => 
-			{input.classList.remove('is-invalid')
-		});
-		form.querySelectorAll('.danger').forEach(p => {
-			p.style.display = 'none'
-		});
+		form.querySelectorAll('.is-invalid').forEach(input => input.classList.remove('is-invalid'));
+		form.querySelectorAll('.danger').forEach(p => p.style.display = 'none');
 
 		// 이미지 초기화
 		form.querySelector('.image_field .select_img').removeAttribute('style');
@@ -148,9 +145,6 @@ document.addEventListener('DOMContentLoaded', function() {
 					alertPrimary('냉장고 작성에 성공했습니다.');
 					bootstrap.Modal.getInstance(document.getElementById('writeFridgeModal'))?.hide();
 					bootstrap.Modal.getInstance(document.getElementById('writeUserFridgeModal'))?.show();
-					
-					// *** TODO : 탭 2 활성화 ***
-					
 					fetchCreatedFridgeList();
 				}
 			}

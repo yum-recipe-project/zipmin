@@ -783,6 +783,17 @@
 	height: 24px;
 }
 
+#container .modal-content .modal-body .fridge_list .fridge_delete {
+	background: #fff;
+	border: 1px solid #FA896B;
+	color: #FA896B;
+	font-size: 12px;
+	padding: 4px 8px;
+	height: 27px;
+	border-radius: 4px;
+	text-align: center;
+}
+
 
 
 /* 하단 시트 */
@@ -840,20 +851,6 @@
 	line-height: 1.5;
 }
 
-#container .modal-content .fridge_sheet .sheet_head button {
-	background: #fff;
-	border: 1px solid #FA896B;
-	color: #FA896B;
-	font-size: 12px;
-	padding: 4px 12px;
-	height: 32px;
-}
-
-#container .modal-content .fridge_sheet .sheet_head button:hover {
-	color: #fff;
-	background: #FA896B;
-}
-
 #container .modal-content .fridge_sheet .sheet_action {
 	display: flex;
 	gap: 8px;
@@ -890,6 +887,8 @@
     border-radius: 36px;
     color: #FFF;
 }
+
+
 
 
 
@@ -955,7 +954,25 @@
 	color: #FFF;
 }
 
+#container .modal-content .modal-body .btn-dark-outline {
+	display: inline-flex;
+	align-items: center;
+	height: 36px;
+	padding: 0 12px;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 20px;
+    letter-spacing: -0.2px;
+    background: none;
+    border: 1px solid var(--txt-color-600);
+    border-radius: 36px;
+    color: var(--txt-color-600);
+}
 
+#container .modal-content .modal-body .btn-dark-outline:hover {
+	background: none;
+	color: var(--txt-color-600);
+}
 
 
 #container .modal-content .modal-body .zone_field .form-radio {

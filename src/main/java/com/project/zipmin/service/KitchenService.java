@@ -14,7 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
-import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.KitchenErrorCode;
 import com.project.zipmin.dto.GuideReadResponseDto;
 import com.project.zipmin.dto.LikeCreateRequestDto;
@@ -134,12 +133,12 @@ public class KitchenService {
 		// 입력값 검증
 		if (likeDto == null || likeDto.getTablename() == null
 				|| likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
-			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
+			throw new ApiException(KitchenErrorCode.KITCHEN_INVALID_INPUT);
 		}
 		
-		// 댓글 존재 여부 확인
-		if (kitchenRepository.existsById(likeDto.getRecodenum())) {
-			new ApiException(CommentErrorCode.COMMENT_NOT_FOUND);
+		// 게시글 존재 여부 확인
+		if (!kitchenRepository.existsById(likeDto.getRecodenum())) {
+		    throw new ApiException(KitchenErrorCode.KITCHEN_NOT_FOUND);
 		}
 		
 		// 좋아요 저장
@@ -150,7 +149,7 @@ public class KitchenService {
 		    throw e;
 		}
 		catch (Exception e) {
-		    throw new ApiException(CommentErrorCode.COMMENT_LIKE_FAIL);
+		    throw new ApiException(KitchenErrorCode.KITCHEN_LIKE_FAIL);
 		}
 		
 	}

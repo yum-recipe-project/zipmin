@@ -22,7 +22,9 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.CommentSuccessCode;
+import com.project.zipmin.api.KitchenErrorCode;
 import com.project.zipmin.api.KitchenSuccessCode;
+import com.project.zipmin.api.LikeErrorCode;
 import com.project.zipmin.dto.GuideReadResponseDto;
 import com.project.zipmin.dto.GuideResponseDTO;
 import com.project.zipmin.dto.LikeCreateRequestDto;
@@ -109,23 +111,25 @@ public class KitchenController {
 	// 특정 가이드 좋아요 (저장)
 	@PostMapping("/guides/{id}/likes")
 	public ResponseEntity<?> likeGuide(
-			@PathVariable int guideId,
+			@PathVariable("id") int guideId,
 			@RequestBody LikeCreateRequestDto likeRequestDto) {
+		
+		System.err.println("==likeGuide 진입");
+		System.err.println(likeRequestDto);
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 			// *** todo: 키친가이드 에러코드로 변경 ***
-		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(KitchenErrorCode.KITCHEN_UNAUTHORIZED_ACCESS);
 		}
 		
 		likeRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
-		
 		LikeCreateResponseDto likeResponseDto = kitchenService.likeGuide(likeRequestDto);
 					
 		// *** todo: 키친가이드 에러코드로 변경 ***
-		return ResponseEntity.status(CommentSuccessCode.COMMENT_LIKE_SUCCESS.getStatus())
-				.body(ApiResponse.success(CommentSuccessCode.COMMENT_LIKE_SUCCESS, likeResponseDto));
+		return ResponseEntity.status(KitchenSuccessCode.KITCHEN_LIKE_SUCCESS.getStatus())
+				.body(ApiResponse.success(KitchenSuccessCode.KITCHEN_LIKE_SUCCESS, likeResponseDto));
 	}
 
 	

@@ -64,7 +64,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
 /**
  * 서버에서 키친가이드 목록 데이터를 가져오는 함수
  */
@@ -180,55 +179,76 @@ function renderGuideList(guideList) {
         li.appendChild(a);
         container.appendChild(li);
     });
-	
-	
-
-	/******** 이거 수정 필요 *********/
-	/*** Dto에 likestatus를 저장해두었으므로 필요없음 ***/
-	/*** 위 코드의 favBtn을 적절히 표시하고 그 버튼 눌렀을 때의 백엔드 처리를 만들기 ****/
-//    initFavoriteButtons(); 
 }
-
-
-
 
 
 /**
- * 찜 버튼 클릭 이벤트 등록 함수
+ * 좋아요(찜) 버튼 렌더링 함수
  * 
- * ***** common/comment.js 보고 수정할 것 (renderLikeButton 부분)
+ * @param {number} id - 가이드(게시글) ID
+ * @param {boolean} likestatus - 현재 사용자가 좋아요를 눌렀는지 여부
  */
-function initFavoriteButtons() {
-    document.querySelectorAll(".favorite_btn").forEach(button => {
-        button.addEventListener("click", e => {
-            e.preventDefault();
-            e.stopPropagation();
-            button.classList.toggle("active");
-        });
-    });
-}
-
 function renderLikeButton(id, likestatus) {
 	
-	const button = document.createElement('button');
-	button.className = 'favorite_btn';
+    const button = document.createElement('button');
+    button.className = 'favorite_btn';
 
-	const img = document.createElement('img');
-	img.src = likestatus ? '/images/common/star_full.png' : '/images/recipe/star_empty.png';
-	
-	button.append(img);
-	
-	// 좋아요 버튼 동작
-	button.addEventListener('click', (event) => {
-	    event.preventDefault();
-	    likestatus = !likestatus;
-	    img.src = likestatus ? '/images/common/star_full.png' : '/images/recipe/star_empty.png';
-	});
+    const img = document.createElement('img');
+    img.src = likestatus ? '/images/common/star_full.png' : '/images/recipe/star_empty.png';
+    button.append(img);
+
+    // 좋아요 버튼 동작
+    button.addEventListener('click', async (event) => {
+        event.preventDefault();
+
+		const token = localStorage.getItem('accessToken');
+		
+        if (!token) {
+            alert("로그인이 필요합니다.");
+            return;
+        }
+
+		try {
+            const response = await fetch(`/guides/${id}/likes`, {
+                method: 'POST',
+                headers: {
+                    ...getAuthHeaders(),
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    tablename: "guide",
+                    recodenum: id
+                })
+            });
+			
+			const result = await response.json();
+			
+			
+			if (result.code === "KITCHEN_LIKE_SUCCESS") {
+				
+                likestatus = !likestatus;
+                img.src = likestatus
+                    ? '/images/common/star_full.png'
+                    : '/images/recipe/star_empty.png';
+
+                const likeCountElement = button.closest('.guide_item')
+                    .querySelector('.info p:first-child');
+
+                let currentCount = parseInt(likeCountElement.textContent.replace(/\D/g, '')) || 0;
+                currentCount = likestatus ? currentCount + 1 : currentCount - 1;
+                likeCountElement.textContent = `스크랩 ${currentCount}`;
+            } else {
+                alert(result.message || "좋아요 요청 실패");
+            }
 
 
-	return button;
+        } catch (error) {
+            console.error("좋아요 처리 중 오류:", error);
+        }
+    });
+
+    return button;
 }
-
 
 
 

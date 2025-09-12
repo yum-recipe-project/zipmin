@@ -139,7 +139,8 @@ function renderGuideList(guideList) {
         const subtitleSpan = document.createElement('span');
         subtitleSpan.textContent = guide.subtitle;
 
-	    const favBtn = renderLikeButton(guide.id, guide.likestatus);
+//	    const favBtn = renderLikeButton(guide.id, guide.likestatus);
+	    const favBtn = renderLikeButton(guide.id, guide.likecount, guide.likestatus);
 	    guideTop.append(subtitleSpan, favBtn);
 			
         const titleSpan = document.createElement('span');
@@ -183,73 +184,134 @@ function renderGuideList(guideList) {
 
 
 /**
- * 좋아요(찜) 버튼 렌더링 함수
+ * 키친가이드 좋아요(찜) 버튼을 생성하는 함수
  * 
  * @param {number} id - 가이드(게시글) ID
- * @param {boolean} likestatus - 현재 사용자가 좋아요를 눌렀는지 여부
+ * @param {number} likecount - 현재 좋아요 수
+ * @param {boolean} isLiked - 사용자가 좋아요를 눌렀는지 여부
  */
-function renderLikeButton(id, likestatus) {
+function renderLikeButton(id, likecount, isLiked) {
 	
-    const button = document.createElement('button');
-    button.className = 'favorite_btn';
+	// 버튼 요소
+	const button = document.createElement('button');
+	button.className = 'favorite_btn';
 
-    const img = document.createElement('img');
-    img.src = likestatus ? '/images/common/star_full.png' : '/images/recipe/star_empty.png';
-    button.append(img);
+	const img = document.createElement('img');
+	img.src = isLiked ? '/images/common/star_full.png' : '/images/recipe/star_empty.png';
 
-    // 좋아요 버튼 동작
-    button.addEventListener('click', async (event) => {
-        event.preventDefault();
+	button.append(img);
 
-		const token = localStorage.getItem('accessToken');
+	// 클릭 이벤트
+	button.addEventListener('click', async function (event) {
+		event.preventDefault();
 		
-        if (!token) {
-            alert("로그인이 필요합니다.");
-            return;
-        }
+		if (!isLoggedIn()) {
+			redirectToLogin();
+			return;
+		}
+		
+		// 스크랩 수 요소 
+	    const likeCountElement = button.closest('.guide_item').querySelector('.info p:first-child');
 
-		try {
-           const url = `/guides/${id}/likes`;
-           const options = {
-               method: likestatus ? 'DELETE' : 'POST',
-               headers: {
-                   ...getAuthHeaders(),
-                   'Content-Type': 'application/json'
-               },
-               body: JSON.stringify({
-                   tablename: "guide",
-                   recodenum: id
-               })
-           };
+	    // 현재 스크랩 수 계산 (likecount + 버튼 상태)
+	    let currentCount = likecount;
 
-           const response = await fetch(url, options);
-           const result = await response.json();
+		// 좋아요 취소
+		if (isLiked) {
+			try {
+				const data = {
+					tablename: 'guide',
+					recodenum: id,
+				};
 
-           // 성공 코드 분기
-           if (result.code === "KITCHEN_LIKE_SUCCESS" || result.code === "KITCHEN_UNLIKE_SUCCESS") {
-               // 상태 토글
-               likestatus = !likestatus;
-               img.src = likestatus
-                   ? '/images/common/star_full.png'
-                   : '/images/recipe/star_empty.png';
+				const response = await instance.delete(`/guides/${id}/likes`, {
+					data: data,
+					headers: getAuthHeaders(),
+				});
 
-               // 스크랩 수 갱신
-               const likeCountElement = button.closest('.guide_item')
-                   .querySelector('.info p:first-child');
-               let currentCount = parseInt(likeCountElement.textContent.replace(/\D/g, '')) || 0;
-               currentCount = likestatus ? currentCount + 1 : currentCount - 1;
-               likeCountElement.textContent = `스크랩 ${currentCount}`;
-           } else {
-               alert(result.message || "좋아요 요청 실패");
-           }
+				if (response.data.code === 'KITCHEN_UNLIKE_SUCCESS') {
+					isLiked = false;
+					img.src = '/images/recipe/star_empty.png';
+					currentCount = Math.max(0, currentCount - 1); 
+	                likeCountElement.textContent = `스크랩 ${currentCount}`;
+	                likecount = currentCount;
+				}
+			} catch (error) {
+				const code = error?.response?.data?.code;
 
-       } catch (error) {
-           console.error("좋아요 처리 중 오류:", error);
-       }
-   });
+				if (code === 'KITCHEN_UNLIKE_FAIL') {
+					alertDanger('찜 취소에 실패했습니다.');
+				} else if (code === 'LIKE_DELETE_FAIL') {
+					alertDanger('좋아요 삭제에 실패했습니다.');
+				} else if (code === 'KITCHEN_INVALID_INPUT' || code === 'USER_INVALID_INPUT' || code === 'LIKE_INVALID_INPUT') {
+					alertDanger('입력값이 유효하지 않습니다.');
+				} else if (code === 'KITCHEN_UNAUTHORIZED_ACCESS') {
+					alertDanger('로그인되지 않은 사용자입니다.');
+				} else if (code === 'LIKE_FORBIDDEN') {
+					alertDanger('접근 권한이 없습니다.');
+				} else if (code === 'LIKE_NOT_FOUND') {
+					alertDanger('해당 찜을 찾을 수 없습니다.');
+				} else if (code === 'KITCHEN_NOT_FOUND') {
+					alertDanger('해당 가이드를 찾을 수 없습니다.');
+				} else if (code === 'INTERNAL_SERVER_ERROR') {
+					alertDanger('서버 내부에서 오류가 발생했습니다.');
+				} else {
+					console.log(error);
+				}
+			}
+		}
 
-    return button;
+		// 좋아요 추가
+		else {
+			try {
+				const data = {
+					tablename: 'guide',
+					recodenum: id,
+				};
+
+				const response = await instance.post(`/guides/${id}/likes`, data, {
+					headers: getAuthHeaders(),
+				});
+
+				if (response.data.code === 'KITCHEN_LIKE_SUCCESS') {
+					isLiked = true;
+					img.src = '/images/common/star_full.png';
+					currentCount = currentCount + 1;
+					likeCountElement.textContent = `스크랩 ${currentCount}`;
+					likecount = currentCount; 
+				}
+			} catch (error) {
+				const code = error?.response?.data?.code;
+
+				if (code === 'KITCHEN_LIKE_FAIL') {
+					alertDanger('찜에 실패했습니다.');
+				} else if (code === 'LIKE_CREATE_FAIL') {
+					alertDanger('좋아요 생성에 실패했습니다.');
+				} else if (code === 'KITCHEN_INVALID_INPUT' || code === 'USER_INVALID_INPUT' || code === 'LIKE_INVALID_INPUT') {
+					alertDanger('입력값이 유효하지 않습니다.');
+				} else if (code === 'KITCHEN_UNAUTHORIZED_ACCESS') {
+					alertDanger('로그인되지 않은 사용자입니다.');
+				} else if (code === 'LIKE_FORBIDDEN') {
+					alertDanger('접근 권한이 없습니다.');
+				} else if (code === 'KITCHEN_NOT_FOUND') {
+					alertDanger('해당 가이드를 찾을 수 없습니다.');
+				} else if (code === 'USER_NOT_FOUND') {
+					alertDanger('해당 사용자를 찾을 수 없습니다.');
+				} else if (code === 'LIKE_DUPLICATE') {
+					alertDanger('이미 찜한 가이드입니다.');
+				} else if (code === 'INTERNAL_SERVER_ERROR') {
+					alertDanger('서버 내부에서 오류가 발생했습니다.');
+				} else {
+					console.log(error);
+				}
+			}
+		}
+	});
+
+	return button;
 }
+
+
 
 
 

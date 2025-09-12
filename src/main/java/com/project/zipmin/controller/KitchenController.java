@@ -12,29 +12,26 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
-import com.project.zipmin.api.CommentErrorCode;
-import com.project.zipmin.api.CommentSuccessCode;
 import com.project.zipmin.api.KitchenErrorCode;
 import com.project.zipmin.api.KitchenSuccessCode;
-import com.project.zipmin.api.LikeErrorCode;
+import com.project.zipmin.dto.GuideCreateRequestDto;
+import com.project.zipmin.dto.GuideCreateResponseDto;
 import com.project.zipmin.dto.GuideReadResponseDto;
-import com.project.zipmin.dto.GuideResponseDTO;
+//import com.project.zipmin.dto.GuideResponseDTO;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.service.KitchenService;
 import com.project.zipmin.service.LikeService;
 import com.project.zipmin.service.UserService;
-
-import io.swagger.v3.oas.annotations.Parameter;
 
 @RestController
 public class KitchenController {
@@ -77,14 +74,6 @@ public class KitchenController {
 	    return ResponseEntity.status(KitchenSuccessCode.KITCHEN_READ_SUCCESS.getStatus())
 	            .body(ApiResponse.success(KitchenSuccessCode.KITCHEN_READ_SUCCESS, guide));
 	}
-	
-//	@GetMapping("/guides/{id}")
-//	public ResponseEntity<?> viewGuide(@PathVariable int id) {
-//	    GuideResponseDTO response = kitchenService.readGuideByIdWithLikeStatus(id);
-//
-//	    return ResponseEntity.status(KitchenSuccessCode.KITCHEN_READ_SUCCESS.getStatus())
-//	            .body(ApiResponse.success(KitchenSuccessCode.KITCHEN_READ_SUCCESS, response));
-//	}
 
 
 	
@@ -92,9 +81,23 @@ public class KitchenController {
 	
 	// 새 가이드 등록 (관리자)
 	@PostMapping("/guides")
-	public int writeGuide() {
-		return 0;
+	public ResponseEntity<?> writeGuide(
+	        @RequestBody GuideCreateRequestDto guideRequestDto) {
+	    
+	    // 로그인 여부 확인
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+	        throw new ApiException(KitchenErrorCode.KITCHEN_UNAUTHORIZED_ACCESS);
+	    }
+
+	    GuideCreateResponseDto guideResponseDto = kitchenService.createGuide(guideRequestDto);
+
+	    return ResponseEntity.status(KitchenSuccessCode.KITCHEN_CREATE_SUCCESS.getStatus())
+	            .body(ApiResponse.success(KitchenSuccessCode.KITCHEN_CREATE_SUCCESS, guideResponseDto));
 	}
+	
+	
+	
 	
 	
 	

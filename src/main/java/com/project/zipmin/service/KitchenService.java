@@ -1,6 +1,7 @@
 package com.project.zipmin.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +16,14 @@ import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.KitchenErrorCode;
+import com.project.zipmin.dto.GuideCreateRequestDto;
+import com.project.zipmin.dto.GuideCreateResponseDto;
 import com.project.zipmin.dto.GuideReadResponseDto;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.entity.Guide;
+import com.project.zipmin.entity.Role;
 import com.project.zipmin.mapper.GuideMapper;
 import com.project.zipmin.repository.KitchenRepository;
 
@@ -119,27 +123,16 @@ public class KitchenService {
 	}
 	
 	
-//    // 특정 가이드 상세 조회
-//	public GuideReadResponseDto readGuideById(int id) {
-//	    Guide guide = kitchenRepository.findById(id)
-//	            .orElseThrow(() -> new IllegalArgumentException("해당 가이드를 찾을 수 없습니다. ID: " + id));
-//
-//	    return guideMapper.toReadResponseDto(guide);
-//	}
-	
 	// 특정 가이드 상세 조회 (좋아요 상태 포함)
 	public GuideReadResponseDto readGuideById(int id) {
-	    // 1. 가이드 조회
 	    Guide guide = kitchenRepository.findById(id)
 	            .orElseThrow(() -> new IllegalArgumentException("해당 가이드를 찾을 수 없습니다. ID: " + id));
 	    
 	    GuideReadResponseDto guideDto = guideMapper.toReadResponseDto(guide);
 
-	    // 2. 좋아요 수 조회
 	    long likeCount = likeService.countLike("guide", guide.getId());
 	    guideDto.setLikecount(likeCount);
 
-	    // 3. 로그인 사용자 찜 여부 확인
 	    boolean likestatus = false;
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if (authentication != null && authentication.isAuthenticated()
@@ -150,11 +143,8 @@ public class KitchenService {
 	    }
 	    guideDto.setLikestatus(likestatus);
 
-	    // 4. DTO로 묶어서 반환
 	    return guideDto;
-	    
 	}
-
 
 	
 	// 가이드 좋아요
@@ -209,4 +199,47 @@ public class KitchenService {
 	}
 	
 
+	// 가이드 작성
+	public GuideCreateResponseDto createGuide(GuideCreateRequestDto guideRequestDto) {
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(KitchenErrorCode.KITCHEN_FORBIDDEN);
+			}
+		}
+		guideRequestDto.setUserId(userService.readUserByUsername(username).getId());
+	
+		// 입력값 검증
+	    if (guideRequestDto == null 
+	            || guideRequestDto.getTitle() == null 
+	            || guideRequestDto.getSubtitle() == null
+	            || guideRequestDto.getCategory() == null 
+	            || guideRequestDto.getContent() == null) {
+	        throw new ApiException(KitchenErrorCode.KITCHEN_INVALID_INPUT);
+	    }
+	    
+	    System.err.println("==== guideRequestDto 입력값 ====");
+	    System.err.println("Title: " + guideRequestDto.getTitle());
+	    System.err.println("Subtitle: " + guideRequestDto.getSubtitle());
+	    System.err.println("Category: " + guideRequestDto.getCategory());
+	    System.err.println("Content: " + guideRequestDto.getContent());
+	    System.err.println("UserId: " + guideRequestDto.getUserId());
+	    System.err.println("==============================");
+	    
+	    
+	    // 엔티티 변환 및 저장
+	    Guide guide = guideMapper.toEntity(guideRequestDto);
+	    guide.setPostdate(new Date()); // 현재 시간 설정
+	    
+	    try {
+	        guide = kitchenRepository.save(guide);
+	        return guideMapper.toCreateResponseDto(guide);
+	    } catch (Exception e) {
+	        throw new ApiException(KitchenErrorCode.KITCHEN_CREATE_FAIL);
+	    }
+	}
+	
+	
 }

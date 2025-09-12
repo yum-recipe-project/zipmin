@@ -12,25 +12,6 @@ function getGuideIdFromQuery() {
     const params = new URLSearchParams(window.location.search);
     return params.get('id');
 }
-//
-///**
-// * 키친가이드 상세 게시글 fetch 함수
-// * @param {number} guideId - 요청할 가이드 ID
-// */
-//function fetchGuideDetail(guideId) {
-//    console.log(`[fetchGuideDetail] Fetching URL: /guides/${guideId}`);
-//
-//    fetch(`/guides/${guideId}`)
-//        .then(res => res.json())
-//        .then(result => {
-//            const response = result.data;
-//			if (!response || !response.guide) return;
-//
-//            renderGuide(response.guide, response.likecount);
-//        })
-//        .catch(console.error);
-//}
-
 
 
 

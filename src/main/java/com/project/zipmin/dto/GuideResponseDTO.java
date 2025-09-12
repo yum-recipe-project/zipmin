@@ -14,4 +14,5 @@ import lombok.NoArgsConstructor;
 public class GuideResponseDTO {
 	private GuideReadResponseDto guide;
 	private long likecount;
+	private boolean likestatus;
 }

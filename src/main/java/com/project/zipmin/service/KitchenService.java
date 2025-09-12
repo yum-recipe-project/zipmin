@@ -119,13 +119,42 @@ public class KitchenService {
 	}
 	
 	
-    // 특정 가이드 상세 조회
+//    // 특정 가이드 상세 조회
+//	public GuideReadResponseDto readGuideById(int id) {
+//	    Guide guide = kitchenRepository.findById(id)
+//	            .orElseThrow(() -> new IllegalArgumentException("해당 가이드를 찾을 수 없습니다. ID: " + id));
+//
+//	    return guideMapper.toReadResponseDto(guide);
+//	}
+	
+	// 특정 가이드 상세 조회 (좋아요 상태 포함)
 	public GuideReadResponseDto readGuideById(int id) {
+	    // 1. 가이드 조회
 	    Guide guide = kitchenRepository.findById(id)
 	            .orElseThrow(() -> new IllegalArgumentException("해당 가이드를 찾을 수 없습니다. ID: " + id));
+	    
+	    GuideReadResponseDto guideDto = guideMapper.toReadResponseDto(guide);
 
-	    return guideMapper.toReadResponseDto(guide);
+	    // 2. 좋아요 수 조회
+	    long likeCount = likeService.countLike("guide", guide.getId());
+	    guideDto.setLikecount(likeCount);
+
+	    // 3. 로그인 사용자 찜 여부 확인
+	    boolean likestatus = false;
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication != null && authentication.isAuthenticated()
+	            && !"anonymousUser".equals(authentication.getPrincipal())) {
+	        String username = authentication.getName();
+	        int userId = userService.readUserByUsername(username).getId();
+	        likestatus = likeService.existsUserLike("guide", guideDto.getId(), userId);
+	    }
+	    guideDto.setLikestatus(likestatus);
+
+	    // 4. DTO로 묶어서 반환
+	    return guideDto;
+	    
 	}
+
 
 	
 	// 가이드 좋아요

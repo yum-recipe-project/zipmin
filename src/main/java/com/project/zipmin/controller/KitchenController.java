@@ -72,14 +72,20 @@ public class KitchenController {
 	// 가이드 조회
 	@GetMapping("/guides/{id}")
 	public ResponseEntity<?> viewGuide(@PathVariable int id) {
-	    GuideReadResponseDto guide = kitchenService.readGuideById(id);
-	    int likeCount = likeService.selectLikeCountByTable("guide", id);
-	    
-	    GuideResponseDTO response = new GuideResponseDTO(guide, likeCount);
+		GuideReadResponseDto guide = kitchenService.readGuideById(id);	    
 	    
 	    return ResponseEntity.status(KitchenSuccessCode.KITCHEN_READ_SUCCESS.getStatus())
-	            .body(ApiResponse.success(KitchenSuccessCode.KITCHEN_READ_SUCCESS, response));
+	            .body(ApiResponse.success(KitchenSuccessCode.KITCHEN_READ_SUCCESS, guide));
 	}
+	
+//	@GetMapping("/guides/{id}")
+//	public ResponseEntity<?> viewGuide(@PathVariable int id) {
+//	    GuideResponseDTO response = kitchenService.readGuideByIdWithLikeStatus(id);
+//
+//	    return ResponseEntity.status(KitchenSuccessCode.KITCHEN_READ_SUCCESS.getStatus())
+//	            .body(ApiResponse.success(KitchenSuccessCode.KITCHEN_READ_SUCCESS, response));
+//	}
+
 
 	
 	

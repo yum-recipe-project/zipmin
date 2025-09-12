@@ -26,10 +26,10 @@
 						<h2 class="title"></h2>
 						<div class="guide_writer">
 							<img src="/images/common/test.png">
-							<span><b>관리자</b></span>
+							<span><b class="writer"></b></span>
 							<span> ・ </span>
-							<span>저장</span>
-							<span class="scrap">26</span>
+							<span>스크랩</span>
+							<span class="scrap"></span>
 							<span> ・ </span>
 							<span class="post_date"></span>
 						</div>

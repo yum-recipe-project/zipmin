@@ -139,7 +139,6 @@ function renderGuideList(guideList) {
         const subtitleSpan = document.createElement('span');
         subtitleSpan.textContent = guide.subtitle;
 
-//	    const favBtn = renderLikeButton(guide.id, guide.likestatus);
 	    const favBtn = renderLikeButton(guide.id, guide.likecount, guide.likestatus);
 	    guideTop.append(subtitleSpan, favBtn);
 			

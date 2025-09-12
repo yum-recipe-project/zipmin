@@ -18,6 +18,7 @@ import com.project.zipmin.api.KitchenErrorCode;
 import com.project.zipmin.dto.GuideReadResponseDto;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
+import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.entity.Guide;
 import com.project.zipmin.mapper.GuideMapper;
 import com.project.zipmin.repository.KitchenRepository;
@@ -155,6 +156,28 @@ public class KitchenService {
 	}
 
 	
+	// 가이드 좋아요 취소
+	public void unlikeGuide(LikeDeleteRequestDto likeDto) {
+	    // 입력값 검증
+	    if (likeDto == null || likeDto.getTablename() == null
+	            || likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+	        throw new ApiException(KitchenErrorCode.KITCHEN_INVALID_INPUT);
+	    }
+
+	    // 게시글 존재 여부 확인
+	    if (!kitchenRepository.existsById(likeDto.getRecodenum())) {
+	        throw new ApiException(KitchenErrorCode.KITCHEN_NOT_FOUND);
+	    }
+
+	    // 좋아요 삭제
+	    try {
+	        likeService.deleteLike(likeDto);
+	    } catch (ApiException e) {
+	        throw e;
+	    } catch (Exception e) {
+	        throw new ApiException(KitchenErrorCode.KITCHEN_UNLIKE_FAIL);
+	    }
+	}
 	
 
 }

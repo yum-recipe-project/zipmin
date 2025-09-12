@@ -29,6 +29,7 @@ import com.project.zipmin.dto.GuideReadResponseDto;
 import com.project.zipmin.dto.GuideResponseDTO;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
+import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.service.KitchenService;
 import com.project.zipmin.service.LikeService;
 import com.project.zipmin.service.UserService;
@@ -134,5 +135,26 @@ public class KitchenController {
 
 	
 	
+	
+	// 특정 가이드 좋아요 취소
+	@DeleteMapping("/guides/{id}/likes")
+	public ResponseEntity<?> unlikeGuide(
+	        @PathVariable("id") int guideId,
+	        @RequestBody LikeDeleteRequestDto likeDto) {
+
+	    // 로그인 여부 확인
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+	        throw new ApiException(KitchenErrorCode.KITCHEN_UNAUTHORIZED_ACCESS);
+	    }
+
+	    likeDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
+
+	    // 서비스 호출
+	    kitchenService.unlikeGuide(likeDto);
+
+	    return ResponseEntity.status(KitchenSuccessCode.KITCHEN_UNLIKE_SUCCESS.getStatus())
+	            .body(ApiResponse.success(KitchenSuccessCode.KITCHEN_UNLIKE_SUCCESS, null));
+	}
 	
 }

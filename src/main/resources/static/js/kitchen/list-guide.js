@@ -209,43 +209,44 @@ function renderLikeButton(id, likestatus) {
         }
 
 		try {
-            const response = await fetch(`/guides/${id}/likes`, {
-                method: 'POST',
-                headers: {
-                    ...getAuthHeaders(),
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    tablename: "guide",
-                    recodenum: id
-                })
-            });
-			
-			const result = await response.json();
-			
-			
-			if (result.code === "KITCHEN_LIKE_SUCCESS") {
-				
-                likestatus = !likestatus;
-                img.src = likestatus
-                    ? '/images/common/star_full.png'
-                    : '/images/recipe/star_empty.png';
+           const url = `/guides/${id}/likes`;
+           const options = {
+               method: likestatus ? 'DELETE' : 'POST',
+               headers: {
+                   ...getAuthHeaders(),
+                   'Content-Type': 'application/json'
+               },
+               body: JSON.stringify({
+                   tablename: "guide",
+                   recodenum: id
+               })
+           };
 
-                const likeCountElement = button.closest('.guide_item')
-                    .querySelector('.info p:first-child');
+           const response = await fetch(url, options);
+           const result = await response.json();
 
-                let currentCount = parseInt(likeCountElement.textContent.replace(/\D/g, '')) || 0;
-                currentCount = likestatus ? currentCount + 1 : currentCount - 1;
-                likeCountElement.textContent = `스크랩 ${currentCount}`;
-            } else {
-                alert(result.message || "좋아요 요청 실패");
-            }
+           // 성공 코드 분기
+           if (result.code === "KITCHEN_LIKE_SUCCESS" || result.code === "KITCHEN_UNLIKE_SUCCESS") {
+               // 상태 토글
+               likestatus = !likestatus;
+               img.src = likestatus
+                   ? '/images/common/star_full.png'
+                   : '/images/recipe/star_empty.png';
 
+               // 스크랩 수 갱신
+               const likeCountElement = button.closest('.guide_item')
+                   .querySelector('.info p:first-child');
+               let currentCount = parseInt(likeCountElement.textContent.replace(/\D/g, '')) || 0;
+               currentCount = likestatus ? currentCount + 1 : currentCount - 1;
+               likeCountElement.textContent = `스크랩 ${currentCount}`;
+           } else {
+               alert(result.message || "좋아요 요청 실패");
+           }
 
-        } catch (error) {
-            console.error("좋아요 처리 중 오류:", error);
-        }
-    });
+       } catch (error) {
+           console.error("좋아요 처리 중 오류:", error);
+       }
+   });
 
     return button;
 }

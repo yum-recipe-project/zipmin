@@ -215,6 +215,109 @@ function renderFavoriteButton(id, likecount, isLiked) {
 
 
 
+/**
+ * 키친가이드 삭제 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteBtn = document.getElementById('deleteGuideBtn');
+
+    if (deleteBtn) {
+        deleteBtn.addEventListener('click', async function() {
+            const guideId = getGuideIdFromQuery(); 
+
+            if (!guideId) {
+                alertDanger("삭제할 가이드 ID가 없습니다.");
+                return;
+            }
+			
+			console.log(guideId);
+
+            if (confirm('키친가이드를 삭제하시겠습니까?')) {
+                try {
+                    const response = await instance.delete(`/guides/${guideId}`, {
+                        headers: getAuthHeaders()
+                    });
+
+                    if (response.data.code === 'KITCHEN_DELETE_SUCCESS') {
+                        alertPrimary('키친가이드를 성공적으로 삭제했습니다.');
+                        location.href = '/kitchen/listGuide.do'; // 삭제 후 목록으로 이동
+                    }
+
+                } catch (error) {
+                    const code = error?.response?.data?.code;
+
+                    if (code === 'KITCHEN_DELETE_FAIL') {
+                        alertDanger('키친가이드 삭제에 실패했습니다.');
+                    } else if (code === 'COMMENT_INVALID_INPUT' || code === 'USER_INVALID_INPUT') {
+                        alertDanger('입력값이 유효하지 않습니다.');
+                    } else if (code === 'COMMENT_UNAUTHORIZED') {
+                        alertDanger('로그인되지 않은 사용자입니다.');
+                    } else if (code === 'COMMENT_FORBIDDEN') {
+                        alertDanger('접근 권한이 없습니다.');
+                    } else if (code === 'KITCHEN_NOT_FOUND') {
+                        alertDanger('해당 키친가이드를 찾을 수 없습니다.');
+                    } else if (code === 'USER_NOT_FOUND') {
+                        alertDanger('해당 사용자를 찾을 수 없습니다.');
+                    } else if (code === 'INTERNAL_SERVER_ERROR') {
+                        alertDanger('서버 내부에서 오류가 발생했습니다.');
+                    } else {
+                        console.log(error);
+                    }
+                }
+            }
+        });
+    }
+});
+
+
+async function deleteGuide(id) {
+
+	if (confirm('키친가이드를 삭제하시겠습니까?')) {
+		try {
+			const response = await instance.delete(`/guides/${id}`, {
+				headers: getAuthHeaders()
+			});
+			
+			if (response.data.code === 'KITCHEN_DELETE_SUCCESS') {
+				alertPrimary('댓글을 성공적으로 삭제했습니다.');
+				location.href = '/kitchen/listGuide.do'; // 삭제 후 목록으로 이동
+			}
+			
+		}
+		catch (error) {
+			const code = error?.response?.data?.code;
+			
+			if (code === 'KITCHEN_DELETE_FAIL') {
+				alertDanger('키친가이드 삭제에 실패했습니다');
+			}
+			else if (code === 'COMMENT_INVALID_INPUT') {
+				alertDanger('입력값이 유효하지 않습니다.');
+			}
+			else if (code === 'USER_INVALID_INPUT') {
+				alertDanger('입력값이 유효하지 않습니다.');
+			}
+			else if (code === 'COMMENT_UNAUTHORIZED') {
+				alertDanger('로그인되지 않은 사용자입니다.');
+			}
+			else if (code === 'COMMENT_FORBIDDEN') {
+				alertDanger('접근 권한이 없습니다.');
+			}
+			else if (code === 'KITCHEN_NOT_FOUND') {
+				alertDanger('해당 키친가이드를 찾을 수 없습니다.');
+			}
+			else if (code === 'USER_NOT_FOUND') {
+				alertDanger('해당 사용자를 찾을 수 없습니다.');
+			}
+			else if (code === 'INTERNAL_SERVER_ERROR') {
+				alertDanger('서버 내부에서 오류가 발생했습니다.');
+			}
+			else {
+				console.log(error);
+			}
+		}
+	}
+	
+}
 
 
 

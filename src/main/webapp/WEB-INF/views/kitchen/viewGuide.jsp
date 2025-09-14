@@ -32,10 +32,11 @@
 							<span class="scrap"></span>
 							<span> ・ </span>
 							<span class="post_date"></span>
+							<!-- todo: 키친가이드 삭제 관리자 페이지로 이동하기 -->
+							<button type="button" id="deleteGuideBtn">삭제하기</button>
 						</div>
 						<div class="btn_wrap">
 							<button class="btn_tool" onclick="">
-								<img src="/images/kitchen/star.png"> 저장
 							</button>
 						</div>
 					</div>

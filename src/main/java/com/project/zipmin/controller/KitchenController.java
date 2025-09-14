@@ -98,9 +98,6 @@ public class KitchenController {
 	
 	
 	
-	
-	
-	
 	// 특정 가이드 수정 (관리자)
 	@PatchMapping("/guides/{id}")
 	public int editGuide(@PathVariable int id) {
@@ -111,12 +108,21 @@ public class KitchenController {
 	
 	// 특정 가이드 삭제 (관리자)
 	@DeleteMapping("/guides/{id}")
-	public int deleteGuide(@PathVariable int id) {
-		return 0;
+	public ResponseEntity<?> deleteGuide(@PathVariable int id) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(KitchenErrorCode.KITCHEN_UNAUTHORIZED_ACCESS);
+		}
+		
+		kitchenService.deleteGuide(id);
+		
+		
+		return ResponseEntity.status(KitchenSuccessCode.KITCHEN_DELETE_SUCCESS.getStatus())
+				.body(ApiResponse.success(KitchenSuccessCode.KITCHEN_DELETE_SUCCESS, null));
 	}
-	
-	
-	
+
 	
 	// 특정 가이드 좋아요 (저장)
 	@PostMapping("/guides/{id}/likes")

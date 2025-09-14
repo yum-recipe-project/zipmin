@@ -22,6 +22,7 @@ import com.project.zipmin.dto.GuideReadResponseDto;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
+import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.entity.Guide;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.mapper.GuideMapper;
@@ -241,5 +242,48 @@ public class KitchenService {
 	    }
 	}
 	
+	
+	// 가이드 삭제
+	public void deleteGuide(Integer id) {
+		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(KitchenErrorCode.KITCHEN_INVALID_INPUT);
+		}
+		
+		// 가이드 게시글 여부 확인
+		Guide guide = kitchenRepository.findById(id)
+				.orElseThrow(() -> new ApiException(KitchenErrorCode.KITCHEN_NOT_FOUND));
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto user = userService.readUserByUsername(username);
+		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (user.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (guide.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(KitchenErrorCode.KITCHEN_FORBIDDEN);
+				}
+				if (guide.getUser().getRole().equals(Role.ROLE_ADMIN)) {
+					if (user.getId() != guide.getUser().getId()) {
+						throw new ApiException(KitchenErrorCode.KITCHEN_FORBIDDEN);
+					}
+				}
+			}
+			// 일반 회원
+			else {
+				throw new ApiException(KitchenErrorCode.KITCHEN_FORBIDDEN);
+			}
+		}
+		
+		// 가이드 삭제
+		try {
+			kitchenRepository.deleteById(id);
+		}
+		catch (Exception e) {
+			throw new ApiException(KitchenErrorCode.KITCHEN_DELETE_FAIL);
+		}
+		
+	}
 	
 }

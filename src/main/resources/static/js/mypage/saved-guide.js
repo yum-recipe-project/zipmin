@@ -154,6 +154,23 @@ function renderLikeButton(id, likecount, isLiked) {
 					currentCount = Math.max(0, currentCount - 1); 
 	                likeCountElement.textContent = `스크랩 ${currentCount}`;
 	                likecount = currentCount;
+					
+					// 좋아요 취소한 가이드 제거
+					const guideItem = button.closest('.guide_item');
+					if (guideItem) {
+						guideItem.remove();
+					}
+					
+				    const guideCountEl = document.getElementById('guideCount');
+				    if (guideCountEl) {
+				        const currentTotal = parseInt(guideCountEl.innerText) || 0;
+				        guideCountEl.innerText = `${Math.max(0, currentTotal - 1)}개`;
+				    }
+
+				    if (page >= totalPages) {
+				        const loadMoreBtn = document.querySelector('.btn_more');
+				        if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+				    }
 				}
 			} catch (error) {
 				const code = error?.response?.data?.code;

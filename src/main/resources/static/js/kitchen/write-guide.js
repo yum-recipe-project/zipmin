@@ -2,48 +2,16 @@
  * 키친가이드 글쓰기
  */
 document.addEventListener('DOMContentLoaded', function() {
-
-    const form = document.getElementById('writeGuideForm'); // form id
+    const form = document.getElementById('writeGuideForm');
+	
     form.addEventListener('submit', async function(event) {
         event.preventDefault();
-        let isValid = true;
-
-        // 입력값 검증
-        const title = document.getElementById('title');
-        const subtitle = document.getElementById('subtitle');
-        const category = document.getElementById('category');
-        const content = document.getElementById('content');
-
-        if (title.value.trim() === '') {
-            title.classList.add('is-invalid');
-            document.getElementById('titleHint').style.display = 'block';
-            title.focus();
-            isValid = false;
+		
+		// 폼값 검증
+        if (!validateGuideForm()) {
+            return;
         }
-
-        if (subtitle.value.trim() === '') {
-            subtitle.classList.add('is-invalid');
-            document.getElementById('subtitleHint').style.display = 'block';
-            subtitle.focus();
-            isValid = false;
-        }
-
-        if (category.value.trim() === '') {
-            category.classList.add('is-invalid');
-            document.getElementById('categoryHint').style.display = 'block';
-            category.focus();
-            isValid = false;
-        }
-
-        if (content.value.trim() === '') {
-            content.classList.add('is-invalid');
-            document.getElementById('contentHint').style.display = 'block';
-            content.focus();
-            isValid = false;
-        }
-
-        if (!isValid) return;
-
+				
         // 로그인 여부 확인
         if (!isLoggedIn()) {
             redirectToLogin();
@@ -51,12 +19,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         try {
-            // 요청 DTO 구성
+            // 요청 DTO
             const guideRequestDto = {
-                title: title.value.trim(),
-                subtitle: subtitle.value.trim(),
-                category: category.value.trim(),
-                content: content.value.trim()
+				title: document.getElementById('title').value.trim(),
+                subtitle: document.getElementById('subtitle').value.trim(),
+                category: document.getElementById('category').value.trim(),
+                content: document.getElementById('content').value.trim()
             };
 
             // API 요청
@@ -87,3 +55,40 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+
+/**
+ * 키친가이드 작성 폼값 검증 함수
+ */
+function validateGuideForm() {
+    const title = document.getElementById('title');
+    const subtitle = document.getElementById('subtitle');
+    const category = document.getElementById('category');
+    const content = document.getElementById('content');
+
+    if (subtitle.value.trim() === '') {
+        alertDanger("소제목을 입력해주세요.");
+        subtitle.focus();
+        return false;
+    }
+
+    if (title.value.trim() === '') {
+        alertDanger("제목을 입력해주세요.");
+        title.focus();
+        return false;
+    }
+
+    if (category.value.trim() === '') {
+        alertDanger("카테고리를 선택해주세요.");
+        category.focus();
+        return false;
+    }
+
+    if (content.value.trim() === '') {
+        alertDanger("본문 내용을 입력해주세요.");
+        content.focus();
+        return false;
+    }
+
+    return true;
+}

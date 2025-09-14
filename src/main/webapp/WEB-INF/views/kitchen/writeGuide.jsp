@@ -25,19 +25,19 @@
 						<!-- 소제목 -->
 						<div class="form_group">
 							<label for="subtitle">소제목</label>
-							<input type="text" id="subtitle" name="subtitle" required>
+							<input type="text" id="subtitle" name="subtitle" placeholder="신선도를 유지하는 법" >
 						</div>
 
 						<!-- 제목 -->
 						<div class="form_group">
 							<label for="title">제목</label>
-							<input type="text" id="title" name="title" required>
+							<input type="text" id="title" name="title" placeholder="생선 냉동 보관법" >
 						</div>
 
 						<!-- 카테고리 -->
 						<div class="form_group">
 							<label for="category">카테고리</label>
-							<select id="category" name="category" required>
+							<select id="category" name="category" >
 								<option value="">-- 선택하세요 --</option>
 								<option value="preparation">손질법</option>
 								<option value="storage">보관법</option>
@@ -49,12 +49,12 @@
 						<!-- 본문 -->
 						<div class="form_group">
 							<label for="content">내용</label>
-							<textarea id="content" name="content" rows="10" required></textarea>
+							<textarea id="content" name="content" rows="10" placeholder="본문 내용을 입력하세요" ></textarea>
 						</div>
 
 						<!-- 버튼 -->
 						<div class="form_actions">
-							<button type="submit" class="btn_primary">저장하기</button>
+							<button type="submit" class="btn_primary">작성하기</button>
 							<button type="button" class="btn_outline" onclick="location.href='/kitchen/listGuide.do'">취소</button>
 						</div>
 					</form>

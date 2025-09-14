@@ -281,6 +281,21 @@ public class UserService {
 		return userRepository.existsByUsername(username);
 	}
 
+	
+	
+	
+	
+	
+	// 유저 정보 반환
+//	public User getUserEntityByUsername(String username) {
+//	    if (username == null) {
+//	        throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+//	    }
+//
+//	    return userRepository.findByUsername(username)
+//	            .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+//	}
+
 
 
 

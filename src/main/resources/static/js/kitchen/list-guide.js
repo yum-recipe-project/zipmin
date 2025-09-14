@@ -64,24 +64,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
 /**
  * 서버에서 키친가이드 목록 데이터를 가져오는 함수
  */
 async function fetchGuideList() {
+	const token = localStorage.getItem('accessToken');
+	const payload = parseJwt(token);
+	
 	
 	try {
 		const params = new URLSearchParams({
 			category: category,
-			keyword: keyword, //추가 
+			keyword: keyword,  
 			sort: sort,
 			page: page,
 			size: size
 		});
 		
 		const response = await fetch(`/guides?${params}`, {
-			method: 'GET'
+			method: 'GET',
+			headers: getAuthHeaders()
 		});
+		
 		const result = await response.json();
 		
 		if (result.code === 'KITCHEN_READ_LIST_SUCCESS') {
@@ -135,11 +139,9 @@ function renderGuideList(guideList) {
         const subtitleSpan = document.createElement('span');
         subtitleSpan.textContent = guide.subtitle;
 
-        const favBtn = document.createElement('button');
-        favBtn.className = 'favorite_btn';
-
-        guideTop.append(subtitleSpan, favBtn);
-
+	    const favBtn = renderLikeButton(guide.id, guide.likecount, guide.likestatus);
+	    guideTop.append(subtitleSpan, favBtn);
+			
         const titleSpan = document.createElement('span');
         titleSpan.textContent = guide.title;
 
@@ -148,11 +150,35 @@ function renderGuideList(guideList) {
 
         const scrapP = document.createElement('p');
         scrapP.textContent = `스크랩 ${guide.likecount}`;
-
+		
+		// todo: 관리자 페이지로 이동하기
+		// 수정하기
+        const editBtn = document.createElement('button');
+        editBtn.type = 'button';
+        editBtn.className = 'btn btn-sm btn-outline-info ms-2';
+        editBtn.textContent = '수정';
+		
+		editBtn.dataset.bsToggle = 'modal';
+		editBtn.dataset.bsTarget = '#editGuideModal';
+		editBtn.dataset.id = guide.id;
+							
+							
+        // 클릭 시 모달 열고 데이터 채우기
+        editBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+			
+		   document.getElementById('editGuideId').value = guide.id;
+		   document.getElementById('editGuideTitleInput').value = guide.title;
+		   document.getElementById('editGuideSubtitleInput').value = guide.subtitle;
+		   document.getElementById('editGuideCategorySelect').value = guide.category;
+		   document.getElementById('editGuideContentInput').value = guide.content;
+        });
+		
         const dateP = document.createElement('p');
         dateP.textContent = formatDate(guide.postdate);
 
-        infoDiv.append(scrapP, dateP);
+		// todo: 관리자 페이지로 editBtn 이동 후 삭제
+        infoDiv.append(scrapP, dateP, editBtn);
 
         const writerDiv = document.createElement('div');
         writerDiv.className = 'writer';
@@ -177,31 +203,137 @@ function renderGuideList(guideList) {
         li.appendChild(a);
         container.appendChild(li);
     });
-
-	/******** 이거 수정 필요 *********/
-	/*** Dto에 likestatus를 저장해두었으므로 필요없음 ***/
-	/*** 위 코드의 favBtn을 적절히 표시하고 그 버튼 눌렀을 때의 백엔드 처리를 만들기 ****/
-    initFavoriteButtons(); 
 }
-
-
-
 
 
 /**
- * 찜 버튼 클릭 이벤트 등록 함수
+ * 키친가이드 좋아요(찜) 버튼을 생성하는 함수
  * 
- * ***** common/comment.js 보고 수정할 것 (renderLikeButton 부분)
+ * @param {number} id - 가이드(게시글) ID
+ * @param {number} likecount - 현재 좋아요 수
+ * @param {boolean} isLiked - 사용자가 좋아요를 눌렀는지 여부
  */
-function initFavoriteButtons() {
-    document.querySelectorAll(".favorite_btn").forEach(button => {
-        button.addEventListener("click", e => {
-            e.preventDefault();
-            e.stopPropagation();
-            button.classList.toggle("active");
-        });
-    });
+function renderLikeButton(id, likecount, isLiked) {
+	
+	// 버튼 요소
+	const button = document.createElement('button');
+	button.className = 'favorite_btn';
+
+	const img = document.createElement('img');
+	img.src = isLiked ? '/images/common/star_full.png' : '/images/recipe/star_empty.png';
+
+	button.append(img);
+
+	// 클릭 이벤트
+	button.addEventListener('click', async function (event) {
+		event.preventDefault();
+		
+		if (!isLoggedIn()) {
+			redirectToLogin();
+			return;
+		}
+		
+		// 스크랩 수 요소 
+	    const likeCountElement = button.closest('.guide_item').querySelector('.info p:first-child');
+
+	    // 현재 스크랩 수 계산 (likecount + 버튼 상태)
+	    let currentCount = likecount;
+
+		// 좋아요 취소
+		if (isLiked) {
+			try {
+				const data = {
+					tablename: 'guide',
+					recodenum: id,
+				};
+
+				const response = await instance.delete(`/guides/${id}/likes`, {
+					data: data,
+					headers: getAuthHeaders(),
+				});
+
+				if (response.data.code === 'KITCHEN_UNLIKE_SUCCESS') {
+					isLiked = false;
+					img.src = '/images/recipe/star_empty.png';
+					currentCount = Math.max(0, currentCount - 1); 
+	                likeCountElement.textContent = `스크랩 ${currentCount}`;
+	                likecount = currentCount;
+				}
+			} catch (error) {
+				const code = error?.response?.data?.code;
+
+				if (code === 'KITCHEN_UNLIKE_FAIL') {
+					alertDanger('찜 취소에 실패했습니다.');
+				} else if (code === 'LIKE_DELETE_FAIL') {
+					alertDanger('좋아요 삭제에 실패했습니다.');
+				} else if (code === 'KITCHEN_INVALID_INPUT' || code === 'USER_INVALID_INPUT' || code === 'LIKE_INVALID_INPUT') {
+					alertDanger('입력값이 유효하지 않습니다.');
+				} else if (code === 'KITCHEN_UNAUTHORIZED_ACCESS') {
+					alertDanger('로그인되지 않은 사용자입니다.');
+				} else if (code === 'LIKE_FORBIDDEN') {
+					alertDanger('접근 권한이 없습니다.');
+				} else if (code === 'LIKE_NOT_FOUND') {
+					alertDanger('해당 찜을 찾을 수 없습니다.');
+				} else if (code === 'KITCHEN_NOT_FOUND') {
+					alertDanger('해당 가이드를 찾을 수 없습니다.');
+				} else if (code === 'INTERNAL_SERVER_ERROR') {
+					alertDanger('서버 내부에서 오류가 발생했습니다.');
+				} else {
+					console.log(error);
+				}
+			}
+		}
+
+		// 좋아요 추가
+		else {
+			try {
+				const data = {
+					tablename: 'guide',
+					recodenum: id,
+				};
+
+				const response = await instance.post(`/guides/${id}/likes`, data, {
+					headers: getAuthHeaders(),
+				});
+
+				if (response.data.code === 'KITCHEN_LIKE_SUCCESS') {
+					isLiked = true;
+					img.src = '/images/common/star_full.png';
+					currentCount = currentCount + 1;
+					likeCountElement.textContent = `스크랩 ${currentCount}`;
+					likecount = currentCount; 
+				}
+			} catch (error) {
+				const code = error?.response?.data?.code;
+
+				if (code === 'KITCHEN_LIKE_FAIL') {
+					alertDanger('찜에 실패했습니다.');
+				} else if (code === 'LIKE_CREATE_FAIL') {
+					alertDanger('좋아요 생성에 실패했습니다.');
+				} else if (code === 'KITCHEN_INVALID_INPUT' || code === 'USER_INVALID_INPUT' || code === 'LIKE_INVALID_INPUT') {
+					alertDanger('입력값이 유효하지 않습니다.');
+				} else if (code === 'KITCHEN_UNAUTHORIZED_ACCESS') {
+					alertDanger('로그인되지 않은 사용자입니다.');
+				} else if (code === 'LIKE_FORBIDDEN') {
+					alertDanger('접근 권한이 없습니다.');
+				} else if (code === 'KITCHEN_NOT_FOUND') {
+					alertDanger('해당 가이드를 찾을 수 없습니다.');
+				} else if (code === 'USER_NOT_FOUND') {
+					alertDanger('해당 사용자를 찾을 수 없습니다.');
+				} else if (code === 'LIKE_DUPLICATE') {
+					alertDanger('이미 찜한 가이드입니다.');
+				} else if (code === 'INTERNAL_SERVER_ERROR') {
+					alertDanger('서버 내부에서 오류가 발생했습니다.');
+				} else {
+					console.log(error);
+				}
+			}
+		}
+	});
+
+	return button;
 }
+
 
 
 

@@ -26,16 +26,17 @@
 						<h2 class="title"></h2>
 						<div class="guide_writer">
 							<img src="/images/common/test.png">
-							<span><b>관리자</b></span>
+							<span><b class="writer"></b></span>
 							<span> ・ </span>
-							<span>저장</span>
-							<span class="scrap">26</span>
+							<span>스크랩</span>
+							<span class="scrap"></span>
 							<span> ・ </span>
 							<span class="post_date"></span>
+							<!-- todo: 키친가이드 삭제 관리자 페이지로 이동하기 -->
+							<button type="button" id="deleteGuideBtn">삭제하기</button>
 						</div>
 						<div class="btn_wrap">
 							<button class="btn_tool" onclick="">
-								<img src="/images/kitchen/star.png"> 저장
 							</button>
 						</div>
 					</div>

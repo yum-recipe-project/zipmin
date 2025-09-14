@@ -2,7 +2,6 @@ package com.project.zipmin.service;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,20 +15,24 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.KitchenErrorCode;
+import com.project.zipmin.dto.CommentReadMyResponseDto;
 import com.project.zipmin.dto.GuideCreateRequestDto;
 import com.project.zipmin.dto.GuideCreateResponseDto;
+import com.project.zipmin.dto.GuideReadMySavedResponseDto;
 import com.project.zipmin.dto.GuideReadResponseDto;
 import com.project.zipmin.dto.GuideUpdateRequestDto;
 import com.project.zipmin.dto.GuideUpdateResponseDto;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
+import com.project.zipmin.dto.LikeReadResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
-import com.project.zipmin.dto.VoteChoiceUpdateRequestDto;
+import com.project.zipmin.entity.Comment;
 import com.project.zipmin.entity.Guide;
+import com.project.zipmin.entity.Like;
 import com.project.zipmin.entity.Role;
-import com.project.zipmin.entity.VoteChoice;
 import com.project.zipmin.mapper.GuideMapper;
 import com.project.zipmin.repository.KitchenRepository;
 
@@ -284,9 +287,6 @@ public class KitchenService {
 	
 	
 	
-	
-	
-	
 	// 가이드 수정
 	public GuideUpdateResponseDto updateGuide(GuideUpdateRequestDto guideRequestDto) {
 		
@@ -340,4 +340,49 @@ public class KitchenService {
  		}
 		
 	}
+
+
+	
+	// 사용자가 저장한 가이드 목록 조회
+    public Page<GuideReadMySavedResponseDto> readSavedGuidePageByUserId(Integer userId, Pageable pageable) {
+
+        if (userId == null || pageable == null) {
+            throw new ApiException(KitchenErrorCode.KITCHEN_INVALID_INPUT);
+        }
+
+        // 1. 사용자가 좋아요한 가이드 목록 가져오기
+        List<LikeReadResponseDto> likeList = likeService.readLikeListByTablenameAndUserId("guide", userId);
+
+        // 2. 좋아요한 가이드 ID만 추출
+        List<Integer> guideIds = likeList.stream()
+                .map(LikeReadResponseDto::getRecodenum)
+                .toList();
+
+        if (guideIds.isEmpty()) {
+            return Page.empty(pageable); // 좋아요한 글이 없으면 빈 페이지 반환
+        }
+
+        // 3. Guide 조회 (Pageable 적용)
+        Page<Guide> guidePage = kitchenRepository.findByIdIn(guideIds, pageable);
+
+        // 4. DTO 변환
+        List<GuideReadMySavedResponseDto> dtoList = new ArrayList<>();
+        for (Guide guide : guidePage) {
+            GuideReadMySavedResponseDto dto = guideMapper.toReadMySavedResponseDto(guide);
+            dto.setLikecount(likeService.countLike("guide", guide.getId())); // 좋아요 수 세팅
+            dtoList.add(dto);
+        }
+
+        return new PageImpl<>(dtoList, pageable, guidePage.getTotalElements());
+    }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

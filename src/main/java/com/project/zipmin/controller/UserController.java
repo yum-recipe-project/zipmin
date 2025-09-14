@@ -3,13 +3,10 @@ package com.project.zipmin.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,38 +14,33 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
-import com.project.zipmin.api.CommentErrorCode;
-import com.project.zipmin.api.FridgeSuccessCode;
 import com.project.zipmin.api.ClassSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.CommentReadMyResponseDto;
-import com.project.zipmin.dto.CommentReadResponseDto;
-import com.project.zipmin.dto.FridgeReadResponseDto;
-import com.project.zipmin.dto.UserReadRequestDto;
 import com.project.zipmin.dto.FundDTO;
-import com.project.zipmin.dto.UserPasswordCheckRequestDto;
-import com.project.zipmin.dto.UserDto;
+import com.project.zipmin.dto.GuideReadMySavedResponseDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
+import com.project.zipmin.dto.UserDto;
+import com.project.zipmin.dto.UserPasswordCheckRequestDto;
+import com.project.zipmin.dto.UserReadRequestDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.UserUpdateRequestDto;
 import com.project.zipmin.dto.UserUpdateResponseDto;
 import com.project.zipmin.entity.Role;
-import com.project.zipmin.entity.User;
-import com.project.zipmin.mapper.UserMapper;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.CookingService;
 import com.project.zipmin.service.FridgeService;
+import com.project.zipmin.service.KitchenService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.UserCorrectPassworResponse;
@@ -61,7 +53,6 @@ import com.project.zipmin.swagger.UserForbiddenResponse;
 import com.project.zipmin.swagger.UserIncorrectPassworResponse;
 import com.project.zipmin.swagger.UserInvalidInputResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
-import com.project.zipmin.swagger.UserReadFailResponse;
 import com.project.zipmin.swagger.UserReadListFailResponse;
 import com.project.zipmin.swagger.UserReadListSuccessResponse;
 import com.project.zipmin.swagger.UserReadSuccessResponse;
@@ -91,6 +82,7 @@ public class UserController {
 	private final CommentService commentService;	
 	private final CookingService cookingService;	
 	private final FridgeService fridgeService;
+	private final KitchenService kitchenService;
 	
 	
 	
@@ -756,10 +748,40 @@ public class UserController {
 	}
 	
 	
-	
-	
-	
-	
+	// 저장한 키친가이드
+	@GetMapping("/users/{id}/guides")
+	public ResponseEntity<?> readUserSavedGuideList(
+			@PathVariable Integer id,
+			@RequestParam int page,
+			@RequestParam int size) {
+		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 로그인 정보
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		// 본인 확인
+		if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN)) {
+			if (id != userService.readUserByUsername(username).getId()) {
+				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+			}
+		}
+		
+		Pageable pageable = PageRequest.of(page, size);
+		Page<GuideReadMySavedResponseDto> savedGuidePage = kitchenService.readSavedGuidePageByUserId(id, pageable);
+		
+		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, savedGuidePage));
+	}
 	
 	
 	/*********** 아래 요청명 다 적절히 수정 필요 !!! ***********/

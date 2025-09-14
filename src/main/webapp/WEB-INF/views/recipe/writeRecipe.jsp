@@ -230,13 +230,13 @@
 						</div>
 					</div>
 					
-					<div class="ingredient_wrap">
-						<h2>재료</h2>
+					<div class="recipe_stock_wrap">
+						<h2>필요한 재료를 작성해주세요</h2>
 						
 						<!-- 조리 양 -->
-						<div class="serving_field">
+						<div class="form-group portion_field">
 							<label>조리 양</label>
-							<select>
+							<select class="form-select">
 								<option value="">조리 양을 선택하세요</option>
 								<option value="1인분">1인분</option>
 								<option value="2인분">2인분</option>
@@ -244,53 +244,52 @@
 								<option value="4인분">4인분</option>
 								<option value="5인분">5인분</option>
 							</select>
-							<input type="hidden" name="serving">
+							<input type="hidden" name="portion">
 							<p>양을 선택해주세요.</p>
 						</div>
 						
 						<!-- 재료 -->
-						<div class="ingredient_field">
+						<div class="form-group stock_field">
 							<label>재료</label>
 							<ul>
-								<li class="ingredient_row">
-									<div class="ingredient_flex">
-										<input type="text" class="ingredient_input" name="" value="" placeholder="재료">
-										<img src="/images/recipe/commit.png">
-										<input type="text" class="ingredient_amount_input" name="" value="" placeholder="단위가 포함된 양">
-										<img src="/images/recipe/commit.png">
-										<input type="text" class="ingredient_note_input" name="" value="" placeholder="비고 (선택사항)">
-									</div>
-									<p class="ingredient_hint">재료를 입력해주세요.</p>
+								<li class="input_group">
+									<input type="text" name="name" placeholder="재료">
+									<input type="text" name="amount" placeholder="단위가 포함된 양">
+									<input type="text" name="note" placeholder="비고 (선택사항)">
+								</li>
+								<li class="input_group">
+									<input type="text" name="name" placeholder="재료">
+									<input type="text" name="amount" placeholder="단위가 포함된 양">
+									<input type="text" name="note" placeholder="비고 (선택사항)">
 								</li>
 							</ul>
-							<div class="add_btn">
-								<a id="addIngredientBtn" href="">재료 추가하기</a>
-							</div>
+							<button type="button" id="WriteRecipeAddStockButton" class="btn btn-primary-outline">재료 추가하기</button>
+							<p>재료를 입력해주세요.</p>
 						</div>
 					</div>
 					
-					<div class="step_wrap">
-						<h2>조리 순서</h2>
-						<ul>
-							<li class="step_row">
-								<div class="step_image_field">
-									<label>STEP 1</label>
-									<input type="file" class="step_image_input" name="image" accept="image/*">
-								</div>
-								<div class="step_field">
-									<input type="text" class="step_input" name="" value="" placeholder="조리 방법을 자세히 작성해주세요">
-								</div>
-								<p class="step_hint">조리 순서를 입력해주세요.</p>
-							</li>
-						</ul>
-						<div class="add_btn">
-							<a id="addStepBtn" href="">다음 단계 작성하기</a>
+					<div class="recipe_step_wrap">
+						<h2>조리 방법을 순서대로 알려주세요</h2>
+						
+						<div class="form-group step_field">
+							<ul>
+								<li>
+									<h5>STEP 1</h5>
+									<div class="form-textarea">
+										<textarea name="content" rows="2" cols="30" placeholder="조리 방법을 자세히 작성해주세요"></textarea>
+										<input type="file" name="image" accept="image/*">
+									</div>
+								</li>
+							</ul>
+							<button type="button" id="WriteRecipeAddStepButton" class="btn btn-primary-outline">조리 방법 추가하기</button>
+							<p>조리 방법을 입력해주세요.</p>
 						</div>
 					</div>
 					
-					<div class="tip_wrap">
+					
+					<div class="recipe_notice_wrap">
 						<!-- 공지사항 -->
-						<div class="notice_info">
+						<div class="notice">
 							<h5>이런 경우 레시피가 삭제될 수 있어요</h5>
 							<p>・&nbsp;&nbsp;존재하지 않는 재료나 조리법을 입력하는 경우</p>
 							<p>・&nbsp;&nbsp;부정확한 정보로 인해 많은 사용자가 신고한 경우</p>
@@ -310,7 +309,7 @@
 					
 					<!-- 업로드 버튼 -->
 					<div class="btn_wrap">
-						<button class="btn_outline" onclick="">취소하기</button>
+						<button class="btn_outline" onclick="location.href='/recipe/listRecipe.do'">취소하기</button>
 						<button class="btn_primary" type="submit" onclick="">업로드하기</button>
 					</div>
 				</form>

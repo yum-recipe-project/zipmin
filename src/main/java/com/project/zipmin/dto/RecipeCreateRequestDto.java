@@ -11,15 +11,15 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class RecipeCreateRequestDto {
 	
-	private String image;
 	private String title;
+	private String image;
 	private String introduce;
 	private String cooklevel;
 	private String cooktime;
 	private String spicy;
 	private String portion;
 	private String tip;
-	private String youtube;
+	// private String youtube;
 	private Integer userId;
 	
 	private List<RecipeCategoryCreateRequestDto> categoryDtoList;

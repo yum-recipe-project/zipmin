@@ -57,8 +57,10 @@
 }
 
 #container .recipe_basic_wrap .form-image input.danger {
-	border: 1px dashed #F45452;
-	background-color: rgb(254, 245, 245);
+	border: 1px dashed #F45452 !important;
+	background: url(/images/recipe/add_photo_f45452.png) no-repeat center !important;
+	background-color: rgb(254, 245, 245) !important;
+    background-size: 40px !important;
 }
 
 #container .recipe_basic_wrap .form-image p {
@@ -113,17 +115,6 @@
 }
 
 #container .recipe_basic_wrap .form-group input.danger {
-	appearance: none;
-	padding: 11px 32px 13px 12px;
-	width: 100%;
-	height: 50px;
-	vertical-align: middle;
-	font-size: 16px;
-	line-height: 24px;
-	letter-spacing: -0.4px;
-	color: rgb(33, 35, 41);
-	border-radius: 4px;
-	outline: none;
 	border: 1px solid #F45452;
 	background: rgb(254, 245, 245);
 }
@@ -272,17 +263,6 @@
 }
 
 #container .recipe_stock_wrap .form-group input.danger {
-	appearance: none;
-	padding: 11px 32px 13px 12px;
-	width: 100%;
-	height: 50px;
-	vertical-align: middle;
-	font-size: 16px;
-	line-height: 24px;
-	letter-spacing: -0.4px;
-	color: rgb(33, 35, 41);
-	border-radius: 4px;
-	outline: none;
 	border: 1px solid #F45452;
 	background: rgb(254, 245, 245);
 }
@@ -295,6 +275,7 @@
 	line-height: 20px;
 	letter-spacing: -0.2px;
 	color: #F45452;
+	text-align: left;
 }
 
 /* 재료 > 셀렉트 폼 */
@@ -361,17 +342,23 @@
 
 }
 
-#container .recipe_stock_wrap .remove_btn a {
+
+#container .recipe_stock_wrap .input_group .remove_stock_btn {
+	border: none;
+	background: none;
+	margin-top: 8px;
+	width: 165px;
 	font-size: 12px;
 	font-weight: 600;
 	color: var(--point-color2);
 	display: flex;
 	align-items: center;
 	gap: 2px;
+	white-space: no-wrap;
 	cursor: pointer;
 }
 
-#container .recipe_stock_wrap .remove_btn img {
+#container .recipe_stock_wrap .input_group .remove_stock_btn img {
 	width: 16px;
 	height: 16px;
 }
@@ -401,6 +388,10 @@
 /* 조리 순서 > 텍스트 폼 */
 #container .recipe_step_wrap .step_field {
 	text-align: center;
+}
+
+#container .recipe_step_wrap .form-group li {
+	position: relative;
 }
 
 #container .recipe_step_wrap .form-group li:not(:first-child) {
@@ -436,27 +427,17 @@
 	text-align: left;
 }
 
+#container .recipe_step_wrap .form-group .form-textarea.danger {
+	border: 1px solid #F45452;
+	background: rgb(254, 245, 245);
+}
+
 #container .recipe_step_wrap .form-group .form-textarea textarea {
 	width: 100%;
 	height: 70px;
 	margin-bottom: 10px;
 }
 
-#container .recipe_step_wrap .form-group .form-textarea textarea.danger {
-	appearance: none;
-	padding: 11px 32px 13px 12px;
-	width: 100%;
-	height: 50px;
-	vertical-align: middle;
-	font-size: 16px;
-	line-height: 24px;
-	letter-spacing: -0.4px;
-	color: rgb(33, 35, 41);
-	border-radius: 4px;
-	outline: none;
-	border: 1px solid #F45452;
-	background: rgb(254, 245, 245);
-}
 
 #container .recipe_step_wrap .form-group .form-textarea input[type='file']::file-selector-button {
 	margin-right: 10px;
@@ -474,6 +455,7 @@
 	line-height: 20px;
 	letter-spacing: -0.2px;
 	color: #F45452;
+	text-align: left;
 }
 
 /* 조리 순서 > 버튼 */
@@ -498,12 +480,13 @@
 	color: var(--point-color2);
 }
 
-#container .content .step_wrap .step_field .remove_btn {
+#container .recipe_step_wrap .remove_step_btn {
+	position: absolute;
+	bottom: 15px;
+	right: 18px;
+	border: none;
+	background: none;
 	margin-top: 8px;
-	width: 55px;
-}
-
-#container .content .step_wrap .step_field .remove_btn a {
 	font-size: 12px;
 	font-weight: 600;
 	color: var(--point-color2);
@@ -514,7 +497,7 @@
 	cursor: pointer;
 }
 
-#container .content .step_wrap .step_field .remove_btn img {
+#container .recipe_step_wrap .remove_step_btn img {
 	width: 16px;
 	height: 16px;
 }

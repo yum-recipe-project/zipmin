@@ -40,23 +40,23 @@
 						</div>
 						
 						<!--  난이도 -->
-						<div class="form-group level_field">
+						<div class="form-group cooklevel_field">
 							<label>난이도<img src="/images/recipe/help_666.png"></label>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="writeRecipeCooklevel1" name="cooklevel" value="입문">
+									<input type="radio" id="writeRecipeCooklevel1" name="cooklevelRadio" value="입문">
 									<label for="writeRecipeCooklevel1">입문</label>
 								</div>
 								<div>
-									<input type="radio" id="writeRecipeCooklevel2" name="cooklevel" value="초급">
+									<input type="radio" id="writeRecipeCooklevel2" name="cooklevelRadio" value="초급">
 									<label for="writeRecipeCooklevel2">초급</label>
 								</div>
 								<div>
-									<input type="radio" id="writeRecipeCooklevel3" name="cooklevel" value="중급">
+									<input type="radio" id="writeRecipeCooklevel3" name="cooklevelRadio" value="중급">
 									<label for="writeRecipeCooklevel3">중급</label>
 								</div>
 								<div>
-									<input type="radio" id="writeRecipeCooklevel4" name="cooklevel" value="고급">
+									<input type="radio" id="writeRecipeCooklevel4" name="cooklevelRadio" value="고급">
 									<label for="writeRecipeCooklevel4">고급</label>
 								</div>
 							</div>
@@ -72,27 +72,27 @@
 						</div>
 						
 						<!-- 조리시간 -->
-						<div class="form-group time_field">
+						<div class="form-group cooktime_field">
 							<label>조리시간</label>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="writeRecipeCooktime1" name="cooktime" value="10분">
+									<input type="radio" id="writeRecipeCooktime1" name="cooktimeRadio" value="10분">
 									<label for="writeRecipeCooktime1">10분</label>
 								</div>
 								<div>
-									<input type="radio" id="writeRecipeCooktime2" name="cooktime" value="30분">
+									<input type="radio" id="writeRecipeCooktime2" name="cooktimeRadio" value="30분">
 									<label for="writeRecipeCooktime2">30분</label>
 								</div>
 								<div>
-									<input type="radio" id="writeRecipeCooktime3" name="cooktime" value="1시간">
+									<input type="radio" id="writeRecipeCooktime3" name="cooktimeRadio" value="1시간">
 									<label for="writeRecipeCooktime3">1시간</label>
 								</div>
 								<div>
-									<input type="radio" id="writeRecipeCooktime4" name="cooktime" value="1시간 30분">
+									<input type="radio" id="writeRecipeCooktime4" name="cooktimeRadio" value="1시간 30분">
 									<label for="writeRecipeCooktime4">1시간 30분</label>
 								</div>
 								<div>
-									<input type="radio" id="writeRecipeCooktime5" name="cooktime" value="2시간 이상">
+									<input type="radio" id="writeRecipeCooktime5" name="cooktimeRadio" value="2시간 이상">
 									<label for="writeRecipeCooktime5">2시간 이상</label>
 								</div>
 							</div>
@@ -105,23 +105,23 @@
 							<label>맵기 정도<img src="/images/recipe/help_666.png"></label>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="writeRecipeSpicy1" name="spicy" value="아주 안매움">
+									<input type="radio" id="writeRecipeSpicy1" name="spicyRadio" value="아주 안매움">
 									<label for="writeRecipeSpicy1">아주 안매움</label>
 								</div>
 								<div>
-									<input type="radio" id="writeRecipeSpicy2" name="spicy" value="안매움">
+									<input type="radio" id="writeRecipeSpicy2" name="spicyRadio" value="안매움">
 									<label for="writeRecipeSpicy2">안매움</label>
 								</div>
 								<div>
-									<input type="radio" id="writeRecipeSpicy3" name="spicy" value="보통">
+									<input type="radio" id="writeRecipeSpicy3" name="spicyRadio" value="보통">
 									<label for="writeRecipeSpicy3">보통</label>
 								</div>
 								<div>
-									<input type="radio" id="writeRecipeSpicy4" name="spicy" value="매움">
+									<input type="radio" id="writeRecipeSpicy4" name="spicyRadio" value="매움">
 									<label for="writeRecipeSpicy4">매움</label>
 								</div>
 								<div>
-									<input type="radio" id="writeRecipeSpicy5" name="spicy" value="아주 매움">
+									<input type="radio" id="writeRecipeSpicy5" name="spicyRadio" value="아주 매움">
 									<label for="writeRecipeSpicy5">아주 매움</label>
 								</div>
 							</div>
@@ -223,13 +223,15 @@
 							<p>카테고리를 선택해주세요.</p>
 						</div>
 						
-						<!-- 제목 -->
+						<!-- 팁 -->
 						<div class="form-group tip_field">
 							<label>팁 및 주의사항 (선택사항)</label>
 							<input type="text" name="tip" placeholder="요리팁이나 주의사항을 작성해주세요">
 						</div>
 					</div>
+				</form>
 					
+				<form id="writeRecipeStockForm">
 					<div class="recipe_stock_wrap">
 						<h2>필요한 재료를 작성해주세요</h2>
 						
@@ -237,7 +239,7 @@
 						<div class="form-group portion_field">
 							<label>조리 양</label>
 							<select class="form-select">
-								<option value="">조리 양을 선택하세요</option>
+								<option value="" disabled selected hidden="true">조리 양을 선택하세요</option>
 								<option value="1인분">1인분</option>
 								<option value="2인분">2인분</option>
 								<option value="3인분">3인분</option>
@@ -257,17 +259,14 @@
 									<input type="text" name="amount" placeholder="단위가 포함된 양">
 									<input type="text" name="note" placeholder="비고 (선택사항)">
 								</li>
-								<li class="input_group">
-									<input type="text" name="name" placeholder="재료">
-									<input type="text" name="amount" placeholder="단위가 포함된 양">
-									<input type="text" name="note" placeholder="비고 (선택사항)">
-								</li>
 							</ul>
-							<button type="button" id="WriteRecipeAddStockButton" class="btn btn-primary-outline">재료 추가하기</button>
 							<p>재료를 입력해주세요.</p>
+							<button type="button" id="writeRecipeAddStockButton" class="btn btn-primary-outline">재료 추가하기</button>
 						</div>
 					</div>
+				</form>
 					
+				<form id="writeRecipeStepForm">
 					<div class="recipe_step_wrap">
 						<h2>조리 방법을 순서대로 알려주세요</h2>
 						
@@ -276,17 +275,18 @@
 								<li>
 									<h5>STEP 1</h5>
 									<div class="form-textarea">
-										<textarea name="content" rows="2" cols="30" placeholder="조리 방법을 자세히 작성해주세요"></textarea>
+										<textarea name="content" rows="2" cols="30" placeholder="조리 방법을 자세히 작성해주세요 (사진 첨부는 선택사항입니다)"></textarea>
 										<input type="file" name="image" accept="image/*">
 									</div>
 								</li>
 							</ul>
-							<button type="button" id="WriteRecipeAddStepButton" class="btn btn-primary-outline">조리 방법 추가하기</button>
 							<p>조리 방법을 입력해주세요.</p>
+							<button type="button" id="writeRecipeAddStepButton" class="btn btn-primary-outline">다음 단계 작성하기</button>
 						</div>
 					</div>
+				</form>
 					
-					
+				<form id="writeRecipeNoticeForm">
 					<div class="recipe_notice_wrap">
 						<!-- 공지사항 -->
 						<div class="notice">
@@ -306,13 +306,13 @@
 							</div>
 						</div>
 					</div>
-					
-					<!-- 업로드 버튼 -->
-					<div class="btn_wrap">
-						<button class="btn_outline" onclick="location.href='/recipe/listRecipe.do'">취소하기</button>
-						<button class="btn_primary" type="submit" onclick="">업로드하기</button>
-					</div>
 				</form>
+					
+				<!-- 업로드 버튼 -->
+				<div class="btn_wrap">
+					<button class="btn_outline" onclick="location.href='/recipe/listRecipe.do'">취소하기</button>
+					<button id="submitWriteRecipeFormButton" class="btn_primary" type="button">업로드하기</button>
+				</div>
 			</div>
 		</main>
 		

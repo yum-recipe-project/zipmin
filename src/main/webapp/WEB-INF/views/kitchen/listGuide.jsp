@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="/css/kitchen/list-guide.css">
 		<link rel="stylesheet" href="/css/common/pagination.css">
 		<script src="/js/kitchen/list-guide.js"></script>
+		<script src="/js/admin/modal/edit-guide-modal.js"></script>
 	</head>
 	<body>
 		<%@include file="../common/header.jsp" %>
@@ -53,6 +54,8 @@
 					    <ul></ul>
 					</div>
 				</div>
+				
+				<%@include file="../admin/modal/editGuideModal.jsp" %>
 			
 			</div>
 		</main>

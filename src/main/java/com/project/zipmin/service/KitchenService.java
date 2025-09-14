@@ -2,6 +2,7 @@ package com.project.zipmin.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,16 @@ import com.project.zipmin.api.KitchenErrorCode;
 import com.project.zipmin.dto.GuideCreateRequestDto;
 import com.project.zipmin.dto.GuideCreateResponseDto;
 import com.project.zipmin.dto.GuideReadResponseDto;
+import com.project.zipmin.dto.GuideUpdateRequestDto;
+import com.project.zipmin.dto.GuideUpdateResponseDto;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.UserReadResponseDto;
+import com.project.zipmin.dto.VoteChoiceUpdateRequestDto;
 import com.project.zipmin.entity.Guide;
 import com.project.zipmin.entity.Role;
+import com.project.zipmin.entity.VoteChoice;
 import com.project.zipmin.mapper.GuideMapper;
 import com.project.zipmin.repository.KitchenRepository;
 
@@ -221,15 +226,6 @@ public class KitchenService {
 	        throw new ApiException(KitchenErrorCode.KITCHEN_INVALID_INPUT);
 	    }
 	    
-	    System.err.println("==== guideRequestDto 입력값 ====");
-	    System.err.println("Title: " + guideRequestDto.getTitle());
-	    System.err.println("Subtitle: " + guideRequestDto.getSubtitle());
-	    System.err.println("Category: " + guideRequestDto.getCategory());
-	    System.err.println("Content: " + guideRequestDto.getContent());
-	    System.err.println("UserId: " + guideRequestDto.getUserId());
-	    System.err.println("==============================");
-	    
-	    
 	    // 엔티티 변환 및 저장
 	    Guide guide = guideMapper.toEntity(guideRequestDto);
 	    guide.setPostdate(new Date()); // 현재 시간 설정
@@ -286,4 +282,62 @@ public class KitchenService {
 		
 	}
 	
+	
+	
+	
+	
+	
+	// 가이드 수정
+	public GuideUpdateResponseDto updateGuide(GuideUpdateRequestDto guideRequestDto) {
+		
+		// 입력값 검증
+	    if (guideRequestDto == null || guideRequestDto.getId() == 0
+	            || guideRequestDto.getTitle() == null || guideRequestDto.getSubtitle() == null
+	            || guideRequestDto.getCategory() == null || guideRequestDto.getContent() == null) {
+	        throw new ApiException(KitchenErrorCode.KITCHEN_INVALID_INPUT);
+	    }
+		
+		// 가이드 존재 여부 확인
+		Guide guide = kitchenRepository.findById(guideRequestDto.getId())
+				.orElseThrow(() -> new ApiException(KitchenErrorCode.KITCHEN_NOT_FOUND));
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto user = userService.readUserByUsername(username);
+		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (user.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (guide.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(KitchenErrorCode.KITCHEN_FORBIDDEN);
+				}
+				if (guide.getUser().getRole().equals(Role.ROLE_ADMIN)) {
+					if (user.getId() != guide.getUser().getId()) {
+						throw new ApiException(KitchenErrorCode.KITCHEN_FORBIDDEN);
+					}
+				}
+			}
+			// 일반 회원
+			else {
+				throw new ApiException(KitchenErrorCode.KITCHEN_FORBIDDEN);
+			}
+		}
+		
+		// 변경 값 설정
+	    guide.setTitle(guideRequestDto.getTitle());
+	    guide.setSubtitle(guideRequestDto.getSubtitle());
+	    guide.setCategory(guideRequestDto.getCategory());
+	    guide.setContent(guideRequestDto.getContent());
+	    
+	    
+	    
+	    // 이벤트 수정
+ 		try {
+ 			guide = kitchenRepository.save(guide);
+ 			return guideMapper.toUpdateResponseDto(guide);
+ 		}
+ 		catch (Exception e) {
+ 			throw new ApiException(KitchenErrorCode.KITCHEN_UPDATE_FAIL);
+ 		}
+		
+	}
 }

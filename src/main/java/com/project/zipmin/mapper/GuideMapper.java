@@ -6,6 +6,8 @@ import org.mapstruct.Mapping;
 import com.project.zipmin.dto.GuideCreateRequestDto;
 import com.project.zipmin.dto.GuideCreateResponseDto;
 import com.project.zipmin.dto.GuideReadResponseDto;
+import com.project.zipmin.dto.GuideUpdateRequestDto;
+import com.project.zipmin.dto.GuideUpdateResponseDto;
 import com.project.zipmin.entity.Guide;
 
 @Mapper(componentModel = "spring")
@@ -24,6 +26,14 @@ public interface GuideMapper {
 	
 	@Mapping(target = "userId", source = "user.id")
 	GuideCreateResponseDto toCreateResponseDto(Guide guide);
+	
+	// Update
+    @Mapping(target = "id", source = "id")
+    Guide toEntity(GuideUpdateRequestDto guideDTO);
+    
+    @Mapping(target = "userId", source = "user.id")
+    GuideUpdateResponseDto toUpdateResponseDto(Guide guide);
+	
 	
 }
 

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
@@ -25,6 +24,8 @@ import com.project.zipmin.api.KitchenSuccessCode;
 import com.project.zipmin.dto.GuideCreateRequestDto;
 import com.project.zipmin.dto.GuideCreateResponseDto;
 import com.project.zipmin.dto.GuideReadResponseDto;
+import com.project.zipmin.dto.GuideUpdateRequestDto;
+import com.project.zipmin.dto.GuideUpdateResponseDto;
 //import com.project.zipmin.dto.GuideResponseDTO;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
@@ -100,8 +101,26 @@ public class KitchenController {
 	
 	// 특정 가이드 수정 (관리자)
 	@PatchMapping("/guides/{id}")
-	public int editGuide(@PathVariable int id) {
-		return 0;
+	public ResponseEntity<?> editGuide(@PathVariable int id,
+			@RequestBody GuideUpdateRequestDto guideRequestDto) {
+		
+		System.err.print("수정 컨트롤러 진입, id:" + id);
+		System.err.print("guideRequestDto:" + guideRequestDto);
+		
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(KitchenErrorCode.KITCHEN_UNAUTHORIZED_ACCESS);
+		}
+		
+		GuideUpdateResponseDto guideResponseDto = kitchenService.updateGuide(guideRequestDto);
+		
+		System.err.println("컨트롤러 끝");
+		
+		
+		return ResponseEntity.status(KitchenSuccessCode.KITCHEN_UPDATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(KitchenSuccessCode.KITCHEN_UPDATE_SUCCESS, guideResponseDto));
 	}
 	
 	

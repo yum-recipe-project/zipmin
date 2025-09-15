@@ -3,14 +3,12 @@ package com.project.zipmin.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.access.method.P;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -19,14 +17,15 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
-import com.project.zipmin.api.EventErrorCode;
 import com.project.zipmin.api.RecipeErrorCode;
-import com.project.zipmin.api.VoteErrorCode;
+import com.project.zipmin.dto.LikeReadResponseDto;
 import com.project.zipmin.dto.RecipeCategoryCreateRequestDto;
 import com.project.zipmin.dto.RecipeCategoryCreateResponseDto;
 import com.project.zipmin.dto.RecipeCategoryReadResponseDto;
 import com.project.zipmin.dto.RecipeCreateRequestDto;
 import com.project.zipmin.dto.RecipeCreateResponseDto;
+import com.project.zipmin.dto.RecipeReadMyResponseDto;
+import com.project.zipmin.dto.RecipeReadMySavedResponseDto;
 import com.project.zipmin.dto.RecipeReadResponseDto;
 import com.project.zipmin.dto.RecipeStepCreateRequestDto;
 import com.project.zipmin.dto.RecipeStepCreateResponseDto;
@@ -40,7 +39,6 @@ import com.project.zipmin.entity.RecipeCategory;
 import com.project.zipmin.entity.RecipeStep;
 import com.project.zipmin.entity.RecipeStock;
 import com.project.zipmin.entity.Role;
-import com.project.zipmin.entity.User;
 import com.project.zipmin.mapper.RecipeCategoryMapper;
 import com.project.zipmin.mapper.RecipeMapper;
 import com.project.zipmin.mapper.RecipeStepMapper;
@@ -193,7 +191,6 @@ public class RecipeService {
 	
 	
 	
-	
 	// 레시피 목록을 조회하는 함수 (냉장고 파먹기 용)
 	public List<RecipeReadResponseDto> readRecipeList() {
 		
@@ -228,6 +225,74 @@ public class RecipeService {
 	}
 	
 	
+	
+	// 사용자가 작성한 레시피 목록을 조회하는 함수
+	public Page<RecipeReadMyResponseDto> readRecipePageByUserId(Integer userId, Pageable pageable) {
+	    
+	    if (userId == null || pageable == null) {
+	        throw new ApiException(RecipeErrorCode.RECIPE_INVALID_INPUT);
+	    }
+
+	    // 레시피 목록 조회
+	    Page<Recipe> recipePage;
+	    try {
+	        recipePage = recipeRepository.findByUserId(userId, pageable);
+	    }
+	    catch (Exception e) {
+	        throw new ApiException(RecipeErrorCode.RECIPE_READ_LIST_FAIL);
+	    }
+
+	    List<RecipeReadMyResponseDto> recipeDtoList = new ArrayList<>();
+	    for (Recipe recipe : recipePage) {
+	        RecipeReadMyResponseDto recipeDto = recipeMapper.toReadMyResponseDto(recipe);
+
+
+	        recipeDto.setLikecount(likeService.countLike("recipe", recipe.getId()));
+
+	        recipeDtoList.add(recipeDto);
+	    }
+
+	    return new PageImpl<>(recipeDtoList, pageable, recipePage.getTotalElements());
+	}
+
+	
+	
+	
+	// 사용자가 저장한(좋아요) 레시피 목록 조회
+	public Page<RecipeReadMySavedResponseDto> readSavedRecipePageByUserId(Integer userId, Pageable pageable) {
+
+	    if (userId == null || pageable == null) {
+	        throw new ApiException(RecipeErrorCode.RECIPE_INVALID_INPUT);
+	    }
+	    
+	    // 1. 사용자가 좋아요한 레시피 목록 가져오기
+	    List<LikeReadResponseDto> likeList = likeService.readLikeListByTablenameAndUserId("recipe", userId);
+	    System.err.println("likeList: " + likeList);
+	    
+	    // 2. 좋아요한 레시피 ID만 추출
+	    List<Integer> recipeIds = likeList.stream()
+	            .map(LikeReadResponseDto::getRecodenum)
+	            .toList();
+
+	    if (recipeIds.isEmpty()) {
+	        return Page.empty(pageable); // 좋아요한 글이 없으면 빈 페이지 반환
+	    }
+
+	    // 3. Recipe 조회 (Pageable 적용)
+	    Page<Recipe> recipePage = recipeRepository.findByIdIn(recipeIds, pageable);
+
+	    // 4. DTO 변환
+	    List<RecipeReadMySavedResponseDto> dtoList = new ArrayList<>();
+	    for (Recipe recipe : recipePage) {
+	        RecipeReadMySavedResponseDto dto = recipeMapper.toReadMySavedResponseDto(recipe);
+	        dto.setLikecount(likeService.countLike("recipe", recipe.getId())); // 좋아요 수 세팅
+	        dto.setImage(publicPath + "/" + dto.getImage());
+	        dtoList.add(dto);
+	    }
+	    
+	    return new PageImpl<>(dtoList, pageable, recipePage.getTotalElements());
+	}
+
 	
 	
 	

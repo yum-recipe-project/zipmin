@@ -5,6 +5,7 @@ import org.mapstruct.Mapping;
 
 import com.project.zipmin.dto.GuideCreateRequestDto;
 import com.project.zipmin.dto.GuideCreateResponseDto;
+import com.project.zipmin.dto.GuideReadMySavedResponseDto;
 import com.project.zipmin.dto.GuideReadResponseDto;
 import com.project.zipmin.dto.GuideUpdateRequestDto;
 import com.project.zipmin.dto.GuideUpdateResponseDto;
@@ -33,6 +34,12 @@ public interface GuideMapper {
     
     @Mapping(target = "userId", source = "user.id")
     GuideUpdateResponseDto toUpdateResponseDto(Guide guide);
+    
+    
+    // 내 저장 가이드용 Read DTO 매핑
+    @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "likecount", ignore = true) // 서비스에서 세팅
+    GuideReadMySavedResponseDto toReadMySavedResponseDto(Guide guide);
 	
 	
 }

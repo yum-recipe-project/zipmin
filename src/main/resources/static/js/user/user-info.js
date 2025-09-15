@@ -2,16 +2,14 @@
  * 접근 권한을 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', async function() {
-	if (!isLoggedIn()) {
-		redirectToLogin();
-	}
-
+	
 	try {
 		await instance.get('/dummy');
 	}
 	catch (error) {
-		console.log(error);
+		redirectToLogin('/');
 	}
+	
 });
 
 
@@ -33,16 +31,13 @@ document.addEventListener('DOMContentLoaded', function() {
  * 회원 정보를 조회하는 함수
  */
 document.addEventListener('DOMContentLoaded', async function() {
-	if (!isLoggedIn()) {
-		redirectToLogin();
-	}
 
 	try {
 		const token = localStorage.getItem('accessToken');
 		const payload = parseJwt(token);
 		
 		const response = await instance.get(`/users/${payload.id}`);
-		if (response.data.code === 'USER_PROFILE_FETCH_SUCCESS') {
+		if (response.data.code === 'USER_READ_SUCCESS') {
 			document.querySelector('.username_field .username').innerText = response.data.data.username;
 			document.querySelector('.name_field .name').innerText = response.data.data.name;
 			document.querySelector('.nickname_field .nickname').innerText = response.data.data.nickname;
@@ -56,8 +51,29 @@ document.addEventListener('DOMContentLoaded', async function() {
 		}
 	}
 	catch (error) {
-		console.log(error);
+		const code = error?.response?.data?.code;
+		const message = error?.response?.data?.message;
+		
+		if (code === 'USER_INVALID_INPUT') {
+			alert(message);
+		}
+		else if (code === 'USER_UNAUTHORIZED_ACCESS') {
+			alert(message);
+		}
+		else if (code === 'USER_FORBIDDEN') {
+			alert(message);
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			alert(message);
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alert(message);
+		}
+		else {
+			console.log('서버 요청 중 오류 발생');
+		}
 	}
+	
 });
 
 
@@ -188,24 +204,53 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 		
 		if (isValid) {
-			const token = localStorage.getItem('accessToken');
-			const payload = parseJwt(token);
-				
-			const data = {
-				name: basicInfoForm.name.value.trim(),
-				nickname: basicInfoForm.nickname.value.trim(),
-				tel: basicInfoForm.tel.value.trim()
-			};
-			
 			try {
-				const response = await instance.put(`/users/${payload.id}`, data);
+				const token = localStorage.getItem('accessToken');
+				const payload = parseJwt(token);
+					
+				const data = {
+					name: basicInfoForm.name.value.trim(),
+					nickname: basicInfoForm.nickname.value.trim(),
+					tel: basicInfoForm.tel.value.trim()
+				};
 				
-				if (response.data.code === 'USER_PROFILE_UPDATE_SUCCESS') {
+				const response = await instance.patch(`/users/${payload.id}`, data);
+				
+				if (response.data.code === 'USER_UPDATE_SUCCESS') {
 					location.reload();
 				}
 			}
 			catch(error) {
-				console.log(error);
+				const code = error?.response?.data?.code;
+				const message = error?.response?.data?.message;
+				
+				if (code === 'USER_UPDATE_FAIL') {
+					alert(message);
+				}
+				else if (code === 'USER_INVALID_INPUT') {
+					alert(message);
+				}
+				else if (code === 'USER_UNAUTHORIZED_ACCESS') {
+					alert(message);
+				}
+				else if (code === 'USER_FORBIDDEN') {
+					alert(message);
+				}
+				else if (code === 'USER_NOT_FOUND') {
+					alert(message);
+				}
+				else if (code === 'USER_TEL_DUPLICATED') {
+					alert(message);
+				}
+				else if (code === 'USER_EMAIL_DUPLICATED') {
+					alert(message);
+				}
+				else if (code === 'INTERNAL_SERVER_ERROR') {
+					alert(message);
+				}
+				else {
+					console.log('서버 요청 중 오류 발생');
+				}
 			}
 		}
 	});
@@ -224,22 +269,51 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 
 		if (isValid) {
-			const token = localStorage.getItem('accessToken');
-			const payload = parseJwt(token);
-			
-			const data = {
-				email: emailInfoForm.email.value.trim()
-			}
-			
 			try {
-				const response = await instance.put(`/users/${payload.id}`, data);
+				const token = localStorage.getItem('accessToken');
+				const payload = parseJwt(token);
 				
-				if (response.data.code === 'USER_PROFILE_UPDATE_SUCCESS') {
+				const data = {
+					email: emailInfoForm.email.value.trim()
+				}
+				
+				const response = await instance.patch(`/users/${payload.id}`, data);
+				
+				if (response.data.code === 'USER_UPDATE_SUCCESS') {
 					location.reload();
 				}
 			}
 			catch (error) {
-				console.log(error);
+				const code = error?.response?.data?.code;
+				const message = error?.response?.data?.message;
+				
+				if (code === 'USER_UPDATE_FAIL') {
+					alert(message);
+				}
+				else if (code === 'USER_INVALID_INPUT') {
+					alert(message);
+				}
+				else if (code === 'USER_UNAUTHORIZED_ACCESS') {
+					alert(message);
+				}
+				else if (code === 'USER_FORBIDDEN') {
+					alert(message);
+				}
+				else if (code === 'USER_NOT_FOUND') {
+					alert(message);
+				}
+				else if (code === 'USER_TEL_DUPLICATED') {
+					alert(message);
+				}
+				else if (code === 'USER_EMAIL_DUPLICATED') {
+					alert(message);
+				}
+				else if (code === 'INTERNAL_SERVER_ERROR') {
+					alert(message);
+				}
+				else {
+					console.log('서버 요청 중 오류 발생');
+				}
 			}
 		}
 		
@@ -256,32 +330,46 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 		if (confirm('정말로 탈퇴하시겠습니까?')) {
 			if (confirm('이 동작은 되돌릴 수 없습니다. 정말로 탈퇴하시겠습니까?')) {
-				const token = localStorage.getItem('accessToken');
-				const payload = parseJwt(token);
 				
 				try {
-					const response = await instance(`/users/${payload.id}`);
+					const token = localStorage.getItem('accessToken');
+					const payload = parseJwt(token);
+					
+					const response = await instance.delete(`/users/${payload.id}`);
 					
 					if (response.data.code === 'USER_DELETE_SUCCESS') {
 						localStorage.removeItem('accessToken');
-						alert('회원을 탈퇴했습니다.');
+						alert('회원 탈퇴가 완료되었습니다.');
 						location.href = '/';
 					}
 				}
 				catch (error) {
-					alert('회원 탈퇴에 실패했습니다.');
-					console.log(error);
+					const code = error?.response?.data?.code;
+					const message = error?.response?.data?.message;
+					
+					if (code === 'USER_DELETE_FAIL') {
+						alert(message);
+					}
+					else if (code === 'USER_INVALID_INPUT') {
+						alert(message);
+					}
+					else if (code === 'USER_UNAUTHORIZED_ACCESS') {
+						alert(message);
+					}
+					else if (code === 'USER_FORBIDDEN') {
+						alert(message);
+					}
+					else if (code === 'USER_NOT_FOUND') {
+						alert(message);
+					}
+					else if (code === 'INTERNAL_SERVER_ERROR') {
+						alert(message);
+					}
+					else {
+						console.log('서버 요청 중 오류 발생');
+					}
 				}
 			}
 		}
 	}) 
 });
-
-
-
-
-
-
-
-
-

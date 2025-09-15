@@ -16,7 +16,9 @@ public class EventReadResponseDto {
 	private Date opendate;
 	private Date closedate;
 	private String content;
+	private String image;
+	private int userId;
 	
-	private String status;
+	private int commentcount;
 	
 }

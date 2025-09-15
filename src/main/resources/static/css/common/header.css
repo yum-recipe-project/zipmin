@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+
+
+
+
 /* 헤더 상단 */
 #header .header_top {
 	margin: 0px auto;
@@ -18,7 +22,7 @@
 	color: var(--txt-color-500);
 }
 
-/* 헤더 상단 (요리팁) */
+/* 헤더 상단  > 키친가이드 팁 */
 #header .header_top .inner .cook_tip {
 	display: flex;
 }
@@ -30,7 +34,17 @@
 	color: var(--txt-color-500);
 }
 
-/* 헤더 상단 (유틸 메뉴) */
+#header .header_top .inner .cook_tip .tip_text {
+	display: inline-block;
+	transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+#header .header_top .inner .cook_tip .tip_text.slide-up {
+	transform: translateY(-100%);
+	opacity: 0;
+}
+
+/* 헤더 상단 > 유틸 메뉴 */
 #header .header_top .inner .util_menu {
 	display: flex;
 	justify-content: flex-end;
@@ -61,18 +75,12 @@
 	color: var(--txt-color-500);
 }
 
-#header .header_top .inner .util_menu a.account {
-	display: flex;
-	gap: 4px;
-	align-items: center;
+#header .header_top .inner .util_menu .user_name {
 	color: #666;
 	font-weight: 600;
 }
 
-#header .header_top .inner .util_menu a.account img {
-	width: 16px;
-	height: 16px;
-}
+
 
 
 
@@ -98,7 +106,7 @@
 	align-items: center;
 }
 
-/* 헤더 하단 (로고) */
+/* 헤더 하단 > 로고 */
 #header .header_bottom .inner .logo {
 	width: 100px;
 	justify-content: center;
@@ -106,7 +114,7 @@
 	margin-right: 40px;
 }
 
-/* 헤더 하단 (메뉴) */
+/* 헤더 하단 > 메뉴 */
 #header .header_bottom .inner .gnb ul {
 	display: flex;
     align-items: center;
@@ -122,11 +130,12 @@
 	color: var(--point-color1);
 }
 
-/* 헤더 하단 (검색창) */
+/* 헤더 하단 > 검색창 */
 #header .header_bottom .inner .search_form {
 	display: none;
 	margin-left: auto !important;
-	width: 308px;
+	/* width: 308px; */
+	width: 280px;
 	padding: 0px 12px;
 	border: 1px solid var(--line-color1);
 	border-radius: 4px;

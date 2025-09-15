@@ -16,43 +16,39 @@ public class AdminViewController {
 		return "admin/login";
 	}
 	
-	@GetMapping("/admin/register.do")
-	public String adminRegister() {
-		return "admin/register";
+	@GetMapping("/admin/listUser.do")
+	public String adminListUser() {
+		return "admin/listUser";
 	}
 	
-	@GetMapping("/admin/button.do")
-	public String adminButtons() {
-		return "admin/ui-buttons";
+	@GetMapping("/admin/listRecipe.do")
+	public String adminListRecipe() {
+		return "admin/listRecipe";
 	}
 	
-	@GetMapping("/admin/alert.do")
-	public String adminAlerts() {
-		return "admin/ui-alerts";
+	@GetMapping("/admin/listGuide.do")
+	public String adminListGuide() {
+		return "admin/listGuide";
 	}
 	
-	@GetMapping("/admin/card.do")
-	public String adminCard() {
-		return "admin/ui-card";
+	@GetMapping("/admin/listChomp.do")
+	public String adminListChomp() {
+		return "admin/listChomp";
 	}
 	
-	@GetMapping("/admin/form.do")
-	public String adminForms() {
-		return "admin/ui-forms";
+	@GetMapping("/admin/listComment.do")
+	public String adminListComment() {
+		return "admin/listComment";
 	}
 	
-	@GetMapping("/admin/typography.do")
-	public String adminTypography() {
-		return "admin/ui-typography";
+	@GetMapping("/admin/listReview.do")
+	public String adminListReview() {
+		return "admin/listReview";
 	}
 	
-	@GetMapping("/admin/icon.do")
-	public String adminIcons() {
-		return "admin/ui-icons";
+	@GetMapping("/admin/listClass.do")
+	public String adminListClass() {
+		return "admin/listClass";
 	}
 	
-	@GetMapping("/admin/sample.do")
-	public String adminSample() {
-		return "admin/sample";
-	}
 }

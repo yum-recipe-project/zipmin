@@ -1,5 +1,7 @@
 package com.project.zipmin.service;
 
+import java.util.Optional;
+
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -44,38 +46,49 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		String username = oAuth2Response.getEmail();
 		
 		// 넘어온 회원정보가 이미 테이블에 존재하는지 확인
-		User existData = userRepository.findByUsername(username);
-		
-		// 존재하지 않는다면 회원정보를 저장하고 CustomOAuth2User 반환
-		if (existData == null) {
-			User user = User.createUser(username, oAuth2Response.getName(), oAuth2Response.getName(), oAuth2Response.getEmail(), Role.ROLE_USER, oAuth2Response.getProvider(), oAuth2Response.getProviderId());
+		Optional<User> optionalUser = userRepository.findByUsername(username);
 
-			user = userRepository.save(user);
-			
-			UserDto userDto = new UserDto();
-			userDto.setId(user.getId());
-			userDto.setUsername(username);
-			userDto.setName(oAuth2Response.getName());
-			userDto.setNickname(oAuth2Response.getName());
-			userDto.setEmail(oAuth2Response.getEmail());
-			userDto.setRole("ROLE_USER");
-			
-			return new CustomOAuth2User(userDto);
+		// 존재하지 않는다면 회원정보를 저장하고 CustomOAuth2User 반환
+		if (optionalUser.isEmpty()) {
+		    User user = User.createUser(
+		        username,
+		        oAuth2Response.getName(),
+		        oAuth2Response.getName(),
+		        oAuth2Response.getEmail(),
+		        Role.ROLE_USER,
+		        oAuth2Response.getProvider(),
+		        oAuth2Response.getProviderId()
+		    );
+
+		    user = userRepository.save(user);
+
+		    UserDto userDto = new UserDto();
+		    userDto.setId(user.getId());
+		    userDto.setUsername(user.getUsername());
+		    userDto.setName(user.getName());
+		    userDto.setNickname(user.getNickname());
+		    userDto.setEmail(user.getEmail());
+		    userDto.setRole("ROLE_USER");
+
+		    return new CustomOAuth2User(userDto);
+		 // 회원정보가 존재한다면 조회된 데이터로 반환
+		} else {		    User existUser = optionalUser.get();
+		    existUser.updateUser(oAuth2Response.getEmail(), oAuth2Response.getName());
+
+		    UserDto userDto = new UserDto();
+		    userDto.setId(existUser.getId());
+		    userDto.setUsername(existUser.getUsername());
+		    userDto.setName(existUser.getName());
+		    userDto.setNickname(existUser.getNickname());
+		    userDto.setEmail(existUser.getEmail());
+		    userDto.setRole("ROLE_USER");
+
+		    return new CustomOAuth2User(userDto);
 		}
-		// 회원정보가 존재한다면 조회된 데이터로 반환
-		else {
-			existData.updateUser(oAuth2Response.getEmail(), oAuth2Response.getName());
-			
-			UserDto userDto = new UserDto();
-			userDto.setId(existData.getId());
-			userDto.setUsername(username);
-			userDto.setName(existData.getName());
-			userDto.setNickname(existData.getNickname());
-			userDto.setEmail(existData.getEmail());
-			userDto.setRole("ROLE_USER");
-			
-			return new CustomOAuth2User(userDto);
-		}
+
 	}
+	
+	
+	
 	
 }

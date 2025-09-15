@@ -2,8 +2,7 @@
     pageEncoding="UTF-8"%>
     
 <form id="writeSubcommentForm" method="post" action="" onsubmit="">
-	<input type="hidden" id="writeCommentTablename" name="tablename">
-	<input type="hidden" id="writeCommentRecodenum" name="recodenum">
+	<input type="hidden" id="writeSubcommentCommId" name="commId">
 	<div class="modal" id="writeSubcommentModal">
 		<div class="modal-dialog">
 			<div class="modal-content">

@@ -1,257 +1,257 @@
-//package com.project.zipmin.controller;
-//
-//import java.util.List;
-//
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.web.bind.annotation.DeleteMapping;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.bind.annotation.PutMapping;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RestController;
-//
-//import com.project.zipmin.dto.RecipeCategoryDTO;
-//import com.project.zipmin.dto.CommentDTO;
-//import com.project.zipmin.dto.RecipeIngredientDTO;
-//import com.project.zipmin.dto.RecipeDTO;
-//import com.project.zipmin.dto.ReviewDTO;
-//import com.project.zipmin.dto.RecipeStepDTO;
-//import com.project.zipmin.dto.UserDTO;
-//import com.project.zipmin.service.CategoryService;
-//import com.project.zipmin.service.CommentService;
-//import com.project.zipmin.service.IngredientService;
-//import com.project.zipmin.service.LikeService;
-//import com.project.zipmin.service.RecipeService;
-//import com.project.zipmin.service.ReportService;
-//import com.project.zipmin.service.ReviewService;
-//import com.project.zipmin.service.UserService;
-//
-//import org.springframework.web.bind.annotation.RequestParam;
-//
-//
-//
-//@RestController
-//@RequestMapping("/recipes")
-//public class RecipeController {
-//	
-//	@Autowired
-//	RecipeService recipeDAO;
-//	@Autowired
-//	CategoryService categoryDAO;
-//	@Autowired
-//	UserService userDAO;
-//	@Autowired
-//	LikeService likeDAO;
-//	@Autowired
-//	ReportService reportDAO;
-//	@Autowired
-//	IngredientService ingredientDAO;
-//	@Autowired
-//	ReviewService reviewDAO;
-//	@Autowired
-//	CommentService commentDAO;
-//	
-//	
-//	
-//	// 레시피 목록 조회
-//	@GetMapping("")
-//	public List<RecipeDTO> listRecipe() {
-//		return null;
-//	}
-//	
-//	
-//	
-//	// 특정 레시피 조회
-//	@GetMapping("/{recipeIdx}")
-//	public RecipeDTO viewRecipe(@PathVariable("recipeIdx") int recipeIdx) {
-//		
-//		// 레시피 조회
-//		RecipeDTO recipeDTO = recipeDAO.selectRecipe(recipeIdx);
-//		
-//		// 카테고리 목록 조회
-//		List<RecipeCategoryDTO> categoryList = categoryDAO.selectCategoryListByRecipeIdx(recipeIdx);
-//		recipeDTO.setCategoryList(categoryList);
-//		
-//		// 작성자 조회
-//		// UserDTO userDTO = userDAO.selectUser(recipeDTO.getUserId());
-//		// recipeDTO.setMember(userDTO);
-//		
-//		// 재료 목록 조회
-//		List<RecipeIngredientDTO> ingredientList = ingredientDAO.selectIngredientListByRecipeIdx(recipeIdx);
-//		recipeDTO.setIngredientList(ingredientList);
-//		
-//		// 조리 순서 목록 조회
-//		List<RecipeStepDTO> stepList = recipeDAO.selectStepList(recipeIdx);
-//		recipeDTO.setStepList(stepList);
-//		
-//		// recipeIdx랑 로그인 한 user의 로그인 정보 보내서 레시피에 좋아요와 신고 누른 여부 각각 가져와야 함
-//		Boolean isLike = likeDAO.selectLikeStatusByTable("dayeong", "recipe", recipeIdx);
-//		Boolean isReport = reportDAO.selectReportStatusByTable("dayeong", "recipe", recipeIdx);
-//		recipeDTO.setIsLike(isLike);
-//		recipeDTO.setIsReport(isReport);
-//		
-//		// 팔로워 수와 팔로우 여부 조회
-//		int followerCount = likeDAO.selectFollowerCountByMemberId(recipeDTO.getMember().getId());
-//		Boolean isFollow = likeDAO.selectLikeStatusByTable("dayeong", "recipe", recipeDTO.getId());
-//		recipeDTO.setFollowerCount(followerCount);
-//		recipeDTO.setIsFollow(isFollow);
-//		
-//		// 리뷰 수와 댓글 수 조회
-//		int reviewCount = reviewDAO.selectReviewCountByRecipeIdx(recipeIdx);
-//		recipeDTO.setReviewCount(reviewCount);
-//		int commentCount = commentDAO.selectCommentCountByTable("recipe", recipeIdx);
-//		recipeDTO.setCommentCount(commentCount);
-//		
-//		return recipeDTO;
-//	}
-//	
-//	
-//	
-//	// 새 레시피 등록
-//	@PostMapping("")
-//	public int writeRecipe() {
-//		return 0;
-//	}
-//	
-//	
-//	
-//	// 특정 레시피 수정
-//	@PutMapping("/{recipeIdx}")
-//	public int editRecipe(@PathVariable("recipeIdx") int recipeIdx) {
-//		
-//		// 구현 필요 없을 듯
-//		
-//		return 0;
-//	}
-//	
-//	
-//	
-//	// 특정 레시피 삭제
-//	@DeleteMapping("/{recipeIdx}")
-//	public int deleteRecipe(@PathVariable("recipeIdx") int recipeIdx) {
-//		return 0;
-//	}
-//	
-//	
-//	
-//	// 특정 레시피의 리뷰 목록 조회
-//	@GetMapping("/{recipeIdx}/reviews")
-//	public List<ReviewDTO> listRecipeReview(
-//			@PathVariable("recipeIdx") int recipeIdx,
-//			@RequestParam(name = "sort", defaultValue = "new") String sort) {
-//	
-//		// required 옵션 추가해야 할 수도 있음
-//		
-//		// 특정 레시피의 리뷰 조회
-//		if (sort.equals("new")) {
-//			return reviewDAO.selectReviewListByRecipeIdxSortNew(1);
-//		}
-//		else if (sort.equals("old")) {
-//			return reviewDAO.selectReviewListByRecipeIdxSortOld(1);
-//		}
-//		else {
-//			return reviewDAO.selectReviewListByRecipeIdxSortHelp(1);
-//		}
-//	}
-//	
-//	
-//	
-//	// 특정 레시피의 특정 리뷰 조회
-//	@GetMapping("/{recipeIdx}/reviews/{reviewIdx}")
-//	public ReviewDTO viewRecipeReview(
-//			@PathVariable("recipeIdx") int recipeIdx,
-//			@PathVariable("reviewIdx") int reviewIdx) {
-//		return null;
-//	}
-//	
-//	
-//	
-//	// 특정 레시피에 리뷰 작성
-//	@PostMapping("/{recipeIdx}/reviews")
-//	public int writeRecipeReview(@PathVariable("recipeIdx") int recipeIdx) {
-//		return 0;
-//	}
-//	
-//	
-//	
-//	// 특정 레시피의 특정 리뷰 수정
-//	@PutMapping("/{recipeIdx}/reviews/{reviewIdx}")
-//	public int editRecipeReview(
-//			@PathVariable("recipeIdx") int recipeIdx,
-//			@PathVariable("reviewIdx") int reviewIdx) {
-//		return 0;
-//	}
-//	
-//	
-//	
-//	// 특정 레시피의 특정 리뷰 삭제
-//	@DeleteMapping("/{recipeIdx}/reviews/{reviewIdx}")
-//	public int deleteRecipeReview(
-//			@PathVariable("recipeIdx") int recipeIdx,
-//			@PathVariable("reviewIdx") int reviewIdx) {
-//		return 0;
-//	}
-//	
-//	
-//	
-//	// 특정 레시피의 댓글 목록 조회
-//	@GetMapping("/{recipeIdx}/comments")
-//	public List<CommentDTO> listRecipeComment(
-//			@PathVariable("recipeIdx") int recipeIdx,
-//			@RequestParam(name = "sort", defaultValue = "new") String sort) {
-//		
-//		return null;
-//	}
-//	
-//	
-//	
-//	// 특정 레시피의 특정 댓글 조회
-//	@GetMapping("/{recipeIdx}/comments/{commIdx}")
-//	public CommentDTO viewRecipeComment(
-//			@PathVariable("recipeIdx") int recipeIdx,
-//			@PathVariable("commIdx") int commIdx) {
-//		return null;
-//	}
-//	
-//	
-//	
-//	// 특정 레시피에 댓글 작성
-//	@PostMapping("/{recipeIdx}/comments")
-//	public int writeRecipeComment(
-//			@PathVariable("recipeIdx") int recipeIdx) {
-//		
-//		return 0;
-//	}
-//	
-//	
-//	
-//	// 특정 레시피의 특정 댓글 수정
-//	@PutMapping("/{recipeIdx}/comments/{commIdx}")
-//	public int editRecipeComment(
-//			@PathVariable("recipeIdx") int recipeIdx,
-//			@PathVariable("commIdx") int commIdx) {
-//		return 0;
-//	}
-//	
-//	
-//	
-//	// 특정 레시피의 특정 댓글 삭제
-//	@DeleteMapping("/{recipeIdx}/comments/{commIdx}")
-//	public int deleteRecipeComment(
-//			@PathVariable("recipeIdx") int recipeIdx,
-//			@PathVariable("commIdx") int commIdx) {
-//		return 0;
-//	}
-//	
-//	
-//	
-//	
-//	
-//	
-//	
-//	
-//	
-//	
-//
-//}
+package com.project.zipmin.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.ApiResponse;
+import com.project.zipmin.api.CommentErrorCode;
+import com.project.zipmin.api.RecipeErrorCode;
+import com.project.zipmin.api.RecipeSuccessCode;
+import com.project.zipmin.api.VoteErrorCode;
+import com.project.zipmin.dto.RecipeCreateRequestDto;
+import com.project.zipmin.dto.RecipeCreateResponseDto;
+import com.project.zipmin.dto.RecipeReadResponseDto;
+import com.project.zipmin.service.RecipeService;
+import com.project.zipmin.service.UserService;
+import com.project.zipmin.swagger.InternalServerErrorResponse;
+import com.project.zipmin.swagger.RecipeCategoryReadListFailResponse;
+import com.project.zipmin.swagger.RecipeDeleteFailResponse;
+import com.project.zipmin.swagger.RecipeDeleteSuccessResponse;
+import com.project.zipmin.swagger.RecipeForbiddenResponse;
+import com.project.zipmin.swagger.RecipeInvalidInputResponse;
+import com.project.zipmin.swagger.RecipeNotFoundResponse;
+import com.project.zipmin.swagger.RecipeReadSuccessResponse;
+import com.project.zipmin.swagger.RecipeStepReadListFailResponse;
+import com.project.zipmin.swagger.RecipeStockReadListFailResponse;
+import com.project.zipmin.swagger.RecipeUnauthorizedAccessResponse;
+import com.project.zipmin.swagger.UserInvalidInputResponse;
+import com.project.zipmin.swagger.UserNotFoundResponse;
+import com.project.zipmin.swagger.VoteUpdateSuccessResponse;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
+@RestController
+public class RecipeController {
+	
+	@Autowired
+	RecipeService recipeService;
+	
+	@Autowired
+	UserService userService;
+	
+	
+	
+	
+	
+	// 레시피 목록 조회
+	@GetMapping("/recipes")
+	public ResponseEntity<?> readRecipe(
+			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) List<String> categoryList,
+			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
+			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
+			@RequestParam int page,
+			@RequestParam int size) {
+		
+		Pageable pageable = PageRequest.of(page, size);
+		Page<RecipeReadResponseDto> recipePage = recipeService.readRecipePage(categoryList, keyword, sort, pageable);
+		
+		return ResponseEntity.status(RecipeSuccessCode.RECIPE_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(RecipeSuccessCode.RECIPE_READ_LIST_SUCCESS, recipePage));
+	}
+	
+	
+	
+	
+	
+	@Operation(
+	    summary = "레시피 조회"
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "레시피 조회 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeReadSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "레시피 카테고리 조회 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeCategoryReadListFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "레시피 재료 조회 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeStockReadListFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "레시피 조리과정 조회 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeStepReadListFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 레시피를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
+	// 레시피 조회
+	@GetMapping("/recipes/{id}")
+	public ResponseEntity<?> viewRecipe(@Parameter(description = "레시피의 일련번호") @PathVariable int id) {
+		
+		RecipeReadResponseDto recipeDto = recipeService.readRecipdById(id);
+		
+		return ResponseEntity.status(RecipeSuccessCode.RECIPE_READ_SUCCESS.getStatus())
+				.body(ApiResponse.success(RecipeSuccessCode.RECIPE_READ_SUCCESS, recipeDto));
+	}
+	
+	
+	
+	
+	
+	// 레시피 작성
+	@PostMapping(value = "/recipes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<?> writeRecipe(
+			@Parameter(description = "레시피 작성 요청 정보") @RequestPart RecipeCreateRequestDto recipeRequestDto,
+			@Parameter(description = "레시피 이미지 파일") @RequestPart MultipartFile recipeImage,
+			@Parameter(description = "조리 과정 이미지 파일") @RequestParam(required = false) MultiValueMap<String, MultipartFile> stepImageMap) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(RecipeErrorCode.RECIPE_UNAUTHORIZED_ACCESS);
+		}
+		recipeRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
+		
+		RecipeCreateResponseDto recipeResponseDto = recipeService.createRecipe(recipeRequestDto, recipeImage, stepImageMap);
+		
+		return ResponseEntity.status(RecipeSuccessCode.RECIPE_CREATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(RecipeSuccessCode.RECIPE_CREATE_SUCCESS, recipeResponseDto));
+	}
+	
+
+	
+	
+	
+	@Operation(
+	    summary = "레시피 조회"
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "레시피 삭제 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeDeleteSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "레시피 삭제 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeDeleteFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인 되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeUnauthorizedAccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "권한 없는 사용자의 접근",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 레시피를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
+	// 레시피 삭제 (관리자)
+	@DeleteMapping("/recipes/{id}")
+	public ResponseEntity<?> deleteRecipe(@Parameter(description = "레시피의 일련번호") @PathVariable int id) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(RecipeErrorCode.RECIPE_UNAUTHORIZED_ACCESS);
+		}
+		
+		recipeService.deleteRecipe(id);
+		
+		return ResponseEntity.status(RecipeSuccessCode.RECIPE_DELETE_SUCCESS.getStatus())
+				.body(ApiResponse.success(RecipeSuccessCode.RECIPE_DELETE_SUCCESS, null));
+	}
+	
+
+}

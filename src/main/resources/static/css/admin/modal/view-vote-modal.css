@@ -1,0 +1,129 @@
+@charset "UTF-8";
+
+
+.modal-body .vote_wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 60px;
+}
+
+
+
+/* 투표 헤더 */
+.modal-body .vote_wrap .vote_header span {
+	color: var(--txt-color-500);
+	font-weight: 400;
+	line-height: 1.4;
+	letter-spacing: -0.02em;
+	font-size: 14px;
+}
+
+.modal-body .vote_wrap .vote_header h2 {
+	margin-top: 8px;
+	font-weight: 700;
+	line-height: 1.5;
+	letter-spacing: -0.03em;
+	font-size: 32px;
+}
+
+.modal-body .vote_wrap .vote_header .vote_info {
+	margin-top: 8px;
+	display: flex;
+	gap: 4px;
+	align-items: center;
+}
+
+.modal-body .vote_wrap .vote_header .vote_info .period {
+	background: #000;
+	border-radius: 30px;
+	padding: 4px 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-right: 8px;
+}
+
+.modal-body .vote_wrap .vote_header .vote_info .period span {
+	white-space: pre-wrap;
+	font-size: 12px;
+	color: #FFF;
+	line-height: 16px;
+}
+
+
+
+
+/* 투표 결과 */
+.modal-body .vote_result ul {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.modal-body .vote_result .vote_option_wrap {
+	position: relative;
+	background: rgb(243, 245, 247);
+	border-radius: 4px;
+	overflow: hidden;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex: 1 1 0%;
+}
+
+.modal-body .vote_result .vote_option_wrap::before {
+	position: absolute;
+	display: block;
+	content: '';
+	top: 0px;
+	left: 0px;
+	width: var(--bar-width, 0%);
+	height: 100%;
+	background: rgb(215, 219, 230);
+}
+
+.modal-body .vote_result .vote_option_wrap h5 {
+	position: relative;
+	flex: 1 1 0%;
+	padding: 12px 0px 12px 16px;
+	font-weight: 500 !important;
+	gap: 8px !important;
+	display: flex;
+	align-items: center;
+	font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.4px;
+}
+
+.modal-body .vote_result .vote_option_wrap h5 img {
+	width:18px;
+	height: 18px;
+}
+
+.modal-body .vote_result .vote_option_wrap span {
+	position: relative;
+	color: rgb(126, 128, 130);
+	margin: 0px 8px;
+	font-size: 12px;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+}
+
+.modal-body .vote_result .vote_option_wrap h3 {
+	position: relative;
+	font-weight: 700 !important;
+	margin-right: 16px !important;
+	font-size: 22px;
+	line-height: 32px;
+	letter-spacing: -0.4px;  
+}
+
+
+
+
+.modal-body .vote_wrap img {
+  width: 500px;
+  height: auto;
+  max-width: 100%;
+  display: block;
+}

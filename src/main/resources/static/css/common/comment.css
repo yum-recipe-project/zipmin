@@ -191,6 +191,7 @@
 }
 
 #container .comment_content {
+	white-space: pre-line;
 	font-size: 14px;
 	font-weight: 400;
 	line-height: 1.4;
@@ -275,7 +276,32 @@
 	font-weight: 400;
 	line-height: 1.4;
 	letter-spacing: -0.02em;
+	white-space: pre-line;
 }
+
+
+
+
+
+/* 목록 없음 표시 */
+#container .content .list_empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 70px;
+	margin-top: 120px;
+}
+
+#container .content .list_empty span {
+	text-align: center !important;
+	margin-bottom: 32px !important;
+	color: #7E8082;
+	font-weight: 400;
+	line-height: 1.5;
+	letter-spacing: -0.025em;
+	font-size: 16px;
+}
+
 
 
 

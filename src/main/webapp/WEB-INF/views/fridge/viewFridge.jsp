@@ -7,11 +7,12 @@
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
-		<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
 		<link rel="stylesheet" href="/css/fridge/view-fridge.css">
+		<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 		<script src="/js/fridge/view-fridge.js"></script>
-		<script src="/js/modal/add-ingredient-modal.js"></script>
+		<script src="/js/modal/write-fridge-modal.js"></script>
+		<script src="/js/modal/write-user-fridge-modal.js"></script>
+		<script src="/js/modal/edit-user-fridge-modal.js"></script>
 	</head>
 	
 	<body>
@@ -24,277 +25,35 @@
 				<div class="fridge_wrap">
 					<div class="fridge_header">
 						<h2>나의 냉장고</h2>
+						<button type="button" class="btn btn_tab" data-bs-toggle="modal" data-bs-target="#writeUserFridgeModal">냉장고 채우기</button>
 					</div>
-					
 					<div class="fridge_content">
-					
-						<div class="fridge">
-						
-							<!-- 육류 -->
-							<div class="ingredient_swiper">
-								<div class="category">
-									<div class="ingredient_img">
-										<img src="/images/fridge/meat.png">
-									</div>
-									<span>육류</span>
-								</div>
-								
-								<div class="swiper">
-								  <div class="swiper-wrapper">
-								  	<div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/chicken.png">
-											</div>
-											<span>닭가슴살</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								    <div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/pig.png">
-											</div>
-											<span>닭가슴살</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								    <div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/cow.png">
-											</div>
-											<span>닭가슴살</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								    <div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/chicken.png">
-											</div>
-											<span>닭가슴살</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								    <div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/pig.png">
-											</div>
-											<span>닭가슴살</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								    <div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/cow.png">
-											</div>
-											<span>닭가슴살</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								    <div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/chicken.png">
-											</div>
-											<span>닭가슴살</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								  </div>
-								</div>
-							</div>
-							
-							<!-- 채소류 -->
-							<div class="ingredient_swiper">
-								<div class="category">
-									<div class="ingredient_img">
-										<img src="/images/fridge/vegetables.png">
-									</div>
-									<span>채소류</span>
-								</div>
-								
-								<div class="swiper">
-								  <div class="swiper-wrapper">
-								  	<div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/grass.png">
-											</div>
-											<span>상추</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								    <div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/carrot.png">
-											</div>
-											<span>당근</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								    <div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/onion.png">
-											</div>
-											<span>양파</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								    <div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/eggplant.png">
-											</div>
-											<span>가지</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								    <div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/grass.png">
-											</div>
-											<span>상추</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								    <div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/carrot.png">
-											</div>
-											<span>당근</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								    <div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/onion.png">
-											</div>
-											<span>양파</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								    <div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/eggplant.png">
-											</div>
-											<span>가지</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								  </div>
-								</div>
-							</div>
-							
-							<!-- 소스류 -->
-							<div class="ingredient_swiper">
-								<div class="category">
-									<div class="ingredient_img">
-										<img src="/images/fridge/sauce.png">
-									</div>
-									<span>소스류</span>
-								</div>
-								
-								<div class="swiper">
-								  <div class="swiper-wrapper">
-								  	<div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/ketchup.png">
-											</div>
-											<span>케찹</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								    <div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/soysauce.png">
-											</div>
-											<span>간장</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								    <div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/mayonnaise.png">
-											</div>
-											<span>마요네즈</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								    <div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/chili.png">
-											</div>
-											<span>타바스코</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								    <div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/ketchup.png">
-											</div>
-											<span>케찹</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								    <div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/soysauce.png">
-											</div>
-											<span>간장</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								    <div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/mayonnaise.png">
-											</div>
-											<span>마요네즈</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								    <div class="swiper-slide">
-								    	<div class="ingredient">
-											<div class="ingredient_img">
-												<img src="/images/fridge/chili.png">
-											</div>
-											<span>타바스코</span>
-											<p>2025.03.27</p>
-										</div>
-								    </div>
-								  </div>
-								</div>
+						<div class="fridge_subtitle">
+							<h3></h3>
+							<div class="fridge_zone">
+								<p>냉장</p>
+								<p>냉동</p>
+								<p>실온</p>
 							</div>
 						</div>
-						
-						<button class="btn_primary" data-bs-toggle="modal" data-bs-target="#addIngredientModal">냉장고 채우기</button>
-
-						
-								
+						<ul class="fridge_list"></ul>
+					</div>
+				</div>
+							
+				<div class="memo_wrap">
+				
+					<div class="memo_header">
+						<h2>장보기 메모</h2>
+					</div>
+				
+					<div class="memo_content">
+					
 						<!-- 재료 표 -->
 						<table class="ingredient_list">
 						    <thead>
 						        <tr>
-						            <th width="330px">재료</th>
-						            <th width="216px">용량</th>
-						            <th width="216px">소비기한</th>
-						            <th width="122px">종류</th>
+						            <th width="472px">재료</th>
+						            <th width="472px">용량</th>
 						            <th width="60px"></th>
 						        </tr>
 						    </thead>
@@ -302,8 +61,6 @@
 						        <tr>
 						            <td>마라탕 소스</td>
 						            <td>100g</td>
-						            <td>2025.01.02</td>
-						            <td>육류</td>
 						            <td>
 						            	<button class="delete_btn">
 						            		<img src="/images/fridge/close.png">
@@ -313,8 +70,6 @@
 						        <tr>
 						            <td>상하이 목장 치즈</td>
 						            <td>10ea</td>
-						            <td>2025.01.02</td>
-						            <td>채소류</td>
 						             <td>
 						            	<button class="delete_btn">
 						            		<img src="/images/fridge/close.png">
@@ -324,8 +79,6 @@
 						        <tr>
 						            <td>제로콜라</td>
 						            <td>2L</td>
-						            <td>2025.01.02</td>
-						            <td>소스류</td>
 						             <td>
 						            	<button class="delete_btn">
 						            		<img src="/images/fridge/close.png">
@@ -334,65 +87,79 @@
 						        </tr>
 						    </tbody>
 						</table>
+						<div class="btn_wrap">
+							<button class="btn_outline" onclick="location.href='/chompessor/listForum.do';">장보기 완료</button>
+							<button class="btn_primary" type="submit" onclick="">추가하기</button>
+						</div>
 						
 					</div>
+					
 				</div>
+			
 				
 				<!-- 냉장고 파먹기 -->
-				<div class="clear_wrap">
-					<div class="clear_header">
+				<div class="pick_wrap">
+					<div class="pick_header">
 						<h2>냉장고 파먹기</h2>
 					</div>
-					
-					<div class="clear_content">
-					
+					<div class="pick_content">
 						<!-- 레시피 추천 -->
-						<div class="clear_recipe">
-							<p class="pick">냉장고 속 재료로 만들 수 있는 요리</p>
-							<ul>
-								<li>
-									<div class="recipe">
-										<span>1</span>
-										<p>김치볶음밥</p>
-										<p class="flag">90% 일치</p>
-									</div>
-								</li>
-								
-								<li>
-									<div class="recipe">
-										<span>2</span>
-										<p>김치볶음밥</p>
-									</div>
-								</li>
-								<li>
-									<div class="recipe">
-										<span>3</span>
-										<p>김치볶음밥</p>
-									</div>
-								</li>
-								<li>
-									<div class="recipe">
-										<span>4</span>
-										<p> 김치볶음밥</p>
-									</div>
-								</li>
-								<li>
-									<div class="recipe">
-										<span>5</span>
-										<p> 김치볶음밥</p>
-									</div>
-								</li>
-								
-							</ul>
+						<div class="pick_recipe">
+							<p class="pick_title">냉장고 속 재료로 만들 수 있는 요리</p>
+							<ul class="pick_list"></ul>
 						</div>
 					</div>
 				</div>
 				
+				<!-- 내 주변 마트 -->
+				<div class="mart_wrap">
+					<div class="mart_header">
+						<h2>내 주변 마트</h2>
+						<div class="btn_wrap">
+							<button class="btn_icon"><img src="/images/fridge/arrow_back.png" class="left"></button>
+							<button class="btn_icon"><img src="/images/fridge/arrow_forward.png" class="right"></button>
+						</div>
+					</div>
+					<div class="mart_content">
+						<!-- 지도 -->
+						<div class="map">지도</div>
+						<!-- 마트 목록 -->
+						<ul class="mart_list">
+							<li>
+								<div class="mart_box">
+									<div class="mart_txt">
+										<span>이마트</span>
+										<div class="ping">
+											<img src="/images/fridge/location.png">
+											<p>0.8km</p>
+										</div>
+									</div>
+								</div>
+							</li>
+							<li>
+								<div class="mart_box">
+									<div class="mart_txt">
+										<span>이마트</span>
+										<div class="ping">
+											<img src="/images/fridge/location.png">
+											<p>0.8km</p>
+										</div>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				
+
+			
 				
 			</div>
 			
 			<!-- 냉장고 채우기 모달 -->
-			<%@include file="../modal/addIngredientModal.jsp" %>
+			<%@include file="../modal/writeFridgeModal.jsp" %>
+			<%@include file="../modal/writeUserFridgeModal.jsp" %>
+			<%@include file="../modal/editUserFridgeModal.jsp" %>
 		
 		</main>
 		

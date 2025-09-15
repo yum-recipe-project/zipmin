@@ -10,7 +10,7 @@ import lombok.Data;
 public class VoteRecordCreateResponseDto {
 	
 	private int id;
-	private int voteId;
+	private int chompId;
 	private int userId;
 	private int choiceId;
 	

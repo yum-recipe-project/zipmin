@@ -1,99 +1,15 @@
-
-
-
-
-/** =========== 모두 테스트 코드 ============= */
-
-
-
 /**
- * 레시피 상세 페이지에 데이터를 설정하는 함수
+ * 전역 변수
  */
-document.addEventListener('DOMContentLoaded', function() {
-	// 데이터 패치
-	fetch("http://localhost:8586/recipes/1", {
-		method: "GET"
-	})
-	.then(response => response.json())
-	.then(data => {
-		// 제목
-		const titleElement = document.getElementById("title");
-		titleElement.innerText = data.title;
-		// 단계
-		const levelElement = document.getElementById("level");
-		levelElement.innerText = data.level;
-		// 조리 시간
-		const timeElement = document.getElementById("time");
-		timeElement.innerText = data.time;
-		// 맵기 정도
-		const spicyElement = document.getElementById("spicy");
-		spicyElement.innerText = data.spicy;
-		// 소개
-		const introduceElement = document.getElementById("introduce");
-		introduceElement.innerText = data.introduce;
-		// 팁
-		const tipElement = document.getElementById("tip");
-		tipElement.innerText = data.tip;
-		// 닉네임
-		const nicknameElement = document.querySelectorAll(".nickname[data-id]");
-		nicknameElement.forEach(nickname => { nickname.innerText = data.member.nickname; });
-		// 조리 양
-		const servingInput = document.getElementById("servingInput");
-		servingInput.value = data.serving;
-		// 재료
-		const ingredientElement = document.getElementById("ingredient");
-		ingredientElement.innerHTML = data.ingredient_list.map(ingredient => `
-		    <tr>
-		        <td>${ingredient.name}</td>
-		        <td>${ingredient.amount}${ingredient.unit}</td>
-		        <td>${ingredient.note || ""}</td>
-		    </tr>
-		`).join("");
-		// 조리 순서
-		const stepElement = document.getElementById("step");
-		stepElement.innerHTML = data.step_list.map((step, index) => `
-			<li>
-				<div class="description">
-					<h5>STEP${ index + 1 }</h5>
-					<p><span class="hidden">${ index + 1 }.&nbsp;</span>${ step.description }</p>
-				</div>
-				${step.image ? `<div class="image"><img src="${step.image}"></div>` : `<div class="image"><img src="/images/common/test.png"></div>`}
-			</li>
-		`).join("");
-		// 구독자 수
-		const followerElement = document.getElementById("follower");
-		followerElement.innerText = data.follower_count;
-		// 구독 버튼
-		const followButton = document.getElementById("followButton");
-		followButton.classList.toggle("btn_outline", data.isFollow);
-		followButton.classList.toggle("btn_dark", !data.isFollow);
-		followButton.innerText = (data.isFollow === false ? "구독" : "구독 중");
-		// 리뷰 수
-		const reviewCountElement = document.querySelectorAll(".review_count[data-id]");
-		reviewCountElement.forEach(reviewcount => { reviewcount.innerText = data.review_count; });
-		// 댓글 수
-		const commentCountElement = document.querySelectorAll(".comment_count[data-id]");
-		commentCountElement.forEach(commentcount => { commentcount.innerText = data.comment_count; });
-		// 장보기메모 (모달창)
-		const memoElement = document.getElementById("memo");
-		memoElement.innerHTML = data.ingredient_list.map((ingredient, index) => `
-		    <tr>
-		        <td>${ingredient.name}</td>
-		        <td>${ingredient.amount}${ingredient.unit}</td>
-		        <td>
-		            <input type="checkbox" id="addMemo_${index}" name="ingredient" checked>
-		            <label for="addMemo_${index}"></label>
-		        </td>
-		    </tr>
-		`).join("");
-	})
-	.catch(error => console.log(error));
-});
+let originPortion = 0;
+let photoMode = true;
+
+
 
 
 
 /**
- * 리뷰/댓글 탭 메뉴 클릭 시 탭 메뉴를 활성화하고 해당하는 내용을 표시하는 함수
+ * 탭 메뉴 클릭 시 탭 메뉴를 활성화하고 해당하는 내용을 표시하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
     const tabItems = document.querySelectorAll('.tab_button button');
@@ -101,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 탭 클릭 이벤트 설정
     tabItems.forEach((item, index) => {
-        item.addEventListener("click", function(event) {
+        item.addEventListener('click', function(event) {
             event.preventDefault();
             
             tabItems.forEach(button => button.classList.remove('active'));
@@ -122,189 +38,307 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-// 리뷰 데이터 관련 변수
-var reviewOffset = 0; // 현재 데이터 시작 위치
-var reviewLimit = 10; // 한 번에 가져올 데이터 개수
-var reviewCount = 0; // 전체 리뷰 개수
 
-document.addEventListener("DOMContentLoaded", function () {
-    // 초기 리뷰 데이터 로드
-    loadRecipeReviewContent();
 
-    // "더보기" 버튼 클릭 시 추가 데이터 로드
-    document.querySelector('.more_review_btn').addEventListener('click', function (event) {
-        event.preventDefault();
-        loadRecipeReviewContent();
-    });
+/**
+ * 레시피의 상세 데이터를 가져오는 함수
+ */
+document.addEventListener('DOMContentLoaded', async function() {
+	
+	const basicForm = document.getElementById('viewRecipeBasicForm');
+	const stockForm = document.getElementById('viewRecipeStockForm');
+	const tipForm = document.getElementById('viewRecipeTipForm');
+	const supportForm = document.getElementById('viewRecipeSupportForm');
+	const reviewCommentForm = document.getElementById('viewRecipeReviewCommentForm');
+	
+	
+	// 레시피 정보 조회
+	try {
+		const id = new URLSearchParams(window.location.search).get('id');
+				
+		const response = await fetch(`/recipes/${id}`, {
+			headers: getAuthHeaders()
+		});
+		
+		const result = await response.json();
+		
+		console.log(result);
+		
+		if (result.code === 'RECIPE_READ_SUCCESS') {
+			
+			// 기본 정보
+			basicForm.querySelector('.recipe_title').innerText = result.data.title;
+			basicForm.querySelector('.recipe_cooklevel').innerText = result.data.cooklevel;
+			basicForm.querySelector('.recipe_cooktime').innerText = result.data.cooktime;
+			basicForm.querySelector('.recipe_spicy').innerText = result.data.spicy;
+			basicForm.querySelector('.recipe_writer img').src = result.data.avatar;
+			basicForm.querySelector('.recipe_writer span').innerText = result.data.nickname;
+			basicForm.querySelector('.recipe_introduce').innerText = result.data.introduce;
+			if (result.data.liked) {
+				basicForm.querySelector('.btn_icon.like img').src = '/images/recipe/star_full_1a7ce2.png'
+			 	basicForm.querySelector('.btn_icon.like').classList.add('active');
+			}
+			renderCategoryList(result.data.category_list);
+			
+			// 재료
+			originPortion = parseInt(result.data.portion, 10);
+			stockForm.querySelector('.recipe_portion select').value = result.data.portion;
+			renderStockList(result.data.stock_list);
+			renderMemoList(result.data.stock_list);
+			
+			// 조리 순서
+			renderStepList(result.data.step_list);
+			
+			// 레시피 팁
+			tipForm.querySelector('.recipe_tip p').innerText = result.data.tip;
+			
+			// 구독 및 후원
+			supportForm.querySelector('.recipe_writer img').src = result.data.avatar;
+			supportForm.querySelector('.recipe_writer h5').innerText = result.data.nickname;
+			supportForm.querySelector('.recipe_writer p').innerText = `구독자 ${result.data.follower}명`;
+			
+			// 리뷰 수
+			reviewCommentForm.querySelector('.review_count').innerText = result.data.reviewcount;
+			reviewCommentForm.querySelector('.comment_count').innerText = result.data.commentcount;
+		}
+		
+		if (result.code === 'RECIPE_READ_FAIL') {
+			alert('레시피 조회에 실패했습니다.');
+			location.href = '/recipe/listRecipe.do';
+		}
+		else if (result.code === 'RECIPE_CATEGORY_READ_LIST_FAIL') {
+			alert('레시피 조회에 실패했습니다.');
+			location.href = '/recipe/listRecipe.do';
+		}
+		else if (result.code === 'RECIPE_STOCK_READ_LIST_FAIL') {
+			alert('레시피 조회에 실패했습니다.');
+			location.href = '/recipe/listRecipe.do';
+		}
+		else if (result.code === 'RECIPE_STEP_READ_LIST_FAIL') {
+			alert('레시피 조회에 실패했습니다.');
+			location.href = '/recipe/listRecipe.do';
+		}
+		else if (result.code === 'USER_INVALID_INPUT') {
+			alert('입력값이 유효하지 않습니다.');
+			location.href = '/recipe/listRecipe.do';
+		}
+		else if (result.code === 'RECIPE_NOT_FOUND') {
+			alert('해당 레시피를 찾을 수 없습니다.');
+			location.href = '/recipe/listRecipe.do';
+		}
+		else if (result.code === 'USER_NOT_FOUND') {
+			alert('해당 사용자를 찾을 수 없습니다.');
+			location.href = '/recipe/listRecipe.do';
+		}
+ 		else if (result.code === 'INTERNAL_SERVER_ERROR') {
+			alert('서버 내부 오류가 발생했습니다.');
+			location.href = '/recipe/listRecipe.do';
+		}
+	}
+	catch(error) {
+		console.log(error);
+	}
+	
 });
 
+
+
+
+
 /**
- * 레시피 리뷰 목록 데이터를 fetch로 로드하는 함수
+ * 레시피의 인분 변경시 레시피 재료 목록의 용량을 계산하는 함수
  */
-/*
-function loadRecipeReviewContent() {
-    fetch("http://localhost:8586/recipes/1/reviews", {
-		method: "GET"
-    })
-	.then(response => response.json())
-	.then(data => {
-		const reviewListElement = document.getElementById("reviewList");
-        reviewListElement.innerHTML = data.map(review => `
-            <li class="review">
-                <img class="review_avatar" src="/images/common/test.png">
-                <div class="review_inner">
-                    <!-- 리뷰 헤더 -->
-                    <div class="review_info">
-                        <div class="review_writer">
-                            <span>${review.writer}</span>
-                            <span>${review.postdate}</span>
-                        </div>
-                        <div class="review_action">
-                            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editRecipeReviewModal"
-                                onclick="openEditRecipeReviewModal();">수정</a>
-                            <a href="javascript:void(0);">삭제</a>
-                        </div>
-                    </div>
-                    <!-- 리뷰 별점 -->
-                    <div class="review_score">
-                        <div class="star">
-                            ${'<img src="/images/recipe/star_full.png">'.repeat(review.score)}
-                            ${'<img src="/images/recipe/star_empty.png">'.repeat(5 - review.score)}
-                        </div>
-                        <p>${review.score}</p>
-                    </div>
-                    <!-- 리뷰 내용 -->
-                    <p class="review_content">${review.content}</p>
-                    <!-- 리뷰 좋아요 버튼 -->
-                    <div class="like_review_btn">
-                        <p>이 리뷰가 도움이 되었다면 꾹!</p>
-                        <button class="btn_like">
-                            <img src="/images/recipe/thumb_up_full.png">
-                            <img src="/images/recipe/thumb_up_empty.png">
-                            <p>${review.likes}</p>
-                        </button>
-                    </div>
-                </div>
-            </li>
-        `).join("");
+document.addEventListener('DOMContentLoaded', function() {
 
-        // 전체 리뷰 개수 설정 (첫 요청 시)
-        if (reviewCount === 0) {
-            reviewCount = data.totalCount; // 서버에서 전체 개수를 제공한다고 가정
-        }
+	const stockForm = document.getElementById('viewRecipeStockForm');
+	stockForm.querySelector('.recipe_portion select').addEventListener('change', function() {
+		const portion = parseInt(stockForm.querySelector('.recipe_portion select').value, 10);
+		stockForm.querySelectorAll('.stock_list td.amount').forEach(td => {
+			const originAmount = parseFloat(td.dataset.amount);
+			const unit = td.dataset.unit;			
+			const amount = Math.round((originAmount / originPortion) * portion * 100) / 100;
+			td.textContent = `${amount}${unit}`;
+		});
+	});
+	
+});
 
-        // offset 증가 (다음 데이터 가져오기 위한 설정)
-        reviewOffset += reviewLimit;
 
-        // 불러올 데이터가 없으면 "더보기" 버튼 숨김
-        const moreReviewButton = document.querySelector('.more_review_btn');
-        if (reviewOffset >= reviewCount) {
-            moreReviewButton.style.display = "none";
-        } else {
-            moreReviewButton.style.display = "block";
-        }
-    })
-    .catch(error => {
-        console.error("리뷰 데이터를 불러오는 중 오류 발생:", error);
-        document.querySelector('.more_review_btn').style.display = "none";
-    });
+
+
+
+/**
+ * 레시피 카테고리 목록을 화면에 렌더링하는 함수
+ */
+function renderCategoryList(categoryList) {
+	const basicForm = document.getElementById('viewRecipeBasicForm');
+	const container = basicForm.querySelector('.recipe_category');
+	container.innerHTML = '';
+	
+	categoryList.forEach(category => {
+		const span  = document.createElement('span');
+		span.textContent = `# ${category.tag}`;
+		span.addEventListener('click', function(event) {
+			event.preventDefault();
+			location.href = `/recipe/listRecipe.do?category=${category.tag}`;
+		});
+		
+		container.appendChild(span);
+	});
 }
-*/
 
-
-
-
-/**
- * 레시피 리뷰에 데이터를 설정하는 함수 (******** 테스트 ***********)
- */
-/*
-fetch("http://localhost:8586/recipes/1/reviews", {
-	method: "GET"
-})
-.then(response => response.json())
-.then(data => {
-	const reviewListElement = document.getElementById("reviewList");
-	if(reviewListElement) console.log("있음");
-	reviewListElement.innerHTML = data.map((review) => `
-		<li class="review">
-			<img class="review_avatar" src="/images/common/test.png">
-			<div class="review_inner">
-				<!-- 리뷰 헤더 -->
-				<div class="review_info">
-					<div class="review_writer">
-						<span>아잠만</span>
-						<span>${ review.postdate }</span>
-					</div>
-						<div class="review_action">
-							<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editRecipeReviewModal"
-								onclick="openEditRecipeReviewModal();">
-								수정
-							</a>
-							<a href="">삭제</a>
-						</div>
-				</div>
-				<!-- 리뷰 별점 -->
-				<div class="review_score">
-					<div class="star">
-						<%-- <c:forEach> --%>
-							<img src="/images/recipe/star_full.png">
-						<%-- </c:forEach> --%>
-						<%-- <c:forEach> --%>
-							<img src="/images/recipe/star_empty.png">
-						<%-- </c:forEach> --%>
-					</div>
-					<p>3</p>
-				</div>
-				<p class="review_content">${ review.content }</p>
-				<div class="like_review_btn">
-					<p>이 리뷰가 도움이 되었다면 꾹!</p>
-					<button class="btn_like" onclick="">
-							<img src="/images/recipe/thumb_up_full.png">
-							<img src="/images/recipe/thumb_up_empty.png">
-						<p>5</p>
-					</button>
-				</div>
-			</div>
-		</li>
-	`).join("");
-})
-.catch(error => console.log(error));
-*/
 
 
 
 
 /**
- * 레시피 댓글 목록 데이터를 로드하는 함수
+ * 레시피 재료 목록을 화면에 렌더링하는 함수
  */
-function loadRecipeCommentContent() {
-    $.ajax({
-        url: '/recipe/viewRecipe/comment.do',
-        type: 'GET',
-        data: {
-	        offset: commentOffset,
-	        limit: commentLimit
-		},
-        success: function (response) {
-            // 응답 데이터를 리스트에 추가
-            $('#recipeCommentContent').append(response);
-
-            // 서버에서 총 데이터의 개수를 가져와서 설정
-            commentCount = parseInt($('#commentCount').val());
-	        commentOffset += commentLimit;
-
-            // 불러올 데이터가 없으면 더보기 버튼 숨김
-            if (commentOffset >= commentCount) {
-                $('.more_comment_btn').hide();
-            } else {
-                $('.more_comment_btn').show();
-            }
-        },
-        error: function () {
-            $('.more_comment_btn').hide();
-        }
-    });
+function renderStockList(stockList) {
+	const stockForm = document.getElementById('viewRecipeStockForm');
+	const container = stockForm.querySelector('.stock');
+	container.innerHTML = '';
+	
+	stockList.forEach(stock => {
+		const tr = document.createElement('tr');
+		
+		// 이름
+		const tdName = document.createElement('td');
+		tdName.textContent = stock.name;
+		tr.appendChild(tdName);
+		
+		// 양
+		const tdAmount = document.createElement('td');
+		tdAmount.className = 'amount';
+		tdAmount.dataset.amount = stock.amount;
+		tdAmount.dataset.unit = stock.unit;
+		tdAmount.textContent = `${stock.amount}${stock.unit}`;
+		tr.appendChild(tdAmount);
+		
+		// 비고
+		const tdNote = document.createElement('td');
+		tdNote.textContent = stock.note;
+		tr.appendChild(tdNote);
+		
+		container.appendChild(tr);
+	});
 }
+
+
+
+
+
+/**
+ * 장보기 메모 렌더링 (모달창)
+ */
+function renderMemoList(stockList) {
+	const memoElement = document.getElementById('memo');
+	memoElement.innerHTML = '';
+	
+	stockList.forEach((ingredient, index) => {
+		const tr = document.createElement('tr');
+		
+		// 이름
+		const tdName = document.createElement('td');
+		tdName.textContent = ingredient.name;
+		tr.appendChild(tdName);
+		
+		// 수량
+		const tdAmount = document.createElement('td');
+		tdAmount.textContent = `${ingredient.amount}${ingredient.unit}`;
+		tr.appendChild(tdAmount);
+		
+		// 체크박스
+		const tdCheckbox = document.createElement('td');
+		
+		const checkbox = document.createElement('input');
+		checkbox.type = 'checkbox';
+		checkbox.id = `addMemo_${index}`;
+		checkbox.name = 'ingredient';
+		checkbox.checked = true;
+		
+		const label = document.createElement('label');
+		label.setAttribute('for', `addMemo_${index}`);
+		
+		tdCheckbox.appendChild(checkbox);
+		tdCheckbox.appendChild(label);
+		tr.appendChild(tdCheckbox);
+		
+		memoElement.appendChild(tr);
+	});
+}
+
+
+
+
+
+/**
+ * 레시피 조리 과정을 화면에 렌더링하는 함수
+ */
+function renderStepList(stepList) {
+	const stepForm = document.getElementById('viewRecipeStepForm');
+	const container = stepForm.querySelector('.step_list');
+	container.innerHTML = '';
+
+    stepList.forEach((step, index) => {
+		const li = document.createElement('li');
+		
+		const contentDiv = document.createElement('div');
+		contentDiv.className = 'step_content';
+		
+		const h5 = document.createElement('h5');
+		h5.textContent = `STEP${index + 1}`;
+		contentDiv.appendChild(h5);
+		
+		const p = document.createElement('p');
+		p.textContent = step.content;
+		contentDiv.appendChild(p);
+		li.appendChild(contentDiv);
+		
+		const imageDiv = document.createElement('div');
+		imageDiv.className = 'step_image';
+		
+		const img = document.createElement('img');
+		img.src = step.image;
+		imageDiv.appendChild(img);
+		
+		if (step.image) {
+			li.appendChild(imageDiv);
+		}
+		
+		container.appendChild(li);
+	});
+}
+
+
+
+
+
+/**
+ * 레시피 재료 목록의 사진 토글하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const stepForm = document.getElementById('viewRecipeStepForm');
+	
+	document.getElementById('togglePhotoButton').addEventListener('click', function(event) {
+		event.preventDefault();
+		photoMode = !photoMode;
+		
+		if (photoMode) {
+			document.getElementById('togglePhotoButton').innerHTML = '<img src="/images/recipe/photo_999.png">사진 숨기기';
+			stepForm.querySelectorAll('.step_list .step_image').forEach(step => {
+				step.style.display = 'block';
+			});
+		}
+		else {
+			document.getElementById('togglePhotoButton').innerHTML = '<img src="/images/recipe/photo_999.png">사진 보기';
+			stepForm.querySelectorAll('.step_list .step_image').forEach(step => {
+				step.style.display = 'none';
+			});
+		}
+	});
+});
+
 
 
 

@@ -1,8 +1,6 @@
 package com.project.zipmin.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.service.LikeService;
@@ -11,7 +9,7 @@ import com.project.zipmin.service.LikeService;
 @RequestMapping("/likes")
 public class LikeController {
 	
-	LikeService likeDAO;
+	LikeService likeService;
 	
 //	// 좋아요 수
 //	@GetMapping("/count")

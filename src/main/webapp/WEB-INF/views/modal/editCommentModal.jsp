@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<form id="editCommentForm" method="post" action="" onsubmit="">
+<form id="editCommentForm" method="post" >
 	<input type="hidden" id="editCommentId" name="id">
 	<div class="modal" id="editCommentModal">
 		<div class="modal-dialog">
@@ -18,7 +18,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
-					<button type="submit" class="btn btn-primary disabled">작성하기</button>
+					<button type="submit" class="btn btn-primary disabled">수정하기</button>
 				</div>
 			</div>
 		</div>

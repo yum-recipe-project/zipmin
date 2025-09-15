@@ -21,10 +21,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "LIKES")
 public class Like {
+	
 	@Id
 	@GeneratedValue(generator = "seq_likes_id")
 	@SequenceGenerator(name = "seq_likes_id", sequenceName = "SEQ_LIKES_ID", allocationSize = 1)
 	private int id;
+	
 	private String tablename;
 	private int recodenum;
 	
@@ -32,4 +34,5 @@ public class Like {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")
 	private User user;
+	
 }

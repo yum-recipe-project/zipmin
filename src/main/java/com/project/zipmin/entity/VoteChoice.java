@@ -29,8 +29,8 @@ public class VoteChoice {
 	
 	private String choice;
 	
-	// private int vote_id;
+	// private int chomp_id;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "VOTE_ID")
-	private Vote vote;
+	@JoinColumn(name = "CHOMP_ID")
+	private Chomp chomp;
 }

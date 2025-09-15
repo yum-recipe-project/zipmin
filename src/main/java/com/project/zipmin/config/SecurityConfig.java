@@ -143,8 +143,12 @@ public class SecurityConfig {
 				.requestMatchers("/", "/login", "/logout", "/oauth2-jwt-header", "/reissue").permitAll()
 				.requestMatchers("/user/**").permitAll()
 				.requestMatchers("/users/**").permitAll()
+				
 				.requestMatchers("/recipe/**").permitAll()
+				.requestMatchers("/recipes", "/recipes/**").permitAll()
+				
 				.requestMatchers("/kitchen/**").permitAll()
+				.requestMatchers("/guides/**").permitAll()
 				
 				.requestMatchers("/chompessor/**").permitAll()
 				.requestMatchers("/chomp", "/chomp/**", "/votes", "/votes/**", "/megazines", "/megazines/**", "events", "/events/**").permitAll()
@@ -152,13 +156,17 @@ public class SecurityConfig {
 				.requestMatchers("/comments", "/comments/**").permitAll()
 				
 				.requestMatchers("/cooking/**").permitAll()
+				.requestMatchers("/classes", "/classes/**").permitAll()
+				
 				.requestMatchers("/fridge/**").permitAll()
 				
 				.requestMatchers("/mypage.do").permitAll()
 				.requestMatchers("/mypage/**").permitAll()
 				
+				.requestMatchers("/admin/login.do").permitAll()
+				// .requestMatchers("/admin/**").hasRole("ADMIN")
 				.requestMatchers("/admin/**").permitAll()
-				.requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**", "/assets/**").permitAll()
+				.requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**", "/assets/**", "/files/**").permitAll()
 				
 				// Swagger 관련 경로 모두 허용
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**"

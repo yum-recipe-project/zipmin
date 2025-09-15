@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.AuthErrorCode;
+import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.dto.TokenDto;
 import com.project.zipmin.entity.User;
 import com.project.zipmin.repository.UserRepository;
@@ -70,7 +71,9 @@ public class ReissueService {
 		String role = jwtUtil.getRole(refresh);
 		
 		// DB의 refresh token과 일치 여부 확인
-		String refreshToken = userRepository.findByUsername(username).getRefresh();
+		User user = userRepository.findByUsername(username)
+			    .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+		String refreshToken = user.getRefresh();
 		if (!refreshToken.equals(refresh)) {
 			throw new ApiException(AuthErrorCode.AUTH_TOKEN_INVALID);
 		}
@@ -91,7 +94,8 @@ public class ReissueService {
 	
 	public void addRefresh(String username, String refresh, Long expiredMs) {
 		Date date = new Date(System.currentTimeMillis() + expiredMs);
-		User user = userRepository.findByUsername(username);
+		User user = userRepository.findByUsername(username)
+			    .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
 		user.updateRefresh(refresh, date.toString());
 	}
 

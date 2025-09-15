@@ -9,24 +9,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum UserSuccessCode implements Code {
 	
-	// 회원가입
-	USER_SIGNUP_SUCCESS(HttpStatus.CREATED, "회원가입에 성공했습니다."),
-	USER_USERNAME_AVAILABLE(HttpStatus.OK, "사용 가능한 아이디입니다."),
+	// 데이터 처리
+	USER_READ_LIST_SUCCESS(HttpStatus.OK, "사용자 목록 조회 성공"),
+	USER_READ_USERNAME_SUCCESS(HttpStatus.OK, "사용자 아이디 조회 성공"),
+	USER_READ_SUCCESS(HttpStatus.OK, "사용자 조회 성공"),
+	USER_CREATE_SUCCESS(HttpStatus.CREATED, "사용자 작성 성공"),
+	USER_UPDATE_SUCCESS(HttpStatus.OK, "사용자 수정 성공"),
+	USER_DELETE_SUCCESS(HttpStatus.OK, "사용자 삭제 성공"),
 	
-	// 로그인
-	USER_LOGIN_SUCCESS(HttpStatus.OK, "로그인에 성공했습니다."),
-	USER_LOGOUT_SUCCESS(HttpStatus.OK, "로그아웃에 성공했습니다."),
-	USER_FIND_USERNAME_SUCCESS(HttpStatus.OK, "아이디를 찾았습니다."),
-	USER_FIND_PASSWORD_SUCCESS(HttpStatus.OK, "임시 비밀번호를 발급하였습니다."),
+	USER_LOGIN_SUCCESS(HttpStatus.OK, "로그인 성공"),
+	USER_LOGOUT_SUCCESS(HttpStatus.OK, "로그아웃 성공"),
+	USER_RESET_PASSWORD_SUCCESS(HttpStatus.OK, "임시 비밀번호 발급 성공"),
 	
-	// 회원 정보
-	USER_PROFILE_FETCH_SUCCESS(HttpStatus.OK, "회원 정보를 조회했습니다."),
-	USER_PROFILE_UPDATE_SUCCESS(HttpStatus.OK, "회원 정보가 수정되었습니다."),
-	USER_DELETE_SUCCESS(HttpStatus.OK, "회원 탈퇴가 완료되었습니다."),
-	
-	// 회원 인증
-	USER_PASSWORD_VERIFY_SUCCESS(HttpStatus.OK, "비밀번호 검증에 성공했습니다.");
-	
+	USER_USERNAME_NOT_DUPLICATED(HttpStatus.OK, "사용 가능한 아이디"),
+	USER_CORRECT_PASSWORD(HttpStatus.OK, "비밀번호 일치");
+
 	private final HttpStatus status;
 	private final String message;
 	

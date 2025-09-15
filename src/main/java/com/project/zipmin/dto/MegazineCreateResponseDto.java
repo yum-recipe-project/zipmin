@@ -15,8 +15,8 @@ public class MegazineCreateResponseDto {
 	private String title;
 	private Date postdate;
 	private String content;
+	private String userId;
 	
-	private ChompReadResponseDto chompDto;
-	private UserReadResponseDto userDto;
+	private String nickname;
 	
 }

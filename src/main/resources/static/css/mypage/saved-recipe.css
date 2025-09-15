@@ -96,7 +96,7 @@
 
 
 /* 작성한 레시피 */
-#container .content .recipe_wrap .recipe_content .recipe_box {
+#container .content .recipe_wrap .recipe_box {
 	border-bottom: 1px solid var(--line-color2);
 	height: 160px;
 	padding: 30px 0;
@@ -105,10 +105,13 @@
 	
 }
 
-#container .content .recipe_wrap .recipe_content .recipe_box img {
+#container .content .recipe_wrap .recipe_box .recipe_thumb {
 	height: 100px;
 	width: 100px;
+	
 }
+
+
 
 
 
@@ -132,7 +135,7 @@
 	font-size: 18px;
 	font-weight: 600;
 }
-#container .content .recipe_wrap .recipe_top .favorite_btn {
+#container .content .recipe_wrap .favorite_btn {
     width: 17px;
     height: 17px;
     background-image: url('/images/recipe/star_full.png');
@@ -141,7 +144,7 @@
     border: none;
     cursor: pointer;
 }
-#container .content .recipe_wrap .recipe_top .favorite_btn.active {
+#container .content .recipe_wrap .favorite_btn.active {
     background-image: url('/images/recipe/star_empty.png');
 }
 

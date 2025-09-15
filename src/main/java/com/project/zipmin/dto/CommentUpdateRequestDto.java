@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CommentUpdateRequestDto {
+	
+	private Integer id;
 	private String content;
-	private int userId;
+	
 }

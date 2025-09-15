@@ -5,7 +5,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>집밥의 민족</title>
+		<title>집밥의민족</title>
 		<%@include file="common/head.jsp" %>
 		<link rel="stylesheet" href="/css/home.css">
 		<script src="/js/home.js"></script>
@@ -13,250 +13,149 @@
 	
 	<body>
 		<%@include file="common/header.jsp" %>
+		
 		<main id="container">
-			<div class="content">
-				<!-- 메인 배너 -->
-				<div class="main_banner">
-					<img src="/images/home/main_mascot.png"/>
-					<div class="txt">
-						<p class="title">오늘 저녁 <span>마라탕</span> 땡겨요</p>
-						<button class="btn_sort" onclick="location.href='/recipe/listRecipe.do'">
-				            마라탕 레시피 보러가기
-				            <div class="btn_img"></div>
-				        </button>
+		
+			<!-- 메인 베너 -->
+			<div class="main_banner">
+				<div class="banner_inner">
+					<img src="/images/home/main_mascot1.png"/>
+					<div class="title">
+						<h3>오늘 <span class="meal"></span> <span class="roulette"></span> 땡겨요</h3>
+						<a class="roulette_link">모든 레시피 보러가기&nbsp;&nbsp;→</a>
 					</div>
+					<img src="/images/home/main_mascot2.png"/>
 				</div>
-				
-				<!-- 카테고리 메뉴 -->
-				<div class="category_menu">
-					<div class="type">
-						<h2>종류별</h2>
-						<ul class="category_list">
-							<li>
-								<div class="image"></div>
-								<p>치킨</p>
-							</li>
-							<li>
-								<div class="image"></div>
-								<p>중식</p>
-							</li>
-							<li>
-								<div class="image"></div>
-								<p>돈까스</p>
-							</li>
-							<li>
-								<div class="image"></div>
-								<p>회</p>
-							</li>
-							<li>
-								<div class="image"></div>
-								<p>피자</p>
-							</li>
-							<li>
-								<div class="image"></div>
-								<p>찜</p>
-							</li>
-							<li>
-								<div class="image"></div>
-								<p>탕</p>
-							</li>
-							<li>
-								<div class="image"></div>
-								<p>족발</p>
-							</li>
-							<li>
-								<div class="image"></div>
-								<p>보쌈</p>
-							</li>
-							<li>
-								<div class="image"></div>
-								<p>중식</p>
-							</li>
-						</ul>
-					</div>
-					<div class="case">
-						<h2>상황별</h2>
-						<ul class="category_list">
-							<li>
-								<div class="image"></div>
-								<p>명절</p>
-							</li>
-							<li>
-								<div class="image"></div>
-								<p>술안주</p>
-							</li>
-							<li>
-								<div class="image"></div>
-								<p>다이어트</p>
-							</li>
-							<li>
-								<div class="image"></div>
-								<p>해장</p>
-							</li>
-						</ul>
-					</div>	
-				</div>
-				
-				<!-- 레시피 랭킹  -->
-				<div class="recipe_ranking">
-					
-					<!-- 랭킹 헤더 -->
-					<div class="ranking_header">
-						<div class="txt">
-							<span>집밥은 역시 집밥의 민족</span>
-					        <h2>현재 뜨고 있는 레시피</h2>
-						</div>
-					    <div class="dropdown">
-					        <button class="btn_sort" id="recipeSortBtn">
-					            찜 많은 순
-					            <div class="btn_img"></div>
-					        </button>
-					        <ul class="dropdown_menu">
-					            <li>찜 많은 순</li>
-					            <li>별점 높은 순</li>
-					        </ul>
-					    </div>
-				    </div>
-				    
-				    <!-- 랭킹 리스트 -->
-					<ul class="recipe_list">
-					    <li>
-					        <a href="/recipe/viewRecipe.do">
-					            <div class="recipe_card">
-					                <div class="image"></div>
-					                <p>먹짱이 김치볶음밥이고 두줄까지는 가능합니당. 뒤부터는 말줄임표</p>
-					                <span>초급 / 30분 / 아주 매움</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/recipe/viewRecipe.do">
-					            <div class="recipe_card">
-					                <div class="image"></div>
-					                <p>먹짱이 김치볶음밥이고 두줄까지는 가능...</p>
-					                <span>초급 / 30분 / 아주 매움</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/recipe/viewRecipe.do">
-					            <div class="recipe_card">
-					                <div class="image"></div>
-					                <p>먹짱이 김치볶음밥이고 두줄까지는 가능합니당. 뒤부터는 말줄임표</p>
-					                <span>초급 / 30분 / 아주 매움</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/recipe/viewRecipe.do">
-					            <div class="recipe_card">
-					                <div class="image"></div>
-					                <p>먹짱이 김치볶음밥이고 두줄까지는 가능합니당. 뒤부터는 말줄임표</p>
-					                <span>초급 / 30분 / 아주 매움</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/recipe/viewRecipe.do">
-					            <div class="recipe_card">
-					                <div class="image"></div>
-					                <p>먹짱이 김치볶음밥이고 두줄까지는 가능합니당. 뒤부터는 말줄임표</p>
-					                <span>초급 / 30분 / 아주 매움</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/recipe/viewRecipe.do">
-					            <div class="recipe_card">
-					                <div class="image"></div>
-					                <p>먹짱이 김치볶음밥이고 두줄까지는 가능...</p>
-					                <span>초급 / 30분 / 아주 매움</span>
-					            </div>
-					        </a>
-					    </li>
-					</ul>
-				</div>
-				
-				<!-- 키친 가이드 랭킹 -->
-				<div class="guide_ranking">
-					<!-- 랭킹 헤더 -->
-					<div class="ranking_header">
-				        <h2>키친 가이드로 요리 스킬 UP!</h2>
-						<span>집밥을 만들기 위한 꿀팁 대방출</span>
-				        <button class="btn_sort" onclick="location.href='/kitchen/listGuide.do'">
-				            더보기
-				            <div class="btn_img"></div>
-				        </button>
-				    </div>
-				    
-				    <!-- 랭킹 리스트 -->
-					<ul class="guide_list">
-					    <li>
-					        <a href="/kitchen/viewGuide.do">
-					            <div class="guide_card">
-					                <div class="image"></div>
-					                <p>칼에 버터 안 묻히고 소분 하는 법</p>
-					                <span>스크랩 29</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/kitchen/viewGuide.do">
-					            <div class="guide_card">
-					                <div class="image"></div>
-					                <p>칼에 버터 안 묻히고 소분 하는 법</p>
-					                <span>스크랩 29</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/kitchen/viewGuide.do">
-					            <div class="guide_card">
-					                <div class="image"></div>
-					                <p>칼에 버터 안 묻히고 소분 하는 법</p>
-					                <span>스크랩 29</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/kitchen/viewGuide.do">
-					            <div class="guide_card">
-					                <div class="image"></div>
-					                <p>칼에 버터 안 묻히고 소분 하는 법</p>
-					                <span>스크랩 29</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/kitchen/viewGuide.do">
-					            <div class="guide_card">
-					                <div class="image"></div>
-					                <p>칼에 버터 안 묻히고 소분 하는 법</p>
-					                <span>스크랩 29</span>
-					            </div>
-					        </a>
-					    </li>
-					    <li>
-					        <a href="/kitchen/viewGuide.do">
-					            <div class="guide_card">
-					                <div class="image"></div>
-					                <p>칼에 버터 안 묻히고 소분 하는 법</p>
-					                <span>스크랩 29</span>
-					            </div>
-					        </a>
-					    </li>
-					</ul>
-				</div>
-			
-				<h2>마이페이지</h2>
-				<button onclick="location.href='/mypage/profile.do';">프로필</button>
-				<br/><br/>
-				
-				<h2>관리자페이지 테스트</h2>
-				<button onclick="location.href='/admin/home.do';">관리자 페이지</button>
-				<br/><br/>
-				
 			</div>
+				
+			<!-- 카테고리 메뉴 -->
+			<div class="category_menu">
+				<h2>카테고리로 레시피 검색!</h2>
+				<ul class="category_list">
+					<li>
+						<img class="image" src="/images/home/bap.png">
+						<p>밥/죽/떡</p>
+					</li>
+					<li>
+						<img class="image" src="/images/home/soup.png">
+						<p>국/탕</p>
+					</li>
+					<li>
+						<img class="image" src="/images/home/pasta.png">
+						<p>양식</p>
+					</li>
+					<li>
+						<img class="image" src="/images/home/china.png">
+						<p>중식</p>
+					</li>
+					<li>
+						<img class="image" src="/images/home/pigfeet.png">
+						<p>돼지고기</p>
+					</li>
+					<li>
+						<img class="image" src="/images/home/chicken.png">
+						<p>닭고기</p>
+					</li>
+					<li>
+						<img class="image" src="/images/home/sushi.png">
+						<p>회</p>
+					</li>
+					<li>
+						<img class="image" src="/images/home/noodle.png">
+						<p>면/만두</p>
+					</li>
+					<li>
+						<img class="image" src="/images/home/lunch.png">
+						<p>도시락</p>
+					</li>
+					<li>
+						<img class="image" src="/images/home/night.png">
+						<p>야식</p>
+					</li>
+					<li>
+						<img class="image" src="/images/home/rice.png">
+						<p>가공식품류</p>
+					</li>
+					<li>
+						<img class="image" src="/images/home/burger.png">
+						<p>해장</p>
+					</li>
+					<li>
+						<img class="image" src="/images/home/life.png">
+						<p>일상</p>
+					</li>
+					<li>
+						<img class="image" src="/images/home/flower.png">
+						<p>축하</p>
+					</li>
+					<li>
+						<img class="image" src="/images/home/speed.png">
+						<p>초스피드</p>
+					</li>
+					<li>
+						<img class="image" src="/images/home/snackfood.png">
+						<p>간식</p>
+					</li>
+					<li>
+						<img class="image" src="/images/home/dessert.png">
+						<p>빵</p>
+					</li>
+					<li>
+						<img class="image" src="/images/home/cake.png">
+						<p>디저트</p>
+					</li>
+					<li>
+						<img class="image" src="/images/home/drink.png">
+						<p>차/음료/술</p>
+					</li>
+					<li>
+						<img class="image" src="/images/home/etc.png">
+						<p>기타</p>
+					</li>
+				</ul>
+			</div>
+			
+			<!-- 레시피 랭킹  -->
+			<div class="recipe_ranking">
+				<!-- 랭킹 헤더 -->
+				<div class="ranking_header">
+					<h2>현재 뜨고 있는 레시피</h2>
+					<span>집밥은 역시 집밥의 민족</span>
+					<button class="btn_sort" onclick="location.href='/recipe/listRecipe.do'">
+						더보기
+						<div class="btn_img"></div>
+					</button>
+				</div>
+			    
+			    <!-- 랭킹 리스트 -->
+				<ul class="recipe_list"></ul>
+			</div>
+			
+			<!-- 키친 가이드 랭킹 -->
+			<div class="guide_ranking">
+				<!-- 랭킹 헤더 -->
+				<div class="ranking_header">
+			        <h2>키친 가이드로 요리 스킬 UP!</h2>
+					<span>집밥을 만들기 위한 꿀팁 대방출</span>
+			        <button class="btn_sort" onclick="location.href='/kitchen/listGuide.do'">
+			            더보기
+			            <div class="btn_img"></div>
+			        </button>
+			    </div>
+			    <!-- 랭킹 리스트 -->
+			    <div class="guide_list_wrap">
+					<ul class="guide_list"></ul>
+			    </div>
+			</div>
+			
+<!-- 			<h2>마이페이지</h2>
+			<button onclick="location.href='/mypage/profile.do';">프로필</button>
+			<br/><br/>
+			
+			<h2>관리자페이지 테스트</h2>
+			<button onclick="location.href='/admin/home.do';">관리자 페이지</button>
+			<br/><br/> -->
+				
 		</main>
 		
 		<%@include file="common/footer.jsp" %>

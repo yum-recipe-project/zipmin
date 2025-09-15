@@ -10,15 +10,14 @@ import com.project.zipmin.entity.VoteRecord;
 @Repository
 public interface VoteRecordRepository extends JpaRepository<VoteRecord, Integer> {
 	
-	Optional<VoteRecord> findByUserIdAndVoteId(int userId, int voteId);
+	Optional<VoteRecord> findByUserIdAndChompId(int userId, int chompId);
 	
-	long countByChoiceId(int choiceId);
-	long countByVoteId(int voteId);
+	int countByChoiceId(int choiceId);
+	int countByChompId(int chompId);
 	
-	boolean existsByUserIdAndVoteId(int userId, int voteId);
+	boolean existsByUserIdAndChompId(int userId, int chompId);
 	
 	
 	
-    void deleteByUserIdAndVoteId(int userId, int voteId);
 
 }

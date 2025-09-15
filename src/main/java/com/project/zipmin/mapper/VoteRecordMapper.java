@@ -13,22 +13,22 @@ import com.project.zipmin.entity.VoteRecord;
 public interface VoteRecordMapper {
 	
 	// Create
-	@Mapping(target = "vote.id", source = "voteId")
+	@Mapping(target = "chomp.id", source = "chompId")
 	@Mapping(target = "user.id", source = "userId")
 	@Mapping(target = "choice.id", source = "choiceId")
 	VoteRecord toEntity(VoteRecordCreateRequestDto recordDto);
 	
-	@Mapping(target = "voteId", source = "vote.id")
+	@Mapping(target = "chompId", source = "chomp.id")
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "choiceId", source = "choice.id")
 	VoteRecordCreateRequestDto toCreateRequestDto(VoteRecord record);
 	
-	@Mapping(target = "vote.id", source = "voteId")
+	@Mapping(target = "chomp.id", source = "chompId")
 	@Mapping(target = "user.id", source = "userId")
 	@Mapping(target = "choice.id", source = "choiceId")
 	VoteRecord toEntity(VoteRecordCreateResponseDto recordDto);
 	
-	@Mapping(target = "voteId", source = "vote.id")
+	@Mapping(target = "chompId", source = "chomp.id")
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "choiceId", source = "choice.id")
 	VoteRecordCreateResponseDto toCreateResponseDto(VoteRecord record);
@@ -36,6 +36,5 @@ public interface VoteRecordMapper {
 	// Read
 	VoteRecord toEntity(VoteRecordReadResponseDto recordDto);
 	VoteRecordReadResponseDto toReadResponseDto(VoteRecord record);
-	
 	
 }

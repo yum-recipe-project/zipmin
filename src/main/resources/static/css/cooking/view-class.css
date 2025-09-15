@@ -163,6 +163,8 @@
 	letter-spacing: -0.4px;
 	font-weight: 700;
 	margin-bottom: 16px;
+	white-space: pre-line;
+	word-break: break-word;
 }
 
 #container .class_content .class_info .intro_wrap .target p {

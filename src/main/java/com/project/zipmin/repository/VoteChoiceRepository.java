@@ -1,21 +1,19 @@
 package com.project.zipmin.repository;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.project.zipmin.entity.Vote;
 import com.project.zipmin.entity.VoteChoice;
 
 @Repository
 public interface VoteChoiceRepository extends JpaRepository<VoteChoice, Integer> {
 	
-	List<VoteChoice> findByVoteId(int voteId);
+	List<VoteChoice> findAllByChompId(int chompId);
 	
 	
-	void deleteAllByVoteId(int voteId);
-	
+	void deleteAllByChompId(int chompId);
+	void deleteAllByChompIdAndIdNotIn(int chompId, Collection<Integer> ids);
 }

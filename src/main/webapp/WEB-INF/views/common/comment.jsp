@@ -9,9 +9,9 @@
 			<span></span>
 		</div>
 		<div class="comment_order">
-			<button class="btn_sort_small active" data-sort="new">최신순</button>
-			<button class="btn_sort_small" data-sort="old">오래된순</button>
-			<button class="btn_sort_small" data-sort="hot">인기순</button>
+			<button class="btn_sort_small active" data-sort="postdate-desc">최신순</button>
+			<button class="btn_sort_small" data-sort="postdate-asc">오래된순</button>
+			<button class="btn_sort_small" data-sort="likecount-desc">인기순</button>
 		</div>
 	</div>
 	
@@ -19,7 +19,7 @@
 	<form id="writeCommentForm" class="comment_write">
 		<!-- 로그인 하지 않은 경우 -->
 		<div id="logout_state">
-			<a href="/user/login.do">
+			<a href="javascript: redirectToLogin();">
 				<span>댓글 작성을 위해 로그인을 해주세요.</span>
 				<span>400</span>
 			</a>
@@ -28,7 +28,7 @@
 		<div id="login_state">
 			<div class="login_user">
 				<img src="/images/common/test.png">
-				<span></span>
+				<span id="writeCommentNickname"></span>
 			</div>
 			<div class="comment_input">
 				<textarea id="writeCommentContent" rows="2" maxlength="400" placeholder="욕설, 비방, 허위 정보 및 부적절한 댓글은 사전 경고 없이 삭제될 수 있습니다."></textarea>

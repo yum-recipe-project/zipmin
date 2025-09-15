@@ -15,8 +15,10 @@ public class VoteCreateRequestDto {
 	private String title;
 	private Date opendate;
 	private Date closedate;
-	private int chompId;
+	private String category;
+	private String image;
+	private int userId;
 	
-	private List<VoteChoiceCreateRequestDto> choices;
+	private List<VoteChoiceCreateRequestDto> choiceList;
 	
 }

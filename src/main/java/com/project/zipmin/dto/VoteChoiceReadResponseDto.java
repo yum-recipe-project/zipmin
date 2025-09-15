@@ -8,10 +8,12 @@ import lombok.Data;
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class VoteChoiceReadResponseDto {
+	
 	private int id;
 	private String choice;
-	private int voteId;
+	private int chompId;
 	
-	private int count;
-	private double rate;
+	private int recordcount;
+	private double recordrate;
+	
 }

@@ -16,5 +16,6 @@ public class EventUpdateRequestDto {
 	private Date opendate;
 	private Date closedate;
 	private String content;
+	private String image;
 	
 }

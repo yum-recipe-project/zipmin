@@ -21,10 +21,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "RECIPE_CATEGORY")
 public class RecipeCategory {
+	
 	@Id
 	@GeneratedValue(generator = "seq_recipe_category_id")
 	@SequenceGenerator(name = "seq_recipe_category_id", sequenceName = "SEQ_RECIPE_CATEGORY_ID", allocationSize = 1)
 	private int id;
+	
 	private String type;
 	private String tag;
 	
@@ -32,4 +34,5 @@ public class RecipeCategory {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "RECIPE_ID")
 	private Recipe recipe;
+	
 }

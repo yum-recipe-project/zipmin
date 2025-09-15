@@ -3,53 +3,55 @@
  */
 document.addEventListener('DOMContentLoaded', async function() {
 	
-	const params = new URLSearchParams(window.location.search);
-	const id = params.get('id');
-	const token = localStorage.getItem('accessToken');
-	
-	const headers = {
-		'Content-Type': 'application/json'
-	};
-	if (token) {
-		headers['Authorization'] = `Bearer ${token}`;
-	}
-	
 	// 투표 정보 조회
 	try {
+		const id = new URLSearchParams(window.location.search).get('id');
+		
 		const response = await fetch(`/votes/${id}`, {
 			method: 'GET',
-			headers: headers
+			headers: getAuthHeaders()
 		});
-		const result = await response.json();
 		
-		console.log(result);
+		const result = await response.json();
 		
 		if (result.code === 'VOTE_READ_SUCCESS') {
 			document.querySelector('.vote_title').innerText = result.data.title;
-			const now = new Date();
-			const opendate = new Date(result.data.opendate);
-			const closedate = new Date(result.data.closedate);
-			const formatDate = `${opendate.getFullYear()}년 ${String(opendate.getMonth() + 1).padStart(2, '0')}월 ${String(opendate.getDate()).padStart(2, '0')}일 - ${closedate.getFullYear()}년 ${String(closedate.getMonth() + 1).padStart(2, '0')}월 ${String(closedate.getDate()).padStart(2, '0')}일`;
-			document.querySelector('.vote_postdate').innerText = formatDate;
-			document.querySelector('.vote_total').innerText = result.data.total;
+			document.querySelector('.vote_postdate').innerText = `${formatDatePeriod(result.data.opendate, result.data.closedate)}`;
+			document.querySelector('.vote_total').innerText = result.data.recordcount;
 			
-			// 사용자 투표 완료
-			if (result.data.voted) {
-				showRecord(result.data.choice_list, result.data.choice_id);
-			}
 			// 투표 종료
-			else if (now < opendate || now > closedate) {
-				showRecord(result.data.choice_list, result.data.choice_id);
+			const now = new Date();
+			if (now < new Date(result.data.opendate) || now > new Date(result.data.closedate)) {
+				renderRecord(result.data.choice_list, result.data.choice_id);
 				document.getElementById('revoteBtn').style.display = 'none';
+			}
+			// 사용자 투표 완료
+			else if (result.data.voted) {
+				renderRecord(result.data.choice_list, result.data.choice_id);
 			}
 			// 비로그인 상태 혹은 투표 미완료
 			else {
-				showChoice(result.data.choice_list);
+				renderChoiceList(result.data.choice_list);
 			}
 		}
-		else {
-			alert(result.message);
+		else if (result.code === 'VOTE_READ_FAIL') {
+			alert('투표 조회에 실패했습니다.');
 			location.href = '/chompessor/listChomp.do';
+		}
+		else if (result.code === 'VOTE_RECORD_READ_FAIL') {
+			alert('투표 조회에 실패했습니다.');
+			location.href = '/chompessor/listChomp.do';
+		}
+		else if (result.code === 'VOTE_NOT_FOUND') {
+			alert('해당 투표를 찾을 수 없습니다.');
+			location.href = '/chompessor/listChomp.do';
+		}
+		else if (result.code === 'INTERNAL_SERVER_ERROR') {
+			alert('서버 내부 오류가 발생했습니다.');
+			location.href = '/chompessor/listChomp.do';
+		}
+		else {
+			console.log(error);
 		}
 	}
 	catch (error) {
@@ -59,18 +61,18 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
 
+
+
 /**
  * 투표의 선택지를 보여주는 함수
- * 
- * @param {Array} choice - 각 선택지와 투표 수 및 비율 정보가 담긴 객체 배열
  */
-function showChoice(choices) {
+function renderChoiceList(choiceList) {
 
 	document.querySelector('.vote_form').style.display = 'block';
 	document.querySelector('.vote_result').style.display = 'none';
 	document.querySelector('.choice_list').innerHTML = '';
 
-	choices.forEach((choice, index) => {
+	choiceList.forEach((choice, index) => {
 		const li = document.createElement('li');
 
 		const wrap = document.createElement('div');
@@ -86,12 +88,13 @@ function showChoice(choices) {
 		label.setAttribute('for', `vote${index + 1}`);
 		label.textContent = choice.choice;
 
-		wrap.appendChild(checkbox);
-		wrap.appendChild(label);
+		wrap.append(checkbox, label);
 		li.appendChild(wrap);
 		document.querySelector('.choice_list').appendChild(li);
 	});
 }
+
+
 
 
 
@@ -120,20 +123,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+
+
 /**
  * 투표의 결과를 보여주는 함수
- * 
- * @param {Array} choices - 각 선택지와 투표 수 및 비율 정보가 담긴 객체 배열
- * @param {number} choiceId - 사용자가 선택한 선택지의 ID
  */
-function showRecord(choices, choiceId) {
+function renderRecord(choiceList, choiceId) {
 	document.querySelector('.vote_form').style.display = 'none';
 	document.querySelector('.vote_result').style.display = 'block';
 
 	const listElement = document.querySelector('.record_list');
 	listElement.innerHTML = '';
 
-	choices.forEach(choice => {
+	choiceList.forEach(choice => {
 		const isChoiced = choice.id === choiceId;
 
 		const li = document.createElement('li');
@@ -143,7 +145,7 @@ function showRecord(choices, choiceId) {
 		if (isChoiced) {
 			wrap.classList.add('select');
 		}
-		wrap.style.setProperty('--bar-width', `${choice.rate}%`);
+		wrap.style.setProperty('--bar-width', `${choice.recordrate}%`);
 
 		const h5 = document.createElement('h5');
 		if (isChoiced) {
@@ -154,15 +156,12 @@ function showRecord(choices, choiceId) {
 		h5.appendChild(document.createTextNode(choice.choice));
 
 		const span = document.createElement('span');
-		span.innerText = `${choice.count}명`;
+		span.innerText = `${choice.recordcount}명`;
 
 		const h3 = document.createElement('h3');
-		h3.innerText = `${choice.rate}%`;
+		h3.innerText = `${choice.recordrate}%`;
 
-		wrap.appendChild(h5);
-		wrap.appendChild(span);
-		wrap.appendChild(h3);
-		
+		wrap.append(h5, span, h3);
 		li.appendChild(wrap);
 		listElement.appendChild(li);
 	});
@@ -194,9 +193,11 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 			const data = {
 				user_id: payload.id,
-				vote_id: voteId,
+				chomp_id: voteId,
 				choice_id: checked.value
 			};
+			
+			console.log(data);
 			
 			try {
 				const response = await instance.post(`/votes/${voteId}/records`, data);
@@ -264,7 +265,7 @@ async function cancelVote() {
 		
 		const data = {
 			user_id: Number(userId),
-			vote_id: Number(voteId)
+			chomp_id: Number(voteId)
 		};
 		
 		try {
@@ -325,6 +326,11 @@ async function cancelVote() {
  */
 document.addEventListener('DOMContentLoaded', function() {	
 	
+	const tablename = 'vote';
+	let sort = 'postdate-desc';
+	let size = 15;
+
+	
 	// 정렬 버튼 클릭 시 초기화 후 댓글 목록 조회
 	document.querySelectorAll('.comment_order button').forEach(tab => {
 		tab.addEventListener('click', function (event) {
@@ -338,15 +344,45 @@ document.addEventListener('DOMContentLoaded', function() {
 			document.querySelector('.comment_list').innerHTML = '';
 			commentList = [];
 			
-			fetchCommentList('chomp_vote');
+			fetchCommentList(tablename, sort, size);
 		});
 	});
 	
 	// 최초 댓글 목록 조회
-	fetchCommentList('chomp_vote');
+	fetchCommentList(tablename, sort, size);
 	
 	// 더보기 버튼 클릭 시 다음 페이지 로드
 	document.querySelector('.btn_more').addEventListener('click', function () {
-		fetchCommentList('chomp_vote');
+		fetchCommentList(tablename, sort, size);
 	});
 });
+
+
+
+
+/**
+ * 댓글을 작성하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function () {
+	
+	document.getElementById('writeCommentForm').addEventListener('submit', function (event) {
+		event.preventDefault();
+		writeComment('vote');
+	});
+});
+
+
+
+/**
+ * 대댓글을 작성하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function () {
+	
+	document.getElementById('writeSubcommentForm').addEventListener('submit', function (event) {
+		event.preventDefault();
+		writeSubcomment('vote');
+	});
+	
+});
+
+

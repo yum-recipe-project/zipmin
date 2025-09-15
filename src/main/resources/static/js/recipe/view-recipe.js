@@ -1,4 +1,14 @@
 /**
+ * 전역 변수
+ */
+let originPortion = 0;
+let photoMode = true;
+
+
+
+
+
+/**
  * 탭 메뉴 클릭 시 탭 메뉴를 활성화하고 해당하는 내용을 표시하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
@@ -35,6 +45,13 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 document.addEventListener('DOMContentLoaded', async function() {
 	
+	const basicForm = document.getElementById('viewRecipeBasicForm');
+	const stockForm = document.getElementById('viewRecipeStockForm');
+	const tipForm = document.getElementById('viewRecipeTipForm');
+	const supportForm = document.getElementById('viewRecipeSupportForm');
+	const reviewCommentForm = document.getElementById('viewRecipeReviewCommentForm');
+	
+	
 	// 레시피 정보 조회
 	try {
 		const id = new URLSearchParams(window.location.search).get('id');
@@ -45,30 +62,44 @@ document.addEventListener('DOMContentLoaded', async function() {
 		
 		const result = await response.json();
 		
+		console.log(result);
+		
 		if (result.code === 'RECIPE_READ_SUCCESS') {
 			
-			// 레시피 정보
-			document.getElementById('title').innerText = result.data.title;
-			document.getElementById('level').innerText = result.data.cooklevel;
-			document.getElementById('time').innerText = result.data.cooktime;
-			document.getElementById('spicy').innerText = result.data.spicy;
-			document.getElementById('introduce').innerText = result.data.introduce;
-			document.getElementById('tip').innerText = result.data.tip;
-			document.querySelectorAll('.nickname[data-id]').forEach(nickname => { nickname.innerText = result.data.nickname; });
+			// 기본 정보
+			basicForm.querySelector('.recipe_title').innerText = result.data.title;
+			basicForm.querySelector('.recipe_cooklevel').innerText = result.data.cooklevel;
+			basicForm.querySelector('.recipe_cooktime').innerText = result.data.cooktime;
+			basicForm.querySelector('.recipe_spicy').innerText = result.data.spicy;
+			basicForm.querySelector('.recipe_writer img').src = result.data.avatar;
+			basicForm.querySelector('.recipe_writer span').innerText = result.data.nickname;
+			basicForm.querySelector('.recipe_introduce').innerText = result.data.introduce;
+			if (result.data.liked) {
+				basicForm.querySelector('.btn_icon.like img').src = '/images/recipe/star_full_1a7ce2.png'
+			 	basicForm.querySelector('.btn_icon.like').classList.add('active');
+			}
+			renderCategoryList(result.data.category_list);
 			
 			// 재료
-			document.getElementById('servingInput').value = result.data.portion;
+			originPortion = parseInt(result.data.portion, 10);
+			stockForm.querySelector('.recipe_portion select').value = result.data.portion;
 			renderStockList(result.data.stock_list);
 			renderMemoList(result.data.stock_list);
 			
 			// 조리 순서
 			renderStepList(result.data.step_list);
 			
-			// 리뷰 수
-			document.querySelectorAll('.review_count[data-id]').forEach(reviewcount => { reviewcount.innerText = result.data.reviewcount; });
-			document.querySelectorAll('.comment_count[data-id]').forEach(commentcount => { commentcount.innerText = result.data.commentcount; });
+			// 레시피 팁
+			tipForm.querySelector('.recipe_tip p').innerText = result.data.tip;
 			
-			// ***** 구독자 정보 렌더링 *****
+			// 구독 및 후원
+			supportForm.querySelector('.recipe_writer img').src = result.data.avatar;
+			supportForm.querySelector('.recipe_writer h5').innerText = result.data.nickname;
+			supportForm.querySelector('.recipe_writer p').innerText = `구독자 ${result.data.follower}명`;
+			
+			// 리뷰 수
+			reviewCommentForm.querySelector('.review_count').innerText = result.data.reviewcount;
+			reviewCommentForm.querySelector('.comment_count').innerText = result.data.commentcount;
 		}
 		
 		if (result.code === 'RECIPE_READ_FAIL') {
@@ -115,31 +146,81 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
 /**
- * 재료 목록 렌더링
+ * 레시피의 인분 변경시 레시피 재료 목록의 용량을 계산하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+
+	const stockForm = document.getElementById('viewRecipeStockForm');
+	stockForm.querySelector('.recipe_portion select').addEventListener('change', function() {
+		const portion = parseInt(stockForm.querySelector('.recipe_portion select').value, 10);
+		stockForm.querySelectorAll('.stock_list td.amount').forEach(td => {
+			const originAmount = parseFloat(td.dataset.amount);
+			const unit = td.dataset.unit;			
+			const amount = Math.round((originAmount / originPortion) * portion * 100) / 100;
+			td.textContent = `${amount}${unit}`;
+		});
+	});
+	
+});
+
+
+
+
+
+/**
+ * 레시피 카테고리 목록을 화면에 렌더링하는 함수
+ */
+function renderCategoryList(categoryList) {
+	const basicForm = document.getElementById('viewRecipeBasicForm');
+	const container = basicForm.querySelector('.recipe_category');
+	container.innerHTML = '';
+	
+	categoryList.forEach(category => {
+		const span  = document.createElement('span');
+		span.textContent = `# ${category.tag}`;
+		span.addEventListener('click', function(event) {
+			event.preventDefault();
+			location.href = `/recipe/listRecipe.do?category=${category.tag}`;
+		});
+		
+		container.appendChild(span);
+	});
+}
+
+
+
+
+
+/**
+ * 레시피 재료 목록을 화면에 렌더링하는 함수
  */
 function renderStockList(stockList) {
-	const ingredientElement = document.getElementById('ingredient');
-	ingredientElement.innerHTML = '';
+	const stockForm = document.getElementById('viewRecipeStockForm');
+	const container = stockForm.querySelector('.stock');
+	container.innerHTML = '';
 	
-	stockList.forEach(ingredient => {
+	stockList.forEach(stock => {
 		const tr = document.createElement('tr');
 		
 		// 이름
 		const tdName = document.createElement('td');
-		tdName.textContent = ingredient.name;
+		tdName.textContent = stock.name;
 		tr.appendChild(tdName);
 		
 		// 양
 		const tdAmount = document.createElement('td');
-		tdAmount.textContent = `${ingredient.amount}${ingredient.unit}`;
+		tdAmount.className = 'amount';
+		tdAmount.dataset.amount = stock.amount;
+		tdAmount.dataset.unit = stock.unit;
+		tdAmount.textContent = `${stock.amount}${stock.unit}`;
 		tr.appendChild(tdAmount);
 		
 		// 비고
 		const tdNote = document.createElement('td');
-		tdNote.textContent = ingredient.note || '';
+		tdNote.textContent = stock.note;
 		tr.appendChild(tdNote);
 		
-		ingredientElement.appendChild(tr);
+		container.appendChild(tr);
 	});
 }
 
@@ -192,47 +273,40 @@ function renderMemoList(stockList) {
 
 
 /**
- * 조리 순서 렌더링
+ * 레시피 조리 과정을 화면에 렌더링하는 함수
  */
 function renderStepList(stepList) {
-	const stepElement = document.getElementById('step');
-	stepElement.innerHTML = '';
+	const stepForm = document.getElementById('viewRecipeStepForm');
+	const container = stepForm.querySelector('.step_list');
+	container.innerHTML = '';
 
     stepList.forEach((step, index) => {
 		const li = document.createElement('li');
 		
-		// 설명 div
-		const descDiv = document.createElement('div');
-		descDiv.className = 'description';
+		const contentDiv = document.createElement('div');
+		contentDiv.className = 'step_content';
 		
 		const h5 = document.createElement('h5');
 		h5.textContent = `STEP${index + 1}`;
-		descDiv.appendChild(h5);
+		contentDiv.appendChild(h5);
 		
 		const p = document.createElement('p');
+		p.textContent = step.content;
+		contentDiv.appendChild(p);
+		li.appendChild(contentDiv);
 		
-		const span = document.createElement('span');
-		span.className = 'hidden';
-		span.textContent = `${index + 1}. `;
-		p.appendChild(span);
-		
-		const descText = document.createTextNode(step.content);
-		p.appendChild(descText);
-		
-		descDiv.appendChild(p);
-		li.appendChild(descDiv);
-		
-		// 이미지 div
-		const imgDiv = document.createElement('div');
-		imgDiv.className = 'image';
+		const imageDiv = document.createElement('div');
+		imageDiv.className = 'step_image';
 		
 		const img = document.createElement('img');
-		img.src = step.image ? step.image : '/images/common/test.png';
-		imgDiv.appendChild(img);
+		img.src = step.image;
+		imageDiv.appendChild(img);
 		
-		li.appendChild(imgDiv);
+		if (step.image) {
+			li.appendChild(imageDiv);
+		}
 		
-		stepElement.appendChild(li);
+		container.appendChild(li);
 	});
 }
 
@@ -241,37 +315,29 @@ function renderStepList(stepList) {
 
 
 /**
- * 구독자 정보 렌더링
+ * 레시피 재료 목록의 사진 토글하는 함수
  */
-/*
-function renderFollowSection(followerCount, isFollow) {
-    // 구독자 수
-    const followerElement = document.getElementById("follower");
-    if (followerElement) {
-        followerElement.innerText = followerCount;
-    }
-
-    // 구독 버튼
-    const followButton = document.getElementById("followButton");
-    if (followButton) {
-        // 버튼 클래스 토글
-        followButton.classList.remove("btn_outline", "btn_dark");
-        if (isFollow) {
-            followButton.classList.add("btn_outline");
-            followButton.innerText = "구독 중";
-        } else {
-            followButton.classList.add("btn_dark");
-            followButton.innerText = "구독";
-        }
-    }
-}
-*/
-
-
-
-
-
-
+document.addEventListener('DOMContentLoaded', function() {
+	const stepForm = document.getElementById('viewRecipeStepForm');
+	
+	document.getElementById('togglePhotoButton').addEventListener('click', function(event) {
+		event.preventDefault();
+		photoMode = !photoMode;
+		
+		if (photoMode) {
+			document.getElementById('togglePhotoButton').innerHTML = '<img src="/images/recipe/photo_999.png">사진 숨기기';
+			stepForm.querySelectorAll('.step_list .step_image').forEach(step => {
+				step.style.display = 'block';
+			});
+		}
+		else {
+			document.getElementById('togglePhotoButton').innerHTML = '<img src="/images/recipe/photo_999.png">사진 보기';
+			stepForm.querySelectorAll('.step_list .step_image').forEach(step => {
+				step.style.display = 'none';
+			});
+		}
+	});
+});
 
 
 

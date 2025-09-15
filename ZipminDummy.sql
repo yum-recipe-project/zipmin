@@ -2,12 +2,12 @@
 insert into users values (seq_user_id.NEXTVAL, 'admin', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '총관리자', '집밥의민족', null, null, null, 0, 0, 'ROLE_SUPER_ADMIN', 1, null, null, null, null);
 insert into users values (seq_user_id.NEXTVAL, 'admin1', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '관리자1', '집밥의민족', null, null, null, 0, 0, 'ROLE_ADMIN', 1, null, null, null, null);
 insert into users values (seq_user_id.NEXTVAL, 'admin2', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '관리자2', '집밥의민족', null, null, null, 0, 0, 'ROLE_ADMIN', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'harim', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '정하림', '아잠만', '010-0000-0000', 'qazwsx9445@naver.com', null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'dayeong', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '부다영', '김뿌영', '010-0000-0000', 'dyboo1347@gmail.com', null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user1',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자1',  '사용자1',  '010-0000-0000', 'user1@gmail.com',  null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user2',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자2',  '사용자2',  '010-0000-0000', 'user2@gmail.com',  null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user3',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자3',  '사용자3',  '010-0000-0000', 'user3@gmail.com',  null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user4',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자4',  '사용자4',  '010-0000-0000', 'user4@gmail.com',  null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'harim', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '정하림', '아잠만', '010-0000-0000', 'qazwsx9445@naver.com', '/images/user/user3.jpg', 100, 200, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'dayeong', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '부다영', '김뿌영', '010-0000-0000', 'dyboo1347@gmail.com', '/images/user/user2.jpg', 100, 200, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user1',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자1',  '사용자1',  '010-0000-0000', 'user1@gmail.com',  '/images/user/user3.jpg', 100, 200, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user2',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자2',  '사용자2',  '010-0000-0000', 'user2@gmail.com',  '/images/user/user4.jpg', 100, 200, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user3',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자3',  '사용자3',  '010-0000-0000', 'user3@gmail.com',  '/images/user/user1.jpg', 100, 200, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user4',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자4',  '사용자4',  '010-0000-0000', 'user4@gmail.com',  '/images/user/user2.jpg', 100, 200, 'ROLE_USER', 1, null, null, null, null);
 insert into users values (seq_user_id.NEXTVAL, 'user5',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자5',  '사용자5',  '010-0000-0000', 'user5@gmail.com',  null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
 insert into users values (seq_user_id.NEXTVAL, 'user6',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자6',  '사용자6',  '010-0000-0000', 'user6@gmail.com',  null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
 insert into users values (seq_user_id.NEXTVAL, 'user7',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자7',  '사용자7',  '010-0000-0000', 'user7@gmail.com',  null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
@@ -64,14 +64,14 @@ INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '개', TO_DATE('2
 
 
 -- RECIPE 테이블 더미데이터
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '468e70a253c3463eae3d0de7e46dfd23.png', '소불고기', '달콤짭짤한 불고기 요리', TO_DATE('25/09/10', 'RR/MM/DD'), '하', '30분 이내', '매움', '2인분', '고기 재울 때 키위나 배를 갈아 넣으면 부드러워져요!', null, 4);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '08d967c50662482e9dae8bb1c2cb76ac.png', '쌈밥', '야채와 함께 먹는 건강한 쌈밥', TO_DATE('25/08/10', 'RR/MM/DD'), '중', '20분 이내', '보통', '1인분', '고기를 굽기 전 밑간하면 더 맛있어요.', null, 4);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'df3e2e68808c470a88aaf29322f4347d.png', '마요네즈 비빔면', '매콤 고소한 초간단 비빔면', TO_DATE('25/08/10', 'RR/MM/DD'), '상', '10분 이내', '아주 매움', '1인분', '불닭소스를 조절해서 맵기 조절 가능해요.', null, 4);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'b476ce2deebf434785f961fc60ab13c4.png', '김치볶음밥', '집에 있는 재료로 간단하게!', TO_DATE('25/08/07', 'RR/MM/DD'), '상', '15분 이내', '아주 매움', '1인분', '김치는 꼭 볶아서 써야 깊은 맛이 나요!', null, 4);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '849ecad1b6a84ae7869c29d6e7a7fed3.png', '짜장면', '달콤 짭짤한 중식의 기본', TO_DATE('25/08/23', 'RR/MM/DD'), '중', '30분 이내', '보통', '2인분', '춘장을 충분히 볶아야 맛이 살아나요.', null, 4);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '63d708c6a5e34178a04151023cfe23da.png', '닭갈비', '매콤한 맛의 대표 주자', TO_DATE('25/08/24', 'RR/MM/DD'), '중', '40분 이내', '아주 매움', '3인분', '고구마를 넣으면 단맛이 더해져요.', null, 4);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '7ff82e049e184df0900f1b0d59ac8ba1.png', '계란말이', '도시락 단골 반찬', TO_DATE('25/07/10', 'RR/MM/DD'), '하', '10분 이내', '매움', '1인분', '육수나 우유를 조금 넣으면 부드러워져요.', null, 4);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '2690844ba7ca4522aa7a568015becb9b.png', '떡볶이', '매콤달콤 국민 간식', TO_DATE('25/06/10', 'RR/MM/DD'), '하', '20분 이내', '보통', '2인분', '고추장에 설탕 대신 올리고당을 써보세요.', null, 4);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '468e70a253c3463eae3d0de7e46dfd23.png', '소불고기', '달콤짭짤한 불고기 요리', TO_DATE('25/09/10', 'RR/MM/DD'), '입문', '30분 이내', '매움', '2인분', '고기 재울 때 키위나 배를 갈아 넣으면 부드러워져요!', 4);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '08d967c50662482e9dae8bb1c2cb76ac.png', '쌈밥', '야채와 함께 먹는 건강한 쌈밥', TO_DATE('25/08/10', 'RR/MM/DD'), '초급', '20분 이내', '보통', '1인분', '고기를 굽기 전 밑간하면 더 맛있어요.', 4);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'df3e2e68808c470a88aaf29322f4347d.png', '마요네즈 비빔면', '매콤 고소한 초간단 비빔면', TO_DATE('25/08/10', 'RR/MM/DD'), '중급', '10분 이내', '아주 매움', '1인분', '불닭소스를 조절해서 맵기 조절 가능해요.', 4);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'b476ce2deebf434785f961fc60ab13c4.png', '김치볶음밥', '집에 있는 재료로 간단하게!', TO_DATE('25/08/07', 'RR/MM/DD'), '고급', '15분 이내', '아주 매움', '1인분', '김치는 꼭 볶아서 써야 깊은 맛이 나요!', 4);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '849ecad1b6a84ae7869c29d6e7a7fed3.png', '짜장면', '달콤 짭짤한 중식의 기본', TO_DATE('25/08/23', 'RR/MM/DD'), '중급', '30분 이내', '보통', '2인분', '춘장을 충분히 볶아야 맛이 살아나요.', 4);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '63d708c6a5e34178a04151023cfe23da.png', '닭갈비', '매콤한 맛의 대표 주자', TO_DATE('25/08/24', 'RR/MM/DD'), '중급', '40분 이내', '아주 매움', '3인분', '고구마를 넣으면 단맛이 더해져요.', 4);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '7ff82e049e184df0900f1b0d59ac8ba1.png', '계란말이', '도시락 단골 반찬', TO_DATE('25/07/10', 'RR/MM/DD'), '입문', '10분 이내', '매움', '1인분', '육수나 우유를 조금 넣으면 부드러워져요.', 4);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '2690844ba7ca4522aa7a568015becb9b.png', '떡볶이', '매콤달콤 국민 간식', TO_DATE('25/06/10', 'RR/MM/DD'), '초급', '20분 이내', '보통', '2인분', '고추장에 설탕 대신 올리고당을 써보세요.', 4);
 commit;
 
 -- test.png 08d967c50662482e9dae8bb1c2cb76ac.png
@@ -94,6 +94,10 @@ INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '재료별',
 -- 마요네즈 비빔면
 INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '방법별', '비빔', 3);
 INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '재료별', '소스', 3);
+
+-- 닭갈비
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '방법별', '비빔', 6);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '재료별', '소스', 6);
 commit;
 
 
@@ -124,7 +128,7 @@ commit;
 
 -- RECIPE_STEP 테이블 더미데이터
 -- 소불고기
-INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '소고기를 양념에 재운다.', 1);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, '28509811794d4202816294ac39bcceac.png', '소고기를 양념에 재운다.', 1);
 INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '양파와 함께 볶는다.', 1);
 
 -- 쌈밥

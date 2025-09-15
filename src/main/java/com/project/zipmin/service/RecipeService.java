@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.method.P;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,6 +64,7 @@ public class RecipeService {
 	
 	private final UserService userService;
 	private final FileService fileService;
+	private final LikeService likeService;
 	
 	private final RecipeMapper recipeMapper;
 	private final RecipeCategoryMapper categoryMapper;
@@ -238,7 +240,18 @@ public class RecipeService {
 		
 		// 레시피 응답 구성
 		RecipeReadResponseDto recipeDto = recipeMapper.toReadResponseDto(recipe);
-		recipeDto.setNickname(userService.readUserById(recipeDto.getId()).getNickname());
+		UserReadResponseDto userDto = userService.readUserById(recipeDto.getUserId());
+		recipeDto.setNickname(userDto.getNickname());
+		recipeDto.setAvatar(userDto.getAvatar());
+		recipeDto.setFollower(likeService.countLike("users", recipeDto.getUserId()));
+		
+		// 좋아요 여부
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
+			String username = authentication.getName();
+			int userId = userService.readUserByUsername(username).getId();
+			recipeDto.setLiked(likeService.existsUserLike("recipe", recipeDto.getId(), userId));
+		}
 		
 		// 레시피 카테고리 조회
 		try {
@@ -265,10 +278,6 @@ public class RecipeService {
 			List<RecipeStockReadResponseDto> stockDtoList = new ArrayList<>();
 			for (RecipeStock stock : stockList) {
 				RecipeStockReadResponseDto stockDto = stockMapper.toReadResponseDto(stock);
-				
-				// 이미지
-				recipeDto.setImage(publicPath + "/" + recipeDto.getImage());	
-				
 				stockDtoList.add(stockDto);
 			}
 			
@@ -286,6 +295,12 @@ public class RecipeService {
 			List<RecipeStepReadResponseDto> stepDtoList = new ArrayList<>();
 			for (RecipeStep step : stepList) {
 				RecipeStepReadResponseDto stepDto = stepMapper.toReadResponseDto(step);
+				
+				// 이미지
+				if (stepDto.getImage() != null) {
+					stepDto.setImage(publicPath + "/" + stepDto.getImage());	
+				}
+				
 				stepDtoList.add(stepDto);
 			}
 			
@@ -304,8 +319,6 @@ public class RecipeService {
 	
 	// 레시피를 작성하는 함수
 	public RecipeCreateResponseDto createRecipe(RecipeCreateRequestDto recipeRequestDto, MultipartFile recipeImage, MultiValueMap<String, MultipartFile> stepImageMap) {
-		
-		System.err.println(recipeRequestDto);
 		
 		// 입력값 검증 (레시피)
 		if (recipeRequestDto == null || recipeRequestDto.getTitle() == null
@@ -351,7 +364,7 @@ public class RecipeService {
 			recipeRequestDto.setImage(image);
 		}
 		catch (Exception e) {
-			throw new ApiException(EventErrorCode.EVENT_FILE_UPLOAD_FAIL);
+			throw new ApiException(RecipeErrorCode.RECIPE_FILE_UPLOAD_FAIL);
 		}
 		
 		// 레시피 저장
@@ -403,7 +416,7 @@ public class RecipeService {
 				stepDto.setRecipeId(recipeResponseDto.getId());
 				
 				// 조리 과정 파일 저장
-				String key = "stepImage[" + i + "]";
+				String key = "stepImageMap[" + i + "]";
 				MultipartFile stepImage = (stepImageMap != null) ? stepImageMap.getFirst(key) : null;
 				try {
 					if (stepImage != null && !stepImage.isEmpty()) {
@@ -412,7 +425,7 @@ public class RecipeService {
 					}
 				}
 				catch (Exception e) {
-					throw new ApiException(EventErrorCode.EVENT_FILE_UPLOAD_FAIL);
+					throw new ApiException(RecipeErrorCode.RECIPE_STEP_FILE_UPLOAD_FAIL);
 				}
 				
 				// 조리 과정 저장

@@ -24,78 +24,66 @@
 		<main id="container">
 			<div class="content">
 				<div class="recipe_wrap">
-					<div class="recipe_header">
+					<div id="viewRecipeBasicForm" class="recipe_header">
 						<!-- 제목 -->
-						<h2 id="title"></h2>
+						<h2 class="recipe_title"></h2>
 						
-						<!-- 스크랩 버튼 -->
-						<div class="save_recipe_btn">
-							<button class="btn_tool" onclick="">
-								<img src="/images/recipe/bookmark.png"> 저장
+						<!-- 유틸 버튼 -->
+						<div class="btn_wrap">
+							<button class="btn_icon like">
+								<img src="/images/recipe/star_empty_181a1c.png">
+							</button>
+							<button class="btn_icon print" onclick="window.print();">
+								<img src="/images/recipe/print.png">
+							</button>
+							<button class="btn_icon" data-bs-toggle="modal" data-bs-target="#reportRecipeModal">
+								<img src="/images/recipe/siren.png">
 							</button>
 						</div>
 						
 						<!-- 레시피 정보 -->
 						<div class="recipe_info">
-							<div class="recipe_info_item">
+							<div class="info">
 								<img src="/images/recipe/level.png">
-								<p id="level"></p>
+								<p class="recipe_cooklevel"></p>
 							</div>
-							<div class="recipe_info_item">
+							<div class="info">
 								<img src="/images/recipe/time.png">
-								<p id="time"></p>
+								<p class="recipe_cooktime"></p>
 							</div>
-							<div class="recipe_info_item">
+							<div class="info">
 								<img src="/images/recipe/spicy.png">
-								<p id="spicy"></p>
+								<p class="recipe_spicy"></p>
 							</div>
 						</div>
 						
 						<!-- 작성자 -->
 						<div class="recipe_writer">
-							<a class="nickname" href="">
+							<button type="button" class="btn_nickname">
 								<img src="/images/common/test.png">
-								<span class="nickname" data-id="1"></span>
-							</a>
-							<c:if test="${ true }">
-								<a href="">팔로우</a>
-							</c:if>
+								<span>알 수 없는 사용자</span>
+							</button>
+							<button type="button" class="btn_text">팔로우</button>
 						</div>
 						
 						<!-- 소개 -->
-						<p id="introduce" class="recipe_introduce"></p>
+						<p class="recipe_introduce"></p>
 						
 						<!-- 카테고리 -->
-						<div id="category" class="recipe_category">
-						</div>
-						
-						<!-- 버튼 -->
-						<div class="btn_wrap">
-							<button class="btn_icon" data-bs-toggle="modal" data-bs-target="#reportRecipeModal">
-								<img src="/images/recipe/siren.png">
-							</button>
-							<button class="btn_icon" onclick="">
-								<img src="/images/recipe/youtube.png">
-							</button>
-							<button class="btn_icon print" onclick="window.print();">
-								<img src="/images/recipe/print.png">
-							</button>
-						</div>
+						<div class="recipe_category"></div>
 					</div>
 					
-					<div class="recipe_ingredient">
-						<!-- 제목 -->
+					<div id="viewRecipeStockForm" class="recipe_stock">
 						<h3>재료</h3>
+						
 						<!-- 장보기메모에 재료 담기 버튼 -->
-						<div class="save_ingredient_btn">
-							<button class="btn_tool" data-bs-toggle="modal" data-bs-target="#addMemoModal">
-								<img src="/images/recipe/pen.png"> 장보기메모에 재료 담기
-							</button>
-						</div>
+						<button class="btn_tool" data-bs-toggle="modal" data-bs-target="#addMemoModal">
+							<img src="/images/recipe/pen.png"> 장보기메모에 재료 담기
+						</button>
 						
 						<!-- 양 -->
-						<div class="recipe_serving">
-							<select id="servingInput" name="">
+						<div class="recipe_portion">
+							<select>
 								<option value="1인분">1인분</option>
 								<option value="2인분">2인분</option>
 								<option value="3인분">3인분</option>
@@ -106,52 +94,55 @@
 						</div>
 						
 						<!-- 재료 표 -->
-						<table class="ingredient_list">
+						<table class="stock_list">
 							<thead>
 								<tr>
-									<th width="25%">재료</th>
-									<th width="25%">용량</th>
-									<th width="50%">비고</th>
+									<th width="33%">재료</th>
+									<th width="33%">용량</th>
+									<th width="33%">비고</th>
 								</tr>
 							</thead>
-							<tbody id="ingredient"></tbody>
+							<tbody class="stock"></tbody>
 						</table>
 					</div>
 					
-					<div class="recipe_step">
+					<div id="viewRecipeStepForm" class="recipe_step">
 						<!-- 제목 -->
 						<h3>조리 순서</h3>
-						<ul class="step_list" id="step"></ul>
+						
+						<!-- 장보기메모에 재료 담기 버튼 -->
+						<button id="togglePhotoButton" class="btn_tool"><img src="/images/recipe/photo_999.png">사진 숨기기</button>
+						
+						<!-- 조리 과정 목록 -->
+						<ul class="step_list"></ul>
 					</div>
 					
 					<!-- 요리팁 -->
-					<div class="recipe_tip">
-						<h3>주의사항</h3>
-						<p id="tip"></p>
+					<div id="viewRecipeTipForm">
+						<div class="recipe_tip">
+							<h3>주의사항</h3>
+							<p></p>
+						</div>
 					</div>
 					
-					<!-- 구독 및 후원 -->
-					<div class="recipe_util">
-						<div class="profile">
+					<!-- 후원 -->
+					<div id="viewRecipeSupportForm" class="recipe_support">
+						<div class="recipe_writer">
 							<img src="/images/common/test.png">
 							<div>
-								<h5 class="nickname" data-id="2"></h5>
-								<p>구독자 <em id="follower">45</em>명</p>
+								<h5>알 수 없는 사용자</h5>
+								<p>구독자 0명</p>
 							</div>
 						</div>
 						<div class="btn_wrap">
-							<button class="btn_outline" type="button" data-bs-toggle="modal" data-bs-target="#supportRecipeModal"
-								onclick="openSupportRecipeModal();">
-								레시피 후원하기
-							</button>
-							
-							<button id="followButton" class="btn_dark" type="submit" onclick="">구독</button>
+							<button class="btn_outline" type="button" data-bs-toggle="modal" data-bs-target="#supportRecipeModal">레시피 후원하기</button>
+							<button type="button" class="btn_dark">구독</button>
 						</div>
 					</div>
 				</div>
 				
 				<!-- 탭 메뉴 버튼 -->
-				<div class="tab_button_wrap">
+				<div id="viewRecipeReviewCommentForm" class="tab_button_wrap">
 					<div class="tab_button">
 						<button class="active">리뷰 (<em class="review_count" data-id="1"></em>)</button>
 						<button>댓글 (<em class="comment_count" data-id="1"></em>)</button>

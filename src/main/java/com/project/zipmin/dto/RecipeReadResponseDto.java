@@ -22,7 +22,6 @@ public class RecipeReadResponseDto {
 	private String spicy;
 	private String portion;
 	private String tip;
-	private String youtube;
 	private Integer userId;
 	
 	private List<RecipeCategoryReadResponseDto> categoryList;
@@ -34,9 +33,13 @@ public class RecipeReadResponseDto {
 	private int reportcount;
 	private int reviewcount;
 	private Double reviewscore;
+	private boolean isLiked;
 	
+	// 작성자 정보
 	private String username;
 	private String nickname;
+	private String avatar;
+	private int follower;
 	
 	// 냉파용 (수정 필요)
 	private Double rate;

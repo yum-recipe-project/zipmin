@@ -45,7 +45,6 @@ public class Recipe {
 	private String spicy;
 	private String portion;
 	private String tip;
-	private String youtube;
 	
 	// private String userId;
 	@ManyToOne(fetch = FetchType.LAZY)

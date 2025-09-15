@@ -416,7 +416,7 @@ public class RecipeService {
 				stepDto.setRecipeId(recipeResponseDto.getId());
 				
 				// 조리 과정 파일 저장
-				String key = "stepImage[" + i + "]";
+				String key = "stepImageMap[" + i + "]";
 				MultipartFile stepImage = (stepImageMap != null) ? stepImageMap.getFirst(key) : null;
 				try {
 					if (stepImage != null && !stepImage.isEmpty()) {

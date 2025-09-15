@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -154,11 +155,16 @@ public class RecipeController {
 	
 	
 	// 레시피 작성
-	@PostMapping("/recipes")
+	@PostMapping(value = "/recipes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<?> writeRecipe(
-			@Parameter(description = "투표 작성 요청 정보") @RequestPart RecipeCreateRequestDto recipeRequestDto,
+			@Parameter(description = "레시피 작성 요청 정보") @RequestPart RecipeCreateRequestDto recipeRequestDto,
 			@Parameter(description = "레시피 이미지 파일") @RequestPart MultipartFile recipeImage,
-			@Parameter(description = "조리 과정 이미지 파일") @RequestPart(required = false) MultiValueMap<String, MultipartFile> stepImageMap) {
+			@Parameter(description = "조리 과정 이미지 파일") @RequestParam(required = false) MultiValueMap<String, MultipartFile> stepImageMap) {
+		
+		
+	    if (stepImageMap != null) {
+	        System.out.println("step keys = " + stepImageMap.keySet()); // [stepImageMap[0], stepImageMap[3]] 등
+	    }
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

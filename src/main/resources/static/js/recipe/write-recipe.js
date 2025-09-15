@@ -375,9 +375,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			        formdata.append('recipeImage', recipeImage.files[0]);
 			    }
 				
+				// 여기서 map 만들기
 				recipeStepForm.querySelectorAll('.step_field input[name="image"]').forEach((recipeImage, idx) => {
 				    if (recipeImage.files.length > 0) {
-				        formdata.append(`stepImage[${idx}]`, recipeImage.files[0]);
+				        formdata.append(`stepImageMap[${idx}]`, recipeImage.files[0]);
 				    }
 				});
 

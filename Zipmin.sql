@@ -194,7 +194,6 @@ create table recipe (
     spicy varchar2(30) not null,
     portion varchar2(30) not null,
     tip varchar2(300),
-    youtube varchar2(100),
     user_id number not null
 );
 alter table recipe
@@ -219,7 +218,7 @@ commit;
 create table recipe_category (
     id number primary key,
     type varchar2(15) not null,
-    tag varchar2(15) not null,
+    tag varchar2(50) not null,
     recipe_id number not null
 );
 alter table recipe_category

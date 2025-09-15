@@ -354,7 +354,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					],
 					
 					portion: recipeStockForm.portion.value.trim(),
-					stock_dto_list: Array.from(recipeStockForm.querySelectorAll('.input_group')).map(stock => {
+					stock_dto_list: Array.from(recipeStockForm.querySelectorAll('.input_group')).forEach(stock => {
 					    return {
 					        name: stock.querySelector('input[name="name"]').value.trim(),
 					        amount: stock.querySelector('input[name="amount"]').value.match(/^(\d+)(.*)$/)[1].trim(),
@@ -363,8 +363,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					    };
 					}),
 					
-					// *** TODO 이거부터 시작 !!!!!
-					step_dto_list: Array.from(recipeStepForm.querySelectorAll('.form-textarea')).map(step => {
+					step_dto_list: Array.from(recipeStepForm.querySelectorAll('.form-textarea')).forEach(step => {
 						return {
 							content: step.querySelector('input[name="content"]').value.trim(),
 							image: step.querySelector('input[name="image"]').value.trim()

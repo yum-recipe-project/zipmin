@@ -344,7 +344,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					cooktime: recipeForm.cooktime.value.trim(),
 					spicy: recipeForm.spicy.value.trim(),
 					tip: recipeForm.tip.value.trim(),
-					userId: id,
+					user_id: id,
 					category_dto_list: [
 						{ type: '종류별', tag: recipeForm.categoryType.value.trim() },
 						{ type: '상황별', tag: recipeForm.categoryCase.value.trim() },
@@ -369,13 +369,11 @@ document.addEventListener('DOMContentLoaded', function() {
 					})
 				})], { type: 'application/json' }));
 			
-				
 				const recipeImage = recipeForm.image; 
-			    if (recipeImage.files.length > 0) {
+				if (recipeImage.files.length > 0) {
 			        formdata.append('recipeImage', recipeImage.files[0]);
 			    }
 				
-				// 여기서 map 만들기
 				recipeStepForm.querySelectorAll('.step_field input[name="image"]').forEach((recipeImage, idx) => {
 				    if (recipeImage.files.length > 0) {
 				        formdata.append(`stepImageMap[${idx}]`, recipeImage.files[0]);
@@ -396,6 +394,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 			catch (error) {
 				console.log(error);
+				
+				// *** TODO : 에러 코드 추가 ***
 			}
 		}
 

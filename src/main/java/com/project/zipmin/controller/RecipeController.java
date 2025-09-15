@@ -161,11 +161,6 @@ public class RecipeController {
 			@Parameter(description = "레시피 이미지 파일") @RequestPart MultipartFile recipeImage,
 			@Parameter(description = "조리 과정 이미지 파일") @RequestParam(required = false) MultiValueMap<String, MultipartFile> stepImageMap) {
 		
-		
-	    if (stepImageMap != null) {
-	        System.out.println("step keys = " + stepImageMap.keySet()); // [stepImageMap[0], stepImageMap[3]] 등
-	    }
-		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {

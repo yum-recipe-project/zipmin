@@ -266,7 +266,7 @@
 					</div>
 				</form>
 					
-				<form id="writeRecipeStepForm">
+				<form id="writeRecipeStepForm" enctype="multipart/form-data">
 					<div class="recipe_step_wrap">
 						<h2>조리 방법을 순서대로 알려주세요</h2>
 						

@@ -19,7 +19,6 @@ public class RecipeCreateRequestDto {
 	private String spicy;
 	private String portion;
 	private String tip;
-	// private String youtube;
 	private Integer userId;
 	
 	private List<RecipeCategoryCreateRequestDto> categoryDtoList;

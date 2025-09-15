@@ -339,7 +339,6 @@ document.addEventListener('DOMContentLoaded', function() {
 				const formdata = new FormData();
 				formdata.append('recipeRequestDto', new Blob([JSON.stringify({
 					title: recipeForm.title.value.trim(),
-					image: recipeForm.image.value.trim(),
 					introduce: recipeForm.introduce.value.trim(),
 					cooklevel: recipeForm.cooklevel.value.trim(),
 					cooktime: recipeForm.cooktime.value.trim(),
@@ -354,7 +353,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					],
 					
 					portion: recipeStockForm.portion.value.trim(),
-					stock_dto_list: Array.from(recipeStockForm.querySelectorAll('.input_group')).forEach(stock => {
+					stock_dto_list: Array.from(recipeStockForm.querySelectorAll('.input_group')).map(stock => {
 					    return {
 					        name: stock.querySelector('input[name="name"]').value.trim(),
 					        amount: stock.querySelector('input[name="amount"]').value.match(/^(\d+)(.*)$/)[1].trim(),
@@ -363,13 +362,13 @@ document.addEventListener('DOMContentLoaded', function() {
 					    };
 					}),
 					
-					step_dto_list: Array.from(recipeStepForm.querySelectorAll('.form-textarea')).forEach(step => {
+					step_dto_list: Array.from(recipeStepForm.querySelectorAll('.form-textarea')).map(step => {
 						return {
-							content: step.querySelector('input[name="content"]').value.trim(),
-							image: step.querySelector('input[name="image"]').value.trim()
+							content: step.querySelector('textarea[name="content"]').value.trim()
 						}
 					})
 				})], { type: 'application/json' }));
+			
 				
 				const recipeImage = recipeForm.image; 
 			    if (recipeImage.files.length > 0) {
@@ -378,7 +377,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				
 				recipeStepForm.querySelectorAll('.step_field input[name="image"]').forEach((recipeImage, idx) => {
 				    if (recipeImage.files.length > 0) {
-				        formdata.append(`stepImage[${i}]`, recipeImage.files[0]);
+				        formdata.append(`stepImage[${idx}]`, recipeImage.files[0]);
 				    }
 				});
 
@@ -389,7 +388,9 @@ document.addEventListener('DOMContentLoaded', function() {
 					}
 				});
 				
-				console.log(response);
+				if (response.data.code === 'RECIPE_CREATE_SUCCESS') {
+					location.href = `/recipe/viewRecipe.do?id=${response.data.data.id}`;
+				}
 				
 			}
 			catch (error) {

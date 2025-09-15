@@ -24,11 +24,13 @@ public enum RecipeErrorCode implements Code {
     RECIPE_CREATE_FAIL(HttpStatus.BAD_REQUEST, "레시피 작성 실패"),
     RECIPE_READ_LIST_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "레시피 목록 조회 실패"),
     RECIPE_DELETE_FAIL(HttpStatus.BAD_REQUEST, "레시피 삭제 실패"),
+    RECIPE_FILE_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "레시피 파일 업로드 실패"),
     
     RECIPE_STEP_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 조리 과정을 찾을 수 없음"),
     RECIPE_STEP_CREATE_FAIL(HttpStatus.BAD_REQUEST, "조리 과정 작성 실패"),
     RECIPE_STEP_READ_LIST_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "조리 과정 목록 조회 실패"),
     RECIPE_STEP_DELETE_FAIL(HttpStatus.BAD_REQUEST, "조리 과정 삭제 실패"),
+    RECIPE_STEP_FILE_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "조리 과정 파일 업로드 실패"),
     
     RECIPE_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 카테고리를 찾을 수 없음"),
     RECIPE_CATEGORY_CREATE_FAIL(HttpStatus.BAD_REQUEST, "카테고리 작성 실패"),

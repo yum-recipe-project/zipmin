@@ -320,8 +320,6 @@ public class RecipeService {
 	// 레시피를 작성하는 함수
 	public RecipeCreateResponseDto createRecipe(RecipeCreateRequestDto recipeRequestDto, MultipartFile recipeImage, MultiValueMap<String, MultipartFile> stepImageMap) {
 		
-		System.err.println(recipeRequestDto);
-		
 		// 입력값 검증 (레시피)
 		if (recipeRequestDto == null || recipeRequestDto.getTitle() == null
 				|| recipeRequestDto.getIntroduce() == null || recipeRequestDto.getCooklevel() == null
@@ -366,7 +364,7 @@ public class RecipeService {
 			recipeRequestDto.setImage(image);
 		}
 		catch (Exception e) {
-			throw new ApiException(EventErrorCode.EVENT_FILE_UPLOAD_FAIL);
+			throw new ApiException(RecipeErrorCode.RECIPE_FILE_UPLOAD_FAIL);
 		}
 		
 		// 레시피 저장
@@ -427,7 +425,7 @@ public class RecipeService {
 					}
 				}
 				catch (Exception e) {
-					throw new ApiException(EventErrorCode.EVENT_FILE_UPLOAD_FAIL);
+					throw new ApiException(RecipeErrorCode.RECIPE_STEP_FILE_UPLOAD_FAIL);
 				}
 				
 				// 조리 과정 저장

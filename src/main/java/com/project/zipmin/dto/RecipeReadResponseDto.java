@@ -22,7 +22,6 @@ public class RecipeReadResponseDto {
 	private String spicy;
 	private String portion;
 	private String tip;
-	private String youtube;
 	private Integer userId;
 	
 	private List<RecipeCategoryReadResponseDto> categoryList;

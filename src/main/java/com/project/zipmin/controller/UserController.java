@@ -787,8 +787,7 @@ public class UserController {
 				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, savedGuidePage));
 	}
 	
-	
-	
+		
 	
 	
 	// 저장한(좋아요를 누른) 레시피

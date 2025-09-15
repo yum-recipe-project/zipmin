@@ -24,6 +24,7 @@ import com.project.zipmin.dto.RecipeCategoryCreateResponseDto;
 import com.project.zipmin.dto.RecipeCategoryReadResponseDto;
 import com.project.zipmin.dto.RecipeCreateRequestDto;
 import com.project.zipmin.dto.RecipeCreateResponseDto;
+import com.project.zipmin.dto.RecipeReadMyResponseDto;
 import com.project.zipmin.dto.RecipeReadMySavedResponseDto;
 import com.project.zipmin.dto.RecipeReadResponseDto;
 import com.project.zipmin.dto.RecipeStepCreateRequestDto;
@@ -190,7 +191,6 @@ public class RecipeService {
 	
 	
 	
-	
 	// 레시피 목록을 조회하는 함수 (냉장고 파먹기 용)
 	public List<RecipeReadResponseDto> readRecipeList() {
 		
@@ -224,6 +224,37 @@ public class RecipeService {
 		
 	}
 	
+	
+	
+	// 사용자가 작성한 레시피 목록을 조회하는 함수
+	public Page<RecipeReadMyResponseDto> readRecipePageByUserId(Integer userId, Pageable pageable) {
+	    
+	    if (userId == null || pageable == null) {
+	        throw new ApiException(RecipeErrorCode.RECIPE_INVALID_INPUT);
+	    }
+
+	    // 레시피 목록 조회
+	    Page<Recipe> recipePage;
+	    try {
+	        recipePage = recipeRepository.findByUserId(userId, pageable);
+	    }
+	    catch (Exception e) {
+	        throw new ApiException(RecipeErrorCode.RECIPE_READ_LIST_FAIL);
+	    }
+
+	    List<RecipeReadMyResponseDto> recipeDtoList = new ArrayList<>();
+	    for (Recipe recipe : recipePage) {
+	        RecipeReadMyResponseDto recipeDto = recipeMapper.toReadMyResponseDto(recipe);
+
+
+	        recipeDto.setLikecount(likeService.countLike("recipe", recipe.getId()));
+
+	        recipeDtoList.add(recipeDto);
+	    }
+
+	    return new PageImpl<>(recipeDtoList, pageable, recipePage.getTotalElements());
+	}
+
 	
 	
 	

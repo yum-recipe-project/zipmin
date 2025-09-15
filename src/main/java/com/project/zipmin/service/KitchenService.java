@@ -231,7 +231,7 @@ public class KitchenService {
 	    
 	    // 엔티티 변환 및 저장
 	    Guide guide = guideMapper.toEntity(guideRequestDto);
-	    guide.setPostdate(new Date()); // 현재 시간 설정
+	    guide.setPostdate(new Date());
 	    
 	    try {
 	        guide = kitchenRepository.save(guide);
@@ -350,22 +350,19 @@ public class KitchenService {
             throw new ApiException(KitchenErrorCode.KITCHEN_INVALID_INPUT);
         }
 
-        // 1. 사용자가 좋아요한 가이드 목록 가져오기
         List<LikeReadResponseDto> likeList = likeService.readLikeListByTablenameAndUserId("guide", userId);
 
-        // 2. 좋아요한 가이드 ID만 추출
+        // 좋아요한 가이드 ID만 추출
         List<Integer> guideIds = likeList.stream()
                 .map(LikeReadResponseDto::getRecodenum)
                 .toList();
 
         if (guideIds.isEmpty()) {
-            return Page.empty(pageable); // 좋아요한 글이 없으면 빈 페이지 반환
+            return Page.empty(pageable); 
         }
 
-        // 3. Guide 조회 (Pageable 적용)
         Page<Guide> guidePage = kitchenRepository.findByIdIn(guideIds, pageable);
 
-        // 4. DTO 변환
         List<GuideReadMySavedResponseDto> dtoList = new ArrayList<>();
         for (Guide guide : guidePage) {
             GuideReadMySavedResponseDto dto = guideMapper.toReadMySavedResponseDto(guide);

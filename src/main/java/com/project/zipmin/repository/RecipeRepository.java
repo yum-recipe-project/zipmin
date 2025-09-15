@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.project.zipmin.entity.Comment;
 import com.project.zipmin.entity.Recipe;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
@@ -23,4 +24,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
     
     // 사용자가 좋아요 한 레시피
     Page<Recipe> findByIdIn(List<Integer> ids, Pageable pageable);
+    
+    Page<Recipe> findByUserId(int userId, Pageable pageable);
 }

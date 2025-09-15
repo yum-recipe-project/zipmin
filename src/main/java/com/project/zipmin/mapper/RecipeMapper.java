@@ -7,6 +7,7 @@ import org.mapstruct.Mapping;
 
 import com.project.zipmin.dto.RecipeCreateRequestDto;
 import com.project.zipmin.dto.RecipeCreateResponseDto;
+import com.project.zipmin.dto.RecipeReadMyResponseDto;
 import com.project.zipmin.dto.RecipeReadMySavedResponseDto;
 import com.project.zipmin.dto.RecipeReadResponseDto;
 import com.project.zipmin.entity.Recipe;
@@ -44,10 +45,12 @@ public interface RecipeMapper {
 	
 	
 	// 저장한(좋아요) 레시피용
-    @Mapping(target = "likecount", ignore = true)   
-    @Mapping(target = "username", ignore = true)    
-    @Mapping(target = "nickname", ignore = true)    
     RecipeReadMySavedResponseDto toReadMySavedResponseDto(Recipe recipe);
+    
+    
+//	@Mapping(target = "commId", source = "comment.id")
+	@Mapping(target = "userId", source = "user.id")
+	RecipeReadMyResponseDto toReadMyResponseDto(Recipe recipe);
 	
 	
 	

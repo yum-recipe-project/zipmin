@@ -25,9 +25,6 @@ async function fetchSavedRecipeList() {
         }).toString();
 
         const response = await instance.get(`/users/${payload.id}/likes/recipes?${params}`);
-//        const recipeList = response.data.data.content;
-
-		console.log(response);
 		
         renderSavedRecipeList(response.data.data.content);
 

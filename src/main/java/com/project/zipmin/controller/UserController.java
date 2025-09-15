@@ -28,6 +28,7 @@ import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.CommentReadMyResponseDto;
 import com.project.zipmin.dto.FundDTO;
 import com.project.zipmin.dto.GuideReadMySavedResponseDto;
+import com.project.zipmin.dto.RecipeReadMyResponseDto;
 import com.project.zipmin.dto.RecipeReadMySavedResponseDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
@@ -831,6 +832,42 @@ public class UserController {
 
 	
 	
+	
+	
+	// 작성한 레시피
+	@GetMapping("/users/{id}/recipes")
+	public ResponseEntity<?> readUserRecipeList(
+			@PathVariable Integer id,
+			@RequestParam int page,
+			@RequestParam int size) {
+		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 로그인 정보
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		// 본인 확인
+		if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN)) {
+			if (id != userService.readUserByUsername(username).getId()) {
+				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+			}
+		}
+		
+		Pageable pageable = PageRequest.of(page, size);
+		Page<RecipeReadMyResponseDto> recipePage = recipeService.readRecipePageByUserId(id, pageable);
+		
+		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, recipePage));
+	}
 	
 	
 	/*********** 아래 요청명 다 적절히 수정 필요 !!! ***********/

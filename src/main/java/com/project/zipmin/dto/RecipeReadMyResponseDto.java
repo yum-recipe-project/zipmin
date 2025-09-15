@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class RecipeReadMySavedResponseDto {
+public class RecipeReadMyResponseDto {
 	
 	private Integer id;               
 	private String image;             
@@ -21,9 +21,8 @@ public class RecipeReadMySavedResponseDto {
 	private Double reviewscore;       
 	private int reviewcount;          
 	private int likecount;            
-	private int commentcount;         
-	private Date postdate;            
-	private String username;          
-	private String nickname;          
+	private Date postdate;         
 	
+	
+	private int userId;         
 }

@@ -202,18 +202,18 @@ instance.interceptors.response.use(
 
 /**
  * 로그인 페이지로 이동시키는 함수
- * 
- * @param {string} url - 사용자가 취소 선택시 이동할 주소 (없으면 현재 페이지 유지)
  */
 function redirectToLogin(url) {
 	
-	localStorage.removeItem('accessToken');
-
-	if (confirm('로그인이 필요합니다. 로그인 페이지로 이동합니다.')) {
-		location.href = '/user/login.do';
-	}
-	else if (url) {
+	// 로그인
+	if (isLoggedIn()) {
 		location.href = url;
+	}
+	// 비로그인
+	else {
+		if (confirm('로그인이 필요합니다. 로그인 페이지로 이동합니다.')) {
+			location.href = '/user/login.do';
+		}
 	}
 	
 }

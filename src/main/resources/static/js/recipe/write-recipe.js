@@ -1,3 +1,8 @@
+
+
+
+
+
 /**
  * 레시피 작성 폼을 실시간으로 검증하는 함수
  */
@@ -66,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 	});
 	
+	// *** TODO : 모든 카테고리에 danger 걸렸다가 해제되는 동작 수정 ***
 	// 종류별 카테고리 실시간 검사
 	form.querySelector('.category_field select:nth-of-type(1)').addEventListener('change', function() {
 		form.categoryType.value = this.value;
@@ -120,17 +126,19 @@ document.addEventListener('DOMContentLoaded', function() {
 		form.querySelector('.portion_field p').style.display = isPortionEmpty ? 'block' : 'none';
 	});
 	
-	// *** TODO : 조리양 형식 검사 ***
-	
 	// 재료 실시간 검사
+	// *** TODO : 재료 실시간 검사 수정 ***
 	form.querySelectorAll('.stock_field .input_group').forEach(stock => {
 		stock.addEventListener('blur', function() {
 			const nameInput = stock.querySelector('input[name="name"]');
 			const amountInput = stock.querySelector('input[name="amount"]');
-			const isStockEmpty = nameInput.value.trim() === '' || amountInput.value.trim() === '';
-			nameInput.classList.toggle('danger', isStockEmpty);
-			amountInput.classList.toggle('danger', isStockEmpty);
-			form.querySelector('.stock_field p').style.display = isStockEmpty ? 'block' : 'none';
+			const isAmountNotMatch = !form.amount.value.trim().match(/^(\d+)([a-zA-Z가-힣]+)$/);
+			const isNameEmpty = nameInput.value.trim() === '';
+			const isAmountEmpty = amountInput.value.trim() === '';
+			nameInput.classList.toggle('danger', (isNameEmpty && isAmountEmpty) || (!isAmountEmpty && isAmountNotMatch));
+			amountInput.classList.toggle('danger', (isNameEmpty && isAmountEmpty) || (!isAmountEmpty && isAmountNotMatch));
+			form.querySelector('.stock_field p:nth-of-type(1)').style.display = isNameEmpty && isAmountEmpty ? 'block' : 'none';
+			form.querySelector('.stock_field p:nth-of-type(2)').style.display = !isNameEmpty && !isAmountEmpty && isAmountNotMatch ? 'block' : 'none';
 		}, true);
 	});
 	
@@ -303,6 +311,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			if(step.querySelector('textarea[name="content"]').value.trim() === '') {
 				step.classList.add('danger');
 				recipeStepForm.querySelector('.step_field p').style.display = 'block';
+				isValid = false;
 			}
 		});
 		
@@ -313,17 +322,82 @@ document.addEventListener('DOMContentLoaded', function() {
 				nameInput.classList.add('danger');
 				amountInput.classList.add('danger');
 				recipeStockForm.querySelector('.stock_field p').style.display = 'block';
+				isValid = false;
 			}
 		});
 	
 		if (recipeStockForm.portion.value.trim() === '') {
 			recipeStockForm.querySelector('.portion_field .form-select').classList.add('danger');
 			recipeStockForm.querySelector('.portion_field p').style.display = 'block';
+			isValid = false;
 		}
 		
-		// *** TODO : 폼값 검사 추가 ***
+		if (recipeForm.categoryWay.value.trim() === '') {
+			recipeForm.querySelector('.category_field select:nth-of-type(4)').classList.add('danger');
+			recipeForm.querySelector('.category_field p').style.display = "block";
+			recipeForm.categoryWay.focus();
+			isValid = false;
+		}
 		
+		if (recipeForm.categoryIngredient.value.trim() === '') {
+			recipeForm.querySelector('.category_field select:nth-of-type(3)').classList.add('danger');
+			recipeForm.querySelector('.category_field p').style.display = 'block';
+			recipeForm.categoryIngredient.focus();
+			isValid = false;
+		}
 		
+		if (recipeForm.categoryCase.value.trim() === '') {
+			recipeForm.querySelector('.category_field select:nth-of-type(2)').classList.add('danger');
+			recipeForm.querySelector('.category_field p').style.display = 'block';
+			recipeForm.categoryCase.focus();
+			isValid = false;
+		}
+		
+		if (recipeForm.categoryType.value.trim() === '') {
+			recipeForm.querySelector('.category_field select:nth-of-type(1)').classList.add('danger');
+			recipeForm.querySelector('.category_field p').style.display = 'block';
+			recipeForm.categoryType.focus();
+			isValid = false;
+		}
+		
+		if (recipeForm.spicy.value.trim() === '') {
+			recipeForm.querySelector('.spicy_field p').style.display = 'block';
+			recipeForm.spicy.focus();
+			isValid = false;
+		}
+		
+		if (recipeForm.cooktime.value.trim() === '') {
+			recipeForm.querySelector('.cooktime_field p').style.display ='block';
+			recipeForm.cooktime.focus();
+			isValid = false;
+		}
+		
+		if (recipeForm.cooklevel.value.trim() === '') {
+			recipeForm.querySelector('.cooklevel_field p').style.display = 'block';
+			recipeForm.cooklevel.focus();
+			isValid = false;
+		}
+		
+		if (recipeForm.introduce.value.trim() === '') {
+			recipeForm.introduce.classList.add('danger');
+			recipeForm.querySelector('.introduce_field p').style.display = 'block';
+			recipeForm.introduce.focus();
+			isValid = false;
+		}
+		
+		if (recipeForm.title.value.trim() === '') {
+			recipeForm.title.classList.add('danger');
+			recipeForm.querySelector('.title_field p').style.display = 'block';
+			recipeForm.title.focus();
+			isValid = false;
+		}
+		
+		if (recipeForm.image.value.trim() === '') {
+			recipeForm.image.classList.add('danger');
+			recipeForm.querySelector('.image_field p').style.display = 'block';
+			recipeForm.image.focus();
+			isValid = false;
+		}
 		
 		if (isValid == true && !recipeNoticeForm.notice.checked) {
 			alert('유의사항을 확인하고 동의해야 제출할 수 있습니다.');
@@ -398,133 +472,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 		}
 
-		/*
-			
-			if (form.categoryWay.value.trim() === '') {
-				document.querySelector('.category_field select:nth-of-type(4)').classList.add('danger');
-				document.querySelector('.category_field p').style.display = "block";
-				form.categoryWay.focus();
-				isValid = false;
-			}
-			
-			if (form.categoryIngredient.value.trim() === '') {
-				document.querySelector('.category_field select:nth-of-type(3)').classList.add('danger');
-				document.querySelector('.category_field p').style.display = 'block';
-				form.categoryIngredient.focus();
-				isValid = false;
-			}
-			
-			if (form.categoryCase.value.trim() === '') {
-				document.querySelector('.category_field select:nth-of-type(2)').classList.add('danger');
-				document.querySelector('.category_field p').style.display = 'block';
-				form.categoryCase.focus();
-				isValid = false;
-			}
-			
-			if (form.categoryType.value.trim() === '') {
-				document.querySelector('.category_field select:nth-of-type(1)').classList.add('danger');
-				document.querySelector('.category_field p').style.display = 'block';
-				form.categoryType.focus();
-				isValid = false;
-			}
-			
-			if (form.spicy.value.trim() === '') {
-				document.querySelectorAll('.spicy_field .spicy_btn').forEach((button) => {
-					button.classList.add('danger');
-				});
-				document.querySelector('.spicy_field p').style.display = 'block';
-				document.querySelector('.spicy_btn').focus();
-				isValid = false;
-			}
-			
-			if (form.cooktime.value.trim() === '') {
-				document.querySelector('.time_field select').classList.add('danger');
-				document.querySelector('.time_field p').style.display ='block';
-				form.cooktime.focus();
-				isValid = false;
-			}
-			
-			if (form.cooklevel.value.trim() === '') {
-				document.querySelectorAll('.level_field .level_btn').forEach((button) => {
-					button.classList.add('danger');
-				});
-				document.querySelector('.level_field p').style.display = 'block';
-				document.querySelector('.level_btn').focus();
-				isValid = false;
-			}
-			
-			if (form.introduce.value.trim() === '') {
-				form.introduce.classList.add('danger');
-				document.querySelector('.introduce_field p').style.display = 'block';
-				form.introduce.focus();
-				isValid = false;
-			}
-			
-			if (form.title.value.trim() === '') {
-				form.title.classList.add('danger');
-				document.querySelector('.title_field p').style.display = 'block';
-				form.title.focus();
-				isValid = false;
-			}
-			
-			if (form.thumbnail.value.trim() === '') {
-				form.thumbnail.classList.add('danger');
-				document.querySelector('.thumbnail_field p').style.display = 'block';
-				form.thumbnail.focus();
-				isValid = false;
-			}
-	
-			if (isValid == true && !form.notice.checked) {
-				alert('유의사항을 확인하고 동의해야 제출할 수 있습니다.');
-				isValid = false;
-			}
-			
-			// 폼 제출
-			if (isValid) {
-				
-				try {
-					const token = localStorage.getItem('accessToken');
-					const payload = parseJwt(token);
-					
-					const data = {
-						image_url: "https://example.com/recipe.jpg",
-						title: form.title.value,
-						introduce: form.introduce.value,
-						cooklevel: form.cooklevel.value,
-						cooktime: form.cooktime.value,
-						spicy: form.spicy.value,
-						portion: form.serving.value,
-						tip: form.tip.value,
-						youtube_url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-						user_id: payload.id,
-						
-						category_dto_list: [
-							{ type: '종류별', tag: form.categoryType.value },
-							{ type: '상황별', tag: form.categoryCase.value },
-							{ type: '재료별', tag: form.categoryIngredient.value },
-							{ type: '방법별', tag: form.categoryWay.value }
-						],
-						
-						stock_dto_list: getIngredientList(),
-						step_dto_list: getStepList(),
-					};
-					
-					console.log(data);
-					
-					const response = await instance.post('/recipes', data);
-							
-					if (response.data.code === 'RECIPE_CREATE_SUCCESS') {
-						alert('맛있는 레시피가 등록되었어요!');
-						location.href = '/recipe/viewRecipe.do';
-					}
-				}
-				catch (error) {
-					
-				}
-				
-			}
-			
-			*/
 	});
 });
 

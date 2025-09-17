@@ -261,6 +261,7 @@
 								</li>
 							</ul>
 							<p>재료를 입력해주세요.</p>
+							<p>입력 형식이 올바르지 않습니다.</p>
 							<button type="button" id="writeRecipeAddStockButton" class="btn btn-primary-outline">재료 추가하기</button>
 						</div>
 					</div>

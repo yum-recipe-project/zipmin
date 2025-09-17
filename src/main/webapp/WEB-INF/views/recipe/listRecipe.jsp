@@ -21,7 +21,7 @@
 					<h2>레시피</h2>
 					
 					<!-- 레시피 작성 -->
-					<a href="/recipe/writeRecipe.do" class="btn_block">
+					<a href="javascript: redirectToLogin('/recipe/writeRecipe.do');" class="btn_block">
 						<span>맛있는 한 끼를 위한 <b>레시피 작성하기</b></span>
 						<img src="/images/mypage/arrow_right.png">
 					</a>

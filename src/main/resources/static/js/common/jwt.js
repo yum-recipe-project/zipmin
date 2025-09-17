@@ -217,4 +217,3 @@ function redirectToLogin(url) {
 	}
 	
 }
-

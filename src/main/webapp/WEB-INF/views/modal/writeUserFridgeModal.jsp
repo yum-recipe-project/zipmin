@@ -53,13 +53,13 @@
 							<div class="form-group">
 								<label>양</label>
 								<input type="text" name="amount" class="form-control" placeholder="예: 300g">
-								<p id="sheetAmountHint1" class="danger">양을 입력해주세요</p>
-								<p id="sheetAmountHint2" class="danger">입력 형식이 올바르지 않습니다</p>
+								<p id="sheetAmountHint1" class="danger">양을 입력해주세요.</p>
+								<p id="sheetAmountHint2" class="danger">입력 형식이 올바르지 않습니다.</p>
 							</div>
 							<div class="form-group expdate_field">
 								<label>유통기한</label>
 								<input type="date" name="expdate" class="form-control">
-								<p id="sheetExpdateHint" class="danger">유통기간을 입력해주세요</p>
+								<p id="sheetExpdateHint" class="danger">유통기간을 입력해주세요.</p>
 							</div>
 							<div class="sheet_action">
 								<button type="button" class="btn" id="sheetCloseButton">닫기</button>

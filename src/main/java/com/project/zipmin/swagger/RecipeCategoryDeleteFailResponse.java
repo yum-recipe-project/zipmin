@@ -8,7 +8,7 @@ public class RecipeCategoryDeleteFailResponse {
     @Schema(example = "RECIPE_CATEGORY_DELETE_FAIL", description = "에러 코드")
     public String code;
 
-    @Schema(example = "카테고리 삭제 실패", description = "에러 메시지")
+    @Schema(example = "레시피 카테고리 삭제 실패", description = "에러 메시지")
     public String message;
 
     @Schema(nullable = true, description = "응답 데이터")

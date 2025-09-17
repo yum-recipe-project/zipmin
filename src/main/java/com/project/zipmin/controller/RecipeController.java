@@ -34,14 +34,26 @@ import com.project.zipmin.dto.RecipeReadResponseDto;
 import com.project.zipmin.service.RecipeService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
+import com.project.zipmin.swagger.RecipeCategoryCreateFailResponse;
+import com.project.zipmin.swagger.RecipeCategoryInvalidInputResponse;
 import com.project.zipmin.swagger.RecipeCategoryReadListFailResponse;
+import com.project.zipmin.swagger.RecipeCreateFailResponse;
+import com.project.zipmin.swagger.RecipeCreateSuccessResponse;
 import com.project.zipmin.swagger.RecipeDeleteFailResponse;
 import com.project.zipmin.swagger.RecipeDeleteSuccessResponse;
+import com.project.zipmin.swagger.RecipeFileUploadFailResponse;
 import com.project.zipmin.swagger.RecipeForbiddenResponse;
 import com.project.zipmin.swagger.RecipeInvalidInputResponse;
 import com.project.zipmin.swagger.RecipeNotFoundResponse;
+import com.project.zipmin.swagger.RecipeReadListFailResponse;
+import com.project.zipmin.swagger.RecipeReadListSuccessResponse;
 import com.project.zipmin.swagger.RecipeReadSuccessResponse;
+import com.project.zipmin.swagger.RecipeStepCreateFailResponse;
+import com.project.zipmin.swagger.RecipeStepFileUploadFailResponse;
+import com.project.zipmin.swagger.RecipeStepInvalidInputResponse;
 import com.project.zipmin.swagger.RecipeStepReadListFailResponse;
+import com.project.zipmin.swagger.RecipeStockCreateFailResponse;
+import com.project.zipmin.swagger.RecipeStockInvalidInputResponse;
 import com.project.zipmin.swagger.RecipeStockReadListFailResponse;
 import com.project.zipmin.swagger.RecipeUnauthorizedAccessResponse;
 import com.project.zipmin.swagger.UserInvalidInputResponse;
@@ -64,9 +76,38 @@ public class RecipeController {
 	UserService userService;
 	
 	
+
 	
 	
-	
+	@Operation(
+	    summary = "레시피 목록 조회"
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "레시피 목록 조회 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeReadListSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "레시피 목록 조회 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeReadListFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
 	// 레시피 목록 조회
 	@GetMapping("/recipes")
 	public ResponseEntity<?> readRecipe(
@@ -111,10 +152,16 @@ public class RecipeController {
 						schema = @Schema(implementation = RecipeStockReadListFailResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
-				description = "레시피 조리과정 조회 실패",
+				description = "레시피 조리 순서 조회 실패",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = RecipeStepReadListFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
 				description = "입력값이 유효하지 않음",
@@ -152,8 +199,103 @@ public class RecipeController {
 	
 	
 	
+
 	
-	
+	@Operation(
+	    summary = "레시피 작성"
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "201",
+				description = "레시피 작성 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeCreateSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "레시피 작성 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeCreateFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "레시피 카테고리 작성 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeCategoryCreateFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "레시피 재료 작성 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeStockCreateFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "레시피 작성 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeStepCreateFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeCategoryInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeStockInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeStepInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인 되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeUnauthorizedAccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "레시피 파일 업로드 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeFileUploadFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "레시피 조리 순서 파일 업로드 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeStepFileUploadFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
 	// 레시피 작성
 	@PostMapping(value = "/recipes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<?> writeRecipe(
@@ -253,5 +395,4 @@ public class RecipeController {
 				.body(ApiResponse.success(RecipeSuccessCode.RECIPE_DELETE_SUCCESS, null));
 	}
 	
-
 }

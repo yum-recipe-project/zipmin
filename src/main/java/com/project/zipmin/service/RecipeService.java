@@ -158,7 +158,6 @@ public class RecipeService {
 			} 
 			else {
 				// 카테고리 여러 개
-				// ***** 아래 코드는 카테고리끼리 OR 조건이므로 AND 조건으로 변경 필요 *****
 				recipePage = hasKeyword
 						? recipeRepository.findDistinctByCategoryList_TagInAndTitleContainingIgnoreCase(categoryList, keyword, sortedPageable)
 						: recipeRepository.findDistinctByCategoryList_TagIn(categoryList, sortedPageable);
@@ -297,7 +296,11 @@ public class RecipeService {
 	
 	
 	// 레시피 상세 조회
-	public RecipeReadResponseDto readRecipdById(int id) {
+	public RecipeReadResponseDto readRecipdById(Integer id) {
+		
+		if (id == null) {
+			throw new ApiException(RecipeErrorCode.RECIPE_INVALID_INPUT);
+		}
 		
 		// 레시피 조회
 		Recipe recipe = recipeRepository.findById(id)
@@ -419,7 +422,7 @@ public class RecipeService {
 		}
 		for (RecipeStepCreateRequestDto stepDto : recipeRequestDto.getStepDtoList()) {
 			if (stepDto.getContent() == null) {
-				throw new ApiException(RecipeErrorCode.RECIPE_CATEGORY_INVALID_INPUT);
+				throw new ApiException(RecipeErrorCode.RECIPE_STEP_INVALID_INPUT);
 			}
 		}
 		

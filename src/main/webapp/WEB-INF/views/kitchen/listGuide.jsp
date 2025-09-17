@@ -21,7 +21,7 @@
 					<h2>키친가이드</h2>
 					
 					<!-- todo: 키친가이드 작성 관리자 페이지로 이동하기 -->
-					<a href="/kitchen/writeGuide.do">키친가이드 작성하기</a>
+					<!-- <a href="/kitchen/writeGuide.do">키친가이드 작성하기</a> -->
 				
 					<div class="tab">
 						<a class="btn_tab active" href="" data-category=""><span>전체</span></a>

@@ -150,6 +150,7 @@ function renderGuideList(guideList) {
 		
 		// todo: 관리자 페이지로 이동하기
 		// 수정하기
+		/*
         const editBtn = document.createElement('button');
         editBtn.type = 'button';
         editBtn.className = 'btn btn-sm btn-outline-info ms-2';
@@ -158,9 +159,11 @@ function renderGuideList(guideList) {
 		editBtn.dataset.bsToggle = 'modal';
 		editBtn.dataset.bsTarget = '#editGuideModal';
 		editBtn.dataset.id = guide.id;
+		*/
 							
 							
         // 클릭 시 모달 열고 데이터 채우기
+		/*
         editBtn.addEventListener('click', function(e) {
             e.preventDefault();
 			
@@ -170,12 +173,14 @@ function renderGuideList(guideList) {
 		   document.getElementById('editGuideCategorySelect').value = guide.category;
 		   document.getElementById('editGuideContentInput').value = guide.content;
         });
+		*/
 		
         const dateP = document.createElement('p');
         dateP.textContent = formatDate(guide.postdate);
 
 		// todo: 관리자 페이지로 editBtn 이동 후 삭제
-        infoDiv.append(scrapP, dateP, editBtn);
+        infoDiv.append(scrapP, dateP);
+		// infoDiv.appendChild(editBtn);
 
         const writerDiv = document.createElement('div');
         writerDiv.className = 'writer';

@@ -54,25 +54,25 @@
 			</nav>
 			<!-- 검색창 -->
 			<form class="search_form" data-type="recipe">
-				<input type="text" class="search_word" placeholder="검색어를 입력하세요">
+				<input type="text" class="search_word" placeholder="레시피를 검색하세요">
 				<button type="submit" class="search_btn">
 					<img src="/images/common/search.png">
 				</button>
 			</form>
 			<form class="search_form" data-type="cooking">
-				<input type="text" class="search_word" placeholder="검색어를 입력하세요">
+				<input type="text" class="search_word" placeholder="쿠킹클래스를 검색하세요">
 				<button type="submit" class="search_btn">
 					<img src="/images/common/search.png">
 				</button>
 			</form>
 			<form class="search_form" data-type="chompessor">
-				<input type="text" class="search_word" placeholder="검색어를 입력하세요">
+				<input type="text" class="search_word" placeholder="쩝쩝박사를 검색하세요">
 				<button type="submit" class="search_btn">
 					<img src="/images/common/search.png">
 				</button>
 			</form>
 			<form class="search_form" data-type="kitchen">
-				<input type="text" class="search_word" placeholder="검색어를 입력하세요">
+				<input type="text" class="search_word" placeholder="키친가이드를 검색하세요">
 				<button type="submit" class="search_btn">
 					<img src="/images/common/search.png">
 				</button>

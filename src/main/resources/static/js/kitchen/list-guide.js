@@ -68,9 +68,6 @@ document.addEventListener('DOMContentLoaded', function() {
  * 서버에서 키친가이드 목록 데이터를 가져오는 함수
  */
 async function fetchGuideList() {
-	const token = localStorage.getItem('accessToken');
-	const payload = parseJwt(token);
-	
 	
 	try {
 		const params = new URLSearchParams({

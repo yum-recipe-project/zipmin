@@ -66,13 +66,12 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 	});
 	
-	// *** TODO : 카테고리 실시간 검사 ***
 	// 종류별 카테고리 실시간 검사
 	form.querySelector('.category_field select:nth-of-type(1)').addEventListener('change', function() {
 		form.categoryType.value = this.value;
 		const isCategoryTypeEmpty = form.categoryType.value.trim() === '';
 		this.classList.toggle('danger', isCategoryTypeEmpty);
-		document.querySelector('.category_field p').style.display = isCategoryTypeEmpty ? "block" : "none";
+		form.querySelector('.category_field p').style.display = isCategoryTypeEmpty ? "block" : "none";
 	});
 
 	// 상황별 카테고리 실시간 검사
@@ -80,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		form.categoryCase.value = this.value;
 		const isCategoryCaseEmpty = form.categoryCase.value.trim() === '';
 		this.classList.toggle('danger', isCategoryCaseEmpty);
-		document.querySelector('.category_field p').style.display = isCategoryCaseEmpty ? 'block' : 'none';
+		form.querySelector('.category_field p').style.display = isCategoryCaseEmpty ? 'block' : 'none';
 	});
 
 	// 재료별 카테고리 실시간 검사
@@ -88,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		form.categoryIngredient.value = this.value;
 		const isCategoryIngredientEmpty = form.categoryIngredient.value.trim() === '';
 		this.classList.toggle('danger', isCategoryIngredientEmpty);
-		document.querySelector('.category_field p').style.display = isCategoryIngredientEmpty ? 'block' : 'none';
+		form.querySelector('.category_field p').style.display = isCategoryIngredientEmpty ? 'block' : 'none';
 	});
 
 	// 방법별 카테고리 실시간 검사
@@ -96,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		form.categoryWay.value = this.value;
 		const isCategoryWayEmpty = form.categoryWay.value.trim() === '';
 		this.classList.toggle('danger', isCategoryWayEmpty);
-		document.querySelector('.category_field p').style.display = isCategoryWayEmpty ? 'block' : 'none';
+		form.querySelector('.category_field p').style.display = isCategoryWayEmpty ? 'block' : 'none';
 	});
 	
 });

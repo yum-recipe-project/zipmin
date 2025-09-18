@@ -11,11 +11,13 @@
 		<link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
 		<link rel="stylesheet" href="../assets/css/styles.min.css" />
 		<link rel="stylesheet" href="/css/admin/list-recipe.css" />
+		<link rel="stylesheet" href="/css/admin/modal/view-recipe-modal.css" />
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 		<script src="/js/common/jwt.js"></script>
 		<script src="/js/common/util.js"></script>
 		<script src="/js/common/pagination.js"></script>
 		<script src="/js/admin/list-recipe.js"></script>
+		<script src="/js/admin/modal/view-recipe-modal.js"></script>
 	</head>
 	
 	<body>
@@ -116,6 +118,7 @@
 				</div>
 			</div>
 			
+			<%@include file="../admin/modal/viewRecipeModal.jsp" %>
 		</div>
 		
 		<script src="../assets/libs/jquery/dist/jquery.min.js"></script>

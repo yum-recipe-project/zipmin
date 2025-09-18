@@ -16,6 +16,24 @@ let recipeList = [];
 
 
 /**
+ * 접근 권한을 설정하는 함수
+ */
+document.addEventListener('DOMContentLoaded', async function() {
+	
+	try {
+		await instance.get('/dummy');
+	}
+	catch (error) {
+		redirectToLogin('/');
+	}
+	
+});
+
+
+
+
+
+/**
  * 레시피 목록 검색 필터를 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
@@ -28,7 +46,26 @@ document.addEventListener('DOMContentLoaded', function() {
 		fetchRecipeList();
 	});
 	
-	// ***** 카테고리 추가 *****
+	// 카테고리
+	document.querySelectorAll('.btn_tab a').forEach(tab => {
+		tab.addEventListener('click', function (event) {
+			event.preventDefault();
+			document.querySelector('.btn_tab a.active')?.classList.remove('active');
+			this.classList.add('active');
+			
+			category = this.getAttribute('data-tab');
+			page = 0;
+			keyword = '';
+			document.getElementById('text-srh').value = '';
+			sortKey = 'id';
+			sortOrder = 'desc';
+			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
+			document.querySelector(`.sort_btn[data-key="${sortKey}"]`).classList.add(sortOrder);
+			
+			recipeList = [];
+			fetchRecipeList();
+		});
+	});
 	
 	// 정렬 버튼
 	document.querySelectorAll('.sort_btn').forEach(btn => {
@@ -158,6 +195,7 @@ function renderRecipeList(recipeList) {
 		titleH6.textContent = recipe.title;
 		titleH6.dataset.bsToggle = 'modal';
 		titleH6.dataset.bsTarget = '#viewRecipeModal';
+		titleH6.dataset.id = recipe.id;
 		const subInfo = document.createElement('small');
 		subInfo.className = 'text-muted d-block';
 		subInfo.textContent = `${recipe.cooklevel} · ${recipe.cooktime} · ${recipe.spicy}`;

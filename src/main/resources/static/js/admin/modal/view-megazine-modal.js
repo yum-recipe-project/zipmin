@@ -1,13 +1,14 @@
 /**
- * 서버에서 신고 목록 데이터를 가져오는 함수
+ * 서버에서 매거진 데이터를 가져오는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
 	
 	const modal = document.getElementById('viewMegazineModal');
 	modal.addEventListener('show.bs.modal', async function (event) {
 	
+		// 매거진 조회
 		try {
-			const id = event.relatedTarget?.dataset.id
+			const id = event.relatedTarget?.dataset.id;
 			
 			const response = await instance.get(`/megazines/${id}`, {
 				headers: getAuthHeaders()

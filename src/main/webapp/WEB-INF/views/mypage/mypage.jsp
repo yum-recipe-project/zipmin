@@ -80,12 +80,6 @@
 									
 								</div>
 								
-								<div class="grade_field">
-									<label>등급</label>
-									<input type="hidden" id="nameInput" name="" value="" placeholder="이름 입력">
-									<p>빨간양말</p>
-								</div>
-								
 								<div class="comment_field">
 									<div class="field_top">
 										<label>소개</label>

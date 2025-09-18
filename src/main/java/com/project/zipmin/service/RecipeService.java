@@ -190,7 +190,8 @@ public class RecipeService {
 	
 	
 	
-	// 레시피 목록을 조회하는 함수 (냉장고 파먹기 용)
+	
+	// 레시피 목록 조회 (냉장고 파먹기용)
 	public List<RecipeReadResponseDto> readRecipeList() {
 		
 		// 레시피 목록 조회
@@ -222,6 +223,8 @@ public class RecipeService {
 		return recipeDtoList;
 		
 	}
+	
+	
 	
 	
 	
@@ -257,7 +260,7 @@ public class RecipeService {
 	
 	
 	
-	// 사용자가 저장한(좋아요) 레시피 목록 조회
+	// 사용자가 좋아요한 레시피 목록 조회
 	public Page<RecipeReadMySavedResponseDto> readSavedRecipePageByUserId(Integer userId, Pageable pageable) {
 
 	    if (userId == null || pageable == null) {
@@ -266,7 +269,6 @@ public class RecipeService {
 	    
 	    // 1. 사용자가 좋아요한 레시피 목록 가져오기
 	    List<LikeReadResponseDto> likeList = likeService.readLikeListByTablenameAndUserId("recipe", userId);
-	    System.err.println("likeList: " + likeList);
 	    
 	    // 2. 좋아요한 레시피 ID만 추출
 	    List<Integer> recipeIds = likeList.stream()

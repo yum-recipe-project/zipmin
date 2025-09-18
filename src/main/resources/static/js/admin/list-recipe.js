@@ -110,22 +110,17 @@ async function fetchRecipeList(scrollTop = true) {
 			size: size
 		}).toString();
 		
-		const response = await fetch(`/recipes?${params}`, {
-			method: 'GET',
+		const response = await instance.get(`/recipes?${params}`, {
 			headers: getAuthHeaders()
 		});
 		
-		const result = await response.json();
-		
-		console.log(result);
-		
-		if (result.code === 'RECIPE_READ_LIST_SUCCESS') {
+		if (response.data.code === 'RECIPE_READ_LIST_SUCCESS') {
 			
 			// 전역 변수 설정
-			totalPages = result.data.totalPages;
-			totalElements = result.data.totalElements;
-			page = result.data.number;
-			recipeList = result.data.content;
+			totalPages = response.data.data.totalPages;
+			totalElements = response.data.data.totalElements;
+			page = response.data.data.number;
+			recipeList = response.data.data.content;
 			
 			// 렌더링
 			renderRecipeList(recipeList);
@@ -133,7 +128,7 @@ async function fetchRecipeList(scrollTop = true) {
 			document.querySelector('.total').innerText = `총 ${totalElements}개`;
 			
 			// 검색 결과 없음 표시
-			if (result.data.totalPages === 0) {
+			if (response.data.data.totalPages === 0) {
 				document.querySelector('.table_th').style.display = 'none';
 				document.querySelector('.search_empty')?.remove();
 				const table = document.querySelector('.fixed-table');
@@ -150,12 +145,23 @@ async function fetchRecipeList(scrollTop = true) {
 				window.scrollTo({ top: 0, behavior: 'smooth' });
 			}
 		}
-		
-		/***** 에러코드 추가 *****/
-		
 	}
 	catch (error) {
-		console.log(error);
+		const code = error?.response?.data?.code;
+		
+		if (code === 'RECIPE_READ_LIST_FAIL') {
+			alertDanger('레시피 목록 조회에 실패했습니다.');
+		}
+		else if (code === 'RECIPE_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alertDanger('서버 내부에서 오류가 발생했습니다.');
+		}
+		else {
+			alertDanger('알 수 없는 오류가 발생했습니다.')
+			console.log(error);
+		}
 	}
 	
 }
@@ -245,7 +251,7 @@ function renderRecipeList(recipeList) {
 		reportCount.className = 'fw-semibold mb-0';
 		reportCount.textContent = recipe.reportcount;
 		
-		// 신고 보기
+		// 신고 모달창 열기
 		if ((recipe.reportcount ?? 0) > 0) {
 			reportCount.className = 'fw-semibold mb-0 view';
 			reportCount.dataset.bsToggle = 'modal';
@@ -338,33 +344,11 @@ async function deleteRecipe(id) {
 			alertDanger('해당 사용자를 찾을 수 없습니다.');
 		}
 		else if (code == 'INTERNAL_SERVER_ERROR') {
-			alertDanger('서버 내부 오류가 발생했습니다.');
+			alertDanger('서버 내부에서 오류가 발생했습니다.');
 		}
 		else {
+			alertDanger('알 수 없는 오류가 발생했습니다.')
 			console.log(error);
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -92,9 +92,26 @@ document.addEventListener('DOMContentLoaded', function() {
 		catch(error) {
 			const code = error?.response?.data?.code;
 			
-			// *** TODO : 에러 코드 추가 ***
 			if (code === 'RECIPE_READ_FAIL') {
 				alertDanger('레시피 조회에 실패했습니다.');
+			}
+			else if (code === 'RECIPE_CATEGORY_READ_LIST_FAIL') {
+				alertDanger('레시피 카테고리 목록 조회에 실패했습니다.');
+			}
+			else if (code === 'RECIPE_STOCK_READ_LIST_FAIL') {
+				alertDanger('레시피 재료 목록 조회에 실패했습니다.');
+			}
+			else if (code === 'RECIPE_STEP_READ_LIST_FAIL') {
+				alertDanger('레시피 조리 순서 목록 조회에 실패했습니다.');
+			}
+			else if (code === 'RECIPE_INVALID_INPUT') {
+				alertDanger('입력값이 유효하지 않습니다.');
+			}
+			else if (code === 'RECIPE_NOT_FOUND') {
+				alertDanger('해당 레시피를 찾을 수 없습니다.');
+			}
+			else if (code === 'USER_NOT_FOUND') {
+				alertDanger('해당 사용자를 찾을 수 없습니다.');
 			}
 			else if (code === 'INTERNAL_SERVER_ERROR') {
 				alertDanger('서버 내부 오류가 발생했습니다.');

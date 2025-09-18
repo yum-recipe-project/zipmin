@@ -46,10 +46,10 @@
 					</div>
 					
 					<div id="viewRecipeStockForm" class="recipe_stock">
-						<h3>재료</h3>
-						
-						<!-- 양 -->
-						<p class="recipe_portion"></p>
+						<div class="stock_title">
+							<h3>재료</h3>
+							<p class="recipe_portion"></p>
+						</div>
 						
 						<!-- 재료 표 -->
 						<table class="stock_list">

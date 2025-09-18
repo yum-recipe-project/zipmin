@@ -1,10 +1,5 @@
 @charset "UTF-8";
 
-.modal-content .modal-body {
-	padding: 5px 30px;
-}
-
-
 
 
 
@@ -12,8 +7,7 @@
 .modal-content .modal-body .recipe_wrap .recipe_header {
 	padding: 0 0 50px 0;
 	position: relative;
-	border-bottom: 2px solid var(--line-color1);
-	
+	border-bottom: 2px solid rgba(0, 0, 0, 0.05);
 }
 
 /* 레시피 헤더 > 제목 */
@@ -45,6 +39,7 @@
 
 .modal-content .modal-body .recipe_wrap .recipe_header .recipe_info .info p {
 	color: var(--txt-color-500);
+	margin-bottom: 0;
 }
 
 /* 레시피 헤더 > 작성자 */
@@ -65,7 +60,7 @@
 	width: 30px;
 	height: 30px;
 	margin-right: 4px;
-	border: 1px solid var(--line-color3);
+	border: 1px solid #D7DBEC;
 }
 
 .modal-content .modal-body .recipe_wrap .recipe_header .recipe_writer .btn_nickname {
@@ -123,60 +118,48 @@
 .modal-content .modal-body .recipe_wrap .recipe_stock {
 	padding: 50px 0;
 	position: relative;
-	border-bottom: 2px solid var(--line-color1);
+	border-bottom: 2px solid rgba(0, 0, 0, 0.05);
 }
 
-.modal-content .modal-body .recipe_wrap .recipe_stock h3 {
+.modal-content .modal-body .recipe_wrap .recipe_stock .stock_title {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.modal-content .modal-body .recipe_wrap .recipe_stock .stock_title h3 {
 	font-size: 24px;
 	font-weight: 600;
+	margin-bottom: 0;
 }
 
 /* 레시피 재료 > 양 */
-.modal-content .modal-body  .recipe_wrap .recipe_stock .recipe_portion {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	margin-top: 40px;
-}
-
-.modal-content .modal-body .recipe_wrap .recipe_stock .recipe_portion select {
-	width: auto;
-	padding: 0 45px 0 12px;
-	height: 42px;
-	border: 1px solid var(--line-color2);
+.modal-content .modal-body  .recipe_wrap .recipe_stock .stock_title p {
 	color: var(--txt-color-500);
-	font-weight: 500;
-	border-radius: 4px;
-	cursor: pointer;
-	position: relative;
-	background: url(/images/recipe/arrow_down.png) no-repeat right 5px top 50%;
-	background-size: 24px;
-}
-
-.modal-content .modal-body .recipe_wrap .recipe_stock .recipe_portion p {
-	color: var(--txt-color-500);
-	font-size: 12px;
-	font-weight: 400;
+	font-size: 14px;
+	font-weight: 600;
+	margin-bottom: 0;
 }
 
 /* 레시피 재료 > 재료 목록 */
-.modal-content .modal-body .content .recipe_wrap .recipe_stock .stock_list {
-	margin-top: 8px;
+.modal-content .modal-body .recipe_wrap .recipe_stock .stock_list {
+	margin-top: 25px;
 	border: 3px solid #F9F9F9;
+	width: 100%;
 }
 
 .modal-content .modal-body .recipe_wrap .recipe_stock .stock_list thead th {
 	text-align: center;
 	background: #F9F9F9;
 	padding: 16px;
-	height: 50px;
+	line-height: 8px;
 	border-bottom: 1px solid #F9F9F9;
 	font-size: 14px;
 }
 
 .modal-content .modal-body .recipe_wrap .recipe_stock .stock_list tbody tr {
 	text-align: center;
-	height: 50px;
+	line-height: 8px;
 	border-bottom: 1px solid #F9F9F9;
 	font-size: 14px;
 }
@@ -193,23 +176,12 @@
 .modal-content .modal-body .recipe_wrap .recipe_step {
 	padding: 50px 0;
 	position: relative;
-	border-bottom: 2px solid var(--line-color1);
+	border-bottom: 2px solid rgba(0, 0, 0, 0.05);
 }
 
 .modal-content .modal-body .recipe_wrap .recipe_step h3 {
 	font-size: 24px;
 	font-weight: 600;
-}
-
-.modal-content .modal-body .recipe_wrap .recipe_step .btn_tool {
-	position: absolute;
-	top: 40px;
-	right: 0;
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	width: fit-content;
-	margin-left: auto;
 }
 
 /* 조리 순서 > 목록 */
@@ -233,7 +205,12 @@
 .modal-content .modal-body .recipe_wrap .recipe_step .step_list .step_content h5 {
 	font-size: 18px;
 	font-weight: 700;
-	color: var(--point-color1);
+	color: #FF9087;
+	margin-bottom: 0;
+}
+
+.modal-content .modal-body .recipe_wrap .recipe_step .step_list .step_content p {
+	margin-bottom: 0;
 }
 
 .modal-content .modal-body .recipe_wrap .recipe_step .step_list .step_image {
@@ -245,7 +222,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid var(--line-color2);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 24px;
 }
 
@@ -263,7 +240,6 @@
 /* 요리팁 */
 .modal-content .modal-body .recipe_wrap .recipe_tip {
 	padding: 50px 0;
-	position: relative;
 }
 
 .modal-content .modal-body .recipe_wrap .recipe_tip h3 {

@@ -10,6 +10,7 @@
 		<title>집밥의민족</title>
 		<link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
 		<link rel="stylesheet" href="../assets/css/styles.min.css" />
+		<link rel="stylesheet" href="/css/admin/common/modal.css" />
 		<link rel="stylesheet" href="/css/admin/list-recipe.css" />
 		<link rel="stylesheet" href="/css/admin/modal/view-recipe-modal.css" />
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

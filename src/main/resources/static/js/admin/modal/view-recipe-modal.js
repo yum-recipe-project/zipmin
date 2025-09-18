@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				});
 				
 				// 재료
-				stockForm.querySelector('.recipe_portion').innerText = response.data.data.portion;
+				stockForm.querySelector('.recipe_portion').innerText = `( ${response.data.data.portion} 기준 )`;
 				response.data.data.stock_list.forEach(stock => {
 					const tr = document.createElement('tr');
 					// 이름
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				});
 				
 				// 팁
-				tipForm.querySelector('.recipe_tip').innerText = response.data.data.tip;
+				tipForm.querySelector('.recipe_tip p').innerText = response.data.data.tip;
 			}
 		}
 		catch(error) {

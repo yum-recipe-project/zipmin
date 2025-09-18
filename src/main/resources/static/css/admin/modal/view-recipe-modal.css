@@ -239,7 +239,7 @@
 
 /* 요리팁 */
 .modal-content .modal-body .recipe_wrap .recipe_tip {
-	padding: 50px 0;
+	padding: 50px 0 0 0;
 }
 
 .modal-content .modal-body .recipe_wrap .recipe_tip h3 {

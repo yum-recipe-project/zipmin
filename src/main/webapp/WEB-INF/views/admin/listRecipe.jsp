@@ -19,6 +19,7 @@
 		<script src="/js/common/pagination.js"></script>
 		<script src="/js/admin/list-recipe.js"></script>
 		<script src="/js/admin/modal/view-recipe-modal.js"></script>
+		<script src="/js/admin/modal/list-report-modal.js"></script>
 	</head>
 	
 	<body>
@@ -119,7 +120,10 @@
 				</div>
 			</div>
 			
+			<!-- 레시피 상세 모달 -->
 			<%@include file="../admin/modal/viewRecipeModal.jsp" %>
+			<!-- 신고 목록 모달 -->
+			<%@include file="../admin/modal/listReportModal.jsp" %>
 		</div>
 		
 		<script src="../assets/libs/jquery/dist/jquery.min.js"></script>

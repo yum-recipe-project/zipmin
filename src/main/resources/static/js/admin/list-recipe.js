@@ -246,12 +246,12 @@ function renderRecipeList(recipeList) {
 		reportCount.textContent = recipe.reportcount;
 		
 		// 신고 보기
-		// ***** 이거 listReportCommentModal 이런식으로 해야할 수도 *****
 		if ((recipe.reportcount ?? 0) > 0) {
 			reportCount.className = 'fw-semibold mb-0 view';
 			reportCount.dataset.bsToggle = 'modal';
 			reportCount.dataset.bsTarget = '#listReportModal';
 			reportCount.dataset.recodenum = recipe.id;
+			reportCount.dataset.tablename = 'recipe';
 			reportCount.addEventListener('click', (event) => {
 				if (!isLoggedIn()) {
 					event.preventDefault();

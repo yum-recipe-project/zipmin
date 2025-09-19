@@ -292,7 +292,7 @@ function renderRecipeList(recipeList) {
 		li.className = 'recipe';
 		
 		const link = document.createElement('a');
-		link.href = `/recipes/viewRecipe.do?id=${recipe.id}`;
+		link.href = `/recipe/viewRecipe.do?id=${recipe.id}`;
 		const img = document.createElement('img');
 		img.className = 'recipe_image';
 		img.src = recipe.image;

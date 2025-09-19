@@ -277,7 +277,7 @@
 #container .class_wrap {
 	display: flex;
 	flex-direction: column;
-	gap: 44px;
+	gap: 34px;
 }
 
 /* 클래스 > 정렬 */
@@ -313,6 +313,7 @@
 
 #container .class_wrap .class_list .class {
 	width: 520px;
+	height: 128px;
 	display: flex;
 	align-items: center;
 	cursor: pointer;

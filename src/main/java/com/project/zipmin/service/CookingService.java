@@ -463,25 +463,56 @@ public class CookingService {
 			throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
 		}
 		
+		// 정렬 문자열을 객체로 변환
+		Sort sortSpec = Sort.by(Sort.Order.desc("id"));
+		if (sort != null && !sort.isBlank()) {
+			switch (sort) {
+				case "postdate-desc":
+					sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id"));
+					break;
+				case "eventdate-desc":
+					sortSpec = Sort.by(Sort.Order.desc("eventdate"), Sort.Order.desc("id"));
+					break;
+				case "applycount-desc":
+					sortSpec = Sort.by(Sort.Order.desc("applycount"), Sort.Order.desc("id"));
+					break;
+				default:
+					break;
+		    }
+		}
+		
+		// 기존 페이지 객체에 정렬 주입
+		Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
+		
 		// 클래스 목록 조회
 		Page<Class> classPage;
 		Date now = new Date();
 		
 		try {
 			switch (sort) {
-				case "end" -> classPage = classRepository.findByUserIdAndNoticedateBefore(userId, now, pageable);
-				case "progress" -> classPage = classRepository.findByUserIdAndNoticedateAfter(userId, now, pageable);
-				default -> classPage = classRepository.findByUserId(userId, pageable);
+				case "end" -> classPage = classRepository.findByUserIdAndNoticedateBefore(userId, now, sortedPageable);
+				case "progress" -> classPage = classRepository.findByUserIdAndNoticedateAfter(userId, now, sortedPageable);
+				default -> classPage = classRepository.findByUserId(userId, sortedPageable);
 			}
 		}
 		catch (Exception e) {
 			throw new ApiException(ClassErrorCode.CLASS_APPLY_READ_LIST_FAIL);
 		}
 		
+		Date today = new Date();
 		List<ClassReadResponseDto> classDtoList = new ArrayList<ClassReadResponseDto>();
 		for (Class classs : classPage) {
 			ClassReadResponseDto classDto = classMapper.toReadResponseDto(classs);
-			// 여기에 내용 추가
+			
+			// 이미지
+			if (classs.getImage() != null) {
+				classDto.setImage(publicPath + "/" + classDto.getImage());
+			}
+			
+			// 상태
+			Boolean isOpened = today.before(classDto.getNoticedate());
+			classDto.setOpened(isOpened);
+
 			classDtoList.add(classDto);
 		}
 		

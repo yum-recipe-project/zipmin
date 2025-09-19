@@ -109,27 +109,14 @@
 				<div id="classWrap" class="class_wrap tab_content">
 					<!-- 제목 -->
 					<div class="class_util">
-						<p class="class_title">클래스 2개</p>
+						<p class="class_header">클래스 2개</p>
 						<div class="class_sort">
-							<button class="btn_sort active" data-status="">전체</button>
-							<button class="btn_sort" data-status="open">모집중</button>
-							<button class="btn_sort" data-status="close">마감</button>
+							<button class="btn_sort active" data-sort="postdate-desc">최신순</button>
+							<button class="btn_sort" data-sort="applycount-desc">인기순</button>
 						</div>
 					</div>
 					
-					<ul class="class_list">
-						<li class="class">
-							<a href="">
-								<img class="class_image" src="/images/common/test.png">
-								<p class="flag">마감</p>
-							</a>
-							<div class="class_info">
-								<h3 class="class_title">레시피 제목</h3>
-								<p class="class_place">서울</p>
-								<p class="class_date">2025.04.12(토) 10:30 - 12:00</p>
-							</div>
-						</li>
-					</ul>
+					<ul class="class_list"></ul>
 					
 					<!-- 클래스 페이지네이션 -->
 					<div class="pagination_wrap ">

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
+import com.project.zipmin.api.ClassErrorCode;
 import com.project.zipmin.api.ClassSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
@@ -730,6 +731,8 @@ public class UserController {
 	
 	
 	
+	
+	
 	// 개설한 쿠킹클래스
 	@GetMapping("/users/{id}/classes")
 	public ResponseEntity<?> listUserClass(
@@ -738,33 +741,15 @@ public class UserController {
 			@Parameter(description = "조회할 페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지의 항목 수") @RequestParam int size) {
 		
-		// 입력값 검증
-		if (id == null) {
-			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-		}
-		
-		// 인증 여부 확인 (비로그인)
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
-		}
-		
-		// 로그인 정보
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		
-		// 본인 확인
-		if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN)) {
-			if (id != userService.readUserByUsername(username).getId()) {
-				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
-			}
-		}
-		
 		Pageable pageable = PageRequest.of(page, size);
 		Page<ClassReadResponseDto> classPage = cookingService.readClassPageByUserId(id, sort, pageable);
 		
-		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, classPage));
+		return ResponseEntity.status(ClassSuccessCode.CLASS_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(ClassSuccessCode.CLASS_READ_LIST_SUCCESS, classPage));
 	}
+	
+	
+	
 	
 	
 	// 저장한(좋아요를 누른) 키친가이드

@@ -191,7 +191,7 @@ async function fetchRecipeList() {
 			if (totalPages === 0) {
 				recipeWrap.querySelector('.recipe_list').style.display = 'none';
 				recipeWrap.querySelector('.list_empty')?.remove();
-				recipeWrap.querySelector('.recipe_list').insertAdjacentElement('afterend', renderListEmpty());
+				recipeWrap.querySelector('.recipe_list').insertAdjacentElement('afterend', renderRecipeListEmpty());
 			}
 			else {
 				recipeWrap.querySelector('.list_empty')?.remove();
@@ -217,19 +217,57 @@ async function fetchRecipeList() {
 /**
  * 클래스 목록 데이터를 가져오는 함수
  */
-async function fetchClassList(classList) {
+async function fetchClassList() {
 	
 	const classWrap = document.getElementById('classWrap');
 	
 	try {
 		const id = new URLSearchParams(window.location.search).get('id');
 				
-				const params = new URLSearchParams({
-					sort: sort,
-					page : page,
-					size : size
-				}).toString();
-				
+		const params = new URLSearchParams({
+			sort: sort,
+			page : page,
+			size : size
+		}).toString();
+		
+		const response = await fetch(`/users/${id}/classes?${params}`, {
+			method: 'GET',
+			headers: getAuthHeaders()
+		});
+		
+		const result = await response.json();
+		
+		if (result.code === 'CLASS_READ_LIST_SUCCESS') {
+			// 전역변수 설정
+			totalPages = result.data.totalPages;
+			totalElements = result.data.totalElements;
+			page = result.data.number;
+			classList = result.data.content;
+			
+			// 렌더링
+			classWrap.querySelector('.class_header').innerText = `클래스 ${totalElements}개`;
+			renderClassList(classList);
+			renderPagination(fetchClassList);
+			
+			// 결과 없음 표시
+			if (totalPages === 0) {
+				classWrap.querySelector('.class_list').style.display = 'none';
+				classWrap.querySelector('.list_empty')?.remove();
+				classWrap.querySelector('.class_list').insertAdjacentElement('afterend', renderClassListEmpty());
+			}
+			else {
+				classWrap.querySelector('.list_empty')?.remove();
+				classWrap.querySelector('.class_list').style.display = '';
+			}
+			
+			// 스크롤 최상단 이동
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+		}
+		
+		
+		// *** TODO : 에러 코드 추가하기 ***
+		
+		console.log(result);
 	}
 	catch (error) {
 		console.log(error);
@@ -309,14 +347,87 @@ function renderRecipeList(recipeList) {
 
 
 /**
- * 목록 결과 없음 화면을 화면에 렌더링하는 함수
+ * 클래스 목록을 화면에 랜더링하는 함수
  */
-function renderListEmpty() {
+function renderClassList(classList) {
+	const classWrap = document.getElementById('classWrap');
+	const container = classWrap.querySelector('.class_list');
+	container.innerHTML = '';
+	
+	classList.forEach(classs => {
+		const li = document.createElement('li');
+		li.className = 'class';
+		
+		const link = document.createElement('a');
+		link.href = `/cooking/viewClass.do?id=${classs.id}`;
+		
+		const img = document.createElement('img');
+		img.className = 'class_image';
+		img.src = classs.image;
+		link.appendChild(img);
+		
+		const flag = document.createElement('p');
+		flag.className = classs.opened ? 'flag open' : 'flag';
+		flag.textContent = classs.opened ? '모집중' : '마감';
+		link.appendChild(flag);
+
+		const info = document.createElement('div');
+		info.className = 'class_info';
+
+		const title = document.createElement('h3');
+		title.className = 'class_title';
+		title.textContent = classs.title;
+		
+		const introduce = document.createElement('p');
+		introduce.className = 'class_introduce';
+		introduce.textContent = classs.introduce;
+		
+		const detail = document.createElement('div');
+		detail.className = 'class_detail';
+
+		const dateItem = document.createElement('div');
+		dateItem.className = 'detail_item';
+		dateItem.innerHTML = `<img src="/images/recipe/time.png"><p>${formatDate(classs.eventdate)}</p>`;
+		
+		detail.appendChild(dateItem);
+
+		info.append(title, introduce, detail);
+		li.append(link, info);
+		container.appendChild(li);
+	});
+}
+
+
+
+
+
+/**
+ * 레시피 목록 결과 없음을 화면에 렌더링하는 함수
+ */
+function renderRecipeListEmpty() {
     const wrapper = document.createElement('div');
     wrapper.className = 'list_empty';
 	
     const span = document.createElement('span');
     span.textContent = '작성된 레시피가 없습니다';
+    wrapper.appendChild(span);
+
+    return wrapper;
+}
+
+
+
+
+
+/**
+ * 클래스 목록 결과 없음을 화면에 렌더링하는 함수
+ */
+function renderClassListEmpty() {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'list_empty';
+	
+    const span = document.createElement('span');
+    span.textContent = '개설된 쿠킹클래스가 없습니다';
     wrapper.appendChild(span);
 
     return wrapper;

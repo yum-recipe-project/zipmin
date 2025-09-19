@@ -16,24 +16,23 @@
 			<div class="content">
 					
 				<!-- 유저 정보 -->
-				<div class="user_wrap">
+				<div id="userWrap" class="user_wrap">
 					<div class="user">
-						<img src="/images/common/test.png" class="user_avatar">
+						<span class="user_avatar"></span>
 						<div class="user_info">
 							<div class="user_title">
-								<h2 class="user_nickname">아잠만</h2>
+								<h2 class="user_nickname"></h2>
 								<!-- *** TODO : 상태 토글되도록 처리 *** -->
 								<button class="btn btn_dark">팔로우</button>
 							</div>
 							<p class="user_introduce">안녕하세요 아잠만입니다 레시피 열심히 작성할게요 !!</p>
 							<div class="user_count">
-								<p>팔로우</p><span class="likecount">0명</span>
+								<p>팔로우</p><span class="likecount"></span>
 								<p>•</p>
-								<p>레시피</p><span class="recipecount">0개</span>
+								<p>레시피</p><span class="recipecount"></span>
 							</div>
 						</div>
 					</div>
-					<p class="user_link">www.링크를 걸어보아요.com</p>
 				</div>
 				
 				<!-- 네비게이션 버튼 -->
@@ -45,7 +44,7 @@
 				</div>
 				
 				<!-- 사용자 레시피 -->
-				<div id="" class="recipe_wrap">
+				<div id="recipeWrap" class="recipe_wrap tab_content">
 					<!-- 제목 -->
 					<div class="recipe_util">
 						<p class="recipe_title">레시피 3개</p>
@@ -105,7 +104,7 @@
 				</div>
 				
 				<!-- 사용자 클래스 -->
-				<div id="" class="class_wrap">
+				<div id="" class="class_wrap tab_content">
 					<!-- 제목 -->
 					<div class="class_util">
 						<p class="class_title">클래스 2개</p>
@@ -132,7 +131,7 @@
 					</ul>
 					
 					<!-- 클래스 페이지네이션 -->
-					<div class="pagination_wrap">
+					<div class="pagination_wrap ">
 						<div class="pagination">
 						    <ul></ul>
 						</div>

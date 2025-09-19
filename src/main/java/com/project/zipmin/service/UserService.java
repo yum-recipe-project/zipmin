@@ -16,10 +16,12 @@ import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.AuthErrorCode;
+import com.project.zipmin.api.LikeErrorCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.dto.CustomUserDetails;
 import com.project.zipmin.dto.UserReadRequestDto;
 import com.project.zipmin.dto.UserPasswordCheckRequestDto;
+import com.project.zipmin.dto.UserProfileReadResponseDto;
 import com.project.zipmin.dto.UserDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
@@ -30,6 +32,7 @@ import com.project.zipmin.entity.User;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.mapper.ChompMapper;
 import com.project.zipmin.mapper.UserMapper;
+import com.project.zipmin.repository.LikeRepository;
 import com.project.zipmin.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -42,8 +45,12 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 
+	private final LikeRepository likeRepository;
+	
+	
 	
 
+	
 	// 사용자 목록 조회
 	public Page<UserReadResponseDto> readUserPage(String category, Pageable pageable) {
 		
@@ -93,6 +100,28 @@ public class UserService {
 		
 		return userMapper.toReadResponseDto(user);
 	}
+	
+	
+	
+	// 아이디로 사용자 프로필 조회
+	public UserProfileReadResponseDto readUserProfileById(Integer id) {
+		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		// 사용자 조회
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+		
+		// 사용자 응답 구성
+		UserProfileReadResponseDto userDto = userMapper.toReadProfileResponseDto(user);
+		
+		
+		return userDto;
+	}
+	
 	
 	
 	
@@ -210,6 +239,8 @@ public class UserService {
 			}
 			user.setTel(userDto.getTel());
 		}
+		
+		// *** TODO : 이미지 소개 링크 추가 ***
 		
 		// 사용자 수정
 		try {

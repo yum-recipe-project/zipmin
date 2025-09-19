@@ -34,6 +34,7 @@ import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
 import com.project.zipmin.dto.UserDto;
 import com.project.zipmin.dto.UserPasswordCheckRequestDto;
+import com.project.zipmin.dto.UserProfileReadResponseDto;
 import com.project.zipmin.dto.UserReadRequestDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.UserUpdateRequestDto;
@@ -84,7 +85,6 @@ public class UserController {
 	private final UserService userService;
 	private final CommentService commentService;	
 	private final CookingService cookingService;	
-	private final FridgeService fridgeService;
 	private final KitchenService kitchenService;
 	private final RecipeService recipeService;
 	
@@ -170,12 +170,27 @@ public class UserController {
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
 	@GetMapping("/users/{id}")
-	public ResponseEntity<?> readUser(@Parameter(description = "투표의 일련번호", required = true, example = "1") @PathVariable int id) {
+	public ResponseEntity<?> readUser(@Parameter(description = "사용자의 일련번호", required = true, example = "1") @PathVariable int id) {
 		UserReadResponseDto userDto = userService.readUserById(id);
 		
 		return ResponseEntity.status(UserSuccessCode.USER_READ_SUCCESS.getStatus())
 					.body(ApiResponse.success(UserSuccessCode.USER_READ_SUCCESS, userDto));
 	}
+	
+	
+	
+	
+	
+	// 사용자 프로필 조회
+	@GetMapping("/users/{id}/profile")
+	public ResponseEntity<?> readUserProfile(@Parameter(description = "사용자의 일련번호", required = true, example = "1") @PathVariable int id) {
+		UserProfileReadResponseDto userDto = userService.readUserProfileById(id);
+		
+		return ResponseEntity.status(UserSuccessCode.USER_READ_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_READ_SUCCESS, userDto));
+	}
+	
+	
 	
 	
 	

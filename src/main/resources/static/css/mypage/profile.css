@@ -29,6 +29,10 @@
 	height: 98px;
 	border-radius: 10px;
 	border: 1px solid var(--line-color3);
+	background-color: #fff;
+    background-position: 60% 70%;
+    background-repeat: no-repeat;
+    background-size: 80%;
 }
 
 #container .user_wrap .user .user_info  {
@@ -295,7 +299,7 @@
 }
 
 
-#container .class_wrap .class_util .recipe_sort {
+#container .class_wrap .class_util .class_sort {
 	display: flex;
 	gap: 16px;
 }

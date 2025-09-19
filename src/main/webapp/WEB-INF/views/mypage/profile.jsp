@@ -7,7 +7,9 @@
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/mypage/profile.css">
+		<link rel="stylesheet" href="/css/common/pagination.css">
 		<script src="/js/mypage/profile.js"></script>
+		<script src="/js/common/pagination.js"></script>
 	</head>
 	<body>
 		<%@include file="../common/header.jsp" %>
@@ -47,9 +49,9 @@
 				<div id="recipeWrap" class="recipe_wrap tab_content">
 					<!-- 제목 -->
 					<div class="recipe_util">
-						<p class="recipe_title">레시피 3개</p>
+						<p class="recipe_header">레시피 3개</p>
 						<div class="recipe_sort">
-							<button class="btn_sort active" data-sort="id-desc">최신순</button>
+							<button class="btn_sort active" data-sort="postdate-desc">최신순</button>
 							<button class="btn_sort" data-sort="likecount-desc">인기순</button>
 							<button class="btn_sort" data-sort="reviewscore-desc">별점순</button>
 						</div>
@@ -104,7 +106,7 @@
 				</div>
 				
 				<!-- 사용자 클래스 -->
-				<div id="" class="class_wrap tab_content">
+				<div id="classWrap" class="class_wrap tab_content">
 					<!-- 제목 -->
 					<div class="class_util">
 						<p class="class_title">클래스 2개</p>
@@ -117,16 +119,15 @@
 					
 					<ul class="class_list">
 						<li class="class">
-							<a href="/cooking/viewClass.do?id=14">
-								<div class="class_image">
-									<img src="/files/15eeb5289ed64063a99a25a490b8c5e0.png">
-								</div>
-								<div class="class_info">
-									<h5>건강 주스와 스무디 클래스</h5>
-									<p class="flag">마감</p>
-									<p class="date">2025년 04월 12일</p>
-								</div>
+							<a href="">
+								<img class="class_image" src="/images/common/test.png">
+								<p class="flag">마감</p>
 							</a>
+							<div class="class_info">
+								<h3 class="class_title">레시피 제목</h3>
+								<p class="class_place">서울</p>
+								<p class="class_date">2025.04.12(토) 10:30 - 12:00</p>
+							</div>
 						</li>
 					</ul>
 					

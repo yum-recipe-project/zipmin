@@ -1,13 +1,13 @@
 /**
  * 전역변수
  */
+const size = 2;
 let totalPages = 0;
 let totalElements = 0;
 let page = 0;
-const size = 10;
-let recipeList = [];
 let sort = 'postdate-desc';
-
+let recipeList = [];
+let classList = [];
 
 
 
@@ -30,6 +30,19 @@ document.addEventListener('DOMContentLoaded', function() {
             
             contentItems.forEach(content => content.style.display = 'none');
             contentItems[index].style.display = 'flex';
+			
+			sort = 'postdate-desc';
+			page = 0;
+			recipeList = [];
+			classList = [];
+
+			recipeWrap.querySelector('.btn_sort.active')?.classList.remove('active');
+			recipeWrap.querySelectorAll('.btn_sort')[0].classList.add('active');
+			classWrap.querySelector('.btn_sort.active')?.classList.remove('active');
+			classWrap.querySelectorAll('.btn_sort')[0].classList.add('active');
+			
+			fetchRecipeList();
+			fetchClassList();
         });
     });
 
@@ -39,58 +52,55 @@ document.addEventListener('DOMContentLoaded', function() {
 
     tabItems[0].classList.add('active');
     contentItems[0].style.display = 'flex';
+	
 });
+
+
 
 
 
 /**
- * 탭 메뉴 클릭시 탭 메뉴를 활성화하고 해당 내용을 표시하는 함수
+ * 레시피와 클래스 목록을 검색하는 함수
  */
-/*
 document.addEventListener('DOMContentLoaded', function() {
 	
-	// 검색
-	const searchForm = document.querySelector('.search_form[data-type="cooking"]');
-	searchForm.addEventListener('submit', function(event) {
-		event.preventDefault();
-		keyword = searchForm.querySelector('.search_word').value.trim();
-		page = 0;
-		fetchClassList();
-	});
+	const recipeWrap = document.getElementById('recipeWrap');
+	const classWrap = document.getElementById('classWrap');
 	
-	// 카테고리
-	document.querySelectorAll('.btn_tab').forEach(tab => {
-		tab.addEventListener('click', function (event) {
-			event.preventDefault();
-			document.querySelector('.btn_tab.active')?.classList.remove('active');
-			this.classList.add('active');
-			
-			category = this.getAttribute('data-tab');
-			page = 0;
-			classList = [];
-			
-			fetchClassList();
-		});
-	});
-	
-	// 상태 버튼
-	document.querySelectorAll('.btn_sort').forEach(btn => {
+	// 레시피 정렬 버튼
+	recipeWrap.querySelectorAll('.btn_sort').forEach(btn => {
 		btn.addEventListener('click', function(event) {
 			event.preventDefault();
-			document.querySelector('.btn_sort.active')?.classList.remove('active');
+			recipeWrap.querySelector('.btn_sort.active')?.classList.remove('active');
 			btn.classList.add('active');
 			
-			status = btn.dataset.status;
+			sort = btn.dataset.sort;
+			page = 0;
+			recipeList = [];
+			
+			fetchRecipeList(recipeList);
+		});
+	});
+	
+	// 클래스 정렬 버튼
+	classWrap.querySelectorAll('.btn_sort').forEach(btn => {
+		btn.addEventListener('click', function(event) {
+			event.preventDefault();
+			classWrap.querySelector('.btn_sort.active')?.classList.remove('active');
+			btn.classList.add('active');
+			
+			sort = btn.dataset.sort;
 			page = 0;
 			classList = [];
 			
-			fetchClassList();
+			fetchClassList(classList);
 		});
 	});
-
-	fetchClassList();
+	
+	fetchRecipeList(recipeList);
+	fetchClassList(classList);
 });
-*/
+
 
 
 
@@ -138,6 +148,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
 
+
 /**
  * 레시피 목록 데이터를 가져오는 함수
  */
@@ -149,7 +160,13 @@ async function fetchRecipeList() {
 	try {
 		const id = new URLSearchParams(window.location.search).get('id');
 		
-		const response = await fetch(`/users/${id}/recipe`, {
+		const params = new URLSearchParams({
+			sort: sort,
+			page : page,
+			size : size
+		}).toString();
+		
+		const response = await fetch(`/users/${id}/recipes?${params}`, {
 			method: 'GET',
 			headers: getAuthHeaders()
 		});
@@ -157,23 +174,153 @@ async function fetchRecipeList() {
 		const result = await response.json();
 		
 		console.log(result);
+		
+		if (result.code === 'USER_READ_LIST_SUCCESS') {
+			// 전역변수 설정
+			totalPages = result.data.totalPages;
+			totalElements = result.data.totalElements;
+			page = result.data.number;
+			recipeList = result.data.content;
+			
+			// 렌더링
+			recipeWrap.querySelector('.recipe_header').innerText = `레시피 ${totalElements}개`;
+			renderRecipeList(recipeList);
+			renderPagination(fetchRecipeList);
+			
+			// 결과 없음 표시
+			if (totalPages === 0) {
+				recipeWrap.querySelector('.recipe_list').style.display = 'none';
+				recipeWrap.querySelector('.list_empty')?.remove();
+				recipeWrap.querySelector('.recipe_list').insertAdjacentElement('afterend', renderListEmpty());
+			}
+			else {
+				recipeWrap.querySelector('.list_empty')?.remove();
+				recipeWrap.querySelector('.recipe_list').style.display = '';
+			}
+			
+			// 스크롤 최상단 이동
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+		}
+		
+		
+		// *** TODO : 에러 코드 추가하기 ***
 	}
 	catch (error) {
-		
+		alertDanger('알 수 없는 오류가 발생했습니다.');
+		console.log(error);
 	}
 }
 
 
 
 
+/**
+ * 클래스 목록 데이터를 가져오는 함수
+ */
+async function fetchClassList(classList) {
+	
+	const classWrap = document.getElementById('classWrap');
+	
+	try {
+		const id = new URLSearchParams(window.location.search).get('id');
+				
+				const params = new URLSearchParams({
+					sort: sort,
+					page : page,
+					size : size
+				}).toString();
+				
+	}
+	catch (error) {
+		console.log(error);
+	}
+	
+}
 
 
 
 
 
+/**
+ * 레시피 목록을 화면에 렌더링하는 함수
+ */
+function renderRecipeList(recipeList) {
+	const recipeWrap = document.getElementById('recipeWrap');
+	const container = recipeWrap.querySelector('.recipe_list');
+	container.innerHTML = '';
+	
+	recipeList.forEach(recipe => {
+		const li = document.createElement('li');
+		li.className = 'recipe';
+		
+		const link = document.createElement('a');
+		link.href = `/recipes/viewRecipe.do?id=${recipe.id}`;
+		const img = document.createElement('img');
+		img.className = 'recipe_image';
+		img.src = recipe.image;
+		link.appendChild(img);
+
+		const info = document.createElement('div');
+		info.className = 'recipe_info';
+
+		const title = document.createElement('h3');
+		title.className = 'recipe_title';
+		title.textContent = recipe.title;
+		
+		const introduce = document.createElement('p');
+		introduce.className = 'recipe_introduce';
+		introduce.textContent = recipe.introduce;
+
+		const detail = document.createElement('div');
+		detail.className = 'recipe_detail';
+
+		const levelItem = document.createElement('div');
+		levelItem.className = 'detail_item';
+		levelItem.innerHTML = `<img src="/images/recipe/level.png"><p>${recipe.cooklevel}</p>`;
+
+		const timeItem = document.createElement('div');
+		timeItem.className = 'detail_item';
+		timeItem.innerHTML = `<img src="/images/recipe/time.png"><p>${recipe.cooktime}</p>`;
+
+		const spicyItem = document.createElement('div');
+		spicyItem.className = 'detail_item';
+		spicyItem.innerHTML = `<img src="/images/recipe/spicy.png"><p>${recipe.spicy}</p>`;
+
+		detail.append(levelItem, timeItem, spicyItem);
+
+		const categoryItem = document.createElement('div');
+		categoryItem.className = 'recipe_category';
+		recipe.category_list.forEach(category => {
+			const a = document.createElement('a');
+			a.href = '#';
+			a.textContent = category.tag;
+			categoryItem.appendChild(a);
+		});
+		
+		info.append(title, introduce, detail, categoryItem);
+		li.append(link, info);
+		container.appendChild(li);
+	});
+	
+}
 
 
 
+
+
+/**
+ * 목록 결과 없음 화면을 화면에 렌더링하는 함수
+ */
+function renderListEmpty() {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'list_empty';
+	
+    const span = document.createElement('span');
+    span.textContent = '작성된 레시피가 없습니다';
+    wrapper.appendChild(span);
+
+    return wrapper;
+}
 
 
 

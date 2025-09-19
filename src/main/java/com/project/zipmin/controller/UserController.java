@@ -838,7 +838,6 @@ public class UserController {
 	    
 	    // 레시피 저장 페이지 조회
 	    Page<RecipeReadMySavedResponseDto> savedRecipePage = recipeService.readSavedRecipePageByUserId(id, pageable);
-	    System.err.println("페이지 조회 후");
 	    
 	    return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
 	            .body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, savedRecipePage));
@@ -852,6 +851,7 @@ public class UserController {
 	@GetMapping("/users/{id}/recipes")
 	public ResponseEntity<?> readUserRecipeList(
 			@PathVariable Integer id,
+			@RequestParam(required = false) String sort,
 			@RequestParam int page,
 			@RequestParam int size) {
 		
@@ -860,28 +860,18 @@ public class UserController {
 			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
 		}
 		
-		// 인증 여부 확인 (비로그인)
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
-		}
-		
-		// 로그인 정보
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		
-		// 본인 확인
-		if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN)) {
-			if (id != userService.readUserByUsername(username).getId()) {
-				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
-			}
-		}
-		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<RecipeReadMyResponseDto> recipePage = recipeService.readRecipePageByUserId(id, pageable);
+		Page<RecipeReadMyResponseDto> recipePage = recipeService.readRecipePageByUserId(id, sort, pageable);
 		
 		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, recipePage));
 	}
+	
+	
+	
+	
+	
+	
 	
 	
 	/*********** 아래 요청명 다 적절히 수정 필요 !!! ***********/

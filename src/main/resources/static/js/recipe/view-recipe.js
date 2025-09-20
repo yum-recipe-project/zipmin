@@ -341,4 +341,84 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+/**
+ * 레시피 좋아요(저장) 버튼 기능
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    const likeButton = document.querySelector('.btn_icon.like');
+    const recipeId = new URLSearchParams(window.location.search).get('id');
+    const img = likeButton.querySelector('img');
+    let isLiked = likeButton.classList.contains('active'); // 초기 상태
+
+    likeButton.addEventListener('click', async function(event) {
+        event.preventDefault();
+
+        if (!isLoggedIn()) { // 로그인 확인 함수
+            redirectToLogin();
+            return;
+        }
+
+        try {
+            if (isLiked) {
+                // 좋아요 취소
+                const response = await fetch(`/recipes/${recipeId}/likes`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...getAuthHeaders()
+                    },
+                    body: JSON.stringify({}) // 서버에서 userId 처리
+                });
+
+                const result = await response.json();
+                if (result.code === 'RECIPE_UNLIKE_SUCCESS') {
+                    isLiked = false;
+                    img.src = '/images/recipe/star_empty_181a1c.png';
+                    likeButton.classList.remove('active');
+                } else {
+                    alert(result.message || '좋아요 취소에 실패했습니다.');
+                }
+            } else {
+				
+				
+				const data = {
+					tablename: 'recipe',
+					recodenum: recipeId,
+				};
+
+				const response = await instance.post(`/recipes/${recipeId}/likes`, data, {
+					headers: getAuthHeaders(),
+				});
+				
+				
+//				
+//                // 좋아요 추가
+//                const response = await fetch(`/recipes/${recipeId}/likes`, {
+//                    method: 'POST',
+//                    headers: {
+//                        'Content-Type': 'application/json',
+//                        ...getAuthHeaders()
+//                    },
+//                    body: JSON.stringify({}) // LikeCreateRequestDto는 서버에서 처리
+//                });
+
+				const result = response.data;
+				
+                if (result.code === 'RECIPE_LIKE_SUCCESS') {
+                    isLiked = true;
+                    img.src = '/images/recipe/star_full_1a7ce2.png';
+                    likeButton.classList.add('active');
+                } else {
+                    alert(result.message || '좋아요에 실패했습니다.');
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            alert('서버 오류로 인해 좋아요를 처리할 수 없습니다.');
+        }
+    });
+});
+
+
+
 

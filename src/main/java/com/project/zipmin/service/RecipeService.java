@@ -17,7 +17,10 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.KitchenErrorCode;
 import com.project.zipmin.api.RecipeErrorCode;
+import com.project.zipmin.dto.LikeCreateRequestDto;
+import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeReadResponseDto;
 import com.project.zipmin.dto.RecipeCategoryCreateRequestDto;
 import com.project.zipmin.dto.RecipeCategoryCreateResponseDto;
@@ -270,6 +273,7 @@ public class RecipeService {
 	    
 	    // 1. 사용자가 좋아요한 레시피 목록 가져오기
 	    List<LikeReadResponseDto> likeList = likeService.readLikeListByTablenameAndUserId("recipe", userId);
+	    System.err.println("좋아요한 레시피목록" + likeList);
 	    
 	    // 2. 좋아요한 레시피 ID만 추출
 	    List<Integer> recipeIds = likeList.stream()
@@ -567,4 +571,34 @@ public class RecipeService {
 		}
 	}
 
+	
+	
+	// 레시피를 저장하는 함수
+	public LikeCreateResponseDto likeRecipe(LikeCreateRequestDto likeDto) {
+		
+		System.err.println(likeDto);
+		
+		// 입력값 검증
+		if (likeDto == null || likeDto.getTablename() == null
+				|| likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+			throw new ApiException(RecipeErrorCode.RECIPE_INVALID_INPUT);
+		}
+		
+		// 게시글 존재 여부 확인
+		if (!recipeRepository.existsById(likeDto.getRecodenum())) {
+		    throw new ApiException(RecipeErrorCode.RECIPE_NOT_FOUND);
+		}
+		
+		// 좋아요 저장
+		try {
+		    return likeService.createLike(likeDto);
+		}
+		catch (ApiException e) {
+		    throw e;
+		}
+		catch (Exception e) {
+		    throw new ApiException(RecipeErrorCode.RECIPE_LIKE_FAIL);
+		}
+		
+	}
 }

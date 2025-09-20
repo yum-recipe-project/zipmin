@@ -41,6 +41,9 @@ async function fetchMyRecipeList() {
 /**
  * 레시피 목록 화면에 렌더링
  */
+/**
+ * 레시피 목록 화면에 렌더링
+ */
 function renderMyRecipeList(recipeList) {
     const container = document.getElementById('myRecipeList');
 
@@ -48,6 +51,11 @@ function renderMyRecipeList(recipeList) {
         const li = document.createElement('li');
         li.className = 'recipe_item';
         li.dataset.id = recipe.id;
+
+        // 상세보기 링크
+        const link = document.createElement('a');
+        link.href = `/recipes/${recipe.id}`;
+        link.className = 'recipe_link';
 
         const recipeBox = document.createElement('div');
         recipeBox.className = 'recipe_box';
@@ -62,26 +70,14 @@ function renderMyRecipeList(recipeList) {
         const details = document.createElement('div');
         details.className = 'recipe_details';
 
-        // 상단: 제목 + 관리 버튼
+        // 상단: 제목
         const topDiv = document.createElement('div');
         topDiv.className = 'recipe_top';
 
         const titleP = document.createElement('p');
         titleP.textContent = recipe.title;
 
-        const managementDiv = document.createElement('div');
-        managementDiv.className = 'recipe_management';
-
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = '삭제';
-        deleteBtn.addEventListener('click', async () => {
-            if (confirm('정말 삭제하시겠습니까?')) {
-                await deleteRecipe(recipe.id, li);
-            }
-        });
-
-        managementDiv.append(deleteBtn);
-        topDiv.append(titleP, managementDiv);
+        topDiv.appendChild(titleP);
 
         // 정보: 난이도, 시간, 매운 정도
         const infoDiv = document.createElement('div');
@@ -129,10 +125,32 @@ function renderMyRecipeList(recipeList) {
 
         details.append(topDiv, infoDiv, scoreDiv);
         recipeBox.appendChild(details);
-        li.appendChild(recipeBox);
+
+        // 관리 버튼 (오른쪽 상단)
+        const managementDiv = document.createElement('div');
+        managementDiv.className = 'recipe_management';
+
+        const deleteBtn = document.createElement('button');
+		deleteBtn.className = 'delete_btn';
+        deleteBtn.textContent = '삭제';
+        deleteBtn.addEventListener('click', async (event) => {
+            event.preventDefault(); 
+            event.stopPropagation();
+            if (confirm('정말 삭제하시겠습니까?')) await deleteRecipe(recipe.id, li);
+        });
+
+        managementDiv.appendChild(deleteBtn);
+        recipeBox.appendChild(managementDiv);
+
+        // 링크 안에 recipeBox 포함
+        link.appendChild(recipeBox);
+        li.appendChild(link);
+
         container.appendChild(li);
     });
 }
+
+
 
 /**
  * 레시피 삭제

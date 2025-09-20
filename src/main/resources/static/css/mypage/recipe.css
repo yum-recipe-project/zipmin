@@ -96,7 +96,7 @@
 
 
 /* 작성한 레시피 */
-#container .content .recipe_wrap .recipe_content .recipe_box {
+#container .content .recipe_wrap .recipe_box {
 	border-bottom: 1px solid var(--line-color2);
 	height: 160px;
 	padding: 30px 0;
@@ -105,7 +105,7 @@
 	
 }
 
-#container .content .recipe_wrap .recipe_content .recipe_box img {
+#container .content .recipe_wrap .recipe_box .recipe_thumb {
 	height: 100px;
 	width: 100px;
 }

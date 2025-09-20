@@ -250,6 +250,7 @@ public class RecipeService {
 
 
 	        recipeDto.setLikecount(likeService.countLike("recipe", recipe.getId()));
+	        recipeDto.setImage(publicPath + "/" + recipeDto.getImage());
 
 	        recipeDtoList.add(recipeDto);
 	    }

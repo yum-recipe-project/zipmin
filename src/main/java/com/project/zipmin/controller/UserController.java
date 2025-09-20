@@ -823,7 +823,6 @@ public class UserController {
 	    
 	    // 레시피 저장 페이지 조회
 	    Page<RecipeReadMySavedResponseDto> savedRecipePage = recipeService.readSavedRecipePageByUserId(id, pageable);
-	    System.err.println("페이지 조회 후");
 	    
 	    return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
 	            .body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, savedRecipePage));

@@ -1,6 +1,5 @@
 package com.project.zipmin.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
@@ -20,16 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
-import com.project.zipmin.api.ClassErrorCode;
 import com.project.zipmin.api.ClassSuccessCode;
-import com.project.zipmin.api.CommentErrorCode;
-import com.project.zipmin.api.CommentSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.CommentReadMyResponseDto;
-import com.project.zipmin.dto.FundDTO;
 import com.project.zipmin.dto.GuideReadMySavedResponseDto;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
@@ -38,7 +33,6 @@ import com.project.zipmin.dto.RecipeReadMyResponseDto;
 import com.project.zipmin.dto.RecipeReadMySavedResponseDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
-import com.project.zipmin.dto.UserDto;
 import com.project.zipmin.dto.UserPasswordCheckRequestDto;
 import com.project.zipmin.dto.UserProfileReadResponseDto;
 import com.project.zipmin.dto.UserReadRequestDto;
@@ -48,7 +42,6 @@ import com.project.zipmin.dto.UserUpdateResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.CookingService;
-import com.project.zipmin.service.FridgeService;
 import com.project.zipmin.service.KitchenService;
 import com.project.zipmin.service.RecipeService;
 import com.project.zipmin.service.UserService;
@@ -186,6 +179,11 @@ public class UserController {
 	
 	
 	
+	// USER_READ_SUCCESS
+	// LIKE_COUNT_FAIL
+	// USER_INVALID_INPUT
+	// LIKE_INVALID_INPUT
+	// USER_NOT_FOUND
 	
 	// 사용자 프로필 조회
 	@GetMapping("/users/{id}/profile")
@@ -738,7 +736,9 @@ public class UserController {
 	
 	
 	
-	
+	// USER_READ_CLASS_LIST_SUCCESS
+	// USER_READ_CLASS_LIST_FAIL
+	// CLASS_INVALID_INPUT
 	// 개설한 쿠킹클래스
 	@GetMapping("/users/{id}/classes")
 	public ResponseEntity<?> listUserClass(
@@ -750,8 +750,8 @@ public class UserController {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<ClassReadResponseDto> classPage = cookingService.readClassPageByUserId(id, sort, pageable);
 		
-		return ResponseEntity.status(ClassSuccessCode.CLASS_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(ClassSuccessCode.CLASS_READ_LIST_SUCCESS, classPage));
+		return ResponseEntity.status(UserSuccessCode.USER_READ_CLASS_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_READ_CLASS_LIST_SUCCESS, classPage));
 	}
 	
 	
@@ -836,8 +836,15 @@ public class UserController {
 
 	
 	
+
 	
-	
+	// USER_READ_LIST_SUCCESS
+	// USER_READ_RECIPE_LIST_FAIL
+	// RECIPE_CATEGORY_READ_LIST_FAIL
+	// LIKE_COUNT_FAIL
+	// USER_INVALID_INPUT
+	// RECIPE_INVALID_INPUT
+	// LIKE_INVALID_INPUT
 	// 작성한 레시피
 	@GetMapping("/users/{id}/recipes")
 	public ResponseEntity<?> readUserRecipeList(
@@ -854,14 +861,21 @@ public class UserController {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<RecipeReadMyResponseDto> recipePage = recipeService.readRecipePageByUserId(id, sort, pageable);
 		
-		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, recipePage));
+		return ResponseEntity.status(UserSuccessCode.USER_READ_RECIPE_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_READ_RECIPE_LIST_SUCCESS, recipePage));
 	}
 	
 	
 	
 	
 	
+	// USER_UNAUTHORIZED_ACCESS
+	// USER_LIKE_SUCCESS
+	// USER_INVALID_INPUT
+	// USER_NOT_FOUND
+	// LIKE_INVALID_INPUT
+	// LIKE_DUPLICATE
+	// LIKE_CREATE_FAIL
 	
 	// 사용자 좋아요
 	@PostMapping("/users/{id}/likes")
@@ -886,6 +900,15 @@ public class UserController {
 	
 	
 	
+	// USER_UNAUTHORIZED_ACCESS
+	// USER_UNLIKE_SUCCESS
+	// USER_INVALID_INPUT
+	// USER_NOT_FOUND
+	// LIKE_INVALID_INPUT
+	// LIKE_NOT_FOUND
+	// (LIKE_FORBIDDEN)
+	// LIKE_DELETE_FAIL
+	
 	// 사용자 좋아요 취소
 	@DeleteMapping("/users/{id}/likes")
 	public ResponseEntity<?> unlikeUser(
@@ -899,7 +922,7 @@ public class UserController {
 		}
 		likeDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 		
-		commentService.unlikeComment(likeDto);
+		userService.unlikeUser(likeDto);
 		
 		return ResponseEntity.status(UserSuccessCode.USER_UNLIKE_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_UNLIKE_SUCCESS, null));

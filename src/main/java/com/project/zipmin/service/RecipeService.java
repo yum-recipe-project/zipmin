@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.RecipeErrorCode;
+import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.dto.LikeReadResponseDto;
 import com.project.zipmin.dto.RecipeCategoryCreateRequestDto;
 import com.project.zipmin.dto.RecipeCategoryCreateResponseDto;
@@ -263,7 +264,7 @@ public class RecipeService {
 	        recipePage = recipeRepository.findByUserId(userId, sortedPageable);
 	    }
 	    catch (Exception e) {
-	        throw new ApiException(RecipeErrorCode.RECIPE_READ_LIST_FAIL);
+	        throw new ApiException(UserErrorCode.USER_READ_RECIPE_LIST_FAIL);
 	    }
 
 	    // 레시피 목록 응답 구성

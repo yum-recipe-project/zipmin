@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ClassErrorCode;
+import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.ClassApplyCreateRequestDto;
 import com.project.zipmin.dto.ClassApplyCreateResponseDto;
@@ -496,7 +497,7 @@ public class CookingService {
 			}
 		}
 		catch (Exception e) {
-			throw new ApiException(ClassErrorCode.CLASS_APPLY_READ_LIST_FAIL);
+			throw new ApiException(UserErrorCode.USER_READ_CLASS_LIST_FAIL);
 		}
 		
 		Date today = new Date();

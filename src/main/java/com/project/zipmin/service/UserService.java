@@ -366,7 +366,7 @@ public class UserService {
 		// 입력값 검증
 		if (likeDto == null || likeDto.getTablename() == null
 				|| likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
-			throw new ApiException(LikeErrorCode.LIKE_INVALID_INPUT);
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
 		}
 		
 		// 사용자 존재 여부 확인
@@ -374,7 +374,7 @@ public class UserService {
 			new ApiException(UserErrorCode.USER_NOT_FOUND);
 		}
 		
-		// 좋아요 퓌소
+		// 좋아요 취소
 		try {
 			likeService.deleteLike(likeDto);
 		}

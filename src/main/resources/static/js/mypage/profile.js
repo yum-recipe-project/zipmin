@@ -138,14 +138,29 @@ document.addEventListener('DOMContentLoaded', async function() {
 				userWrap.appendChild(p);
 			}
 		}
-		
+		else if (result.code === 'LIKE_COUNT_FAIL') {
+			alertDanger('좋아요 수 집계에 실패했습니다.');
+		}
+		else if (result.code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (result.code === 'LIKE_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (result.code === 'USER_NOT_FOUND') {
+			alertDanger('해당 사용자를 찾을 수 없습니다.');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alertDanger('서버 내부에서 오류가 발생했습니다.');
+		}
+		else {
+			console.log(error);
+		}
 	}
 	catch(error) {
 		console.log(error);
-		
-		// *** TODO : 에러코드 작성하기 ***
+		alertDanger('알 수 없는 오류가 발생했습니다.');
 	}
-	
 });
 
 
@@ -176,9 +191,7 @@ async function fetchRecipeList() {
 		
 		const result = await response.json();
 		
-		console.log(result);
-		
-		if (result.code === 'USER_READ_LIST_SUCCESS') {
+		if (result.code === 'USER_READ_RECIPE_LIST_SUCCESS') {
 			// 전역변수 설정
 			totalPages = result.data.totalPages;
 			totalElements = result.data.totalElements;
@@ -204,13 +217,34 @@ async function fetchRecipeList() {
 			// 스크롤 최상단 이동
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
-		
-		
-		// *** TODO : 에러 코드 추가하기 ***
+		else if (result.code === 'USER_READ_RECIPE_LIST_FAIL') {
+			alertDanger('사용자 레시피 목록 조회에 실패했습니다.');
+		}
+		else if (result.code === 'RECIPE_CATEGORY_READ_LIST_FAIL') {
+			alertDanger('레시피 카테고리 목록 조회에 실패했습니다.');
+		}
+		else if (result.code === 'LIKE_COUNT_FAIL') {
+			alertDanger('좋아요 수 집계에 실패했습니다.');
+		}
+		else if (result.code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (result.code === 'RECIPE_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (result.code === 'LIKE_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alertDanger('서버 내부에서 오류가 발생했습니다.');
+		}
+		else {
+			console.log(error);
+		}
 	}
 	catch (error) {
-		alertDanger('알 수 없는 오류가 발생했습니다.');
 		console.log(error);
+		alertDanger('알 수 없는 오류가 발생했습니다.');
 	}
 }
 
@@ -240,7 +274,7 @@ async function fetchClassList() {
 		
 		const result = await response.json();
 		
-		if (result.code === 'CLASS_READ_LIST_SUCCESS') {
+		if (result.code === 'USER_READ_CLASS_LIST_SUCCESS') {
 			// 전역변수 설정
 			totalPages = result.data.totalPages;
 			totalElements = result.data.totalElements;
@@ -266,11 +300,18 @@ async function fetchClassList() {
 			// 스크롤 최상단 이동
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
-		
-		
-		// *** TODO : 에러 코드 추가하기 ***
-		
-		console.log(result);
+		else if (result.code === 'USER_READ_CLASS_LIST_FAIL') {
+			alertDanger('사용자 클래스 목록 조회에 실패했습니다.');
+		}
+		else if (result.code === 'CLASS_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alertDanger('서버 내부에서 오류가 발생했습니다.');
+		}
+		else {
+			console.log(error);
+		}
 	}
 	catch (error) {
 		console.log(error);
@@ -604,7 +645,9 @@ function renderClassPagination() {
 
 
 
-
+/**
+ * 사용자 좋아요 및 좋아요를 취소하는 함수
+ */
 document.addEventListener('DOMContentLoaded', function() {
 	
 	const userWrap = document.getElementById('userWrap');
@@ -618,7 +661,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			return;
 		}
 		
-		// 좋아요 취소
+		// 사용자 좋아요 취소
 		if (button.dataset.isLiked === 'true') {
 			try {
 				const id = new URLSearchParams(window.location.search).get('id');
@@ -642,12 +685,40 @@ document.addEventListener('DOMContentLoaded', function() {
 			catch(error) {
 				const code = error?.response?.data?.code;
 				
-				// *** TODO : 에러코드 추가 ***
-				console.log(error);
+				if (code === 'USER_UNLIKE_FAIL') {
+					alertDanger('사용자 좋아요 취소에 실패했습니다.');
+				}
+				else if (code === 'LIKE_DELETE_FAIL') {
+					alertDanger('좋아요 삭제에 실패했습니다.');
+				}
+				else if (code === 'USER_INVALID_INPUT') {
+					alertDanger('입력값이 유효하지 않습니다.')
+				}
+				else if (code === 'LIKE_INVALID_INPUT') {
+					alertDanger('입력값이 유효하지 않습니다.');
+				}
+				else if (code === 'USER_UNAUTHORIZED') {
+					alertDanger('로그인되지 않은 사용자입니다.')
+				}
+				else if (code === 'LIKE_FORBIDDEN') {
+					alertDanger('접근 권한이 없습니다.');
+				}
+				else if (code === 'LIKE_NOT_FOUND') {
+					alertDanger('해당 좋아요를 찾을 수 없습니다');
+				}
+				else if (code === 'USER_NOT_FOUND') {
+					alertDanger('해당 사용자를 찾을 수 없습니다.');
+				}
+				else if (code === 'INTERNAL_SERVER_ERROR') {
+					alertDanger('서버 내부에서 오류가 발생했습니다.');
+				}
+				else {
+					console.log(error);
+				}
 			}
 		}
 		
-		// 좋아요
+		// 사용자 좋아요
 		else if (button.dataset.isLiked === 'false') {
 			try {
 				const id = new URLSearchParams(window.location.search).get('id');
@@ -669,15 +740,40 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 			catch(error) {
 				const code = error?.response?.data?.code;
-								
-				// *** TODO : 에러코드 추가 ***
-				console.log(error);
+				
+				if (code === 'USER_LIKE_FAIL') {
+					alertDanger('사용자 좋아요에 실패했습니다.');
+				}
+				else if (code === 'LIKE_CREATE_FAIL') {
+					alertDanger('좋아요 작성에 실패했습니다.');
+				}
+				else if (code === 'USER_INVALID_INPUT') {
+					alertDanger('입력값이 유효하지 않습니다.')
+				}
+				else if (code === 'LIKE_INVALID_INPUT') {
+					alertDanger('입력값이 유효하지 않습니다.');
+				}
+				else if (code === 'USER_UNAUTHORIZED') {
+					alertDanger('로그인되지 않은 사용자입니다.')
+				}
+				else if (code === 'LIKE_NOT_FOUND') {
+					alertDanger('해당 좋아요를 찾을 수 없습니다');
+				}
+				else if (code === 'USER_NOT_FOUND') {
+					alertDanger('해당 사용자를 찾을 수 없습니다.');
+				}
+				else if (code === 'LIKE_DUPLICATE') {
+					alertDanger('이미 좋아요한 사용자입니다.');
+				}
+				else if (code === 'INTERNAL_SERVER_ERROR') {
+					alertDanger('서버 내부에서 오류가 발생했습니다.');
+				}
+				else {
+					console.log(error);
+				}
 			}
 		}
-		
-		
 	});
-	
 });
 
 

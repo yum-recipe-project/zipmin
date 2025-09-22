@@ -15,104 +15,84 @@
 		
 		<main id="container">
 			<div class="content">
-			
-				<div class="profile_wrap">
-					
-					<!-- 유저 프로필 -->
-					<div class="info_wrap">
-						<div class="info_inner">
+				<!-- 사용자 정보 -->
+				<div id="userWrap" class="user_wrap">
+					<div class="user">
+						<!-- 이미지 선택 영역 -->
+						<div class="image_field">
+							<span class="user_avatar"></span>
+							<button class="edit_btn">
+								<img src="/images/user/edit_user.png" alt="수정">
+								<p>프로필 이미지 설정</p>
+							</button>
+						</div>
 						
-							<!-- 유저 이미지 -->
-							<div class="profile">
-							
-								<span class="profile_img"></span>
-								<div class="modify_btn_wrap">
-									<button class="modify_btn" id="profileModifyBtn">
-									    <img id="profileIcon" src="/images/user/edit_user.png" alt="수정">
-									    <p id="profileState">프로필 이미지 설정</p>
-									</button>
-									
-									 <input type="file" id="fileInput" style="display:none;" accept="image/*">
-									 
-								</div>
-							
-							</div>
+						<!-- 이미지 목록 영역 -->
+						<!-- <div class="image_list">
+							<ul>
+								<li><button><img src="/images/fridge/chicken.png"></button></li>
+								<li><button><img src="/images/fridge/pig.png"></button></li>
+								<li><button><img src="/images/fridge/cow.png"></button></li>
+								<li><button><img src="/images/fridge/grass.png"></button></li>
+								<li><button><img src="/images/fridge/carrot.png"></button></li>
+								<li><button><img src="/images/fridge/onion.png"></button></li>
+								<li><button><img src="/images/fridge/eggplant.png"></button></li>
+								<li><button><img src="/images/fridge/ketchup.png"></button></li>
+								<li><button><img src="/images/fridge/soysauce.png"></button></li>
+								<li><button><img src="/images/fridge/mayonnaise.png"></button></li>
+								<li><button><img src="/images/fridge/chili.png"></button></li>
+							</ul>
+							<input type="hidden" name="avatar">
+						</div> -->
 						
-							<!-- 유저 정보 -->
-							<div class="summary">
-							
-								<div class="nickname_field">
-									<div class="field_top">
-										<label>닉네임</label>
-										<input type="hidden" id="nicknameInput" name="" value="" placeholder="이름 입력">
-										<div class="modify_btn_wrap">
-											<button class="modify_btn" id="nickNameModifyBtn">
-											    <img id="nickNameIcon" src="/images/user/edit_user.png" alt="수정">
-											    <p id="nickNameState">수정</p>
-											</button>
-										</div>
-									</div>
-									<div class="field_bottom" id="nickNameField">
-										<p>아잠만</p>
-										<div class="follow_txt">
-											<a href="/mypage/follower.do">팔로워</a>
-											<a href="/mypage/following.do">팔로잉</a>
-										</div>
-									</div>
-									
-									<!-- 닉네임 수정폼 -->
-									<div id="modifyNickName" class="hidden">
-										<div class="nickname_random_field">
-											<span>닉네임 설정</span>
-											<button class="random_wrap">
-											    <span>랜덤 생성</span>
-											    <img src="/images/mypage/refresh.png" alt="새로고침">
-											</button>
-										</div>
-										<div class="modify_field">
-											<input type="text" name="" value="" placeholder="닉네임 입력">
-										</div>
-										<p class="nickname_warning">닉네임은 노출되는 정보이므로 개인정보가 유출되지 않도록 주의해주세요.</p>
-										<div class="submit_btn_wrap">
-											<button type="submit" class="save_btn">저장</button>
-										</div>
-									</div>
-									
-								</div>
-								
-								<div class="comment_field">
-									<div class="field_top">
-										<label>소개</label>
-										<input type="hidden" id="nameInput" name="" value="" placeholder="이름 입력">
-										<div class="modify_btn_wrap">
-											<button class="modify_btn" id="commentModifyBtn">
-											    <img id="commentIcon" src="/images/user/edit_user.png" alt="수정">
-											    <p id="commentState">수정</p>
-											</button>
-										</div>
-									</div>
-									<p id="comment">안녕하세요, 저는 아잠만입니다. 저는 요즘 곱창에 빠져있어요. 곱창레시피 많이 올릴게요~</p>
-									
-									<!-- 소개 수정폼 -->
-									<div id="modifyComment" class="hidden">
-										<div class="modify_field">
-											<input type="text" name="" value="" placeholder="소개 입력">
-										</div>
-										<div class="submit_btn_wrap">
-											<button type="submit" class="save_btn">저장</button>
-										</div>
-									</div>
-									
-									
-								</div>
-								
-								<div class="point_field">
-									<span>500P</span>
-									<button class="btn_primary" type="button" data-bs-toggle="modal" data-bs-target="#topUpPointModal" onclick="">충전</button>
-								</div>
-								
+						<div class="nickname_field">
+							<div class="nickname_title">
+								<label>닉네임</label>
+								<button class="edit_btn">
+								    <img src="/images/user/edit_user.png" alt="수정">
+								    <p>수정</p>
+								</button>
 							</div>
 							
+							<div class="nickname_content">
+								<p>아잠만</p>
+								<a href="/mypage/follower.do">팔로워</a>
+								<a href="/mypage/following.do">팔로잉</a>
+							</div>
+							
+							<!-- 닉네임 수정폼 -->
+							<form id="editUserNicknameForm" class="nickname_form">
+								<div class="edit_input">
+									<input type="text" name="nickname" placeholder="닉네임 입력">
+								</div>
+								<p class="nickname_warning">닉네임은 노출되는 정보이므로 개인정보가 유출되지 않도록 주의해주세요.</p>
+								<button type="submit" class="btn btn_primary_wide">저장</button>
+							</form>
+						</div>
+						
+						<div class="introduce_field">
+							<div class="introduce_title">
+								<label>소개</label>
+								<button class="edit_btn">
+								    <img src="/images/user/edit_user.png" alt="수정">
+								    <p>수정</p>
+								</button>
+							</div>
+							
+							<p id="user_introduce">안녕하세요, 저는 아잠만입니다. 저는 요즘 곱창에 빠져있어요. 곱창레시피 많이 올릴게요~</p>
+							
+							<!-- 소개 수정폼 -->
+							<form id="editUserIntroduceForm" class="introduce_form">
+								<div class="edit_input">
+									<input type="text" name="introduce" placeholder="소개 입력">
+								</div>
+								<button type="submit" class="btn btn_primary_wide">저장</button>
+							</form>
+						</div>
+						
+						<div class="point_field">
+							<span>500P</span>
+							<button class="btn_primary" type="button" data-bs-toggle="modal" data-bs-target="#topUpPointModal" onclick="">충전</button>
 						</div>
 					</div>
 					
@@ -238,7 +218,6 @@
 					</div>
 					
 				</div>
-			</div>
 			
 			<!-- 포인트 충전 -->
 			<%@include file="../modal/topUpPointModal.jsp" %>

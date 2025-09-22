@@ -50,6 +50,12 @@ function renderSavedRecipeList(recipeList) {
         li.className = 'recipe_item';
         li.dataset.id = recipe.id;
 		
+		
+		// 상세보기 링크
+		const link = document.createElement('a');
+		link.href = `/recipe/viewRecipe.do?id=${recipe.id}`; 
+		link.className = 'recipe_link';
+		
 
         const recipeBox = document.createElement('div');
         recipeBox.className = 'recipe_box';
@@ -122,7 +128,9 @@ function renderSavedRecipeList(recipeList) {
 
         details.append(topDiv, infoDiv, scoreDiv);
         recipeBox.appendChild(details);
-        li.appendChild(recipeBox);
+		
+		link.appendChild(recipeBox);
+		li.appendChild(link);
         container.appendChild(li);
     });
 }

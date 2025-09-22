@@ -53,12 +53,6 @@ public class User {
 	private int point;
 	private int revenue;
 	
-	@Formula("(SELECT COUNT(*) FROM likes l WHERE l.recodenum = id AND l.tablename = 'users')")
-	private int likecount;
-	
-	@Formula("(SELECT COUNT(*) FROM recipe r WHERE r.user_id = id)")
-	private int recipecount;
-	
 	// 정적 팩토리 메서드
 	public static User createUser(String username, Role role) {
         User user = new User();

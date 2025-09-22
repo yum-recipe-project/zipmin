@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			page = 0;
 			recipeList = [];
 			
-			fetchRecipeList(recipeList);
+			fetchRecipeList();
 		});
 	});
 	
@@ -93,12 +93,13 @@ document.addEventListener('DOMContentLoaded', function() {
 			page = 0;
 			classList = [];
 			
-			fetchClassList(classList);
+			fetchClassList();
 		});
 	});
 	
-	fetchRecipeList(recipeList);
-	fetchClassList(classList);
+	fetchUser();
+	fetchRecipeList();
+	fetchClassList();
 });
 
 
@@ -108,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
 /**
  * 사용자 프로필 데이터를 가져오는 함수
  */
-document.addEventListener('DOMContentLoaded', async function() {
+async function fetchUser() {
 	
 	const userWrap = document.getElementById('userWrap');
 	
@@ -130,7 +131,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 			userWrap.querySelector('.user_title button').dataset.isLiked = result.data.liked ? 'true' : 'false';
 			userWrap.querySelector('.user_introduce').innerText = result.data.introduce;
 			userWrap.querySelector('.likecount').innerText = `${result.data.likecount}명`;
-			userWrap.querySelector('.recipecount').innerText = `${result.data.recipecount}개`;
 			if (result.data.link) {
 				const p = document.createElement('p');
 				p.className = 'user_link';
@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 		console.log(error);
 		alertDanger('알 수 없는 오류가 발생했습니다.');
 	}
-});
+}
 
 
 
@@ -172,6 +172,7 @@ document.addEventListener('DOMContentLoaded', async function() {
  */
 async function fetchRecipeList() {
 	
+	const userWrap = document.getElementById('userWrap');
 	const recipeWrap = document.getElementById('recipeWrap');
 	
 	// 레시피 목록 조회
@@ -192,6 +193,7 @@ async function fetchRecipeList() {
 		const result = await response.json();
 		
 		if (result.code === 'USER_READ_RECIPE_LIST_SUCCESS') {
+			
 			// 전역변수 설정
 			totalPages = result.data.totalPages;
 			totalElements = result.data.totalElements;
@@ -199,6 +201,7 @@ async function fetchRecipeList() {
 			recipeList = result.data.content;
 			
 			// 렌더링
+			userWrap.querySelector('.recipecount').innerText = `${totalElements}개`;
 			recipeWrap.querySelector('.recipe_header').innerText = `레시피 ${totalElements}개`;
 			renderRecipeList(recipeList);
 			renderRecipePagination();
@@ -677,9 +680,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				});
 				
 				if (response.data.code === 'USER_UNLIKE_SUCCESS') {
-					button.dataset.isLiked = 'false';
-					button.className = 'btn btn_dark';
-					button.innerText = '팔로우';
+					fetchUser();
 				}
 			}
 			catch(error) {
@@ -733,9 +734,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				});
 				
 				if (response.data.code === 'USER_LIKE_SUCCESS') {
-					button.dataset.isLiked = 'true';
-					button.className = 'btn btn_outline';
-					button.innerText = '팔로우 취소';
+					fetchUser();
 				}
 			}
 			catch(error) {

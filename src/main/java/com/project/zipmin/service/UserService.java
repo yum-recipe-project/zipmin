@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.method.P;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -121,10 +120,7 @@ public class UserService {
 		
 		// 사용자 응답 구성
 		UserProfileReadResponseDto userDto = userMapper.toReadProfileResponseDto(user);
-		
-		// TODO: 응답 좋아요수랑 응답 구성하는 부분 수정하기 ***
-		userDto.setLikecount(likeService.countLike("comments", user.getId()));
-		
+		userDto.setLikecount(likeService.countLike("users", user.getId()));
 		
 		// 좋아요 여부
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

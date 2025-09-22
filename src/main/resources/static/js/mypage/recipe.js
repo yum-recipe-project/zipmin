@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
- * 내가 작성한 레시피 목록 가져오기
+ * 내가 작성한 레시피 목록 데이터를 가져오는 함수
  */
 async function fetchMyRecipeList() {
     try {
@@ -38,11 +38,9 @@ async function fetchMyRecipeList() {
     }
 }
 
+
 /**
- * 레시피 목록 화면에 렌더링
- */
-/**
- * 레시피 목록 화면에 렌더링
+ * 레시피 목록 화면에 렌더링하는 함수
  */
 function renderMyRecipeList(recipeList) {
     const container = document.getElementById('myRecipeList');
@@ -52,10 +50,11 @@ function renderMyRecipeList(recipeList) {
         li.className = 'recipe_item';
         li.dataset.id = recipe.id;
 
-        // 상세보기 링크
-        const link = document.createElement('a');
-        link.href = `/recipes/${recipe.id}`;
-        link.className = 'recipe_link';
+		// 상세보기 링크
+		const link = document.createElement('a');
+		link.href = `/recipe/viewRecipe.do?id=${recipe.id}`; 
+		link.className = 'recipe_link';
+
 
         const recipeBox = document.createElement('div');
         recipeBox.className = 'recipe_box';
@@ -126,7 +125,7 @@ function renderMyRecipeList(recipeList) {
         details.append(topDiv, infoDiv, scoreDiv);
         recipeBox.appendChild(details);
 
-        // 관리 버튼 (오른쪽 상단)
+		// 레시피 관리(삭제) 버튼
         const managementDiv = document.createElement('div');
         managementDiv.className = 'recipe_management';
 
@@ -142,7 +141,6 @@ function renderMyRecipeList(recipeList) {
         managementDiv.appendChild(deleteBtn);
         recipeBox.appendChild(managementDiv);
 
-        // 링크 안에 recipeBox 포함
         link.appendChild(recipeBox);
         li.appendChild(link);
 

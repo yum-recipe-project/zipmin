@@ -56,8 +56,8 @@
 							
 							<div class="nickname_content">
 								<p>아잠만</p>
-								<a href="/mypage/follower.do">팔로워</a>
-								<a href="/mypage/following.do">팔로잉</a>
+								<button type="button" data-bs-toggle="modal" data-bs-target="#viewUserFollowerModal">팔로워</button>
+								<button type="button" data-bs-toggle="modal" data-bs-target="#viewUserFollowingModal">팔로잉</button>
 							</div>
 							
 							<!-- 닉네임 수정폼 -->
@@ -98,16 +98,12 @@
 					
 					<!-- 내 정보 관리 -->
 					<div class="menu_wrap">
-					
 						<h2>내 정보 관리</h2>
 						
 						<!-- 회원 정보 -->
 						<div class="my_info">
-						
 							<label>내 정보 관리</label>
-							
 							<div class="info">
-							
 								<a href="/user/userInfo.do" class="info_box">
 									<div class="info_txt">
 										<span>회원정보</span>
@@ -115,7 +111,6 @@
 									</div>
 									<img src="/images/mypage/arrow_right.png">
 								</a>
-								
 								<a href="/user/changePassword.do" class="info_box">
 									<div class="info_txt">
 										<span>비밀번호 변경</span>
@@ -123,7 +118,6 @@
 									</div>
 									<img src="/images/mypage/arrow_right.png">
 								</a>
-								
 								<a href="/mypage/revenue.do" class="info_box">
 									<div class="info_txt">
 										<span>수익</span>
@@ -131,17 +125,13 @@
 									</div>
 									<img src="/images/mypage/arrow_right.png">
 								</a>
-								
 							</div>
-							
 						</div>
 						
 						<!-- 활동 관리 -->
 						<div class="my_info">
 							<label>활동 관리</label>
-							
 							<div class="info">
-							
 								<a href="/mypage/recipe.do" class="info_box">
 									<div class="info_txt">
 										<span>내 레시피</span>
@@ -149,7 +139,6 @@
 									</div>
 									<img src="/images/mypage/arrow_right.png">
 								</a>
-								
 								<a href="/mypage/review.do" class="info_box">
 									<div class="info_txt">
 										<span>내 요리 후기</span>
@@ -157,7 +146,6 @@
 									</div>
 									<img src="/images/mypage/arrow_right.png">
 								</a>
-								
 								<a href="/mypage/comment.do" class="info_box">
 									<div class="info_txt">
 										<span>내 댓글</span>
@@ -165,7 +153,6 @@
 									</div>
 									<img src="/images/mypage/arrow_right.png">
 								</a>
-								
 								<a href="/mypage/savedRecipe.do" class="info_box">
 									<div class="info_txt">
 										<span>저장한 레시피</span>
@@ -173,7 +160,6 @@
 									</div>
 									<img src="/images/mypage/arrow_right.png">
 								</a>
-								
 								<a href="/mypage/savedGuide.do" class="info_box">
 									<div class="info_txt">
 										<span>저장한 키친가이드</span>
@@ -181,20 +167,13 @@
 									</div>
 									<img src="/images/mypage/arrow_right.png">
 								</a>
-							
 							</div>
-							
-							
-							
 						</div>
 						
 						<!-- 쿠킹 클래스 -->
 						<div class="my_info">
-						
 							<label>쿠킹 클래스</label>
-							
 							<div class="info">
-							
 								<a href="/mypage/appliedClass.do" class="info_box">
 									<div class="info_txt">
 										<span>신청 목록 관리</span>
@@ -202,7 +181,6 @@
 									</div>
 									<img src="/images/mypage/arrow_right.png">
 								</a>
-								
 								<a href="/mypage/class.do" class="info_box">
 									<div class="info_txt">
 										<span>내 쿠킹클래스</span>
@@ -210,16 +188,15 @@
 									</div>
 									<img src="/images/mypage/arrow_right.png">
 								</a>
-								
 							</div>
-							
 						</div>
-						
 					</div>
-					
 				</div>
+			</div>
 			
-			<!-- 포인트 충전 -->
+			<!-- 모달 -->
+			<%@include file="../modal/viewUserFollowerModal.jsp" %>
+			<%@include file="../modal/viewUserFollowingModal.jsp" %>
 			<%@include file="../modal/topUpPointModal.jsp" %>
 			
 			

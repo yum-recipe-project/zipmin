@@ -76,13 +76,16 @@
 }
 
 /* 사용자 정보 > 닉네임 필드 > 팔로워 */
-#container .user_wrap .user .nickname_field .nickname_content a {
+#container .user_wrap .user .nickname_field .nickname_content button {
 	position: relative;
 	color: var(--point-color1);
 	font-size: 12px;
+	border: none;
+	background: none;
+	padding-top: 3px;
 }
 
-#container .user_wrap .user .nickname_field .nickname_content a:first-of-type::after {
+#container .user_wrap .user .nickname_field .nickname_content button:first-of-type::after {
 	content: '';
     position: absolute;
     top: 50%;

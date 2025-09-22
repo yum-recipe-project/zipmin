@@ -21,6 +21,9 @@ public enum UserSuccessCode implements Code {
 	USER_LOGOUT_SUCCESS(HttpStatus.OK, "로그아웃 성공"),
 	USER_RESET_PASSWORD_SUCCESS(HttpStatus.OK, "임시 비밀번호 발급 성공"),
 	
+	USER_LIKE_SUCCESS(HttpStatus.OK, "사용자 좋아요 성공"),
+	USER_UNLIKE_SUCCESS(HttpStatus.OK, "사용자 좋아요 취소 성공"),
+	
 	USER_USERNAME_NOT_DUPLICATED(HttpStatus.OK, "사용 가능한 아이디"),
 	USER_CORRECT_PASSWORD(HttpStatus.OK, "비밀번호 일치");
 

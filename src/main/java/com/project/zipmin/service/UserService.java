@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.method.P;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -19,6 +21,9 @@ import com.project.zipmin.api.AuthErrorCode;
 import com.project.zipmin.api.LikeErrorCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.dto.CustomUserDetails;
+import com.project.zipmin.dto.LikeCreateRequestDto;
+import com.project.zipmin.dto.LikeCreateResponseDto;
+import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.UserReadRequestDto;
 import com.project.zipmin.dto.UserPasswordCheckRequestDto;
 import com.project.zipmin.dto.UserProfileReadResponseDto;
@@ -32,7 +37,6 @@ import com.project.zipmin.entity.User;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.mapper.ChompMapper;
 import com.project.zipmin.mapper.UserMapper;
-import com.project.zipmin.repository.LikeRepository;
 import com.project.zipmin.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -44,8 +48,8 @@ public class UserService {
 	private final UserMapper userMapper;
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
-
-	private final LikeRepository likeRepository;
+	
+	private final LikeService likeService;
 	
 	
 	
@@ -118,6 +122,17 @@ public class UserService {
 		// 사용자 응답 구성
 		UserProfileReadResponseDto userDto = userMapper.toReadProfileResponseDto(user);
 		
+		// TODO: 응답 좋아요수랑 응답 구성하는 부분 수정하기 ***
+		userDto.setLikecount(likeService.countLike("comments", user.getId()));
+		
+		
+		// 좋아요 여부
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
+			String username = authentication.getName();
+			int userId = readUserByUsername(username).getId();
+			userDto.setLiked(likeService.existsUserLike("users", user.getId(), userId));
+		}
 		
 		return userDto;
 	}
@@ -312,6 +327,66 @@ public class UserService {
 		return userRepository.existsByUsername(username);
 	}
 
+	
+	
+	
+	// 사용자 좋아요
+	public LikeCreateResponseDto likeUser(LikeCreateRequestDto likeDto) {
+		
+		// 입력값 검증
+		if (likeDto == null || likeDto.getTablename() == null
+				|| likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		// 사용자 존재 여부 확인
+		if (userRepository.existsById(likeDto.getRecodenum())) {
+			new ApiException(UserErrorCode.USER_NOT_FOUND);
+		}
+		
+		// 좋아요 저장
+		try {
+			return likeService.createLike(likeDto);
+		}
+		catch (ApiException e) {
+			throw e;
+		}
+		catch (Exception e) {
+			throw new ApiException(UserErrorCode.USER_LIKE_FAIL);
+		}
+		
+	}
+	
+	
+	
+	
+	// 사용자 좋아요 취소
+	public void unlikeUser(LikeDeleteRequestDto likeDto) {
+		
+		// 입력값 검증
+		if (likeDto == null || likeDto.getTablename() == null
+				|| likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+			throw new ApiException(LikeErrorCode.LIKE_INVALID_INPUT);
+		}
+		
+		// 사용자 존재 여부 확인
+		if (userRepository.existsById(likeDto.getRecodenum())) {
+			new ApiException(UserErrorCode.USER_NOT_FOUND);
+		}
+		
+		// 좋아요 퓌소
+		try {
+			likeService.deleteLike(likeDto);
+		}
+		catch (ApiException e) {
+			throw e;
+		}
+		catch (Exception e) {
+			throw new ApiException(UserErrorCode.USER_UNLIKE_FAIL);
+		}
+		
+	}
+	
 	
 	
 	

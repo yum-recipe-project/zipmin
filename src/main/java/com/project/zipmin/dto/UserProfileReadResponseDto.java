@@ -17,5 +17,5 @@ public class UserProfileReadResponseDto {
 	
 	private int likecount;
 	private int recipecount;
-	private int isLiked;
+	private boolean isLiked;
 }

@@ -22,6 +22,8 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.ClassErrorCode;
 import com.project.zipmin.api.ClassSuccessCode;
+import com.project.zipmin.api.CommentErrorCode;
+import com.project.zipmin.api.CommentSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
@@ -29,6 +31,9 @@ import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.CommentReadMyResponseDto;
 import com.project.zipmin.dto.FundDTO;
 import com.project.zipmin.dto.GuideReadMySavedResponseDto;
+import com.project.zipmin.dto.LikeCreateRequestDto;
+import com.project.zipmin.dto.LikeCreateResponseDto;
+import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.RecipeReadMyResponseDto;
 import com.project.zipmin.dto.RecipeReadMySavedResponseDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
@@ -185,6 +190,7 @@ public class UserController {
 	// 사용자 프로필 조회
 	@GetMapping("/users/{id}/profile")
 	public ResponseEntity<?> readUserProfile(@Parameter(description = "사용자의 일련번호", required = true, example = "1") @PathVariable int id) {
+		
 		UserProfileReadResponseDto userDto = userService.readUserProfileById(id);
 		
 		return ResponseEntity.status(UserSuccessCode.USER_READ_SUCCESS.getStatus())
@@ -857,70 +863,49 @@ public class UserController {
 	
 	
 	
-	
-	
-	/*********** 아래 요청명 다 적절히 수정 필요 !!! ***********/
-	
-	
-	// 팔로워 목록
-	@GetMapping("/users/{id}/followers")
-	public List<UserDto> listFollowers() {
-		return null;
-	}
-	
-	
-	
-	// 팔로잉 목록
-	@GetMapping("/users/{id}/following")
-	public List<UserDto> listFollowing() {
-		return null;
-	}
-	
-	
-	
-	// 로그인 한 사용자가 특정 사용자를 팔로우하고 있는지 확인
-	@GetMapping("/users/{id}/following/{targetId}")
-	public boolean checkUserFollow() {
-		return false;
+	// 사용자 좋아요
+	@PostMapping("/users/{id}/likes")
+	public ResponseEntity<?> likeUser(
+			@Parameter(description = "사용자의 일련번호") @PathVariable int id,
+			@Parameter(description = "좋아요 작성 요청 정보") @RequestBody LikeCreateRequestDto likeRequestDto) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
+		}
+		likeRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
+		
+		LikeCreateResponseDto likeResponseDto = userService.likeUser(likeRequestDto);
+		
+		return ResponseEntity.status(UserSuccessCode.USER_LIKE_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_LIKE_SUCCESS, likeResponseDto));
+		
 	}
 	
 	
 	
 	
-	// 로그인 한 사용자의 레시피 좋아요 여부
-	@GetMapping("/users/{userId}/likes/{tablename}/{recodenum}")
-	public boolean checkUserLike(
-	        @PathVariable("userId") String userId,
-	        @PathVariable("tablename") String tablename,
-	        @PathVariable("recodenum") int recodenum) {
-
-	    return true;
+	// 사용자 좋아요 취소
+	@DeleteMapping("/users/{id}/likes")
+	public ResponseEntity<?> unlikeUser(
+			@Parameter(description = "사용자의 일련번호") @PathVariable int id,
+			@Parameter(description = "좋아요 삭제 요청 정보") @RequestBody LikeDeleteRequestDto likeDto) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
+		}
+		likeDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
+		
+		commentService.unlikeComment(likeDto);
+		
+		return ResponseEntity.status(UserSuccessCode.USER_UNLIKE_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_UNLIKE_SUCCESS, null));
 	}
 	
 	
-	
-	// 좋아요 및 팔로우
-	@PostMapping("/users/{userId}/likes/{tablename}/{recodenum}")
-	public int like() {
-		return 0;
-	}
-	
-	
-	
-	// 좋아요 삭제 및 언팔로우
-	@DeleteMapping("/{userId}/likes/{tablename}/{recodenum}")
-	public int unlike() {
-		return 0;
-	}
-	
-	
-	
-	// 사용자의 클래스 결석 횟수 조회
-	@GetMapping("/{userId}/applies/count")
-	public int countApply(
-			@PathVariable("userId") String userId) {
-		return 0;
-	}
 	
 	
 	
@@ -928,31 +913,6 @@ public class UserController {
 	
 	
 
-
-	
-	
-	// 로그인 한 사용자가 받은 후원 조회
-	@GetMapping("/supports")
-	public List<FundDTO> listMySupport() {
-		return null;
-	}
-	
-	
-	
-	// 로그인 한 유저가 포인트 충전 요청
-	@PostMapping("/points/deposit")
-	public int depositPoint() {
-		return 0;
-	}
-	
-	
-	
-	// 특정 유저가 포인트 인출 요청
-	@PostMapping("/{userId}/points/withdraw")
-	public int withdrawPoint(
-			@PathVariable("userId") String userId) {
-		return 0;
-	}
 	
 	
 }

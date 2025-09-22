@@ -125,6 +125,9 @@ document.addEventListener('DOMContentLoaded', async function() {
 		if (result.code === 'USER_READ_SUCCESS') {
 			userWrap.querySelector('.user_avatar').style.backgroundImage = `url(${result.data.avatar})`;
 			userWrap.querySelector('.user_nickname').innerText = result.data.nickname;
+			userWrap.querySelector('.user_title button').className = result.data.liked ? 'btn btn_outline' : 'btn btn_dark';
+			userWrap.querySelector('.user_title button').innerText = result.data.liked ? '팔로우 취소' : '팔로우';
+			userWrap.querySelector('.user_title button').dataset.isLiked = result.data.liked ? 'true' : 'false';
 			userWrap.querySelector('.user_introduce').innerText = result.data.introduce;
 			userWrap.querySelector('.likecount').innerText = `${result.data.likecount}명`;
 			userWrap.querySelector('.recipecount').innerText = `${result.data.recipecount}개`;
@@ -600,6 +603,82 @@ function renderClassPagination() {
 
 
 
+
+
+document.addEventListener('DOMContentLoaded', function() {
+	
+	const userWrap = document.getElementById('userWrap');
+	const button = userWrap.querySelector('.user_title button');
+	
+	button.addEventListener('click', async function(event) {
+		event.preventDefault();
+		
+		if (!isLoggedIn()) {
+			redirectToLogin();
+			return;
+		}
+		
+		// 좋아요 취소
+		if (button.dataset.isLiked === 'true') {
+			try {
+				const id = new URLSearchParams(window.location.search).get('id');
+				
+				const data = {
+					tablename: 'users',
+					recodenum: id
+				}
+				
+				const response = await instance.delete(`/users/${id}/likes`, {
+					data: data,
+					headers: getAuthHeaders()
+				});
+				
+				if (response.data.code === 'USER_UNLIKE_SUCCESS') {
+					button.dataset.isLiked = 'false';
+					button.className = 'btn btn_dark';
+					button.innerText = '팔로우';
+				}
+			}
+			catch(error) {
+				const code = error?.response?.data?.code;
+				
+				// *** TODO : 에러코드 추가 ***
+				console.log(error);
+			}
+		}
+		
+		// 좋아요
+		else if (button.dataset.isLiked === 'false') {
+			try {
+				const id = new URLSearchParams(window.location.search).get('id');
+				
+				const data = {
+					tablename: 'users',
+					recodenum: id
+				}
+				
+				const response = await instance.post(`/users/${id}/likes`, data, {
+					headers: getAuthHeaders()
+				});
+				
+				if (response.data.code === 'USER_LIKE_SUCCESS') {
+					button.dataset.isLiked = 'true';
+					button.className = 'btn btn_outline';
+					button.innerText = '팔로우 취소';
+				}
+			}
+			catch(error) {
+				const code = error?.response?.data?.code;
+								
+				// *** TODO : 에러코드 추가 ***
+				console.log(error);
+			}
+		}
+		
+		
+	});
+	
+});
 
 
 

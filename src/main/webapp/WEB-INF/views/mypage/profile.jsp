@@ -24,7 +24,6 @@
 						<div class="user_info">
 							<div class="user_title">
 								<h2 class="user_nickname"></h2>
-								<!-- *** TODO : 상태 토글되도록 처리 *** -->
 								<button class="btn btn_dark">팔로우</button>
 							</div>
 							<p class="user_introduce">안녕하세요 아잠만입니다 레시피 열심히 작성할게요 !!</p>

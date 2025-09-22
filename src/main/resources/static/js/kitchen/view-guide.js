@@ -20,8 +20,6 @@ function getGuideIdFromQuery() {
  * @param {number} guideId - 요청할 가이드 ID
  */
 async function fetchGuideDetail(guideId) {
-    console.log(`[fetchGuideDetail] Fetching URL: /guides/${guideId}`);
-
     try {
         const response = await fetch(`/guides/${guideId}`, {
             method: 'GET',
@@ -34,7 +32,6 @@ async function fetchGuideDetail(guideId) {
         }
 
         const result = await response.json();
-		console.log(result); // <- 여기서 실제 구조 확인
         const guide = result.data;
 
 		if (!guide) return;

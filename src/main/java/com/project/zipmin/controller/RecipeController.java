@@ -32,6 +32,7 @@ import com.project.zipmin.api.RecipeSuccessCode;
 import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
+import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.RecipeCreateRequestDto;
 import com.project.zipmin.dto.RecipeCreateResponseDto;
 import com.project.zipmin.dto.RecipeReadResponseDto;
@@ -411,7 +412,7 @@ public class RecipeController {
 	
 	
 	
-	// 특정 레시피 좋아요 (저장)
+	// 레시피 저장
 	@PostMapping("/recipes/{id}/likes")
 	public ResponseEntity<?> likeRecipes(
 			@PathVariable("id") int recipeId,
@@ -433,5 +434,29 @@ public class RecipeController {
 				.body(ApiResponse.success(RecipeSuccessCode.RECIPE_LIKE_SUCCESS, likeResponseDto));
 	}
 	
+	
+	
+	
+	
+	// 레시피 저장 취소
+	@DeleteMapping("/recipes/{id}/likes")
+	public ResponseEntity<?> unlikeRecipes(
+	        @PathVariable("id") int guideId,
+	        @RequestBody LikeDeleteRequestDto likeDto) {
+
+	    // 로그인 여부 확인
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+	        throw new ApiException(RecipeErrorCode.RECIPE_UNAUTHORIZED_ACCESS);
+	    }
+
+	    likeDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
+
+	    // 서비스 호출
+	    recipeService.unlikeRecipe(likeDto);
+
+	    return ResponseEntity.status(RecipeSuccessCode.RECIPE_UNLIKE_SUCCESS.getStatus())
+	            .body(ApiResponse.success(RecipeSuccessCode.RECIPE_UNLIKE_SUCCESS, null));
+	}
 	
 }

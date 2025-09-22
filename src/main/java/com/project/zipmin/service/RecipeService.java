@@ -21,6 +21,7 @@ import com.project.zipmin.api.KitchenErrorCode;
 import com.project.zipmin.api.RecipeErrorCode;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
+import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.LikeReadResponseDto;
 import com.project.zipmin.dto.RecipeCategoryCreateRequestDto;
 import com.project.zipmin.dto.RecipeCategoryCreateResponseDto;
@@ -600,5 +601,29 @@ public class RecipeService {
 		    throw new ApiException(RecipeErrorCode.RECIPE_LIKE_FAIL);
 		}
 		
+	}
+
+
+	// 레시피 저장 취소
+	public void unlikeRecipe(LikeDeleteRequestDto likeDto) {
+	    // 입력값 검증
+	    if (likeDto == null || likeDto.getTablename() == null
+	            || likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+	        throw new ApiException(RecipeErrorCode.RECIPE_INVALID_INPUT);
+	    }
+
+	    // 게시글 존재 여부 확인
+	    if (!recipeRepository.existsById(likeDto.getRecodenum())) {
+	        throw new ApiException(RecipeErrorCode.RECIPE_NOT_FOUND);
+	    }
+
+	    // 좋아요 삭제
+	    try {
+	        likeService.deleteLike(likeDto);
+	    } catch (ApiException e) {
+	        throw e;
+	    } catch (Exception e) {
+	        throw new ApiException(RecipeErrorCode.RECIPE_UNLIKE_FAIL);
+	    }
 	}
 }

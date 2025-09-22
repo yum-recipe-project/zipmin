@@ -24,7 +24,7 @@ async function fetchSavedRecipeList() {
             size: size
         }).toString();
 
-        const response = await instance.get(`/users/${payload.id}/likes/recipe?${params}`);
+        const response = await instance.get(`/users/${payload.id}/likes/recipes?${params}`);
 		
         renderSavedRecipeList(response.data.data.content);
 
@@ -49,11 +49,11 @@ function renderSavedRecipeList(recipeList) {
         const li = document.createElement('li');
         li.className = 'recipe_item';
         li.dataset.id = recipe.id;
+		
 
         const recipeBox = document.createElement('div');
         recipeBox.className = 'recipe_box';
 
-   
 		// 이미지
 		const img = document.createElement('img');
 		img.src = recipe.image || '/images/common/default_recipe.jpg';

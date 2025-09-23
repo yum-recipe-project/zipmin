@@ -55,7 +55,7 @@
 							</div>
 							
 							<div class="nickname_content">
-								<p>아잠만</p>
+								<p class="user_nickname"></p>
 								<button type="button" data-bs-toggle="modal" data-bs-target="#viewUserFollowerModal">팔로워</button>
 								<button type="button" data-bs-toggle="modal" data-bs-target="#viewUserFollowingModal">팔로잉</button>
 							</div>
@@ -79,7 +79,7 @@
 								</button>
 							</div>
 							
-							<p class="user_introduce">안녕하세요, 저는 아잠만입니다. 저는 요즘 곱창에 빠져있어요. 곱창레시피 많이 올릴게요~</p>
+							<p class="user_introduce"></p>
 							
 							<!-- 소개 수정폼 -->
 							<form id="editUserIntroduceForm" class="introduce_form">

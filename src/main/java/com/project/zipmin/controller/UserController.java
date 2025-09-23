@@ -513,8 +513,8 @@ public class UserController {
 	})
 	@PatchMapping("/users/{id}")
 	public ResponseEntity<?> updateUser(
-			@Parameter(description = "사용자의 일련번호", required = true, example = "1") @PathVariable Integer id,
-			@Parameter(description = "사용자 수정 요청 정보", required = true) @RequestBody UserUpdateRequestDto userRequestDto) {
+			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
+			@Parameter(description = "사용자 수정 요청 정보") @RequestBody UserUpdateRequestDto userRequestDto) {
 
 		// 입력값 검증
 		if (id == null) {

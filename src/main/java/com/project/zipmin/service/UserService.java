@@ -250,8 +250,12 @@ public class UserService {
 			}
 			user.setTel(userDto.getTel());
 		}
-		
-		// *** TODO : 이미지 소개 링크 추가 ***
+		if (userDto.getAvatar() != null) {
+			user.setAvatar(userDto.getAvatar());
+		}
+		if (userDto.getIntroduce() != null) {
+			user.setIntroduce(userDto.getIntroduce());
+		}
 		
 		// 사용자 수정
 		try {

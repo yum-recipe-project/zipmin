@@ -28,8 +28,8 @@
 						</div>
 						
 						<!-- 이미지 목록 영역 -->
-						<form id="editUserAvatarForm" class="image_list">
-							<ul>
+						<form id="editUserAvatarForm">
+							<ul class="image_list">
 								<li><button><img src="/images/fridge/chicken.png"></button></li>
 								<li><button><img src="/images/fridge/pig.png"></button></li>
 								<li><button><img src="/images/fridge/cow.png"></button></li>

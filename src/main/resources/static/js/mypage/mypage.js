@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
 /**
- * 
+ * 사용자 프로필 작성 폼을 실시간으로 검증하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
 	
@@ -25,10 +25,21 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 	// 이미지 선택 영역 토글
 	const avatarEditButton = userWrap.querySelector('.image_field .edit_btn');
+	const avatarContent = userWrap.querySelector('.image_field .user_avatar');
 	const avatarForm = document.getElementById('editUserAvatarForm');
-	avatarEditButton.addEventListener('click', function () {
-		const isVisible = userWrap.querySelector('.image_list').style.display === 'block';
-		userWrap.querySelector('.image_list').style.display = isVisible ? 'none' : 'block';
+	avatarEditButton.addEventListener('click', function(event) {
+		event.preventDefault();
+		
+		if (avatarForm.querySelector('.image_list').style.display === 'block') {
+			avatarForm.querySelector('.image_list').style.display = 'none';
+			avatarEditButton.querySelector('p').textContent = '프로필 이미지 설정';
+			avatarEditButton.querySelector('img').src = '/images/mypage/edit_1a7ce2.png';
+		}
+		else {
+			avatarForm.querySelector('.image_list').style.display = 'block';
+			avatarEditButton.querySelector('p').textContent = '취소';
+			avatarEditButton.querySelector('img').src = '/images/mypage/cancel_1a7ce2.png';
+		}
 	});
 
 	// 이미지 선택 시 적용
@@ -36,13 +47,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		btn.addEventListener('click', function (event) {
 			event.preventDefault();
 			const src = this.querySelector('img').src;
-			userWrap.querySelector('.user_avatar').style.backgroundImage = `url("${src}")`;
-			userWrap.querySelector('.user_avatar').style.backgroundColor = '#F1F6FD';
-			userWrap.querySelector('.user_avatar').style.backgroundSize = '65%';
-			userWrap.querySelector('.user_avatar').style.backgroundPosition = 'center';
-			userWrap.querySelector('.user_avatar').style.backgroundRepeat = 'no-repeat';
-			userWrap.querySelector('.user_avatar').style.borderColor = '#D7DBE6';
-			userWrap.querySelector('.image_list').style.display = 'none';
+			avatarContent.style.backgroundImage = `url("${src}")`;
+			avatarContent.style.backgroundColor = '#F1F6FD';
+			avatarContent.style.backgroundSize = '65%';
+			avatarContent.style.backgroundPosition = 'center';
+			avatarContent.style.backgroundRepeat = 'no-repeat';
+			avatarContent.style.borderColor = '#D7DBE6';
+			avatarForm.querySelector('.image_list').style.display = 'none';
 			
 			avatarForm.avatar.value = src.substring(src.indexOf('/images')); ;
 		});
@@ -80,7 +91,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		nicknameForm.querySelector('button[type="submit"]').classList.toggle('disable', isNicknameEmpty);
 		nicknameForm.querySelector('button[type="submit"]').disabled = isNicknameEmpty;
 	});
-	
 	
 	// 소개 수정폼 토글
 	const introduceEditButton = userWrap.querySelector('.introduce_field .edit_btn');

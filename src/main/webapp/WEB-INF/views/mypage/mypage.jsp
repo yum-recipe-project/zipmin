@@ -22,13 +22,13 @@
 						<div class="image_field">
 							<span class="user_avatar"></span>
 							<button class="edit_btn">
-								<img src="/images/user/edit_user.png" alt="수정">
+								<img src="/images/user/edit_user.png">
 								<p>프로필 이미지 설정</p>
 							</button>
 						</div>
 						
 						<!-- 이미지 목록 영역 -->
-						<!-- <div class="image_list">
+						<form id="editUserAvatarForm" class="image_list">
 							<ul>
 								<li><button><img src="/images/fridge/chicken.png"></button></li>
 								<li><button><img src="/images/fridge/pig.png"></button></li>
@@ -43,13 +43,13 @@
 								<li><button><img src="/images/fridge/chili.png"></button></li>
 							</ul>
 							<input type="hidden" name="avatar">
-						</div> -->
+						</form>
 						
 						<div class="nickname_field">
 							<div class="nickname_title">
 								<label>닉네임</label>
 								<button class="edit_btn">
-								    <img src="/images/user/edit_user.png" alt="수정">
+								    <img src="/images/mypage/edit_1a7ce2.png">
 								    <p>수정</p>
 								</button>
 							</div>
@@ -66,7 +66,7 @@
 									<input type="text" name="nickname" placeholder="닉네임 입력">
 								</div>
 								<p class="nickname_warning">닉네임은 노출되는 정보이므로 개인정보가 유출되지 않도록 주의해주세요.</p>
-								<button type="submit" class="btn btn_primary_wide">저장</button>
+								<button type="submit" class="btn_primary_wide disable" disabled>저장</button>
 							</form>
 						</div>
 						
@@ -74,19 +74,19 @@
 							<div class="introduce_title">
 								<label>소개</label>
 								<button class="edit_btn">
-								    <img src="/images/user/edit_user.png" alt="수정">
+								    <img src="/images/mypage/edit_1a7ce2.png">
 								    <p>수정</p>
 								</button>
 							</div>
 							
-							<p id="user_introduce">안녕하세요, 저는 아잠만입니다. 저는 요즘 곱창에 빠져있어요. 곱창레시피 많이 올릴게요~</p>
+							<p class="user_introduce">안녕하세요, 저는 아잠만입니다. 저는 요즘 곱창에 빠져있어요. 곱창레시피 많이 올릴게요~</p>
 							
 							<!-- 소개 수정폼 -->
 							<form id="editUserIntroduceForm" class="introduce_form">
 								<div class="edit_input">
 									<input type="text" name="introduce" placeholder="소개 입력">
 								</div>
-								<button type="submit" class="btn btn_primary_wide">저장</button>
+								<button type="submit" class="btn_primary_wide disable" disabled>저장</button>
 							</form>
 						</div>
 						

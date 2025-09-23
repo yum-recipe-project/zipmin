@@ -102,13 +102,13 @@ document.addEventListener('DOMContentLoaded', function() {
 	avatarEditButton.addEventListener('click', function(event) {
 		event.preventDefault();
 		
-		if (avatarForm.querySelector('.image_list').style.display === 'block') {
+		if (avatarForm.querySelector('.image_list').style.display === 'flex') {
 			avatarForm.querySelector('.image_list').style.display = 'none';
 			avatarEditButton.querySelector('p').textContent = '프로필 이미지 설정';
 			avatarEditButton.querySelector('img').src = '/images/mypage/edit_1a7ce2.png';
 		}
 		else {
-			avatarForm.querySelector('.image_list').style.display = 'block';
+			avatarForm.querySelector('.image_list').style.display = 'flex';
 			avatarEditButton.querySelector('p').textContent = '취소';
 			avatarEditButton.querySelector('img').src = '/images/mypage/cancel_1a7ce2.png';
 		}

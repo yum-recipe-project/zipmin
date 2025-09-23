@@ -59,6 +59,20 @@
 /* 사용자 정보 > 이미지 목록 폼 */
 #container .user_wrap .user .image_list {
 	display: none;
+	flex-wrap: wrap;
+	margin-top: 20px;
+	gap: 10px;
+}
+
+#container .user_wrap .user .image_list li {
+	width: 44px;
+	height: 44px;
+}
+
+#container .user_wrap .user .image_list li button {
+	border: 1px solid #ddd;
+	border-radius: 50%;
+	padding: 6px;
 }
 
 /* 사용자 정보 > 닉네임 필드 */

@@ -30,17 +30,17 @@
 						<!-- 이미지 목록 영역 -->
 						<form id="editUserAvatarForm">
 							<ul class="image_list">
-								<li><button><img src="/images/fridge/chicken.png"></button></li>
-								<li><button><img src="/images/fridge/pig.png"></button></li>
-								<li><button><img src="/images/fridge/cow.png"></button></li>
-								<li><button><img src="/images/fridge/grass.png"></button></li>
-								<li><button><img src="/images/fridge/carrot.png"></button></li>
-								<li><button><img src="/images/fridge/onion.png"></button></li>
-								<li><button><img src="/images/fridge/eggplant.png"></button></li>
-								<li><button><img src="/images/fridge/ketchup.png"></button></li>
-								<li><button><img src="/images/fridge/soysauce.png"></button></li>
-								<li><button><img src="/images/fridge/mayonnaise.png"></button></li>
-								<li><button><img src="/images/fridge/chili.png"></button></li>
+								<li><button><img src="/images/user/user1.png"></button></li>
+								<li><button><img src="/images/user/user2.png"></button></li>
+								<li><button><img src="/images/user/user3.png"></button></li>
+								<li><button><img src="/images/user/user4.png"></button></li>
+								<li><button><img src="/images/user/user5.png"></button></li>
+								<li><button><img src="/images/user/user6.png"></button></li>
+								<li><button><img src="/images/user/user7.png"></button></li>
+								<li><button><img src="/images/user/user8.png"></button></li>
+								<li><button><img src="/images/user/user9.png"></button></li>
+								<li><button><img src="/images/user/user10.png"></button></li>
+								<li><button><img src="/images/user/user11.png"></button></li>
 							</ul>
 							<input type="hidden" name="avatar">
 						</form>

@@ -63,7 +63,7 @@
 							<!-- 닉네임 수정폼 -->
 							<form id="editUserNicknameForm" class="nickname_form">
 								<div class="edit_input">
-									<input type="text" name="nickname" placeholder="닉네임 입력">
+									<input type="text" name="nickname" placeholder="닉네임을 입력해주세요">
 								</div>
 								<p class="nickname_warning">닉네임은 노출되는 정보이므로 개인정보가 유출되지 않도록 주의해주세요.</p>
 								<button type="submit" class="btn_primary_wide disable" disabled>저장</button>
@@ -84,7 +84,7 @@
 							<!-- 소개 수정폼 -->
 							<form id="editUserIntroduceForm" class="introduce_form">
 								<div class="edit_input">
-									<input type="text" name="introduce" placeholder="소개 입력">
+									<input type="text" name="introduce" placeholder="소개를 입력해주세요">
 								</div>
 								<button type="submit" class="btn_primary_wide disable" disabled>저장</button>
 							</form>

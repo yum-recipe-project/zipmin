@@ -60,10 +60,14 @@ document.addEventListener('DOMContentLoaded', function() {
 			nicknameForm.style.display = 'none';
 			nicknameEditButton.querySelector('p').textContent = '수정';
 			nicknameEditButton.querySelector('img').src = '/images/mypage/edit_1a7ce2.png';
+			nicknameForm.nickname.value = '';
+			nicknameForm.querySelector('button[type="submit"]').classList.add('disable');
+			nicknameForm.querySelector('button[type="submit"]').disabled = true;
 		}
 		else {
 			nicknameContent.style.display = 'none';
 			nicknameForm.style.display = 'block';
+			nicknameForm.nickname.value = nicknameContent.querySelector('p').innerText;
 			nicknameEditButton.querySelector('p').textContent = '취소';
 			nicknameEditButton.querySelector('img').src = '/images/mypage/cancel_1a7ce2.png';
 		}
@@ -75,7 +79,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		const isNicknameEmpty = this.value.trim() === '';
 		nicknameForm.querySelector('button[type="submit"]').classList.toggle('disable', isNicknameEmpty);
 		nicknameForm.querySelector('button[type="submit"]').disabled = isNicknameEmpty;
-		
 	});
 	
 	
@@ -91,16 +94,26 @@ document.addEventListener('DOMContentLoaded', function() {
 			introduceForm.style.display = 'none';
 			introduceEditButton.querySelector('p').textContent = '수정';
 			introduceEditButton.querySelector('img').src = '/images/mypage/edit_1a7ce2.png';
+			introduceForm.introduce.value = '';
+			introduceForm.querySelector('button[type="submit"]').classList.add('disable');
+			introduceForm.querySelector('button[type="submit"]').disabled = true;
 		}
 		else {
 			introduceContent.style.display = 'none';
 			introduceForm.style.display = 'block';
+			introduceForm.introduce.value = introduceContent.innerText;
 			introduceEditButton.querySelector('p').textContent = '취소';
 			introduceEditButton.querySelector('img').src = '/images/mypage/cancel_1a7ce2.png';
 		}
 	});
 	
-	// *** TODO : 소개 실시간 검사 ***
+	// 소개 실시간 검사
+	introduceForm.introduce.addEventListener('input', function(event) {
+		event.preventDefault();
+		const isIntroduceEmpty = this.value.trim() === '';
+		introduceForm.querySelector('button[type="submit"]').classList.toggle('disable', isIntroduceEmpty);
+		introduceForm.querySelector('button[type="submit"]').disabled = isIntroduceEmpty;
+	});
 	
 });
 

@@ -805,7 +805,10 @@ public class UserController {
 	        @RequestParam int page,
 	        @RequestParam int size) {
 
+		System.err.println("컨트롤러 진입");
+		System.err.println(id);
 		
+	
 	    // 입력값 검증
 	    if (id == null) {
 	        throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
@@ -820,6 +823,8 @@ public class UserController {
 	    // 로그인 정보
 	    String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
+	    System.err.println("아이디:"+id);
+	    System.err.println("이름:"+username);
 	    // 본인 확인
 	    if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
 	        if (id != userService.readUserByUsername(username).getId()) {
@@ -832,6 +837,7 @@ public class UserController {
 	    // 레시피 저장 페이지 조회
 	    Page<RecipeReadMySavedResponseDto> savedRecipePage = recipeService.readSavedRecipePageByUserId(id, pageable);
 	    
+	    System.err.println("저장한 레시피 목록 조회 완료");
 	    return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
 	            .body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, savedRecipePage));
 	}

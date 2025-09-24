@@ -346,3 +346,82 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+
+
+/**
+ * 레시피 좋아요(저장) 버튼 기능
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    const likeButton = document.querySelector('.btn_icon.like');
+    const recipeId = new URLSearchParams(window.location.search).get('id');
+    const img = likeButton.querySelector('img');
+
+    const likeCountElement = document.querySelector('.btn_likecount');
+    let likecount = parseInt(likeCountElement?.textContent || '0', 10);
+
+    likeButton.addEventListener('click', async function(event) {
+        event.preventDefault();
+
+        if (!isLoggedIn()) {
+            redirectToLogin();
+            return;
+        }
+
+        let isLiked = likeButton.classList.contains('active');
+
+        // 좋아요 취소
+        if (isLiked) {
+            try {
+                const data = {
+                    tablename: 'recipe',
+                    recodenum: recipeId,
+                };
+
+                const response = await instance.delete(`/recipes/${recipeId}/likes`, {
+                    data: data,
+                    headers: getAuthHeaders(),
+                });
+
+                if (response.data.code === 'RECIPE_UNLIKE_SUCCESS') {
+                    img.src = '/images/recipe/star_empty_181a1c.png';
+                    likeButton.classList.remove('active');
+                    likecount = Math.max(0, likecount - 1);
+                    if (likeCountElement) likeCountElement.textContent = `${likecount}`;
+                }
+            } catch (error) {
+                console.error(error);
+                alert('찜 취소 중 오류가 발생했습니다.');
+            }
+        }
+
+        // 좋아요 추가
+        else {
+            try {
+                const data = {
+                    tablename: 'recipe',
+                    recodenum: recipeId,
+                };
+
+                const response = await instance.post(`/recipes/${recipeId}/likes`, data, {
+                    headers: getAuthHeaders(),
+                });
+
+                if (response.data.code === 'RECIPE_LIKE_SUCCESS') {
+                    img.src = '/images/recipe/star_full_1a7ce2.png';
+                    likeButton.classList.add('active');
+                    likecount = likecount + 1;
+                    if (likeCountElement) likeCountElement.textContent = `${likecount}`;
+                }
+            } catch (error) {
+                console.error(error);
+                alert('찜 추가 중 오류가 발생했습니다.');
+            }
+        }
+    });
+});
+
+
+
+
+
+

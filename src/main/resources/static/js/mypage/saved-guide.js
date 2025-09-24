@@ -56,6 +56,11 @@ function renderSavedGuideList(guideList) {
         const li = document.createElement('li');
         li.className = 'guide_item';
         li.dataset.id = guide.id;
+		
+		// 상세보기 링크
+		const link = document.createElement('a');
+		link.href = `/kitchen/viewGuide.do?id=${guide.id}`; 
+		link.className = 'guide_link';
 
         const guideDetails = document.createElement('div');
         guideDetails.className = 'guide_details';
@@ -97,7 +102,10 @@ function renderSavedGuideList(guideList) {
         writerDiv.appendChild(nicknameP);
 
         guideDetails.append(guideTop, titleSpan, infoDiv, writerDiv);
-        li.appendChild(guideDetails);
+		
+		
+		link.appendChild(guideDetails);
+		li.appendChild(link);
         container.appendChild(li);
     });
 }

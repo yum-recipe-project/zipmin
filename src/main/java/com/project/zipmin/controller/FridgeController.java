@@ -16,16 +16,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
-import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.FridgeErrorCode;
 import com.project.zipmin.api.FridgeSuccessCode;
-import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.dto.FridgeCreateRequestDto;
 import com.project.zipmin.dto.FridgeCreateResponseDto;
 import com.project.zipmin.dto.FridgeReadResponseDto;
@@ -43,8 +39,6 @@ import com.project.zipmin.dto.UserFridgeUpdateResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.FridgeService;
 import com.project.zipmin.service.UserService;
-import com.project.zipmin.swagger.ChompReadListFailResponse;
-import com.project.zipmin.swagger.ChompReadListSuccessResponse;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.UserInvalidInputResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
@@ -224,7 +218,7 @@ public class FridgeController {
 				responseCode = "400",
 				description = "입력값이 유효하지 않음",
 				content = @Content(
-						mediaType = "application/json",
+						mediaType = "application/json", 
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
 		// 400 LIKE_INVALID_INPUT
 		// 401 FRIDGE_UNAUTHORIZED_ACCESS
@@ -650,6 +644,20 @@ public class FridgeController {
 	
 	
 	
+	// 장보기 메모 
+//	@GetMapping("/users/{id}/fridge-memo")
+//	public ResponseEntity<?> listMemo(
+//		    @RequestParam int page,
+//		    @RequestParam int size) {
+//		
+//		Pageable pageable = PageRequest.of(page, size);
+//		Page<MemoReadResponseDto> guidePage = null;
+//		
+//		MemoPage = fridgeService.readMemoPage(pageable);
+//		
+//        return ResponseEntity.status(FridgeSuccessCode.memo_READ_LIST_SUCCESS.getStatus())
+//                .body(ApiResponse.success(FridgeSuccessCode.KITCHEN_READ_LIST_SUCCESS, guidePage));
+//	}
 	
 
 }

@@ -253,6 +253,18 @@
 
 
 
+/* 장보기 메모 */
+#container .modal-content .modal-body table.memo input[type='text'] {
+    border: 1px solid var(--line-color2);
+    font-size: 14px;
+    width: 100%;        
+    box-sizing: border-box;
+    padding: 6px 8px;     
+}
+
+
+
+
 
 
 /* 포인트 */

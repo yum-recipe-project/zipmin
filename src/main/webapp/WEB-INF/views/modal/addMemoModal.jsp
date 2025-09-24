@@ -10,7 +10,7 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 				</div>
 				<div class="modal-body">
-					<table>
+					<table class="memo">
 						<thead>
 							<tr>
 								<th width="43%">재료</th>
@@ -18,7 +18,13 @@
 								<th width="14%">선택</th>
 							</tr>
 						</thead>
-						<tbody id="memo"></tbody>
+						<tbody>
+							<tr>
+								<td><input type="text" name="name" placeholder="재료"></td>
+								<td><input type="text" name="amount" placeholder="단위가 포함된 양"></td>
+								<td><input type="text" name="note" placeholder="비고 (선택사항)"></td>
+							</tr>
+						</tbody>
 					</table>
 				</div>
 				<div class="modal-footer">

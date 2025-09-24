@@ -3,19 +3,15 @@ package com.project.zipmin.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.LikeErrorCode;
-import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.LikeReadResponseDto;
-import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.entity.Like;
-import com.project.zipmin.entity.Role;
 import com.project.zipmin.mapper.LikeMapper;
 import com.project.zipmin.repository.LikeRepository;
 
@@ -25,11 +21,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LikeService {
 	
-	private final LikeRepository likeRepository;
-	
-	private final UserService userService;
-	
 	private final LikeMapper likeMapper;
+	private final LikeRepository likeRepository;
 
 	
 	
@@ -79,6 +72,7 @@ public class LikeService {
 				.orElseThrow(() -> new ApiException(LikeErrorCode.LIKE_NOT_FOUND));
 		
 		// 권한 확인
+		/*
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		UserReadResponseDto user = userService.readUserByUsername(username);
 		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
@@ -100,6 +94,7 @@ public class LikeService {
 				}
 			}
 		}
+		*/
 		
 		// 좋아요 삭제
 		try {

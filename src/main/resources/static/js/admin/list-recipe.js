@@ -16,6 +16,24 @@ let recipeList = [];
 
 
 /**
+ * 접근 권한을 설정하는 함수
+ */
+document.addEventListener('DOMContentLoaded', async function() {
+	
+	try {
+		await instance.get('/dummy');
+	}
+	catch (error) {
+		redirectToLogin('/');
+	}
+	
+});
+
+
+
+
+
+/**
  * 레시피 목록 검색 필터를 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
@@ -28,7 +46,26 @@ document.addEventListener('DOMContentLoaded', function() {
 		fetchRecipeList();
 	});
 	
-	// ***** 카테고리 추가 *****
+	// 카테고리
+	document.querySelectorAll('.btn_tab a').forEach(tab => {
+		tab.addEventListener('click', function (event) {
+			event.preventDefault();
+			document.querySelector('.btn_tab a.active')?.classList.remove('active');
+			this.classList.add('active');
+			
+			category = this.getAttribute('data-tab');
+			page = 0;
+			keyword = '';
+			document.getElementById('text-srh').value = '';
+			sortKey = 'id';
+			sortOrder = 'desc';
+			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
+			document.querySelector(`.sort_btn[data-key="${sortKey}"]`).classList.add(sortOrder);
+			
+			recipeList = [];
+			fetchRecipeList();
+		});
+	});
 	
 	// 정렬 버튼
 	document.querySelectorAll('.sort_btn').forEach(btn => {
@@ -73,22 +110,17 @@ async function fetchRecipeList(scrollTop = true) {
 			size: size
 		}).toString();
 		
-		const response = await fetch(`/recipes?${params}`, {
-			method: 'GET',
+		const response = await instance.get(`/recipes?${params}`, {
 			headers: getAuthHeaders()
 		});
 		
-		const result = await response.json();
-		
-		console.log(result);
-		
-		if (result.code === 'RECIPE_READ_LIST_SUCCESS') {
+		if (response.data.code === 'RECIPE_READ_LIST_SUCCESS') {
 			
 			// 전역 변수 설정
-			totalPages = result.data.totalPages;
-			totalElements = result.data.totalElements;
-			page = result.data.number;
-			recipeList = result.data.content;
+			totalPages = response.data.data.totalPages;
+			totalElements = response.data.data.totalElements;
+			page = response.data.data.number;
+			recipeList = response.data.data.content;
 			
 			// 렌더링
 			renderRecipeList(recipeList);
@@ -96,7 +128,7 @@ async function fetchRecipeList(scrollTop = true) {
 			document.querySelector('.total').innerText = `총 ${totalElements}개`;
 			
 			// 검색 결과 없음 표시
-			if (result.data.totalPages === 0) {
+			if (response.data.data.totalPages === 0) {
 				document.querySelector('.table_th').style.display = 'none';
 				document.querySelector('.search_empty')?.remove();
 				const table = document.querySelector('.fixed-table');
@@ -113,12 +145,23 @@ async function fetchRecipeList(scrollTop = true) {
 				window.scrollTo({ top: 0, behavior: 'smooth' });
 			}
 		}
-		
-		/***** 에러코드 추가 *****/
-		
 	}
 	catch (error) {
-		console.log(error);
+		const code = error?.response?.data?.code;
+		
+		if (code === 'RECIPE_READ_LIST_FAIL') {
+			alertDanger('레시피 목록 조회에 실패했습니다.');
+		}
+		else if (code === 'RECIPE_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alertDanger('서버 내부에서 오류가 발생했습니다.');
+		}
+		else {
+			alertDanger('알 수 없는 오류가 발생했습니다.')
+			console.log(error);
+		}
 	}
 	
 }
@@ -158,6 +201,7 @@ function renderRecipeList(recipeList) {
 		titleH6.textContent = recipe.title;
 		titleH6.dataset.bsToggle = 'modal';
 		titleH6.dataset.bsTarget = '#viewRecipeModal';
+		titleH6.dataset.id = recipe.id;
 		const subInfo = document.createElement('small');
 		subInfo.className = 'text-muted d-block';
 		subInfo.textContent = `${recipe.cooklevel} · ${recipe.cooktime} · ${recipe.spicy}`;
@@ -207,13 +251,13 @@ function renderRecipeList(recipeList) {
 		reportCount.className = 'fw-semibold mb-0';
 		reportCount.textContent = recipe.reportcount;
 		
-		// 신고 보기
-		// ***** 이거 listReportCommentModal 이런식으로 해야할 수도 *****
+		// 신고 모달창 열기
 		if ((recipe.reportcount ?? 0) > 0) {
 			reportCount.className = 'fw-semibold mb-0 view';
 			reportCount.dataset.bsToggle = 'modal';
 			reportCount.dataset.bsTarget = '#listReportModal';
 			reportCount.dataset.recodenum = recipe.id;
+			reportCount.dataset.tablename = 'recipe';
 			reportCount.addEventListener('click', (event) => {
 				if (!isLoggedIn()) {
 					event.preventDefault();
@@ -300,33 +344,11 @@ async function deleteRecipe(id) {
 			alertDanger('해당 사용자를 찾을 수 없습니다.');
 		}
 		else if (code == 'INTERNAL_SERVER_ERROR') {
-			alertDanger('서버 내부 오류가 발생했습니다.');
+			alertDanger('서버 내부에서 오류가 발생했습니다.');
 		}
 		else {
+			alertDanger('알 수 없는 오류가 발생했습니다.')
 			console.log(error);
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

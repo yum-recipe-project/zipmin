@@ -13,8 +13,9 @@ import lombok.Data;
 public class RecipeReadMyResponseDto {
 	
 	private Integer id;               
-	private String image;             
-	private String title;             
+	private String image;           
+	private String title;
+	private String introduce;
 	private String cooklevel;         
 	private String cooktime;          
 	private String spicy;             
@@ -24,5 +25,7 @@ public class RecipeReadMyResponseDto {
 	private Date postdate;         
 	
 	
-	private int userId;         
+	private int userId;     
+	
+	private List<RecipeCategoryReadResponseDto> categoryList;
 }

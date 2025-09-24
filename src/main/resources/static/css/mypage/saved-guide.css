@@ -71,6 +71,23 @@
 	align-items: center;
 }
 
+#container .content .guide_wrap .guide_list .guide_item a {
+	display: flex;
+	width: 100%;
+	text-decoration: none;
+	color: inherit;
+}
+
+#container .content .guide_wrap .guide_list .guide_item a .guide_details {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+
+
+
+
 
 /* 저장한 가이드 내용 */
 #container .content .guide_wrap .guide_list .guide_item .guide_details {

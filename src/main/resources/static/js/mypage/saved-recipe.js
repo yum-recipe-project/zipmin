@@ -49,11 +49,17 @@ function renderSavedRecipeList(recipeList) {
         const li = document.createElement('li');
         li.className = 'recipe_item';
         li.dataset.id = recipe.id;
+		
+		
+		// 상세보기 링크
+		const link = document.createElement('a');
+		link.href = `/recipe/viewRecipe.do?id=${recipe.id}`; 
+		link.className = 'recipe_link';
+		
 
         const recipeBox = document.createElement('div');
         recipeBox.className = 'recipe_box';
 
-   
 		// 이미지
 		const img = document.createElement('img');
 		img.src = recipe.image || '/images/common/default_recipe.jpg';
@@ -122,7 +128,9 @@ function renderSavedRecipeList(recipeList) {
 
         details.append(topDiv, infoDiv, scoreDiv);
         recipeBox.appendChild(details);
-        li.appendChild(recipeBox);
+		
+		link.appendChild(recipeBox);
+		li.appendChild(link);
         container.appendChild(li);
     });
 }

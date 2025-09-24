@@ -264,6 +264,7 @@ function renderCommentList(commentList) {
 		reportCount.className = 'fw-semibold mb-0 view';
 		reportCount.dataset.bsToggle = 'modal';
 		reportCount.dataset.bsTarget = '#listReportModal';
+		reportCount.dataset.tablename = 'comments';
 		reportCount.dataset.recodenum = comment.id;
 		reportCount.addEventListener('click', (event) => {
 			if (!isLoggedIn()) {

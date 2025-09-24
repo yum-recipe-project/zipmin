@@ -8,6 +8,8 @@
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/mypage/mypage.css">
 		<script src="/js/mypage/mypage.js"></script>
+		<script src="/js/modal/view-like-user-modal.js"></script>
+		<script src="/js/modal/view-liked_user-modal.js"></script>
 		<script src="/js/modal/top-up-point-modal.js"></script>
 	</head>
 	<body>
@@ -56,8 +58,8 @@
 							
 							<div class="nickname_content">
 								<p class="user_nickname"></p>
-								<button type="button" data-bs-toggle="modal" data-bs-target="#viewUserFollowerModal">팔로워</button>
-								<button type="button" data-bs-toggle="modal" data-bs-target="#viewUserFollowingModal">팔로잉</button>
+								<button type="button" data-bs-toggle="modal" data-bs-target="#viewLikedUserModal">팔로워</button>
+								<button type="button" data-bs-toggle="modal" data-bs-target="#viewLikeUserModal">팔로잉</button>
 							</div>
 							
 							<!-- 닉네임 수정폼 -->
@@ -195,8 +197,8 @@
 			</div>
 			
 			<!-- 모달 -->
-			<%@include file="../modal/viewUserFollowerModal.jsp" %>
-			<%@include file="../modal/viewUserFollowingModal.jsp" %>
+			<%@include file="../modal/viewLikeUserModal.jsp" %>
+			<%@include file="../modal/viewLikedUserModal.jsp" %>
 			<%@include file="../modal/topUpPointModal.jsp" %>
 			
 			

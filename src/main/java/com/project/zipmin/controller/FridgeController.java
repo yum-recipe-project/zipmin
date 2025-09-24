@@ -247,6 +247,11 @@ public class FridgeController {
 	public ResponseEntity<?> listLikedFridgeList(
 			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id) {
 		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
+		}
+		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {

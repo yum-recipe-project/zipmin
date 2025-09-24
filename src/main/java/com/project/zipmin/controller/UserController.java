@@ -1,5 +1,6 @@
 package com.project.zipmin.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.ClassSuccessCode;
+import com.project.zipmin.api.FridgeErrorCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
@@ -780,7 +782,7 @@ public class UserController {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		
 		// 본인 확인
-		if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN)) {
+		if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
 			if (id != userService.readUserByUsername(username).getId()) {
 				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
 			}
@@ -819,7 +821,7 @@ public class UserController {
 	    String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
 	    // 본인 확인
-	    if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN)) {
+	    if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
 	        if (id != userService.readUserByUsername(username).getId()) {
 	            throw new ApiException(UserErrorCode.USER_FORBIDDEN);
 	        }
@@ -833,6 +835,44 @@ public class UserController {
 	    return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
 	            .body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, savedRecipePage));
 	}
+	
+	
+	
+	
+	
+	// 좋아요한 사용자 목록 조회
+	@GetMapping("/users/{id}/like-users")
+	public ResponseEntity<?> readUserLikedUserList(
+			@PathVariable Integer id) {
+		
+	    // 입력값 검증
+	    if (id == null) {
+	        throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+	    }
+	    
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
+		}
+	    
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserByUsername(username).getId() != id) {
+					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+				}
+			}
+		}
+	    
+	    List<UserProfileReadResponseDto> userList = userService.readLikeUserList(id);
+		
+		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, userList));
+	}
+	
+	
 
 	
 	

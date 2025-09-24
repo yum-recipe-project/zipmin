@@ -1,7 +1,9 @@
 package com.project.zipmin.service;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,7 @@ import com.project.zipmin.dto.CustomUserDetails;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
+import com.project.zipmin.dto.LikeReadResponseDto;
 import com.project.zipmin.dto.UserReadRequestDto;
 import com.project.zipmin.dto.UserPasswordCheckRequestDto;
 import com.project.zipmin.dto.UserProfileReadResponseDto;
@@ -38,6 +41,7 @@ import com.project.zipmin.mapper.ChompMapper;
 import com.project.zipmin.mapper.UserMapper;
 import com.project.zipmin.repository.UserRepository;
 
+import io.jsonwebtoken.lang.Collections;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -86,6 +90,60 @@ public class UserService {
 		
 		return new PageImpl<>(userDtoList, pageable, userPage.getTotalElements());
 	}
+	
+	
+	
+	
+	
+	// 좋아요한 사용자 목록 조회
+	public List<UserProfileReadResponseDto> readLikeUserList(Integer userId) {
+		
+		if (userId == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		// 좋아요 일련번호 목록 조회
+		List<LikeReadResponseDto> likeDtoList = likeService.readLikeListByTablenameAndUserId("users", userId);
+		List<Integer> idList = likeDtoList.stream()
+				.map(LikeReadResponseDto::getRecodenum)
+				.collect(Collectors.toCollection(LinkedHashSet::new))
+				.stream().toList();
+		
+		if (idList.isEmpty()) {
+			return Collections.emptyList();
+		}
+		
+		// 사용자 목록 조회
+		List<User> userList = null;
+		try {
+			userList = userRepository.findAllByIdIn(idList);
+		}
+		catch (Exception e) {
+			throw new ApiException(UserErrorCode.USER_READ_LIST_FAIL);
+		}
+		
+		// 사용자 목록 응답 구성
+		List<UserProfileReadResponseDto> userDtoList = new ArrayList<>();	
+		for (User user : userList) {
+			UserProfileReadResponseDto userDto = userMapper.toReadProfileResponseDto(user);
+			
+			// 좋아요 여부
+			userDto.setLiked(likeService.existsUserLike("users", userDto.getId(), userId));
+			
+			userDtoList.add(userDto);
+		}
+		
+		return userDtoList;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

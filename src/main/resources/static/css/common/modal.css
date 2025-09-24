@@ -70,6 +70,12 @@
 	border-radius: 0 0 12px 12px;
 }
 
+#container .modal-content .modal-body.body-scroll {
+	padding: 20px;
+	overflow-y: auto;
+	height: 600px;
+}
+
 
 #container .modal-content .modal-body label {
 	font-size: 14px;
@@ -1089,6 +1095,105 @@
 	padding: 10px;
 }
 
+
+
+
+
+/* 팔로잉 수 */
+#container .modal-content .modal-body .user_count span {
+	font-weight: 500;
+	line-height: 1.5;
+	letter-spacing: -0.025em;
+	font-size: 14px;
+	color: var(--txt-color-500);
+}
+
+/* 팔로잉 목록 */
+#container .modal-content .modal-body .user_list {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	display: block;
+}
+
+#container .modal-content .modal-body .user_list li {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	padding: 12px 0;
+	height: 90px;
+	border-bottom: 1px solid var(--line-color2);
+	width: 100%;
+	box-sizing: border-box;
+}
+
+#container .modal-content .modal-body .user_list li:last-of-type {
+	border-bottom: none;
+}
+
+/* 팔로잉 이미지 */
+#container .modal-content .modal-body .user_list img {
+	display: block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ddd;
+    flex-shrink: 0;
+}
+
+/* 팔로잉 정보 */
+#container .modal-content .modal-body .user_list .user_info {
+	flex: 1 1 auto;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+#container .modal-content .modal-body .user_list .user_info span {
+	font-size: 16px;
+	font-weight: 500;
+	line-height: 1.5;
+}
+
+#container .modal-content .modal-body .user_list .user_info p {
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--txt-color-500);
+	line-height: 1.5;
+    overflow: hidden;       
+    white-space: nowrap;     
+    text-overflow: ellipsis; 
+}
+
+/* 팔로잉 버튼 */
+#container .modal-content .modal-body .user_list .btn_outline_small {
+	margin-left: auto;
+	flex-shrink: 0;
+	height: 32px;
+	line-height: 32px;
+	padding: 0 12px;
+	background: #fff;
+}
+
+#container .modal-content .modal-body .user_list .btn_primary_small {
+	display: flex;
+	gap: 2px;
+	align-items: center;
+    width: fit-content;
+    border-radius: 4px;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+	margin-left: auto;
+	flex-shrink: 0;
+	height: 32px;
+	line-height: 32px;
+	padding: 0 12px;
+	color: #fff;
+	background: var(--point-color2);
+	letter-spacing: -0.4px;
+}
 
 
 

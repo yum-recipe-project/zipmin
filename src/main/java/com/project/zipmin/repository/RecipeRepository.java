@@ -26,4 +26,8 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
     Page<Recipe> findByIdIn(List<Integer> ids, Pageable pageable);
     
     Page<Recipe> findByUserId(int userId, Pageable pageable);
+    
+    
+    
+    int countByUserId(int userId);
 }

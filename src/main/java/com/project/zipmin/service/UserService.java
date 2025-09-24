@@ -1,13 +1,16 @@
 package com.project.zipmin.service;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.method.P;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -16,10 +19,16 @@ import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.AuthErrorCode;
+import com.project.zipmin.api.LikeErrorCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.dto.CustomUserDetails;
+import com.project.zipmin.dto.LikeCreateRequestDto;
+import com.project.zipmin.dto.LikeCreateResponseDto;
+import com.project.zipmin.dto.LikeDeleteRequestDto;
+import com.project.zipmin.dto.LikeReadResponseDto;
 import com.project.zipmin.dto.UserReadRequestDto;
 import com.project.zipmin.dto.UserPasswordCheckRequestDto;
+import com.project.zipmin.dto.UserProfileReadResponseDto;
 import com.project.zipmin.dto.UserDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
@@ -32,6 +41,7 @@ import com.project.zipmin.mapper.ChompMapper;
 import com.project.zipmin.mapper.UserMapper;
 import com.project.zipmin.repository.UserRepository;
 
+import io.jsonwebtoken.lang.Collections;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -41,9 +51,13 @@ public class UserService {
 	private final UserMapper userMapper;
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
-
+	
+	private final LikeService likeService;
+	
+	
 	
 
+	
 	// 사용자 목록 조회
 	public Page<UserReadResponseDto> readUserPage(String category, Pageable pageable) {
 		
@@ -79,6 +93,60 @@ public class UserService {
 	
 	
 	
+	
+	
+	// 좋아요한 사용자 목록 조회
+	public List<UserProfileReadResponseDto> readLikeUserList(Integer userId) {
+		
+		if (userId == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		// 좋아요 일련번호 목록 조회
+		List<LikeReadResponseDto> likeDtoList = likeService.readLikeListByTablenameAndUserId("users", userId);
+		List<Integer> idList = likeDtoList.stream()
+				.map(LikeReadResponseDto::getRecodenum)
+				.collect(Collectors.toCollection(LinkedHashSet::new))
+				.stream().toList();
+		
+		if (idList.isEmpty()) {
+			return Collections.emptyList();
+		}
+		
+		// 사용자 목록 조회
+		List<User> userList = null;
+		try {
+			userList = userRepository.findAllByIdIn(idList);
+		}
+		catch (Exception e) {
+			throw new ApiException(UserErrorCode.USER_READ_LIST_FAIL);
+		}
+		
+		// 사용자 목록 응답 구성
+		List<UserProfileReadResponseDto> userDtoList = new ArrayList<>();	
+		for (User user : userList) {
+			UserProfileReadResponseDto userDto = userMapper.toReadProfileResponseDto(user);
+			
+			// 좋아요 여부
+			userDto.setLiked(likeService.existsUserLike("users", userDto.getId(), userId));
+			
+			userDtoList.add(userDto);
+		}
+		
+		return userDtoList;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// 아이디로 사용자 조회
 	public UserReadResponseDto readUserById(Integer id) {
 		
@@ -93,6 +161,36 @@ public class UserService {
 		
 		return userMapper.toReadResponseDto(user);
 	}
+	
+	
+	
+	// 아이디로 사용자 프로필 조회
+	public UserProfileReadResponseDto readUserProfileById(Integer id) {
+		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		// 사용자 조회
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+		
+		// 사용자 응답 구성
+		UserProfileReadResponseDto userDto = userMapper.toReadProfileResponseDto(user);
+		userDto.setLikecount(likeService.countLike("users", user.getId()));
+		
+		// 좋아요 여부
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
+			String username = authentication.getName();
+			int userId = readUserByUsername(username).getId();
+			userDto.setLiked(likeService.existsUserLike("users", user.getId(), userId));
+		}
+		
+		return userDto;
+	}
+	
 	
 	
 	
@@ -210,6 +308,12 @@ public class UserService {
 			}
 			user.setTel(userDto.getTel());
 		}
+		if (userDto.getAvatar() != null) {
+			user.setAvatar(userDto.getAvatar());
+		}
+		if (userDto.getIntroduce() != null) {
+			user.setIntroduce(userDto.getIntroduce());
+		}
 		
 		// 사용자 수정
 		try {
@@ -281,6 +385,66 @@ public class UserService {
 		return userRepository.existsByUsername(username);
 	}
 
+	
+	
+	
+	// 사용자 좋아요
+	public LikeCreateResponseDto likeUser(LikeCreateRequestDto likeDto) {
+		
+		// 입력값 검증
+		if (likeDto == null || likeDto.getTablename() == null
+				|| likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		// 사용자 존재 여부 확인
+		if (userRepository.existsById(likeDto.getRecodenum())) {
+			new ApiException(UserErrorCode.USER_NOT_FOUND);
+		}
+		
+		// 좋아요 저장
+		try {
+			return likeService.createLike(likeDto);
+		}
+		catch (ApiException e) {
+			throw e;
+		}
+		catch (Exception e) {
+			throw new ApiException(UserErrorCode.USER_LIKE_FAIL);
+		}
+		
+	}
+	
+	
+	
+	
+	// 사용자 좋아요 취소
+	public void unlikeUser(LikeDeleteRequestDto likeDto) {
+		
+		// 입력값 검증
+		if (likeDto == null || likeDto.getTablename() == null
+				|| likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		// 사용자 존재 여부 확인
+		if (userRepository.existsById(likeDto.getRecodenum())) {
+			new ApiException(UserErrorCode.USER_NOT_FOUND);
+		}
+		
+		// 좋아요 취소
+		try {
+			likeService.deleteLike(likeDto);
+		}
+		catch (ApiException e) {
+			throw e;
+		}
+		catch (Exception e) {
+			throw new ApiException(UserErrorCode.USER_UNLIKE_FAIL);
+		}
+		
+	}
+	
 	
 	
 	

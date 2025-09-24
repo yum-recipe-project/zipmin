@@ -222,34 +222,33 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 			catch(error) {
 				const code = error?.response?.data?.code;
-				const message = error?.response?.data?.message;
 				
 				if (code === 'USER_UPDATE_FAIL') {
-					alert(message);
+					alertDanger('사용자 정보 수정에 실패했습니다.');
 				}
 				else if (code === 'USER_INVALID_INPUT') {
-					alert(message);
+					alertDanger('입력값이 유효하지 않습니다.');
 				}
 				else if (code === 'USER_UNAUTHORIZED_ACCESS') {
-					alert(message);
+					alertDanger('로그인하지 않은 사용자입니다.');
 				}
 				else if (code === 'USER_FORBIDDEN') {
-					alert(message);
+					alertDanger('접근 권한이 없습니다.');
 				}
 				else if (code === 'USER_NOT_FOUND') {
-					alert(message);
+					alertDanger('해당 사용자를 찾을 수 없습니다.');
 				}
 				else if (code === 'USER_TEL_DUPLICATED') {
-					alert(message);
+					alertDanger('사용자 전화번호가 중복되었습니다.');
 				}
 				else if (code === 'USER_EMAIL_DUPLICATED') {
-					alert(message);
+					alertDanger('사용자 이메일이 중복되었습니다.');
 				}
 				else if (code === 'INTERNAL_SERVER_ERROR') {
-					alert(message);
+					alertDanger('서버 내부에서 알 수 없는 오류가 발생했습니다.');
 				}
 				else {
-					console.log('서버 요청 중 오류 발생');
+					console.log('알 수 없는 오류가 발생했습니다.');
 				}
 			}
 		}

@@ -7,8 +7,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	modal.addEventListener('show.bs.modal', async function (event) {
 	
 		try {
+			const tablename = event.relatedTarget?.dataset.tablename;
+			
 			const params = new URLSearchParams({
-				tablename : 'comments',
+				tablename : tablename,
 				recodenum : event.relatedTarget?.dataset.recodenum
 			}).toString();
 			

@@ -589,7 +589,7 @@ public class CommentController {
 	@PostMapping("/comments/{id}/likes")
 	public ResponseEntity<?> likeComment(
 			@Parameter(description = "댓글의 일련번호") @PathVariable int id,
-			@Parameter(description = "댓글 좋아요 작성 요청 정보") @RequestBody LikeCreateRequestDto likeRequestDto) {
+			@Parameter(description = "좋아요 작성 요청 정보") @RequestBody LikeCreateRequestDto likeRequestDto) {
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -1,5 +1,7 @@
 package com.project.zipmin.entity;
 
+import org.hibernate.annotations.Formula;
+
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -36,6 +38,8 @@ public class User {
 	private String tel;
 	private String email;
 	private String avatar;
+	private String introduce;
+	private String link;
 	
 	@Enumerated(EnumType.STRING)
 	private Role role;

@@ -17,4 +17,7 @@ public class UserUpdateRequestDto {
 	private String tel;
 	private String email;
 	
+	private String avatar;
+	private String introduce;
+	
 }

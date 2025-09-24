@@ -34,7 +34,6 @@
 					
 					<!-- 팔로워 목록 -->
 					<ul class="follower_list">
-<%-- 						<c:forEach> --%>
 							<li>
 								<div class="follower_box">
 									<!-- 프로필 이미지 -->
@@ -56,38 +55,11 @@
 									</button>
 								</div>
 							</li>
-<%-- 						</c:forEach> --%>
-							<!-- 디자인 확인용, 개발 후 삭제 -->
 							<li>
 								<div class="follower_box">
 									<!-- 프로필 이미지 -->
-									<c:if test="${ true }">
-										<img src="/images/common/hh.jpg">
-									</c:if>
-									<c:if test="${ false }">
-										<span class="follower_img"></span>
-									</c:if>
-									
-									<!-- 팔로워 정보 -->
-									<div class="follower_info">
-										<span>아잠만</span>
-										<p>저는 세계 최강 요리사입니다람쥐</p>
-									</div>
-									
-									<button class="btn_outline_small followButton">
-										<span>팔로잉</span>
-									</button>
-								</div>
-							</li>
-							<li>
-								<div class="follower_box">
-									<!-- 프로필 이미지 -->
-									<c:if test="${ false }">
-										<img src="/images/common/hh.jpg">
-									</c:if>
-									<c:if test="${ true }">
-										<span class="follower_img"></span>
-									</c:if>
+									<img src="/images/common/hh.jpg">
+									<span class="follower_img"></span>
 									
 									<!-- 팔로워 정보 -->
 									<div class="follower_info">

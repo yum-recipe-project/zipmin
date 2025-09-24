@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.KitchenErrorCode;
 import com.project.zipmin.api.RecipeErrorCode;
+import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
@@ -233,28 +234,69 @@ public class RecipeService {
 	
 	
 	// 사용자가 작성한 레시피 목록을 조회하는 함수
-	public Page<RecipeReadMyResponseDto> readRecipePageByUserId(Integer userId, Pageable pageable) {
+	public Page<RecipeReadMyResponseDto> readRecipePageByUserId(Integer userId, String sort, Pageable pageable) {
 	    
+		// 입력값 검증
 	    if (userId == null || pageable == null) {
 	        throw new ApiException(RecipeErrorCode.RECIPE_INVALID_INPUT);
 	    }
+	    
+		// 정렬 문자열을 객체로 변환
+		Sort sortSpec = Sort.by(Sort.Order.desc("id"));
+		if (sort != null && !sort.isBlank()) {
+			switch (sort) {
+				case "postdate-desc":
+					sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id"));
+					break;
+				case "likecount-desc":
+					sortSpec = Sort.by(Sort.Order.desc("likecount"), Sort.Order.desc("id"));
+					break;
+				case "reviewscore-desc":
+					sortSpec = Sort.by(Sort.Order.desc("reviewscore"), Sort.Order.desc("id"));
+					break;
+				default:
+					break;
+		    }
+		}
+		
+		// 기존 페이지 객체에 정렬 주입
+		Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
 
 	    // 레시피 목록 조회
 	    Page<Recipe> recipePage;
 	    try {
-	        recipePage = recipeRepository.findByUserId(userId, pageable);
+	        recipePage = recipeRepository.findByUserId(userId, sortedPageable);
 	    }
 	    catch (Exception e) {
-	        throw new ApiException(RecipeErrorCode.RECIPE_READ_LIST_FAIL);
+	        throw new ApiException(UserErrorCode.USER_READ_RECIPE_LIST_FAIL);
 	    }
 
+	    // 레시피 목록 응답 구성
 	    List<RecipeReadMyResponseDto> recipeDtoList = new ArrayList<>();
 	    for (Recipe recipe : recipePage) {
 	        RecipeReadMyResponseDto recipeDto = recipeMapper.toReadMyResponseDto(recipe);
-
-
+	        
+	        // 이미지
+	     	recipeDto.setImage(publicPath + "/" + recipeDto.getImage());	
+	        // 좋아요 수
 	        recipeDto.setLikecount(likeService.countLike("recipe", recipe.getId()));
-	        recipeDto.setImage(publicPath + "/" + recipeDto.getImage());
+	        
+	        // 레시피 카테고리 조회
+			try {
+				List<RecipeCategory> categoryList = categoryRepository.findAllByRecipeId(recipe.getId());
+				
+				// 레시피 카테고리 목록 응답 구성
+				List<RecipeCategoryReadResponseDto> categoryDtoList = new ArrayList<>();
+				for (RecipeCategory category : categoryList) {
+					RecipeCategoryReadResponseDto categoryDto = categoryMapper.toReadResponseDto(category);
+					categoryDtoList.add(categoryDto);
+				}
+				
+				recipeDto.setCategoryList(categoryDtoList);
+			}
+			catch (Exception e) {
+				throw new ApiException(RecipeErrorCode.RECIPE_CATEGORY_READ_LIST_FAIL);
+			}
 
 	        recipeDtoList.add(recipeDto);
 	    }
@@ -569,6 +611,27 @@ public class RecipeService {
 		}
 		catch (Exception e) {
 			throw new ApiException(RecipeErrorCode.RECIPE_DELETE_FAIL);
+		}
+	}
+	
+	
+	
+	
+	
+	// 사용자가 작성한 레시피 개수
+	public int countRecipeByUserId(Integer userId) {
+		
+		// 입력값 검증
+		if (userId == null) {
+			throw new ApiException(RecipeErrorCode.RECIPE_INVALID_INPUT);
+		}
+		
+		// 레시피 수 조회
+		try {
+			return recipeRepository.countByUserId(userId);
+		}
+		catch (Exception e) {
+			throw new ApiException(RecipeErrorCode.RECIPE_COUNT_FAIL);
 		}
 	}
 

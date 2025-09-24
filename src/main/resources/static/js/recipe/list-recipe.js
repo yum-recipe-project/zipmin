@@ -270,7 +270,6 @@ document.addEventListener('DOMContentLoaded', function() {
 async function fetchRecipeList() {
 	
 	try {
-		
 		// 현재 UI에서 categoryList 계산
 		let categoryList = [];
 		const categoryTab = document.querySelector('.category_title .tab');

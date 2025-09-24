@@ -22,49 +22,6 @@
 
 
 
-
-/* 타이틀 (링크) */
-#container .content .following_wrap .following_title a {
-	padding: 8px 0px;
-	color: var(--txt-color-500);
-	font-weight: 500;
-	line-height: 1.4;
-	letter-spacing: -0.02em;
-	font-size: 14px;
-}
-
-#container .content .following_wrap .following_title a span {
-	display: flex;
-	align-items: center;
-	gap: 4px;
-}
-#container .content .following_wrap .following_title a span img {
-	width: 20px;
-	height: 20px;
-}
-
-/* 타이틀 (제목) */
-#container .content .following_wrap .following_title h2 {
-	margin-top: 8px;
-	font-weight: 700;
-	line-height: 1.5;
-	letter-spacing: -0.03em;
-	font-size: 32px;
-	margin-bottom: 24px;
-}
-
-
-
-/* 팔로잉 수 */
-#container .content .following_wrap .following_count span {
-	font-weight: 500;
-	line-height: 1.5;
-	letter-spacing: -0.025em;
-	font-size: 12px;
-	color: var(--txt-color-500);
-}
-
-
 /* 팔로잉 목록 */
 #container .content .following_wrap .following_list li {
 	border-bottom: 1px solid var(--line-color2);
@@ -123,6 +80,7 @@
 	background: #fff;
 	margin-left: auto;
 }
+
 /* 팔로우 버튼 */
 .btn_primary {
 	display: flex;

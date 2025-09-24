@@ -83,6 +83,11 @@
 	color: #FFF;
 	letter-spacing: -0.4px;
 }
+.btn_primary_wide.disable {
+	opacity: 0.4;
+	cursor: not-allowed;
+}
+
 
 
 

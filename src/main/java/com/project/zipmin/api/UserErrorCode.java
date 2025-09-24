@@ -29,9 +29,15 @@ public enum UserErrorCode implements Code {
 	USER_RESET_PASSWORD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "임시 비밀번호 발급 실패"),
 	USER_INCORRECT_PASSWORD(HttpStatus.UNAUTHORIZED, "비밀번호 불일치"),
 	
+	USER_READ_RECIPE_LIST_FAIL(HttpStatus.BAD_REQUEST, "사용자 레시피 목록 조회 실패"),
+	USER_READ_CLASS_LIST_FAIL(HttpStatus.BAD_REQUEST, "사용자 클래스 목록 조회 실패"),
+	
 	USER_USERNAME_DUPLICATED(HttpStatus.CONFLICT, "아이디 중복 작성 시도"),
 	USER_TEL_DUPLICATED(HttpStatus.CONFLICT, "전화번호 중복 작성 시도"),
 	USER_EMAIL_DUPLICATED(HttpStatus.CONFLICT, "이메일 중복 작성 시도"),
+	
+    USER_LIKE_FAIL(HttpStatus.BAD_REQUEST, "사용자 좋아요 실패"),
+    USER_UNLIKE_FAIL(HttpStatus.BAD_REQUEST, "사용자 좋아요 삭제 실패"),
 
 	// 기타
 	USER_UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "예외 처리되지 않은 내부 오류");

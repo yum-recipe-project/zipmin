@@ -73,6 +73,10 @@ document.addEventListener('DOMContentLoaded', async function() {
 			basicForm.querySelector('.recipe_spicy').innerText = result.data.spicy;
 			basicForm.querySelector('.recipe_writer img').src = result.data.avatar;
 			basicForm.querySelector('.recipe_writer span').innerText = result.data.nickname;
+			basicForm.querySelector('.btn_nickname').addEventListener('click', function(event) {
+				event.preventDefault();
+				location.href = `/mypage/profile.do?id=${result.data.user_id}`;
+			});
 			basicForm.querySelector('.recipe_introduce').innerText = result.data.introduce;
 			if (result.data.liked) {
 				basicForm.querySelector('.btn_icon.like img').src = '/images/recipe/star_full_1a7ce2.png'

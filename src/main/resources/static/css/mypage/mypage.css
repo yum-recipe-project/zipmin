@@ -6,7 +6,13 @@
 	width: 1160px;
 }
 
-#container .content .profile_wrap {
+
+
+
+
+/* 사용자 정보 */
+#container .content .user_wrap {
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	gap: 50px;
@@ -14,14 +20,7 @@
 	margin-bottom: 80px;
 }
 
-
-
-
-/* 유저 프로필 (정보) */
-#container .content .profile_wrap .info_wrap {
-	width: 100%;
-}
-#container .content .profile_wrap .info_wrap .info_inner {
+#container .user_wrap .user {
 	padding: 48px 40px 0;
 	width: 448px;
 	display: flex;
@@ -29,199 +28,85 @@
 	align-items: center;
 	flex-direction: column;
 	margin: 0px auto;
-/* 	min-height: 100vh; */
 	max-width: 448px;
 	font-size: 16px;
 	line-height: 24px;
 	letter-spacing: -0.4px;
 }
 
-
-
-/* 유저 프로필 */
-#container .content .profile_wrap .info_wrap .info_inner .profile {
+/* 사용자 정보 > 이미지 필드 */
+#container .user_wrap .user .image_field {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	gap: 10px;
 }
 
-#container .content .profile_wrap .info_wrap .info_inner .profile span {
+#container .user_wrap .user .image_field .user_avatar {
 	font-size: 16px;
 	font-weight: 600;	
-}
-
-#container .content .profile_wrap .info_wrap .info_inner .profile .profile_img {
 	display: block;
     width: 56px;
     height: 56px;
     border-radius: 50%;
     background-color: #ddd;
     flex-shrink: 0;
-    
-    /* 이미지 추가 테스트 */
     background-size: cover;  
     background-position: center;
 }
 
 
-
-/* 유저 정보 */
-#container .content .profile_wrap .info_wrap .info_inner .summary {
-	width: 100%;
-}
-#container .content .profile_wrap .info_wrap .info_inner .summary .field_top {
-	display: flex;
-	align-items: flex-start;
-	justify-content: space-between;
-}
-#container .content .profile_wrap .info_wrap .info_inner .summary .field_bottom {
-	display: flex;
+/* 사용자 정보 > 이미지 목록 폼 */
+#container .user_wrap .user .image_list {
+	display: none;
+	flex-wrap: wrap;
+	margin-top: 20px;
 	gap: 10px;
 }
 
-/* 수정버튼 */
-.modify_btn_wrap .modify_btn {
-	display: flex;	
-	align-items: center;
-	gap: 2px;
-	background: none;
-	border: none;
-}
-.modify_btn_wrap .modify_btn img {
-	height: 20px;
-}
-.modify_btn_wrap .modify_btn p {
-    font-size: 16px;
-    margin: 0;
-    line-height: 1;
-    color: var(--point-color2);
+#container .user_wrap .user .image_list li {
+	width: 44px;
+	height: 44px;
 }
 
+#container .user_wrap .user .image_list li button {
+	border: 1px solid #ddd;
+	border-radius: 50%;
+	padding: 6px;
+}
 
-/* 수정 필드  */
-.modify_field input {
-	border: 1px solid var(--line-color1);
-	border-radius: 4px;
+/* 사용자 정보 > 닉네임 필드 */
+#container .user_wrap .user .nickname_field {
 	width: 100%;
-	height: 50px;
-}
-
-input::placeholder {
-    font-size: 16px;
-}
-
-#modifyNickName {
-	margin-top: 5px;
-}
-.nickname_warning {
-	margin-top: 5px;
-	font-size: 12px;
-	color: var(--txt-color-500);
-}
-
-
-/* 랜덤 버튼 */
-.nickname_random_field {
-	display: flex;
-	justify-content: space-between;
-}
-.nickname_random_field .random_wrap {
-	background: none;
-	border: none;
-	display: flex;
-	align-items: center;
-	gap: 3px;
-	margin-bottom: 10px;
-}
-.nickname_random_field .random_wrap img {
-	width: 18px;
-	height: 18px;
-}
-.nickname_random_field .random_wrap span {
-	color: var(--point-color2);
-}
-
-
-/* 저장버튼 */
-.submit_btn_wrap {
-	margin-top: 32px;
-}
-.submit_btn_wrap .save_btn {
-	width: 100%;
-    border-radius: 4px;
-    border:none;
-    background-color: var(--point-color2);
-    color: #fff;
-    padding: 15px 32px 16px;
-    font-size: 18px;
-}
-
-.hidden {
-    display: none !important;
-}
-
-
-
-
-
-
-#container .content .profile_wrap .info_wrap .info_inner .summary .nickname_field, 
-#container .content .profile_wrap .info_wrap .info_inner .summary .grade_field, 
-#container .content .profile_wrap .info_wrap .info_inner .summary .comment_field {
 	margin: 16px 0;
 	padding: 16px 0;
 	border-bottom: 1px solid var(--line-color2);
 }
 
-#container .content .profile_wrap .info_wrap .info_inner .summary label {
-    font-weight: 500;
-    display: block;
-    margin-bottom: 10px;
-    font-size: 14px;
-    line-height: 20px;
-    letter-spacing: -0.2px;
-    color: var(--txt-color-600);
-   	font-weight: 600;
-}
-
-#container .content .profile_wrap .info_wrap .info_inner .summary .point_field {
+#container .user_wrap .user .nickname_field .nickname_title {
 	display: flex;
+	align-items: flex-start;
 	justify-content: space-between;
-	height: 50px;
-	padding: 10px 20px;
-	background: #f2f2f2;
-	align-items: center;
-	border-radius: 4px; 
-}
-#container .content .profile_wrap .info_wrap .info_inner .summary .point_field span {
-	font-size: 14px;
-	font-weight: 700;
-	
 }
 
-.btn_primary {
-	width: 50px;
-    height: 32px;
-    font-size: 14px;
-    padding: 0;
-}
-
-
-/* 유저 정보 (팔로워 정보) */
-#container .content .profile_wrap .info_wrap .info_inner .summary .follow_txt {
+#container .user_wrap .user .nickname_field .nickname_content {
 	display: flex;
-	gap: 11px;
+	gap: 10px;
+	align-items: center;
 }
 
-#container .content .profile_wrap .info_wrap .info_inner .summary .follow_txt a {
+/* 사용자 정보 > 닉네임 필드 > 팔로워 */
+#container .user_wrap .user .nickname_field .nickname_content button {
 	position: relative;
 	color: var(--point-color1);
 	font-size: 12px;
+	border: none;
+	background: none;
+	padding-top: 3px;
 }
 
-#container .content .profile_wrap .info_wrap .info_inner .summary .follow_txt a:first-child::after {
-	content: "";
+#container .user_wrap .user .nickname_field .nickname_content button:first-of-type::after {
+	content: '';
     position: absolute;
     top: 50%;
     right: -6px;
@@ -232,8 +117,111 @@ input::placeholder {
     transform: translateY(-50%);
 }
 
+/* 사용자 정보 > 닉네임 수정 폼 */
+#container .user_wrap .user .nickname_field .nickname_form {
+	margin-top: 5px;
+	display: none;
+}
+
+#container .user_wrap .user .nickname_field .nickname_warning {
+	margin-top: 5px;
+	font-size: 12px;
+	color: var(--txt-color-500);
+}
 
 
+/* 사용자 정보 > 소개 필드 */
+#container .user_wrap .user .introduce_field {
+	width: 100%;
+	margin: 0 0 16px 0;
+	padding: 16px 0;
+	border-bottom: 1px solid var(--line-color2);
+}
+
+#container .user_wrap .user .introduce_field .introduce_title {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+}
+
+/* 사용자 정보 > 소개 수정 폼 */
+#container .user_wrap .user .introduce_field .introduce_form {
+	display: none;
+}
+
+/* 사용자 정보 > 포인트 필드 */
+#container .user_wrap .user .point_field {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	height: 50px;
+	padding: 10px 20px;
+	background: #f2f2f2;
+	align-items: center;
+	border-radius: 4px; 
+}
+
+#container .user_wrap .user .point_field span {
+	font-size: 14px;
+	font-weight: 700;
+}
+
+#container .user_wrap .user .point_field .btn_primary {
+	width: 50px;
+	height: 32px;
+	font-size: 14px;
+	padding: 0;
+}
+
+
+
+
+/* 공통 > 수정버튼 */
+#container .user_wrap .user .edit_btn {
+	display: flex;	
+	align-items: center;
+	gap: 2px;
+	background: none;
+	border: none;
+}
+#container .user_wrap .user .edit_btn img {
+	height: 20px;
+}
+#container .user_wrap .user .edit_btn p {
+    font-size: 16px;
+    margin: 0;
+    line-height: 1;
+    color: var(--point-color2);
+}
+
+/* 공통 > 라벨 */
+#container .user_wrap .user label {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.2px;
+    color: var(--txt-color-600);
+   	font-weight: 600;
+}
+
+/* 공통 > 수정 필드  */
+#container .user_wrap .user .edit_input input {
+	border: 1px solid var(--line-color1);
+	border-radius: 4px;
+	width: 100%;
+	height: 50px;
+}
+
+#container .user_wrap .user .edit_input input::placeholder {
+    font-size: 16px;
+}
+
+/* 공통 > 제출 버튼 */
+#container .user_wrap .user button[type='submit'] {
+	margin-top: 16px;
+}
 
 
 
@@ -242,7 +230,7 @@ input::placeholder {
 
 
 /* 내 정보 관리 */
-#container .content .profile_wrap .menu_wrap h2 {
+#container .content  .menu_wrap h2 {
 	margin-top: 8px;
 	font-weight: 700;
 	line-height: 1.5;
@@ -251,7 +239,7 @@ input::placeholder {
 	margin-bottom: 24px;
 }
 
-#container .content .profile_wrap .menu_wrap label {
+#container .content  .menu_wrap label {
     font-weight: 500;
     display: block;
     margin-bottom: 8px;
@@ -264,17 +252,17 @@ input::placeholder {
 
 
 /* 내 정보 관리 (메뉴)  */
-#container .content .profile_wrap .menu_wrap .my_info {
+#container .content  .menu_wrap .my_info {
 	margin-bottom: 24px;
 }
-#container .content .profile_wrap .menu_wrap .my_info .info {
+#container .content  .menu_wrap .my_info .info {
     display: flex;
     flex-wrap: wrap; 
     width: 100%;
     gap: 20px;
 }
 
-#container .content .profile_wrap .menu_wrap .my_info .info_box {
+#container .content  .menu_wrap .my_info .info_box {
     display: flex;
     width: calc(50% - 10px); 
     height: 100px;
@@ -285,21 +273,21 @@ input::placeholder {
     box-sizing: border-box; 
 }
 
-#container .content .profile_wrap .menu_wrap .my_info .info_box:nth-child(odd):last-child {
+#container .content  .menu_wrap .my_info .info_box:nth-child(odd):last-child {
     width: calc(50% - 10px);
 }
 
 /* 내 정보 관리 (글자/화살표)  */
-#container .content .profile_wrap .menu_wrap .my_info .info_box .info_txt span {
+#container .content  .menu_wrap .my_info .info_box .info_txt span {
 	font-size: 18px;
 	font-weight: 600;
 }
-#container .content .profile_wrap .menu_wrap .my_info .info_box .info_txt p {
+#container .content  .menu_wrap .my_info .info_box .info_txt p {
 	font-size: 14px;
 	color: var(--txt-color-500);
 }
 
-#container .content .profile_wrap .menu_wrap .my_info .info_box img {
+#container .content  .menu_wrap .my_info .info_box img {
 	width: 30px;
 	height: 30px;
 	margin-left: auto;

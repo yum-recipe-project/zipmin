@@ -534,12 +534,13 @@ function renderLikeUserList(userList) {
 		
 		const nickname = document.createElement('span');
 		nickname.textContent = user.nickname;
-		
-		const intro = document.createElement('p');
-		intro.textContent = user.introduce;
-		
 		info.appendChild(nickname);
-		info.appendChild(intro);
+		
+		if (user.introduce) {
+			const intro = document.createElement('p');
+			intro.textContent = user.introduce;
+			info.appendChild(intro);
+		}
 		
 		const button = document.createElement('button');
 		button.className = user.liked ? 'btn_outline_small' : 'btn_primary_small';
@@ -551,7 +552,7 @@ function renderLikeUserList(userList) {
 		});
 		
 		const btnText = document.createElement('span');
-		btnText.textContent = user.liked ? '팔로우 취소' : '팔로우';
+		btnText.textContent = user.liked ? '팔로잉' : '팔로우';
 		
 		button.appendChild(btnText);
 		
@@ -566,25 +567,6 @@ function renderLikeUserList(userList) {
 
 
 /**
- * 목록 결과 없음 화면을 화면에 렌더링하는 함수
- */
-/*
-function renderListEmpty() {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'list_empty';
-	
-    const span = document.createElement('span');
-    span.textContent = '내용이 없습니다';
-    wrapper.appendChild(span);
-
-    return wrapper;
-}
-*/
-
-
-
-
-/**
  * 사용자를 좋아요한 사용자 목록을 화면에 렌더링하는 함수
  */
 function renderLikedUserList(userList) {
@@ -593,7 +575,27 @@ function renderLikedUserList(userList) {
 	const container = modal.querySelector('.user_list');
 	container.innerHTML = '';
 	
+	// 사용자 목록이 존재하지 않는 경우
+	if (userList == null || userList.length === 0) {
+		container.style.display = 'none';
+		modal.querySelector('list_empty')?.remove();
+		
+		const wrapper = document.createElement('div');
+		wrapper.className = 'list_empty';
+		
+		const span = document.createElement('span');
+		span.textContent = '내용이 없습니다';
+		wrapper.appendChild(span);
+		container.insertAdjacentElement('afterend', wrapper);
+		
+		return;
+	}
+	
+	// 사용자 목록이 존재하는 경우
 	userList.forEach(user => {
+		container.style.disaply = 'block';
+		modal.querySelector('list_empty')?.remove();
+		
 		const li = document.createElement('li');
 		
 		const img = document.createElement('img');
@@ -604,12 +606,13 @@ function renderLikedUserList(userList) {
 		
 		const nickname = document.createElement('span');
 		nickname.textContent = user.nickname;
-		
-		const intro = document.createElement('p');
-		intro.textContent = user.introduce;
-		
 		info.appendChild(nickname);
-		info.appendChild(intro);
+		
+		if (user.introduce) {
+			const intro = document.createElement('p');
+			intro.textContent = user.introduce;
+			info.appendChild(intro);
+		}
 		
 		const button = document.createElement('button');
 		button.className = user.liked ? 'btn_outline_small' : 'btn_primary_small';
@@ -621,7 +624,7 @@ function renderLikedUserList(userList) {
 		});
 		
 		const btnText = document.createElement('span');
-		btnText.textContent = user.liked ? '팔로우 취소' : '팔로우';
+		btnText.textContent = user.liked ? '팔로잉' : '팔로우';
 		
 		button.appendChild(btnText);
 		

@@ -9,7 +9,7 @@
 		<link rel="stylesheet" href="/css/mypage/mypage.css">
 		<script src="/js/mypage/mypage.js"></script>
 		<script src="/js/modal/view-like-user-modal.js"></script>
-		<script src="/js/modal/view-liked_user-modal.js"></script>
+		<script src="/js/modal/view-liked-user-modal.js"></script>
 		<script src="/js/modal/top-up-point-modal.js"></script>
 	</head>
 	<body>

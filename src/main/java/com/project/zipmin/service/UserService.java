@@ -95,9 +95,10 @@ public class UserService {
 	
 	
 	
-	// 좋아요한 사용자 목록 조회
+	// 사용자가 좋아요한 사용자 목록 조회
 	public List<UserProfileReadResponseDto> readLikeUserList(Integer userId) {
 		
+		// 입력값 검증
 		if (userId == null) {
 			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
 		}
@@ -138,8 +139,47 @@ public class UserService {
 	
 	
 	
-	
-	
+	// 사용자를 좋아하는 사용자 목록 조회
+	public List<UserProfileReadResponseDto> readLikedUserList(Integer userId) {
+		
+		// 입력값 검증
+		if (userId == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		// 좋아요 일련번호 목록 조회
+		List<LikeReadResponseDto> likeDtoList = likeService.readLikeListByTablenameAndRecodenum("users", userId);
+		List<Integer> idList = likeDtoList.stream()
+				.map(LikeReadResponseDto::getUserId)
+				.collect(Collectors.toCollection(LinkedHashSet::new))
+				.stream().toList();
+		
+		if (idList.isEmpty()) {
+			return Collections.emptyList();
+		}
+		
+		// 사용자 목록 조회
+		List<User> userList = null;
+		try {
+			userList = userRepository.findAllByIdIn(idList);
+		}
+		catch (Exception e) {
+			throw new ApiException(UserErrorCode.USER_READ_LIST_FAIL);
+		}
+		
+		// 사용자 목록 응답 구성
+		List<UserProfileReadResponseDto> userDtoList = new ArrayList<>();	
+		for (User user : userList) {
+			UserProfileReadResponseDto userDto = userMapper.toReadProfileResponseDto(user);
+			
+			// 좋아요 여부
+			userDto.setLiked(likeService.existsUserLike("users", userDto.getId(), userId));
+			
+			userDtoList.add(userDto);
+		}
+		
+		return userDtoList;
+	}
 	
 	
 	

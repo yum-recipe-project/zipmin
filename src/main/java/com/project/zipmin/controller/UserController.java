@@ -804,10 +804,6 @@ public class UserController {
 	        @PathVariable Integer id,
 	        @RequestParam int page,
 	        @RequestParam int size) {
-
-		System.err.println("컨트롤러 진입");
-		System.err.println(id);
-		
 	
 	    // 입력값 검증
 	    if (id == null) {
@@ -823,8 +819,6 @@ public class UserController {
 	    // 로그인 정보
 	    String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-	    System.err.println("아이디:"+id);
-	    System.err.println("이름:"+username);
 	    // 본인 확인
 	    if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
 	        if (id != userService.readUserByUsername(username).getId()) {
@@ -837,7 +831,6 @@ public class UserController {
 	    // 레시피 저장 페이지 조회
 	    Page<RecipeReadMySavedResponseDto> savedRecipePage = recipeService.readSavedRecipePageByUserId(id, pageable);
 	    
-	    System.err.println("저장한 레시피 목록 조회 완료");
 	    return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
 	            .body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, savedRecipePage));
 	}
@@ -846,9 +839,9 @@ public class UserController {
 	
 	
 	
-	// 좋아요한 사용자 목록 조회
+	// 사용자가 좋아요한 사용자 목록 조회
 	@GetMapping("/users/{id}/like-users")
-	public ResponseEntity<?> readUserLikedUserList(
+	public ResponseEntity<?> readUserLikeUserList(
 			@PathVariable Integer id) {
 		
 	    // 입력값 검증
@@ -877,6 +870,42 @@ public class UserController {
 		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, userList));
 	}
+	
+	
+	
+	
+	// 사용자를 좋아하는 사용자 목록 조회
+	@GetMapping("/users/{id}/liked-users")
+	public ResponseEntity<?> readUserLikedUserList(
+			@PathVariable Integer id) {
+		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
+		}
+	    
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserByUsername(username).getId() != id) {
+					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+				}
+			}
+		}
+		
+		List<UserProfileReadResponseDto> userList = userService.readLikedUserList(id);
+		
+		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, userList));
+	}
+	
 	
 	
 

@@ -149,8 +149,6 @@ public class UserService {
 	
 	
 	
-	
-	
 	// 사용자를 좋아하는 사용자 목록 조회
 	public List<UserProfileReadResponseDto> readLikedUserList(Integer userId) {
 		
@@ -192,9 +190,6 @@ public class UserService {
 		
 		return userDtoList;
 	}
-	
-	
-	
 	
 	
 	// 아이디로 사용자 조회

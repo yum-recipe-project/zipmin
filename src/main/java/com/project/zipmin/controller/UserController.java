@@ -1088,7 +1088,6 @@ public class UserController {
 	// USER_UNAUTHORIZED_ACCESS
 	// USER_FORBIDDEN
 	// USER_NOT_FOUND
-	
 	// 사용자를 좋아하는 사용자 목록 조회
 	@GetMapping("/users/{id}/liked-users")
 	public ResponseEntity<?> readUserLikedUserList(

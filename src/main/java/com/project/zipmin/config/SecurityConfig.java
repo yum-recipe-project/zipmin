@@ -82,7 +82,7 @@ public class SecurityConfig {
 				// 모든 출처에서 요청 허용 (http://localhost:3000와 같이 주소로 허용 가능)
 				configuration.setAllowedOrigins(List.of(
 					    "http://localhost:8586",
-					    "http://ec2-54-180-98-103.ap-northeast-2.compute.amazonaws.com:8586"
+					    "http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586"
 					)
 				);
 				// HTTP 메소드 (GET, POST 등 모든 요청)의 요청을 허용

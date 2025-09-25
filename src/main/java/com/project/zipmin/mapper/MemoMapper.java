@@ -8,6 +8,8 @@ import com.project.zipmin.dto.GuideCreateResponseDto;
 import com.project.zipmin.dto.GuideReadResponseDto;
 import com.project.zipmin.dto.GuideUpdateRequestDto;
 import com.project.zipmin.dto.GuideUpdateResponseDto;
+import com.project.zipmin.dto.MemoCreateRequestDto;
+import com.project.zipmin.dto.MemoCreateResponseDto;
 import com.project.zipmin.dto.MemoReadResponseDto;
 import com.project.zipmin.entity.Guide;
 import com.project.zipmin.entity.Memo;
@@ -26,10 +28,10 @@ public interface MemoMapper {
 	
 	// Create
 	@Mapping(target = "user.id", source = "userId")
-	Guide toEntity(GuideCreateRequestDto guideDTO);
+	Memo toEntity(MemoCreateRequestDto memoDTO);
 	
 	@Mapping(target = "userId", source = "user.id")
-	GuideCreateResponseDto toCreateResponseDto(Guide guide);
+	MemoCreateResponseDto toCreateResponseDto(Memo memo);
 	
 	// Update
     @Mapping(target = "id", source = "id")

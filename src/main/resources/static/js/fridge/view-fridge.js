@@ -525,11 +525,10 @@ async function fetchUserMemoList() {
 		
 		const response = await instance.get(`users/${id}/memos`, {
 			headers: getAuthHeaders(),
-			params: { page, size }
 		});
 		
 		if (response.data.code === 'MEMO_READ_LIST_SUCCESS') {
-			memoList = response.data.data.content;
+			memoList = response.data.data;
 			
 			// 검색 결과 없음 표시
 			if (memoList.length === 0) {

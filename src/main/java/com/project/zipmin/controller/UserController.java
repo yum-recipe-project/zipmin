@@ -767,6 +767,8 @@ public class UserController {
 			@RequestParam int page,
 			@RequestParam int size) {
 		
+		System.err.println("키친가이드 컨트롤러");
+		
 		// 입력값 검증
 		if (id == null) {
 			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
@@ -975,6 +977,45 @@ public class UserController {
 	}
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	//테스트
+//	@GetMapping("/users/{id}/memos")
+//	public ResponseEntity<?> listMemo(
+//			@PathVariable Integer id,
+//			@RequestParam int page,
+//			@RequestParam int size) {
+//		
+//		System.err.println("테스트");
+//		
+//		// 입력값 검증
+//		if (id == null) {
+//			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+//		}
+//		
+//		// 인증 여부 확인 (비로그인)
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+//		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
+//		}
+//		
+//		// 로그인 정보
+//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//		
+//		// 본인 확인
+//		if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
+//			if (id != userService.readUserByUsername(username).getId()) {
+//				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+//			}
+//		}
+//		
+//		return null;
+//	}
 	
 	
 	

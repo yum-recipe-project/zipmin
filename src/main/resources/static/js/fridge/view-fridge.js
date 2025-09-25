@@ -21,7 +21,9 @@ document.addEventListener('DOMContentLoaded', async function() {
  */
 document.addEventListener('DOMContentLoaded', async function() {
 	fetchUserFridgeList();
+	fetchUserMemoList();
 });
+
 
 
 
@@ -499,3 +501,162 @@ function renderPickListEmpty() {
 
     return wrapper;
 }
+
+
+
+
+let page = 0;
+let size = 10;
+let totalPages = 0;
+let memoList = [];
+
+
+/**
+ * 서버에서 장보기 메모를 가져오는 함수
+ */
+async function fetchUserMemoList() {
+	
+	// 사용자 냉장고 목록 조회
+	try {
+		
+		// 요청 URL
+		const token = localStorage.getItem('accessToken');
+		const id = parseJwt(token).id;
+		
+		const response = await instance.get(`users/${id}/memos`, {
+			headers: getAuthHeaders(),
+			params: { page, size }
+		});
+		
+		if (response.data.code === 'MEMO_READ_LIST_SUCCESS') {
+			memoList = response.data.data.content;
+			
+			// 검색 결과 없음 표시
+			if (memoList.length === 0) {
+				document.querySelector('.ingredient_list').style.display = 'none';
+				const content = document.querySelector('.ingredient_list');
+				content.insertAdjacentElement('afterend', renderMemoListEmpty());
+			}
+			// 검색 결과 표시
+			else {
+				renderMemoList(memoList);
+			}
+			
+		}
+	}
+	catch (error) {
+		console.log(error);
+	}
+	
+}
+
+
+
+/**
+ * 장보기 메모 목록을 화면에 렌더링하는 함수
+ */
+function renderMemoList(memoList) {
+    const memoContent = document.querySelector('.memo_content');
+    const table = memoContent.querySelector('.ingredient_list');
+    const btnWrap = memoContent.querySelector('.btn_wrap');
+
+    table.innerHTML = '';
+    btnWrap.innerHTML = '';
+
+    const thead = document.createElement('thead');
+    thead.innerHTML = `
+        <tr>
+            <th width="20%">재료</th>
+            <th width="20%">용량</th>
+            <th width="40%">비고</th>
+            <th width="10%">수정</th>
+            <th width="10%">선택</th>
+        </tr>
+    `;
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+
+    memoList.forEach(memo => {
+        const tr = document.createElement('tr');
+
+        const tdName = document.createElement('td');
+        tdName.textContent = memo.name;
+
+        const tdAmount = document.createElement('td');
+        tdAmount.textContent = `${memo.amount}${memo.unit || ''}`;
+
+        const tdNote = document.createElement('td');
+        tdNote.textContent = memo.note || '';
+
+        const tdEdit = document.createElement('td');
+        const editBtn = document.createElement('button');
+        editBtn.className = 'btn_sort sort_sm';
+        editBtn.type = 'button';
+        editBtn.textContent = '수정';
+        tdEdit.appendChild(editBtn);
+
+        const tdSelect = document.createElement('td');
+        const selectBtn = document.createElement('button');
+        selectBtn.className = 'btn_sort sort_sm';
+        selectBtn.type = 'button';
+        selectBtn.textContent = '선택';
+        tdSelect.appendChild(selectBtn);
+
+        tr.append(tdName, tdAmount, tdNote, tdEdit, tdSelect);
+        tbody.appendChild(tr);
+    });
+
+    table.appendChild(tbody);
+
+    const completeBtn = document.createElement('button');
+    completeBtn.className = 'btn_outline';
+    completeBtn.textContent = '장보기 완료';
+    completeBtn.onclick = () => {
+        location.href = '/chompessor/listForum.do';
+    };
+
+    const addBtn = document.createElement('button');
+    addBtn.className = 'btn_primary';
+    addBtn.type = 'button';
+    addBtn.setAttribute('data-bs-toggle', 'modal');
+    addBtn.setAttribute('data-bs-target', '#addMemoModal');
+    addBtn.textContent = '추가하기';
+
+    btnWrap.append(completeBtn, addBtn);
+}
+
+/**
+ * 장보기 메모 목록 결과 없음 화면을 화면에 렌더링하는 함수
+ */
+function renderMemoListEmpty() {
+
+	const wrapper = document.createElement('div');
+  	wrapper.className = 'memo_empty_wrap';
+
+	const list = document.createElement('div');
+	list.className = 'memo_list_empty';
+	wrapper.appendChild(list);
+	
+    const span = document.createElement('span');
+    span.textContent = '작성한 장보기 메모가 없습니다.';
+    list.appendChild(span);
+
+	const btnWrap = document.querySelector('.btn_wrap');
+	const addBtn = document.createElement('button');
+	addBtn.className = 'btn_primary';
+	addBtn.type = 'button';
+	addBtn.setAttribute('data-bs-toggle', 'modal');
+	addBtn.setAttribute('data-bs-target', '#addMemoModal');
+	addBtn.textContent = '추가하기';
+
+	btnWrap.append(addBtn);
+	
+
+    return wrapper;
+}
+
+
+
+
+

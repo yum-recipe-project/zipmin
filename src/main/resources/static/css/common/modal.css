@@ -278,6 +278,12 @@
     vertical-align: middle;
 }
 
+.memo_edit:hover {
+    color: #0073E6 !important;
+    border-color: #0073E6 !important;
+}
+
+
 
 
 

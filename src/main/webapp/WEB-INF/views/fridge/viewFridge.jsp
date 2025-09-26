@@ -14,6 +14,7 @@
 		<script src="/js/modal/write-user-fridge-modal.js"></script>
 		<script src="/js/modal/edit-user-fridge-modal.js"></script>
 		<script src="/js/modal/write-memo-modal.js"></script>
+		<script src="/js/modal/edit-memo-modal.js"></script>
 	</head>
 	
 	<body>
@@ -126,6 +127,7 @@
 			
 			<!-- 장보기 메모 모달  -->
 			<%@include file="../modal/writeMemoModal.jsp" %>
+			<%@include file="../modal/editMemoModal.jsp" %>
 		
 		</main>
 		

@@ -590,9 +590,21 @@ function renderMemoList(memoList) {
 
         const tdEdit = document.createElement('td');
         const editBtn = document.createElement('button');
-        editBtn.className = 'btn_sort sort_sm';
+		
+        editBtn.className = 'btn btn_tab memo_edit';
         editBtn.type = 'button';
         editBtn.textContent = '수정';
+		editBtn.setAttribute('data-bs-toggle', 'modal');
+		editBtn.setAttribute('data-bs-target', '#editMemoModal');
+		
+		editBtn.setAttribute('data-id', memo.id);
+		editBtn.setAttribute('data-name', memo.name);
+		editBtn.setAttribute('data-amount', memo.amount);
+		editBtn.setAttribute('data-unit', memo.unit || '');
+		editBtn.setAttribute('data-note', memo.note || '');
+
+		
+		
         tdEdit.appendChild(editBtn);
 
         const tdSelect = document.createElement('td');
@@ -624,6 +636,8 @@ function renderMemoList(memoList) {
 
     btnWrap.append(completeBtn, addBtn);
 }
+
+
 
 /**
  * 장보기 메모 목록 결과 없음 화면을 화면에 렌더링하는 함수
@@ -658,4 +672,26 @@ function renderMemoListEmpty() {
 
 
 
+/**
+ * 장보기 메모 수정 버튼 동작
+ */
+document.addEventListener("DOMContentLoaded", function() {
+    const editMemoModalEl = document.getElementById('editMemoModal');
+
+    editMemoModalEl.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget; 
+        const memoId = button.getAttribute('data-id');
+        const name = button.getAttribute('data-name');
+        const amount = button.getAttribute('data-amount');
+        const unit = button.getAttribute('data-unit');
+        const note = button.getAttribute('data-note');
+
+        // form input 채우기
+        const form = document.getElementById('editMemoForm');
+        form.dataset.memoId = memoId; // 수정 요청시 사용
+        form.name.value = name;
+        form.amount.value = amount + unit; 
+        form.note.value = note;
+    });
+});
 

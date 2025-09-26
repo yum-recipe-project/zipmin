@@ -1,24 +1,22 @@
 package com.project.zipmin.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
-import com.project.zipmin.api.KitchenErrorCode;
 import com.project.zipmin.api.MemoErrorCode;
 import com.project.zipmin.dto.MemoCreateRequestDto;
 import com.project.zipmin.dto.MemoCreateResponseDto;
 import com.project.zipmin.dto.MemoReadResponseDto;
+import com.project.zipmin.dto.MemoUpdateRequestDto;
+import com.project.zipmin.dto.MemoUpdateResponseDto;
+import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.entity.Memo;
-import com.project.zipmin.entity.Role;
+import com.project.zipmin.entity.User;
 import com.project.zipmin.mapper.MemoMapper;
 import com.project.zipmin.repository.MemoRepository;
 
@@ -38,37 +36,7 @@ public class MemoService {
 	private final MemoMapper memoMapper;
 	
 	
-	// 메모 목록 조회
-//	public Page<MemoReadResponseDto> readMemoPage(Integer userId, Pageable pageable) {
-//		
-//		System.err.println("메모 서비스 진입");
-//		
-//		// 입력값 검증
-//		if (pageable == null) {
-//			throw new ApiException(MemoErrorCode.MEMO_INVALID_INPUT);
-//		}
-//		
-//		// 메모 목록 조회
-//		Page<Memo> memoPage;
-//		try {
-//			memoPage = memoRepository.findAllByUserId(userId, pageable);
-//		}
-//		catch (Exception e) {
-//			throw new ApiException(MemoErrorCode.MEMO_READ_LIST_FAIL);
-//		}
-//		
-//		// dto 변경
-//		List<MemoReadResponseDto> memoDtoList = new ArrayList<MemoReadResponseDto>();
-//		for (Memo memo : memoPage) {
-//			MemoReadResponseDto memoDto = memoMapper.toReadResponseDto(memo);
-//			
-//			memoDtoList.add(memoDto);
-//		}
-//		
-//		
-//		return new PageImpl<>(memoDtoList, pageable, memoPage.getTotalElements());
-//	}
-	
+	// 장보기 메모 조회
 	public List<MemoReadResponseDto> readMemoList(Integer userId) {
 	    List<Memo> memoList = memoRepository.findAllByUserId(userId);
 	    return memoList.stream()
@@ -79,14 +47,11 @@ public class MemoService {
 
 	
 	
-	
-	
-	// 메모 작성
+	// 장보기 메모 작성
 	public MemoCreateResponseDto createMemo(MemoCreateRequestDto memoRequestDto) {
 		
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		memoRequestDto.setUserId(userService.readUserByUsername(username).getId());
-		
 		
 		// 입력값 검증
 	    if (memoRequestDto == null 
@@ -106,6 +71,44 @@ public class MemoService {
 	}
 	
 	
+	
+	
+	// 댓글을 수정하는 함수
+	public MemoUpdateResponseDto updateMemo(int memoId, MemoUpdateRequestDto memoDto) {
+		
+
+	    // 입력값 검증
+	    if (memoDto == null || memoDto.getName() == null) {
+	        throw new ApiException(MemoErrorCode.MEMO_INVALID_INPUT);
+	    }
+
+	    // 메모 존재 여부 확인
+	    Memo memo = memoRepository.findById(memoId)
+	            .orElseThrow(() -> new ApiException(MemoErrorCode.MEMO_NOT_FOUND));
+
+	    // 작성자 확인 (본인만 수정 가능)
+	    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+	    UserReadResponseDto user = userService.readUserByUsername(username);
+	    
+	    if (memo.getUser().getId() != user.getId()) {
+	        throw new ApiException(MemoErrorCode.MEMO_FORBIDDEN);
+	    }
+
+	    // 변경 값 설정
+	    memo.setName(memoDto.getName());
+	    memo.setAmount(memoDto.getAmount());
+	    memo.setUnit(memoDto.getUnit());
+	    memo.setNote(memoDto.getNote());
+
+	    // 메모 수정
+	    try {
+	        memo = memoRepository.save(memo);
+	        return memoMapper.toUpdateResponseDto(memo);
+	    } catch (Exception e) {
+	        throw new ApiException(MemoErrorCode.MEMO_UPDATE_FAIL);
+	    }
+	}
+
 	
 	
 }

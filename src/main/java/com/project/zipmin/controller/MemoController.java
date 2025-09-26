@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
-import com.project.zipmin.api.CommentErrorCode;
-import com.project.zipmin.api.CommentSuccessCode;
 import com.project.zipmin.api.MemoErrorCode;
 import com.project.zipmin.api.MemoSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
@@ -25,11 +23,11 @@ import com.project.zipmin.dto.MemoCreateResponseDto;
 import com.project.zipmin.dto.MemoReadResponseDto;
 import com.project.zipmin.dto.MemoUpdateRequestDto;
 import com.project.zipmin.dto.MemoUpdateResponseDto;
+import com.project.zipmin.dto.RecipeStockMemoCreateRequestDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.MemoService;
 import com.project.zipmin.service.UserService;
 
-import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -138,6 +136,35 @@ public class MemoController {
 	            .body(ApiResponse.success(MemoSuccessCode.MEMO_DELETE_SUCCESS, null));
 	}
 
+
+	
+	
+	// 레시피 재료 장보기 메모 추가
+	@PostMapping("/users/{userId}/memos/recipe-stock")
+	public ResponseEntity<?> addRecipeStockMemo(
+	        @PathVariable int userId,
+	        @RequestBody RecipeStockMemoCreateRequestDto requestDTO) {
+		
+		System.err.println("레시피-> 메모 컨트롤러");
+		System.err.println(requestDTO);
+
+	    // 로그인 여부 확인
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+	        throw new ApiException(MemoErrorCode.MEMO_UNAUTHORIZED_ACCESS);
+	    }
+
+	    // 요청이 비어있는 경우 처리
+	    if (requestDTO.getMemoList() == null || requestDTO.getMemoList().isEmpty()) {
+	        throw new ApiException(MemoErrorCode.MEMO_INVALID_INPUT);
+	    }
+
+	    // 서비스 호출 (각 항목을 반복해서 저장)
+	    List<MemoCreateResponseDto> result = memoService.addRecipeStockMemo(userId, requestDTO.getMemoList());
+
+	    return ResponseEntity.status(MemoSuccessCode.MEMO_CREATE_SUCCESS.getStatus())
+	            .body(ApiResponse.success(MemoSuccessCode.MEMO_CREATE_SUCCESS, result));
+	}
 
 	
 }

@@ -1,5 +1,6 @@
 package com.project.zipmin.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,18 +9,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
-import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.MemoErrorCode;
 import com.project.zipmin.dto.MemoCreateRequestDto;
 import com.project.zipmin.dto.MemoCreateResponseDto;
 import com.project.zipmin.dto.MemoReadResponseDto;
 import com.project.zipmin.dto.MemoUpdateRequestDto;
 import com.project.zipmin.dto.MemoUpdateResponseDto;
+import com.project.zipmin.dto.RecipeStockMemoCreateRequestDto;
 import com.project.zipmin.dto.UserReadResponseDto;
-import com.project.zipmin.entity.Comment;
 import com.project.zipmin.entity.Memo;
-import com.project.zipmin.entity.Role;
-import com.project.zipmin.entity.User;
 import com.project.zipmin.mapper.MemoMapper;
 import com.project.zipmin.repository.MemoRepository;
 
@@ -130,7 +128,6 @@ public class MemoService {
 	    String username = SecurityContextHolder.getContext().getAuthentication().getName();
 	    UserReadResponseDto user = userService.readUserByUsername(username);
 
-//	    }
 	    if (memo.getUser().getId() != user.getId()) {
 	        throw new ApiException(MemoErrorCode.MEMO_FORBIDDEN);
 	    }
@@ -147,6 +144,26 @@ public class MemoService {
 	
 	
 	
+	
+	// 레시피 재료 -> 장보기 메모 담기
+	public List<MemoCreateResponseDto> addRecipeStockMemo(int userId, List<RecipeStockMemoCreateRequestDto.MemoItem> items) {
+	    List<MemoCreateResponseDto> result = new ArrayList<>();
+
+	    for (RecipeStockMemoCreateRequestDto.MemoItem item : items) {
+	        MemoCreateRequestDto dto = new MemoCreateRequestDto();
+	        dto.setName(item.getName());
+	        dto.setAmount(Integer.parseInt(item.getAmount()));
+	        dto.setUnit(item.getUnit());
+	        dto.setNote(item.getNote());
+	        dto.setUserId(userId);
+
+	        MemoCreateResponseDto created = createMemo(dto);
+	        result.add(created);
+	    }
+
+	    return result;
+	}
+
 	
 	
 	

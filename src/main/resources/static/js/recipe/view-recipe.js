@@ -219,6 +219,7 @@ function renderStockList(stockList) {
 		tdAmount.textContent = `${stock.amount}${stock.unit}`;
 		tr.appendChild(tdAmount);
 		
+		
 		// 비고
 		const tdNote = document.createElement('td');
 		tdNote.textContent = stock.note;
@@ -250,7 +251,15 @@ function renderMemoList(stockList) {
 		// 수량
 		const tdAmount = document.createElement('td');
 		tdAmount.textContent = `${ingredient.amount}${ingredient.unit}`;
+		
+		tdAmount.dataset.amount = ingredient.amount;
+		tdAmount.dataset.unit = ingredient.unit; // ← 여기 추가
+		
+		
 		tr.appendChild(tdAmount);
+		
+		
+		
 		
 		// 체크박스
 		const tdCheckbox = document.createElement('td');

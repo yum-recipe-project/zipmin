@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<form id="addMemoForm" onsubmit="return validateAddMemoForm();">
+<!-- <form id="addMemoForm" onsubmit="return validateAddMemoForm();"> -->
+<form id="addMemoForm">
 	<div class="modal" id="addMemoModal">
 		<div class="modal-dialog">
 			<div class="modal-content">

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
+import com.project.zipmin.api.CommentErrorCode;
+import com.project.zipmin.api.CommentSuccessCode;
 import com.project.zipmin.api.MemoErrorCode;
 import com.project.zipmin.api.MemoSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
@@ -26,6 +29,7 @@ import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.MemoService;
 import com.project.zipmin.service.UserService;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -111,6 +115,29 @@ public class MemoController {
 	    return ResponseEntity.status(MemoSuccessCode.MEMO_UPDATE_SUCCESS.getStatus())
 	            .body(ApiResponse.success(MemoSuccessCode.MEMO_UPDATE_SUCCESS, memoResponseDto));
 	}
+	
+	
+	
+	
+	
+	// 장보기 메모 삭제
+	@DeleteMapping("/users/{userId}/memos/{memoId}")
+	public ResponseEntity<?> deleteMemo(
+			@PathVariable int memoId) {
+		
+	    // 로그인 여부 확인
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+	        throw new ApiException(MemoErrorCode.MEMO_UNAUTHORIZED_ACCESS);
+	    }
+
+	    // 메모 삭제 서비스 호출
+	    memoService.deleteMemo(memoId);
+
+	    return ResponseEntity.status(MemoSuccessCode.MEMO_DELETE_SUCCESS.getStatus())
+	            .body(ApiResponse.success(MemoSuccessCode.MEMO_DELETE_SUCCESS, null));
+	}
+
 
 	
 }

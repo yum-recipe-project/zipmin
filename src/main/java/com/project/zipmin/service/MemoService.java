@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.MemoErrorCode;
 import com.project.zipmin.dto.MemoCreateRequestDto;
 import com.project.zipmin.dto.MemoCreateResponseDto;
@@ -15,7 +16,9 @@ import com.project.zipmin.dto.MemoReadResponseDto;
 import com.project.zipmin.dto.MemoUpdateRequestDto;
 import com.project.zipmin.dto.MemoUpdateResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
+import com.project.zipmin.entity.Comment;
 import com.project.zipmin.entity.Memo;
+import com.project.zipmin.entity.Role;
 import com.project.zipmin.entity.User;
 import com.project.zipmin.mapper.MemoMapper;
 import com.project.zipmin.repository.MemoRepository;
@@ -109,6 +112,42 @@ public class MemoService {
 	    }
 	}
 
+	
+	
+	// 장보기 메모 삭제
+	public void deleteMemo(Integer memoId) {
+
+	    // 입력값 검증
+	    if (memoId == null) {
+	        throw new ApiException(MemoErrorCode.MEMO_INVALID_INPUT);
+	    }
+
+	    // 메모 존재 여부 판단
+	    Memo memo = memoRepository.findById(memoId)
+	            .orElseThrow(() -> new ApiException(MemoErrorCode.MEMO_NOT_FOUND));
+
+	    // 권한 확인 (로그인한 사용자와 메모 작성자 일치 여부)
+	    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+	    UserReadResponseDto user = userService.readUserByUsername(username);
+
+//	    }
+	    if (memo.getUser().getId() != user.getId()) {
+	        throw new ApiException(MemoErrorCode.MEMO_FORBIDDEN);
+	    }
+
+
+	    // 메모 삭제
+	    try {
+	        memoRepository.deleteById(memoId);
+	    } catch (Exception e) {
+	        throw new ApiException(MemoErrorCode.MEMO_DELETE_FAIL);
+	    }
+	}
+
+	
+	
+	
+	
 	
 	
 }

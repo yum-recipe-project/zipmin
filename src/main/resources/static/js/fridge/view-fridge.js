@@ -602,30 +602,34 @@ function renderMemoList(memoList) {
 		editBtn.setAttribute('data-amount', memo.amount);
 		editBtn.setAttribute('data-unit', memo.unit || '');
 		editBtn.setAttribute('data-note', memo.note || '');
-
 		
-		
-        tdEdit.appendChild(editBtn);
+        tdEdit.appendChild(editBtn);	
 
-        const tdSelect = document.createElement('td');
-        const selectBtn = document.createElement('button');
-        selectBtn.className = 'btn_sort sort_sm';
-        selectBtn.type = 'button';
-        selectBtn.textContent = '선택';
-        tdSelect.appendChild(selectBtn);
+		const tdSelect = document.createElement('td');
+	    const checkbox = document.createElement('input');
+	    checkbox.type = 'checkbox';
+	    checkbox.id = `memo_${memo.id}`;
+	    checkbox.name = 'selectedMemo';
+	
+	    const label = document.createElement('label');
+	    label.setAttribute('for', `memo_${memo.id}`);
+	
+	    tdSelect.appendChild(checkbox);
+	    tdSelect.appendChild(label);
+	
+	    tr.append(tdName, tdAmount, tdNote, tdEdit, tdSelect);
+	    tbody.appendChild(tr);
 
-        tr.append(tdName, tdAmount, tdNote, tdEdit, tdSelect);
-        tbody.appendChild(tr);
     });
 
     table.appendChild(tbody);
 
     const completeBtn = document.createElement('button');
-    completeBtn.className = 'btn_outline';
+    completeBtn.className = 'btn_outline delete_memo';
     completeBtn.textContent = '장보기 완료';
-    completeBtn.onclick = () => {
-        location.href = '/chompessor/listForum.do';
-    };
+//    completeBtn.onclick = () => {
+//        location.href = '/chompessor/listForum.do';
+//    };
 
     const addBtn = document.createElement('button');
     addBtn.className = 'btn_primary';
@@ -673,7 +677,7 @@ function renderMemoListEmpty() {
 
 
 /**
- * 장보기 메모 수정 버튼 동작
+ * 장보기 메모 수정 버튼 동작 (수정 모달 오픈)
  */
 document.addEventListener("DOMContentLoaded", function() {
     const editMemoModalEl = document.getElementById('editMemoModal');
@@ -694,4 +698,50 @@ document.addEventListener("DOMContentLoaded", function() {
         form.note.value = note;
     });
 });
+
+
+
+/**
+ * 장보기 메모 완료 기능
+ */
+/**
+ * 장보기 메모 완료 기능 (체크한 메모 삭제)
+ */
+document.addEventListener('click', async function(event) {
+    if (event.target.classList.contains('delete_memo')) {
+		
+        const selectedCheckboxes = document.querySelectorAll('input[name="selectedMemo"]:checked');
+        const selectedMemoIds = Array.from(selectedCheckboxes).map(cb => cb.id.replace('memo_', ''));
+
+		console.log(selectedMemoIds);
+		
+        if (selectedMemoIds.length === 0) {
+            alertDanger('삭제할 메모를 선택해주세요.');
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem('accessToken');
+            const userId = parseJwt(token).id;
+
+            for (const memoId of selectedMemoIds) {
+                await instance.delete(`/users/${userId}/memos/${memoId}`, {
+                    headers: getAuthHeaders()
+                });
+            }
+
+            fetchUserMemoList();
+
+            alertPrimary('선택한 메모가 삭제되었습니다.');
+
+        } catch (error) {
+            console.error(error);
+            alertDanger('메모 삭제 중 오류가 발생했습니다.');
+        }
+    }
+});
+
+
+
+
 

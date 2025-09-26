@@ -42,36 +42,36 @@ async function fetchUser() {
 	try {
 		const id = parseJwt(localStorage.getItem('accessToken')).id;
 		
-		// *** TODO : 인스턴스로 변경 ***
-		const response = await fetch(`/users/${id}/profile`, {
-			method: 'GET',
+		const response = await instance.get(`/users/${id}/profile`, {
 			headers: getAuthHeaders()
 		});
 		
-		const result = await response.json();
-		
-		if (result.code === 'USER_READ_SUCCESS') {
-			if (result.data.avatar) {
-				userWrap.querySelector('.user_avatar').style.backgroundImage = `url(${result.data.avatar})`;
+		if (response.data.code === 'USER_READ_SUCCESS') {
+			if (response.data.data.avatar) {
+				userWrap.querySelector('.user_avatar').style.backgroundImage = `url(${response.data.data.avatar})`;
 				userWrap.querySelector('.user_avatar').style.backgroundColor = '#F1F6FD';
 				userWrap.querySelector('.user_avatar').style.backgroundSize = '65%';
 				userWrap.querySelector('.user_avatar').style.backgroundPosition = 'center';
 				userWrap.querySelector('.user_avatar').style.backgroundRepeat = 'no-repeat';
 				userWrap.querySelector('.user_avatar').style.borderColor = '#D7DBE6';
 			}
-			userWrap.querySelector('.user_nickname').innerText = result.data.nickname;
-			userWrap.querySelector('.user_introduce').innerText = result.data.introduce;
+			userWrap.querySelector('.user_nickname').innerText = response.data.data.nickname;
+			userWrap.querySelector('.user_introduce').innerText = response.data.data.introduce;
 		}
-		else if (result.code === 'LIKE_COUNT_FAIL') {
+	}
+	catch(error) {
+		const code = error?.response?.data?.code;
+		
+		if (response.data.code === 'LIKE_COUNT_FAIL') {
 			alertDanger('좋아요 수 집계에 실패했습니다.');
 		}
-		else if (result.code === 'USER_INVALID_INPUT') {
+		else if (response.data.code === 'USER_INVALID_INPUT') {
 			alertDanger('입력값이 유효하지 않습니다.');
 		}
-		else if (result.code === 'LIKE_INVALID_INPUT') {
+		else if (response.data.code === 'LIKE_INVALID_INPUT') {
 			alertDanger('입력값이 유효하지 않습니다.');
 		}
-		else if (result.code === 'USER_NOT_FOUND') {
+		else if (response.data.code === 'USER_NOT_FOUND') {
 			alertDanger('해당 사용자를 찾을 수 없습니다.');
 		}
 		else if (code === 'INTERNAL_SERVER_ERROR') {
@@ -80,10 +80,6 @@ async function fetchUser() {
 		else {
 			console.log(error);
 		}
-	}
-	catch(error) {
-		console.log(error);
-		alertDanger('알 수 없는 오류가 발생했습니다.');
 	}
 }
 
@@ -105,17 +101,44 @@ async function fetchLikeUserList() {
 			headers: getAuthHeaders()
 		});
 		
-		console.log(response);
-		
 		if (response.data.code === 'USER_READ_LIST_SUCCESS') {
 			modal.querySelector('.user_count span').innerText = `총 ${response.data.data.length}명`;
 			renderLikeUserList(response.data.data);
 		}
 	}
 	catch(error) {
-		console.log(error);
-		
-		// *** TODO : 에러코드 작성하기 ***
+		const code = error?.response?.data?.code;
+				
+		if (response.data.code === 'USER_READ_LIST_FAIL') {
+			alertDanger('사용자 목록 조회에 실패했습니다.');
+		}
+		else if (response.data.code === 'LIKE_READ_LIST_FAIL') {
+			alertDanger('좋아요 목록 조회에 실패했습니다.');
+		}
+		else if (response.data.code === 'LIKE_EXIST_FAIL') {
+			alertDanger('좋아요 여부 조회에 실패했습니다.');
+		}
+		else if (response.data.code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다,');
+		}
+		else if (response.data.code === 'LIKE_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (response.data.code === 'USER_UNAUTHORIZED_ACCESS') {
+			alertDanger('로그인되지 않은 사용자입니다.');
+		}
+		else if (response.data.code === 'USER_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (response.data.code === 'USER_NOT_FOUND') {
+			alertDanger('해당 사용자를 찾을 수 없습니다.');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alertDanger('서버 내부에서 오류가 발생했습니다.');
+		}
+		else {
+			console.log(error);
+		}
 	}
 	
 }
@@ -138,21 +161,48 @@ async function fetchLikedUserList() {
 			headers: getAuthHeaders()
 		});
 		
-		console.log(response);
-		
 		if (response.data.code === 'USER_READ_LIST_SUCCESS') {
 			modal.querySelector('.user_count span').innerText = `총 ${response.data.data.length}명`;
 			renderLikedUserList(response.data.data);
 		}
-		
 	}
 	catch(error) {
-		console.log(error);
-		
-		// *** TODO : 에러코드 작성하기 ***
+		const code = error?.response?.data?.code;
+				
+		if (response.data.code === 'USER_READ_LIST_FAIL') {
+			alertDanger('사용자 목록 조회에 실패했습니다.');
+		}
+		else if (response.data.code === 'LIKE_READ_LIST_FAIL') {
+			alertDanger('좋아요 목록 조회에 실패했습니다.');
+		}
+		else if (response.data.code === 'LIKE_EXIST_FAIL') {
+			alertDanger('좋아요 여부 조회에 실패했습니다.');
+		}
+		else if (response.data.code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다,');
+		}
+		else if (response.data.code === 'LIKE_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (response.data.code === 'USER_UNAUTHORIZED_ACCESS') {
+			alertDanger('로그인되지 않은 사용자입니다.');
+		}
+		else if (response.data.code === 'USER_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (response.data.code === 'USER_NOT_FOUND') {
+			alertDanger('해당 사용자를 찾을 수 없습니다.');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alertDanger('서버 내부에서 오류가 발생했습니다.');
+		}
+		else {
+			console.log(error);
+		}
 	}
 	
 }
+
 
 
 

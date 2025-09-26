@@ -12,7 +12,7 @@
 			<div class="modal-body body-scroll">
 				<!-- 팔로워 수 -->
 				<div class="user_count">
-					<span>총 7명</span>
+					<span></span>
 				</div>
 			
 				<!-- 팔로워 목록 -->

@@ -95,6 +95,8 @@ public class UserService {
 	
 	
 	
+	
+	
 	// 사용자가 좋아요한 사용자 목록 조회
 	public List<UserProfileReadResponseDto> readLikeUserList(Integer userId) {
 		

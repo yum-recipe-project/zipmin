@@ -838,6 +838,15 @@ public class UserController {
 	
 	
 	
+	// USER_READ_LIST_SUCCESS
+	// USER_READ_LIST_FAIL
+	// LIKE_READ_LIST_FAIL
+	// LIKE_EXIST_FAIL
+	// USER_INVALID_INPUT
+	// LIKE_INVALID_INPUT
+	// USER_UNAUTHORIZED_ACCESS
+	// USER_FORBIDDEN
+	// USER_NOT_FOUND
 	
 	// 사용자가 좋아요한 사용자 목록 조회
 	@GetMapping("/users/{id}/like-users")
@@ -873,6 +882,16 @@ public class UserController {
 	
 	
 	
+	
+	// USER_READ_LIST_SUCCESS
+	// USER_READ_LIST_FAIL
+	// LIKE_READ_LIST_FAIL
+	// LIKE_EXIST_FAIL
+	// USER_INVALID_INPUT
+	// LIKE_INVALID_INPUT
+	// USER_UNAUTHORIZED_ACCESS
+	// USER_FORBIDDEN
+	// USER_NOT_FOUND
 	
 	// 사용자를 좋아하는 사용자 목록 조회
 	@GetMapping("/users/{id}/liked-users")

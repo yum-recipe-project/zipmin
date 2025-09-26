@@ -86,7 +86,8 @@ public class MemoService {
 		
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		memoRequestDto.setUserId(userService.readUserByUsername(username).getId());
-	
+		
+		
 		// 입력값 검증
 	    if (memoRequestDto == null 
 	            || memoRequestDto.getName() == null 

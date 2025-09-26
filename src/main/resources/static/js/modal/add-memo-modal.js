@@ -16,8 +16,9 @@
 
 
 
-//
-
+/**
+ * 장보기 메모를 작성하는 함수
+ */
 document.addEventListener("DOMContentLoaded", function() {
 
     const form = document.getElementById('addMemoForm');
@@ -58,39 +59,28 @@ document.addEventListener("DOMContentLoaded", function() {
 			isValid = false;
 		}
 		 
-
-        console.log("재료명:", form.name.value.trim());
-        console.log("amount:", match[1]);
-        console.log("unit:", match[2]);
-        console.log("비고:", form.note.value.trim());
-		
-		
-		
 		if (isValid){
 			try{
-				const id = parseJwt(localStorage.getItem('accessToken')).id;
+				const userId = parseJwt(localStorage.getItem('accessToken')).id;
 				const data = {
 					name: form.name.value.trim(),
 				    amount: match[1],
 				    unit: match[2],
 				    note: form.note.value.trim(),
-					id:id
+					userId:userId
 				}
 				
-				const response = await instance.post(`/users/${id}/memos`, data, {
+				const response = await instance.post(`/users/${userId}/memos`, data, {
 					headers: getAuthHeaders()
 				});
 				
 				if (response.data.code === 'MEMO_CREATE_SUCCESS') {
-					console.log("입력성공");
 					fetchUserMemoList();
 					
 					// 모달 닫기
 	                const addMemoModalEl = document.getElementById('addMemoModal');
 	                const modal = bootstrap.Modal.getInstance(addMemoModalEl);
 	                if (modal) modal.hide();
-					// 모달 내용 초기화
-					form.reset();
 				}
 				
 			}
@@ -106,4 +96,28 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
+
+
+/**
+ * 모달이 닫히면 폼을 초기화하는 함수
+ */
+document.addEventListener("DOMContentLoaded", function() {
+    const addMemoModalEl = document.getElementById('addMemoModal');
+    const addMemoForm = document.getElementById('addMemoForm');
+
+    if (addMemoModalEl) {
+        addMemoModalEl.addEventListener('hidden.bs.modal', function () {
+            // 폼 리셋
+            addMemoForm.reset();
+
+            // 유효성 에러 표시 제거
+            addMemoForm.querySelectorAll('.is-invalid').forEach(input => {
+                input.classList.remove('is-invalid');
+            });
+
+            const hint = document.getElementById('sheetAmountHint1');
+            if (hint) hint.style.display = 'none';
+        });
+    }
+});
 

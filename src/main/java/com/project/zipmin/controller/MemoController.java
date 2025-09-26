@@ -111,12 +111,10 @@ public class MemoController {
 	
 	
 	// 장보기 메모 입력
-	@PostMapping("/users/{id}/memos")
+	@PostMapping("/users/{userId}/memos")
 	public ResponseEntity<?> writeMemo(
-			@PathVariable int id,
+			@PathVariable int userId,
 	        @RequestBody MemoCreateRequestDto memoRequestDto) {
-		System.err.println("메모 입력 컨트롤러");
-		System.err.println("아이디:"+id);
 	    
 	    // 로그인 여부 확인
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -125,7 +123,7 @@ public class MemoController {
 	    }
 
 	    MemoCreateResponseDto memoResponseDto = memoService.createMemo(memoRequestDto);
-
+	    
 	    return ResponseEntity.status(MemoSuccessCode.MEMO_CREATE_SUCCESS.getStatus())
 	            .body(ApiResponse.success(MemoSuccessCode.MEMO_CREATE_SUCCESS, memoResponseDto));
 	}

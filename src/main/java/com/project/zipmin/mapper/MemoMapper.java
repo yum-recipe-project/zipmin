@@ -27,6 +27,7 @@ public interface MemoMapper {
    
 	
 	// Create
+    @Mapping(target = "id", ignore = true)
 	@Mapping(target = "user.id", source = "userId")
 	Memo toEntity(MemoCreateRequestDto memoDTO);
 	

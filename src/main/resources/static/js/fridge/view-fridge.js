@@ -619,7 +619,7 @@ function renderMemoList(memoList) {
     addBtn.className = 'btn_primary';
     addBtn.type = 'button';
     addBtn.setAttribute('data-bs-toggle', 'modal');
-    addBtn.setAttribute('data-bs-target', '#addMemoModal');
+    addBtn.setAttribute('data-bs-target', '#writeMemoModal');
     addBtn.textContent = '추가하기';
 
     btnWrap.append(completeBtn, addBtn);
@@ -646,7 +646,7 @@ function renderMemoListEmpty() {
 	addBtn.className = 'btn_primary';
 	addBtn.type = 'button';
 	addBtn.setAttribute('data-bs-toggle', 'modal');
-	addBtn.setAttribute('data-bs-target', '#addMemoModal');
+	addBtn.setAttribute('data-bs-target', '#writeMemoModal');
 	addBtn.textContent = '추가하기';
 
 	btnWrap.append(addBtn);

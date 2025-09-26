@@ -34,17 +34,17 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 사용자 로그인 요청을 처리하는 커스텀 필터입니다.
+ * 관리자 로그인 요청을 처리하는 커스텀 필터입니다.
  *
  * JSON 형식의 사용자 인증 정보를 처리하여,
  * 인증 성공 시 JWT 토큰을 발급하고
  * 인증 실패 시 401 응답을 반환합니다.
  * 
  * @author 정하림
- * @since 1.0 (2025-06-01)
+ * @since 1.0 (2025-09-27)
  */
 @RequiredArgsConstructor
-public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
+public class CustomAdminLoginFilter extends UsernamePasswordAuthenticationFilter {
 	
 	private final AuthenticationManager authenticationManager;
 	private final JwtUtil jwtUtil;

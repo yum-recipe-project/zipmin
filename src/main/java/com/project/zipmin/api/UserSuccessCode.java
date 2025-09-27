@@ -12,10 +12,12 @@ public enum UserSuccessCode implements Code {
 	// 데이터 처리
 	USER_READ_LIST_SUCCESS(HttpStatus.OK, "사용자 목록 조회 성공"),
 	USER_READ_USERNAME_SUCCESS(HttpStatus.OK, "사용자 아이디 조회 성공"),
+	USER_READ_PASSWORD_SUCCESS(HttpStatus.OK, "사용자 비밀번호 조회 성공"),
 	USER_READ_SUCCESS(HttpStatus.OK, "사용자 조회 성공"),
 	USER_CREATE_SUCCESS(HttpStatus.CREATED, "사용자 작성 성공"),
 	USER_UPDATE_SUCCESS(HttpStatus.OK, "사용자 수정 성공"),
 	USER_DELETE_SUCCESS(HttpStatus.OK, "사용자 삭제 성공"),
+	
 	
 	USER_READ_RECIPE_LIST_SUCCESS(HttpStatus.OK, "사용자 레시피 목록 조회 성공"),
 	USER_READ_CLASS_LIST_SUCCESS(HttpStatus.OK, "사용자 클래스 목록 조회 성공"),

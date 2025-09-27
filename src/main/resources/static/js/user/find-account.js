@@ -125,16 +125,14 @@ document.addEventListener('DOMContentLoaded', function() {
 		// 아이디 찾기
 		if (isValid) {
 			try {
-				const headers = { 'Content-Type' : 'application/json' };
-				
 				const data = {
 					name: form.name.value.trim(),
 					tel: form.tel.value.trim()
 				}
 				
-				const response = await fetch('/users/find-username', {
+				const response = await fetch('/users/find-username', data, {
 					method: 'POST',
-					headers: headers,
+					headers: getAuthHeaders(),
 					body: JSON.stringify(data)
 				});
 				
@@ -174,6 +172,35 @@ document.addEventListener('DOMContentLoaded', function() {
 /**
  * 사용자의 비밀번호를 찾는 함수
  */
-
+document.addEventListener('DOMContentLoaded', function() {
+	
+	// 비밀번호 찾기 폼
+	const form = document.getElementById('find-password-form');
+	
+	form.addEventListener('submit', async function(event) {
+		event.preventDefault();
+		
+		try {
+			const data = {
+				username: form.username.value.trim(),
+				email: form.email.value.trim()
+			}
+			
+			const response = await fetch('/users/find-password', {
+				method: 'POST',
+				headers: getAuthHeaders(),
+				body: JSON.stringify(data)
+			});
+			
+			const result = await response.json();
+			
+			console.log(result);
+		}
+		catch(error) {
+			console.log(error);
+		}
+	});
+	
+});
 
 

@@ -37,8 +37,9 @@ import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
 import com.project.zipmin.dto.UserPasswordCheckRequestDto;
 import com.project.zipmin.dto.UserProfileReadResponseDto;
-import com.project.zipmin.dto.UserReadRequestDto;
+import com.project.zipmin.dto.UserReadPasswordRequestDto;
 import com.project.zipmin.dto.UserReadResponseDto;
+import com.project.zipmin.dto.UserReadUsernameRequestDto;
 import com.project.zipmin.dto.UserUpdateRequestDto;
 import com.project.zipmin.dto.UserUpdateResponseDto;
 import com.project.zipmin.entity.Role;
@@ -410,7 +411,6 @@ public class UserController {
 	
 	
 	
-	// 아이디 찾기
 	@Operation(
 	    summary = "사용자 아이디 찾기"
 	)
@@ -440,9 +440,10 @@ public class UserController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
+	// 아이디 찾기
 	@PostMapping("/users/find-username")
 	public ResponseEntity<?> findUsername(
-			@Parameter(description = "사용자 아이디 조회 요청 정보", required = true) @RequestBody @Valid UserReadRequestDto userRequestDto) {
+			@Parameter(description = "아이디 조회 요청 정보") @RequestBody UserReadUsernameRequestDto userRequestDto) {
 		
 		// 아이디 조회
 		String username = userService.readUserByNameAndTel(userRequestDto).getUsername();
@@ -450,6 +451,28 @@ public class UserController {
 		return ResponseEntity.status(UserSuccessCode.USER_READ_USERNAME_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_READ_USERNAME_SUCCESS, Map.of("username", username)));
 	}
+	
+
+	
+	
+	@PostMapping("/users/find-password")
+	public ResponseEntity<?> findPassword(
+			@Parameter(description = "비밀번호 조회 요청 정보") @RequestBody UserReadPasswordRequestDto userDto) {
+		
+		// 비밀번호 조회
+		userService.findPassword(userDto);
+		
+		System.err.println("성공 했음");
+		
+		return ResponseEntity.status(UserSuccessCode.USER_READ_PASSWORD_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_READ_PASSWORD_SUCCESS, null));
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	

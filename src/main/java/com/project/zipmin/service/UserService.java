@@ -26,9 +26,11 @@ import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.LikeReadResponseDto;
-import com.project.zipmin.dto.UserReadRequestDto;
+import com.project.zipmin.dto.MailDto;
+import com.project.zipmin.dto.UserReadUsernameRequestDto;
 import com.project.zipmin.dto.UserPasswordCheckRequestDto;
 import com.project.zipmin.dto.UserProfileReadResponseDto;
+import com.project.zipmin.dto.UserReadPasswordRequestDto;
 import com.project.zipmin.dto.UserDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
@@ -53,6 +55,7 @@ public class UserService {
 	private final PasswordEncoder passwordEncoder;
 	
 	private final LikeService likeService;
+	private final MailService mailService;
 	
 	
 	
@@ -253,8 +256,9 @@ public class UserService {
 	
 	
 	
-	// 이름과 전화번호로 사용자 조회
-	public UserReadResponseDto readUserByNameAndTel(UserReadRequestDto userDto) {
+	// 이름과 전화번호로 사용자 조회 (아이디 찾기)
+	// TODO : 함수 분리할 것
+	public UserReadResponseDto readUserByNameAndTel(UserReadUsernameRequestDto userDto) {
 		
 		// 입력값 검증
 //		if (userDto == null || userDto.getName() == "" || userDto.getTel() == null) {
@@ -268,6 +272,57 @@ public class UserService {
 		return userMapper.toReadResponseDto(user);
 	}
 
+	
+	
+	
+	// 비밀번호 찾기
+	public void findPassword(UserReadPasswordRequestDto userDto) {
+		
+		// 입력값 검증
+		if (userDto == null || userDto.getUsername() == null || userDto.getEmail() == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		// 사용자 조회
+		User user = userRepository.findByUsernameAndEmail(userDto.getUsername(), userDto.getEmail())
+				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+		
+	
+		String tmpPassword = getTmpPassword();
+		
+		// 여기서 랜덤 생성된 비밀번호로 업데이트하기
+		
+		// 메일 보내기
+		MailDto mailDto = new MailDto();
+		mailDto.setTo(user.getEmail());
+		mailDto.setSubject("집밥의민족 계정 암호 재설정");
+		// TODO : 내용 수정
+		mailDto.setContent("임시비밀번호 이거임 -> " + tmpPassword);
+		
+		mailService.sendEmail(mailDto);
+		
+		
+	}
+	
+	  public String getTmpPassword() {
+	      char[] charSet = new char[]{ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+	              'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
+	              'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+
+	      String newPassword = "";
+
+	      for (int i = 0; i < 10; i++) {
+	          int idx = (int) (charSet.length * Math.random());
+	          newPassword += charSet[idx];
+	      }
+
+	      return newPassword;
+	  }
+
+	
+
+	
+	
 	
 	
 	// 사용자 작성

@@ -1,3 +1,275 @@
+document.addEventListener('DOMContentLoaded', function() {
+	fetchReviewList();
+});
+
+
+
+
+/**
+ * 로그인 여부에 따라 리뷰 작성폼을 다르게 표시하는 함수
+ */
+document.addEventListener('DOMContentLoaded', async function () {
+	
+	if (isLoggedIn()) {
+		const payload = parseJwt(localStorage.getItem('accessToken'));
+		document.getElementById('login_state').style.display = 'block';
+		document.getElementById('logout_state').style.display = 'none';
+		document.getElementById('writeReviewNickname').innerText = payload.nickname;
+	}
+	else {
+		document.getElementById('login_state').style.display = 'none';
+		document.getElementById('logout_state').style.display = 'block';
+	}
+
+});
+
+
+
+/**
+ * 전역변수
+ */
+let reviewTotalPages = 0;
+let reviewTotalElements = 0;
+let reviewPage = 0;
+const reviewSize = 15;
+let reviewTablename = '';
+let reviewSort = '';
+let reviewList = [];
+
+/**
+ * 서버에서 리뷰 목록 데이터를 가져오는 함수
+ */
+async function fetchReviewList() {
+    try {
+        const id = new URLSearchParams(window.location.search).get('id');
+
+        const params = new URLSearchParams({
+            recipeId: id,            // 리뷰는 recipeId 기준
+            sort: reviewSort,
+            page: reviewPage,
+            size: reviewSize
+        }).toString();
+
+        const response = await fetch(`/reviews?${params}`, {
+            method: 'GET',
+            headers: getAuthHeaders()  // 인증 헤더 포함
+        });
+
+        const result = await response.json();
+
+        if (result.code === 'REVIEW_READ_LIST_SUCCESS') {
+
+            // 전역 변수 설정
+            reviewTotalPages = result.data.totalPages;
+            reviewTotalElements = result.data.totalElements;
+            reviewList = [...reviewList, ...result.data.content];
+
+            // 렌더링 (renderReviewList는 나중에 구현)
+            renderReviewList(reviewList);
+
+            // 리뷰 총 개수 표시
+            document.querySelector('.review_count span:last-of-type').innerText = reviewTotalElements;
+
+            // 더보기 버튼 제어
+            document.querySelector('.more_review_btn .btn_more').style.display = reviewPage >= reviewTotalPages - 1 ? 'none' : 'block';
+
+            // 리뷰 목록이 없을 때 처리
+            if (reviewTotalPages === 0) {
+                document.querySelector('.review_list').style.display = 'none';
+                document.querySelector('.list_empty')?.remove();
+                const content = document.querySelector('.review_write');
+                content.insertAdjacentElement('afterend', renderListEmpty());
+            } else {
+                document.querySelector('.list_empty')?.remove();
+                document.querySelector('.review_list').style.display = '';
+            }
+        }
+        else if (result.code === 'REVIEW_READ_LIST_FAIL') {
+            alertDanger('리뷰 목록 조회에 실패했습니다.');
+        }
+        else {
+            console.log('알 수 없는 에러:', result);
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+
+
+
+
+
+/**
+ * 리뷰 목록을 화면에 렌더링하는 함수
+ * @param {Array} reviewList - 서버에서 받아온 리뷰 데이터 배열
+ */
+function renderReviewList(reviewList) {
+	
+	console.log(reviewList);
+	
+    const container = document.getElementById('reviewList');
+    container.innerHTML = ''; 
+
+    reviewList.forEach(review => {
+        const reviewList = document.createElement('li');
+        reviewList.className = 'review';
+        reviewList.dataset.id = review.id;
+		
+        // 리뷰 내부 wrapper
+        const innerDiv = document.createElement('div');
+        innerDiv.className = 'review_inner';
+
+        // 리뷰 헤더
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'review_info';
+
+        // 작성자 정보
+        const writerDiv = document.createElement('div');
+        writerDiv.className = 'review_writer';
+        const avatar = document.createElement('img');
+        avatar.className = 'review_avatar';
+        avatar.src = '/images/common/test.png'; // 임시, 실제 유저 프로필 이미지로 교체 가능
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = review.nickname;
+		
+        const dateSpan = document.createElement('span');
+        dateSpan.textContent = formatDate(review.postdate);
+        writerDiv.append(avatar, nameSpan, dateSpan);
+
+        // 기능 버튼 (신고 / 수정 / 삭제)
+        const actionDiv = document.createElement('div');
+        actionDiv.className = 'review_action';
+
+        const payload = isLoggedIn() ? getPayload() : null;
+		
+        const canAction =
+            payload?.role === 'ROLE_SUPER_ADMIN' ||
+            (payload?.role === 'ROLE_ADMIN' && review.role === 'ROLE_USER') ||
+            (payload?.id === review.user_id);
+			
+
+        // 수정 / 삭제 버튼
+        if (canAction) {
+            const editLink = document.createElement('a');
+            editLink.href = 'javascript:void(0);';
+            editLink.dataset.bsToggle = 'modal';
+            editLink.dataset.bsTarget = '#editReviewModal';
+            editLink.textContent = '수정';
+            editLink.addEventListener('click', function() {
+                document.getElementById('editReviewContent').value = review.content;
+                document.getElementById('editReviewId').value = review.id;
+            });
+
+            const deleteLink = document.createElement('a');
+            deleteLink.href = 'javascript:void(0);';
+            deleteLink.textContent = '삭제';
+            deleteLink.addEventListener('click', function() {
+                deleteReview(review.id);
+            });
+
+            actionDiv.append(editLink, deleteLink);
+        }
+
+        // 신고 버튼
+        const reportLink = document.createElement('a');
+        reportLink.href = 'javascript:void(0);';
+        reportLink.textContent = '신고';
+        reportLink.dataset.bsToggle = 'modal';
+        reportLink.dataset.bsTarget = '#reportReviewModal';
+        reportLink.addEventListener('click', function() {
+            if (!isLoggedIn()) {
+                redirectToLogin();
+                return;
+            }
+            document.getElementById('reportReviewId').value = review.id;
+        });
+        actionDiv.append(reportLink);
+
+        infoDiv.append(writerDiv, actionDiv);
+
+        // 별점
+        const scoreDiv = document.createElement('div');
+        scoreDiv.className = 'review_score';
+        const starDiv = document.createElement('div');
+        starDiv.className = 'star';
+
+        for (let i = 1; i <= 5; i++) {
+            const starImg = document.createElement('img');
+            starImg.src = i <= review.score ? '/images/recipe/star_full.png' : '/images/recipe/star_empty.png';
+            starDiv.appendChild(starImg);
+        }
+        const scoreP = document.createElement('p');
+        scoreP.textContent = review.score;
+        scoreDiv.append(starDiv, scoreP);
+
+        // 리뷰 내용
+        const contentP = document.createElement('p');
+        contentP.className = 'review_content';
+        contentP.textContent = review.content;
+		
+        // 좋아요 버튼
+		const likeDiv = document.createElement('div');
+		likeDiv.className = 'like_review_btn';
+		
+		const likeText = document.createElement('p');
+		likeText.textContent = '이 리뷰가 도움이 되었다면 꾹!';
+		
+		const likeBtn = renderReviewLikeButton(review.id, review.likecount, review.liked);
+		
+		likeDiv.append(likeText, likeBtn);
+		innerDiv.append(infoDiv, scoreDiv, contentP, likeDiv);
+
+		reviewList.appendChild(innerDiv);
+        container.appendChild(reviewList);
+    });
+}
+
+
+
+/**
+ * 리뷰 좋아요 버튼을 생성하는 함수
+ */
+function renderReviewLikeButton(id, likecount, isLiked) {
+	   const likeBtn = document.createElement('button');
+	   likeBtn.className = 'btn_like';
+	   
+	   const img = document.createElement('img');
+	   img.src = isLiked ? '/images/recipe/thumb_up_full.png' : '/images/recipe/thumb_up_empty.png';
+
+	   const likeCountP = document.createElement('p');
+	   likeCountP.textContent = likecount;
+
+	   likeBtn.append(img, likeCountP);
+
+	   // 클릭 이벤트
+	   likeBtn.addEventListener('click', function() {
+			console.log("클릭");			
+	   });
+
+	   return likeBtn;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /***** comment.js의 전역변수를 그대로 사용하면 레시피 상세 페이지에서 에러가 남!! 주의 필요 *****/

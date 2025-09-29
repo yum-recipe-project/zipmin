@@ -31,6 +31,10 @@ drop sequence seq_report_id;
 drop table likes;
 drop sequence seq_likes_id;
 
+--memo 테이블 삭제
+drop table fridge_memo;
+drop sequence seq_fridge_memo_id;
+
 -- 삭제 예정
 drop table user_fridge;
 drop sequence seq_user_fridge_id;
@@ -654,6 +658,26 @@ create sequence seq_class_apply_id
 commit;
 
 
+
+-- fridge_memo 테이블
+create table fridge_memo (
+    id number primary key,
+    name varchar2(50) not null, 
+    amount number,              
+    unit varchar2(30),          
+    note varchar2(300),         
+    user_id number not null     
+);
+alter table fridge_memo
+    add constraint const_fridge_memo_user foreign key(user_id)
+    references users(id) on delete cascade;
+create sequence seq_fridge_memo_id
+    increment by 1
+    start with 1
+    minvalue 1
+    nocycle
+    nocache;
+commit;
 
 
 

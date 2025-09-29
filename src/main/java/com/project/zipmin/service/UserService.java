@@ -271,6 +271,24 @@ public class UserService {
 		
 		return userMapper.toReadResponseDto(user);
 	}
+	
+	
+	
+	
+	// 사용자명과 이메일로 사용자 조회
+	public UserReadResponseDto readUserByUsernameAndEmail(UserReadPasswordRequestDto userDto) {
+		
+		// 입력값 검증
+		if (userDto == null || userDto.getUsername() == null || userDto.getEmail() == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		// 사용자 조회
+		User user = userRepository.findByUsernameAndEmail(userDto.getUsername(), userDto.getEmail())
+				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+		
+		return userMapper.toReadResponseDto(user);
+	}
 
 	
 	
@@ -290,7 +308,7 @@ public class UserService {
 	
 		String tmpPassword = getTmpPassword();
 		
-		// 여기서 랜덤 생성된 비밀번호로 업데이트하기
+		
 		
 		// 메일 보내기
 		MailDto mailDto = new MailDto();
@@ -301,7 +319,15 @@ public class UserService {
 		
 		mailService.sendEmail(mailDto);
 		
-		
+		// 여기서 랜덤 생성된 비밀번호로 업데이트하기
+		user.setPassword(passwordEncoder.encode(tmpPassword));
+		// 사용자 수정
+		try {
+			user = userRepository.save(user);
+		}
+		catch (Exception e) {
+			throw new ApiException(UserErrorCode.USER_UPDATE_FAIL);
+		}
 	}
 	
 	  public String getTmpPassword() {
@@ -468,6 +494,9 @@ public class UserService {
 		}
 		
 	}
+	
+	
+	
 
 	
 	

@@ -317,6 +317,7 @@ public class UserController {
 			@Parameter(description = "사용자 아이디", required = true, example = "user1") @RequestParam String username) {
 
         // 아이디 중복확인
+		// **** TODO : 서비스로 옮기기 *****
         if (userService.existsUsername(username)) {
         	throw new ApiException(UserErrorCode.USER_USERNAME_DUPLICATED);
         }
@@ -324,6 +325,24 @@ public class UserController {
         return ResponseEntity.status(UserSuccessCode.USER_USERNAME_NOT_DUPLICATED.getStatus())
         		.body(ApiResponse.success(UserSuccessCode.USER_USERNAME_NOT_DUPLICATED, null));
 	}
+	
+	
+	
+	
+	
+	
+	@PostMapping("/users/check-email")
+	public ResponseEntity<?> checkEmail(
+			@Parameter(description = "비밀번호 조회 요청 정보") @RequestBody UserReadPasswordRequestDto userRequestDto) {
+		
+		UserReadResponseDto userResponseDto = userService.readUserByUsernameAndEmail(userRequestDto);		
+		
+		return ResponseEntity.status(UserSuccessCode.USER_READ_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_READ_SUCCESS, userResponseDto));
+	}
+	
+	
+	
 	
 	
 	
@@ -411,6 +430,10 @@ public class UserController {
 	
 	
 	
+	
+	
+	
+	
 	@Operation(
 	    summary = "사용자 아이디 찾기"
 	)
@@ -461,8 +484,6 @@ public class UserController {
 		
 		// 비밀번호 조회
 		userService.findPassword(userDto);
-		
-		System.err.println("성공 했음");
 		
 		return ResponseEntity.status(UserSuccessCode.USER_READ_PASSWORD_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_READ_PASSWORD_SUCCESS, null));

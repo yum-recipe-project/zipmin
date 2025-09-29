@@ -49,7 +49,6 @@
 								<p>이메일을 입력해주세요.</p>
 							</div>
 							<button type="submit" class="btn_primary_wide">인증하기</button>
-							<a href="/user/findAccount/passwordResult.do">임시 비밀번호 받기 페이지로 이동</a>
 						</form>
 					</div>
 				</div>

@@ -179,6 +179,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 	form.addEventListener('submit', async function(event) {
 		event.preventDefault();
+		isValid = true;
+		
+		// TODO : 폼값 검사
 		
 		try {
 			const data = {
@@ -186,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				email: form.email.value.trim()
 			}
 			
-			const response = await fetch('/users/find-password', {
+			const response = await fetch('/users/check-email', {
 				method: 'POST',
 				headers: getAuthHeaders(),
 				body: JSON.stringify(data)
@@ -195,6 +198,15 @@ document.addEventListener('DOMContentLoaded', function() {
 			const result = await response.json();
 			
 			console.log(result);
+			
+			if (result.code === 'USER_READ_SUCCESS') {
+				sessionStorage.setItem('emailChecked', 'true');
+				location.href = '/user/findAccount/passwordResult.do';
+			}
+			else if (result.code === 'USER_NOT_FOUND') {
+				// *** TODO
+				alert('불일치');
+			}
 		}
 		catch(error) {
 			console.log(error);

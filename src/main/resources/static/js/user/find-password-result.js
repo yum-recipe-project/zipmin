@@ -27,8 +27,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 		try {
 			const data = {
-				username: 'harim',
-				email: 'jhr.chicken@gmail.com'
+				username: sessionStorage.getItem('username-email').split('-')[0],
+				email: sessionStorage.getItem('username-email').split('-')[1]
 			}
 			
 			const response = await fetch('/users/find-password', {

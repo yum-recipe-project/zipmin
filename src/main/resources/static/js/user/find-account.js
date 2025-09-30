@@ -197,10 +197,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			
 			const result = await response.json();
 			
-			console.log(result);
-			
 			if (result.code === 'USER_READ_SUCCESS') {
 				sessionStorage.setItem('emailChecked', 'true');
+				sessionStorage.setItem('username-email', result.data.username + "-" + result.data.email);
 				location.href = '/user/findAccount/passwordResult.do';
 			}
 			else if (result.code === 'USER_NOT_FOUND') {

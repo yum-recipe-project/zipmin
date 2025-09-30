@@ -296,6 +296,8 @@ public class UserService {
 	// 비밀번호 찾기
 	public void findPassword(UserReadPasswordRequestDto userDto) {
 		
+		System.err.println(userDto);
+		
 		// 입력값 검증
 		if (userDto == null || userDto.getUsername() == null || userDto.getEmail() == null) {
 			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
@@ -307,8 +309,6 @@ public class UserService {
 		
 	
 		String tmpPassword = getTmpPassword();
-		
-		
 		
 		// 메일 보내기
 		MailDto mailDto = new MailDto();

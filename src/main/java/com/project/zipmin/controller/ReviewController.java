@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,12 +77,11 @@ public class ReviewController {
 	}
 
 	
-	// 댓글 수정
+	// 리뷰 수정
 	@PatchMapping("/reviews/{id}")
 	public ResponseEntity<?> updateReview(
 	        @PathVariable int id,
 	        @RequestBody ReviewUpdateRequestDto reviewRequestDto) {
-		System.err.println("수정 컨트롤러");
 	    
 	    // 인증 여부 확인 (비로그인)
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -96,7 +96,28 @@ public class ReviewController {
 	            .body(ApiResponse.success(ReviewSuccessCode.REVIEW_UPDATE_SUCCESS, reviewResponseDto));
 	}
 
+
 	
+	
+	// 리뷰 삭제
+	@DeleteMapping("/reviews/{id}")
+	public ResponseEntity<?> deleteReview(
+	        @PathVariable int id) {
+
+	    // 로그인 여부 확인
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+	        throw new ApiException(ReviewErrorCode.REVIEW_UNAUTHORIZED_ACCESS);
+	    }
+
+	    // 리뷰 삭제 서비스 호출
+	    reviewService.deleteReview(id);
+
+	    // 삭제 성공 응답 반환
+	    return ResponseEntity.status(ReviewSuccessCode.REVIEW_DELETE_SUCCESS.getStatus())
+	            .body(ApiResponse.success(ReviewSuccessCode.REVIEW_DELETE_SUCCESS, null));
+	}
+
 	
 	
 }

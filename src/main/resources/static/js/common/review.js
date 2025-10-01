@@ -36,6 +36,7 @@ let reviewTablename = '';
 let reviewSort = '';
 let reviewList = [];
 
+
 /**
  * 서버에서 리뷰 목록 데이터를 가져오는 함수
  */
@@ -103,11 +104,8 @@ async function fetchReviewList() {
 
 /**
  * 리뷰 목록을 화면에 렌더링하는 함수
- * @param {Array} reviewList - 서버에서 받아온 리뷰 데이터 배열
  */
 function renderReviewList(reviewList) {
-	
-	console.log(reviewList);
 	
     const container = document.getElementById('reviewList');
     container.innerHTML = ''; 
@@ -256,6 +254,66 @@ function renderReviewLikeButton(id, likecount, isLiked) {
 
 
 
+/**
+ * 리뷰를 작성하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('writeReviewForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        try {
+            const recipeId = new URLSearchParams(window.location.search).get('id');
+
+			const data = {
+			    score: Number(document.getElementById('writeReviewStar').value || 0), 
+			    content: document.getElementById('writeReviewContent').value.trim(),  
+			    recipe_id: Number(recipeId)                                           
+			};
+
+
+            const response = await instance.post('/reviews', data, {
+                headers: getAuthHeaders()
+            });
+
+            if (response.data.code === 'REVIEW_CREATE_SUCCESS') {
+                alertPrimary('리뷰 작성에 성공했습니다.');
+
+                document.getElementById("writeReviewContent").value = '';
+                const submitBtn = document.querySelector("#writeReviewForm button[type='submit']");
+                submitBtn.disabled = true;
+                submitBtn.classList.add('disable');
+
+                page = 0;
+                reviewList = [];
+                fetchReviewList();
+            }
+        } catch (error) {
+            const code = error?.response?.data?.code;
+
+            if (code === 'REVIEW_CREATE_FAIL') {
+                alertDanger('리뷰 작성에 실패했습니다.');
+            } else if (code === 'REVIEW_INVALID_INPUT') {
+                alertDanger('입력값이 유효하지 않습니다.');
+            } else if (code === 'USER_INVALID_INPUT') {
+                alertDanger('입력값이 유효하지 않습니다.');
+            } else if (code === 'REVIEW_UNAUTHORIZED') {
+                alert('로그인되지 않은 사용자입니다.');
+            } else if (code === 'REVIEW_FORBIDDEN') {
+                alert('접근 권한이 없습니다.');
+            } else if (code === 'REVIEW_NOT_FOUND') {
+                alert('해당 리뷰를 찾을 수 없습니다.');
+            } else if (code === 'USER_NOT_FOUND') {
+                alert('해당 사용자를 찾을 수 없습니다.');
+            } else if (code === 'INTERNAL_SERVER_ERROR') {
+                alert('서버 내부에서 오류가 발생했습니다.');
+            } else {
+                console.log(error);
+            }
+        }
+    });
+});
+
+
 
 
 
@@ -400,139 +458,6 @@ document.addEventListener("DOMContentLoaded", function () {
         loadRecipeReviewContent();
     });
 });
-*/
-
-/**
- * 레시피 리뷰 목록 데이터를 fetch로 로드하는 함수
- */
-/*
-function loadRecipeReviewContent() {
-    fetch("http://localhost:8586/recipes/1/reviews", {
-		method: "GET"
-    })
-	.then(response => response.json())
-	.then(data => {
-		const reviewListElement = document.getElementById("reviewList");
-        reviewListElement.innerHTML = data.map(review => `
-            <li class="review">
-                <img class="review_avatar" src="/images/common/test.png">
-                <div class="review_inner">
-                    <!-- 리뷰 헤더 -->
-                    <div class="review_info">
-                        <div class="review_writer">
-                            <span>${review.writer}</span>
-                            <span>${review.postdate}</span>
-                        </div>
-                        <div class="review_action">
-                            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editRecipeReviewModal"
-                                onclick="openEditRecipeReviewModal();">수정</a>
-                            <a href="javascript:void(0);">삭제</a>
-                        </div>
-                    </div>
-                    <!-- 리뷰 별점 -->
-                    <div class="review_score">
-                        <div class="star">
-                            ${'<img src="/images/recipe/star_full.png">'.repeat(review.score)}
-                            ${'<img src="/images/recipe/star_empty.png">'.repeat(5 - review.score)}
-                        </div>
-                        <p>${review.score}</p>
-                    </div>
-                    <!-- 리뷰 내용 -->
-                    <p class="review_content">${review.content}</p>
-                    <!-- 리뷰 좋아요 버튼 -->
-                    <div class="like_review_btn">
-                        <p>이 리뷰가 도움이 되었다면 꾹!</p>
-                        <button class="btn_like">
-                            <img src="/images/recipe/thumb_up_full.png">
-                            <img src="/images/recipe/thumb_up_empty.png">
-                            <p>${review.likes}</p>
-                        </button>
-                    </div>
-                </div>
-            </li>
-        `).join("");
-
-        // 전체 리뷰 개수 설정 (첫 요청 시)
-        if (reviewCount === 0) {
-            reviewCount = data.totalCount; // 서버에서 전체 개수를 제공한다고 가정
-        }
-
-        // offset 증가 (다음 데이터 가져오기 위한 설정)
-        reviewOffset += reviewLimit;
-
-        // 불러올 데이터가 없으면 "더보기" 버튼 숨김
-        const moreReviewButton = document.querySelector('.more_review_btn');
-        if (reviewOffset >= reviewCount) {
-            moreReviewButton.style.display = "none";
-        } else {
-            moreReviewButton.style.display = "block";
-        }
-    })
-    .catch(error => {
-        console.error("리뷰 데이터를 불러오는 중 오류 발생:", error);
-        document.querySelector('.more_review_btn').style.display = "none";
-    });
-}
-*/
-
-
-
-
-/**
- * 레시피 리뷰에 데이터를 설정하는 함수 (******** 테스트 ***********)
- */
-/*
-fetch("http://localhost:8586/recipes/1/reviews", {
-	method: "GET"
-})
-.then(response => response.json())
-.then(data => {
-	const reviewListElement = document.getElementById("reviewList");
-	if(reviewListElement) console.log("있음");
-	reviewListElement.innerHTML = data.map((review) => `
-		<li class="review">
-			<img class="review_avatar" src="/images/common/test.png">
-			<div class="review_inner">
-				<!-- 리뷰 헤더 -->
-				<div class="review_info">
-					<div class="review_writer">
-						<span>아잠만</span>
-						<span>${ review.postdate }</span>
-					</div>
-						<div class="review_action">
-							<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editRecipeReviewModal"
-								onclick="openEditRecipeReviewModal();">
-								수정
-							</a>
-							<a href="">삭제</a>
-						</div>
-				</div>
-				<!-- 리뷰 별점 -->
-				<div class="review_score">
-					<div class="star">
-						<%-- <c:forEach> --%>
-							<img src="/images/recipe/star_full.png">
-						<%-- </c:forEach> --%>
-						<%-- <c:forEach> --%>
-							<img src="/images/recipe/star_empty.png">
-						<%-- </c:forEach> --%>
-					</div>
-					<p>3</p>
-				</div>
-				<p class="review_content">${ review.content }</p>
-				<div class="like_review_btn">
-					<p>이 리뷰가 도움이 되었다면 꾹!</p>
-					<button class="btn_like" onclick="">
-							<img src="/images/recipe/thumb_up_full.png">
-							<img src="/images/recipe/thumb_up_empty.png">
-						<p>5</p>
-					</button>
-				</div>
-			</div>
-		</li>
-	`).join("");
-})
-.catch(error => console.log(error));
 */
 
 

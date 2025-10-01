@@ -5,15 +5,25 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
+import com.project.zipmin.api.ReviewErrorCode;
 import com.project.zipmin.api.ReviewSuccessCode;
+import com.project.zipmin.dto.ReviewCreateRequestDto;
+import com.project.zipmin.dto.ReviewCreateResponseDto;
 import com.project.zipmin.dto.ReviewReadResponseDto;
 import com.project.zipmin.service.ReviewService;
 import com.project.zipmin.service.UserService;
+
+import io.swagger.v3.oas.annotations.Parameter;
 
 @RestController
 public class ReviewController {
@@ -38,6 +48,29 @@ public class ReviewController {
 	    
 	    return ResponseEntity.status(ReviewSuccessCode.REVIEW_READ_LIST_SUCCESS.getStatus())
 	            .body(ApiResponse.success(ReviewSuccessCode.REVIEW_READ_LIST_SUCCESS, reviewPage));
+	}
+
+	
+	// 리뷰 작성
+	@PostMapping("/reviews")
+	public ResponseEntity<?> createReview(
+	        @RequestBody ReviewCreateRequestDto reviewRequestDto) {
+		
+	    // 로그인 여부 확인
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+	        throw new ApiException(ReviewErrorCode.REVIEW_UNAUTHORIZED_ACCESS);
+	    }
+
+	    // 작성자 userId 설정
+	    reviewRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
+	    
+	    // 리뷰 생성 서비스 호출
+	    ReviewCreateResponseDto reviewResponseDto = reviewService.createReview(reviewRequestDto);
+
+	    // 응답 반환
+	    return ResponseEntity.status(ReviewSuccessCode.REVIEW_CREATE_SUCCESS.getStatus())
+	            .body(ApiResponse.success(ReviewSuccessCode.REVIEW_CREATE_SUCCESS, reviewResponseDto));
 	}
 
 	

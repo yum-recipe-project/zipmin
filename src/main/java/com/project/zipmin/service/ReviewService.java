@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ReviewErrorCode;
+import com.project.zipmin.dto.ReviewCreateRequestDto;
+import com.project.zipmin.dto.ReviewCreateResponseDto;
 import com.project.zipmin.dto.ReviewReadResponseDto;
 import com.project.zipmin.entity.Review;
 import com.project.zipmin.mapper.ReviewMapper;
@@ -112,8 +114,40 @@ public class ReviewService {
 	
 	
 	
-	
-	
+    // 리뷰 작성
+    public ReviewCreateResponseDto createReview(ReviewCreateRequestDto reviewRequestDto) {
+
+        // 입력값 검증
+        if (reviewRequestDto == null 
+                || reviewRequestDto.getContent() == null
+                || reviewRequestDto.getScore() == null
+                || reviewRequestDto.getRecipeId() == null
+                || reviewRequestDto.getUserId() == null) {
+            throw new ApiException(ReviewErrorCode.REVIEW_INVALID_INPUT);
+        }
+        
+        
+
+        // DTO → 엔티티 변환
+        Review review = reviewMapper.toEntity(reviewRequestDto);
+        System.err.println(review);
+
+        try {
+            // 리뷰 저장
+            review = reviewRepository.saveAndFlush(review);
+
+            // 응답 DTO 생성
+            ReviewCreateResponseDto reviewResponseDto = reviewMapper.toCreateResponseDto(review);
+            reviewResponseDto.setNickname(userService.readUserById(reviewRequestDto.getUserId()).getNickname());
+            reviewResponseDto.setLikecount(likeService.countLike("review", review.getId()));
+            reviewResponseDto.setLikestatus(false); // 작성 직후는 기본적으로 좋아요 안 누른 상태
+
+            return reviewResponseDto;
+        } catch (Exception e) {
+            throw new ApiException(ReviewErrorCode.REVIEW_CREATE_FAIL);
+        }
+    }
+
 	
 	
 	

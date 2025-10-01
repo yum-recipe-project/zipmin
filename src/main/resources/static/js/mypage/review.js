@@ -3,6 +3,11 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 	fetchReviewtList();
 	
+	document.querySelector('.btn_more').addEventListener('click', function() {
+		fetchReviewtList();
+	});
+		
+	
 	
 });
 

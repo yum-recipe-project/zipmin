@@ -250,10 +250,134 @@ function renderReviewLikeButton(id, likecount, isLiked) {
 
 	   likeBtn.append(img, likeCountP);
 
-	   // 클릭 이벤트
-	   likeBtn.addEventListener('click', function() {
-			console.log("클릭");			
-	   });
+		// 좋아요 버튼 동작
+		likeBtn.addEventListener('click', async function() {
+			
+			if (!isLoggedIn()) {
+				redirectToLogin();
+				return;
+			}
+			
+			// 좋아요 취소
+			if (isLiked) {
+				try {
+					const data = {
+						tablename: 'review',
+						recodenum: id,
+					}
+					
+					const response = await instance.delete(`/reviews/${id}/likes`, {
+						data: data,
+						headers: getAuthHeaders()
+					});
+					
+					if (response.data.code === 'REVIEW_UNLIKE_SUCCESS') {
+						alertPrimary('리뷰 좋아요 취소에 성공했습니다.');
+						isLiked = false;
+						img.src = '/images/common/thumb_up_empty.png';
+						likeCountP.textContent = Number(likeCountP.textContent) - 1;
+					}
+				}
+				catch (error) {
+					const code = error?.response?.data?.code;
+					
+					if (code === 'REVIEW_UNLIKE_FAIL') {
+						alertDanger('댓글 좋아요 취소에 실패했습니다.');
+					}
+					else if (code === 'LIKE_DELETE_FAIL') {
+						alertDanger('좋아요 삭제에 실패했습니다');
+					}
+					else if (code === 'COMMENT_INVALID_INPUT') {
+						alertDanger('입력값이 유효하지 않습니다.');
+					}
+					else if (code === 'USER_INVALID_INPUT') {
+						alertDanger('입력값이 유효하지 않습니다.');
+					}
+					else if (code === 'LIKE_INVALID_INPUT') {
+						alertDanger('입력값이 유효하지 않습니다.');
+					}
+					else if (code === 'COMMENT_UNAUTHORIZED') {
+						alertDanger('로그인되지 않은 사용자입니다.');
+					}
+					else if (code === 'LIKE_FORBIDDEN') {
+						alertDanger('접근 권한이 없습니다.');
+					}
+					else if (code === 'LIKE_NOT_FOUND') {
+						alertDanger('해당 좋아요를 찾을 수 없습니다');
+					}
+					else if (code === 'COMMENT_NOT_FOUND') {
+						alertDanger('해당 댓글을 찾을 수 없습니다.');
+					}
+					else if (code === 'INTERNAL_SERVER_ERROR') {
+						alertDanger('서버 내부에서 오류가 발생했습니다.');
+					}
+					else {
+						console.log(error);
+					}
+				}
+			}
+			
+			// 좋아요
+			else {
+				try {
+					const data = {
+						tablename: 'review',
+						recodenum: id
+					}
+					
+					const response = await instance.post(`/reviews/${id}/likes`, data, {
+						headers: getAuthHeaders()
+					});
+					
+					if (response.data.code === 'REVIEW_LIKE_SUCCESS') {
+						alertPrimary('리뷰 좋아요에 성공했습니다.');
+						isLiked = true;
+						img.src = '/images/common/thumb_up_full.png';
+						likeCountP.textContent = Number(likeCountP.textContent) + 1;
+					}
+				}
+				catch (error) {
+					const code = error?.response?.data?.code;
+					
+					if (code === 'REVIEW_LIKE_FAIL') {
+						alertDanger('댓글 좋아요에 실패했습니다.');
+					}
+					else if (code === 'LIKE_CREATE_FAIL') {
+						alertDanger('좋아요 작성에 실패했습니다.');
+					}
+					else if (code === 'COMMENT_INVALID_INPUT') {
+						alertDanger('입력값이 유효하지 않습니다.');
+					}
+					else if (code === 'USER_INVALID_INPUT') {
+						alertDanger('입력값이 유효하지 않습니다.');
+					}
+					else if (code === 'LIKE_INVALID_INPUT') {
+						alertDanger('입력값이 유효하지 않습니다.');
+					}
+					else if (code === 'COMMENT_UNAUTHORIZED') {
+						alertDanger('로그인되지 않은 사용자입니다.');
+					}
+					else if (code === 'LIKE_FORBIDDEN') {
+						alertDanger('접근 권한이 없습니다.');
+					}
+					else if (code === 'COMMENT_NOT_FOUND') {
+						alertDanger('해당 댓글을 찾을 수 없습니다.');
+					}
+					else if (code === 'USER_NOT_FOUND') {
+						alertDanger('해당 사용자를 찾을 수 없습니다.');
+					}
+					else if (code === 'LIKE_DUPLICATE') {
+						alertDanger('이미 좋아요한 댓글입니다.');
+					}
+					else if (code === 'INTERNAL_SERVER_ERROR') {
+						alertDanger('서버 내부에서 오류가 발생했습니다.');
+					}
+					else {
+						console.log(error);
+					}
+				}
+			}
+		});
 
 	   return likeBtn;
 }

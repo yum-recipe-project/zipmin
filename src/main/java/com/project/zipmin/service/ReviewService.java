@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
-import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.ReviewErrorCode;
+import com.project.zipmin.dto.LikeCreateRequestDto;
+import com.project.zipmin.dto.LikeCreateResponseDto;
+import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.ReviewCreateRequestDto;
 import com.project.zipmin.dto.ReviewCreateResponseDto;
 import com.project.zipmin.dto.ReviewReadResponseDto;
@@ -207,7 +209,7 @@ public class ReviewService {
 	
 	
 
- // 	리뷰 삭제
+    // 리뷰 삭제
     public void deleteReview(Integer id) {
 
         // 입력값 검증
@@ -252,6 +254,59 @@ public class ReviewService {
     }
 
 	
+
+    
+    // 리뷰 좋아요
+    public LikeCreateResponseDto likeReview(LikeCreateRequestDto likeDto) {
+
+        // 입력값 검증
+        if (likeDto == null || likeDto.getTablename() == null
+                || likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+            throw new ApiException(ReviewErrorCode.REVIEW_INVALID_INPUT);
+        }
+
+        // 리뷰 존재 여부 확인
+        if (!reviewRepository.existsById(likeDto.getRecodenum())) {
+            throw new ApiException(ReviewErrorCode.REVIEW_NOT_FOUND);
+        }
+
+        // 좋아요 저장
+        try {
+            return likeService.createLike(likeDto);
+        } catch (ApiException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ApiException(ReviewErrorCode.REVIEW_LIKE_FAIL);
+        }
+    }
+    
+    
+    // 리뷰 좋아요 취소
+    public void unlikeReview(LikeDeleteRequestDto likeDto) {
+
+        // 입력값 검증
+        if (likeDto == null || likeDto.getTablename() == null
+                || likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+            throw new ApiException(ReviewErrorCode.REVIEW_INVALID_INPUT);
+        }
+
+        // 리뷰 존재 여부 확인
+        if (!reviewRepository.existsById(likeDto.getRecodenum())) {
+            throw new ApiException(ReviewErrorCode.REVIEW_NOT_FOUND);
+        }
+
+        // 좋아요 취소
+        try {
+            likeService.deleteLike(likeDto);
+        } 
+        catch (ApiException e) {
+            throw e;
+        } 
+        catch (Exception e) {
+            throw new ApiException(ReviewErrorCode.REVIEW_UNLIKE_FAIL);
+        }
+    }
+
 
 
 }

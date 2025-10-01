@@ -20,6 +20,9 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.ReviewErrorCode;
 import com.project.zipmin.api.ReviewSuccessCode;
+import com.project.zipmin.dto.LikeCreateRequestDto;
+import com.project.zipmin.dto.LikeCreateResponseDto;
+import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.ReviewCreateRequestDto;
 import com.project.zipmin.dto.ReviewCreateResponseDto;
 import com.project.zipmin.dto.ReviewReadResponseDto;
@@ -96,8 +99,6 @@ public class ReviewController {
 	            .body(ApiResponse.success(ReviewSuccessCode.REVIEW_UPDATE_SUCCESS, reviewResponseDto));
 	}
 
-
-	
 	
 	// 리뷰 삭제
 	@DeleteMapping("/reviews/{id}")
@@ -120,6 +121,55 @@ public class ReviewController {
 
 	
 	
+	
+	// 리뷰 좋아요
+	@PostMapping("/reviews/{id}/likes")
+	public ResponseEntity<?> likeReview(
+	        @PathVariable int id,
+	        @RequestBody LikeCreateRequestDto likeRequestDto) {
+
+	    // 로그인 여부 확인
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+	        throw new ApiException(ReviewErrorCode.REVIEW_UNAUTHORIZED_ACCESS);
+	    }
+
+	    // 좋아요 작성자 userId 설정
+	    likeRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
+
+	    // 리뷰 좋아요 서비스 호출
+	    LikeCreateResponseDto likeResponseDto = reviewService.likeReview(likeRequestDto);
+
+	    // 응답 반환
+	    return ResponseEntity.status(ReviewSuccessCode.REVIEW_LIKE_SUCCESS.getStatus())
+	            .body(ApiResponse.success(ReviewSuccessCode.REVIEW_LIKE_SUCCESS, likeResponseDto));
+	}
+
+	
+	
+	
+	// 리뷰 좋아요 취소
+	@DeleteMapping("/reviews/{id}/likes")
+	public ResponseEntity<?> unlikeReview(
+	        @PathVariable int id,
+	        @RequestBody LikeDeleteRequestDto likeDto) {
+
+	    // 로그인 여부 확인
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+	        throw new ApiException(ReviewErrorCode.REVIEW_UNAUTHORIZED_ACCESS);
+	    }
+
+	    // 현재 로그인 유저 ID 설정
+	    likeDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
+
+	    // 좋아요 취소 서비스 호출
+	    reviewService.unlikeReview(likeDto);
+
+	    return ResponseEntity.status(ReviewSuccessCode.REVIEW_UNLIKE_SUCCESS.getStatus())
+	            .body(ApiResponse.success(ReviewSuccessCode.REVIEW_UNLIKE_SUCCESS, null));
+	}
+
 }
 
 

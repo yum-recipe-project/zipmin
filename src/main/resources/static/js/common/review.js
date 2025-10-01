@@ -179,20 +179,22 @@ function renderReviewList(reviewList) {
             actionDiv.append(editLink, deleteLink);
         }
 
-        // 신고 버튼
-        const reportLink = document.createElement('a');
-        reportLink.href = 'javascript:void(0);';
-        reportLink.textContent = '신고';
-        reportLink.dataset.bsToggle = 'modal';
-        reportLink.dataset.bsTarget = '#reportReviewModal';
-        reportLink.addEventListener('click', function() {
-            if (!isLoggedIn()) {
-                redirectToLogin();
-                return;
-            }
-            document.getElementById('reportReviewId').value = review.id;
-        });
-        actionDiv.append(reportLink);
+		// 신고 버튼 (본인 리뷰인 경우 숨김)
+       if (!(payload?.id === review.user_id)) {
+           const reportLink = document.createElement('a');
+           reportLink.href = 'javascript:void(0);';
+           reportLink.textContent = '신고';
+           reportLink.dataset.bsToggle = 'modal';
+           reportLink.dataset.bsTarget = '#reportReviewModal';
+           reportLink.addEventListener('click', function() {
+               if (!isLoggedIn()) {
+                   redirectToLogin();
+                   return;
+               }
+               document.getElementById('reportReviewId').value = review.id;
+           });
+           actionDiv.append(reportLink);
+       }
 
         infoDiv.append(writerDiv, actionDiv);
 

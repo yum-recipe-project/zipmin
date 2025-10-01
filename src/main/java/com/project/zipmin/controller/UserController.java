@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.ClassSuccessCode;
-import com.project.zipmin.api.FridgeErrorCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
@@ -33,6 +32,7 @@ import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.RecipeReadMyResponseDto;
 import com.project.zipmin.dto.RecipeReadMySavedResponseDto;
+import com.project.zipmin.dto.ReviewReadMyResponseDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
 import com.project.zipmin.dto.UserPasswordCheckRequestDto;
@@ -46,6 +46,7 @@ import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.CookingService;
 import com.project.zipmin.service.KitchenService;
 import com.project.zipmin.service.RecipeService;
+import com.project.zipmin.service.ReviewService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.UserCorrectPassworResponse;
@@ -88,6 +89,7 @@ public class UserController {
 	private final CookingService cookingService;	
 	private final KitchenService kitchenService;
 	private final RecipeService recipeService;
+	private final ReviewService reviewService;
 	
 	
 	
@@ -977,46 +979,40 @@ public class UserController {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	//테스트
-//	@GetMapping("/users/{id}/memos")
-//	public ResponseEntity<?> listMemo(
-//			@PathVariable Integer id,
-//			@RequestParam int page,
-//			@RequestParam int size) {
-//		
-//		System.err.println("테스트");
-//		
-//		// 입력값 검증
-//		if (id == null) {
-//			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-//		}
-//		
-//		// 인증 여부 확인 (비로그인)
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-//		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
-//		}
-//		
-//		// 로그인 정보
-//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-//		
-//		// 본인 확인
-//		if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
-//			if (id != userService.readUserByUsername(username).getId()) {
-//				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
-//			}
-//		}
-//		
-//		return null;
-//	}
-	
+	// 작성한 리뷰 조회
+	@GetMapping("/users/{id}/reviews")
+	public ResponseEntity<?> readUserReviewList(
+	        @PathVariable Integer id,
+	        @RequestParam int page,
+	        @RequestParam int size) {
+
+	    // 입력값 검증
+	    if (id == null) {
+	        throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+	    }
+
+	    // 인증 여부 확인 (비로그인)
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+	        throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
+	    }
+
+	    // 로그인 정보
+	    String username = authentication.getName();
+
+	    // 본인 확인 (관리자가 아니면 본인만 조회 가능)
+	    UserReadResponseDto loginUser = userService.readUserByUsername(username);
+	    if (!loginUser.getRole().equals(Role.ROLE_ADMIN.name()) && !id.equals(loginUser.getId())) {
+	        throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+	    }
+
+	    Pageable pageable = PageRequest.of(page, size);
+	    Page<ReviewReadMyResponseDto> reviewPage = reviewService.readReviewPageByUserId(id, pageable);
+
+	    return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
+	            .body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, reviewPage));
+	}
+
 	
 	
 	

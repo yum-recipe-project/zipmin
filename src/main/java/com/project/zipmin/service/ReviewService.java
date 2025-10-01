@@ -20,6 +20,7 @@ import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.ReviewCreateRequestDto;
 import com.project.zipmin.dto.ReviewCreateResponseDto;
+import com.project.zipmin.dto.ReviewReadMyResponseDto;
 import com.project.zipmin.dto.ReviewReadResponseDto;
 import com.project.zipmin.dto.ReviewUpdateRequestDto;
 import com.project.zipmin.dto.ReviewUpdateResponseDto;
@@ -309,4 +310,39 @@ public class ReviewService {
 
 
 
+    // 사용자가 작성한 리뷰 목록을 조회하는 함수
+    public Page<ReviewReadMyResponseDto> readReviewPageByUserId(Integer userId, Pageable pageable) {
+
+        if (userId == null || pageable == null) {
+            throw new ApiException(ReviewErrorCode.REVIEW_INVALID_INPUT);
+        }
+
+        // 리뷰 목록 조회
+        Page<Review> reviewPage;
+        try {
+            reviewPage = reviewRepository.findByUserId(userId, pageable);
+        } catch (Exception e) {
+            throw new ApiException(ReviewErrorCode.REVIEW_READ_LIST_FAIL);
+        }
+
+        List<ReviewReadMyResponseDto> reviewDtoList = new ArrayList<>();
+        for (Review review : reviewPage) {
+            ReviewReadMyResponseDto reviewDto = reviewMapper.toReadMyResponseDto(review);
+            reviewDto.setNickname(review.getUser().getNickname());
+
+            // 리뷰가 속한 레시피 제목 가져오기
+            String title = null;
+            if (review.getRecipe() != null) {
+                title = review.getRecipe().getTitle();
+            }
+            reviewDto.setTitle(title);
+
+            reviewDtoList.add(reviewDto);
+        }
+
+        return new PageImpl<>(reviewDtoList, pageable, reviewPage.getTotalElements());
+    }
+
+    
+    
 }

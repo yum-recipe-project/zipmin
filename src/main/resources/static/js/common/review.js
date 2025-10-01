@@ -65,7 +65,6 @@ async function fetchReviewList() {
             reviewTotalElements = result.data.totalElements;
             reviewList = [...reviewList, ...result.data.content];
 
-            // 렌더링 (renderReviewList는 나중에 구현)
             renderReviewList(reviewList);
 
             // 리뷰 총 개수 표시
@@ -128,7 +127,7 @@ function renderReviewList(reviewList) {
         writerDiv.className = 'review_writer';
         const avatar = document.createElement('img');
         avatar.className = 'review_avatar';
-        avatar.src = '/images/common/test.png'; // 임시, 실제 유저 프로필 이미지로 교체 가능
+        avatar.src = '/images/common/test.png';
         const nameSpan = document.createElement('span');
         nameSpan.textContent = review.nickname;
 		
@@ -158,6 +157,16 @@ function renderReviewList(reviewList) {
             editLink.addEventListener('click', function() {
                 document.getElementById('editReviewContent').value = review.content;
                 document.getElementById('editReviewId').value = review.id;
+				document.getElementById('editReviewStar').value = review.score;
+				
+				// 수정 시 별점 초기화
+			    const editReviewStarGroup = document.querySelectorAll('#editReviewStarGroup .star');
+			    editReviewStarGroup.forEach(star => {
+			        const value = Number(star.getAttribute('data-value'));
+			        star.src = value <= review.score
+			            ? '/images/common/star_full.png'
+			            : '/images/common/star_outline.png';
+			    });
             });
 
             const deleteLink = document.createElement('a');
@@ -313,6 +322,94 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+
+
+
+/**
+ * 리뷰를 수정하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	
+	const editForm = document.getElementById('editReviewForm');
+	editForm.addEventListener('submit', async function(event) {
+		event.preventDefault();
+
+		const id = document.getElementById('editReviewId').value;  // 리뷰 ID (hidden input)
+		const content = document.getElementById('editReviewContent').value.trim(); // 수정할 리뷰 내용
+		const score = Number(document.getElementById('editReviewStar').value || 0); // 수정할 별점 (hidden input)
+
+		try {
+			const data = {
+				id: id,
+				content: content,
+				score: score
+			};
+			
+			const response = await instance.patch(`/reviews/${id}`, data, {
+				headers: getAuthHeaders()
+			});
+			
+			if (response.data.code === 'REVIEW_UPDATE_SUCCESS') {
+				alertPrimary('리뷰가 성공적으로 수정되었습니다.');
+				
+				// 리뷰 내용 업데이트
+				if (document.querySelector(`.review[data-id='${id}'] .review_content`)) {
+					document.querySelector(`.review[data-id='${id}'] .review_content`).textContent = response.data.data.content;
+				}
+
+				// 리뷰 별점 업데이트 (⭐ 아이콘 변경)
+				const starContainer = document.querySelector(`.review[data-id='${id}'] .star`);
+				if (starContainer) {
+				    const starImgs = starContainer.querySelectorAll('img');
+				    starImgs.forEach((starImg, index) => {
+				        starImg.src = index < response.data.data.score
+				            ? "/images/recipe/star_full.png"
+				            : "/images/recipe/star_empty.png";
+				    });
+				}
+				
+				// 별점 개수 업데이트
+				const scoreP = document.querySelector(`.review[data-id='${id}'] p`);
+				if (scoreP) scoreP.textContent = response.data.data.score;
+				
+				
+			}
+		}
+		catch (error) {
+			const code = error?.response?.data?.code;
+			
+			if (code === 'REVIEW_UPDATE_FAIL') {
+				alertDanger('리뷰 수정에 실패했습니다.');
+			}	
+			else if (code === 'REVIEW_INVALID_INPUT') {
+				alertDanger('입력값이 유효하지 않습니다.');
+			}
+			else if (code === 'USER_INVALID_INPUT') {
+				alertDanger('입력값이 유효하지 않습니다.');
+			}
+			else if (code === 'REVIEW_UNAUTHORIZED_ACCESS') {
+				alert('로그인되지 않은 사용자입니다.');
+			}
+			else if (code === 'REVIEW_FORBIDDEN') {
+				alert('접근 권한이 없습니다.');
+			}
+			else if (code === 'REVIEW_NOT_FOUND') {
+				alert('해당 리뷰를 찾을 수 없습니다.');
+			}
+			else if (code === 'USER_NOT_FOUND') {
+				alert('해당 사용자를 찾을 수 없습니다.');
+			}
+			else if (code === 'INTERNAL_SERVER_ERROR') {
+				alert('서버 내부에서 오류가 발생했습니다.');
+			}
+			else {
+				console.log(error);
+			}
+		}
+		
+		bootstrap.Modal.getInstance(document.getElementById('editReviewModal'))?.hide();
+	});
+});
 
 
 

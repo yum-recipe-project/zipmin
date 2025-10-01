@@ -18,7 +18,11 @@ import com.project.zipmin.api.ReviewErrorCode;
 import com.project.zipmin.dto.ReviewCreateRequestDto;
 import com.project.zipmin.dto.ReviewCreateResponseDto;
 import com.project.zipmin.dto.ReviewReadResponseDto;
+import com.project.zipmin.dto.ReviewUpdateRequestDto;
+import com.project.zipmin.dto.ReviewUpdateResponseDto;
+import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.entity.Review;
+import com.project.zipmin.entity.Role;
 import com.project.zipmin.mapper.ReviewMapper;
 import com.project.zipmin.repository.ReviewRepository;
 
@@ -149,6 +153,60 @@ public class ReviewService {
     }
 
 	
+    
+    
+    // 리뷰 수정
+    public ReviewUpdateResponseDto updateReview(ReviewUpdateRequestDto reviewDto) {
+    	System.err.println("수정 서비스");
+        
+        // 입력값 검증
+        if (reviewDto == null || reviewDto.getId() == null || reviewDto.getContent() == null) {
+            throw new ApiException(ReviewErrorCode.REVIEW_INVALID_INPUT);
+        }
+        
+        System.err.println("입력값 검증:"+reviewDto);
+
+        // 리뷰 존재 여부 판단
+        Review review = reviewRepository.findById(reviewDto.getId())
+                .orElseThrow(() -> new ApiException(ReviewErrorCode.REVIEW_NOT_FOUND));
+        
+        // 권한 확인
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserReadResponseDto user = userService.readUserByUsername(username);
+        if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+            // 관리자
+            if (user.getRole().equals(Role.ROLE_ADMIN.name())) {
+                if (review.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+                    throw new ApiException(ReviewErrorCode.REVIEW_FORBIDDEN);
+                }
+                else if (review.getUser().getRole().equals(Role.ROLE_ADMIN)) {
+                    if (user.getId() != review.getUser().getId()) {
+                        throw new ApiException(ReviewErrorCode.REVIEW_FORBIDDEN);
+                    }
+                }
+            }
+            // 일반 회원
+            else {
+                if (user.getId() != review.getUser().getId()) {
+                    throw new ApiException(ReviewErrorCode.REVIEW_FORBIDDEN);
+                }
+            }
+        }
+        
+        // 변경 값 설정
+        review.setContent(reviewDto.getContent());
+        review.setScore(reviewDto.getScore());
+
+        // 리뷰 수정
+        try {
+            review = reviewRepository.save(review);
+            return reviewMapper.toUpdateResponseDto(review);
+        }
+        catch (Exception e) {
+            throw new ApiException(ReviewErrorCode.REVIEW_UPDATE_FAIL);
+        }
+    }
+
 	
 	
 

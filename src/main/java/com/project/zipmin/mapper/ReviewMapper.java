@@ -6,6 +6,8 @@ import org.mapstruct.Mapping;
 import com.project.zipmin.dto.ReviewCreateRequestDto;
 import com.project.zipmin.dto.ReviewCreateResponseDto;
 import com.project.zipmin.dto.ReviewReadResponseDto;
+import com.project.zipmin.dto.ReviewUpdateRequestDto;
+import com.project.zipmin.dto.ReviewUpdateResponseDto;
 import com.project.zipmin.entity.Review;
 
 @Mapper(componentModel = "spring")
@@ -38,15 +40,11 @@ public interface ReviewMapper {
     @Mapping(target = "user.id", source = "userId")
     Review toEntity(ReviewCreateResponseDto reviewDto);
     
-    
-//
-//
-//
-//    // Update
-//    Review toEntity(ReviewUpdateRequestDto reviewDto);
-//    ReviewUpdateRequestDto toUpdateRequestDto(Review review);
-//
-//    Review toEntity(ReviewUpdateResponseDto reviewDto);
-//    ReviewUpdateResponseDto toUpdateResponseDto(Review review);
+    // Update
+    Review toEntity(ReviewUpdateRequestDto reviewDto);
+    ReviewUpdateRequestDto toUpdateRequestDto(Review review);
+
+    Review toEntity(ReviewUpdateResponseDto reviewDto);
+    ReviewUpdateResponseDto toUpdateResponseDto(Review review);
 	
 }

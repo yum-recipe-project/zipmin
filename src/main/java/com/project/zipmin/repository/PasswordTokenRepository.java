@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PasswordTokenRepository extends JpaRepository<PasswordToken, Integer> {
 	
-	Optional<PasswordToken> findTopByTokenHashOrderByIdDesc(String tokenHash);
+	// Optional<PasswordToken> findTopByTokenHashOrderByIdDesc(String tokenHash);
 	Optional<PasswordToken> findByToken(String token);
 	
 }

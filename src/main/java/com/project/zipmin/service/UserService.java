@@ -1,6 +1,7 @@
 package com.project.zipmin.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.AuthErrorCode;
@@ -51,6 +53,7 @@ import com.project.zipmin.repository.UserRepository;
 import com.project.zipmin.util.PasswordTokenUtil;
 
 import io.jsonwebtoken.lang.Collections;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -314,27 +317,32 @@ public class UserService {
 		User user = userRepository.findByUsernameAndEmail(userDto.getUsername(), userDto.getEmail())
 				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
 		
+		// 토큰 만료 시간 설정
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.MINUTE, 30);
+		Date expiresAt = cal.getTime();
+		
 		PasswordTokenDto tokenDto = new PasswordTokenDto();
 		tokenDto.setUserId(user.getId());
 		tokenDto.setToken(PasswordTokenUtil.createHashToken(PasswordTokenUtil.createRawToken()));
-		// TODO : 30분 뒤로 수정
-		// tokenDto.setExpiresAt(new Date());
+		tokenDto.setExpiresAt(expiresAt);
 		PasswordToken token = tokenMapper.toEntity(tokenDto);
 		tokenRepository.save(token);
 		
-		// TODO : 현재 링크로 ㄱㄱ
-		// String link = resetBaseUrl + "?token=" + rawToken;
-		
+		String domain = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+		String link = domain + "/change-password/key=" + token.getToken();
+
 		// 메일 전송
 		MailDto mailDto = new MailDto();
 		mailDto.setTo(user.getEmail());
 		mailDto.setSubject("집밥의민족 계정 암호 재설정");
-		// TODO : 내용 수정
-		mailDto.setContent("비밀번호 재설정 링크입니다.\n\n"
-				+ "아래 링크를 클릭하여 새 비밀번호를 설정하세요.\n"
-				// TODO : 링크 수정
-				+ "\n\n"
-				+ "만약 요청하지 않았다면 이 메일을 무시하세요.");
+		mailDto.setContent("안녕하세요. 아잠만님.<br>"
+				+ "아래 링크를 클릭하여 새 비밀번호를 설정해주세요.<br><br>"
+				+ "<a href=\"" + link + "\">" + link + "</a><br><br>"
+				+ "위의 비밀번호 변경 링크는 발송 후 30분 동안 유효합니다.<br>"
+				+ "30분이 지난 후에는 비밀번호 변경 링크 요청을 다시 진행해주세요.<br><br>"
+				+ "집밥의민족 드림");
 		
 		mailService.sendEmail(mailDto);
 	}

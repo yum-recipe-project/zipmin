@@ -2,6 +2,7 @@ package com.project.zipmin.util;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 
@@ -16,7 +17,12 @@ public class PasswordTokenUtil {
 	}
 	
 	public static String createHashToken(String raw) {
-		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("SHA-256");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
 		byte[] digest = md.digest(raw.getBytes(StandardCharsets.UTF_8));
 		StringBuilder sb = new StringBuilder();
 		for (byte b : digest) sb.append(String.format("%02x", b));

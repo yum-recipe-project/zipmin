@@ -1,6 +1,7 @@
 package com.project.zipmin.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,8 +28,10 @@ import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.LikeReadResponseDto;
 import com.project.zipmin.dto.MailDto;
+import com.project.zipmin.dto.PasswordTokenDto;
 import com.project.zipmin.dto.UserReadUsernameRequestDto;
 import com.project.zipmin.dto.UserPasswordCheckRequestDto;
+import com.project.zipmin.dto.UserPasswordUpdateRequestDto;
 import com.project.zipmin.dto.UserProfileReadResponseDto;
 import com.project.zipmin.dto.UserReadPasswordRequestDto;
 import com.project.zipmin.dto.UserDto;
@@ -38,10 +41,14 @@ import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.UserUpdateRequestDto;
 import com.project.zipmin.dto.UserUpdateResponseDto;
 import com.project.zipmin.entity.User;
+import com.project.zipmin.entity.PasswordToken;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.mapper.ChompMapper;
+import com.project.zipmin.mapper.PasswordTokenMapper;
 import com.project.zipmin.mapper.UserMapper;
+import com.project.zipmin.repository.PasswordTokenRepository;
 import com.project.zipmin.repository.UserRepository;
+import com.project.zipmin.util.PasswordTokenUtil;
 
 import io.jsonwebtoken.lang.Collections;
 import lombok.RequiredArgsConstructor;
@@ -53,10 +60,12 @@ public class UserService {
 	private final UserMapper userMapper;
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final PasswordTokenRepository tokenRepository;
 	
 	private final LikeService likeService;
 	private final MailService mailService;
 	
+	private final PasswordTokenMapper tokenMapper;
 	
 	
 
@@ -296,8 +305,6 @@ public class UserService {
 	// 비밀번호 찾기
 	public void findPassword(UserReadPasswordRequestDto userDto) {
 		
-		System.err.println(userDto);
-		
 		// 입력값 검증
 		if (userDto == null || userDto.getUsername() == null || userDto.getEmail() == null) {
 			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
@@ -307,46 +314,67 @@ public class UserService {
 		User user = userRepository.findByUsernameAndEmail(userDto.getUsername(), userDto.getEmail())
 				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
 		
-	
-		String tmpPassword = getTmpPassword();
+		PasswordTokenDto tokenDto = new PasswordTokenDto();
+		tokenDto.setUserId(user.getId());
+		tokenDto.setToken(PasswordTokenUtil.createHashToken(PasswordTokenUtil.createRawToken()));
+		// TODO : 30분 뒤로 수정
+		// tokenDto.setExpiresAt(new Date());
+		PasswordToken token = tokenMapper.toEntity(tokenDto);
+		tokenRepository.save(token);
 		
-		// 메일 보내기
+		// TODO : 현재 링크로 ㄱㄱ
+		// String link = resetBaseUrl + "?token=" + rawToken;
+		
+		// 메일 전송
 		MailDto mailDto = new MailDto();
 		mailDto.setTo(user.getEmail());
 		mailDto.setSubject("집밥의민족 계정 암호 재설정");
 		// TODO : 내용 수정
-		mailDto.setContent("임시비밀번호 이거임 -> " + tmpPassword);
+		mailDto.setContent("비밀번호 재설정 링크입니다.\n\n"
+				+ "아래 링크를 클릭하여 새 비밀번호를 설정하세요.\n"
+				// TODO : 링크 수정
+				+ "\n\n"
+				+ "만약 요청하지 않았다면 이 메일을 무시하세요.");
 		
 		mailService.sendEmail(mailDto);
+	}
+	
+	
+	
+	
+	public void editPassword(UserPasswordUpdateRequestDto userDto) {
 		
-		// 여기서 랜덤 생성된 비밀번호로 업데이트하기
-		user.setPassword(passwordEncoder.encode(tmpPassword));
-		// 사용자 수정
+		// 토큰 조회
+		PasswordToken token = tokenRepository.findByToken(PasswordTokenUtil.createHashToken(userDto.getToken()))
+				.orElseThrow(() ->  new ApiException(UserErrorCode.USER_INVALID_TOKEN));
+		
+		// 만료 여부 확인
+		if (!token.isUsable()) {
+			throw new ApiException(UserErrorCode.USER_TOKEN_EXPIRED);
+		}
+		
+		// 비밀번호 변경
+		User user = token.getUser();
+		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		try {
-			user = userRepository.save(user);
+			userRepository.save(user);
 		}
 		catch (Exception e) {
 			throw new ApiException(UserErrorCode.USER_UPDATE_FAIL);
 		}
+		
+		// 토큰 만료
+		token.setExpiresAt(new Date());
+		try {
+			tokenRepository.save(token);
+		}
+		catch (Exception e) {
+			throw new ApiException(UserErrorCode.USER_TOKEN_UPDATE_FAIL);
+		}
+		
 	}
 	
-	  public String getTmpPassword() {
-	      char[] charSet = new char[]{ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-	              'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
-	              'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
-
-	      String newPassword = "";
-
-	      for (int i = 0; i < 10; i++) {
-	          int idx = (int) (charSet.length * Math.random());
-	          newPassword += charSet[idx];
-	      }
-
-	      return newPassword;
-	  }
-
 	
-
 	
 	
 	

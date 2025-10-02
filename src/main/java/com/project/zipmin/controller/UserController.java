@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
+import com.project.zipmin.api.AuthErrorCode;
 import com.project.zipmin.api.ClassSuccessCode;
 import com.project.zipmin.api.FridgeErrorCode;
 import com.project.zipmin.api.UserErrorCode;
@@ -36,6 +38,7 @@ import com.project.zipmin.dto.RecipeReadMySavedResponseDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
 import com.project.zipmin.dto.UserPasswordCheckRequestDto;
+import com.project.zipmin.dto.UserPasswordUpdateRequestDto;
 import com.project.zipmin.dto.UserProfileReadResponseDto;
 import com.project.zipmin.dto.UserReadPasswordRequestDto;
 import com.project.zipmin.dto.UserReadResponseDto;
@@ -489,6 +492,32 @@ public class UserController {
 				.body(ApiResponse.success(UserSuccessCode.USER_READ_PASSWORD_SUCCESS, null));
 	}
 	
+	
+	
+	
+	// 비밀번호 변경
+	@PatchMapping("/users/{id}/password")
+	public ResponseEntity<?> changePassword(
+			@RequestHeader("Authorization") String authorization,
+			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
+			@Parameter(description = "사용자 비밀번호 수정 요청 정보") @RequestBody UserPasswordUpdateRequestDto userRequestDto) {
+		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		// 토큰 추출
+		if (authorization == null || !authorization.startsWith("Bearer ")) {
+			throw new ApiException(UserErrorCode.USER_TOKEN_MISSING);
+		}
+        String token = authorization.substring(7);
+		userRequestDto.setToken(token);
+		
+		userService.editPassword(userRequestDto);
+		
+		return null;
+	}
 	
 	
 	

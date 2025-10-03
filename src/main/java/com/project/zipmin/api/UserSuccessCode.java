@@ -16,6 +16,7 @@ public enum UserSuccessCode implements Code {
 	USER_READ_SUCCESS(HttpStatus.OK, "사용자 조회 성공"),
 	USER_CREATE_SUCCESS(HttpStatus.CREATED, "사용자 작성 성공"),
 	USER_UPDATE_SUCCESS(HttpStatus.OK, "사용자 수정 성공"),
+	USER_UPDATE_PASSWORD_SUCCESS(HttpStatus.OK, "사용자 비밀번호 수정 성공"),
 	USER_DELETE_SUCCESS(HttpStatus.OK, "사용자 삭제 성공"),
 	
 	

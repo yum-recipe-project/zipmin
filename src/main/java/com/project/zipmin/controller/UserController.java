@@ -510,7 +510,8 @@ public class UserController {
 		
 		userService.editPassword(userRequestDto);
 		
-		return null;
+		return ResponseEntity.status(UserSuccessCode.USER_UPDATE_PASSWORD_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_UPDATE_PASSWORD_SUCCESS, null));
 	}
 	
 	

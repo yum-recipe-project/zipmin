@@ -331,7 +331,7 @@ public class UserService {
 		tokenRepository.save(token);
 		
 		String domain = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
-		String link = domain + "/change-password/key=" + token.getToken();
+		String link = domain + "/user/resetPassword.do?key=" + token.getToken();
 
 		// 메일 전송
 		MailDto mailDto = new MailDto();

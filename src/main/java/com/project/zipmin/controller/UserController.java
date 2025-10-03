@@ -496,16 +496,10 @@ public class UserController {
 	
 	
 	// 비밀번호 변경
-	@PatchMapping("/users/{id}/password")
+	@PatchMapping("/users/password")
 	public ResponseEntity<?> changePassword(
 			@RequestHeader("Authorization") String authorization,
-			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
 			@Parameter(description = "사용자 비밀번호 수정 요청 정보") @RequestBody UserPasswordUpdateRequestDto userRequestDto) {
-		
-		// 입력값 검증
-		if (id == null) {
-			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-		}
 		
 		// 토큰 추출
 		if (authorization == null || !authorization.startsWith("Bearer ")) {

@@ -48,6 +48,11 @@ public class UserViewController {
 		return "user/changePassword";
 	}
 	
+	@GetMapping("/user/resetPassword.do")
+	public String resetPassword() {
+		return "user/resetPassword";
+	}
+	
 	@GetMapping("/user/userInfo.do")
 	public String userInfo() {
 		return "user/userInfo";

@@ -9,7 +9,6 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UserPasswordUpdateRequestDto {
 	
-	private Integer id;
 	private String password;
 	private String token;
 	

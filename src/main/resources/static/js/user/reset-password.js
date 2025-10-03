@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				password: '12345'
 			}
 			
-			const response = await fetch(`/user/password`, {
+			const response = await fetch(`/users/password`, {
 				method: 'PATCH',
 				headers: {
 					'Content-Type': 'application/json',

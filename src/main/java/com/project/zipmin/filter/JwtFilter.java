@@ -38,6 +38,13 @@ public class JwtFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 		
+		// 비밀번호 재설정 API는 JWT 인증 패스
+	    String path = request.getRequestURI();
+	    if (path.startsWith("/users/password")) {
+	        filterChain.doFilter(request, response);
+	        return;
+	    }
+		
 		// Authorization 헤더에서 토큰 추출
 		String authrization = request.getHeader("Authorization");
 		

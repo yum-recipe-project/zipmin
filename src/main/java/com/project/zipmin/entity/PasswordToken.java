@@ -37,8 +37,4 @@ public class PasswordToken {
 	@JoinColumn(name = "USER_ID")
 	private User user;
 	
-	public boolean isUsable() {
-        return new Date().before(expiresAt);
-    }
-	
 }

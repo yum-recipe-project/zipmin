@@ -54,9 +54,11 @@ import com.project.zipmin.util.PasswordTokenUtil;
 
 import io.jsonwebtoken.lang.Collections;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserService {
 	
@@ -323,15 +325,17 @@ public class UserService {
 		cal.add(Calendar.MINUTE, 30);
 		Date expiresAt = cal.getTime();
 		
+		String rawToken = PasswordTokenUtil.createRawToken();
+		String hashToken = PasswordTokenUtil.createHashToken(rawToken);
 		PasswordTokenDto tokenDto = new PasswordTokenDto();
 		tokenDto.setUserId(user.getId());
-		tokenDto.setToken(PasswordTokenUtil.createHashToken(PasswordTokenUtil.createRawToken()));
+		tokenDto.setToken(hashToken);
 		tokenDto.setExpiresAt(expiresAt);
-		PasswordToken token = tokenMapper.toEntity(tokenDto);
-		tokenRepository.save(token);
+		PasswordToken passwordToken = tokenMapper.toEntity(tokenDto);
+		tokenRepository.save(passwordToken);
 		
 		String domain = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
-		String link = domain + "/user/resetPassword.do?key=" + token.getToken();
+		String link = domain + "/user/resetPassword.do?key=" + rawToken;
 
 		// 메일 전송
 		MailDto mailDto = new MailDto();
@@ -357,7 +361,7 @@ public class UserService {
 				.orElseThrow(() ->  new ApiException(UserErrorCode.USER_INVALID_TOKEN));
 		
 		// 만료 여부 확인
-		if (!token.isUsable()) {
+		if (!token.getExpiresAt().after(new Date())) {
 			throw new ApiException(UserErrorCode.USER_TOKEN_EXPIRED);
 		}
 		

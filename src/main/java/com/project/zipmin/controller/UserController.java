@@ -516,6 +516,32 @@ public class UserController {
 	
 	
 	
+	// USER_VALID_TOKEN
+	// USER_TOKEN_MISSING
+	// USER_TOKEN_EXPIRED
+	// USER_INVALID_TOKEN
+	
+	// 토큰 검사
+	@GetMapping("/users/check-token")
+	public ResponseEntity<?> checkToken(@RequestHeader("Authorization") String authorization) {
+		
+		// 토큰 추출
+		if (authorization == null || !authorization.startsWith("Bearer ")) {
+			throw new ApiException(UserErrorCode.USER_TOKEN_MISSING);
+		}
+        String token = authorization.substring(7);
+        
+        userService.checkToken(token);
+		
+        return ResponseEntity.status(UserSuccessCode.USER_VALID_TOKEN.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_VALID_TOKEN, null));
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	

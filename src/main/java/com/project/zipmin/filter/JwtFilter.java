@@ -40,7 +40,7 @@ public class JwtFilter extends OncePerRequestFilter {
 		
 		// 비밀번호 재설정 API는 JWT 인증 패스
 	    String path = request.getRequestURI();
-	    if (path.startsWith("/users/password")) {
+	    if (path.startsWith("/users/password") || path.startsWith("/users/check-token")) {
 	        filterChain.doFilter(request, response);
 	        return;
 	    }

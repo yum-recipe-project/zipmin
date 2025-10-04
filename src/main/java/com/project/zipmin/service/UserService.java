@@ -388,6 +388,23 @@ public class UserService {
 	
 	
 	
+	// 토큰 확인
+	public void checkToken(String rawToken) {
+		
+		// 토큰 조회
+		String hashToken = PasswordTokenUtil.createHashToken(rawToken);
+		PasswordToken passwordToken = tokenRepository.findByToken(hashToken)
+				.orElseThrow(() ->  new ApiException(UserErrorCode.USER_INVALID_TOKEN));
+		
+		// 만료 여부 확인
+		if (!passwordToken.getExpiresAt().after(new Date())) {
+			throw new ApiException(UserErrorCode.USER_TOKEN_EXPIRED);
+		}
+		
+	}
+	
+	
+	
 	
 	
 	

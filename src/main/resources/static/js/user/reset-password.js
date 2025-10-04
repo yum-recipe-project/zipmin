@@ -1,12 +1,59 @@
+
+/**
+ * TODO : 이 페이지에 진입하자마자 검사해야 함
+ */
+document.addEventListener('DOMContentLoaded', async function() {
+	
+	try {
+		const token = new URLSearchParams(window.location.search).get('key');
+		
+		const response = await fetch(`/users/check-token`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
+			}
+		});
+		
+		const result = await response.json();
+		
+		if (result.code === 'USER_VALID_TOKEN') {
+			return;
+		}
+		else if (result.code === 'USER_INVALID_TOKEN') {
+			location.href = '/user/passwordTokenExpired.do';
+		}
+		else if (result.code === 'USER_TOKEN_MISSING') {
+			location.href = '/user/passwordTokenExpired.do';
+		}
+		else if (result.code === 'USER_TOKEN_EXPIRED') {
+			location.href = '/user/passwordTokenExpired.do';
+		}
+		else if (result.code === 'INTERNAL_SERVER_ERROR') {
+			alert('서버 내부에서 오류가 발생했습니다.');
+			location.href = '/';
+		}
+	}
+	catch(error) {
+		console.log(error);
+	}
+	
+});
+
+
+
+
 /**
  * 
  */
 document.addEventListener('DOMContentLoaded', function() {
 	
+	// 비밀번호 초기화 폼
 	const form = document.getElementById('resetPasswordForm');
 	form.addEventListener('submit', async function(event) {
 		event.preventDefault();
 		
+		// 비밀번호 변경
 		try {
 			const token = new URLSearchParams(window.location.search).get('key');
 			
@@ -32,8 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				location.href = '/user/login.do';
 			}
 			else if (result.code === 'USER_TOKEN_EXPIRED') {
-				// TODO : 토큰 만료 페이지로 이동
-				location.href = '/user/passwordTokenExpired.do'
+				location.href = '/user/passwordTokenExpired.do';
 			}
 			
 		}

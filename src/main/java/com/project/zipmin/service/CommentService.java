@@ -102,6 +102,7 @@ public class CommentService {
 			
 			// 닉네임 좋아요수 신고수
 			commentDto.setNickname(comment.getUser().getNickname());
+			commentDto.setAvatar(comment.getUser().getAvatar());
 			commentDto.setLikecount(likeService.countLike("comments", comment.getId()));
 			commentDto.setReportcount(reportService.countReport("comments", comment.getId()));
 			
@@ -122,6 +123,7 @@ public class CommentService {
 				
 				// 닉네임 좋아요수 신고수
 				subcommentDto.setNickname(subcomment.getUser().getNickname());
+				subcommentDto.setAvatar(subcomment.getUser().getAvatar());
 				subcommentDto.setLikecount(likeService.countLike("comments", subcomment.getId()));
 				subcommentDto.setReportcount(reportService.countReport("comments", subcomment.getId()));
 				

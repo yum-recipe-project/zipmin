@@ -59,7 +59,16 @@ document.addEventListener('DOMContentLoaded', async function () {
 		const payload = parseJwt(localStorage.getItem('accessToken'));
 		document.getElementById('login_state').style.display = 'block';
 		document.getElementById('logout_state').style.display = 'none';
+		document.getElementById('writeCommentAvatar').src = payload.avatar;
+		document.getElementById('writeCommentAvatar').addEventListener('click', function(event) {
+			event.preventDefault();
+			location.href = `/mypage/profile.do?id=${payload.id}`;
+		});
 		document.getElementById('writeCommentNickname').innerText = payload.nickname;
+		document.getElementById('writeCommentNickname').addEventListener('click', function(event) {
+			event.preventDefault();
+			location.href = `/mypage/profile.do?id=${payload.id}`;
+		});
 	}
 	else {
 		document.getElementById('login_state').style.display = 'none';
@@ -309,13 +318,21 @@ function renderCommentList(commentList) {
 		// 작성자 정보
 		const writerDiv = document.createElement('div');
 		writerDiv.className = 'comment_writer';
-		const img = document.createElement('img');
-		img.src = '/images/common/test.png';
+		const avatarImg = document.createElement('img');
+		avatarImg.src = comment.avatar;
+		avatarImg.addEventListener('click', function(event) {
+			event.preventDefault();
+			location.href = `/mypage/profile.do?id=${comment.user_id}`;
+		});
 		const nameSpan = document.createElement('span');
 		nameSpan.textContent = comment.nickname;
+		nameSpan.addEventListener('click', function(event) {
+			event.preventDefault();
+			location.href = `/mypage/profile.do?id=${comment.user_id}`;
+		});
 		const dateSpan = document.createElement('span');
 		dateSpan.textContent = formatDate(comment.postdate);
-		writerDiv.append(img, nameSpan, dateSpan);
+		writerDiv.append(avatarImg, nameSpan, dateSpan);
 		
 		// 기능 버튼
 		const actionDiv = document.createElement('div');
@@ -448,13 +465,21 @@ function renderSubcommentList(subcommentList) {
 		// 작성자 정보
 		const writerDiv = document.createElement('div');
 		writerDiv.className = 'subcomment_writer';
-		const img = document.createElement('img');
-		img.src = '/images/common/test.png';
+		const avatarImg = document.createElement('img');
+		avatarImg.src = subcomment.avatar;
+		avatarImg.addEventListener('click', function(event) {
+			event.preventDefault();
+			location.href = `/mypage/profile.do?id=${subcomment.user_id}`;
+		});
 		const nameSpan = document.createElement('span');
 		nameSpan.textContent = subcomment.nickname;
+		nameSpan.addEventListener('click', function(event) {
+			event.preventDefault();
+			location.href = `/mypage/profile.do?id=${subcomment.user_id}`;
+		});
 		const dateSpan = document.createElement('span');
 		dateSpan.textContent = formatDate(subcomment.postdate);
-		writerDiv.append(img, nameSpan, dateSpan);
+		writerDiv.append(avatarImg, nameSpan, dateSpan);
 		
 		// 기능 버튼
 		const actionDiv = document.createElement('div');
@@ -889,7 +914,6 @@ function renderLikeButton(id, likecount, isLiked) {
 				});
 				
 				if (response.data.code === 'COMMENT_UNLIKE_SUCCESS') {
-					alertPrimary('댓글 좋아요 취소에 성공했습니다.');
 					isLiked = false;
 					img.src = '/images/common/thumb_up_empty.png';
 					count.textContent = Number(count.textContent) - 1;
@@ -947,7 +971,6 @@ function renderLikeButton(id, likecount, isLiked) {
 				});
 				
 				if (response.data.code === 'COMMENT_LIKE_SUCCESS') {
-					alertPrimary('댓글 좋아요에 성공했습니다.');
 					isLiked = true;
 					img.src = '/images/common/thumb_up_full.png';
 					count.textContent = Number(count.textContent) + 1;

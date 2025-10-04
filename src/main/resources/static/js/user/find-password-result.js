@@ -38,8 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			
 			const result = await response.json();
 			
-			console.log(result);
-			
 			if (result.code === 'USER_READ_PASSWORD_SUCCESS') {
 				alert('이메일로 비밀번호 변경 링크가 전송되었습니다.');
 			}
@@ -60,5 +58,4 @@ document.addEventListener('DOMContentLoaded', function() {
 			console.log(error);
 		}
 	});
-	
 });

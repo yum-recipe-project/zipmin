@@ -495,6 +495,15 @@ public class UserController {
 	
 	
 	
+	
+	// USER_UPDATE_PASSWORD_SUCCESS
+	// USER_TOKEN_MISSING
+	// USER_INVALID_TOKEN
+	// USER_TOKEN_EXPIRED
+	// USER_UPDATE_FAIL
+	// USER_TOKEN_UPDATE_FAIL
+	// INTERNAL_SERVER_ERROR
+
 	// 비밀번호 변경
 	@PatchMapping("/users/password")
 	public ResponseEntity<?> changePassword(
@@ -516,10 +525,13 @@ public class UserController {
 	
 	
 	
+	
+	
 	// USER_VALID_TOKEN
 	// USER_TOKEN_MISSING
-	// USER_TOKEN_EXPIRED
 	// USER_INVALID_TOKEN
+	// USER_TOKEN_EXPIRED
+	// INTERNAL_SERVER_ERROR
 	
 	// 토큰 검사
 	@GetMapping("/users/check-token")
@@ -536,12 +548,6 @@ public class UserController {
         return ResponseEntity.status(UserSuccessCode.USER_VALID_TOKEN.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_VALID_TOKEN, null));
 	}
-	
-	
-	
-	
-	
-	
 	
 	
 	

@@ -762,7 +762,7 @@ public class UserController {
 		String token = authorization.substring(7);
 		userRequestDto.setToken(token);
 		
-		userService.editPassword(userRequestDto);
+		userService.updatePassword(userRequestDto);
 		
 		return ResponseEntity.status(UserSuccessCode.USER_UPDATE_PASSWORD_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_UPDATE_PASSWORD_SUCCESS, null));

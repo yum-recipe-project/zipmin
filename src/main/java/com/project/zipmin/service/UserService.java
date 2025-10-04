@@ -7,24 +7,17 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.project.zipmin.api.ApiException;
-import com.project.zipmin.api.AuthErrorCode;
-import com.project.zipmin.api.LikeErrorCode;
 import com.project.zipmin.api.UserErrorCode;
-import com.project.zipmin.dto.CustomUserDetails;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
@@ -36,7 +29,6 @@ import com.project.zipmin.dto.UserPasswordCheckRequestDto;
 import com.project.zipmin.dto.UserPasswordUpdateRequestDto;
 import com.project.zipmin.dto.UserProfileReadResponseDto;
 import com.project.zipmin.dto.UserReadPasswordRequestDto;
-import com.project.zipmin.dto.UserDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
@@ -45,7 +37,6 @@ import com.project.zipmin.dto.UserUpdateResponseDto;
 import com.project.zipmin.entity.User;
 import com.project.zipmin.entity.PasswordToken;
 import com.project.zipmin.entity.Role;
-import com.project.zipmin.mapper.ChompMapper;
 import com.project.zipmin.mapper.PasswordTokenMapper;
 import com.project.zipmin.mapper.UserMapper;
 import com.project.zipmin.repository.PasswordTokenRepository;
@@ -53,7 +44,6 @@ import com.project.zipmin.repository.UserRepository;
 import com.project.zipmin.util.PasswordTokenUtil;
 
 import io.jsonwebtoken.lang.Collections;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -63,17 +53,19 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	
 	private final UserMapper userMapper;
+	private final PasswordTokenMapper tokenMapper;
+	
 	private final UserRepository userRepository;
-	private final PasswordEncoder passwordEncoder;
 	private final PasswordTokenRepository tokenRepository;
 	
 	private final LikeService likeService;
 	private final MailService mailService;
 	
-	private final PasswordTokenMapper tokenMapper;
+	private final PasswordEncoder passwordEncoder;
 	
 	
 
+	
 	
 	// 사용자 목록 조회
 	public Page<UserReadResponseDto> readUserPage(String category, Pageable pageable) {
@@ -99,6 +91,7 @@ public class UserService {
 			throw new ApiException(UserErrorCode.USER_READ_LIST_FAIL);
 		}
 		
+		// 사용자 목록 응답 구성
 		List<UserReadResponseDto> userDtoList = new ArrayList<UserReadResponseDto>();
 		for (User user : userPage) {
 			UserReadResponseDto userDto = userMapper.toReadResponseDto(user);
@@ -107,8 +100,6 @@ public class UserService {
 		
 		return new PageImpl<>(userDtoList, pageable, userPage.getTotalElements());
 	}
-	
-	
 	
 	
 	
@@ -158,6 +149,8 @@ public class UserService {
 	
 	
 	
+	
+	
 	// 사용자를 좋아하는 사용자 목록 조회
 	public List<UserProfileReadResponseDto> readLikedUserList(Integer userId) {
 		
@@ -204,8 +197,6 @@ public class UserService {
 	
 	
 	
-	
-	
 	// 아이디로 사용자 조회
 	public UserReadResponseDto readUserById(Integer id) {
 		
@@ -220,6 +211,8 @@ public class UserService {
 		
 		return userMapper.toReadResponseDto(user);
 	}
+	
+	
 	
 	
 	
@@ -253,6 +246,7 @@ public class UserService {
 	
 	
 	
+	
 	// 사용자명으로 사용자 조회
 	public UserReadResponseDto readUserByUsername(String username) {
 		
@@ -270,14 +264,15 @@ public class UserService {
 	
 	
 	
-	// 이름과 전화번호로 사용자 조회 (아이디 찾기)
-	// TODO : 함수 분리할 것
+	
+	
+	// 이름과 전화번호로 사용자 조회
 	public UserReadResponseDto readUserByNameAndTel(UserReadUsernameRequestDto userDto) {
 		
 		// 입력값 검증
-//		if (userDto == null || userDto.getName() == "" || userDto.getTel() == null) {
-//			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-//		}
+		if (userDto == null || userDto.getName() == null || userDto.getTel() == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
 
 		// 사용자 조회
 		User user = userRepository.findByNameAndTel(userDto.getName(), userDto.getTel())
@@ -285,6 +280,7 @@ public class UserService {
 		
 		return userMapper.toReadResponseDto(user);
 	}
+	
 	
 	
 	
@@ -307,6 +303,25 @@ public class UserService {
 	
 	
 	
+	// 아이디 찾기
+	public UserReadResponseDto findUsername(UserReadUsernameRequestDto userDto) {
+		
+		// 입력값 검증
+		if (userDto == null || userDto.getName() == null || userDto.getTel() == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		// 사용자 조회
+		User user = userRepository.findByNameAndTel(userDto.getName(), userDto.getTel())
+				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+		
+		return userMapper.toReadResponseDto(user);
+	}
+	
+	
+	
+	
+	
 	// 비밀번호 찾기
 	public void findPassword(UserReadPasswordRequestDto userDto) {
 		
@@ -325,6 +340,7 @@ public class UserService {
 		cal.add(Calendar.MINUTE, 30);
 		Date expiresAt = cal.getTime();
 		
+		// 토큰 설정
 		String rawToken = PasswordTokenUtil.createRawToken();
 		String hashToken = PasswordTokenUtil.createHashToken(rawToken);
 		PasswordTokenDto tokenDto = new PasswordTokenDto();
@@ -354,41 +370,31 @@ public class UserService {
 	
 	
 	
-	public void editPassword(UserPasswordUpdateRequestDto userDto) {
+	
+	// 비밀번호 검증
+	public void checkPassword(UserPasswordCheckRequestDto userDto) {
 		
-		// 토큰 조회
-		PasswordToken token = tokenRepository.findByToken(PasswordTokenUtil.createHashToken(userDto.getToken()))
-				.orElseThrow(() ->  new ApiException(UserErrorCode.USER_INVALID_TOKEN));
-		
-		// 만료 여부 확인
-		if (!token.getExpiresAt().after(new Date())) {
-			throw new ApiException(UserErrorCode.USER_TOKEN_EXPIRED);
+		// 입력값 검증
+		if (userDto == null || userDto.getId() == null || userDto.getPassword() == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
 		}
 		
-		// 비밀번호 변경
-		User user = token.getUser();
-		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-		try {
-			userRepository.save(user);
-		}
-		catch (Exception e) {
-			throw new ApiException(UserErrorCode.USER_UPDATE_FAIL);
-		}
+		// 사용자 존재 여부 판단
+		User user = userRepository.findById(userDto.getId())
+				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
 		
-		// 토큰 만료
-		token.setExpiresAt(new Date());
-		try {
-			tokenRepository.save(token);
-		}
-		catch (Exception e) {
-			throw new ApiException(UserErrorCode.USER_TOKEN_UPDATE_FAIL);
+		// 비밀번호 검증
+		if (!passwordEncoder.matches(userDto.getPassword(), user.getPassword())) {
+			throw new ApiException(UserErrorCode.USER_INCORRECT_PASSWORD);
 		}
 		
 	}
 	
+
 	
 	
-	// 토큰 확인
+	
+	// 토큰 검증
 	public void checkToken(String rawToken) {
 		
 		// 토큰 조회
@@ -405,8 +411,7 @@ public class UserService {
 	
 	
 	
-	
-	
+
 	
 	// 사용자 작성
 	public UserCreateResponseDto createUser(UserCreateRequestDto userRequestDto) {
@@ -448,6 +453,8 @@ public class UserService {
 
 	
 
+	
+	
 	// 사용자 수정
 	public UserUpdateResponseDto updateUser(UserUpdateRequestDto userDto) {
 		
@@ -460,7 +467,7 @@ public class UserService {
 		User user = userRepository.findById(userDto.getId())
 				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
 
-		// 필요한 필드 수정
+		// 변경 값 설정
 		if (userDto.getUsername() != null) {
 			if (!userDto.getUsername().equals(user.getUsername()) && userRepository.existsByUsername(userDto.getUsername())) {
 				throw new ApiException(UserErrorCode.USER_USERNAME_DUPLICATED);
@@ -505,8 +512,47 @@ public class UserService {
 		}
 		
 	}
+	
+	
+	
 
 	
+	// 사용자 비밀번호 수정
+	public void updatePassword(UserPasswordUpdateRequestDto userDto) {
+		
+		// 토큰 조회
+		PasswordToken token = tokenRepository.findByToken(PasswordTokenUtil.createHashToken(userDto.getToken()))
+				.orElseThrow(() ->  new ApiException(UserErrorCode.USER_INVALID_TOKEN));
+		
+		// 만료 여부 확인
+		if (!token.getExpiresAt().after(new Date())) {
+			throw new ApiException(UserErrorCode.USER_TOKEN_EXPIRED);
+		}
+		
+		// 비밀번호 수정
+		User user = token.getUser();
+		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		try {
+			userRepository.save(user);
+		}
+		catch (Exception e) {
+			throw new ApiException(UserErrorCode.USER_UPDATE_FAIL);
+		}
+		
+		// 토큰 만료
+		token.setExpiresAt(new Date());
+		try {
+			tokenRepository.save(token);
+		}
+		catch (Exception e) {
+			throw new ApiException(UserErrorCode.USER_TOKEN_UPDATE_FAIL);
+		}
+		
+	}
+
+	
+
+
 	
 	// 사용자 삭제
 	public void deleteUser(Integer id) {
@@ -531,28 +577,6 @@ public class UserService {
 		
 	}
 	
-
-	
-	// 비밀번호 검증
-	public void checkPassword(UserPasswordCheckRequestDto userDto) {
-		
-		// 입력값 검증
-		if (userDto == null || userDto.getId() == null || userDto.getPassword() == null) {
-			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-		}
-		
-		// 사용자 존재 여부 판단
-		User user = userRepository.findById(userDto.getId())
-				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
-		
-		// 비밀번호 검증
-		if (!passwordEncoder.matches(userDto.getPassword(), user.getPassword())) {
-			throw new ApiException(UserErrorCode.USER_INCORRECT_PASSWORD);
-		}
-		
-	}
-	
-	
 	
 
 	
@@ -570,6 +594,7 @@ public class UserService {
 
 	
 	
+
 	
 	// 사용자 좋아요
 	public LikeCreateResponseDto likeUser(LikeCreateRequestDto likeDto) {
@@ -601,6 +626,7 @@ public class UserService {
 	
 	
 	
+	
 	// 사용자 좋아요 취소
 	public void unlikeUser(LikeDeleteRequestDto likeDto) {
 		
@@ -627,29 +653,4 @@ public class UserService {
 		}
 		
 	}
-	
-	
-	
-	
-	
-	
-	// 유저 정보 반환
-//	public User getUserEntityByUsername(String username) {
-//	    if (username == null) {
-//	        throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-//	    }
-//
-//	    return userRepository.findByUsername(username)
-//	            .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
-//	}
-
-
-
-
-
-
-
-	
-
-
 }

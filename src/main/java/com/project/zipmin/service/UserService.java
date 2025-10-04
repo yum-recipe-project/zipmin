@@ -306,6 +306,8 @@ public class UserService {
 	// 아이디 찾기
 	public UserReadResponseDto findUsername(UserReadUsernameRequestDto userDto) {
 		
+		System.err.println("실행" + userDto);
+		
 		// 입력값 검증
 		if (userDto == null || userDto.getName() == null || userDto.getTel() == null) {
 			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);

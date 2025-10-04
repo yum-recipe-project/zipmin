@@ -482,7 +482,7 @@ public class UserController {
 			@Parameter(description = "아이디 조회 요청 정보") @RequestBody UserReadUsernameRequestDto userRequestDto) {
 		
 		// 아이디 조회
-		String username = userService.readUserByNameAndTel(userRequestDto).getUsername();
+		String username = userService.findUsername(userRequestDto).getUsername();
 		
 		return ResponseEntity.status(UserSuccessCode.USER_READ_USERNAME_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_READ_USERNAME_SUCCESS, Map.of("username", username)));

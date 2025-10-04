@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					tel: form.tel.value.trim()
 				}
 				
-				const response = await fetch('/users/find-username', data, {
+				const response = await fetch('/users/find-username', {
 					method: 'POST',
 					headers: getAuthHeaders(),
 					body: JSON.stringify(data)

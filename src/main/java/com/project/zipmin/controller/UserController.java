@@ -485,6 +485,15 @@ public class UserController {
 
 	
 	
+	
+	
+	
+	// 200 USER_READ_PASSWORD_SUCCESS
+	// 400 USER_SEND_EMAIL_FAIL
+	// 400 USER_INVALID_INPUT
+	// 404 USER_NOT_FOUND
+	// 500 INTERNAL_SERVER_ERROR
+	
 	@PostMapping("/users/find-password")
 	public ResponseEntity<?> findPassword(
 			@Parameter(description = "비밀번호 조회 요청 정보") @RequestBody UserReadPasswordRequestDto userDto) {

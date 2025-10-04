@@ -41,16 +41,21 @@ public class JwtUtil {
 		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("nickname", String.class);
 	}
 	
+	public String getAvatar(String token) {
+		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("avatar", String.class);
+	}
+	
 	public Boolean isExpired(String token) {
 		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
 	}
 	
-	public String createJwt(String category, int id, String username, String nickname, String role, Long expiredMs) {
+	public String createJwt(String category, int id, String username, String nickname, String avatar, String role, Long expiredMs) {
 		return Jwts.builder()
 				.claim("id", id)
 				.claim("category", category)
 				.claim("username", username)
 				.claim("nickname", nickname)
+				.claim("avatar", avatar)
 				.claim("role", role)
 				.issuedAt(new Date(System.currentTimeMillis()))
 				.expiration(new Date(System.currentTimeMillis() + expiredMs))

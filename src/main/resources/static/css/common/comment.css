@@ -70,7 +70,6 @@
 }
 
 #container .comment_write .login_user img {
-	border-radius: 50%;
 	width: 24px;
 	height: 24px;
 	margin-right: 4px;
@@ -162,10 +161,8 @@
 }
 
 #container .comment_info .comment_writer img {
-	border-radius: 50%;
 	width: 24px;
 	height: 24px;
-	border: 1px solid var(--line-color3);
     cursor: pointer;
 }
 
@@ -245,8 +242,6 @@
 }
 
 #container .subcomment_info .subcomment_writer img {
-	border-radius: 50%;
-	border: 1px solid var(--line-color3);
 	width: 24px;
 	height: 24px;
 	cursor: pointer;

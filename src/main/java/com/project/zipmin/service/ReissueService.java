@@ -68,6 +68,7 @@ public class ReissueService {
 		int id = jwtUtil.getId(refresh);
 		String username = jwtUtil.getUsername(refresh);
 		String nickname = jwtUtil.getNickname(refresh);
+		String avatar = jwtUtil.getAvatar(refresh);
 		String role = jwtUtil.getRole(refresh);
 		
 		// DB의 refresh token과 일치 여부 확인
@@ -79,8 +80,8 @@ public class ReissueService {
 		}
 		
 		// 새로운 토큰 생성
-		String newAccess = jwtUtil.createJwt("access", id, username, nickname, role, 600_000L);
-		String newRefresh = jwtUtil.createJwt("refresh", id, username,  nickname, role, 86400_000L);
+		String newAccess = jwtUtil.createJwt("access", id, username, nickname, avatar, role, 600_000L);
+		String newRefresh = jwtUtil.createJwt("refresh", id, username,  nickname, avatar, role, 86400_000L);
 		
 		// DB에 새로운 refresh 저장
 		addRefresh(username, newRefresh, 84600_000L);

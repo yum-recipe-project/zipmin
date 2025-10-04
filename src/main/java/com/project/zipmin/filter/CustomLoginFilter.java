@@ -77,6 +77,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		int id = customUserDetails.getId();
 		String username = customUserDetails.getUsername();
 		String nickname = customUserDetails.getNickname();
+		String avatar = customUserDetails.getAvatar();
 		
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
@@ -93,8 +94,8 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		}
 		
 		// JWT 토큰 발급 및 응답
-		String access = jwtUtil.createJwt("access", id, username, nickname, role, 60 * 60 * 60L);
-		String refresh = jwtUtil.createJwt("refresh", id, username, nickname, role, 86400_000L);
+		String access = jwtUtil.createJwt("access", id, username, nickname, avatar, role, 60 * 60 * 60L);
+		String refresh = jwtUtil.createJwt("refresh", id, username, nickname, avatar, role, 86400_000L);
 		
 		// refresh 토큰 저장 (DB or Redis)
 		reissueService.addRefresh(username, refresh, 86400_000L);

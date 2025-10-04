@@ -333,6 +333,10 @@ public class UserController {
 	
 	
 	
+	// 200 USER_READ_SUCCESS
+	// 400 USER_INVALID_INPUT
+	// 404 USER_NOT_FOUND
+	// 500 INTERNAL_SERVER_ERROR
 	
 	@PostMapping("/users/check-email")
 	public ResponseEntity<?> checkEmail(

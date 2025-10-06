@@ -76,6 +76,7 @@ public class ReissueService {
 			    .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
 		String refreshToken = user.getRefresh();
 		if (!refreshToken.equals(refresh)) {
+			System.err.println("ReissueService - 토큰 불일치");
 			throw new ApiException(AuthErrorCode.AUTH_TOKEN_INVALID);
 		}
 		

@@ -1,8 +1,3 @@
-//document.addEventListener('DOMContentLoaded', function() {
-//	fetchReviewList();
-//});
-
-
 /**
  * 리뷰 정렬 및 더보기 기능
  */
@@ -15,21 +10,17 @@ document.addEventListener('DOMContentLoaded', function () {
         btn.addEventListener('click', function (event) {
             event.preventDefault();
 
-            // 기존 active 해제 후 클릭한 버튼에 active 추가
             document.querySelector('.review_order .btn_sort_small.active')?.classList.remove('active');
             btn.classList.add('active');
 
-            // 정렬 조건 변경
             reviewSort = btn.dataset.sort;
             reviewPage = 0;
             reviewList = [];
 
-            // 새 정렬 조건으로 리뷰 목록 다시 불러오기
             fetchReviewList();
         });
     });
 
-    // 더보기 버튼 클릭 시 다음 페이지 로드
     document.querySelector('.more_review_btn .btn_more').addEventListener('click', function () {
         reviewPage = reviewPage + 1;
         fetchReviewList();

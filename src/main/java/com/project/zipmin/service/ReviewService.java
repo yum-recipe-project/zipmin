@@ -64,11 +64,11 @@ public class ReviewService {
                 case "postdate-asc":
                     sortSpec = Sort.by(Sort.Order.asc("postdate"), Sort.Order.asc("id")); //오래된
                     break;
-                case "score-desc":
-                    sortSpec = Sort.by(Sort.Order.desc("score"), Sort.Order.desc("id")); //평점 높은
+                case "likecount-desc":
+                    sortSpec = Sort.by(Sort.Order.desc("likecount"), Sort.Order.desc("id")); //평점 높은
                     break;
-                case "score-asc":
-                    sortSpec = Sort.by(Sort.Order.asc("score"), Sort.Order.asc("id"));
+                case "likecount-asc":
+                    sortSpec = Sort.by(Sort.Order.asc("likecount"), Sort.Order.asc("id"));
                     break;
                 default:
                     break;

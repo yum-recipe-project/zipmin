@@ -1,6 +1,42 @@
-document.addEventListener('DOMContentLoaded', function() {
+//document.addEventListener('DOMContentLoaded', function() {
+//	fetchReviewList();
+//});
+
+
+/**
+ * 리뷰 정렬 및 더보기 기능
+ */
+document.addEventListener('DOMContentLoaded', function () {
+	
 	fetchReviewList();
+
+    // 정렬 버튼 클릭 이벤트
+    document.querySelectorAll('.review_order .btn_sort_small').forEach(btn => {
+        btn.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            // 기존 active 해제 후 클릭한 버튼에 active 추가
+            document.querySelector('.review_order .btn_sort_small.active')?.classList.remove('active');
+            btn.classList.add('active');
+
+            // 정렬 조건 변경
+            reviewSort = btn.dataset.sort;
+            reviewPage = 0;
+            reviewList = [];
+
+            // 새 정렬 조건으로 리뷰 목록 다시 불러오기
+            fetchReviewList();
+        });
+    });
+
+    // 더보기 버튼 클릭 시 다음 페이지 로드
+    document.querySelector('.more_review_btn .btn_more').addEventListener('click', function () {
+        reviewPage = reviewPage + 1;
+        fetchReviewList();
+    });
 });
+
+
 
 
 
@@ -709,32 +745,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
-
-
-
-
-
-
-
-
-// 리뷰 데이터 관련 변수
-/*
-var reviewOffset = 0; // 현재 데이터 시작 위치
-var reviewLimit = 10; // 한 번에 가져올 데이터 개수
-var reviewCount = 0; // 전체 리뷰 개수
-
-document.addEventListener("DOMContentLoaded", function () {
-    // 초기 리뷰 데이터 로드
-    loadRecipeReviewContent();
-
-    // "더보기" 버튼 클릭 시 추가 데이터 로드
-    document.querySelector('.more_review_btn').addEventListener('click', function (event) {
-        event.preventDefault();
-        loadRecipeReviewContent();
-    });
-});
-*/
 
 
 

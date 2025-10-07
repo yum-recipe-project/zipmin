@@ -153,4 +153,3 @@ function renderReviewList(reviews) {
         ul.appendChild(li);
     });
 }
-

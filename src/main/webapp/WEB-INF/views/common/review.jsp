@@ -9,9 +9,9 @@
 			<span class="review_count" data-id="2"></span>
 		</div>
 		<div class="review_order">
-			<button class="btn_sort_small active">최신순</button>
-			<button class="btn_sort_small">오래된순</button>
-			<button class="btn_sort_small">도움순</button>
+			<button class="btn_sort_small active" data-sort="postdate-desc">최신순</button>
+			<button class="btn_sort_small" data-sort="postdate-asc">오래된순</button>
+			<button class="btn_sort_small" data-sort="likecount-desc">도움순</button>
 		</div>
 	</div>
 	

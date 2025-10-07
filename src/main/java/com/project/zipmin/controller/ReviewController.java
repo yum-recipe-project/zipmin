@@ -31,6 +31,8 @@ import com.project.zipmin.dto.ReviewUpdateResponseDto;
 import com.project.zipmin.service.ReviewService;
 import com.project.zipmin.service.UserService;
 
+import io.swagger.v3.oas.annotations.Parameter;
+
 @RestController
 public class ReviewController {
 	

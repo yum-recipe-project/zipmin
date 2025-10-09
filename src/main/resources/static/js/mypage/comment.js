@@ -97,12 +97,28 @@ function renderCommentList(commentList) {
 		const titleDiv = document.createElement('div');
 		titleDiv.className = 'mycomment_title';
 		
-		if (comment.title) {
-			const a = document.createElement('a');
-			a.href = `/chompessor/view${capitalizeFirst(comment.tablename)}.do?id=${comment.recodenum}`;
-			a.textContent = comment.title;
-			titleDiv.appendChild(a);
+		const a = document.createElement('a');
+		switch (comment.tablename) {
+			case 'vote':
+				a.href = `/chompessor/viewVote.do?id=${comment.recodenum}`;
+				break;
+			case 'megazine':
+				a.href = `/chompessor/viewMegazine.do?id=${comment.recodenum}`;
+				break;
+			case 'event':
+				a.href = `/chompessor/viewEvent.do?id=${comment.recodenum}`;
+				break;
+			case 'recipe':
+				a.href = `/recipe/viewRecipe.do?id=${comment.recodenum}`;
+				break;
+			case 'guide':
+				a.href = `/kitchen/viewGuide.do?id=${comment.recodenum}`;
+				break;
+			default:
+				break;
 		}
+		a.textContent = comment.title;
+		titleDiv.appendChild(a);
 		
 		const boardP = document.createElement('p');
 		boardP.className = 'board';

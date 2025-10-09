@@ -888,50 +888,6 @@ public class UserController {
 	
 	
 	
-
-	
-	
-	
-	// 신청한 쿠킹클래스
-	@GetMapping("/users/{id}/applied-classes")
-	public ResponseEntity<?> readUserClassApplyList(
-			@Parameter(description = "사용자의 일련번호", required = true, example = "1") @PathVariable Integer id,
-			@RequestParam String sort,
-			@Parameter(description = "조회할 페이지 번호", required = true, example = "1") @RequestParam int page,
-			@Parameter(description = "페이지의 항목 수", required = true, example = "10") @RequestParam int size) {
-		
-		// 입력값 검증
-		if (id == null) {
-			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-		}
-		
-		// 인증 여부 확인 (비로그인)
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
-		}
-		
-		// 로그인 정보
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		
-		// 본인 확인
-		if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN)) {
-			if (id != userService.readUserByUsername(username).getId()) {
-				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
-			}
-		}
-		
-		Pageable pageable = PageRequest.of(page, size);
-		Page<ClassMyApplyReadResponseDto> applyPage = cookingService.readApplyClassPageByUserId(id, sort, pageable);
-		
-		return ResponseEntity.status(ClassSuccessCode.CLASS_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(ClassSuccessCode.CLASS_READ_LIST_SUCCESS, applyPage));
-	}
-	
-	
-	
-	
-	
 	// 저장한(좋아요를 누른) 키친가이드
 	@GetMapping("/users/{id}/likes/guides")
 	public ResponseEntity<?> readUserSavedGuideList(

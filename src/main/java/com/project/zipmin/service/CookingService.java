@@ -543,7 +543,7 @@ public class CookingService {
 	        }
 	    }
 	    catch (Exception e) {
-	        throw new ApiException(ClassErrorCode.CLASS_APPLY_READ_LIST_FAIL);
+	        throw new ApiException(ClassErrorCode.CLASS_READ_LIST_FAIL);
 	    }
 
 	    List<ClassMyApplyReadResponseDto> classDtoList = new ArrayList<>();

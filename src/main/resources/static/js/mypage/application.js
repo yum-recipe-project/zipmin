@@ -2,18 +2,14 @@
  * 접근 권한을 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', async function() {
-	
-	if (!isLoggedIn()) {
-		redirectToLogin('/');
-		return;
-	}
 
 	try {
 		await instance.get('/dummy');
 	}
 	catch (error) {
-		console.log(error);
+		redirectToLogin('/');
 	}
+	
 });
 
 
@@ -66,7 +62,6 @@ async function fetchApplyList() {
 	
 	try {
 		const id = new URLSearchParams(window.location.search).get('id');
-		const token = localStorage.getItem('accessToken');
 		
 		const params = new URLSearchParams({
 			sort: Number(sort),
@@ -74,16 +69,13 @@ async function fetchApplyList() {
 			size: size
 		}).toString();
 		
-		const headers = {
-			'Content-Type': 'application/json',
-			'Authorization' : `Bearer ${token}`
-		}
-		
 		const response = await instance.get(`/classes/${id}/applies?${params}`, {
-			headers: headers
+			headers: getAuthHeaders()
 		});
 		
-		if (response.data.code === 'COOKING_APPLY_READ_LIST_SUCCESS') {
+		console.log(response);
+		
+		if (response.data.code === 'CLASS_APPLY_READ_LIST_SUCCESS') {
 			
 			totalPages = response.data.data.totalPages;
 			page = response.data.data.number;

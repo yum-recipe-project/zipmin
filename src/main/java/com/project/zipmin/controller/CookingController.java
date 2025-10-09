@@ -6,6 +6,7 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.CommentSuccessCode;
+import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.api.ClassErrorCode;
@@ -17,6 +18,7 @@ import com.project.zipmin.dto.ClassApplyReadResponseDto;
 import com.project.zipmin.dto.ClassApplyUpdateRequestDto;
 import com.project.zipmin.dto.ClassApplyUpdateResponseDto;
 import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
+import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.ClassScheduleReadResponseDto;
 import com.project.zipmin.dto.ClassTutorReadResponseDto;
@@ -343,6 +345,44 @@ public class CookingController {
 	
 	
 	
+	
+	
+	// 신청한 쿠킹클래스
+	// TODO : 전면 수정 필요
+	@GetMapping("/users/{id}/applied-classes")
+	public ResponseEntity<?> readUserClassApplyList(
+			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
+			@Parameter(description = "정렬") @RequestParam String sort,
+			@Parameter(description = "페이지 번호") @RequestParam int page,
+			@Parameter(description = "페이지 크기") @RequestParam int size) {
+		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 로그인 정보
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		// 본인 확인
+		if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
+			if (id != userService.readUserByUsername(username).getId()) {
+				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+			}
+		}
+		
+		Pageable pageable = PageRequest.of(page, size);
+		Page<ClassMyApplyReadResponseDto> applyPage = cookingService.readApplyClassPageByUserId(id, sort, pageable);
+		
+		return ResponseEntity.status(ClassSuccessCode.CLASS_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(ClassSuccessCode.CLASS_READ_LIST_SUCCESS, applyPage));
+	}
 	
 	
 	

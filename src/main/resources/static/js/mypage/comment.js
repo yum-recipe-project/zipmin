@@ -42,8 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
 async function fetchCommentList() {
 	
 	try {
-		const token = localStorage.getItem('accessToken');
-		const payload = parseJwt(token);
+		const payload = parseJwt(localStorage.getItem('accessToken'));
 		
 		const params = new URLSearchParams({
 			page: page,
@@ -54,15 +53,20 @@ async function fetchCommentList() {
 		
 		console.log(response);
 		
-		// TODO : 에러코드 분기
-		renderCommentList(response.data.data.content);
-		page = response.data.data.number + 1;
-		totalPages = response.data.data.totalPages;
-		document.querySelector('.mycomment_count span').innerText = response.data.data.totalElements + '개';
-		document.querySelector('.btn_more').style.display = page >= totalPages ? 'none' : 'block';
+		if (response.data.code === 'COMMENT_READ_LIST_SUCCESS') {
+			renderCommentList(response.data.data.content);
+			page = response.data.data.number + 1;
+			totalPages = response.data.data.totalPages;
+			document.querySelector('.mycomment_count span').innerText = response.data.data.totalElements + '개';
+			document.querySelector('.btn_more').style.display = page >= totalPages ? 'none' : 'block';
+		}
+		
 	}
 	catch (error) {
+		
+		// TODO : 에러코드 분기
 		console.log(error);
+		
 	}
 	
 }
@@ -81,7 +85,9 @@ function renderCommentList(commentList) {
 	const tablename = {
 		vote: '투표',
 		megazine: '매거진',
-		event: '이벤트'
+		event: '이벤트',
+		recipe: '레시피',
+		guide: '키친가이드'
 	};
 	
 	commentList.forEach(comment => {

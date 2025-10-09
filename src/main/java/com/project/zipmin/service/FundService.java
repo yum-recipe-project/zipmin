@@ -39,12 +39,15 @@ public class FundService {
 	 // 후원하기
 	 public FundSupportResponseDto support(int funderId, int fundeeId, FundSupportRequestDto requestDto) {
 		// 후원자 조회
-        UserReadResponseDto funderDto = userService.readUserById(funderId);
-        User funder = userMapper.toEntity(funderDto);
-
-        // 후원받는 사람 조회
-        UserReadResponseDto fundeeDto = userService.readUserById(fundeeId);
-        User fundee = userMapper.toEntity(fundeeDto);
+//        UserReadResponseDto funderDto = userService.readUserById(funderId);
+//        User funder = userMapper.toEntity(funderDto);
+//
+//        // 후원받는 사람 조회
+//        UserReadResponseDto fundeeDto = userService.readUserById(fundeeId);
+//        User fundee = userMapper.toEntity(fundeeDto);
+		 
+		User funder = userService.getUserEntityById(funderId);
+		User fundee = userService.getUserEntityById(fundeeId);
 
         if (funder.getPoint() < fundee.getPoint()) {
             throw new ApiException(FundErrorCode.FUND_POINT_EXCEED);

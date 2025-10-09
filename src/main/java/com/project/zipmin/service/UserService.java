@@ -488,6 +488,11 @@ public class UserService {
         return userRepository.save(user);
     }
 		
+	public User getUserEntityById(Integer id) {
+	    return userRepository.findById(id)
+	            .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+	}
+
 
 	
 

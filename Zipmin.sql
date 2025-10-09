@@ -8,59 +8,74 @@
 
 
 -- 테이블과 시퀀스 일괄 삭제
-drop table vote_record;
-drop sequence seq_vote_record_id;
-drop table vote_choice;
-drop sequence seq_vote_choice_id;
-drop table chomp;
-drop sequence seq_chomp_id;
+drop table fund cascade constraints;
+drop sequence seq_fund_id;
 
-drop table class_apply;
-drop sequence seq_class_apply_id;
-drop table class_target;
-drop sequence seq_class_target_id;
-drop table class_schedule;
-drop sequence seq_class_schedule_id;
-drop table class_tutor;
-drop sequence seq_class_tutor_id;
-drop table classes;
-drop sequence seq_classes_id;
-
-drop table report;
-drop sequence seq_report_id;
-drop table likes;
-drop sequence seq_likes_id;
-
---memo 테이블 삭제
-drop table fridge_memo;
+drop table fridge_memo cascade constraints;
 drop sequence seq_fridge_memo_id;
 
--- 삭제 예정
-drop table user_fridge;
-drop sequence seq_user_fridge_id;
-drop table fridge;
-drop sequence seq_fridge_id;
+drop table class_apply cascade constraints;
+drop sequence seq_class_apply_id;
 
-drop table review;
+drop table class_schedule cascade constraints;
+drop sequence seq_class_schedule_id;
+
+drop table class_tutor cascade constraints;
+drop sequence seq_class_tutor_id;
+
+drop table class_target cascade constraints;
+drop sequence seq_class_target_id;
+
+drop table classes cascade constraints;
+drop sequence seq_classes_id;
+
+drop table report cascade constraints;
+drop sequence seq_report_id;
+
+drop table likes cascade constraints;
+drop sequence seq_likes_id;
+
+drop table review cascade constraints;
 drop sequence seq_review_id;
-drop table comments;
+
+drop table comments cascade constraints;
 drop sequence seq_comments_id;
-drop table guide;
+
+drop table guide cascade constraints;
 drop sequence seq_guide_id;
 
-drop table recipe_step;
+drop table recipe_step cascade constraints;
 drop sequence seq_recipe_step_id;
-drop table recipe_stock;
+
+drop table recipe_stock cascade constraints;
 drop sequence seq_recipe_stock_id;
-drop table recipe_category;
+
+drop table recipe_category cascade constraints;
 drop sequence seq_recipe_category_id;
-drop table recipe;
+
+drop table recipe cascade constraints;
 drop sequence seq_recipe_id;
 
-drop table user_account;
+drop table user_fridge cascade constraints;
+drop sequence seq_user_fridge_id;
+
+drop table fridge cascade constraints;
+drop sequence seq_fridge_id;
+
+drop table user_account cascade constraints;
 drop sequence seq_user_account_id;
-drop table users;
+
+drop table users cascade constraints;
 drop sequence seq_user_id;
+
+drop table vote_record cascade constraints;
+drop sequence seq_vote_record_id;
+
+drop table vote_choice cascade constraints;
+drop sequence seq_vote_choice_id;
+
+drop table chomp cascade constraints;
+drop sequence seq_chomp_id;
 
 
 
@@ -682,15 +697,32 @@ commit;
 
 
 -- FUND 테이블
-/**
 create table fund (
     id number primary key,
-    funder_id varchar2(15),
-    fundee_id varchar2(15),
-    recipe_id number not null,
+    funder_id number, 
+    fundee_id number, 
+    recipe_id number, 
     point number not null,
     funddate date default sysdate not null,
     status number default 0 not null
 );
+create sequence seq_fund_id
+    increment by 1
+    start with 1
+    minvalue 1
+    nocycle
+    nocache;
+alter table fund
+    add constraint fk_fund_funder foreign key(funder_id)
+    references users(id)
+    on delete set null;
+alter table fund
+    add constraint fk_fund_fundee foreign key(fundee_id)
+    references users(id)
+    on delete set null;
+alter table fund
+    add constraint fk_fund_recipe foreign key(recipe_id)
+    references recipe(id)
+    on delete set null;
 
-*/
+commit;

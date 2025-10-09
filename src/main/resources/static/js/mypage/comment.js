@@ -211,14 +211,21 @@ function renderUserCommentList(commentList) {
 		
 		const writerDiv = document.createElement('div');
 		writerDiv.className = 'comment_writer';
-		// TODO : 프로필로 이동
 		
 		const img = document.createElement('img');
 		img.src = comment.avatar;
+		img.addEventListener('click', function(event) {
+			event.preventDefault();
+			location.href = `/mypage/profile.do?id=${comment.user_id}`;
+		});
 		writerDiv.appendChild(img);
 		
 		const nameSpan = document.createElement('span');
 		nameSpan.textContent = comment.nickname;
+		nameSpan.addEventListener('click', function(event) {
+			event.preventDefault();
+			location.href = `/mypage/profile.do?id=${comment.user_id}`;
+		});
 		writerDiv.appendChild(nameSpan);
 		
 		const dateSpan = document.createElement('span');

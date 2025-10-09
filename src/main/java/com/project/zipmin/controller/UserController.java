@@ -931,27 +931,6 @@ public class UserController {
 	
 	
 	
-	// USER_READ_CLASS_LIST_SUCCESS
-	// USER_READ_CLASS_LIST_FAIL
-	// CLASS_INVALID_INPUT
-	// 개설한 쿠킹클래스
-	@GetMapping("/users/{id}/classes")
-	public ResponseEntity<?> listUserClass(
-			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
-			@Parameter(description = "정렬") @RequestParam String sort,
-			@Parameter(description = "조회할 페이지 번호") @RequestParam int page,
-			@Parameter(description = "페이지의 항목 수") @RequestParam int size) {
-		
-		Pageable pageable = PageRequest.of(page, size);
-		Page<ClassReadResponseDto> classPage = cookingService.readClassPageByUserId(id, sort, pageable);
-		
-		return ResponseEntity.status(UserSuccessCode.USER_READ_CLASS_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(UserSuccessCode.USER_READ_CLASS_LIST_SUCCESS, classPage));
-	}
-	
-	
-	
-	
 	
 	// 저장한(좋아요를 누른) 키친가이드
 	@GetMapping("/users/{id}/likes/guides")

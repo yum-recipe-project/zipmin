@@ -83,6 +83,10 @@
 	margin-bottom: 16px;
 	color: var(--txt-color-500);
 }
+
+#container .content .class_wrap .class_list .status.opened {
+	color: #00B96B;
+}
 	
 #container .content .class_wrap .class_list .class {
 	display: flex;

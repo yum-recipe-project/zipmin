@@ -33,6 +33,7 @@ import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.ClassScheduleReadResponseDto;
 import com.project.zipmin.dto.ClassTargetReadResponseDto;
 import com.project.zipmin.dto.ClassTutorReadResponseDto;
+import com.project.zipmin.dto.UserClassReadResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.entity.Approval;
 import com.project.zipmin.entity.Class;
@@ -459,7 +460,7 @@ public class CookingService {
 	
 	
 	// 사용자가 개설한 클래스 목록 조회
-	public Page<ClassReadResponseDto> readClassPageByUserId(Integer userId, String sort, Pageable pageable) {
+	public Page<UserClassReadResponseDto> readClassPageByUserId(Integer userId, String sort, Pageable pageable) {
 		
 		// 입력값 검증
 		if (userId == null || pageable == null) {
@@ -499,28 +500,28 @@ public class CookingService {
 			}
 		}
 		catch (Exception e) {
-			throw new ApiException(UserErrorCode.USER_READ_CLASS_LIST_FAIL);
+			throw new ApiException(ClassErrorCode.CLASS_READ_LIST_FAIL);
 		}
 		
+		// 클래스 목록 응답 구성
 		Date today = new Date();
-		List<ClassReadResponseDto> classDtoList = new ArrayList<ClassReadResponseDto>();
+		List<UserClassReadResponseDto> classDtoList = new ArrayList<UserClassReadResponseDto>();
 		for (Class classs : classPage) {
-			ClassReadResponseDto classDto = classMapper.toReadResponseDto(classs);
+			UserClassReadResponseDto classDto = classMapper.toReadUserResponseDto(classs);
 			
 			// 이미지
-			if (classs.getImage() != null) {
-				classDto.setImage(publicPath + "/" + classDto.getImage());
-			}
-			
+			classDto.setImage(publicPath + "/" + classDto.getImage());
 			// 상태
-			Boolean isOpened = today.before(classDto.getNoticedate());
-			classDto.setOpened(isOpened);
+			classDto.setOpened(today.before(classDto.getNoticedate()));
 
 			classDtoList.add(classDto);
 		}
 		
 		return new PageImpl<>(classDtoList, pageable, classPage.getTotalElements());
 	}
+	
+	
+	
 	
 	
 	

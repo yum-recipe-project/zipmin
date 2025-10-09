@@ -6,6 +6,7 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.CommentSuccessCode;
+import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.api.ClassErrorCode;
 import com.project.zipmin.api.ClassSuccessCode;
@@ -20,6 +21,7 @@ import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.ClassScheduleReadResponseDto;
 import com.project.zipmin.dto.ClassTutorReadResponseDto;
 import com.project.zipmin.dto.GuideReadResponseDto;
+import com.project.zipmin.dto.UserClassReadResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.CookingService;
 import com.project.zipmin.service.KitchenService;
@@ -315,6 +317,27 @@ public class CookingController {
 	
 	
 	
+	
+	
+	
+	
+	// CLASS_READ_LIST_SUCCESS
+	// CLASS_READ_LIST_FAIL
+	// CLASS_INVALID_INPUT
+	// 개설한 쿠킹클래스
+	@GetMapping("/users/{id}/classes")
+	public ResponseEntity<?> listUserClass(
+			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
+			@Parameter(description = "정렬") @RequestParam String sort,
+			@Parameter(description = "조회할 페이지 번호") @RequestParam int page,
+			@Parameter(description = "페이지의 항목 수") @RequestParam int size) {
+		
+		Pageable pageable = PageRequest.of(page, size);
+		Page<UserClassReadResponseDto> classPage = cookingService.readClassPageByUserId(id, sort, pageable);
+		
+		return ResponseEntity.status(ClassSuccessCode.CLASS_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(ClassSuccessCode.CLASS_READ_LIST_SUCCESS, classPage));
+	}
 	
 	
 	

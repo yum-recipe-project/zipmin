@@ -2,18 +2,14 @@
  * 접근 권한을 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', async function() {
-	
-	if (!isLoggedIn()) {
-		redirectToLogin('/');
-		return;
-	}
 
 	try {
 		await instance.get('/dummy');
 	}
 	catch (error) {
-		console.log(error);
+		redirectToLogin('/');
 	}
+	
 });
 
 
@@ -66,8 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
 async function fetchClassList() {
 	
 	try {
-		const token = localStorage.getItem('accessToken');
-		const payload = parseJwt(token);
+		const payload = parseJwt(localStorage.getItem('accessToken'));
 		
 		const params = new URLSearchParams({
 			sort: sort,
@@ -75,16 +70,13 @@ async function fetchClassList() {
 			size: size
 		}).toString();
 		
-		const headers = {
-			'Content-Type': 'application/json',
-			'Authorization' : `Bearer ${token}`
-		}
-		
 		const response = await instance.get(`/users/${payload.id}/classes?${params}`, {
-			headers: headers
+			headers: getAuthHeaders()
 		});
 		
-		if (response.data.code === 'USER_READ_LIST_SUCCESS') {
+		console.log(response);
+		
+		if (response.data.code === 'CLASS_READ_LIST_SUCCESS') {
 			
 			totalPages = response.data.data.totalPages;
 			page = response.data.data.number;
@@ -97,6 +89,8 @@ async function fetchClassList() {
 		}
 	}
 	catch (error) {
+		
+		// TODO : 에러코드 추가
 		console.log(error);
 	}
 	
@@ -121,8 +115,8 @@ function renderClassList(classList) {
 		const statusDiv = document.createElement('div');
 		statusDiv.className = 'status';
 		statusDiv.textContent = classs.approval === 1 ? '승인 완료' : '승인 대기중';
+		statusDiv.classList.toggle('opened', classs.approval === 1);
 		li.appendChild(statusDiv);
-		// 클래스 효과 있을수도 ..
 
 		const classDiv = document.createElement('div');
 		classDiv.className = 'class';
@@ -132,8 +126,7 @@ function renderClassList(classList) {
 		thumbnailLink.className = 'thumbnail';
 
 		const img = document.createElement('img');
-		// img.src = classs.image || '/images/common/test.png';
-		img.src = '/images/common/test.png';
+		img.src = classs.image;
 		thumbnailLink.appendChild(img);
 		classDiv.appendChild(thumbnailLink);
 

@@ -5,39 +5,31 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
-import com.project.zipmin.api.AuthErrorCode;
-import com.project.zipmin.api.LikeErrorCode;
 import com.project.zipmin.api.UserErrorCode;
-import com.project.zipmin.dto.CustomUserDetails;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.LikeReadResponseDto;
-import com.project.zipmin.dto.UserReadRequestDto;
-import com.project.zipmin.dto.UserPasswordCheckRequestDto;
-import com.project.zipmin.dto.UserProfileReadResponseDto;
-import com.project.zipmin.dto.UserDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
+import com.project.zipmin.dto.UserPasswordCheckRequestDto;
+import com.project.zipmin.dto.UserPointReadResponseDto;
+import com.project.zipmin.dto.UserProfileReadResponseDto;
+import com.project.zipmin.dto.UserReadRequestDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.UserUpdateRequestDto;
 import com.project.zipmin.dto.UserUpdateResponseDto;
-import com.project.zipmin.entity.User;
 import com.project.zipmin.entity.Role;
-import com.project.zipmin.mapper.ChompMapper;
+import com.project.zipmin.entity.User;
 import com.project.zipmin.mapper.UserMapper;
 import com.project.zipmin.repository.UserRepository;
 
@@ -445,6 +437,51 @@ public class UserService {
 		
 	}
 	
+	
+	
+	
+	
+	// 아이디로 사용자 포인트 조회
+	public UserPointReadResponseDto readUserPointById(Integer id) {
+
+	    // 입력값 검증
+	    if (id == null) {
+	        throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+	    }
+
+	    // 사용자 조회
+	    User user = userRepository.findById(id)
+	            .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+
+	    return userMapper.toReadPointResponseDto(user);
+	}
+	
+	
+
+	
+	// 사용자 포인트 충전
+	public UserPointReadResponseDto addPointToUser(Integer id, int addPoint) {
+	    // 입력값 검증
+	    if (id == null) {
+	        throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+	    }
+
+	    // 사용자 조회
+	    User user = userRepository.findById(id)
+	            .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+
+	    // 포인트 충전
+	    int newPoint = user.getPoint() + addPoint;
+	    user.setPoint(newPoint);
+	    
+	    userRepository.save(user);
+	    
+	    return userMapper.toReadPointResponseDto(user);
+	}
+	
+
+	
+
 	
 	
 	

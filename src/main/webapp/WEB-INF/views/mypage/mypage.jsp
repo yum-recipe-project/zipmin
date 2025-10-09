@@ -11,6 +11,10 @@
 		<script src="/js/modal/view-like-user-modal.js"></script>
 		<script src="/js/modal/view-liked_user-modal.js"></script>
 		<script src="/js/modal/top-up-point-modal.js"></script>
+		
+		<!-- 아임포트 결제용 -->
+		<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+		
 	</head>
 	<body>
 		<%@include file="../common/header.jsp" %>
@@ -94,7 +98,7 @@
 						
 						<div class="point_field">
 							<span>500P</span>
-							<button class="btn_primary" type="button" data-bs-toggle="modal" data-bs-target="#topUpPointModal" onclick="">충전</button>
+							<button class="btn_primary" type="button" data-bs-toggle="modal" data-bs-target="#topUpPointModal" >충전</button>
 						</div>
 					</div>
 					

@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 
 import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
+import com.project.zipmin.dto.UserPointReadResponseDto;
 import com.project.zipmin.dto.UserProfileReadResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.UserUpdateRequestDto;
@@ -19,6 +20,9 @@ public interface UserMapper {
 	
 	User toEntity(UserProfileReadResponseDto userDto);
 	UserProfileReadResponseDto toReadProfileResponseDto(User user);
+	
+	UserPointReadResponseDto toReadPointResponseDto(User user);
+	
 	
 	
 	

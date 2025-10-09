@@ -652,9 +652,7 @@ public class FridgeController {
 	
 	
 
-	
-	
-	
+		
 	
 
 }

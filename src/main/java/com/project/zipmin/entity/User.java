@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,8 +39,13 @@ public class User {
 	private String tel;
 	private String email;
 	private String avatar;
+	
+	
+	@Transient
 	private String introduce;
+	@Transient
 	private String link;
+	
 	
 	@Enumerated(EnumType.STRING)
 	private Role role;

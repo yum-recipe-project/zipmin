@@ -13,6 +13,8 @@
 		<script src="/js/modal/write-fridge-modal.js"></script>
 		<script src="/js/modal/write-user-fridge-modal.js"></script>
 		<script src="/js/modal/edit-user-fridge-modal.js"></script>
+		<script src="/js/modal/write-memo-modal.js"></script>
+		<script src="/js/modal/edit-memo-modal.js"></script>
 	</head>
 	
 	<body>
@@ -49,48 +51,9 @@
 					<div class="memo_content">
 					
 						<!-- 재료 표 -->
-						<table class="ingredient_list">
-						    <thead>
-						        <tr>
-						            <th width="472px">재료</th>
-						            <th width="472px">용량</th>
-						            <th width="60px"></th>
-						        </tr>
-						    </thead>
-						    <tbody>
-						        <tr>
-						            <td>마라탕 소스</td>
-						            <td>100g</td>
-						            <td>
-						            	<button class="delete_btn">
-						            		<img src="/images/fridge/close.png">
-						            	</button>
-						            </td> 
-						        </tr>
-						        <tr>
-						            <td>상하이 목장 치즈</td>
-						            <td>10ea</td>
-						             <td>
-						            	<button class="delete_btn">
-						            		<img src="/images/fridge/close.png">
-						            	</button>
-						            </td>
-						        </tr>
-						        <tr>
-						            <td>제로콜라</td>
-						            <td>2L</td>
-						             <td>
-						            	<button class="delete_btn">
-						            		<img src="/images/fridge/close.png">
-						            	</button>
-						            </td>
-						        </tr>
-						    </tbody>
-						</table>
-						<div class="btn_wrap">
-							<button class="btn_outline" onclick="location.href='/chompessor/listForum.do';">장보기 완료</button>
-							<button class="btn_primary" type="submit" onclick="">추가하기</button>
-						</div>
+						<table class="ingredient_list"></table>
+						<div class="btn_wrap"></div>
+						
 						
 					</div>
 					
@@ -160,6 +123,11 @@
 			<%@include file="../modal/writeFridgeModal.jsp" %>
 			<%@include file="../modal/writeUserFridgeModal.jsp" %>
 			<%@include file="../modal/editUserFridgeModal.jsp" %>
+			
+			
+			<!-- 장보기 메모 모달  -->
+			<%@include file="../modal/writeMemoModal.jsp" %>
+			<%@include file="../modal/editMemoModal.jsp" %>
 		
 		</main>
 		

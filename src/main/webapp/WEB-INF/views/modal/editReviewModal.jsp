@@ -19,6 +19,7 @@
 							<img src="/images/recipe/star_outline.png" class="star" data-value="4">
 							<img src="/images/recipe/star_outline.png" class="star" data-value="5">
 							<input type="hidden" id="editReviewStar" name="rating" value="1">
+							<input type="hidden" id="editReviewId">
 						</div>
 					</div>
 					<div class="form-group">

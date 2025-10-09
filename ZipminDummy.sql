@@ -812,7 +812,11 @@ INSERT INTO class_apply VALUES (seq_class_apply_id.NEXTVAL, SYSDATE, '기초부�
 commit;
 
 
-
+-- fridge_memo 테이블 더미데이터
+insert into fridge_memo (id, name, amount, unit, note, user_id) values (seq_fridge_memo_id.nextval, '마라탕소스', 100, 'g', null, 5);
+insert into fridge_memo (id, name, amount, unit, note, user_id) values (seq_fridge_memo_id.nextval, '닭다리살', 100, 'kg', null, 5);
+insert into fridge_memo (id, name, amount, unit, note, user_id) values (seq_fridge_memo_id.nextval, '올리브유', 200, 'ml', null, 5);
+commit;
 
 
 -- FUND 테이블 더미데이터

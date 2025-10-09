@@ -290,6 +290,7 @@ public class CookingService {
 		
 		// 클래스 조회
 		ClassReadResponseDto classDto = classMapper.toReadResponseDto(classs);
+		classDto.setImage(publicPath + "/" + classDto.getImage());
 		
 		// 클래스 대상 조회
 		try {
@@ -325,6 +326,7 @@ public class CookingService {
 			List<ClassTutorReadResponseDto> tutorDtoList = new ArrayList<>();
 			for (ClassTutor tutor : tutorList) {
 				ClassTutorReadResponseDto tutorDto = tutorMapper.toReadResponseDto(tutor);
+				tutorDto.setImage(publicPath + "/" + tutorDto.getImage());
 				tutorDtoList.add(tutorDto);
 			}
 			classDto.setTutorList(tutorDtoList);

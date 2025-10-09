@@ -38,9 +38,8 @@ async function fetchClass() {
 		if (result.code === 'CLASS_READ_SUCCESS') {
 			
 			document.getElementById('applyClassId').value = id;
-			// 추후에 실제 이미지로 수정
 			document.querySelector('.apply_header h2').innerText = result.data.title;
-			document.querySelector('.thumbnail img').src = '/images/common/test.png';
+			document.querySelector('.thumbnail img').src = result.data.image;
 			document.querySelector('.intro p').innerText = result.data.introduce;
 			document.querySelector('.headcount p').innerText = `${result.data.headcount}명 선정`;
 			document.querySelector('.need p').innerText = result.data.need;
@@ -169,8 +168,7 @@ function renderTutorList(list) {
 		photoDiv.className = 'photo';
 
 		const img = document.createElement('img');
-		// img.src = tutor.image || '/images/common/test.png';
-		img.src = '/images/common/test.png';
+		img.src = tutor.image;
 		photoDiv.appendChild(img);
 
 		const profileDiv = document.createElement('div');

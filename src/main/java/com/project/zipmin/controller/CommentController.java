@@ -22,9 +22,11 @@ import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.CommentSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
+import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.CommentCreateRequestDto;
 import com.project.zipmin.dto.CommentCreateResponseDto;
 import com.project.zipmin.dto.UserCommentReadesponseDto;
+import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.CommentUpdateRequestDto;
 import com.project.zipmin.dto.CommentUpdateResponseDto;
@@ -944,42 +946,12 @@ public class CommentController {
 			@Parameter(description = "페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지 크기") @RequestParam int size) {
 		
-		// 입력값 검증
-		if (id == null) {
-			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
-		}
-		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
 		}
-		
-		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (userService.readUserByUsername(username).getId() == id) {
-				throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
-			}
-		}
-		else {
-			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				if (userService.readUserById(id).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-					throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
-				}
-				if (userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
-					if (userService.readUserByUsername(username).getId() != id) {
-						throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
-					}
-				}
-			}
-			else {
-				if (userService.readUserByUsername(username).getId() != id) {
-					throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
-				}
-			}
-		}
-		
+
 		Pageable pageable = PageRequest.of(page, size);
 		Page<UserCommentReadesponseDto> commentPage = commentService.readCommentPageByUserId(id, pageable);
 		

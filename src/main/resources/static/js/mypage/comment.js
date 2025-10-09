@@ -51,8 +51,10 @@ async function fetchCommentList() {
 		
 		const response = await instance.get(`/users/${payload.id}/comments?${params}`);
 		
+		console.log(response);
+		
 		if (response.data.code === 'COMMENT_READ_LIST_SUCCESS') {
-			renderCommentList(response.data.data.content);
+			renderUserCommentList(response.data.data.content);
 			page = response.data.data.number + 1;
 			totalPages = response.data.data.totalPages;
 			document.querySelector('.mycomment_count span').innerText = response.data.data.totalElements + '개';
@@ -75,10 +77,12 @@ async function fetchCommentList() {
 
 /**
  * 댓글 목록을 화면에 렌더링하는 함수
- * 
- * @param {Object} comments - 댓글 목록 객체
  */
-function renderCommentList(commentList) {
+function renderUserCommentList(commentList) {
+	
+	const container = document.querySelector('.mycomment_list');
+	// TODO : 더보기랑 충돌
+	// container.innerHTML = '';
 	
 	const tablename = {
 		vote: '투표',
@@ -88,7 +92,33 @@ function renderCommentList(commentList) {
 		guide: '키친가이드'
 	};
 	
+	// 사용자 댓글 목록이 존재하지 않는 경우
+	if (commentList == null || commentList.length === 0) {
+		alert('댓글 없음 ㅋㅋ');
+		container.style.display = 'none';
+		document.querySelector('list_empty')?.remove();
+
+		const wrapper = document.createElement('div');
+		wrapper.className = 'list_empty';
+
+		const span = document.createElement('span');
+		span.textContent = '내용이 없습니다';
+		wrapper.appendChild(span);
+		container.insertAdjacentElement('afterend', wrapper);
+
+		return;
+	}
+	
+	// 사용자 댓글 목록이 존재하는 경우
 	commentList.forEach(comment => {
+		container.style.disaply = 'block';
+		// TODO : 더보기랑 충돌 임시 방편
+		// document.querySelector('list_empty').remove();
+		if(document.querySelector('list_empty')) {
+			document.querySelector('list_empty').remove();
+			container.innerHTML = '';
+		}
+		
 		const li = document.createElement('li');
 		li.className = 'mycomment_item';
 		li.dataset.id = comment.id;
@@ -181,7 +211,7 @@ function renderCommentList(commentList) {
 		li.appendChild(titleDiv);
 		li.appendChild(commentDiv);
 		
-		document.querySelector('.mycomment_list').appendChild(li);
+		container.appendChild(li);
 	});
 }
 
@@ -229,6 +259,8 @@ document.addEventListener('DOMContentLoaded', function() {
 				if (commentEl) commentEl.textContent = response.data.data.content;
 				
 				bootstrap.Modal.getInstance(document.getElementById('editCommentModal')).hide();
+				
+				// TODO : fetch!!
 			}
 		}
 		catch (error) {
@@ -328,5 +360,3 @@ async function deleteComment(id) {
 	}
 	
 }
-
-

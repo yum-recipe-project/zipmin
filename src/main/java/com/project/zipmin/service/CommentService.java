@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.LikeErrorCode;
+import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.CommentCreateRequestDto;
 import com.project.zipmin.dto.CommentCreateResponseDto;
 import com.project.zipmin.dto.CommentDeleteRequestDto;
@@ -258,6 +259,28 @@ public class CommentService {
 		// 입력값 검증
 		if (userId == null || pageable == null) {
 			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
+		}
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto user = userService.readUserByUsername(username);
+		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (user.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserById(userId).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+					throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+				}
+				if (userService.readUserById(userId).getRole().equals(Role.ROLE_ADMIN.name())) {
+					if (user.getId() != userId) {
+						throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+					}
+				}
+			}
+			// 일반 회원
+			else {
+				if (user.getId() != userId) {
+					throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+				}
+			}
 		}
 		
 		// 댓글 목록 조회

@@ -15,21 +15,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /**
- * 더보기버튼 클릭 시 해당하는 댓글을 가져오는 함수
+ * 전역 변수
  */
 let totalPages = 0;
+let totalElements = 0;
 let page = 0;
-let size = 10;
+const size = 15;
 let commentList = [];
 
+
+
+
+
+/**
+ * 초기 실행하는 함수
+ */
 document.addEventListener('DOMContentLoaded', function() {
 	
-	fetchCommentList();
-	
+	// 더보기 버튼
 	document.querySelector('.btn_more').addEventListener('click', function() {
-		fetchCommentList();
+		page = page + 1;
+		fetchUserCommentList();
 	});
 	
+	fetchUserCommentList();
 });
 
 
@@ -37,9 +46,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /**
- * 서버에서 댓글 목록 데이터를 가져오는 함수
+ * 서버에서 사용자 댓글 목록 데이터를 가져오는 함수
  */
-async function fetchCommentList() {
+async function fetchUserCommentList() {
+	alert(page);
 	
 	try {
 		const payload = parseJwt(localStorage.getItem('accessToken'));
@@ -54,15 +64,20 @@ async function fetchCommentList() {
 		console.log(response);
 		
 		if (response.data.code === 'COMMENT_READ_LIST_SUCCESS') {
-			renderUserCommentList(response.data.data.content);
-			page = response.data.data.number + 1;
+			// 전역변수 설정
 			totalPages = response.data.data.totalPages;
-			document.querySelector('.mycomment_count span').innerText = response.data.data.totalElements + '개';
-			document.querySelector('.btn_more').style.display = page >= totalPages ? 'none' : 'block';
+			totalElements = response.data.data.totalElements;
+			commentList = [...commentList, ...response.data.data.content];
+			
+			// 렌더링
+			renderUserCommentList(commentList);
+			document.querySelector('.mycomment_count span').innerText = totalElements + '개';
+			document.querySelector('.btn_more').style.display = page >= totalPages - 1 ? 'none' : 'block';
 		}
 		
 	}
 	catch (error) {
+		const code = error?.response?.data?.code;
 		
 		// TODO : 에러코드 추가
 		console.log(error);
@@ -81,8 +96,7 @@ async function fetchCommentList() {
 function renderUserCommentList(commentList) {
 	
 	const container = document.querySelector('.mycomment_list');
-	// TODO : 더보기랑 충돌
-	// container.innerHTML = '';
+	container.innerHTML = '';
 	
 	const tablename = {
 		vote: '투표',
@@ -94,7 +108,6 @@ function renderUserCommentList(commentList) {
 	
 	// 사용자 댓글 목록이 존재하지 않는 경우
 	if (commentList == null || commentList.length === 0) {
-		alert('댓글 없음 ㅋㅋ');
 		container.style.display = 'none';
 		document.querySelector('list_empty')?.remove();
 
@@ -102,7 +115,7 @@ function renderUserCommentList(commentList) {
 		wrapper.className = 'list_empty';
 
 		const span = document.createElement('span');
-		span.textContent = '내용이 없습니다';
+		span.textContent = '작성한 댓글이 없습니다';
 		wrapper.appendChild(span);
 		container.insertAdjacentElement('afterend', wrapper);
 
@@ -112,12 +125,7 @@ function renderUserCommentList(commentList) {
 	// 사용자 댓글 목록이 존재하는 경우
 	commentList.forEach(comment => {
 		container.style.disaply = 'block';
-		// TODO : 더보기랑 충돌 임시 방편
-		// document.querySelector('list_empty').remove();
-		if(document.querySelector('list_empty')) {
-			document.querySelector('list_empty').remove();
-			container.innerHTML = '';
-		}
+		document.querySelector('list_empty')?.remove();
 		
 		const li = document.createElement('li');
 		li.className = 'mycomment_item';
@@ -163,6 +171,7 @@ function renderUserCommentList(commentList) {
 		
 		const writerDiv = document.createElement('div');
 		writerDiv.className = 'comment_writer';
+		// TODO : 프로필로 이동
 		
 		const img = document.createElement('img');
 		img.src = comment.avatar;
@@ -214,7 +223,6 @@ function renderUserCommentList(commentList) {
 		container.appendChild(li);
 	});
 }
-
 
 
 
@@ -304,20 +312,13 @@ async function deleteComment(id) {
 
 	if (confirm('작성하신 댓글을 삭제하시겠습니까?')) {
 		try {
-			const token = localStorage.getItem('accessToken');
-			
-			const headers = {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${token}`
-			}
-			
 			const data = {
 				id: id
 			};
 			
 			const response = await instance.delete(`/comments/${id}`, {
 				data: data,
-				headers: headers
+				headers: getAuthHeaders()
 			});
 			
 			if (response.data.code === 'COMMENT_DELETE_SUCCESS') {

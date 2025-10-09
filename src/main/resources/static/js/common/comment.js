@@ -241,6 +241,7 @@ async function fetchCommentList() {
 			// 더보기 버튼 제어
 			document.querySelector('.btn_more').style.display = page >= totalPages - 1 ? 'none' : 'block';
 			
+			// TODO : render 함수로 옮기기
 			// 검색 결과 없음 표시
 			if (result.data.totalPages === 0) {
 				document.querySelector('.comment_list').style.display = 'none';

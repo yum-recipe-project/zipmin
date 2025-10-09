@@ -46,7 +46,7 @@ public class Recipe {
 	private String portion;
 	private String tip;
 	
-	// private String userId;
+	// private int userId;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")
 	private User user;

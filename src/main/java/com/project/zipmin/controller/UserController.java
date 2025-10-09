@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +26,7 @@ import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
-import com.project.zipmin.dto.CommentReadMyResponseDto;
+import com.project.zipmin.dto.UserCommentReadesponseDto;
 import com.project.zipmin.dto.GuideReadMySavedResponseDto;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
@@ -36,9 +37,11 @@ import com.project.zipmin.dto.ReviewReadMyResponseDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
 import com.project.zipmin.dto.UserPasswordCheckRequestDto;
+import com.project.zipmin.dto.UserPasswordUpdateRequestDto;
 import com.project.zipmin.dto.UserProfileReadResponseDto;
-import com.project.zipmin.dto.UserReadRequestDto;
+import com.project.zipmin.dto.UserReadPasswordRequestDto;
 import com.project.zipmin.dto.UserReadResponseDto;
+import com.project.zipmin.dto.UserReadUsernameRequestDto;
 import com.project.zipmin.dto.UserUpdateRequestDto;
 import com.project.zipmin.dto.UserUpdateResponseDto;
 import com.project.zipmin.entity.Role;
@@ -76,7 +79,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -93,9 +95,8 @@ public class UserController {
 	
 	
 	
-
 	
-	// 사용자 목록 조회 (관리자)
+	
 	@Operation(
 	    summary = "사용자 목록 조회"
 	)
@@ -119,14 +120,12 @@ public class UserController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
+	// 사용자 목록 조회
 	@GetMapping("/users")
 	public ResponseEntity<?> readUserPage(
 			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
-			@Parameter(description = "조회할 페이지 번호", required = true) @RequestParam int page,
-			@Parameter(description = "페이지의 항목 수", required = true) @RequestParam int size) {
-		
-		Pageable pageable = PageRequest.of(page, size);
-		Page<UserReadResponseDto> userPage = userService.readUserPage(category, pageable);
+			@Parameter(description = "페이지 번호") @RequestParam int page,
+			@Parameter(description = "페이지 크기") @RequestParam int size) {
 		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -136,13 +135,17 @@ public class UserController {
 			}
 		}
 		
+		Pageable pageable = PageRequest.of(page, size);
+		Page<UserReadResponseDto> userPage = userService.readUserPage(category, pageable);
+		
 		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, userPage));
 	}
+
 	
 	
 	
-	// 사용자 조회
+	
 	@Operation(
 	    summary = "사용자 조회"
 	)
@@ -172,8 +175,10 @@ public class UserController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
+	// 사용자 조회
 	@GetMapping("/users/{id}")
-	public ResponseEntity<?> readUser(@Parameter(description = "사용자의 일련번호", required = true, example = "1") @PathVariable int id) {
+	public ResponseEntity<?> readUser(@Parameter(description = "사용자의 일련번호") @PathVariable int id) {
+		
 		UserReadResponseDto userDto = userService.readUserById(id);
 		
 		return ResponseEntity.status(UserSuccessCode.USER_READ_SUCCESS.getStatus())
@@ -183,12 +188,42 @@ public class UserController {
 	
 	
 	
-	// USER_READ_SUCCESS
-	// LIKE_COUNT_FAIL
-	// USER_INVALID_INPUT
-	// LIKE_INVALID_INPUT
-	// USER_NOT_FOUND
 	
+	@Operation(
+	    summary = "사용자 프로필 조회"
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "사용자 조회 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserReadSuccessResponse.class))),
+		
+		// LIKE_COUNT_FAIL
+		
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		
+		// LIKE_INVALID_INPUT
+		
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
 	// 사용자 프로필 조회
 	@GetMapping("/users/{id}/profile")
 	public ResponseEntity<?> readUserProfile(@Parameter(description = "사용자의 일련번호", required = true, example = "1") @PathVariable int id) {
@@ -203,7 +238,315 @@ public class UserController {
 	
 	
 	
-	// 사용자 생성
+	@Operation(
+	    summary = "사용자 아이디 검증"
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "사용 가능한 아이디",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserUsernameNotDuplicatedResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "409",
+				description = "아이디 중복 작성 시도",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserUsernameDuplicatedResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
+	// 사용자 아이디 검증
+	@GetMapping("/users/check-username")
+	public ResponseEntity<?> checkUsername(
+			@Parameter(description = "사용자 아이디") @RequestParam String username) {
+
+        // 아이디 중복확인
+        if (userService.existsUsername(username)) {
+        	throw new ApiException(UserErrorCode.USER_USERNAME_DUPLICATED);
+        }
+
+        return ResponseEntity.status(UserSuccessCode.USER_USERNAME_NOT_DUPLICATED.getStatus())
+        		.body(ApiResponse.success(UserSuccessCode.USER_USERNAME_NOT_DUPLICATED, null));
+	}
+	
+	
+	
+	
+	
+	@Operation(
+	    summary = "사용자 이메일 검증"
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "사용자 조회 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserReadSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "409",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
+	// 사용자 이메일 검증
+	@PostMapping("/users/check-email")
+	public ResponseEntity<?> checkEmail(
+			@Parameter(description = "비밀번호 조회 요청 정보") @RequestBody UserReadPasswordRequestDto userRequestDto) {
+		
+		UserReadResponseDto userResponseDto = userService.readUserByUsernameAndEmail(userRequestDto);		
+		
+		return ResponseEntity.status(UserSuccessCode.USER_READ_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_READ_SUCCESS, userResponseDto));
+	}
+	
+	
+	
+	
+	
+	@Operation(
+	    summary = "사용자 비밀번호 검증"
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "비밀번호 일치",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserCorrectPassworResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인 되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserUnauthorizedAccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "권한 없는 사용자의 접근",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "비밀번호 불일치",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserIncorrectPassworResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
+	// 사용자 비밀번호 검증
+	@PostMapping("/users/{id}/check-password")
+	public ResponseEntity<?> verifyPassword(
+			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
+			@Parameter(description = "비밀번호 검증 요청 정보") @RequestBody UserPasswordCheckRequestDto userDto) {
+
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}		
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserByUsername(username).getId() != id) {
+					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+				}
+			}
+		}
+		userDto.setId(userService.readUserByUsername(username).getId());
+		
+		// 비밀번호 확인
+		userService.checkPassword(userDto);
+		
+		return ResponseEntity.status(UserSuccessCode.USER_CORRECT_PASSWORD.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_CORRECT_PASSWORD, null));
+	}
+	
+	
+	
+	
+	
+	@Operation(
+	    summary = "사용자 비밀번호 검증"
+	)
+	@ApiResponses(value = {
+		// USER_VALID_TOKEN
+		// USER_TOKEN_MISSING
+		// USER_INVALID_TOKEN
+		// USER_TOKEN_EXPIRED
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
+	// 비밀번호 토큰 검증
+	@GetMapping("/users/check-token")
+	public ResponseEntity<?> checkToken(@RequestHeader("Authorization") String authorization) {
+		
+		// 토큰 추출
+		if (authorization == null || !authorization.startsWith("Bearer ")) {
+			throw new ApiException(UserErrorCode.USER_TOKEN_MISSING);
+		}
+        String token = authorization.substring(7);
+        
+        userService.checkToken(token);
+		
+        return ResponseEntity.status(UserSuccessCode.USER_VALID_TOKEN.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_VALID_TOKEN, null));
+	}
+	
+	
+	
+	
+	
+	@Operation(
+	    summary = "사용자 아이디 조회"
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "비밀번호 일치",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserReadUsernameSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
+	// 사용자 아이디 조회
+	@PostMapping("/users/find-username")
+	public ResponseEntity<?> findUsername(
+			@Parameter(description = "아이디 조회 요청 정보") @RequestBody UserReadUsernameRequestDto userRequestDto) {
+		
+		// 아이디 조회
+		String username = userService.findUsername(userRequestDto).getUsername();
+		
+		return ResponseEntity.status(UserSuccessCode.USER_READ_USERNAME_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_READ_USERNAME_SUCCESS, Map.of("username", username)));
+	}
+	
+
+	
+	
+	
+	
+	@Operation(
+	    summary = "사용자 비밀번호 조회"
+	)
+	@ApiResponses(value = {
+			
+		// 200 USER_READ_PASSWORD_SUCCESS
+			
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		
+		// 400 USER_SEND_EMAIL_FAIL
+		
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
+	// 사용자 비밀번호 조회
+	@PostMapping("/users/find-password")
+	public ResponseEntity<?> findPassword(
+			@Parameter(description = "비밀번호 조회 요청 정보") @RequestBody UserReadPasswordRequestDto userDto) {
+		
+		// 비밀번호 조회
+		userService.findPassword(userDto);
+		
+		return ResponseEntity.status(UserSuccessCode.USER_READ_PASSWORD_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_READ_PASSWORD_SUCCESS, null));
+	}
+	
+	
+	
+	
+	
 	@Operation(
 	    summary = "사용자 작성"
 	)
@@ -257,14 +600,13 @@ public class UserController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
+	// 사용자 작성
 	@PostMapping("/users")
 	public ResponseEntity<?> createUser(
-			@Parameter(description = "사용자 생성 요청 정보", required = true) @RequestBody UserCreateRequestDto userRequestDto) {
+			@Parameter(description = "사용자 작성 요청 정보") @RequestBody UserCreateRequestDto userRequestDto) {
 		
-		// 인증 여부 확인 (비로그인)
+		// 로그인 여부 확인 후 권한 설정
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		
-		// 권한 설정
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    userRequestDto.setRole(Role.ROLE_USER);
 		}
@@ -282,180 +624,9 @@ public class UserController {
 	}
 	
 	
-	
-	// 사용자 아이디 중복 확인
-	@Operation(
-	    summary = "사용자 아이디 중복 확인"
-	)
-	@ApiResponses(value = {
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "200",
-				description = "사용 가능한 아이디",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = UserUsernameNotDuplicatedResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "400",
-				description = "입력값이 유효하지 않음",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = UserInvalidInputResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "409",
-				description = "아이디 중복 작성 시도",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = UserUsernameDuplicatedResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "500",
-				description = "서버 내부 오류",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = InternalServerErrorResponse.class)))
-	})
-	@GetMapping("/users/check-username")
-	public ResponseEntity<?> checkUsername(
-			@Parameter(description = "사용자 아이디", required = true, example = "user1") @RequestParam String username) {
 
-        // 아이디 중복확인
-        if (userService.existsUsername(username)) {
-        	throw new ApiException(UserErrorCode.USER_USERNAME_DUPLICATED);
-        }
-
-        return ResponseEntity.status(UserSuccessCode.USER_USERNAME_NOT_DUPLICATED.getStatus())
-        		.body(ApiResponse.success(UserSuccessCode.USER_USERNAME_NOT_DUPLICATED, null));
-	}
 	
 	
-	
-	// 비밀번호 확인
-	@Operation(
-	    summary = "사용자 비밀번호 확인"
-	)
-	@ApiResponses(value = {
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "200",
-				description = "비밀번호 일치",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = UserCorrectPassworResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "400",
-				description = "입력값이 유효하지 않음",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = UserInvalidInputResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "401",
-				description = "로그인 되지 않은 사용자",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = UserUnauthorizedAccessResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "401",
-				description = "권한 없는 사용자의 접근",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = UserForbiddenResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "401",
-				description = "비밀번호 불일치",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = UserIncorrectPassworResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "404",
-				description = "해당 사용자를 찾을 수 없음",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = UserNotFoundResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "500",
-				description = "서버 내부 오류",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = InternalServerErrorResponse.class)))
-	})
-	@PostMapping("/users/{id}/check-password")
-	public ResponseEntity<?> verifyPassword(
-			@Parameter(description = "사용자의 일련번호", required = true, example = "1") @PathVariable Integer id,
-			@Parameter(description = "비밀번호 확인 요청 정보", required = true) @RequestBody UserPasswordCheckRequestDto userDto) {
-
-		// 입력값 검증
-		if (id == null) {
-			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-		}		
-		
-		// 인증 여부 확인 (비로그인)
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
-		}
-		
-		// 로그인 정보
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		userDto.setId(userService.readUserByUsername(username).getId());
-		
-		// 본인 확인
-		if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN)) {
-			if (id != userService.readUserByUsername(username).getId()) {
-				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
-			}
-		}
-		
-		// 비밀번호 확인
-		userService.checkPassword(userDto);
-		
-		return ResponseEntity.status(UserSuccessCode.USER_CORRECT_PASSWORD.getStatus())
-				.body(ApiResponse.success(UserSuccessCode.USER_CORRECT_PASSWORD, null));
-	}
-	
-	
-	
-	// 아이디 찾기
-	@Operation(
-	    summary = "사용자 아이디 찾기"
-	)
-	@ApiResponses(value = {
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "200",
-				description = "비밀번호 일치",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = UserReadUsernameSuccessResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "400",
-				description = "입력값이 유효하지 않음",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = UserInvalidInputResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "404",
-				description = "해당 사용자를 찾을 수 없음",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = UserNotFoundResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "500",
-				description = "서버 내부 오류",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = InternalServerErrorResponse.class)))
-	})
-	@PostMapping("/users/find-username")
-	public ResponseEntity<?> findUsername(
-			@Parameter(description = "사용자 아이디 조회 요청 정보", required = true) @RequestBody @Valid UserReadRequestDto userRequestDto) {
-		
-		// 아이디 조회
-		String username = userService.readUserByNameAndTel(userRequestDto).getUsername();
-		
-		return ResponseEntity.status(UserSuccessCode.USER_READ_USERNAME_SUCCESS.getStatus())
-				.body(ApiResponse.success(UserSuccessCode.USER_READ_USERNAME_SUCCESS, Map.of("username", username)));
-	}
-	
-	
-	
-	// 사용자 수정
 	@Operation(
 	    summary = "사용자 수정"
 	)
@@ -515,6 +686,7 @@ public class UserController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
+	// 사용자 수정
 	@PatchMapping("/users/{id}")
 	public ResponseEntity<?> updateUser(
 			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
@@ -525,19 +697,15 @@ public class UserController {
 			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
 		}
 		
-		// 인증 여부 확인 (비로그인)
+		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 로그인 정보
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		userRequestDto.setId(id);
-		
 		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			// 관리자
 			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (userService.readUserById(id).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
@@ -548,13 +716,13 @@ public class UserController {
 					}
 				}
 			}
-			// 일반 회원
 			else {
 				if (userService.readUserByUsername(username).getId() != id) {
 					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
 				}
 			}
 		}
+		userRequestDto.setId(id);
 		
 		UserUpdateResponseDto userResponseDto = userService.updateUser(userRequestDto);
 
@@ -564,7 +732,49 @@ public class UserController {
 	
 	
 	
-	// 사용자 삭제
+	
+	
+	@Operation(
+			summary = "사용자 비밀번호 수정"
+			)
+	@ApiResponses(value = {
+			// TODO : 순서 적절히 변경 필요
+			// USER_UPDATE_PASSWORD_SUCCESS
+			// USER_TOKEN_MISSING
+			// USER_INVALID_TOKEN
+			// USER_TOKEN_EXPIRED
+			// USER_UPDATE_FAIL
+			// USER_TOKEN_UPDATE_FAIL
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(
+					responseCode = "500",
+					description = "서버 내부 오류",
+					content = @Content(
+							mediaType = "application/json",
+							schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
+	// 사용자 비밀번호 수정
+	@PatchMapping("/users/password")
+	public ResponseEntity<?> changePassword(
+			@RequestHeader("Authorization") String authorization,
+			@Parameter(description = "사용자 비밀번호 수정 요청 정보") @RequestBody UserPasswordUpdateRequestDto userRequestDto) {
+		
+		// 토큰 추출
+		if (authorization == null || !authorization.startsWith("Bearer ")) {
+			throw new ApiException(UserErrorCode.USER_TOKEN_MISSING);
+		}
+		String token = authorization.substring(7);
+		userRequestDto.setToken(token);
+		
+		userService.updatePassword(userRequestDto);
+		
+		return ResponseEntity.status(UserSuccessCode.USER_UPDATE_PASSWORD_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_UPDATE_PASSWORD_SUCCESS, null));
+	}
+	
+	
+	
+	
+	
 	@Operation(
 	    summary = "사용자 삭제"
 	)
@@ -612,32 +822,30 @@ public class UserController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
+	// 사용자 삭제
 	@DeleteMapping("/users/{id}")
 	public ResponseEntity<?> deleteMember(
-			@Parameter(description = "사용자의 일련번호", required = true, example = "1") @PathVariable Integer id) {
+			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id) {
 		
 		// 입력값 검증
 		if (id == null) {
 			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
 		}
 		
-		// 인증 여부 확인 (비로그인)
+		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 로그인 정보
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		
 		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 			if (userService.readUserByUsername(username).getId() == id) {
 				throw new ApiException(UserErrorCode.USER_SUPER_ADMIN_FORBIDDEN);
 			}
 		}
 		else {
-			// 관리자
 			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (userService.readUserById(id).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
@@ -648,7 +856,6 @@ public class UserController {
 					}
 				}
 			}
-			// 일반 회원
 			else {
 				if (userService.readUserByUsername(username).getId() != id) {
 					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
@@ -664,40 +871,25 @@ public class UserController {
 
 	
 	
-	// 작성한 댓글
-	@GetMapping("/users/{id}/comments")
-	public ResponseEntity<?> readUserCommentList(
-			@Parameter(description = "사용자의 일련번호", required = true, example = "1") @PathVariable Integer id,
-			@Parameter(description = "조회할 페이지 번호", required = true, example = "1") @RequestParam int page,
-			@Parameter(description = "페이지의 항목 수", required = true, example = "10") @RequestParam int size) {
-		
-		// 입력값 검증
-		if (id == null) {
-			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-		}
-		
-		// 인증 여부 확인 (비로그인)
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
-		}
-		
-		// 로그인 정보
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		
-		// 본인 확인
-		if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN)) {
-			if (id != userService.readUserByUsername(username).getId()) {
-				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
-			}
-		}
-		
-		Pageable pageable = PageRequest.of(page, size);
-		Page<CommentReadMyResponseDto> commentPage = commentService.readCommentPageByUserId(id, pageable);
-		
-		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, commentPage));
-	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// TODO : 해당 도메인으로 옮기기
+	
+	
+	
+	
+
 	
 	
 	
@@ -808,10 +1000,6 @@ public class UserController {
 	        @PathVariable Integer id,
 	        @RequestParam int page,
 	        @RequestParam int size) {
-
-		System.err.println("컨트롤러 진입");
-		System.err.println(id);
-		
 	
 	    // 입력값 검증
 	    if (id == null) {
@@ -827,8 +1015,6 @@ public class UserController {
 	    // 로그인 정보
 	    String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-	    System.err.println("아이디:"+id);
-	    System.err.println("이름:"+username);
 	    // 본인 확인
 	    if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
 	        if (id != userService.readUserByUsername(username).getId()) {
@@ -841,7 +1027,6 @@ public class UserController {
 	    // 레시피 저장 페이지 조회
 	    Page<RecipeReadMySavedResponseDto> savedRecipePage = recipeService.readSavedRecipePageByUserId(id, pageable);
 	    
-	    System.err.println("저장한 레시피 목록 조회 완료");
 	    return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
 	            .body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, savedRecipePage));
 	}
@@ -849,10 +1034,19 @@ public class UserController {
 	
 	
 	
+	// USER_READ_LIST_SUCCESS
+	// USER_READ_LIST_FAIL
+	// LIKE_READ_LIST_FAIL
+	// LIKE_EXIST_FAIL
+	// USER_INVALID_INPUT
+	// LIKE_INVALID_INPUT
+	// USER_UNAUTHORIZED_ACCESS
+	// USER_FORBIDDEN
+	// USER_NOT_FOUND
 	
-	// 좋아요한 사용자 목록 조회
+	// 사용자가 좋아요한 사용자 목록 조회
 	@GetMapping("/users/{id}/like-users")
-	public ResponseEntity<?> readUserLikedUserList(
+	public ResponseEntity<?> readUserLikeUserList(
 			@PathVariable Integer id) {
 		
 	    // 입력값 검증
@@ -881,6 +1075,52 @@ public class UserController {
 		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, userList));
 	}
+	
+	
+	
+	
+	// USER_READ_LIST_SUCCESS
+	// USER_READ_LIST_FAIL
+	// LIKE_READ_LIST_FAIL
+	// LIKE_EXIST_FAIL
+	// USER_INVALID_INPUT
+	// LIKE_INVALID_INPUT
+	// USER_UNAUTHORIZED_ACCESS
+	// USER_FORBIDDEN
+	// USER_NOT_FOUND
+	
+	// 사용자를 좋아하는 사용자 목록 조회
+	@GetMapping("/users/{id}/liked-users")
+	public ResponseEntity<?> readUserLikedUserList(
+			@PathVariable Integer id) {
+		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
+		}
+	    
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserByUsername(username).getId() != id) {
+					throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+				}
+			}
+		}
+		
+		List<UserProfileReadResponseDto> userList = userService.readLikedUserList(id);
+		
+		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, userList));
+	}
+	
 	
 	
 

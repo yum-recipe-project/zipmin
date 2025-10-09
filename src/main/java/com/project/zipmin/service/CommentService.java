@@ -15,9 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.CommentErrorCode;
+import com.project.zipmin.api.LikeErrorCode;
+import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.CommentCreateRequestDto;
 import com.project.zipmin.dto.CommentCreateResponseDto;
-import com.project.zipmin.dto.CommentReadMyResponseDto;
+import com.project.zipmin.dto.CommentDeleteRequestDto;
+import com.project.zipmin.dto.UserCommentReadesponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.CommentUpdateRequestDto;
 import com.project.zipmin.dto.CommentUpdateResponseDto;
@@ -44,6 +47,8 @@ public class CommentService {
 	
 	private final UserService userService;
 	private final ChompService chompService;
+	private final RecipeService recipeService;
+	private final KitchenService kitchenService;
 	private final LikeService likeService;
 	private final ReportService reportService;
 
@@ -96,9 +101,13 @@ public class CommentService {
 		for (Comment comment : commentPage) {
 			CommentReadResponseDto commentDto = commentMapper.toReadResponseDto(comment);
 			
-			// 닉네임 좋아요수 신고수
+			// 닉네임
 			commentDto.setNickname(comment.getUser().getNickname());
+			// 프로필 사진
+			commentDto.setAvatar(comment.getUser().getAvatar());
+			// 좋아요수
 			commentDto.setLikecount(likeService.countLike("comments", comment.getId()));
+			// 신고수
 			commentDto.setReportcount(reportService.countReport("comments", comment.getId()));
 			
 			// 좋아요 여부
@@ -116,9 +125,13 @@ public class CommentService {
 			for (Comment subcomment : subcommentList) {
 				CommentReadResponseDto subcommentDto = commentMapper.toReadResponseDto(subcomment);
 				
-				// 닉네임 좋아요수 신고수
+				// 닉네임
 				subcommentDto.setNickname(subcomment.getUser().getNickname());
+				// 프로필 사진
+				subcommentDto.setAvatar(subcomment.getUser().getAvatar());
+				// 좋아요수
 				subcommentDto.setLikecount(likeService.countLike("comments", subcomment.getId()));
+				// 신고수
 				subcommentDto.setReportcount(reportService.countReport("comments", subcomment.getId()));
 				
 				// 좋아요 여부
@@ -219,10 +232,13 @@ public class CommentService {
 		for (Comment comment : commentPage) {
 			CommentReadResponseDto commentDto = commentMapper.toReadResponseDto(comment);
 			
-			// 닉네임 좋아요수 신고수
+			// 사용자명
 			commentDto.setUsername(comment.getUser().getUsername());
+			// 닉네임
 			commentDto.setNickname(comment.getUser().getNickname());
+			// 좋아요수
 			commentDto.setLikecount(likeService.countLike("comments", comment.getId()));
+			// 신고수
 			commentDto.setReportcount(reportService.countReport("comments", comment.getId()));
 			
 			commentDtoList.add(commentDto);
@@ -236,10 +252,33 @@ public class CommentService {
 	
 	
 	// 사용자가 작성한 댓글 목록을 조회하는 함수
-	public Page<CommentReadMyResponseDto> readCommentPageByUserId(Integer userId, Pageable pageable) {
+	public Page<UserCommentReadesponseDto> readCommentPageByUserId(Integer userId, Pageable pageable) {
 		
+		// 입력값 검증
 		if (userId == null || pageable == null) {
 			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
+		}
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto user = userService.readUserByUsername(username);
+		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (user.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserById(userId).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+					throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+				}
+				if (userService.readUserById(userId).getRole().equals(Role.ROLE_ADMIN.name())) {
+					if (user.getId() != userId) {
+						throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+					}
+				}
+			}
+			// 일반 회원
+			else {
+				if (user.getId() != userId) {
+					throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
+				}
+			}
 		}
 		
 		// 댓글 목록 조회
@@ -251,21 +290,39 @@ public class CommentService {
 			throw new ApiException(CommentErrorCode.COMMENT_READ_LIST_FAIL);
 		}
 		
-		List<CommentReadMyResponseDto> commentDtoList = new ArrayList<CommentReadMyResponseDto>();
+		// 댓글 목록 응답 구성
+		List<UserCommentReadesponseDto> commentDtoList = new ArrayList<UserCommentReadesponseDto>();
 		for (Comment comment : commentPage) {
-			CommentReadMyResponseDto commentDto = commentMapper.toReadMyResponseDto(comment);
+			UserCommentReadesponseDto commentDto = commentMapper.toReadMyResponseDto(comment);
+			
+			// 닉네임
 			commentDto.setNickname(comment.getUser().getNickname());
+			// 프로필 사진
+			commentDto.setAvatar(comment.getUser().getAvatar());
+			
+			// 제목
 			String title = null;
-			if (comment.getTablename().equals("vote")) {
-				title = chompService.readVoteById(comment.getRecodenum()).getTitle();
-			}
-			else if (comment.getTablename().equals("megazine")) {
-				title = chompService.readMegazineById(comment.getRecodenum()).getTitle();
-			}
-			else if (comment.getTablename().equals("event")) {
-				title = chompService.readEventById(comment.getRecodenum()).getTitle();
+			switch (comment.getTablename()) {
+				case "vote" :
+					title = chompService.readVoteById(comment.getRecodenum()).getTitle();
+					break;
+				case "megazine" :
+					title = chompService.readMegazineById(comment.getRecodenum()).getTitle();
+					break;
+				case "event" :
+					title = chompService.readEventById(comment.getRecodenum()).getTitle();
+					break;
+				case "recipe" :
+					title = recipeService.readRecipdById(comment.getRecodenum()).getTitle();
+					break;
+				case "guide" :
+					title = kitchenService.readGuideById(comment.getRecodenum()).getTitle();
+					break;
+				default :
+					break;
 			}
 			commentDto.setTitle(title);
+			
 			commentDtoList.add(commentDto);
 		}
 		

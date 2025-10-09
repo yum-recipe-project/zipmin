@@ -20,9 +20,7 @@ import org.springframework.security.config.annotation.web.configurers.oauth2.cli
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -31,11 +29,10 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.AuthErrorCode;
-import com.project.zipmin.api.ErrorCode;
+import com.project.zipmin.filter.CustomAdminLoginFilter;
 import com.project.zipmin.filter.CustomLoginFilter;
 import com.project.zipmin.filter.CustomLogoutFilter;
 import com.project.zipmin.filter.JwtFilter;
-import com.project.zipmin.handler.AuthFailureHandler;
 import com.project.zipmin.handler.CustomOAuthSuccessHandler;
 import com.project.zipmin.repository.UserRepository;
 import com.project.zipmin.service.CustomOAuth2UserService;
@@ -127,9 +124,17 @@ public class SecurityConfig {
 			)
 		);
 		
-		// 기본 로그인 필터인 UsernamePasswordAuthenticationFilter 자리에 커스텀 로그인 필터를 대체하거나 삽입
-		http.addFilterAt(new CustomLoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, objectMapper, reissueService), UsernamePasswordAuthenticationFilter.class);
-		
+		// 기본 로그인용 필터
+		CustomLoginFilter userLoginFilter = new CustomLoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, objectMapper, reissueService);
+		userLoginFilter.setFilterProcessesUrl("/login");
+
+		// 관리자 로그인용 필터
+		CustomAdminLoginFilter adminLoginFilter = new CustomAdminLoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, objectMapper, reissueService);
+		adminLoginFilter.setFilterProcessesUrl("/admin/login");
+
+		http.addFilterAt(userLoginFilter, UsernamePasswordAuthenticationFilter.class);
+		http.addFilterAt(adminLoginFilter, UsernamePasswordAuthenticationFilter.class);
+
 		// oauth2
 		http.oauth2Login(oauth2 -> oauth2
 				.userInfoEndpoint(UserInfoEndpointConfig -> UserInfoEndpointConfig.userService(customOAuth2UserService))
@@ -140,7 +145,7 @@ public class SecurityConfig {
 		http.authorizeHttpRequests((auth) -> auth
 				.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
 				.requestMatchers("/").permitAll()
-				.requestMatchers("/", "/login", "/logout", "/oauth2-jwt-header", "/reissue").permitAll()
+				.requestMatchers("/", "/login", "/admin/login", "/logout", "/oauth2-jwt-header", "/reissue").permitAll()
 				.requestMatchers("/user/**").permitAll()
 				.requestMatchers("/users/**").permitAll()
 				

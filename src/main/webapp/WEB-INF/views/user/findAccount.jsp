@@ -22,7 +22,7 @@
 						</div>
 						
 						<!-- 아이디 찾기 -->
-						<form id="find-username-form" class="tab_content">
+						<form id="findUsernameForm" class="tab_content">
 							<div class="name_field">
 								<label>이름</label>
 								<input type="text" name="name" value="" placeholder="이름 입력">
@@ -37,7 +37,7 @@
 						</form>
 						
 						<!-- 비밀번호 찾기 -->
-						<form id="find-password-form" class="tab_content">
+						<form id="findPasswordForm" class="tab_content">
 							<div class="username_field">
 								<label>아이디</label>
 								<input type="text" name="username" value="" placeholder="아이디 입력">
@@ -49,7 +49,6 @@
 								<p>이메일을 입력해주세요.</p>
 							</div>
 							<button type="submit" class="btn_primary_wide">인증하기</button>
-							<a href="/user/findAccount/passwordResult.do">임시 비밀번호 받기 페이지로 이동</a>
 						</form>
 					</div>
 				</div>

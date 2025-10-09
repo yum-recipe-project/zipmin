@@ -3,6 +3,8 @@
 
 <form id="supportRecipeForm" onsubmit="">
 	<div class="modal" id="supportRecipeModal">
+		<input type="hidden" id="fundeeIdInput">
+		
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -26,7 +28,7 @@
 										<input id="pointInput" type="number" value="100" min="100" step="1">
 									</div>
 								</td>
-								<td id="remainPoint">-100</td>
+								<td id="remainPoint"></td>
 							</tr>
 						</tbody>
 					</table>

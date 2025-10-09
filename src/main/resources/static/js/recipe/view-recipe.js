@@ -101,6 +101,11 @@ document.addEventListener('DOMContentLoaded', async function() {
 			supportForm.querySelector('.recipe_writer h5').innerText = result.data.nickname;
 			supportForm.querySelector('.recipe_writer p').innerText = `구독자 ${result.data.follower}명`;
 			
+			
+			// 레시피 작성자 ID를 hidden input에 저장
+			document.getElementById('fundeeIdInput').value = result.data.user_id;
+			
+			
 			// 리뷰 수
 			reviewCommentForm.querySelector('.review_count').innerText = result.data.reviewcount;
 			reviewCommentForm.querySelector('.comment_count').innerText = result.data.commentcount;

@@ -155,7 +155,6 @@ public class UserService {
 	}
 	
 	
-	
 	// 아이디로 사용자 프로필 조회
 	public UserProfileReadResponseDto readUserProfileById(Integer id) {
 		
@@ -479,6 +478,16 @@ public class UserService {
 	    return userMapper.toReadPointResponseDto(user);
 	}
 	
+
+	
+	// 사용자 포인트 정보 업데이트
+	public User saveUser(User user) {
+        if (user == null) {
+        	throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+        }
+        return userRepository.save(user);
+    }
+		
 
 	
 

@@ -3,14 +3,12 @@ package com.project.zipmin.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.project.zipmin.dto.CommentReadMyResponseDto;
 import com.project.zipmin.dto.ReviewCreateRequestDto;
 import com.project.zipmin.dto.ReviewCreateResponseDto;
 import com.project.zipmin.dto.ReviewReadMyResponseDto;
 import com.project.zipmin.dto.ReviewReadResponseDto;
 import com.project.zipmin.dto.ReviewUpdateRequestDto;
 import com.project.zipmin.dto.ReviewUpdateResponseDto;
-import com.project.zipmin.entity.Comment;
 import com.project.zipmin.entity.Review;
 
 @Mapper(componentModel = "spring")

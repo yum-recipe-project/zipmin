@@ -26,7 +26,7 @@ import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
-import com.project.zipmin.dto.CommentReadMyResponseDto;
+import com.project.zipmin.dto.UserCommentReadesponseDto;
 import com.project.zipmin.dto.GuideReadMySavedResponseDto;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
@@ -886,41 +886,7 @@ public class UserController {
 	
 	
 	
-	
-	// 작성한 댓글
-	@GetMapping("/users/{id}/comments")
-	public ResponseEntity<?> readUserCommentList(
-			@Parameter(description = "사용자의 일련번호", required = true, example = "1") @PathVariable Integer id,
-			@Parameter(description = "조회할 페이지 번호", required = true, example = "1") @RequestParam int page,
-			@Parameter(description = "페이지의 항목 수", required = true, example = "10") @RequestParam int size) {
-		
-		// 입력값 검증
-		if (id == null) {
-			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-		}
-		
-		// 인증 여부 확인 (비로그인)
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
-		}
-		
-		// 로그인 정보
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		
-		// 본인 확인
-		if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN)) {
-			if (id != userService.readUserByUsername(username).getId()) {
-				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
-			}
-		}
-		
-		Pageable pageable = PageRequest.of(page, size);
-		Page<CommentReadMyResponseDto> commentPage = commentService.readCommentPageByUserId(id, pageable);
-		
-		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, commentPage));
-	}
+
 	
 	
 	

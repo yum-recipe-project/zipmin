@@ -54,6 +54,7 @@ async function fetchCommentList() {
 		
 		console.log(response);
 		
+		// TODO : 에러코드 분기
 		renderCommentList(response.data.data.content);
 		page = response.data.data.number + 1;
 		totalPages = response.data.data.totalPages;

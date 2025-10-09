@@ -6,7 +6,7 @@ import org.mapstruct.ReportingPolicy;
 
 import com.project.zipmin.dto.CommentCreateRequestDto;
 import com.project.zipmin.dto.CommentCreateResponseDto;
-import com.project.zipmin.dto.CommentReadMyResponseDto;
+import com.project.zipmin.dto.UserCommentReadesponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.CommentUpdateRequestDto;
 import com.project.zipmin.dto.CommentUpdateResponseDto;
@@ -45,11 +45,11 @@ public interface CommentMapper {
 	
 	@Mapping(target = "comment.id", source = "commId")
 	@Mapping(target = "user.id", source = "userId")
-	Comment toEntity(CommentReadMyResponseDto commentDto);
+	Comment toEntity(UserCommentReadesponseDto commentDto);
 
 	@Mapping(target = "commId", source = "comment.id")
 	@Mapping(target = "userId", source = "user.id")
-	CommentReadMyResponseDto toReadMyResponseDto(Comment comment);
+	UserCommentReadesponseDto toReadMyResponseDto(Comment comment);
 	
 	
 	

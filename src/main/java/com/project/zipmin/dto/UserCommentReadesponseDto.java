@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class CommentReadMyResponseDto {
+public class UserCommentReadesponseDto {
 	
 	private Integer id;
 	private Date postdate;
@@ -24,5 +24,6 @@ public class CommentReadMyResponseDto {
 	private Integer userId;
 	
 	private String nickname;
+	private String avatar;
 	private String title;
 }

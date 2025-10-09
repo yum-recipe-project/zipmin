@@ -51,8 +51,6 @@ async function fetchCommentList() {
 		
 		const response = await instance.get(`/users/${payload.id}/comments?${params}`);
 		
-		console.log(response);
-		
 		if (response.data.code === 'COMMENT_READ_LIST_SUCCESS') {
 			renderCommentList(response.data.data.content);
 			page = response.data.data.number + 1;
@@ -64,7 +62,7 @@ async function fetchCommentList() {
 	}
 	catch (error) {
 		
-		// TODO : 에러코드 분기
+		// TODO : 에러코드 추가
 		console.log(error);
 		
 	}
@@ -121,7 +119,7 @@ function renderCommentList(commentList) {
 		writerDiv.className = 'comment_writer';
 		
 		const img = document.createElement('img');
-		img.src = '/images/common/test.png';
+		img.src = comment.avatar;
 		writerDiv.appendChild(img);
 		
 		const nameSpan = document.createElement('span');

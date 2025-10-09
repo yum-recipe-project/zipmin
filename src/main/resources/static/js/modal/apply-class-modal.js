@@ -52,33 +52,34 @@ document.addEventListener('DOMContentLoaded', function() {
 				headers: headers
 			});
 			
-			if (response.data.code === 'COOKING_APPLY_CREATE_SUCCESS') {
+			if (response.data.code === 'CLASS_APPLY_CREATE_SUCCESS') {
 				alert('쿠킹클래스 신청이 완료되었습니다.');
 				form.reason.value = '';
 				form.question.value = '';
 				bootstrap.Modal.getInstance(document.getElementById('applyClassModal')).hide();
+				fetchClass();
 			}
 
 		}
 		catch (error) {
 			const code = error?.response?.data?.code;
 			
-			if (code === 'COOKING_APPLY_CREATE_FAIL') {
+			if (code === 'CLASS_APPLY_CREATE_FAIL') {
 				alert('쿠킹클래스 신청에 실패했습니다.');
 				form.reason.value = '';
 				form.question.value = '';
 				bootstrap.Modal.getInstance(document.getElementById('applyClassModal')).hide();
 			}	
-			else if (code === 'COOKING_APPLY_INVALID_INPUT') {
+			else if (code === 'CLASS_APPLY_INVALID_INPUT') {
 				alert('입력값이 유효하지 않습니다.');
 			}
-			else if (code === 'COOKING_UNAUTHORIZED_ACCESS') {
+			else if (code === 'CLASS_UNAUTHORIZED_ACCESS') {
 				alert('로그인되지 않은 사용자입니다.');
 				form.reason.value = '';
 				form.question.value = '';
 				bootstrap.Modal.getInstance(document.getElementById('applyClassModal')).hide();
 			}
-			else if (code === 'COOKING_APPLY_DUPLICATE') {
+			else if (code === 'CLASS_APPLY_DUPLICATE') {
 				alert('이미 신청한 클래스입니다.');
 				form.reason.value = '';
 				form.question.value = '';

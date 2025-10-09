@@ -2,8 +2,9 @@
  * 탭 메뉴 클릭 시 탭 메뉴를 활성화하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	const tabItems = document.querySelectorAll('.tab a');
+	
 	// 탭 클릭 이벤트 설정
+	const tabItems = document.querySelectorAll('.tab a');
 	tabItems.forEach((item) => {
 	    item.addEventListener("click", function() {
 	        tabItems.forEach(button => button.classList.remove('active'));
@@ -12,7 +13,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 	tabItems.forEach(button => button.classList.remove('active'));
 	tabItems[0].classList.add('active');
+	
+	fetchClass();
 });
+
 
 
 
@@ -20,30 +24,18 @@ document.addEventListener('DOMContentLoaded', function() {
 /**
  * 서버에서 쿠킹클래스 상세 정보를 가져오는 함수
  */
-document.addEventListener('DOMContentLoaded', async function() {
+async function fetchClass() {
 	
 	try {
-		const params = new URLSearchParams(window.location.search);
-		const id = params.get('id');
-		
-		const headers = {
-			'Content-Type': 'application/json'
-		}
-		
-		if (isLoggedIn()) {
-			const token = localStorage.getItem('accessToken');
-			headers['Authorization'] = `Bearer ${token}`;
-		}
+		const id = new URLSearchParams(window.location.search).get('id');
 		
 		const response = await fetch(`/classes/${id}`, {
-			headers: headers
+			headers: getAuthHeaders()
 		});
 		
 		const result = await response.json();
 		
 		if (result.code === 'CLASS_READ_SUCCESS') {
-			
-			console.log(result);
 			
 			document.getElementById('applyClassId').value = id;
 			// 추후에 실제 이미지로 수정
@@ -85,7 +77,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 		console.log(error);
 	}
 
-});
+}
 
 
 
@@ -211,10 +203,14 @@ function renderApplyButton(applystatus) {
 	
 	const container = document.querySelector('.apply_header');
 	if (!container) return;
+	
+	// 기존 버튼 제거
+	const oldButton = container.querySelector('button');
+	if (oldButton) oldButton.remove();
 
 	const button = document.createElement('button');
 	button.type = 'button';
-
+	
 	if (applystatus === true) {
 		button.disabled = true;
 		button.className = 'btn_gray_wide';

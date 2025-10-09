@@ -563,7 +563,8 @@ public class CookingService {
 	public ClassApplyCreateResponseDto createApply(ClassApplyCreateRequestDto applyDto) {
 		
 		// 입력값 검증
-		if (applyDto == null || applyDto.getClassId() == null || applyDto.getUserId() == null || applyDto.getReason() == null) {
+		if (applyDto == null || applyDto.getClassId() == null
+				|| applyDto.getUserId() == null || applyDto.getReason() == null) {
 			throw new ApiException(ClassErrorCode.CLASS_APPLY_INVALID_INPUT);
 		}
 		
@@ -572,7 +573,7 @@ public class CookingService {
 			throw new ApiException(ClassErrorCode.CLASS_APPLY_DUPLICATE);
 		}
 		
-		// 클래스 지원 생성
+		// 클래스 신청 작성
 		ClassApply apply = applyMapper.toEntity(applyDto);
 		try {
 			apply = applyRepository.save(apply);
@@ -581,7 +582,6 @@ public class CookingService {
 		catch (Exception e) {
 			throw new ApiException(ClassErrorCode.CLASS_APPLY_CREATE_FAIL);
 		}
-		
 	}
 	
 	

@@ -22,6 +22,9 @@ import com.project.zipmin.dto.ClassTutorReadResponseDto;
 import com.project.zipmin.dto.GuideReadResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.CookingService;
+import com.project.zipmin.service.KitchenService;
+import com.project.zipmin.service.RecipeService;
+import com.project.zipmin.service.ReviewService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.CookingReadSuccessResponse;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
@@ -32,6 +35,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
@@ -53,14 +57,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
+@RequiredArgsConstructor
 @Tag(name = "Cooking API", description = "쿠킹클래스 관련 API")
 public class CookingController {
 	
-	@Autowired
-	CookingService cookingService;
-	
-	@Autowired
-	UserService userService;
+	private final CookingService cookingService;
+	private final UserService userService;
 	
 	
 	
@@ -93,27 +95,12 @@ public class CookingController {
 
 	
 	
+	
+	
 	// 쿠킹클래스 상세 조회
-	// API 문서 추가 필요 ***
-	@Operation(
-	    summary = "쿠킹클래스 상세 조회"
-	)
-	@ApiResponses(value = {
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "200",
-				description = "쿠킹클래스 조회 성공",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = CookingReadSuccessResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "500",
-				description = "서버 내부 오류",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = InternalServerErrorResponse.class)))
-	})
 	@GetMapping("/classes/{id}")
-	public ResponseEntity<?> viewClass(@Parameter(description = "클래스의 일련번호") @PathVariable int id) {
+	public ResponseEntity<?> viewClass(
+			@Parameter(description = "클래스의 일련번호") @PathVariable int id) {
 		
 		ClassReadResponseDto classDto = cookingService.readClassById(id);
 		
@@ -201,7 +188,8 @@ public class CookingController {
 	
 	// 클래스 삭제
 	@DeleteMapping("/classes/{id}")
-	public ResponseEntity<?> deleteClass(@Parameter(description = "클래스의 일련번호") @PathVariable int id) {
+	public ResponseEntity<?> deleteClass(
+			@Parameter(description = "클래스의 일련번호") @PathVariable int id) {
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -216,15 +204,6 @@ public class CookingController {
 	}
 	
 	
-	
-	// 특정 클래스의 일정 목록 조회
-	@GetMapping("/classes/{id}/schedules")
-	public List<ClassScheduleReadResponseDto> viewSchedule(
-			@PathVariable int id) {
-		// 필요에 따라선 클래스 조회에서 일정 목록을 한번에 조회하게 될 수도 있음
-		return null;
-	}
-
 	
 	
 	
@@ -250,13 +229,15 @@ public class CookingController {
 	
 	
 	
+	
+	
 	// 클래스 신청 작성
 	@PostMapping("/classes/{id}/applies")
 	public ResponseEntity<?> applyClass(
-			@PathVariable int id,
-			@RequestBody ClassApplyCreateRequestDto applyRequestDto) {
+			@Parameter(description = "클래스의 일련번호") @PathVariable int id,
+			@Parameter(description = "클래스 신청 작성 요청 정보") @RequestBody ClassApplyCreateRequestDto applyRequestDto) {
 		
-		// 인증 여부 확인 (비로그인)
+		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);

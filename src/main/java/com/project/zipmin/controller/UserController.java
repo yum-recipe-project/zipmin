@@ -87,7 +87,6 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 	
 	private final UserService userService;
-	private final CommentService commentService;	
 	private final CookingService cookingService;	
 	private final KitchenService kitchenService;
 	private final RecipeService recipeService;

@@ -11,8 +11,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 		const response = await fetch(`/events/${id}`);
 		const result = await response.json();
 		
-		console.log(result);
-		
 		if (result.code === 'EVENT_READ_SUCCESS') {
 			document.querySelector('.event_title').innerText = result.data.title;
 			document.querySelector('.event_content').innerText = result.data.content;

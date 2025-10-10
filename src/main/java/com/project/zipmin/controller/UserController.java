@@ -1067,9 +1067,6 @@ public class UserController {
 	// 사용자 출금 계좌 등록
     @PostMapping("/users/{id}/account")
     public ResponseEntity<?> createUserAccount(@RequestBody UserAccountCreateRequestDto accountRequestDto) {
-
-    	System.err.println("클라이언트 출금계좌 정보: " + accountRequestDto);
-    	
         // 로그인 여부 확인
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
@@ -1082,6 +1079,25 @@ public class UserController {
         return ResponseEntity.status(UserSuccessCode.USER_CREATE_ACCOUNT_SUCCESS.getStatus())
                 .body(ApiResponse.success(UserSuccessCode.USER_CREATE_ACCOUNT_SUCCESS, accountResponseDto));
     }
+    
+    
+    
+    // 사용자 출금 계좌 수정
+//    @PatchMapping("/users/{id}/account")
+//    public ResponseEntity<?> updateUserAccount(@RequestBody UserAccountUpdateRequestDto accountRequestDto) {
+//        // 로그인 체크
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+//            throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
+//        }
+//
+//        // 계좌 수정 서비스 호출
+//        UserAccountReadResponseDto accountResponseDto = userService.updateUserAccount(accountRequestDto);
+//
+//        return ResponseEntity.status(UserSuccessCode.USER_UPDATE_ACCOUNT_SUCCESS.getStatus())
+//                .body(ApiResponse.success(UserSuccessCode.USER_UPDATE_ACCOUNT_SUCCESS, accountResponseDto));
+//    }
+
 	
 	
 	

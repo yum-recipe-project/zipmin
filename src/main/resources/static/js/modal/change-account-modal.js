@@ -237,7 +237,6 @@ async function postAccount() {
     }
 
     try {
-        // 요청 DTO
         const accountRequestDto = {
             bank: bankValue,
             accountnum: accountNumber,
@@ -252,10 +251,8 @@ async function postAccount() {
 
         if (response.data.code === 'USER_CREATE_ACCOUNT_SUCCESS') {
             alertPrimary('출금 계좌 등록이 완료되었습니다.');
-            // 모달 닫기
             const modal = bootstrap.Modal.getInstance(document.getElementById('changeAccountModal'));
             modal.hide();
-            // 필요시 모달 내부 초기화 또는 재렌더링
             renderChangeAccount(response.data.data);
         }
     } catch (error) {

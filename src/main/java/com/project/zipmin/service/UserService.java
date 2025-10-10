@@ -33,6 +33,7 @@ import com.project.zipmin.dto.UserUpdateResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.entity.User;
 import com.project.zipmin.entity.UserAccount;
+import com.project.zipmin.mapper.UserAccountMapper;
 import com.project.zipmin.mapper.UserMapper;
 import com.project.zipmin.repository.UserAccountRepository;
 import com.project.zipmin.repository.UserRepository;
@@ -46,6 +47,8 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	
 	private final UserMapper userMapper;
+	private final UserAccountMapper userAccountMapper;
+
 	private final UserRepository userRepository;
 	private final UserAccountRepository userAccountRepository;
 	private final PasswordEncoder passwordEncoder;
@@ -531,7 +534,6 @@ public class UserService {
     // 사용자 출금 계좌 등록
     @Transactional
     public UserAccountReadResponseDto createUserAccount(UserAccountCreateRequestDto accountRequestDto) {
-
         // 입력값 검증
         if (accountRequestDto == null 
                 || accountRequestDto.getBank() == null 
@@ -544,18 +546,13 @@ public class UserService {
         // 사용자 조회
         User user = userRepository.findById(accountRequestDto.getUserId())
                 .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
-
-        // 기존 계좌가 있으면 업데이트, 없으면 새로 생성
-        UserAccount account = userAccountRepository.findByUser(user)
-                .orElse(UserAccount.builder().user(user).build());
-
-        account.setBank(accountRequestDto.getBank());
-        account.setAccountnum(accountRequestDto.getAccountnum());
-        account.setName(accountRequestDto.getName());
-
+        
+        UserAccount userAccount = userAccountMapper.toEntity(accountRequestDto);
+        userAccount.setUser(user);
+        
         try {
-            account = userAccountRepository.save(account);
-            return userMapper.toReadAccountResponseDto(account);
+        	userAccount = userAccountRepository.save(userAccount);
+            return userMapper.toReadAccountResponseDto(userAccount);
         } catch (Exception e) {
             throw new ApiException(UserErrorCode.USER_CREATE_ACCOUNT_FAIL);
         }

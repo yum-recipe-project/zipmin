@@ -19,6 +19,7 @@ import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.LikeReadResponseDto;
+import com.project.zipmin.dto.UserAccountReadResponseDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
 import com.project.zipmin.dto.UserPasswordCheckRequestDto;
@@ -30,7 +31,9 @@ import com.project.zipmin.dto.UserUpdateRequestDto;
 import com.project.zipmin.dto.UserUpdateResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.entity.User;
+import com.project.zipmin.entity.UserAccount;
 import com.project.zipmin.mapper.UserMapper;
+import com.project.zipmin.repository.UserAccountRepository;
 import com.project.zipmin.repository.UserRepository;
 
 import io.jsonwebtoken.lang.Collections;
@@ -42,6 +45,7 @@ public class UserService {
 	
 	private final UserMapper userMapper;
 	private final UserRepository userRepository;
+	private final UserAccountRepository userAccountRepository;
 	private final PasswordEncoder passwordEncoder;
 	
 	private final LikeService likeService;
@@ -497,8 +501,29 @@ public class UserService {
 	
 
 	
+	// 아이디로 사용자 출금 계좌 조회
+    public UserAccountReadResponseDto readUserAccountById(Integer id) {
+
+        // 입력값 검증
+        if (id == null) {
+            throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+        }
+
+        // 사용자 조회
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+
+        UserAccount account = userAccountRepository.findByUser(user).orElse(null);
+
+        // 계좌가 없으면 null 반환
+        if (account == null) {
+            return null;
+        }
+
+        return userMapper.toReadAccountResponseDto(account);
+    }
 	
-	
+    
 	
 	
 	// 유저 정보 반환

@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
 	fetchRevenueList();
-	
+	fetchPoint();
 });
 
 
@@ -191,3 +191,41 @@ function renderPagination() {
 	});
 }
 
+
+
+/**
+ * 사용자 포인트를 가져오는 함수
+ */
+async function fetchPoint() {
+    try {
+        const id = parseJwt(localStorage.getItem('accessToken')).id;
+
+        const response = await fetch(`/users/${id}/point`, {
+            method: 'GET',
+            headers: getAuthHeaders()
+        });
+
+        const result = await response.json();
+
+        if (result.code === 'USER_READ_SUCCESS') {
+            const pointValue = result.data.point || 0;
+
+            const pointDisplay = document.querySelector('.support_point .point span:last-child');
+            if (pointDisplay) {
+                pointDisplay.textContent = `${pointValue.toLocaleString()}원`;
+            }
+
+        } else if (result.code === 'USER_INVALID_INPUT') {
+            alertDanger('입력값이 유효하지 않습니다.');
+        } else if (result.code === 'USER_NOT_FOUND') {
+            alertDanger('해당 사용자를 찾을 수 없습니다.');
+        } else if (result.code === 'INTERNAL_SERVER_ERROR') {
+            alertDanger('서버 내부에서 오류가 발생했습니다.');
+        } else {
+            console.log('알 수 없는 에러:', result);
+        }
+    } catch (error) {
+        console.log(error);
+        alertDanger('알 수 없는 오류가 발생했습니다.');
+    }
+}

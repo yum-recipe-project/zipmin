@@ -34,6 +34,7 @@ import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.RecipeReadMyResponseDto;
 import com.project.zipmin.dto.RecipeReadMySavedResponseDto;
 import com.project.zipmin.dto.ReviewReadMyResponseDto;
+import com.project.zipmin.dto.UserAccountReadResponseDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
 import com.project.zipmin.dto.UserPasswordCheckRequestDto;
@@ -1049,7 +1050,16 @@ public class UserController {
 	
 	
 	
-	
+	// 사용자 출금 계좌 조회
+	@GetMapping("/users/{id}/account")
+	public ResponseEntity<?> readUserAccount(
+	        @PathVariable int id) {
+
+	    UserAccountReadResponseDto accountDto = userService.readUserAccountById(id);
+
+	    return ResponseEntity.status(UserSuccessCode.USER_READ_ACCOUNT_SUCCESS.getStatus())
+	            .body(ApiResponse.success(UserSuccessCode.USER_READ_ACCOUNT_SUCCESS, accountDto));
+	}
 	
 	
 	

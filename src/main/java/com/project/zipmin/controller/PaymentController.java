@@ -40,6 +40,7 @@ public class PaymentController {
     
 
 
+    // 포인트 결제/충전
     @PostMapping("/users/{id}/point")
     public ResponseEntity<?> postUserPoint(
     		@PathVariable int id,

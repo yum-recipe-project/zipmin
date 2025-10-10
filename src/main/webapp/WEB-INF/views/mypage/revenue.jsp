@@ -36,7 +36,7 @@
 					<div class="support_point">
 						<div class="point">
 							<span>출금 가능 금액</span>
-							<span>0원</span>
+							<span></span>
 						</div>
 						<div class="btn_wrap">
 							<button class="btn_outline" data-bs-toggle="modal" data-bs-target="#changeAccountModal"

@@ -19,9 +19,6 @@ import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.LikeReadResponseDto;
-import com.project.zipmin.dto.UserAccountCreateRequestDto;
-import com.project.zipmin.dto.UserAccountReadResponseDto;
-import com.project.zipmin.dto.UserAccountUpdateRequestDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
 import com.project.zipmin.dto.UserPasswordCheckRequestDto;
@@ -33,14 +30,10 @@ import com.project.zipmin.dto.UserUpdateRequestDto;
 import com.project.zipmin.dto.UserUpdateResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.entity.User;
-import com.project.zipmin.entity.UserAccount;
-import com.project.zipmin.mapper.UserAccountMapper;
 import com.project.zipmin.mapper.UserMapper;
-import com.project.zipmin.repository.UserAccountRepository;
 import com.project.zipmin.repository.UserRepository;
 
 import io.jsonwebtoken.lang.Collections;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -48,10 +41,8 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	
 	private final UserMapper userMapper;
-	private final UserAccountMapper userAccountMapper;
 
 	private final UserRepository userRepository;
-	private final UserAccountRepository userAccountRepository;
 	private final PasswordEncoder passwordEncoder;
 	
 	private final LikeService likeService;
@@ -503,110 +494,6 @@ public class UserService {
 	            .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
 	}
 
-
-	// 아이디로 사용자 출금 계좌 조회
-    public UserAccountReadResponseDto readUserAccountById(Integer id) {
-
-        // 입력값 검증
-        if (id == null) {
-            throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-        }
-
-        // 사용자 조회
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
-
-        UserAccount account = userAccountRepository.findByUser(user).orElse(null);
-
-        // 계좌가 없으면 null 반환
-        if (account == null) {
-            return null;
-        }
-
-        return userMapper.toReadAccountResponseDto(account);
-    }
-	
-    
-    
-    
-    
-    
-
-    // 사용자 출금 계좌 등록
-    @Transactional
-    public UserAccountReadResponseDto createUserAccount(UserAccountCreateRequestDto accountRequestDto) {
-        // 입력값 검증
-        if (accountRequestDto == null 
-                || accountRequestDto.getBank() == null 
-                || accountRequestDto.getAccountnum() == null
-                || accountRequestDto.getName() == null
-                || accountRequestDto.getUserId() == 0) {
-            throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-        }
-
-        // 사용자 조회
-        User user = userRepository.findById(accountRequestDto.getUserId())
-                .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
-        
-        UserAccount userAccount = userAccountMapper.toEntity(accountRequestDto);
-        userAccount.setUser(user);
-        
-        try {
-        	userAccount = userAccountRepository.save(userAccount);
-            return userMapper.toReadAccountResponseDto(userAccount);
-        } catch (Exception e) {
-            throw new ApiException(UserErrorCode.USER_CREATE_ACCOUNT_FAIL);
-        }
-    }
-    
-    
-    
-    
-    
-    
-    // 사용자 출금 계좌 수정
-    @Transactional
-    public UserAccountReadResponseDto updateUserAccount(UserAccountUpdateRequestDto accountRequestDto) {
-
-        // 입력값 검증
-        if (accountRequestDto == null 
-                || accountRequestDto.getUserId() == 0
-                || accountRequestDto.getBank() == null
-                || accountRequestDto.getAccountnum() == null
-                || accountRequestDto.getName() == null) {
-            throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-        }
-
-        // 로그인 사용자 확인
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserReadResponseDto loginUser = readUserByUsername(username);
-
-        if (!loginUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name()) &&
-            !loginUser.getRole().equals(Role.ROLE_ADMIN.name()) &&
-            loginUser.getId() != accountRequestDto.getUserId()) {
-            // 일반 사용자가 다른 사람 계좌를 수정하려고 하면
-            throw new ApiException(UserErrorCode.USER_FORBIDDEN);
-        }
-
-        // 수정할 계좌 조회
-        User user = userRepository.findById(accountRequestDto.getUserId())
-                .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
-
-        UserAccount account = userAccountRepository.findByUser(user)
-                .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
-
-        // 변경 값 설정
-        account.setBank(accountRequestDto.getBank());
-        account.setAccountnum(accountRequestDto.getAccountnum());
-        account.setName(accountRequestDto.getName());
-
-        try {
-            account = userAccountRepository.save(account);
-            return userMapper.toReadAccountResponseDto(account);
-        } catch (Exception e) {
-            throw new ApiException(UserErrorCode.USER_UPDATE_ACCOUNT_FAIL);
-        }
-    }
 
     
     

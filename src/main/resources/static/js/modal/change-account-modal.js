@@ -211,10 +211,16 @@ function renderFooterButton(hasAccount) {
         submitButton.classList.toggle('disabled', !numberVal || !nameVal);
     });
 
-    submitButton.addEventListener('click', function(e) {
-        e.preventDefault();
-		postAccount(); 
-    });
+	submitButton.addEventListener('click', function(e) {
+	    e.preventDefault();
+
+	    if (submitButton.textContent === '등록하기') {
+	        postAccount();
+	    } else if (submitButton.textContent === '변경하기') {
+	        updateAccount();
+	    }
+	});
+
 }
 
 
@@ -222,7 +228,7 @@ function renderFooterButton(hasAccount) {
 
 
 /**
- * 사용자 출금 계좌 등록/변경
+ * 사용자 출금 계좌 등록
  */
 async function postAccount() {
     const accountNumber = document.getElementById("accountNumberInput")?.value || '';
@@ -251,6 +257,55 @@ async function postAccount() {
 
         if (response.data.code === 'USER_CREATE_ACCOUNT_SUCCESS') {
             alertPrimary('출금 계좌 등록이 완료되었습니다.');
+            const modal = bootstrap.Modal.getInstance(document.getElementById('changeAccountModal'));
+            modal.hide();
+            renderChangeAccount(response.data.data);
+        }
+    } catch (error) {
+        const code = error?.response?.data?.code;
+
+        if (code === 'USER_INVALID_INPUT') {
+            alertDanger('입력값이 유효하지 않습니다.');
+        } else if (code === 'USER_UNAUTHORIZED_ACCESS') {
+            alertDanger('로그인되지 않은 사용자입니다.');
+        } else if (code === 'INTERNAL_SERVER_ERROR') {
+            alertDanger('서버 내부 오류가 발생했습니다.');
+        } else {
+            console.log(error);
+        }
+    }
+}
+
+
+
+/**
+ * 사용자 출금 계좌 변경
+ */
+async function updateAccount() {
+    const accountNumber = document.getElementById("accountNumberInput")?.value || '';
+    const accountName = document.getElementById("accountNameInput")?.value || '';
+    const bankSelect = document.querySelector("#changeAccountModal .form-select");
+    const bankValue = bankSelect?.value || '';
+
+    if (!isLoggedIn()) {
+        redirectToLogin();
+        return;
+    }
+
+    try {
+        const accountRequestDto = {
+            bank: bankValue,
+            accountnum: accountNumber,
+            name: accountName,
+            user_id: parseJwt(localStorage.getItem('accessToken')).id
+        };
+
+        const response = await instance.patch(`/users/${accountRequestDto.user_id}/account`, accountRequestDto, {
+            headers: getAuthHeaders()
+        });
+
+        if (response.data.code === 'USER_UPDATE_ACCOUNT_SUCCESS') {
+            alertPrimary('출금 계좌 정보가 변경되었습니다.');
             const modal = bootstrap.Modal.getInstance(document.getElementById('changeAccountModal'));
             modal.hide();
             renderChangeAccount(response.data.data);

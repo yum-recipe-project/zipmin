@@ -21,6 +21,7 @@ import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.LikeReadResponseDto;
 import com.project.zipmin.dto.UserAccountCreateRequestDto;
 import com.project.zipmin.dto.UserAccountReadResponseDto;
+import com.project.zipmin.dto.UserAccountUpdateRequestDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
 import com.project.zipmin.dto.UserPasswordCheckRequestDto;
@@ -561,6 +562,52 @@ public class UserService {
     
     
     
+    
+    
+    // 사용자 출금 계좌 수정
+    @Transactional
+    public UserAccountReadResponseDto updateUserAccount(UserAccountUpdateRequestDto accountRequestDto) {
+
+        // 입력값 검증
+        if (accountRequestDto == null 
+                || accountRequestDto.getUserId() == 0
+                || accountRequestDto.getBank() == null
+                || accountRequestDto.getAccountnum() == null
+                || accountRequestDto.getName() == null) {
+            throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+        }
+
+        // 로그인 사용자 확인
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserReadResponseDto loginUser = readUserByUsername(username);
+
+        if (!loginUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name()) &&
+            !loginUser.getRole().equals(Role.ROLE_ADMIN.name()) &&
+            loginUser.getId() != accountRequestDto.getUserId()) {
+            // 일반 사용자가 다른 사람 계좌를 수정하려고 하면
+            throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+        }
+
+        // 수정할 계좌 조회
+        User user = userRepository.findById(accountRequestDto.getUserId())
+                .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+
+        UserAccount account = userAccountRepository.findByUser(user)
+                .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+
+        // 변경 값 설정
+        account.setBank(accountRequestDto.getBank());
+        account.setAccountnum(accountRequestDto.getAccountnum());
+        account.setName(accountRequestDto.getName());
+
+        try {
+            account = userAccountRepository.save(account);
+            return userMapper.toReadAccountResponseDto(account);
+        } catch (Exception e) {
+            throw new ApiException(UserErrorCode.USER_UPDATE_ACCOUNT_FAIL);
+        }
+    }
+
     
     
     

@@ -36,6 +36,7 @@ import com.project.zipmin.dto.RecipeReadMySavedResponseDto;
 import com.project.zipmin.dto.ReviewReadMyResponseDto;
 import com.project.zipmin.dto.UserAccountCreateRequestDto;
 import com.project.zipmin.dto.UserAccountReadResponseDto;
+import com.project.zipmin.dto.UserAccountUpdateRequestDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
 import com.project.zipmin.dto.UserPasswordCheckRequestDto;
@@ -1083,20 +1084,20 @@ public class UserController {
     
     
     // 사용자 출금 계좌 수정
-//    @PatchMapping("/users/{id}/account")
-//    public ResponseEntity<?> updateUserAccount(@RequestBody UserAccountUpdateRequestDto accountRequestDto) {
-//        // 로그인 체크
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-//            throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
-//        }
-//
-//        // 계좌 수정 서비스 호출
-//        UserAccountReadResponseDto accountResponseDto = userService.updateUserAccount(accountRequestDto);
-//
-//        return ResponseEntity.status(UserSuccessCode.USER_UPDATE_ACCOUNT_SUCCESS.getStatus())
-//                .body(ApiResponse.success(UserSuccessCode.USER_UPDATE_ACCOUNT_SUCCESS, accountResponseDto));
-//    }
+    @PatchMapping("/users/{id}/account")
+    public ResponseEntity<?> updateUserAccount(@RequestBody UserAccountUpdateRequestDto accountRequestDto) {
+    	
+        // 로그인 체크
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+            throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
+        }
+
+        UserAccountReadResponseDto accountResponseDto = userService.updateUserAccount(accountRequestDto);
+
+        return ResponseEntity.status(UserSuccessCode.USER_UPDATE_ACCOUNT_SUCCESS.getStatus())
+                .body(ApiResponse.success(UserSuccessCode.USER_UPDATE_ACCOUNT_SUCCESS, accountResponseDto));
+    }
 
 	
 	

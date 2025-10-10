@@ -34,6 +34,7 @@ import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.RecipeReadMyResponseDto;
 import com.project.zipmin.dto.RecipeReadMySavedResponseDto;
 import com.project.zipmin.dto.ReviewReadMyResponseDto;
+import com.project.zipmin.dto.UserAccountCreateRequestDto;
 import com.project.zipmin.dto.UserAccountReadResponseDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
@@ -1062,5 +1063,28 @@ public class UserController {
 	}
 	
 	
+	
+	// 사용자 출금 계좌 등록
+    @PostMapping("/users/{id}/account")
+    public ResponseEntity<?> createUserAccount(@RequestBody UserAccountCreateRequestDto accountRequestDto) {
+
+    	System.err.println("클라이언트 출금계좌 정보: " + accountRequestDto);
+    	
+        // 로그인 여부 확인
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+            throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
+        }
+
+        // 계좌 등록 서비스 호출
+        UserAccountReadResponseDto accountResponseDto = userService.createUserAccount(accountRequestDto);
+
+        return ResponseEntity.status(UserSuccessCode.USER_CREATE_ACCOUNT_SUCCESS.getStatus())
+                .body(ApiResponse.success(UserSuccessCode.USER_CREATE_ACCOUNT_SUCCESS, accountResponseDto));
+    }
+	
+	
+	
+
 	
 }

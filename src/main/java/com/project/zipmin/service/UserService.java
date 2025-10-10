@@ -19,6 +19,7 @@ import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.LikeReadResponseDto;
+import com.project.zipmin.dto.UserAccountCreateRequestDto;
 import com.project.zipmin.dto.UserAccountReadResponseDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
@@ -37,6 +38,7 @@ import com.project.zipmin.repository.UserAccountRepository;
 import com.project.zipmin.repository.UserRepository;
 
 import io.jsonwebtoken.lang.Collections;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -498,9 +500,6 @@ public class UserService {
 	}
 
 
-	
-
-	
 	// 아이디로 사용자 출금 계좌 조회
     public UserAccountReadResponseDto readUserAccountById(Integer id) {
 
@@ -524,7 +523,57 @@ public class UserService {
     }
 	
     
+    
+    
+    
+    
+
+    // 사용자 출금 계좌 등록
+    @Transactional
+    public UserAccountReadResponseDto createUserAccount(UserAccountCreateRequestDto accountRequestDto) {
+
+        // 입력값 검증
+        if (accountRequestDto == null 
+                || accountRequestDto.getBank() == null 
+                || accountRequestDto.getAccountnum() == null
+                || accountRequestDto.getName() == null
+                || accountRequestDto.getUserId() == 0) {
+            throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+        }
+
+        // 사용자 조회
+        User user = userRepository.findById(accountRequestDto.getUserId())
+                .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+
+        // 기존 계좌가 있으면 업데이트, 없으면 새로 생성
+        UserAccount account = userAccountRepository.findByUser(user)
+                .orElse(UserAccount.builder().user(user).build());
+
+        account.setBank(accountRequestDto.getBank());
+        account.setAccountnum(accountRequestDto.getAccountnum());
+        account.setName(accountRequestDto.getName());
+
+        try {
+            account = userAccountRepository.save(account);
+            return userMapper.toReadAccountResponseDto(account);
+        } catch (Exception e) {
+            throw new ApiException(UserErrorCode.USER_CREATE_ACCOUNT_FAIL);
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 	
+    
+    
+    
 	
 	// 유저 정보 반환
 //	public User getUserEntityByUsername(String username) {

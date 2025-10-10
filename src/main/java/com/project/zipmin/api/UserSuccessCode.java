@@ -21,6 +21,7 @@ public enum UserSuccessCode implements Code {
 	USER_READ_CLASS_LIST_SUCCESS(HttpStatus.OK, "사용자 클래스 목록 조회 성공"),
 	
 	USER_READ_ACCOUNT_SUCCESS(HttpStatus.OK, "사용자 출금 계좌 조회 성공"),
+	USER_CREATE_ACCOUNT_SUCCESS(HttpStatus.OK, "사용자 출금 계좌 등록 성공"),
 	
 	USER_LOGIN_SUCCESS(HttpStatus.OK, "로그인 성공"),
 	USER_LOGOUT_SUCCESS(HttpStatus.OK, "로그아웃 성공"),

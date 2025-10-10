@@ -1,17 +1,27 @@
 package com.project.zipmin.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.FundErrorCode;
+import com.project.zipmin.api.KitchenErrorCode;
+import com.project.zipmin.dto.CommentReadMyResponseDto;
 import com.project.zipmin.dto.FundSupportRequestDto;
 import com.project.zipmin.dto.FundSupportResponseDto;
 import com.project.zipmin.dto.RecipeReadResponseDto;
-import com.project.zipmin.dto.UserReadResponseDto;
+import com.project.zipmin.dto.UserRevenueReadResponseDto;
+import com.project.zipmin.entity.Comment;
 import com.project.zipmin.entity.Fund;
+import com.project.zipmin.entity.Guide;
 import com.project.zipmin.entity.Recipe;
 import com.project.zipmin.entity.User;
 import com.project.zipmin.mapper.FundMapper;
@@ -38,14 +48,6 @@ public class FundService {
 	
 	 // 후원하기
 	 public FundSupportResponseDto support(int funderId, int fundeeId, FundSupportRequestDto requestDto) {
-		// 후원자 조회
-//        UserReadResponseDto funderDto = userService.readUserById(funderId);
-//        User funder = userMapper.toEntity(funderDto);
-//
-//        // 후원받는 사람 조회
-//        UserReadResponseDto fundeeDto = userService.readUserById(fundeeId);
-//        User fundee = userMapper.toEntity(fundeeDto);
-		 
 		User funder = userService.getUserEntityById(funderId);
 		User fundee = userService.getUserEntityById(fundeeId);
 
@@ -84,6 +86,38 @@ public class FundService {
 	}
 	 
 	
+	
+	// 특정 사용자의 후원받은 목록 조회
+    public Page<UserRevenueReadResponseDto> readUserRevenuePageById(Integer userId, Pageable pageable) {
+
+        if (userId == null || pageable == null) {
+            throw new ApiException(KitchenErrorCode.KITCHEN_INVALID_INPUT);
+        }
+        
+        
+     // 후원받은 내역 목록 조회
+ 		Page<Fund> fundPage;
+ 		try {
+ 			fundPage = fundRepository.findByFundeeId(userId, pageable);
+ 		}
+ 		catch (Exception e) {
+ 			throw new ApiException(FundErrorCode.FUND_NOT_FOUND);
+ 		}
+
+ 		List<UserRevenueReadResponseDto> revenueDtoList = new ArrayList<UserRevenueReadResponseDto>();
+ 		for (Fund fund : fundPage) {
+ 			UserRevenueReadResponseDto revenueDto = fundMapper.toReadRevenueResponseDto(fund);
+ 			
+ 	        revenueDto.setFunderNickname(fund.getFunder().getNickname());
+	        if (fund.getRecipe() != null) {
+	            revenueDto.setRecipeTitle(fund.getRecipe().getTitle());
+	        }
+	        
+			revenueDtoList.add(revenueDto);
+		}
+        
+        return new PageImpl<>(revenueDtoList, pageable, fundPage.getTotalElements());
+    }
 	
 	
 

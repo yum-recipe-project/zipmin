@@ -48,7 +48,9 @@ public class Fund {
 
     // 출금 상태 (0: 미출금, 1: 출금 완료 등)
     private int status;
-
+    
+    
+    
     // 후원 생성 시 funddate 기본값 설정
     @PrePersist
     public void prePersist() {

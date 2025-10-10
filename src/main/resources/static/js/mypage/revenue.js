@@ -1,3 +1,105 @@
+document.addEventListener("DOMContentLoaded", function() {
+	fetchRevenueList();
+});
+
+
 /**
- * 
+ * 전역 변수
  */
+let page = 0;
+let size = 10;
+let totalPages = 0;
+let revenueList = [];
+
+/**
+ * 서버에서 후원 목록 데이터를 가져오는 함수
+ */
+async function fetchRevenueList() {
+	
+	try {
+		const id = parseJwt(localStorage.getItem('accessToken')).id;
+		const params = new URLSearchParams({
+            page: page,
+            size: size
+        }).toString();
+		
+		const response = await instance.get(`/users/${id}/revenue?${params}`);
+		renderRevenueList(response.data.data.content);
+		page = response.data.data.number + 1;
+		totalPages = response.data.data.totalPages;
+		
+	}
+	catch (error) {
+		console.log(error);
+	}
+	
+}
+
+
+/**
+ * 후원 내역 목록을 화면에 렌더링하는 함수
+ */
+function renderRevenueList(revenueList) {
+    const container = document.querySelector('.support_list');
+    container.innerHTML = ''; 
+
+    if (!revenueList || revenueList.length === 0) {
+        container.innerHTML = '<p class="empty">아직 후원받은 내역이 없습니다.</p>';
+        return;
+    }
+
+    revenueList.forEach(revenue => {
+        // li
+        const li = document.createElement('li');
+
+        const supportInfoDiv = document.createElement('div');
+        supportInfoDiv.className = 'support_info';
+
+        const sponsorDiv = document.createElement('div');
+        sponsorDiv.className = 'sponsor';
+
+        const sponsorP1 = document.createElement('p');
+        sponsorP1.innerHTML = `<b>${revenue.funder_nickname}</b> 님에게 후원받았습니다`;
+
+        const sponsorP2 = document.createElement('p');
+        sponsorP2.textContent = formatDate(revenue.fund_date);
+
+        sponsorDiv.append(sponsorP1, sponsorP2);
+
+        const pointP = document.createElement('p');
+        pointP.className = 'point';
+        pointP.textContent = `${revenue.point.toLocaleString()}P`;
+
+        supportInfoDiv.append(sponsorDiv, pointP);
+
+        const supportDiv = document.createElement('div');
+        supportDiv.className = 'support';
+
+        const recipeLink = document.createElement('a');
+        recipeLink.href = `/recipe/viewRecipe.do?id=${revenue.recipe_id}`;
+        recipeLink.className = 'thumbnail';
+
+        const recipeImg = document.createElement('img');
+        recipeImg.src = revenue.recipe_thumbnail || '/images/common/test.png';
+        recipeLink.appendChild(recipeImg);
+
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'info';
+
+        const labelP = document.createElement('p');
+        labelP.textContent = '레시피';
+
+        const titleA = document.createElement('a');
+        titleA.href = `/recipe/viewRecipe.do?id=${revenue.recipe_id}`;
+        titleA.textContent = revenue.recipe_title || '제목 없음';
+
+        const nicknameP = document.createElement('p');
+        nicknameP.textContent = revenue.funder_nickname;
+
+        infoDiv.append(labelP, titleA, nicknameP);
+        supportDiv.append(recipeLink, infoDiv);
+
+        li.append(supportInfoDiv, supportDiv);
+        container.appendChild(li);
+    });
+}

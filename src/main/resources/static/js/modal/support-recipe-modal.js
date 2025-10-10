@@ -108,8 +108,5 @@ document.addEventListener("DOMContentLoaded", function() {
             console.error(error);
         }
 
-
-		
-		
     });
 });

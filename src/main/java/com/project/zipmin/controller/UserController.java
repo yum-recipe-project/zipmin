@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.ClassSuccessCode;
+import com.project.zipmin.api.FundSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
@@ -40,11 +41,13 @@ import com.project.zipmin.dto.UserPointReadResponseDto;
 import com.project.zipmin.dto.UserProfileReadResponseDto;
 import com.project.zipmin.dto.UserReadRequestDto;
 import com.project.zipmin.dto.UserReadResponseDto;
+import com.project.zipmin.dto.UserRevenueReadResponseDto;
 import com.project.zipmin.dto.UserUpdateRequestDto;
 import com.project.zipmin.dto.UserUpdateResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.CookingService;
+import com.project.zipmin.service.FundService;
 import com.project.zipmin.service.KitchenService;
 import com.project.zipmin.service.RecipeService;
 import com.project.zipmin.service.ReviewService;
@@ -91,6 +94,7 @@ public class UserController {
 	private final KitchenService kitchenService;
 	private final RecipeService recipeService;
 	private final ReviewService reviewService;
+	private final FundService fundService;
 	
 	
 	
@@ -702,6 +706,7 @@ public class UserController {
 	
 	
 	
+	
 	// 신청한 쿠킹클래스
 	@GetMapping("/users/{id}/applied-classes")
 	public ResponseEntity<?> readUserClassApplyList(
@@ -1020,10 +1025,34 @@ public class UserController {
 	}
 
 
-
 	
+	
+	
+	
+	// 사용자 수익 조회
+	@GetMapping("/users/{id}/revenue")
+	public ResponseEntity<?> readUserRevenueList(
+	        @PathVariable Integer id,
+	        @RequestParam int page,
+	        @RequestParam int size) {
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		Pageable pageable = PageRequest.of(page, size);
+		Page<UserRevenueReadResponseDto> revenuePage = fundService.readUserRevenuePageById(id, pageable);
+		
+		
 
-
+	    return ResponseEntity.status(FundSuccessCode.FUND_HISTORY_READ_SUCCESS.getStatus())
+	            .body(ApiResponse.success(FundSuccessCode.FUND_HISTORY_READ_SUCCESS, revenuePage));
+	}
+	
+	
+	
+	
+	
 	
 	
 }

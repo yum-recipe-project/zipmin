@@ -221,7 +221,14 @@
 	color: var(--txt-color-500);
 }
 
-
+/* 출금 가능 금액 안내 */
+#container .modal-content .modal-body .form-info .withdraw_info {
+	margin: 0;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.5;
+	color: #ff0000;
+}
 
 
 

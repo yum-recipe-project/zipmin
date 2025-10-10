@@ -23,9 +23,10 @@ import com.project.zipmin.dto.UserAccountCreateRequestDto;
 import com.project.zipmin.dto.UserAccountReadResponseDto;
 import com.project.zipmin.dto.UserAccountUpdateRequestDto;
 import com.project.zipmin.dto.UserRevenueReadResponseDto;
-import com.project.zipmin.service.FundService;
+import com.project.zipmin.dto.WithdrawCreateRequestDto;
+import com.project.zipmin.dto.WithdrawReadResponseDto;
 import com.project.zipmin.service.RevenueService;
-import com.project.zipmin.service.UserService;
+import com.project.zipmin.service.WithdrawService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 public class RevenueController {
 	
 	private final RevenueService revenueService;
+	private final WithdrawService withdrawService;
 	
 	
 	// 사용자 총 수익 조회
@@ -116,6 +118,35 @@ public class RevenueController {
                 .body(ApiResponse.success(UserSuccessCode.USER_UPDATE_ACCOUNT_SUCCESS, accountResponseDto));
     }
 
+
+    
+    
+    
+    // 사용자 포인트 출금 신청
+    @PostMapping("/users/{id}/withdraw")
+    public ResponseEntity<?> createUserWithdrawRequest(
+            @PathVariable int id,
+            @RequestBody WithdrawCreateRequestDto withdrawRequestDto) {
+    	
+    	System.err.println("클라이언트 출금 신청자: " + id + "출금 정보: " + withdrawRequestDto);
+
+        // 로그인 체크
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+            throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
+        }
+
+        // 요청 사용자 ID 유효성 검사
+        if (id <= 0 || withdrawRequestDto == null) {
+            throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+        }
+
+        // 출금 신청 처리
+        WithdrawReadResponseDto withdrawResponseDto = withdrawService.createWithdrawRequest(id, withdrawRequestDto);
+
+        return ResponseEntity.status(UserSuccessCode.USER_WITHDRAW_REQUEST_SUCCESS.getStatus())
+                .body(ApiResponse.success(UserSuccessCode.USER_WITHDRAW_REQUEST_SUCCESS, withdrawResponseDto));
+    }
 
 	
 	

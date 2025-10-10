@@ -12,6 +12,8 @@ let size = 10;
 let totalPages = 0;
 let revenueList = [];
 let totalElements = 0;
+let totalRevenue = 0;  
+
 
 /**
  * 서버에서 후원 목록 데이터를 가져오는 함수
@@ -196,9 +198,6 @@ function renderPagination() {
 /**
  * 사용자 총 수익 금액을 가져오는 함수
  */
-/**
- * 사용자 총 수익 금액을 가져오는 함수
- */
 async function fetchRevenueTotal() {
     try {
         const id = parseJwt(localStorage.getItem('accessToken')).id;
@@ -211,7 +210,7 @@ async function fetchRevenueTotal() {
         const result = await response.json();
 
         if (response.ok) {
-            const totalRevenue = result || 0;
+			totalRevenue = result || 0;
 
             const pointDisplay = document.querySelector('.support_point .point span:last-child');
             if (pointDisplay) {

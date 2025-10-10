@@ -13,5 +13,6 @@ import com.project.zipmin.entity.UserAccount;
 public interface UserAccountRepository extends JpaRepository<UserAccount, Integer> {
 	
     Optional<UserAccount> findByUser(User user);
+    Optional<UserAccount> findByUserId(Integer userId);
 	
 }

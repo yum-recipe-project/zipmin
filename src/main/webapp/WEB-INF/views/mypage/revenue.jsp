@@ -35,7 +35,7 @@
 					
 					<div class="support_point">
 						<div class="point">
-							<span>출금 가능 금액</span>
+							<span>수익</span>
 							<span></span>
 						</div>
 						<div class="btn_wrap">

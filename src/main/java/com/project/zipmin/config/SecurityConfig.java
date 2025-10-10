@@ -168,9 +168,8 @@ public class SecurityConfig {
 				.requestMatchers("/mypage.do").permitAll()
 				.requestMatchers("/mypage/**").permitAll()
 				
-				.requestMatchers("/admin/login.do").permitAll()
-				// .requestMatchers("/admin/**").hasRole("ADMIN")
-				.requestMatchers("/admin/**").permitAll()
+				.requestMatchers("/admin/login", "/admin/login.do").permitAll()
+				.requestMatchers("/admin/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
 				.requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**", "/assets/**", "/files/**").permitAll()
 				
 				// Swagger 관련 경로 모두 허용

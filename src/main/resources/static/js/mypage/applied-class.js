@@ -191,28 +191,21 @@ function renderClassList(classList) {
 async function deleteApply(id, classId) {
 	
 	try {
-		
-		const token = localStorage.getItem('accessToken');
-		const payload = parseJwt(token);
+		const payload = parseJwt(localStorage.getItem('accessToken'));
 
 		const data = {
 			id: id,
 			class_id: classId
 		}
 
-		const headers = {
-			'Content-Type': 'application/json',
-			'Authorization' : `Bearer ${token}`
-		}
-
 		const response = await instance.delete(`/classes/${payload.id}/applies`, {
 			data: data,
-			headers: headers
+			headers: getAuthHeaders()
 		});
 
 		console.log(response);
 		
-		if (response.data.code === 'COOKING_APPLY_DELETE_SUCCESS') {
+		if (response.data.code === 'CLASS_APPLY_DELETE_SUCCESS') {
 			alert('쿠킹클래스 신청이 성공적으로 취소되었습니다.');
 			const applyElement = document.querySelector(`.class_list li[data-apply-id='${id}']`);
 			if (applyElement) applyElement.remove();

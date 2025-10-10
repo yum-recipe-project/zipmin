@@ -1043,8 +1043,6 @@ public class UserController {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<UserRevenueReadResponseDto> revenuePage = fundService.readUserRevenuePageById(id, pageable);
 		
-		
-
 	    return ResponseEntity.status(FundSuccessCode.FUND_HISTORY_READ_SUCCESS.getStatus())
 	            .body(ApiResponse.success(FundSuccessCode.FUND_HISTORY_READ_SUCCESS, revenuePage));
 	}

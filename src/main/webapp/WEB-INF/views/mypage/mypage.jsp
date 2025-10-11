@@ -131,6 +131,13 @@
 									</div>
 									<img src="/images/mypage/arrow_right.png">
 								</a>
+								<a href="/mypage/withdraw.do" class="info_box">
+									<div class="info_txt">
+										<span>출금 내역</span>
+										<p>출금 내역을 확인합니다.</p>
+									</div>
+									<img src="/images/mypage/arrow_right.png">
+								</a>
 							</div>
 						</div>
 						

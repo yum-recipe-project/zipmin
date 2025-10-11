@@ -370,7 +370,7 @@ public class UserController {
 	@ApiResponses(value = {
 		// USER_VALID_TOKEN
 		// USER_TOKEN_MISSING
-		// USER_INVALID_TOKEN
+		// USER_TOKEN_INVALID
 		// USER_TOKEN_EXPIRED
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "500",
@@ -690,7 +690,7 @@ public class UserController {
 			// TODO : 순서 적절히 변경 필요
 			// USER_UPDATE_PASSWORD_SUCCESS
 			// USER_TOKEN_MISSING
-			// USER_INVALID_TOKEN
+			// USER_TOKEN_INVALID
 			// USER_TOKEN_EXPIRED
 			// USER_UPDATE_FAIL
 			// USER_TOKEN_UPDATE_FAIL

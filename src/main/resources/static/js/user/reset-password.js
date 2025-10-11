@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 		else if (result.code === 'USER_TOKEN_MISSING') {
 			location.href = '/user/passwordTokenExpired.do';
 		}
-		else if (result.code === 'USER_INVALID_TOKEN') {
+		else if (result.code === 'USER_TOKEN_INVALID') {
 			location.href = '/user/passwordTokenExpired.do';
 		}
 		else if (result.code === 'USER_TOKEN_EXPIRED') {
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				else if (result.code === 'USER_TOKEN_MISSING') {
 					location.href = '/user/passwordTokenExpired.do';
 				}
-				else if (result.code === 'USER_INVALID_TOKEN') {
+				else if (result.code === 'USER_TOKEN_INVALID') {
 					location.href = '/user/passwordTokenExpired.do';
 				}
 				else if (result.code === 'USER_TOKEN_EXPIRED') {

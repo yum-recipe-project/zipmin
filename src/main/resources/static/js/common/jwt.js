@@ -29,6 +29,17 @@ function isLoggedIn() {
 
 
 /**
+ * 로그인 여부를 확인하는 함수
+ */
+function isAdminLoggedIn() {
+	return !!localStorage.getItem('accessToken');
+}
+
+
+
+
+
+/**
  * 현재 로그인 상태에 따라 API 요청 헤더를 생성하는 함수
  */
 function getAuthHeaders() {
@@ -214,6 +225,22 @@ function redirectToLogin(url) {
 		if (confirm('로그인이 필요합니다. 로그인 페이지로 이동합니다.')) {
 			location.href = '/user/login.do';
 		}
+	}
+	
+}
+
+
+
+/**
+ * 관리자 로그인 페이지로 이동시키는 함수
+ */
+function redirectToAdminLogin() {
+	
+	if (confirm('관리자 권한으로 로그인이 필요합니다. 로그인 페이지로 이동합니다.')) {
+		location.href = '/admin/login.do';
+	}
+	else {
+		history.back();
 	}
 	
 }

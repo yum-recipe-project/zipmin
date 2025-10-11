@@ -402,7 +402,7 @@ public class UserService {
 		// 토큰 조회
 		String hashToken = PasswordTokenUtil.createHashToken(rawToken);
 		PasswordToken passwordToken = tokenRepository.findByToken(hashToken)
-				.orElseThrow(() ->  new ApiException(UserErrorCode.USER_INVALID_TOKEN));
+				.orElseThrow(() ->  new ApiException(UserErrorCode.USER_TOKEN_INVALID));
 		
 		// 만료 여부 확인
 		if (!passwordToken.getExpiresAt().after(new Date())) {
@@ -524,7 +524,7 @@ public class UserService {
 		
 		// 토큰 조회
 		PasswordToken token = tokenRepository.findByToken(PasswordTokenUtil.createHashToken(userDto.getToken()))
-				.orElseThrow(() ->  new ApiException(UserErrorCode.USER_INVALID_TOKEN));
+				.orElseThrow(() ->  new ApiException(UserErrorCode.USER_TOKEN_INVALID));
 		
 		// 만료 여부 확인
 		if (!token.getExpiresAt().after(new Date())) {

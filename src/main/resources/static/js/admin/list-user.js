@@ -1,24 +1,4 @@
 /**
- * 접근 권한을 설정하는 함수
- */
-document.addEventListener('DOMContentLoaded', async function() {
-	if (!isLoggedIn()) {
-		redirectToLogin();
-	}
-
-	try {
-		await instance.get('/dummy');
-	}
-	catch (error) {
-		redirectToLogin();
-	}
-});
-
-
-
-
-
-/**
  * 전역변수
  */
 let category = '';
@@ -26,6 +6,25 @@ let totalPages = 0;
 let page = 0;
 const size = 10;
 let userList = [];
+
+
+
+
+
+/**
+ * 접근 권한을 설정하는 함수
+ */
+document.addEventListener('DOMContentLoaded', async function() {
+
+	try {
+		await instance.get('/dummy');
+	}
+	catch (error) {
+		redirectToAdminLogin();
+	}
+	
+});
+
 
 
 
@@ -67,10 +66,6 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 async function fetchUserList() {
 	
-	if (!isLoggedIn()) {
-		directToLogin();
-	}
-	
 	try {
 		const token = localStorage.getItem('accessToken');
 		
@@ -89,8 +84,6 @@ async function fetchUserList() {
 			headers: headers
 		});
 		
-		console.log(response);
-		
 		if (response.data.code === 'USER_READ_LIST_SUCCESS') {
 			totalPages = response.data.data.totalPages;
 			page = response.data.data.number;
@@ -105,9 +98,23 @@ async function fetchUserList() {
 	catch (error) {
 		const code = error?.response?.data?.code;
 		
-		/******* 이거 코드 더 추가해야함 !!!!!  */
 		if (code === 'USER_READ_LIST_FAIL') {
-			alert('사용자 목록 조회에 실패했습니다.');
+			alertDanger('사용자 목록 조회에 실패했습니다.');
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'AUTH_TOKEN_INVALID') {
+			redirectToAdminLogin();
+		}
+		else if (code === 'USER_FORBIDDEN') {
+			redirectToAdminLogin();
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			redirectToAdminLogin();
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			console.log(error);
 		}
 		else {
 			console.log(error);

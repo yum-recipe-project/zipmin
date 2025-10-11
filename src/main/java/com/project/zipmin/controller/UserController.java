@@ -87,59 +87,9 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 	
 	private final UserService userService;
-	private final CookingService cookingService;	
 	private final KitchenService kitchenService;
 	private final RecipeService recipeService;
 	private final ReviewService reviewService;
-	
-	
-	
-	
-	
-	@Operation(
-	    summary = "사용자 목록 조회"
-	)
-	@ApiResponses(value = {
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "200",
-				description = "사용자 목록 조회 성공",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = UserReadListSuccessResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "400",
-				description = "사용자 목록 조회 실패",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = UserReadListFailResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "500",
-				description = "서버 내부 오류",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = InternalServerErrorResponse.class)))
-	})
-	// 사용자 목록 조회
-	@GetMapping("/users")
-	public ResponseEntity<?> readUserPage(
-			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
-			@Parameter(description = "페이지 번호") @RequestParam int page,
-			@Parameter(description = "페이지 크기") @RequestParam int size) {
-		
-		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
-			}
-		}
-		
-		Pageable pageable = PageRequest.of(page, size);
-		Page<UserReadResponseDto> userPage = userService.readUserPage(category, pageable);
-		
-		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, userPage));
-	}
 
 	
 	

@@ -85,7 +85,7 @@ async function fetchUserList() {
 			'Authorization': `Bearer ${token}`
 		}
 		
-		const response = await instance.get(`/users?${params}`, {
+		const response = await instance.get(`/admin/users?${params}`, {
 			headers: headers
 		});
 		

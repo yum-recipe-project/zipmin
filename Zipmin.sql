@@ -77,6 +77,9 @@ drop sequence seq_vote_choice_id;
 drop table chomp cascade constraints;
 drop sequence seq_chomp_id;
 
+drop table withdraw cascade constraints;
+drop sequence seq_withdraw_id;
+
 
 
 
@@ -724,5 +727,41 @@ alter table fund
     add constraint fk_fund_recipe foreign key(recipe_id)
     references recipe(id)
     on delete set null;
+    
+    
+    
+    
+-- WITHDRAW 테이블
+CREATE TABLE withdraw (
+    id              NUMBER PRIMARY KEY,       
+    user_id         NUMBER NOT NULL,          
+    account_id      NUMBER NOT NULL,          
+    request_point   NUMBER NOT NULL,          
+    request_date    DATE DEFAULT SYSDATE NOT NULL,
+    status          NUMBER DEFAULT 0 NOT NULL,    
+    complete_date   DATE,                         
+    admin_id        NUMBER                        
+);
+CREATE SEQUENCE seq_withdraw_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOCYCLE
+    NOCACHE;
+
+ALTER TABLE withdraw 
+    ADD CONSTRAINT fk_withdraw_user
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    ON DELETE CASCADE;
+ALTER TABLE withdraw 
+    ADD CONSTRAINT fk_withdraw_account
+    FOREIGN KEY (account_id) REFERENCES user_account(id)
+    ON DELETE CASCADE;
+ALTER TABLE withdraw
+    ADD CONSTRAINT fk_withdraw_admin
+    FOREIGN KEY (admin_id) REFERENCES users(id)
+    ON DELETE SET NULL;
+
+
 
 commit;

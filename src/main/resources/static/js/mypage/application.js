@@ -193,10 +193,10 @@ function renderApplyList(applyList) {
 	const thead = document.createElement('thead');
 	thead.innerHTML = `
 		<tr>
-			<th width="10%">재료</th>
-			<th width="60%">용량</th>
-			<th width="15%">수정</th>
-			<th width="15%">선택</th>
+			<th width="10%">번호</th>
+			<th width="60%">내용</th>
+			<th width="15%">선정 여부</th>
+			<th width="15%">출석 여부</th>
 		</tr>
 	`;
 	container.appendChild(thead);
@@ -204,13 +204,10 @@ function renderApplyList(applyList) {
 	const tbody = document.createElement('tbody');
 	applyList.forEach((apply, index) => {
 		const tr = document.createElement('tr');
-		// tr.dataset.id = apply.id;
 		
 		// 번호
 		const noTd = document.createElement('td');
 		const noH6 = document.createElement('h6');
-		// TODO : 수정
-		// noH6.textContent = offset + 1;
 		const offset = page * size + index;
 		noH6.textContent = totalElements - offset;
 		noTd.appendChild(noH6);
@@ -329,93 +326,118 @@ function renderApplySelected(apply) {
 }
 
 
+
+
+
 /**
- *
+ * 클래스 신청서의 출석 여부를 화면에 랜더링하는 함수
  */
-// TODO : 전면 수정 필요
 function renderApplyAttend(apply) {
 	
 	const td = document.createElement('td');
-	td.className = 'text-center';
 
 	// 드롭다운
 	if (isEvented) {
-		const wrap = document.createElement('div');
-		wrap.className = 'dropdown d-inline-block';
-		
-		const btn = document.createElement('button');
-		btn.type = 'button';
-		switch (apply.selected) {
-			case 1:
-				btn.className = 'btn btn-sm dropdown-toggle bg-primary-subtle text-primary';
-				btn.textContent = '승인';
-				break;
-			case 2:
-				btn.className = 'btn btn-sm dropdown-toggle bg-warning-subtle text-warning';
-				btn.textContent = '대기';
-				break;
-			case 0:
-				btn.className = 'btn btn-sm dropdown-toggle bg-danger-subtle text-danger';
-				btn.textContent = '미승인';
-				break;
+		if (apply.selected === 1) {
+			const wrap = document.createElement('div');
+			wrap.className = 'dropdown';
+			
+			const btn = document.createElement('button');
+			btn.type = 'button';
+			switch (apply.attend) {
+				case 1:
+					btn.className = 'btn_toggle primary';
+					btn.textContent = '출석';
+					break;
+				case 2:
+					btn.className = 'btn_toggle warning';
+					btn.textContent = '대기';
+					break;
+				case 0:
+					btn.className = 'btn_toggle danger';
+					btn.textContent = '결석';
+					break;
+			}
+			btn.setAttribute('data-bs-toggle', 'dropdown');
+			btn.setAttribute('aria-expanded', 'false');
+			
+			const menu = document.createElement('ul');
+			menu.className = 'dropdown-menu';
+			
+			// 출석
+			const liApprove = document.createElement('li');
+			const btnApprove = document.createElement('button');
+			btnApprove.type = 'button';
+			btnApprove.className = 'dropdown-item';
+			btnApprove.textContent = '출석';
+			btnApprove.addEventListener('click', () => editApplyAttend(apply.id, 'ATTEND'));
+			liApprove.appendChild(btnApprove);
+			menu.appendChild(liApprove);
+	
+			// 결석
+			const liReject = document.createElement('li');
+			const btnReject = document.createElement('button');
+			btnReject.type = 'button';
+			btnReject.className = 'dropdown-item';
+			btnReject.textContent = '결석';
+			btnReject.addEventListener('click', () => editApplyAttend(apply.id, 'ABSENT'));
+			liReject.appendChild(btnReject);
+			menu.appendChild(liReject);
+	
+			// 대기
+			const liPending = document.createElement('li');
+			const btnPending = document.createElement('button');
+			btnPending.type = 'button';
+			btnPending.className = 'dropdown-item';
+			btnPending.textContent = '대기';
+			btnPending.addEventListener('click', () => editApplyAttend(apply.id, 'PENDING'));
+			liPending.appendChild(btnPending);
+			menu.appendChild(liPending);
+			
+			wrap.append(btn, menu);
+			td.appendChild(wrap);
 		}
-		btn.setAttribute('data-bs-toggle', 'dropdown');
-		btn.setAttribute('aria-expanded', 'false');
-		
-		const menu = document.createElement('ul');
-		menu.className = 'dropdown-menu shadow-sm';
-		
-		// 승인
-		const liApprove = document.createElement('li');
-		const btnApprove = document.createElement('button');
-		btnApprove.type = 'button';
-		btnApprove.className = 'dropdown-item';
-		btnApprove.textContent = '승인';
-		btnApprove.addEventListener('click', () => editApplySelected(apply.id, 'APPROVED'));
-		liApprove.appendChild(btnApprove);
-		menu.appendChild(liApprove);
-
-		// 반려
-		const liReject = document.createElement('li');
-		const btnReject = document.createElement('button');
-		btnReject.type = 'button';
-		btnReject.className = 'dropdown-item';
-		btnReject.textContent = '미승인';
-		btnReject.addEventListener('click', () => editApplySelected(apply.id, 'REJECTED'));
-		liReject.appendChild(btnReject);
-		menu.appendChild(liReject);
-
-		// 대기
-		const liPending = document.createElement('li');
-		const btnPending = document.createElement('button');
-		btnPending.type = 'button';
-		btnPending.className = 'dropdown-item';
-		btnPending.textContent = '대기';
-		btnPending.addEventListener('click', () => editApplySelected(apply.id, 'PENDING'));
-		liPending.appendChild(btnPending);
-		menu.appendChild(liPending);
-		
-		wrap.append(btn, menu);
-		td.appendChild(wrap)
+	}
+	else if (isOpened) {
+		if (apply.selected === 1) {
+			const span = document.createElement('span');
+			span.type = 'button';
+			span.className = 'btn_gray_small';
+			switch (apply.selected) {
+				case 1:
+					span.textContent = '출석';
+					break;
+				case 2:
+					span.textContent = '대기';
+					break;
+				case 0:
+					span.textContent = '결석';
+					break;
+			}
+			span.disabled = true;
+			td.appendChild(span);
+		}
 	}
 	// 버튼
 	else {
-		const span = document.createElement('span');
-		span.type = 'button';
-		span.className = 'btn_gray_small';
-		switch (apply.selected) {
-			case 1:
-				span.textContent = '출석';
-				break;
-			case 2:
-				span.textContent = '대기';
-				break;
-			case 0:
-				span.textContent = '결석';
-				break;
+		if (apply.selected === 1) {
+			const span = document.createElement('span');
+			span.type = 'button';
+			span.className = 'btn_gray_small';
+			switch (apply.selected) {
+				case 1:
+					span.textContent = '출석';
+					break;
+				case 2:
+					span.textContent = '대기 만료';
+					break;
+				case 0:
+					span.textContent = '결석';
+					break;
+			}
+			span.disabled = true;
+			td.appendChild(span);
 		}
-		span.disabled = true;
-		td.appendChild(span);
 	}
 
 	return td;
@@ -426,14 +448,8 @@ function renderApplyAttend(apply) {
 
 
 /**
- * 클래스 신청서의 출석 여부를 화면에 렌더링하는 함수
+ * 
  */
-
-
-
-
-
-
 async function editApplySelected(applyId, selected) {
 	
 	try {
@@ -466,68 +482,34 @@ async function editApplySelected(applyId, selected) {
 
 
 
-
-
-
-
-
-
-/*
-
-attendBtn.onclick = async function () {
+/**
+ * 
+ */
+async function editApplyAttend(applyId, attend) {
+	
 	try {
-		const id = new URLSearchParams(window.location.search).get('id');
-		const token = localStorage.getItem('accessToken');
-
+		const classId = new URLSearchParams(window.location.search).get('id');
+		
 		const data = {
-			id: apply.id,
-			attend: 1,
-			class_id: id
+			id: applyId,
+			attend: attend,
+			class_id: classId
 		};
 		
-		const headers = {
-			'Content-Type': 'application/json',
-			'Authorization': `Bearer ${token}`
-		};
+		const response = await instance.patch(`/classes/${classId}/applies/${applyId}/status`, data, {
+			headers: getAuthHeaders()
+		});
 		
-		await instance.patch(`/classes/${id}/applies/${apply.id}`, data, { headers });
-
-		attendBtn.classList.add('active');
-		absentBtn.classList.remove('active');
-	} catch (error) {
+		console.log(response);
+		
+		// TODO 성공시 
+	}
+	catch (error) {
+		const code = error?.response?.data?.code;
+		
+		// TODO : 에러코드
+		
 		console.log(error);
 	}
-};
-
-absentBtn.onclick = async function () {
-	try {
-		const id = new URLSearchParams(window.location.search).get('id');
-		const token = localStorage.getItem('accessToken');
-
-		const data = {
-			id: apply.id,
-			attend: 0,
-			class_id: id
-		};
-
-		const headers = {
-			'Content-Type': 'application/json',
-			'Authorization': `Bearer ${token}`
-		};
-
-		await instance.patch(`/classes/${id}/applies/${apply.id}`, data, { headers });
-		
-		absentBtn.classList.add('active');
-		attendBtn.classList.remove('active');
-	} catch (error) {
-		console.log(error);
-	}
-};
-
-btnBox.append(attendBtn, absentBtn);
-li.appendChild(btnBox);
-
-container.appendChild(li);
-*/
-
+}
 

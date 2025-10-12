@@ -32,7 +32,7 @@
 						<div class="apply_sort">
 							<button class="btn_sort active" data-sort="-1">전체</button>
 							<button class="btn_sort" data-sort="1">선정</button>
-							<button class="btn_sort" data-sort="0">대기</button>
+							<button class="btn_sort" data-sort="2">대기</button>
 						</div>
 					</div>
 					

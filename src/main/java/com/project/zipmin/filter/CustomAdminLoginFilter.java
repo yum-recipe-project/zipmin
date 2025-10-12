@@ -34,17 +34,17 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 사용자 로그인 요청을 처리하는 커스텀 필터입니다.
+ * 관리자 로그인 요청을 처리하는 커스텀 필터입니다.
  *
  * JSON 형식의 사용자 인증 정보를 처리하여,
  * 인증 성공 시 JWT 토큰을 발급하고
  * 인증 실패 시 401 응답을 반환합니다.
  * 
  * @author 정하림
- * @since 1.0 (2025-06-01)
+ * @since 1.0 (2025-09-27)
  */
 @RequiredArgsConstructor
-public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
+public class CustomAdminLoginFilter extends UsernamePasswordAuthenticationFilter {
 	
 	private final AuthenticationManager authenticationManager;
 	private final JwtUtil jwtUtil;
@@ -95,7 +95,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		
 		// JWT 토큰 발급 및 응답
 		String access = jwtUtil.createJwt("access", id, username, nickname, avatar, role, 60 * 60 * 60L);
-		String refresh = jwtUtil.createJwt("refresh", id, username, nickname, avatar, role, 86400_000L);
+		String refresh = jwtUtil.createJwt("refresh", id, username, nickname, role, avatar, 86400_000L);
 		
 		// refresh 토큰 저장 (DB or Redis)
 		reissueService.addRefresh(username, refresh, 86400_000L);

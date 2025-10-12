@@ -1,7 +1,5 @@
 package com.project.zipmin.entity;
 
-import org.hibernate.annotations.Formula;
-
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -13,7 +11,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,12 +37,8 @@ public class User {
 	private String email;
 	private String avatar;
 	
-	
-	@Transient
 	private String introduce;
-	@Transient
 	private String link;
-	
 	
 	@Enumerated(EnumType.STRING)
 	private Role role;

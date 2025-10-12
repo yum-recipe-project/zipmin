@@ -6,7 +6,6 @@
 
 
 
-
 -- 테이블과 시퀀스 일괄 삭제
 drop table fund cascade constraints;
 drop sequence seq_fund_id;
@@ -17,14 +16,14 @@ drop sequence seq_fridge_memo_id;
 drop table class_apply cascade constraints;
 drop sequence seq_class_apply_id;
 
+drop table class_target cascade constraints;
+drop sequence seq_class_target_id;
+
 drop table class_schedule cascade constraints;
 drop sequence seq_class_schedule_id;
 
 drop table class_tutor cascade constraints;
 drop sequence seq_class_tutor_id;
-
-drop table class_target cascade constraints;
-drop sequence seq_class_target_id;
 
 drop table classes cascade constraints;
 drop sequence seq_classes_id;
@@ -56,6 +55,9 @@ drop sequence seq_recipe_category_id;
 drop table recipe cascade constraints;
 drop sequence seq_recipe_id;
 
+drop table password_token cascade constraints;
+drop sequence seq_password_token_id;
+
 drop table user_fridge cascade constraints;
 drop sequence seq_user_fridge_id;
 
@@ -84,6 +86,7 @@ drop sequence seq_withdraw_id;
 
 
 
+
 -- USERS 테이블
 -- drop table users;
 -- drop sequence seq_user_id;
@@ -96,6 +99,8 @@ create table users (
     tel varchar2(15),
     email varchar2(50),
     avatar varchar2(200),
+    introduce varchar2(2000),
+    link varchar2(300),
     point number default 0,
     revenue number default 9,
     role varchar2(20) not null,
@@ -140,6 +145,30 @@ create sequence seq_user_account_id
     nocache;
 commit;
 
+
+
+
+
+-- PASSWORD_TOKEN 테이블
+-- drop table password_token;
+-- drop sequence seq_password_token_id;
+CREATE TABLE password_token (
+    id number primary key,
+    token varchar2(64) not null,
+    expires_at date not null,
+    user_id number not null
+);
+alter table password_token
+    add constraint const_password_token_user foreign key(user_id)
+    references users(id) on delete cascade;
+create sequence seq_password_token_id
+    increment by 1
+    start with 1
+    minvalue 1
+    nomaxvalue
+    nocycle
+    nocache;
+commit;
 
 
 
@@ -677,7 +706,10 @@ commit;
 
 
 
--- fridge_memo 테이블
+
+-- FRIDGE_MEMO 테이블
+-- drop table fridge_memo;
+-- drop sequence seq_fridge_memo_id;
 create table fridge_memo (
     id number primary key,
     name varchar2(50) not null, 
@@ -696,6 +728,7 @@ create sequence seq_fridge_memo_id
     nocycle
     nocache;
 commit;
+
 
 
 

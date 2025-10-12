@@ -8,14 +8,14 @@ document.addEventListener('DOMContentLoaded', function () {
 	// 아이디 실시간 검사
 	form.username.addEventListener('input', function() {
 		const isUsernameEmpty = form.username.value.trim() === '';
-		form.username.classList.toggle('danger', isUsernameEmpty);
+		form.username.classList.toggle('is-invalid', isUsernameEmpty);
 		document.querySelector('.username_field p').style.display = isUsernameEmpty ? 'block' : 'none';
 	});
 	
 	// 비밀번호 실시간 검사
 	form.password.addEventListener('input', function() {
 		const isPasswordEmpty = form.password.value.trim() === '';
-		form.password.classList.toggle('danger', isPasswordEmpty);
+		form.password.classList.toggle('is-invalid', isPasswordEmpty);
 		document.querySelector('.password_field p').style.display = isPasswordEmpty ? 'block' : 'none';
 	});
 });
@@ -49,18 +49,17 @@ document.addEventListener('DOMContentLoaded', function() {
 	// 로그인 폼 제출 이벤트 발생
 	form.addEventListener('submit', async function(event) {
 		event.preventDefault();
-		alert('제출');
 		let isValid = true;
 		
 		if (form.password.value.trim() === '') {
-			form.password.classList.add('danger');
+			form.password.classList.add('is-invalid');
 			document.querySelector('.password_field p').style.display = 'block';
 			form.password.focus();
 			isValid = false;
 		}
 		
 		if (form.username.value.trim() === '') {
-			form.username.classList.add('danger');
+			form.username.classList.add('is-invalid');
 			document.querySelector('.username_field p').style.display = 'block';
 			form.username.focus();
 			isValid = false;
@@ -77,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					password : form.password.value.trim()
 				};
 				
-				const response = await fetch('/login', {
+				const response = await fetch('/admin/login', {
 					method: 'POST',
 					headers: headers,
 					body: JSON.stringify(data)
@@ -107,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				}
 			}
 			catch (error) {
-				console.log('서버 요청 중 오류 발생');
+				console.log(error);
 			}
 		}
 	})

@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.KitchenErrorCode;
-import com.project.zipmin.dto.CommentReadMyResponseDto;
+import com.project.zipmin.dto.UserCommentReadesponseDto;
 import com.project.zipmin.dto.GuideCreateRequestDto;
 import com.project.zipmin.dto.GuideCreateResponseDto;
 import com.project.zipmin.dto.GuideReadMySavedResponseDto;

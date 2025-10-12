@@ -75,7 +75,6 @@ async function fetchClass() {
 	catch (error) {
 		console.log(error);
 	}
-
 }
 
 

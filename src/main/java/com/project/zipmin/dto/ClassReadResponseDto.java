@@ -36,6 +36,7 @@ public class ClassReadResponseDto {
 	private boolean applystatus;
 	private int applycount;
 	private boolean isOpened;
+	private boolean isEvented;
 	
 	// 개설 신청자 정보
 	private String username;

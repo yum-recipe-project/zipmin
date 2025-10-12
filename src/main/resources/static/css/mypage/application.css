@@ -68,6 +68,7 @@
 
 
 /* 지원서 목록 */
+/*
 #container .content .apply_list {
 	display: flex;
 	flex-direction: column;
@@ -128,4 +129,121 @@
 	color: #FFF;
 	font-weight: 500;
 }
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 신청서 표 */
+#container .apply_wrap .apply_list thead th {
+	text-align: center;
+	background: #F9F9F9;
+	padding: 16px;
+	height: 50px;
+	border-bottom: 1px solid var(--line-color2);
+	font-size: 16px;
+}
+
+#container .apply_wrap .apply_list tbody tr {
+	text-align: center;
+	height: 50px;
+	border-bottom: 1px solid var(--line-color2);
+	font-size: 14px;
+}
+
+#container .apply_wrap .apply_list tbody tr td {
+	padding: 16px;
+}
+
+
+
+
+
+
+
+#container .apply_wrap .apply_list .dropdown {
+	position: relative;
+	display: inline-block !important;
+}
+
+#container .apply_wrap .apply_list .dropdown .btn_toggle {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+	
+	border: none;
+	justify-content: center;
+	text-align: center;	
+	width: fit-content;
+	height: 32px;
+	padding: 5px 12px 7px;
+	border-radius: 4px;
+	background: #EEE;
+	font-size: 14px;
+	color: #666;
+	font-weight: 500;
+	line-height: 20px;
+	letter-spacing: -0.4px;
+}
+
+#container .apply_wrap .apply_list .dropdown .btn_toggle:after {
+	display: inline-block;
+	margin-left: 0.255em;
+	vertical-align: 0.255em;
+	content: '';
+	border-top: 6px solid;
+	border-right: 4.5px solid transparent;
+	border-bottom: 0;
+	border-left: 4.5px solid transparent;
+}
+
+#container .apply_wrap .apply_list .dropdown .btn_toggle.primary {
+	background-color: #DFE7FF !important;
+	color: rgba(93, 135, 255);
+}
+
+#container .apply_wrap .apply_list .dropdown .btn_toggle.warning {
+	background-color: #FFEFD2 !important;
+	color: #FFAE1F;
+}
+
+#container .apply_wrap .apply_list .dropdown .btn_toggle.danger {
+	background-color: #FEE7E1 !important;
+	color: #FA896B;
+}
+
+#container .apply_wrap .apply_list .dropdown ul {
+	border: none;
+	box-shadow: 0 2px 4px rgba(90, 106, 133, 0.075) !important;
+}
+
+#container .apply_wrap .apply_list .dropdown ul li button {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+	padding: 10px 16px;
+	color: #5A6A85;
+}
+
+#container .apply_wrap .apply_list .dropdown ul li button:active {
+	background: none;
+}
+
+
+
 

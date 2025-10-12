@@ -207,14 +207,16 @@ function renderUserClassList(classList) {
 		const cancelDiv = document.createElement('div');
 		cancelDiv.className = 'cancel_btn';
 
-		const btn = document.createElement('button');
-		btn.className = 'btn_outline';
-		btn.textContent = '신청서 보기';
-		btn.onclick = function () {
-			location.href = `/mypage/class/application.do?id=${classs.id}`;
-		};
-
-		cancelDiv.appendChild(btn);
+		if (classs.approval === 1) {
+			const btn = document.createElement('button');
+			btn.className = 'btn_outline';
+			btn.textContent = '신청서 보기';
+			btn.onclick = function () {
+				location.href = `/mypage/class/application.do?id=${classs.id}`;
+			};
+			cancelDiv.appendChild(btn);
+		}
+		
 		classDiv.appendChild(cancelDiv);
 		li.appendChild(classDiv);
 		container.appendChild(li);

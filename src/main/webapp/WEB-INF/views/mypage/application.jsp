@@ -14,7 +14,7 @@
 		<%@include file="../common/header.jsp" %>
 		<main id="container">
 			<div class="content">
-				<div class="apply_wrap">
+				<div id="applyWrap" class="apply_wrap">
 					<!-- 신청서 헤더 -->
 					<div class="apply_header">
 						<a href="/mypage.do">
@@ -23,7 +23,7 @@
 								<img src="/images/mypage/arrow_right.png">
 							</span>
 						</a>
-						<h2>한식 입문 클래스 신청서</h2>
+						<h2 class="apply_title"></h2>
 					</div>
 					
 					<!-- 신청서 유틸 -->
@@ -36,8 +36,7 @@
 						</div>
 					</div>
 					
-					<!-- 신청서 목록 -->
-					<ul class="apply_list"></ul>
+					<table class="apply_list"></table>
 				</div>
 				
 				<div class="pagination_wrap">

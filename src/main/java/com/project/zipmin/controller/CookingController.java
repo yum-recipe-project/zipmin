@@ -235,18 +235,19 @@ public class CookingController {
 	// 클래스의 신청 목록 조회
 	@GetMapping("/classes/{id}/applies")
 	public ResponseEntity<?> listClassApply(
-			@PathVariable int id,
-			@RequestParam int sort,
-		    @RequestParam int page,
-		    @RequestParam int size) {
+			@Parameter(description = "클래스의 일련번호") @PathVariable int id,
+			@Parameter(description = "정렬") @RequestParam int sort,
+			@Parameter(description = "페이지 번호") @RequestParam int page,
+			@Parameter(description = "페이지 크기") @RequestParam int size) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
+		}
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<ClassApplyReadResponseDto> applyPage = null;
-		
-		// 로그인 여부도 잘 확인해야함
-		
-		
-		applyPage = cookingService.readApplyPageById(id, sort, pageable);
+		Page<ClassApplyReadResponseDto> applyPage = cookingService.readApplyPageById(id, sort, pageable);
 		
 		return ResponseEntity.status(ClassSuccessCode.CLASS_APPLY_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_APPLY_READ_LIST_SUCCESS, applyPage));

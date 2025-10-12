@@ -1,6 +1,7 @@
 package com.project.zipmin.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -344,6 +345,20 @@ public class CookingService {
 		else {
 			int userId = userService.readUserByUsername(authentication.getName()).getId();
 			classDto.setApplystatus(applyRepository.existsByClasssIdAndUserId(id, userId));
+		}
+		
+		// 클래스 오픈 여부 조회
+		Date now = new Date();
+		if (classs.getApproval() == 1 && now.before(classs.getNoticedate())) {
+			classDto.setOpened(true);
+		}
+		
+		// 클래스 진행 완료 여부 조회
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(classDto.getEventdate());
+		calendar.add(Calendar.DAY_OF_YEAR, 7);
+		if (classs.getApproval() == 1 && now.after(classs.getEventdate()) && now.before(calendar.getTime())) {
+			classDto.setEvented(true);
 		}
 		
 		return classDto;

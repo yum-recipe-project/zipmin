@@ -258,11 +258,11 @@ function renderApplySelected(apply) {
 				btn.textContent = '승인';
 				break;
 			case 2:
-				btn.className = 'btn_toggle primary';
+				btn.className = 'btn_toggle warning';
 				btn.textContent = '대기';
 				break;
 			case 0:
-				btn.className = 'btn_toggle primary';
+				btn.className = 'btn_toggle danger';
 				btn.textContent = '미승인';
 				break;
 		}
@@ -278,7 +278,7 @@ function renderApplySelected(apply) {
 		btnApprove.type = 'button';
 		btnApprove.className = 'dropdown-item';
 		btnApprove.textContent = '승인';
-		btnApprove.addEventListener('click', () => editApplySelected(apply.id, 'APPROVED'));
+		btnApprove.addEventListener('click', () => editApplySelected(apply.id, 'SELECTED'));
 		liApprove.appendChild(btnApprove);
 		menu.appendChild(liApprove);
 
@@ -288,7 +288,7 @@ function renderApplySelected(apply) {
 		btnReject.type = 'button';
 		btnReject.className = 'dropdown-item';
 		btnReject.textContent = '미승인';
-		btnReject.addEventListener('click', () => editApplySelected(apply.id, 'REJECTED'));
+		btnReject.addEventListener('click', () => editApplySelected(apply.id, 'UNSELECTED'));
 		liReject.appendChild(btnReject);
 		menu.appendChild(liReject);
 
@@ -445,18 +445,18 @@ async function editApplySelected(applyId, selected) {
 			class_id: classId
 		};
 		
-		const response = await instance.patch(`/classes/${classId}/applies/${applyId}`, data, {
+		const response = await instance.patch(`/classes/${classId}/applies/${applyId}/status`, data, {
 			headers: getAuthHeaders()
 		});
 		
 		console.log(response);
 		
-		// selectBtn.classList.add('active');
-		// pendingBtn.classList.remove('active');
-		
+		// TODO 성공시 
 	}
 	catch (error) {
 		const code = error?.response?.data?.code;
+		
+		// TODO : 에러코드
 		
 		console.log(error);
 	}

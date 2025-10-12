@@ -26,6 +26,7 @@ import com.project.zipmin.dto.ClassApplyCreateRequestDto;
 import com.project.zipmin.dto.ClassApplyCreateResponseDto;
 import com.project.zipmin.dto.ClassApplyDeleteRequestDto;
 import com.project.zipmin.dto.ClassApplyReadResponseDto;
+import com.project.zipmin.dto.ClassApplyStatusUpdateRequestDto;
 import com.project.zipmin.dto.ClassApplyUpdateRequestDto;
 import com.project.zipmin.dto.ClassApplyUpdateResponseDto;
 import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
@@ -37,12 +38,14 @@ import com.project.zipmin.dto.ClassTutorReadResponseDto;
 import com.project.zipmin.dto.UserClassReadResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.entity.Approval;
+import com.project.zipmin.entity.Attend;
 import com.project.zipmin.entity.Class;
 import com.project.zipmin.entity.ClassApply;
 import com.project.zipmin.entity.ClassSchedule;
 import com.project.zipmin.entity.ClassTarget;
 import com.project.zipmin.entity.ClassTutor;
 import com.project.zipmin.entity.Role;
+import com.project.zipmin.entity.Selected;
 import com.project.zipmin.mapper.ClassApplyMapper;
 import com.project.zipmin.mapper.ClassMapper;
 import com.project.zipmin.mapper.ClassScheduleMapper;
@@ -662,6 +665,7 @@ public class CookingService {
 	
 	
 	// 클래스 신청 수정
+	// TOOD : 사용하나 ?
 	public ClassApplyUpdateResponseDto updateApply(ClassApplyUpdateRequestDto applyDto) {
 		
 		// 입력값 검증
@@ -700,6 +704,98 @@ public class CookingService {
 			throw new ApiException(ClassErrorCode.CLASS_APPLY_CREATE_FAIL);
 		}
 	}
+	
+	
+	
+	
+	// 클래스 신청 수정
+	public ClassApplyUpdateResponseDto updateApplySelected(ClassApplyStatusUpdateRequestDto applyDto) {
+		
+		// 입력값 검증
+		if (applyDto == null || applyDto.getId() == null || applyDto.getClassId() == null
+				|| (applyDto.getSelected() == null && applyDto.getAttend() == null)) {
+			throw new ApiException(ClassErrorCode.CLASS_APPLY_INVALID_INPUT);
+		}
+		
+		// 클래스 존재 여부 판단
+		Class classs = classRepository.findById(applyDto.getClassId())
+				.orElseThrow(() -> new ApiException(ClassErrorCode.CLASS_NOT_FOUND));
+		
+		// 클래스 지원 여부 판단
+		ClassApply apply = applyRepository.findById(applyDto.getId())
+				.orElseThrow(() -> new ApiException(ClassErrorCode.CLASS_APPLY_NOT_FOUND));
+		
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto loginUser = userService.readUserByUsername(username);
+		if (!loginUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!loginUser.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (loginUser.getId() != classs.getUser().getId()) {
+					throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
+				}
+			}
+		}
+		
+		// 클래스 선정 기간 검증
+		Date now = new Date();
+		if (applyDto.getSelected() != null) {
+			if (classs.getApproval() != 1 || now.after(classs.getNoticedate())) {
+				throw new ApiException(ClassErrorCode.CLASS_ALREADY_ENDED);
+			}
+		}
+		
+		// 선정 상태
+		Integer selectedCode = null;
+		if (applyDto.getSelected() != null) {
+			try {
+				selectedCode = Selected.valueOf(applyDto.getSelected()).getCode();
+			}
+			catch (Exception e) {
+				throw new ApiException(ClassErrorCode.CLASS_APPLY_INVALID_INPUT);
+			}
+		}
+		
+		// 클래스 출석 기간 검증
+		if (applyDto.getAttend() != null) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(classs.getEventdate());
+			calendar.add(Calendar.DAY_OF_YEAR, 7);
+			if (classs.getApproval() != 1 || now.before(classs.getEventdate()) || now.after(calendar.getTime())) {
+				throw new ApiException(ClassErrorCode.CLASS_ALREADY_ENDED);
+			}
+		}
+		
+		// 출석 상태
+		Integer attendCode = null;
+		if (applyDto.getAttend() != null) {
+			try {
+				attendCode = Attend.valueOf(applyDto.getAttend()).getCode();
+			}
+			catch (Exception e) {
+				throw new ApiException(ClassErrorCode.CLASS_APPLY_INVALID_INPUT);
+			}
+		}
+		
+		// 변경 값 설정
+		if (selectedCode != null) {
+			apply.setSelected(selectedCode);
+		}
+		if (attendCode != null) {
+			apply.setAttend(attendCode);
+		}
+		
+		// 클래스 지원 수정
+		try {
+			apply = applyRepository.save(apply);
+			return applyMapper.toUpdateResponseDto(apply);
+		}
+		catch (Exception e) {
+			throw new ApiException(ClassErrorCode.CLASS_APPLY_CREATE_FAIL);
+		}
+	}
+	
+	
 	
 	
 	

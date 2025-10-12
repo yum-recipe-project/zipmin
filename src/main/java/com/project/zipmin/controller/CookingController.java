@@ -11,6 +11,7 @@ import com.project.zipmin.dto.ClassApplyCreateRequestDto;
 import com.project.zipmin.dto.ClassApplyCreateResponseDto;
 import com.project.zipmin.dto.ClassApplyDeleteRequestDto;
 import com.project.zipmin.dto.ClassApplyReadResponseDto;
+import com.project.zipmin.dto.ClassApplyStatusUpdateRequestDto;
 import com.project.zipmin.dto.ClassApplyUpdateRequestDto;
 import com.project.zipmin.dto.ClassApplyUpdateResponseDto;
 import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
@@ -308,13 +309,15 @@ public class CookingController {
 	
 	
 	// 클래스 신청 수정 (출석)
+	// TODO : 수정 필요
+	/*
 	@PatchMapping("/classes/{classId}/applies/{applyId}")
 	public ResponseEntity<?> attendClass(
 			@PathVariable int classId,
 			@PathVariable int applyId,
 			@RequestBody ClassApplyUpdateRequestDto applyRequestDto) {
 		
-		// 인증 여부 확인 (비로그인)
+		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
@@ -332,6 +335,29 @@ public class CookingController {
 //		}
 		
 		ClassApplyUpdateResponseDto applyResponseDto = cookingService.updateApply(applyRequestDto);
+		
+		return ResponseEntity.status(ClassSuccessCode.CLASS_APPLY_UPDATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(ClassSuccessCode.CLASS_APPLY_UPDATE_SUCCESS, applyResponseDto));
+	}
+	*/
+	
+	
+	
+	
+	// 클래스 신청서 상태 수정
+	@PatchMapping("/classes/{classId}/applies/{applyId}/status")
+	public ResponseEntity<?> attendClass(
+			@PathVariable int classId,
+			@PathVariable int applyId,
+			@RequestBody ClassApplyStatusUpdateRequestDto applyRequestDto) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
+		}
+		
+		ClassApplyUpdateResponseDto applyResponseDto = cookingService.updateApplySelected(applyRequestDto);
 		
 		return ResponseEntity.status(ClassSuccessCode.CLASS_APPLY_UPDATE_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_APPLY_UPDATE_SUCCESS, applyResponseDto));

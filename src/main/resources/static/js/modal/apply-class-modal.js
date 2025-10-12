@@ -29,13 +29,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		event.preventDefault();
 	
 		try {
-			const token = localStorage.getItem('accessToken');
-
-			const headers = {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${token}`
-			}
-
 			const data = {
 				reason: form.reason.value.trim(),
 				question: form.question.value.trim(),
@@ -43,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			};
 			
 			const response = await instance.post(`/classes/${form.id.value}/applies`, data, {
-				headers: headers
+				headers: getAuthHeaders()
 			});
 			
 			if (response.data.code === 'CLASS_APPLY_CREATE_SUCCESS') {

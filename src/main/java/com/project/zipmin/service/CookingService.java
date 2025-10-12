@@ -624,6 +624,10 @@ public class CookingService {
 			throw new ApiException(ClassErrorCode.CLASS_APPLY_DUPLICATE);
 		}
 		
+		// 클래스 신청 상태값 설정
+		applyDto.setSelected(2);
+		applyDto.setAttend(2);
+		
 		// 클래스 신청 작성
 		ClassApply apply = applyMapper.toEntity(applyDto);
 		try {

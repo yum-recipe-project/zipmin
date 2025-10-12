@@ -161,11 +161,17 @@
 	text-align: center;
 	height: 50px;
 	border-bottom: 1px solid var(--line-color2);
-	font-size: 14px;
+	font-size: 16px;
+	
 }
 
 #container .apply_wrap .apply_list tbody tr td {
 	padding: 16px;
+	line-height: 2;
+}
+
+#container .apply_wrap .apply_list tbody tr td h6 {
+	line-height: 1.5;
 }
 
 

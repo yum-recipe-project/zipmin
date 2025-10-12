@@ -215,8 +215,13 @@ function renderApplyList(applyList) {
 		// 신청자
 		const writerTd = document.createElement('td');
 		const writerH6 = document.createElement('h6');
-		// writerH6.textContent = `${classs.nickname} (${classs.username})`;
-		writerH6.textContent = apply.name;
+		writerTd.className = 'text-start';
+		writerH6.innerHTML = `
+			<b>이름 :</b> ${apply.name}<br>
+			<b>신청 동기 :</b> ${apply.reason}<br>
+			<b>질문 :</b> ${apply.question}
+		`;
+
 		writerTd.appendChild(writerH6);
 
 		// 승인

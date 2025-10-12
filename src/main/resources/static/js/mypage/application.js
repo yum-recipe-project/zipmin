@@ -1,4 +1,18 @@
 /**
+ * 전역 변수
+ */
+let sort = -1;
+let totalPages = 0;
+let totalElements = 0;
+let page = 0;
+let size = 10;
+let applyList = [];
+
+
+
+
+
+/**
  * 접근 권한을 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', async function() {
@@ -12,18 +26,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 	
 });
 
-
-
-
-
-/**
- * 전역 변수 선언
- */
-let sort = -1;
-let totalPages = 0;
-let page = 0;
-let size = 10;
-let applyList = [];
 
 
 
@@ -76,18 +78,21 @@ async function fetchApplyList() {
 		console.log(response);
 		
 		if (response.data.code === 'CLASS_APPLY_READ_LIST_SUCCESS') {
-			
+			// 전역변수 설정
 			totalPages = response.data.data.totalPages;
+			totalElements = response.data.data.totalElements;
 			page = response.data.data.number;
 			applyList = response.data.data.content;
 			
+			// 렌더링
 			renderApplyList(applyList);
-			renderPagination();
-			
-			document.querySelector('.apply_util .total').innerText = `총 ${response.data.data.totalElements}개`;
+			renderPagination(fetchApplyList);
+			document.querySelector('.apply_util .total').innerText = `총 ${totalElements}개`;
 		}
 	}
 	catch (error) {
+		
+		// TODO : 에러코드
 		console.log(error);
 	}
 	
@@ -100,24 +105,40 @@ async function fetchApplyList() {
  * 쿠킹클래스의 신청 목록을 화면에 렌더링하는 함수
  */
 function renderApplyList(applyList) {
+	
 	const container = document.querySelector('.apply_list');
 	container.innerHTML = '';
 
+	// 쿠킹클래스의 신청 목록이 존재하지 않는 경우	
+	if (applyList == null || applyList.length === 0) {
+		container.style.display = 'none';
+		document.querySelector('.list_empty')?.remove();
+
+		const wrapper = document.createElement('div');
+		wrapper.className = 'list_empty';
+
+		const span = document.createElement('span');
+		span.textContent = '쿠킹클래스 신청서가 없습니다';
+		wrapper.appendChild(span);
+		container.insertAdjacentElement('afterend', wrapper);
+
+		return;
+	}
+	
+	// 쿠킹클래스의 신청 목록이 존재하는 경우
 	applyList.forEach(apply => {
+		container.style.display = 'block';
+		document.querySelector('.list_empty')?.remove();
+		
 		const li = document.createElement('li');
 
 		const table = document.createElement('table');
-
 		const colgroup = document.createElement('colgroup');
-		
 		const col1 = document.createElement('col');
 		col1.setAttribute('width', '100px');
-		
 		const col2 = document.createElement('col');
 		col2.setAttribute('width', '*');
-		
-		colgroup.appendChild(col1);
-		colgroup.appendChild(col2);
+		colgroup.append(col1, col2);
 
 		const tbody = document.createElement('tbody');
 
@@ -294,77 +315,6 @@ function renderApplyList(applyList) {
 	});
 }
 
-
-
-
-
-/**
- * 페이지네이션을 화면에 렌더링하는 함수
- */
-function renderPagination() {
-	const pagination = document.querySelector('.pagination ul');
-	pagination.innerHTML = '';
-
-	// 이전 버튼
-	const prevLi = document.createElement('li');
-	const prevLink = document.createElement('a');
-	prevLink.href = '#';
-	prevLink.className = 'prev';
-	prevLink.dataset.page = page - 1;
-
-	if (page === 0) {
-		prevLink.style.pointerEvents = 'none';
-		prevLink.style.opacity = '0';
-	}
-
-	const prevImg = document.createElement('img');
-	prevImg.src = '/images/common/chevron_left.png';
-	prevLink.appendChild(prevImg);
-	prevLi.appendChild(prevLink);
-	pagination.appendChild(prevLi);
-
-	// 페이지 번호
-	for (let i = 0; i < totalPages; i++) {
-		const li = document.createElement('li');
-		const a = document.createElement('a');
-		a.href = '#';
-		a.className = `page${i === page ? ' active' : ''}`;
-		a.dataset.page = i;
-		a.textContent = i + 1;
-		li.appendChild(a);
-		pagination.appendChild(li);
-	}
-
-	// 다음 버튼
-	const nextLi = document.createElement('li');
-	const nextLink = document.createElement('a');
-	nextLink.href = '#';
-	nextLink.className = 'next';
-	nextLink.dataset.page = page + 1;
-
-	if (page === totalPages - 1) {
-		nextLink.style.pointerEvents = 'none';
-		nextLink.style.opacity = '0';
-	}
-
-	const nextImg = document.createElement('img');
-	nextImg.src = '/images/common/chevron_right.png';
-	nextLink.appendChild(nextImg);
-	nextLi.appendChild(nextLink);
-	pagination.appendChild(nextLi);
-
-	// 바인딩
-	document.querySelectorAll('.pagination a').forEach(link => {
-		link.addEventListener('click', function (e) {
-			e.preventDefault();
-			const newPage = parseInt(this.dataset.page);
-			if (!isNaN(newPage) && newPage >= 0 && newPage < totalPages && newPage !== page) {
-				page = newPage;
-				fetchGuideList();
-			}
-		});
-	});
-}
 
 
 

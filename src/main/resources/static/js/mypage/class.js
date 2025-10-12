@@ -76,10 +76,8 @@ async function fetchUserClassList() {
 			headers: getAuthHeaders()
 		});
 		
-		console.log(response);
-		
 		if (response.data.code === 'CLASS_READ_LIST_SUCCESS') {
-			// 전역변수 선언
+			// 전역변수 설정
 			totalPages = response.data.data.totalPages;
 			totalElements = response.data.data.totalElements;
 			page = response.data.data.number;
@@ -151,40 +149,6 @@ function renderUserClassList(classList) {
 		const li = document.createElement('li');
 
 		const statusDiv = document.createElement('div');
-		if (classs.opened) {
-			switch (classs.approval) {
-				case 1:
-					statusDiv.className = 'status opened';
-					statusDiv.textContent = '승인 완료';
-					break;
-				case 2:
-					statusDiv.className = 'status';
-					statusDiv.textContent = '승인 대기중'
-					break;
-				case 0:
-					statusDiv.className = 'status';
-					statusDiv.textContent = '미승인';
-					break;
-			}
-		}
-		else  {
-			switch (classs.approval) {
-			case 1:
-				statusDiv.className = 'status';
-				statusDiv.textContent = '승인 완료';
-				break;
-			case 2:
-				statusDiv.className = 'status';
-				statusDiv.textContent = '대기 만료'
-				break;
-			case 0:
-				statusDiv.className = 'status';
-				statusDiv.textContent = '미승인';
-				break;
-			}
-		}
-		
-		
 		switch (classs.approval) {
 			case 1:
 				statusDiv.className = classs.opened ? 'status primary' : 'status';

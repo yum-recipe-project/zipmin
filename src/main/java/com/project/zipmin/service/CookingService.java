@@ -259,10 +259,9 @@ public class CookingService {
 		for (Class classs : classPage) {
 			ClassReadResponseDto classDto = classMapper.toReadResponseDto(classs);
 			
-			// 신청자
+			// 개설 신청자 정보
 			classDto.setUsername(classs.getUser().getUsername());			
 			classDto.setNickname(classs.getUser().getNickname());			
-			// classDto.setUsername(classs.getUser().getUsername());	
 			
 			// 이미지
 			if (classs.getImage() != null) {
@@ -336,19 +335,36 @@ public class CookingService {
 			throw new ApiException(ClassErrorCode.CLASS_TUTOR_READ_FAIL);
 		}
 		
-		// 쿠킹클래스 신청 여부 조회
+		// 클래스 신청 여부 조회
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		classDto.setApplystatus(false);
-
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    return classDto;
+		    classDto.setApplystatus(false);
+			return classDto;
 		}
-
-		String username = authentication.getName();
-		int userId = userService.readUserByUsername(username).getId();
-		classDto.setApplystatus(applyRepository.existsByClasssIdAndUserId(id, userId));
+		else {
+			int userId = userService.readUserByUsername(authentication.getName()).getId();
+			classDto.setApplystatus(applyRepository.existsByClasssIdAndUserId(id, userId));
+		}
 		
 		return classDto;
+	}
+	
+	
+	
+	
+	
+	// 클래스 작성
+	public void createClass() {
+		
+	}
+	
+	
+	
+	
+	
+	// 클래스 수정
+	public void updateClass() {
+		
 	}
 	
 	
@@ -371,7 +387,6 @@ public class CookingService {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		UserReadResponseDto user = userService.readUserByUsername(username);
 		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			// 관리자
 			if (user.getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (classs.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
 					throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
@@ -382,10 +397,19 @@ public class CookingService {
 					}
 				}
 			}
-			// 일반 회원
 			else {
 				if (user.getId() != classs.getUser().getId()) {
 					throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
+				}
+			}
+		}
+		
+		// 클래스 삭제 기한 검사
+		Date now = new Date();
+		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (user.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (now.after(classs.getNoticedate())) {
+					throw new ApiException(ClassErrorCode.CLASS_ALREADY_ENDED);
 				}
 			}
 		}

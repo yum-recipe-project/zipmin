@@ -431,7 +431,7 @@ async function editClassApproval(id, approval) {
 			approval: approval
 		}
 		
-		const response = await instance.patch(`/classes/${id}/approval`, data, {
+		const response = await instance.patch(`/admin/classes/${id}/approval`, data, {
 			headers: getAuthHeaders()
 		});
 		
@@ -447,16 +447,16 @@ async function editClassApproval(id, approval) {
 			alertDanger('쿠킹클래스의 상태 변경에 실패했습니다.');
 		}
 		else if (code === 'CLASS_INVALID_INPUT') {
-			alealertDangerrt('입력값이 유효하지 않습니다.');
+			alertDanger('입력값이 유효하지 않습니다.');
 		}
 		else if (code === 'USER_INVALID_INPUT') {
-			alealertDangerrt('입력값이 유효하지 않습니다.');
+			alertDanger('입력값이 유효하지 않습니다.');
 		}
 		else if (code === 'CLASS_UNAUTHORIZED') {
 			alertDanger('로그인되지 않은 사용자입니다.');
 		}
 		else if (code === 'CLASS_FORBIDDEN') {
-			alertDanger('접근 권한이 없습니다.');
+			redirectToAdminLogin();
 		}
 		else if (code === 'CLASS_ALREADY_ENDED') {
 			alertDanger('쿠킹클래스가 상태 변경 기간이 종료되었습니다.');
@@ -465,10 +465,10 @@ async function editClassApproval(id, approval) {
 			alertDanger('해당 클래스를 찾을 수 없습니다.');
 		}
 		else if (code === 'USER_NOT_FOUND') {
-			alertDanger('해당 사용자를 찾을 수 없습니다.');
+			redirectToAdminLogin();
 		}
 		else if (code === 'INTERNAL_SERVER_ERROR') {
-			alertDanger('서버 내부에서 오류가 발생했습니다.');
+			console.log(error);
 		}
 		else {
 			console.log(error);

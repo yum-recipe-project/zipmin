@@ -6,8 +6,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +28,7 @@ import com.project.zipmin.api.RecipeSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.dto.ChompReadResponseDto;
+import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.RecipeReadResponseDto;
@@ -439,6 +444,36 @@ public class AdminController {
 	
 	
 	
+	
+	
+	// 200 CLASS_UPDATE_APPROVAL_SUCCESS
+	// 400 CLASS_UPDATE_APPROVAL_FAIL
+	// 400 CLASS_INVALID_INPUT
+	// 400 USER_INVALID_INPUT
+	// 401 로그인되지 않은 사용자 CLASS_UNAUTHRIZED
+	// 403 CLASS_FORBIDDEN
+	// 403 CLASS_ALREADY_ENDED
+	// 404 CLASS_NOT_FOUND
+	// 404 USER_NOT_FOUND
+	// 500 서버 내부 오류
+	
+	// 클래스 승인 수정
+	@PatchMapping("/admin/classes/{id}/approval")
+	public ResponseEntity<?>  updateClassApproval(
+			@Parameter(description = "클래스의 일련번호") @PathVariable int id,
+			@Parameter(description = "승인 상태") @RequestBody ClassApprovalUpdateRequestDto classDto) {
+	
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
+		}
+		
+		cookingService.updateClassApproval(classDto);
+		
+		return ResponseEntity.status(ClassSuccessCode.CLASS_UPDATE_APPROVAL_SUCCESS.getStatus())
+				.body(ApiResponse.success(ClassSuccessCode.CLASS_UPDATE_APPROVAL_SUCCESS, null));
+	}
 	
 	
 }

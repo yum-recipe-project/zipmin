@@ -1,4 +1,18 @@
 /**
+ * 전역 변수
+ */
+let sort = '';
+let totalPages = 0;
+let totalElements = 0;
+let page = 0;
+let size = 10;
+let classList = [];
+
+
+
+
+
+/**
  * 접근 권한을 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', async function() {
@@ -11,19 +25,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 	}
 	
 });
-
-
-
-
-
-/**
- * 전역 변수 선언
- */
-let sort = '';
-let totalPages = 0;
-let page = 0;
-let size = 10;
-let classList = [];
 
 
 
@@ -45,11 +46,11 @@ document.addEventListener('DOMContentLoaded', function() {
 			page = 0;
 			classList = [];
 			
-			fetchClassList();
+			fetchUserClassList();
 		});
 	});
 	
-	fetchClassList();
+	fetchUserClassList();
 });
 
 
@@ -57,10 +58,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /**
- * 서버에서 개설한 쿠킹클래스 목록 데이터를 가져오는 함수
+ * 서버에서 사용자가 개설한 쿠킹클래스 목록 데이터를 가져오는 함수
  */
-async function fetchClassList() {
+async function fetchUserClassList() {
 	
+	// 클래스 목록 조회
 	try {
 		const payload = parseJwt(localStorage.getItem('accessToken'));
 		
@@ -77,23 +79,40 @@ async function fetchClassList() {
 		console.log(response);
 		
 		if (response.data.code === 'CLASS_READ_LIST_SUCCESS') {
-			
+			// 전역변수 선언
 			totalPages = response.data.data.totalPages;
+			totalElements = response.data.data.totalElements;
 			page = response.data.data.number;
 			classList = response.data.data.content;
 			
-			renderClassList(classList);
+			// 렌더링
+			renderUserClassList(classList);
+			document.querySelector('.class_util .total').innerText = `총 ${totalElements}개`;
 			renderPagination();
-			
-			document.querySelector('.class_util .total').innerText = `총 ${response.data.data.totalElements}개`;
 		}
 	}
 	catch (error) {
+		const code = error?.response?.data?.code;
 		
-		// TODO : 에러코드 추가
-		console.log(error);
+		if (code === 'CLASS_READ_LIST_FAIL') {
+			alertDanger('클래스 목록 조회에 실패했습니다.');
+		}
+		else if (code === 'CLASS_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			alertDanger('해당 사용자를 찾을 수 없습니다.');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			console.log(error);
+		}
+		else {
+			console.log(error);
+		}
 	}
-	
 }
 
 
@@ -101,15 +120,34 @@ async function fetchClassList() {
 
 
 /**
- * 쿠킹클래스 목록을 화면에 렌더링하는 함수
+ * 사용자가 개설한 쿠킹클래스 목록을 화면에 렌더링하는 함수
  */
-function renderClassList(classList) {
+function renderUserClassList(classList) {
 	
 	const container = document.querySelector('.class_list');
-	if (!container) return;
 	container.innerHTML = '';
 
+	// 사용자가 개설한 쿠킹클래스 목록이 존재하지 않는 경우
+	if (classList == null || classList.length === 0) {
+		container.style.display = 'none';
+		document.querySelector('.list_empty')?.remove();
+		
+		const wrapper = document.createElement('div');
+		wrapper.className = 'list_empty';
+		
+		const span = document.createElement('span');
+		span.textContent = '개설한 쿠킹클래스가 없습니다';
+		wrapper.appendChild(span);
+		container.insertAdjacentElement('afterend', wrapper);
+
+		return;
+	}
+	
+	// 사용자가 개설한 쿠킹클래스가 존재하는 경우
 	classList.forEach(classs => {
+		container.style.display = 'block';
+		document.querySelector('.list_empty')?.remove();
+		
 		const li = document.createElement('li');
 
 		const statusDiv = document.createElement('div');
@@ -133,7 +171,6 @@ function renderClassList(classList) {
 		const infoDiv = document.createElement('div');
 		infoDiv.className = 'info';
 
-		// 제목
 		const titleLink = document.createElement('a');
 		titleLink.href = `/cooking/viewClass.do?id=${classs.id}`;
 		titleLink.textContent = classs.title;
@@ -141,7 +178,6 @@ function renderClassList(classList) {
 
 		const dateP = document.createElement('p');
 
-		// 수업일정
 		const scheduleSpan = document.createElement('span');
 		const scheduleEm = document.createElement('em');
 		scheduleEm.textContent = '수업일정';
@@ -149,7 +185,6 @@ function renderClassList(classList) {
 		scheduleSpan.append(`${formatDateWithDay(classs.eventdate)} ${formatTime(classs.starttime)}-${formatTime(classs.endtime)}`);
 		dateP.appendChild(scheduleSpan);
 
-		// 선정발표
 		const deadlineSpan = document.createElement('span');
 		const deadlineEm = document.createElement('em');
 		deadlineEm.textContent = '선정발표';
@@ -158,7 +193,6 @@ function renderClassList(classList) {
 		dateP.appendChild(deadlineSpan);
 
 		infoDiv.appendChild(dateP);
-
 		classDiv.appendChild(infoDiv);
 
 		const cancelDiv = document.createElement('div');
@@ -173,11 +207,11 @@ function renderClassList(classList) {
 
 		cancelDiv.appendChild(btn);
 		classDiv.appendChild(cancelDiv);
-
 		li.appendChild(classDiv);
 		container.appendChild(li);
 	});
 }
+
 
 
 

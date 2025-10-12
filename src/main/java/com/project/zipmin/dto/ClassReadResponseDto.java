@@ -28,18 +28,17 @@ public class ClassReadResponseDto {
 	private int approval;
 	private int userId;
 	
-	// target 등등 (수정 필요)
+	// 추가 정보
 	private List<ClassTargetReadResponseDto> targetList;
 	private List<ClassScheduleReadResponseDto> scheduleList;
 	private List<ClassTutorReadResponseDto> tutorList;
+	
 	private boolean applystatus;
-	
-	
-	
-	
+	private int applycount;
 	private boolean isOpened;
+	
+	// 개설 신청자 정보
 	private String username;
 	private String nickname;
 	
-	private int applycount;
 }

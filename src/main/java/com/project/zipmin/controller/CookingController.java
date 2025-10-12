@@ -4,11 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
-import com.project.zipmin.api.CommentErrorCode;
-import com.project.zipmin.api.CommentSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
-import com.project.zipmin.api.UserSuccessCode;
-import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.api.ClassErrorCode;
 import com.project.zipmin.api.ClassSuccessCode;
 import com.project.zipmin.dto.ClassApplyCreateRequestDto;
@@ -20,18 +16,14 @@ import com.project.zipmin.dto.ClassApplyUpdateResponseDto;
 import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
 import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
-import com.project.zipmin.dto.ClassScheduleReadResponseDto;
-import com.project.zipmin.dto.ClassTutorReadResponseDto;
-import com.project.zipmin.dto.GuideReadResponseDto;
 import com.project.zipmin.dto.UserClassReadResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.CookingService;
-import com.project.zipmin.service.KitchenService;
-import com.project.zipmin.service.RecipeService;
-import com.project.zipmin.service.ReviewService;
 import com.project.zipmin.service.UserService;
-import com.project.zipmin.swagger.CookingReadSuccessResponse;
+import com.project.zipmin.swagger.CommentReadListSuccessResponse;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
+import com.project.zipmin.swagger.UserInvalidInputResponse;
+import com.project.zipmin.swagger.UserNotFoundResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -41,9 +33,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -55,14 +44,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Cooking API", description = "쿠킹클래스 관련 API")
+@Tag(name = "COOKING API", description = "쿠킹클래스 관련 API")
 public class CookingController {
 	
 	private final CookingService cookingService;
@@ -72,14 +59,34 @@ public class CookingController {
 	
 	
 	
-	// 200 CLASS_READ_LIST_SUCCESS
-	// 400 CLASS_READ_LIST_FAIL
-	// 400 CLASS_INVALID_INPUT
-	// 400 USER_INVALID_INPUT
-	// 404 USER_NOT_FOUND
-	// 500
-
-	// 쿠킹클래스 목록 조회
+	@Operation(
+	    summary = "클래스 목록 조회"
+	)
+	@ApiResponses(value = {
+		// 200 CLASS_READ_LIST_SUCCESS
+		// 400 CLASS_READ_LIST_FAIL
+		// 400 CLASS_INVALID_INPUT
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),	
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+		
+	})
+	// 클래스 목록 조회
 	@GetMapping("/classes")
 	public ResponseEntity<?> listClass(
 			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
@@ -101,7 +108,36 @@ public class CookingController {
 	
 	
 	
-	// 쿠킹클래스 상세 조회
+	@Operation(
+	    summary = "클래스 상세 조회"
+	)
+	@ApiResponses(value = {
+		// 200 CLASS_READ_SUCCESS
+		// 400 CLASS_TARGET_READ_LIST_FAIL
+		// 400 CLASS_SCHEDULE_READ_LIST_FAIL
+		// 400 CLASS_TUTOR_READ_FAIL
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		// 404 CLASS_NOT_FOUND
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+		
+	})
+	// 클래스 상세 조회
 	@GetMapping("/classes/{id}")
 	public ResponseEntity<?> viewClass(
 			@Parameter(description = "클래스의 일련번호") @PathVariable int id) {
@@ -144,52 +180,37 @@ public class CookingController {
 	
 	
 	
-	
-	
-	// 200 CLASS_UPDATE_APPROVAL_SUCCESS
-	// 400 CLASS_UPDATE_APPROVAL_FAIL
-	// 400 CLASS_INVALID_INPUT
-	// 400 USER_INVALID_INPUT
-	// 401 로그인되지 않은 사용자 CLASS_UNAUTHRIZED
-	// 403 CLASS_FORBIDDEN
-	// 403 CLASS_ALREADY_ENDED
-	// 404 CLASS_NOT_FOUND
-	// 404 USER_NOT_FOUND
-	// 500 서버 내부 오류
-	
-	// 클래스 승인 수정 (관리자)
-	@PatchMapping("/classes/{id}/approval")
-	public ResponseEntity<?>  updateClassApproval(
-			@Parameter(description = "클래스의 일련번호") @PathVariable int id,
-			@Parameter(description = "승인 상태") @RequestBody ClassApprovalUpdateRequestDto classDto) {
-	
-		// 로그인 여부 확인
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
-		}
+	@Operation(
+	    summary = "클래스 삭제"
+	)
+	@ApiResponses(value = {
+		// 200 클래스 삭제 성공 CLASS_DELETE_SUCCESS
+		// 400 클래스 삭제 실패 CLASS_DELETE_FAIL
+		// 400 입력값이 유효하지 않음 CLASS_INVALID_INPUT
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		// 401 로그인되지 않은 사용자 CLASS_UNAUTHRIZED
+		// 403 권한 없는 사용자의 접근 CLASS_FORBIDDEN
+		// 403 클래스 종료 후 접근 시도 CLASS_ALREADY_ENDED
+		// 404 해당 클래스를 찾을 수 없음 CLASS_NOT_FOUND
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 		
-		// ***** UpdateResponseDto 받아야 할 수도 있음 *****
-		cookingService.updateClassApproval(classDto);
-		
-		return ResponseEntity.status(ClassSuccessCode.CLASS_UPDATE_APPROVAL_SUCCESS.getStatus())
-				.body(ApiResponse.success(ClassSuccessCode.CLASS_UPDATE_APPROVAL_SUCCESS, null));
-	}
-	
-	
-	
-	
-	
-	// 200 클래스 삭제 성공 CLASS_DELETE_SUCCESS
-	// 400 클래스 삭제 실패 CLASS_DELETE_FAIL
-	// 400 입력값이 유효하지 않음 CLASS_INVALID_INPUT
-	// 400 입력값이 유효하지 않음 USER_INVALID_INPUT
-	// 401 로그인되지 않은 사용자 CLASS_UNAUTHRIZED
-	// 403 권한 없는 사용자의 접근 CLASS_FORBIDDEN
-	// 404 해당 클래스를 찾을 수 없음 CLASS_NOT_FOUND
-	// 404 해당 사용자를 찾을 수 없음 USER_NOT_FOUND
-	// 500 서버 내부 오류
-	
+	})
 	// 클래스 삭제
 	@DeleteMapping("/classes/{id}")
 	public ResponseEntity<?> deleteClass(
@@ -326,7 +347,8 @@ public class CookingController {
 	// CLASS_READ_LIST_SUCCESS
 	// CLASS_READ_LIST_FAIL
 	// CLASS_INVALID_INPUT
-	// 개설한 쿠킹클래스
+	
+	// 사용자가 개설한 쿠킹클래스
 	@GetMapping("/users/{id}/classes")
 	public ResponseEntity<?> listUserClass(
 			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
@@ -347,7 +369,7 @@ public class CookingController {
 	
 	
 	
-	// 신청한 쿠킹클래스
+	// 사용자가 신청한 쿠킹클래스
 	// TODO : 전면 수정 필요
 	@GetMapping("/users/{id}/applied-classes")
 	public ResponseEntity<?> readUserClassApplyList(

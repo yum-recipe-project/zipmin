@@ -24,7 +24,8 @@ public enum UserSuccessCode implements Code {
 	USER_CREATE_ACCOUNT_SUCCESS(HttpStatus.OK, "사용자 출금 계좌 등록 성공"),
 	USER_UPDATE_ACCOUNT_SUCCESS(HttpStatus.OK, "사용자 출금 계좌 수정 성공"),
 	
-	USER_WITHDRAW_REQUEST_SUCCESS(HttpStatus.OK, "사용자 포이트 출금 신청 성공"),
+	USER_WITHDRAW_HISTORY_READ_SUCCESS(HttpStatus.OK, "사용자 포인트트 출금 신청내역 조회 성공"),
+	USER_WITHDRAW_REQUEST_SUCCESS(HttpStatus.OK, "사용자 포인트트 출금 신청 성공"),
 	
 	USER_LOGIN_SUCCESS(HttpStatus.OK, "로그인 성공"),
 	USER_LOGOUT_SUCCESS(HttpStatus.OK, "로그아웃 성공"),

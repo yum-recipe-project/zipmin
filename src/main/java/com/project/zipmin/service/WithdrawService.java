@@ -1,5 +1,11 @@
 package com.project.zipmin.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,8 +73,30 @@ public class WithdrawService {
         }
     }
 	
-    
-    
+    // 특정 사용자의 출금 내역 목록 조회
+    public Page<WithdrawReadResponseDto> readUserWithdrawPageById(Integer userId, Pageable pageable) {
+
+        if (userId == null || pageable == null) {
+            throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+        }
+
+        Page<Withdraw> withdrawPage;
+        try {
+            withdrawPage = withdrawRepository.findByUserId(userId, pageable);
+        } catch (Exception e) {
+            throw new ApiException(UserErrorCode.USER_WITHDRAW_HISTORY_READ_FAIL);
+        }
+
+        List<WithdrawReadResponseDto> withdrawDtoList = new ArrayList<>();
+
+        for (Withdraw withdraw : withdrawPage) {
+            WithdrawReadResponseDto dto = withdrawMapper.toReadResponseDto(withdraw);
+            withdrawDtoList.add(dto);
+        }
+
+        return new PageImpl<>(withdrawDtoList, pageable, withdrawPage.getTotalElements());
+    }
+
     
 	
 }

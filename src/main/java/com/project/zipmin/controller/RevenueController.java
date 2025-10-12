@@ -117,6 +117,32 @@ public class RevenueController {
         return ResponseEntity.status(UserSuccessCode.USER_UPDATE_ACCOUNT_SUCCESS.getStatus())
                 .body(ApiResponse.success(UserSuccessCode.USER_UPDATE_ACCOUNT_SUCCESS, accountResponseDto));
     }
+    
+    
+    
+    // 사용자 출금 내역 목록 조회
+    @GetMapping("/users/{id}/withdraw")
+    public ResponseEntity<?> readUserWithdrawList(
+            @PathVariable Integer id,
+            @RequestParam int page,
+            @RequestParam int size) {
+    	System.err.println("입력값: " + id + " page: " + page + "size: " + size);
+
+        // 입력값 검증
+        if (id == null || id <= 0) {
+            throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        // 서비스 호출
+        Page<WithdrawReadResponseDto> withdrawPage = withdrawService.readUserWithdrawPageById(id, pageable);
+        System.err.println("서비스 호출 완료: " + withdrawPage);
+        
+        return ResponseEntity.status(UserSuccessCode.USER_WITHDRAW_HISTORY_READ_SUCCESS.getStatus())
+                .body(ApiResponse.success(UserSuccessCode.USER_WITHDRAW_HISTORY_READ_SUCCESS, withdrawPage));
+    }
+
 
 
     
@@ -128,15 +154,12 @@ public class RevenueController {
             @PathVariable int id,
             @RequestBody WithdrawCreateRequestDto withdrawRequestDto) {
     	
-    	System.err.println("클라이언트 출금 신청자: " + id + "출금 정보: " + withdrawRequestDto);
-
         // 로그인 체크
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
             throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
         }
-
-        // 요청 사용자 ID 유효성 검사
+        
         if (id <= 0 || withdrawRequestDto == null) {
             throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
         }

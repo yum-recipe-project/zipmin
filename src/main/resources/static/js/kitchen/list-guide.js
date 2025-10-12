@@ -189,7 +189,8 @@ function renderGuideList(guideList) {
             const img = document.createElement('img');
             img.src = guide.writerImage;
             writerDiv.appendChild(img);
-        } else {
+        }
+		else {
             const profileImg = document.createElement('span');
             profileImg.className = 'profile_img';
             writerDiv.appendChild(profileImg);

@@ -81,17 +81,19 @@
 	height: 30px;
 	margin-right: 4px;
 	border: 1px solid var(--line-color3);
+	cursor: pointer;
 }
 
 #container .recipe_wrap .recipe_header .recipe_writer .btn_nickname {
 	color: var(--txt-color-600);
-	font-weight: 600;
+	font-weight: 900;
 	line-height: 1.4;
 	letter-spacing: -0.02em;
 	font-size: 14px;
 	display: flex;
 	align-items: center;
 	gap: 5px;
+	cursor: pointer;
 }
 
 #container .recipe_wrap .recipe_header .recipe_writer .btn_text {
@@ -322,6 +324,7 @@
 	display: flex;
 	gap: 15px;
 	align-items: center;
+	cursor: pointer;
 }
 
 #container .recipe_wrap .recipe_support .recipe_writer img {
@@ -333,11 +336,10 @@
 
 #container .recipe_wrap .recipe_support .recipe_writer h5 {
 	font-size: 18px;
-	font-weight: 500;
+	font-weight: 700;
 }
 
 #container .recipe_wrap .recipe_support .recipe_writer p {
-	margin-top: 5px;
 	font-size: 14px;
 	font-weight: 400;
 	color: var(--txt-color-500);

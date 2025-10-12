@@ -3,21 +3,58 @@
 
 
 /* 타이틀 */
-.title {
+#main-wrapper .title {
 	text-align: center;
 	margin-bottom: 40px;
 }
 
-.title h5 {
+#main-wrapper .title h5 {
 	font-size: 16px;
 	font-weight: 500;
 	line-height: 24px;
 	letter-spacing: -0.4px;
 }
 
-.title h2 {
+#main-wrapper .title h2 {
 	font-size: 32px;
 	font-weight: 600;
 	line-height: 48px;
 	letter-spacing: -1.2px;
+}
+
+#main-wrapper .username_field p {
+	display: none;
+	margin-top: 4px;
+	font-size: 12px;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+	color: #F45452;
+}
+
+#main-wrapper .password_field p {
+	display: none;
+	margin-top: 4px;
+	font-size: 12px;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+	color: #F45452;
+}
+
+/* 폼 (알림) */
+#main-wrapper .alert {
+	display: none;
+	padding: 11px 12px 13px;
+	border-radius: 4px;
+	color: rgb(244, 84, 82);
+	background-color: rgb(254, 245, 245);
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: -0.4px;
+}
+
+#main-wrapper .alert img {
+	margin-right: 8px;
+	letter-spacing: -0.4px;
+    width: 20px;
+    height: 20px;
 }

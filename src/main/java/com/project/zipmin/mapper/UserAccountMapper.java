@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 
+import com.project.zipmin.dto.UserAccountCreateRequestDto;
 import com.project.zipmin.dto.UserAccountDTO;
 import com.project.zipmin.entity.UserAccount;
 
@@ -12,4 +13,6 @@ public interface UserAccountMapper {
 	UserAccountDTO userAccountToUserAccountDTO(UserAccount userAccount);
 	UserAccount userAccountDTOToUserAccount(UserAccountDTO userAccountDTO);
 	List<UserAccountDTO> userAccountListToUserAccountDTOList(List<UserAccount> userAccountList);
+	
+	UserAccount toEntity(UserAccountCreateRequestDto accountRequestDto);
 }

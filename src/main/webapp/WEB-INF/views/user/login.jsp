@@ -24,11 +24,11 @@
 					<!-- 자체 로그인 -->
 					<form>
 						<div class="username_field">
-							<input type="text" name="username" value="" placeholder="아이디">
+							<input type="text" name="username" placeholder="아이디">
 							<p>아이디를 입력해주세요.</p>
 						</div>
 						<div class="password_field">
-							<input type="password" name="password" value="" placeholder="비밀번호">
+							<input type="password" name="password" placeholder="비밀번호">
 							<p>비밀번호를 입력해주세요.</p>
 						</div>
 						<h6 class="alert">

@@ -70,11 +70,10 @@
 }
 
 #container .comment_write .login_user img {
-	border-radius: 50%;
-	background: #ddd;
 	width: 24px;
 	height: 24px;
 	margin-right: 4px;
+	cursor: pointer;
 }
 
 #container .comment_write .login_user span {
@@ -83,6 +82,7 @@
 	line-height: 1.4;
 	letter-spacing: -0.02em;
 	font-size: 14px;
+	cursor: pointer;
 }
 
 /* 댓글 작성 (로그인 - 작성창) */
@@ -161,15 +161,15 @@
 }
 
 #container .comment_info .comment_writer img {
-	border-radius: 50%;
-	background: #ddd;
 	width: 24px;
 	height: 24px;
+    cursor: pointer;
 }
 
 #container .comment_info .comment_writer span {
 	font-size: 14px;
 	font-weight: 500;
+	cursor: pointer;
 }
 
 #container .comment_info .comment_writer span:last-child {
@@ -242,15 +242,15 @@
 }
 
 #container .subcomment_info .subcomment_writer img {
-	border-radius: 50%;
-	background: #ddd;
 	width: 24px;
 	height: 24px;
+	cursor: pointer;
 }
 
 #container .subcomment_info .subcomment_writer span {
 	font-size: 14px;
 	font-weight: 500;
+	cursor: pointer;
 }
 
 #container .subcomment_info .subcomment_writer span:last-child {

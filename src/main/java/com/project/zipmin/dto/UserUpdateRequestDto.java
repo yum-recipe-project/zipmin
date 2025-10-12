@@ -19,5 +19,6 @@ public class UserUpdateRequestDto {
 	
 	private String avatar;
 	private String introduce;
+	private int point;
 	
 }

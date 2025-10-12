@@ -16,16 +16,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
-import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.FridgeErrorCode;
 import com.project.zipmin.api.FridgeSuccessCode;
-import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.dto.FridgeCreateRequestDto;
 import com.project.zipmin.dto.FridgeCreateResponseDto;
 import com.project.zipmin.dto.FridgeReadResponseDto;
@@ -43,8 +39,6 @@ import com.project.zipmin.dto.UserFridgeUpdateResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.FridgeService;
 import com.project.zipmin.service.UserService;
-import com.project.zipmin.swagger.ChompReadListFailResponse;
-import com.project.zipmin.swagger.ChompReadListSuccessResponse;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.UserInvalidInputResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
@@ -652,9 +646,7 @@ public class FridgeController {
 	
 	
 
-	
-	
-	
+		
 	
 
 }

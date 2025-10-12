@@ -1,0 +1,206 @@
+@charset "UTF-8";
+
+#container .content {
+	margin: 0px auto;
+	padding: 0 108px;
+	width: 1160px;
+}
+
+#container .content .withdraw_wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	margin-top: 40px;
+	margin-bottom: 80px;
+}
+
+
+
+/* 헤더 (링크) */
+#container .content .withdraw_wrap .withdraw_header a {
+	padding: 8px 0px;
+	color: var(--txt-color-500);
+	font-weight: 500;
+	line-height: 1.4;
+	letter-spacing: -0.02em;
+	font-size: 14px;
+}
+
+#container .content .withdraw_wrap .withdraw_header a span {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	
+}
+
+#container .content .withdraw_wrap .withdraw_header a span img {
+	width: 20px;
+	height: 20px;
+}
+
+/* 헤더 (제목) */
+#container .content .withdraw_wrap .withdraw_header h2 {
+	margin-top: 8px;
+	font-weight: 700;
+	line-height: 1.5;
+	letter-spacing: -0.03em;
+	font-size: 32px;
+}
+
+
+
+
+#container .content .withdraw_wrap .withdraw_util {
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: -0.2px;
+	font-weight: 400;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	color: var(--txt-color-500);
+}
+
+#container .content .withdraw_wrap .withdraw_util .withdraw_sort {
+	display: flex;
+	gap: 16px;
+}
+
+
+
+/* 포인트 */
+#container .content .withdraw_wrap .withdraw_point {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 0 0 24px;
+	padding: 24px;
+	color: var(--txt-color-600);
+    background-color: #F8F8F8;
+    border: 1px solid #DDD;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.2px;
+    font-weight: 400;
+}
+
+#container .content .withdraw_wrap .withdraw_point .point {
+	background: none;
+	border: none;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+#container .content .withdraw_wrap .withdraw_point .point span {
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: -.2px;
+	font-weight: 400;
+	position: relative;
+	color: var(--txt-color-600);
+}
+
+#container .content .withdraw_wrap .withdraw_point .point span + span {
+	font-size: 20px;
+	font-weight: 600;
+	
+}
+
+
+
+
+/* 출금 신청 목록 */
+#container .content .withdraw_wrap .withdraw_list li:not(:first-child) {
+	margin-top: 24px;
+	padding-top: 24px;
+	border-top: 1px solid #EEE;
+}
+
+.withdraw_list li {
+  display: flex;
+  justify-content: flex-start; 
+  gap: 40px;
+  padding: 16px 0;
+}
+
+.withdraw_list li .withdraw_info:last-child {
+  margin-left: auto;
+}
+
+
+
+
+
+
+
+
+#container .content .withdraw_wrap .withdraw_list .withdraw_info {
+	display: flex;
+	justify-content: space-between;
+	font-size: 18px;
+	line-height: 24px;
+	letter-spacing: -0.4px;
+	font-weight: 500;
+	margin-bottom: 16px;
+}
+
+#container .content .withdraw_wrap .withdraw_list .withdraw_info .request_date p {
+	font-size: 15px;
+	color: var(--txt-color-500);
+	font-weight: 400;
+}
+
+
+#container .content .withdraw_wrap .withdraw_list .withdraw_info .request_point {
+   display: flex;
+   flex-direction: column; 
+/*    gap: 2px;  */
+}
+#container .content .withdraw_wrap .withdraw_list .withdraw_info .request_point p {
+	font-size: 15px;
+	color: var(--txt-color-500);
+	font-weight: 400;
+}
+
+#container .content .withdraw_wrap .withdraw_list .withdraw_info .request_point p + p {
+	font-size: 18px;
+	color:var(--txt-color-600);
+	font-weight: 400;
+}
+
+
+#container .content .withdraw_wrap .withdraw_list .withdraw_info .withdraw_status {
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-end; 
+  gap: 2px; 
+}
+
+#container .content .withdraw_wrap .withdraw_list .withdraw_info .withdraw_status p {
+	font-size: 18px;
+	color: #0073E6;
+	font-weight: 400;
+}
+
+#container .content .withdraw_wrap .withdraw_list .withdraw_info .withdraw_status .complete {
+	font-size: 18px;
+	color:var(--txt-color-600);
+	font-weight: 400;
+}
+
+#container .content .withdraw_wrap .withdraw_list .withdraw_info .withdraw_status p+p {
+	font-size: 15px;
+	color:var(--txt-color-500);
+	font-weight: 400;
+}	
+
+	
+#container .content .withdraw_wrap .withdraw_list .withdraw {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+}
+
+

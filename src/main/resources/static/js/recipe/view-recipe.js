@@ -100,6 +100,15 @@ document.addEventListener('DOMContentLoaded', async function() {
 			supportForm.querySelector('.recipe_writer img').src = result.data.avatar;
 			supportForm.querySelector('.recipe_writer h5').innerText = result.data.nickname;
 			supportForm.querySelector('.recipe_writer p').innerText = `구독자 ${result.data.follower}명`;
+			supportForm.querySelector('.recipe_writer').addEventListener('click', function(event) {
+				event.preventDefault();
+				location.href = `/mypage/profile.do?id=${result.data.user_id}`;
+			});
+			
+			
+			// 레시피 작성자 ID를 hidden input에 저장
+			document.getElementById('fundeeIdInput').value = result.data.user_id;
+			
 			
 			// 리뷰 수
 			reviewCommentForm.querySelector('.review_count').innerText = result.data.reviewcount;
@@ -219,6 +228,7 @@ function renderStockList(stockList) {
 		tdAmount.textContent = `${stock.amount}${stock.unit}`;
 		tr.appendChild(tdAmount);
 		
+		
 		// 비고
 		const tdNote = document.createElement('td');
 		tdNote.textContent = stock.note;
@@ -250,7 +260,15 @@ function renderMemoList(stockList) {
 		// 수량
 		const tdAmount = document.createElement('td');
 		tdAmount.textContent = `${ingredient.amount}${ingredient.unit}`;
+		
+		tdAmount.dataset.amount = ingredient.amount;
+		tdAmount.dataset.unit = ingredient.unit; // ← 여기 추가
+		
+		
 		tr.appendChild(tdAmount);
+		
+		
+		
 		
 		// 체크박스
 		const tdCheckbox = document.createElement('td');

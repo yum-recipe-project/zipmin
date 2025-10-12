@@ -103,9 +103,6 @@ public class KitchenController {
 	public ResponseEntity<?> editGuide(@PathVariable int id,
 			@RequestBody GuideUpdateRequestDto guideRequestDto) {
 		
-		System.err.print("수정 컨트롤러 진입, id:" + id);
-		System.err.print("guideRequestDto:" + guideRequestDto);
-		
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

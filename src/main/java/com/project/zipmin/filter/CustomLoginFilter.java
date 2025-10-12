@@ -34,10 +34,14 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 사용자 로그인 요청을 처리하는 커스텀 필터
- * - JSON 형식의 사용자 인증 정보(username, password)를 처리
- * - 인증 성공 시 JWT 토큰 발급 및 응답
- * - 인증 실패 시 401 응답 반환
+ * 사용자 로그인 요청을 처리하는 커스텀 필터입니다.
+ *
+ * JSON 형식의 사용자 인증 정보를 처리하여,
+ * 인증 성공 시 JWT 토큰을 발급하고
+ * 인증 실패 시 401 응답을 반환합니다.
+ * 
+ * @author 정하림
+ * @since 1.0 (2025-06-01)
  */
 @RequiredArgsConstructor
 public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
@@ -49,6 +53,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 	
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
+		
 		LoginDto loginDto = null;
 		try {
 			loginDto = objectMapper.readValue(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), LoginDto.class);
@@ -72,15 +77,25 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		int id = customUserDetails.getId();
 		String username = customUserDetails.getUsername();
 		String nickname = customUserDetails.getNickname();
+		String avatar = customUserDetails.getAvatar();
 		
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
 		GrantedAuthority auth = iterator.next();
 		String role = auth.getAuthority();
 		
-		// JWT 발급
-		String access = jwtUtil.createJwt("access", id, username, nickname, role, 60 * 60 * 60L);
-		String refresh = jwtUtil.createJwt("refresh", id, username, nickname, role, 86400_000L);
+		// 관리자 로그인 요청일 경우 관리자 권한이 아니면 로그인 실패 처리
+		if (request.getRequestURI().equals("/admin/login") && !role.equals("ROLE_SUPER_ADMIN") && !role.equals("ROLE_ADMIN")) {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.setContentType("application/json");
+			response.setCharacterEncoding("utf-8");
+			response.getWriter().write(objectMapper.writeValueAsString(ApiResponse.error(AuthErrorCode.AUTH_UNAUTHORIZED)));
+			return;
+		}
+		
+		// JWT 토큰 발급 및 응답
+		String access = jwtUtil.createJwt("access", id, username, nickname, avatar, role, 60 * 60 * 60L);
+		String refresh = jwtUtil.createJwt("refresh", id, username, nickname, avatar, role, 86400_000L);
 		
 		// refresh 토큰 저장 (DB or Redis)
 		reissueService.addRefresh(username, refresh, 86400_000L);

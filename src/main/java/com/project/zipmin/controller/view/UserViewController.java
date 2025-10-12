@@ -28,6 +28,11 @@ public class UserViewController {
 		return "user/findAccount";
 	}
 	
+	@GetMapping("/user/passwordTokenExpired.do")
+	public String passwordTokenExpired() {
+		return "user/passwordTokenExpired";
+	}
+	
 	@GetMapping("/user/findAccount/idResult.do")
 	public String findAccountId() {
 		return "user/findIdResult";
@@ -46,6 +51,11 @@ public class UserViewController {
 	@GetMapping("/user/changePassword.do")
 	public String changePassword() {
 		return "user/changePassword";
+	}
+	
+	@GetMapping("/user/resetPassword.do")
+	public String resetPassword() {
+		return "user/resetPassword";
 	}
 	
 	@GetMapping("/user/userInfo.do")

@@ -27,7 +27,7 @@
 		<!-- 로그인 한 경우 -->
 		<div id="login_state">
 			<div class="login_user">
-				<img src="/images/common/test.png">
+				<img id="writeCommentAvatar">
 				<span id="writeCommentNickname"></span>
 			</div>
 			<div class="comment_input">

@@ -10,6 +10,7 @@ import com.project.zipmin.entity.Like;
 public interface LikeRepository extends JpaRepository<Like, Integer> {
 	
 	List<Like> findAllByTablenameAndUserId(String tablename, int userId);
+	List<Like> findAllByTablenameAndRecodenum(String tablename, int recodenum);
 	
 	Optional<Like> findByTablenameAndRecodenumAndUserId(String tablename, int recodenum, int userId);
 	

@@ -15,6 +15,8 @@
 		<script src="/js/modal/add-memo-modal.js"></script>
 		<script src="/js/modal/support-recipe-modal.js"></script>
 		<script src="/js/modal/top-up-point-modal.js"></script>
+		
+		
 		<script src="/js/common/comment.js"></script>
 		<script src="/js/common/review.js"></script>
 	</head>

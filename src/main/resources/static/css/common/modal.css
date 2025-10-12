@@ -221,7 +221,14 @@
 	color: var(--txt-color-500);
 }
 
-
+/* 출금 가능 금액 안내 */
+#container .modal-content .modal-body .form-info .withdraw_info {
+	margin: 0;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.5;
+	color: #ff0000;
+}
 
 
 
@@ -256,6 +263,40 @@
 #container .modal-content .modal-body table input[type='checkbox'] + label::before {
 	margin-right: 0;
 }
+
+
+
+
+
+/* 장보기 메모*/
+.memo_tbody tr td input[type="text"],
+.memo_tbody tr td input[type="number"],
+.memo_tbody tr td textarea {
+    width: 100%;              
+    padding: 6px 10px;        
+    border: 1px solid #ddd;   
+    border-radius: 4px;       
+    font-size: 14px;          
+    box-sizing: border-box;   
+}
+
+#container .modal-content .modal-body table .memo_tbody tr td {
+    padding: 16px 5px;
+    vertical-align: middle;
+}
+
+.memo_edit:hover {
+    color: #0073E6 !important;
+    border-color: #0073E6 !important;
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -651,7 +692,7 @@
 
 
 
-/* 목록 없음 표시 */
+/* 목록 없음 표시 > 검색 없음 */
 #container .modal-content .modal-body .search_empty {
 	display: flex;
 	flex-direction: column;
@@ -684,6 +725,24 @@
 	font-size: 16px;
 }
 
+/* 목록 없음 표시 > 목록 없음 */
+#container .modal-content .modal-body .list_empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 90%;
+}
+
+#container .modal-content .modal-body .list_empty span {
+	text-align: center !important;
+	margin-bottom: 32px !important;
+	color: #7E8082;
+	font-weight: 400;
+	line-height: 1.5;
+	letter-spacing: -0.025em;
+	font-size: 16px;
+}
 
 
 

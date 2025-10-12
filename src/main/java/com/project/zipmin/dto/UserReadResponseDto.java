@@ -20,4 +20,5 @@ public class UserReadResponseDto {
 	private String introduce;
 	private String link;
 	
+	private int point;
 }

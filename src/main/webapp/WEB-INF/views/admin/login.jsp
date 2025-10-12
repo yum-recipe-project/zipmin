@@ -30,15 +30,17 @@
 									
 									<form id="loginForm">
 										<div class="mb-3 username_field">
-											<label for="usernameInput" class="form-label">아이디</label>
-											<input type="text" class="form-control" id="usernameInput" name="username" aria-describedby="emailHelp">
+											<input type="text" class="form-control" id="usernameInput" name="username" placeholder="아이디">
 											<p>아이디를 입력해주세요.</p>
 										</div>
-										<div class="mb-4 password_field">
-											<label for="passwordInput" class="form-label">비밀번호</label>
-											<input type="password" class="form-control" id="passwordInput" name="password">
+										<div class="mb-3 password_field">
+											<input type="password" class="form-control" id="passwordInput" name="password" placeholder="비밀번호">
 											<p>비밀번호를 입력해주세요.</p>
 										</div>
+										<h6 class="alert">
+											<img src="/images/user/alert.png">
+											아이디 또는 비밀번호가 일치하지 않습니다.
+										</h6>
 										
 										<div class="d-flex align-items-center justify-content-between mb-4">
 											<div class="form-check">

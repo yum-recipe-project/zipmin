@@ -663,6 +663,7 @@ public class FridgeController {
 //        return ResponseEntity.status(FridgeSuccessCode.memo_READ_LIST_SUCCESS.getStatus())
 //                .body(ApiResponse.success(FridgeSuccessCode.KITCHEN_READ_LIST_SUCCESS, guidePage));
 //	}
+		
 	
 
 }

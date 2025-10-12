@@ -3,7 +3,7 @@
  */
 document.addEventListener('DOMContentLoaded', function() {	
     const buttons = document.querySelectorAll('.tab_button button');
-	const forms = [document.getElementById('find-username-form'), document.getElementById('find-password-form')];
+	const forms = [document.getElementById('findUsernameForm'), document.getElementById('findPasswordForm')];
 
     // 기본 활성화 탭 설정
     const mode = new URLSearchParams(window.location.search).get('mode');
@@ -38,12 +38,12 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 document.addEventListener('DOMContentLoaded', function () {
 	
-    const form = document.getElementById('find-username-form');
+    const form = document.getElementById('findUsernameForm');
 	
 	// 이름 실시간 검사
 	form.name.addEventListener('blur', function() {
 		const isNameEmpty = this.value.trim() === '';
-		this.classList.toggle('danger', isNameEmpty);
+		form.classList.toggle('danger', isNameEmpty);
 		document.querySelector('.name_field p').style.display = isNameEmpty ? 'block' : 'none';
 	});
 	
@@ -60,8 +60,8 @@ document.addEventListener('DOMContentLoaded', function () {
 			this.value = tel.slice(0, 3) + '-' + tel.slice(3, 7) + '-' + tel.slice(7, 11);
 		}
 		const isTelEmpty = this.value.trim() === '';
-		this. classList.toggle('danger', isTelEmpty);
-		document.querySelector('.tel_field p').style.display = isTelEmpty ? 'block' : 'none';
+		this.classList.toggle('danger', isTelEmpty);
+		form.querySelector('.tel_field p').style.display = isTelEmpty ? 'block' : 'none';
 	});
 	
 });
@@ -75,20 +75,20 @@ document.addEventListener('DOMContentLoaded', function () {
  */
 document.addEventListener('DOMContentLoaded', function () {
 	
-    const form = document.getElementById('find-password-form');
+    const form = document.getElementById('findPasswordForm');
 	
 	// 아이디 실시간 검사
 	form.username.addEventListener('blur', function() {
 		const isUsernameEmpty = this.value.trim() === '';
 		this.classList.toggle('danger', isUsernameEmpty);
-		document.querySelector('.username_field p').style.display = isUsernameEmpty ? 'block' : 'none';
+		form.querySelector('.username_field p').style.display = isUsernameEmpty ? 'block' : 'none';
 	});
 	
 	// 이메일 실시간 검사
 	form.email.addEventListener('blur', function() {
 		const isEmailEmpty = this.value.trim() === '';
 		this.classList.toggle('danger', isEmailEmpty);
-		document.querySelector('.email_field p').style.display = isEmailEmpty ? 'block' : 'none';
+		form.querySelector('.email_field p').style.display = isEmailEmpty ? 'block' : 'none';
 	});
 	
 });
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('DOMContentLoaded', function() {
 	
 	// 아이디 찾기 폼
-	const form = document.getElementById('find-username-form');
+	const form = document.getElementById('findUsernameForm');
 	
 	form.addEventListener('submit', async function(event) {
 		event.preventDefault();
@@ -111,13 +111,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		// 폼 전송시 폼값 검증
 		if (form.tel.value.trim() === '') {
 			form.tel.classList.add('danger');
-			document.querySelector('.tel_field p').style.display = 'block';
+			form.querySelector('.tel_field p').style.display = 'block';
 			form.tel.focus();
 			isValid = false;
 		}
 		if (form.name.value.trim() === '') {
 			form.name.classList.add('danger');
-			document.querySelector('.name_field p').style.display = 'block';
+			form.querySelector('.name_field p').style.display = 'block';
 			form.name.focus();
 			isValid = false;
 		}
@@ -125,8 +125,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		// 아이디 찾기
 		if (isValid) {
 			try {
-				const headers = { 'Content-Type' : 'application/json' };
-				
 				const data = {
 					name: form.name.value.trim(),
 					tel: form.tel.value.trim()
@@ -134,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				
 				const response = await fetch('/users/find-username', {
 					method: 'POST',
-					headers: headers,
+					headers: getAuthHeaders(),
 					body: JSON.stringify(data)
 				});
 				
@@ -145,19 +143,13 @@ document.addEventListener('DOMContentLoaded', function() {
 					location.href = '/user/findAccount/idResult.do';
 				}
 				else if (result.code === 'USER_INVALID_INPUT') {
-					alert('입력값이 유효하지 않습니다.');
-					form.name.value = '';
-					form.tel.value = '';
-					form.name.focus();
+					alertDanger('입력값이 유효하지 않습니다.');
 				}
 				else if (result.code === 'USER_NOT_FOUND') {
-					alert('해당 사용자를 찾을 수 없습니다.');
-					form.name.value = '';
-					form.tel.value = '';
-					form.name.focus();
+					alertDanger('해당 사용자를 찾을 수 없습니다.');
 				}
 				else if (result.code === 'INTERVAL_SERVER_ERROR') {
-					alert('서버 내부 오류가 발생했습니다.');
+					alertDanger('서버 내부에서 오류가 발생했습니다.');
 				}
 			}
 			catch (error) {
@@ -174,6 +166,64 @@ document.addEventListener('DOMContentLoaded', function() {
 /**
  * 사용자의 비밀번호를 찾는 함수
  */
-
-
-
+document.addEventListener('DOMContentLoaded', function() {
+	
+	// 비밀번호 찾기 폼
+	const form = document.getElementById('findPasswordForm');
+	
+	form.addEventListener('submit', async function(event) {
+		event.preventDefault();
+		isValid = true;
+		
+		// 폼값 검증
+		if (form.email.value.trim() === '') {
+			form.email.classList.add('danger');
+			form.querySelector('.email_field p').style.display = 'block';
+			form.email.focus();
+			isValid = false;
+		}
+		if (form.username.value.trim() === '') {
+			form.username.classList.add('danger');
+			form.querySelector('.username_field p').style.display = 'block';
+			form.username.focus();
+			isValid = false;
+		}
+		
+		// 이메일 검증
+		if (isValid) {
+			try {
+				const data = {
+					username: form.username.value.trim(),
+					email: form.email.value.trim()
+				}
+				
+				const response = await fetch('/users/check-email', {
+					method: 'POST',
+					headers: getAuthHeaders(),
+					body: JSON.stringify(data)
+				});
+				
+				const result = await response.json();
+				
+				if (result.code === 'USER_READ_SUCCESS') {
+					sessionStorage.setItem('emailChecked', 'true');
+					sessionStorage.setItem('username-email', result.data.username + "-" + result.data.email);
+					location.href = '/user/findAccount/passwordResult.do';
+				}
+				else if (result.code === 'USER_INVALID_INPUT') {
+					alertDanger('입력값이 유효하지 않습니다.');
+				}
+				else if (result.code === 'USER_NOT_FOUND') {
+					alertDanger('해당 사용자를 찾을 수 없습니다.');
+				}
+				else if (result.code === 'INTERNAL_SERVER_ERROR') {
+					alertDanger('서버 내부에서 오류가 발생했습니다.')
+				}
+			}
+			catch(error) {
+				console.log(error);
+			}
+		}
+	});
+	
+});

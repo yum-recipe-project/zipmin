@@ -13,7 +13,11 @@
 		<script src="/js/modal/write-fridge-modal.js"></script>
 		<script src="/js/modal/write-user-fridge-modal.js"></script>
 		<script src="/js/modal/edit-user-fridge-modal.js"></script>
+
 		<script src="/js/modal/add-memo-modal.js"></script>
+		<script src="/js/modal/write-memo-modal.js"></script>
+		<script src="/js/modal/edit-memo-modal.js"></script>
+		
 	</head>
 	
 	<body>
@@ -50,55 +54,9 @@
 					<div class="memo_content">
 					
 						<!-- 재료 표 -->
-						<!-- 재료 표 -->
-						<table class="ingredient_list">
-						    <thead>
-						        <tr>
-						            <th width="472px">재료</th>
-						            <th width="472px">용량</th>
-						            <th width="40px"><input type="checkbox"></th> <!-- 전체 선택용 체크박스 -->
-						            <th width="60px"></th> <!-- 삭제 버튼 -->
-						        </tr>
-						    </thead>
-						    <tbody>
-						        <tr>
-						            <td>마라탕 소스</td>
-						            <td>100g</td>
-						            <td><input type="checkbox" class="row_checkbox"></td>
-						            <td>
-						                <button class="delete_btn">
-						                    <img src="/images/fridge/close.png">
-						                </button>
-						            </td> 
-						        </tr>
-						        <tr>
-						            <td>상하이 목장 치즈</td>
-						            <td>10ea</td>
-						            <td><input type="checkbox" class="row_checkbox"></td>
-						            <td>
-						                <button class="delete_btn">
-						                    <img src="/images/fridge/close.png">
-						                </button>
-						            </td>
-						        </tr>
-						        <tr>
-						            <td>제로콜라</td>
-						            <td>2L</td>
-						            <td><input type="checkbox" class="row_checkbox"></td>
-						            <td>
-						                <button class="delete_btn">
-						                    <img src="/images/fridge/close.png">
-						                </button>
-						            </td>
-						        </tr>
-						    </tbody>
-						</table>
-
+						<table class="ingredient_list"></table>
+						<div class="btn_wrap"></div>
 						
-						<div class="btn_wrap">
-							<button class="btn_outline" onclick="location.href='/chompessor/listForum.do';">장보기 완료</button>
-							<button type="button" class="btn_primary" data-bs-toggle="modal" data-bs-target="#addMemoModal">추가하기</button>
-						</div>
 						
 					</div>
 					
@@ -173,7 +131,10 @@
 
 			<!-- 메모 모달 -->
 			<%@include file="../modal/addMemoModal.jsp" %>
-			
+			<!-- 장보기 메모 모달  -->
+			<%@include file="../modal/writeMemoModal.jsp" %>
+			<%@include file="../modal/editMemoModal.jsp" %>
+		
 		</main>
 		
 		

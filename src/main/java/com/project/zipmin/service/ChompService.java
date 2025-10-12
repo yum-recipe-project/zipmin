@@ -194,7 +194,12 @@ public class ChompService {
 	
 	
 	// 투표 상세 조회
-	public VoteReadResponseDto readVoteById(int id) {
+	public VoteReadResponseDto readVoteById(Integer id) {
+		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(VoteErrorCode.VOTE_INVALID_INPUT);
+		}
 		
 		// 투표 조회
 		Chomp vote = chompRepository.findById(id)
@@ -543,7 +548,12 @@ public class ChompService {
 	
 	
 	// 매거진의 상세 내용을 조회하는 함수
-	public MegazineReadResponseDto readMegazineById(int id) {
+	public MegazineReadResponseDto readMegazineById(Integer id) {
+		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(MegazineErrorCode.MEGAZINE_INVALID_INPUT);
+		}
 		
 		Chomp megazine = chompRepository.findById(id)
 				.orElseThrow(() -> new ApiException(MegazineErrorCode.MEGAZINE_NOT_FOUND));
@@ -716,7 +726,11 @@ public class ChompService {
 	
 	
 	// 이벤트의 상세 내용을 조회하는 함수
-	public EventReadResponseDto readEventById(int id) {
+	public EventReadResponseDto readEventById(Integer id) {
+		
+		if (id == null) {
+			throw new ApiException(EventErrorCode.EVENT_INVALID_INPUT);
+		}
 		
 		Chomp event = chompRepository.findById(id)
 				.orElseThrow(() -> new ApiException(EventErrorCode.EVENT_NOT_FOUND));

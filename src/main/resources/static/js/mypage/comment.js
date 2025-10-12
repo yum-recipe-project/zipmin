@@ -15,21 +15,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /**
- * 더보기버튼 클릭 시 해당하는 댓글을 가져오는 함수
+ * 전역 변수
  */
 let totalPages = 0;
+let totalElements = 0;
 let page = 0;
-let size = 10;
+const size = 15;
 let commentList = [];
 
+
+
+
+
+/**
+ * 초기 실행하는 함수
+ */
 document.addEventListener('DOMContentLoaded', function() {
 	
-	fetchCommentList();
-	
+	// 더보기 버튼
 	document.querySelector('.btn_more').addEventListener('click', function() {
-		fetchCommentList();
+		page = page + 1;
+		fetchUserCommentList();
 	});
 	
+	fetchUserCommentList();
 });
 
 
@@ -37,13 +46,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /**
- * 서버에서 댓글 목록 데이터를 가져오는 함수
+ * 서버에서 사용자 댓글 목록 데이터를 가져오는 함수
  */
-async function fetchCommentList() {
+async function fetchUserCommentList() {
 	
+	// 댓글 목록 조회
 	try {
-		const token = localStorage.getItem('accessToken');
-		const payload = parseJwt(token);
+		const payload = parseJwt(localStorage.getItem('accessToken'));
 		
 		const params = new URLSearchParams({
 			page: page,
@@ -52,18 +61,77 @@ async function fetchCommentList() {
 		
 		const response = await instance.get(`/users/${payload.id}/comments?${params}`);
 		
-		console.log(response);
+		if (response.data.code === 'COMMENT_READ_LIST_SUCCESS') {
+			// 전역변수 설정
+			totalPages = response.data.data.totalPages;
+			totalElements = response.data.data.totalElements;
+			commentList = [...commentList, ...response.data.data.content];
+			
+			// 렌더링
+			renderUserCommentList(commentList);
+			document.querySelector('.mycomment_count span').innerText = totalElements + '개';
+			document.querySelector('.btn_more').style.display = page >= totalPages - 1 ? 'none' : 'block';
+		}
 		
-		renderCommentList(response.data.data.content);
-		page = response.data.data.number + 1;
-		totalPages = response.data.data.totalPages;
-		document.querySelector('.mycomment_count span').innerText = response.data.data.totalElements + '개';
-		document.querySelector('.btn_more').style.display = page >= totalPages ? 'none' : 'block';
 	}
 	catch (error) {
-		console.log(error);
+		const code = error?.response?.data?.code;
+		
+		if (code === 'COMMENT_READ_LIST_FAIL') {
+			alertDanger('댓글 목록 조회에 실패했습니다.');
+		}
+		else if (code === 'COMMENT_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'VOTE_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'MEGAZINE_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'EVENT_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'RECIPE_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'GUIDE_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'COMMENT_UNAUTHORIZED_ACCESS') {
+			alertDanger('로그인되지 않은 사용자입니다.');
+		}
+		else if (code === 'COMMENT_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			alertDanger('해당 사용자를 찾을 수 없습니다.');
+		}
+		else if (code === 'VOTE_NOT_FOUND') {
+			alertDanger('해당 투표를 찾을 수 없습니다.');
+		}
+		else if (code === 'MEGAZINE_NOT_FOUND') {
+			alertDanger('해당 매거진을 찾을 수 없습니다.');
+		}
+		else if (code === 'EVENT_NOT_FOUND') {
+			alertDanger('해당 이벤트를 찾을 수 없습니다.');
+		}
+		else if (code === 'RECIPE_NOT_FOUND') {
+			alertDanger('해당 레시피를 찾을 수 없습니다.');
+		}
+		else if (code === 'GUIDE_NOT_FOUND') {
+			alertDanger('해당 키친가이드를 찾을 수 없습니다.');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alertDanger('서버 내부 오류가 발생했습니다.');
+		}
+		else {
+			console.log(error);
+		}
 	}
-	
 }
 
 
@@ -72,18 +140,51 @@ async function fetchCommentList() {
 
 /**
  * 댓글 목록을 화면에 렌더링하는 함수
- * 
- * @param {Object} comments - 댓글 목록 객체
  */
-function renderCommentList(commentList) {
+function renderUserCommentList(commentList) {
 	
+	const container = document.querySelector('.mycomment_list');
+	container.innerHTML = '';
+	
+	// 게시판 이름 매핑
 	const tablename = {
 		vote: '투표',
 		megazine: '매거진',
-		event: '이벤트'
+		event: '이벤트',
+		recipe: '레시피',
+		guide: '키친가이드'
 	};
 	
+	// 게시판별 조회 링크 매핑
+	const tablelink = {
+		vote: '/chompessor/viewVote.do?id=',
+		megazine: '/chompessor/viewMegazine.do?id=',
+		event: '/chompessor/viewEvent.do?id=',
+		recipe: '/recipe/viewRecipe.do?id=',
+		guide: '/kitchen/viewGuide.do?id='
+	};
+	
+	// 사용자 댓글 목록이 존재하지 않는 경우
+	if (commentList == null || commentList.length === 0) {
+		container.style.display = 'none';
+		document.querySelector('list_empty')?.remove();
+
+		const wrapper = document.createElement('div');
+		wrapper.className = 'list_empty';
+
+		const span = document.createElement('span');
+		span.textContent = '작성한 댓글이 없습니다';
+		wrapper.appendChild(span);
+		container.insertAdjacentElement('afterend', wrapper);
+
+		return;
+	}
+	
+	// 사용자 댓글 목록이 존재하는 경우
 	commentList.forEach(comment => {
+		container.style.disaply = 'block';
+		document.querySelector('list_empty')?.remove();
+		
 		const li = document.createElement('li');
 		li.className = 'mycomment_item';
 		li.dataset.id = comment.id;
@@ -92,12 +193,10 @@ function renderCommentList(commentList) {
 		const titleDiv = document.createElement('div');
 		titleDiv.className = 'mycomment_title';
 		
-		if (comment.title) {
-			const a = document.createElement('a');
-			a.href = `/chompessor/view${capitalizeFirst(comment.tablename)}.do?id=${comment.recodenum}`;
-			a.textContent = comment.title;
-			titleDiv.appendChild(a);
-		}
+		const a = document.createElement('a');
+		a.href = tablelink[comment.tablename] + comment.recodenum;
+		a.textContent = comment.title;
+		titleDiv.appendChild(a);
 		
 		const boardP = document.createElement('p');
 		boardP.className = 'board';
@@ -114,11 +213,19 @@ function renderCommentList(commentList) {
 		writerDiv.className = 'comment_writer';
 		
 		const img = document.createElement('img');
-		img.src = '/images/common/test.png';
+		img.src = comment.avatar;
+		img.addEventListener('click', function(event) {
+			event.preventDefault();
+			location.href = `/mypage/profile.do?id=${comment.user_id}`;
+		});
 		writerDiv.appendChild(img);
 		
 		const nameSpan = document.createElement('span');
 		nameSpan.textContent = comment.nickname;
+		nameSpan.addEventListener('click', function(event) {
+			event.preventDefault();
+			location.href = `/mypage/profile.do?id=${comment.user_id}`;
+		});
 		writerDiv.appendChild(nameSpan);
 		
 		const dateSpan = document.createElement('span');
@@ -147,23 +254,17 @@ function renderCommentList(commentList) {
 		});
 		actionDiv.append(editLink, deleteLink);
 		
-		infoDiv.appendChild(writerDiv);
-		infoDiv.appendChild(actionDiv);
-		
 		const contentP = document.createElement('p');
 		contentP.className = 'comment_content';
 		contentP.textContent = comment.content;
 		
-		commentDiv.appendChild(infoDiv);
-		commentDiv.appendChild(contentP);
+		infoDiv.append(writerDiv, actionDiv);
+		commentDiv.append(infoDiv, contentP);
 		
-		li.appendChild(titleDiv);
-		li.appendChild(commentDiv);
-		
-		document.querySelector('.mycomment_list').appendChild(li);
+		li.append(titleDiv, commentDiv);
+		container.appendChild(li);
 	});
 }
-
 
 
 
@@ -174,25 +275,14 @@ function renderCommentList(commentList) {
  */
 document.addEventListener('DOMContentLoaded', function() {
 	
-	const editForm = document.getElementById('editCommentForm');
+	const form = document.getElementById('editCommentForm');
 
-	editForm.addEventListener('submit', async function(e) {
-		e.preventDefault();
-		
-		if (!isLoggedIn()) {
-			redirectToLogin();
-		}
-
-		const id = document.getElementById('editCommentId').value;
-		const content = document.getElementById('editCommentContent').value.trim();
+	form.addEventListener('submit', async function(event) {
+		event.preventDefault();
 
 		try {
-			const token = localStorage.getItem('accessToken');
-			
-			const headers = {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${token}`
-			}
+			const id = document.getElementById('editCommentId').value;
+			const content = document.getElementById('editCommentContent').value.trim();
 			
 			const data = {
 				id: id,
@@ -200,43 +290,40 @@ document.addEventListener('DOMContentLoaded', function() {
 			};
 			
 			const response = await instance.patch(`/comments/${id}`, data, {
-				headers: headers
+				headers: getAuthHeaders()
 			});
 			
 			if (response.data.code === 'COMMENT_UPDATE_SUCCESS') {
-				const commentEl = document.querySelector(`.mycomment_item[data-id='${id}'] .comment_content`);
-				if (commentEl) commentEl.textContent = response.data.data.content;
-				
+				alertPrimary('댓글이 성공적으로 수정되었습니다.');
+				document.querySelector(`.mycomment_item[data-id='${id}'] .comment_content`).textContent = response.data.data.content;
 				bootstrap.Modal.getInstance(document.getElementById('editCommentModal')).hide();
 			}
 		}
 		catch (error) {
 			const code = error?.response?.data?.code;
-			const message = error?.response?.data?.message;
 			
 			if (code === 'COMMENT_UPDATE_FAIL') {
-				alert('댓글 수정에 실패했습니다.');
+				alertDanger('댓글 수정에 실패했습니다.');
 			}	
 			else if (code === 'COMMENT_INVALID_INPUT') {
-				alert('입력값이 유효하지 않습니다.');
+				alertDanger('입력값이 유효하지 않습니다.');
 			}
 			else if (code === 'COMMENT_UNAUTHORIZED_ACCESS') {
-				alert('로그인되지 않은 사용자입니다.');
+				alertDanger('로그인되지 않은 사용자입니다.');
 			}
 			else if (code === 'COMMENT_FORBIDDEN') {
-				alert('접근 권한이 없습니다.');
+				alertDanger('접근 권한이 없습니다.');
 			}
 			else if (code === 'COMMENT_NOT_FOUND') {
-				alert('해당 댓글을 찾을 수 없습니다.');
+				alertDanger('해당 댓글을 찾을 수 없습니다.');
 			}
 			else if (code === 'INTERNAL_SERVER_ERROR') {
-				alert('서버 내부 오류가 발생했습니다.');
+				alertDanger('서버 내부에서 오류가 발생했습니다.');
 			}
 			else {
-				alert(message);
+				console.log(error);
 			}
 		}
-			
 	});
 });
 
@@ -251,61 +338,40 @@ async function deleteComment(id) {
 
 	if (confirm('작성하신 댓글을 삭제하시겠습니까?')) {
 		try {
-			const token = localStorage.getItem('accessToken');
-			
-			const headers = {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${token}`
-			}
-			
-			const data = {
-				id: id
-			};
-			
 			const response = await instance.delete(`/comments/${id}`, {
-				data: data,
-				headers: headers
+				headers: getAuthHeaders()
 			});
 			
 			if (response.data.code === 'COMMENT_DELETE_SUCCESS') {
-				const commentEl = document.querySelector(`.mycomment_item[data-id='${id}']`);
-				if (commentEl) commentEl.remove();
-				
-				const subcommentEl = document.querySelectorAll(`.mycomment_item[data-comm-id='${id}']`);
-				if (subcommentEl) subcommentEl.forEach(el => el.remove());
-				
-				commentList = commentList.filter(c => c.id !== id && c.comm_id !== id);
+				alertPrimary('댓글이 성공적으로 삭제되었습니다.');
+				commentList = commentList.filter(comment => comment.id !== id && comment.comm_id !== id);
+				renderUserCommentList(commentList);
 			}
-			
 		}
 		catch (error) {
 			const code = error?.response?.data?.code;
-			const message = error?.response?.data?.message;
 			
 			if (code === 'COMMENT_DELETE_FAIL') {
-				alert('댓글 삭제에 실패했습니다');
+				alerDanger('댓글 삭제에 실패했습니다');
 			}
 			else if (code === 'COMMENT_INVALID_INPUT') {
-				alert('입력값이 유효하지 않습니다.');
+				alerDanger('입력값이 유효하지 않습니다.');
 			}
 			else if (code === 'COMMENT_UNAUTHORIZED') {
-				alert('로그인되지 않은 사용자입니다.');
+				alerDanger('로그인되지 않은 사용자입니다.');
 			}
 			else if (code === 'COMMENT_FORBIDDEN') {
-				alert('접근 권한이 없습니다.');
+				alerDanger('접근 권한이 없습니다.');
 			}
 			else if (code === 'COMMENT_NOT_FOUND') {
-				alert('해당 댓글을 찾을 수 없습니다.');
+				alerDanger('해당 댓글을 찾을 수 없습니다.');
 			}
 			else if (code === 'INTERNAL_SERVER_ERROR') {
-				alert('서버 내부 오류가 발생했습니다.');
+				alerDanger('서버 내부에서 오류가 발생했습니다.');
 			}
 			else {
-				alert(message);
+				console.log(error);
 			}
 		}
 	}
-	
 }
-
-

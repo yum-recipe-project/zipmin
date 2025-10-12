@@ -20,8 +20,13 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.CommentSuccessCode;
+import com.project.zipmin.api.UserErrorCode;
+import com.project.zipmin.api.UserSuccessCode;
+import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.CommentCreateRequestDto;
 import com.project.zipmin.dto.CommentCreateResponseDto;
+import com.project.zipmin.dto.UserCommentReadesponseDto;
+import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.CommentUpdateRequestDto;
 import com.project.zipmin.dto.CommentUpdateResponseDto;
@@ -31,6 +36,7 @@ import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.ReportCreateRequestDto;
 import com.project.zipmin.dto.ReportCreateResponseDto;
 import com.project.zipmin.dto.ReportDeleteRequestDto;
+import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.CommentCreateFailResponse;
@@ -917,6 +923,56 @@ public class CommentController {
 		
 		return ResponseEntity.status(CommentSuccessCode.COMMENT_UNREPORT_SUCCESS.getStatus())
 				.body(ApiResponse.success(CommentSuccessCode.COMMENT_UNREPORT_SUCCESS, null));
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// 200 COMMENT_READ_LIST_SUCCESS
+	// 400 COMMENT_READ_LIST_FAIL
+	// 400 COMMENT_INVALID_INPUT
+	// 400 USER_INVALID_INPUT
+	// 400 VOTE_INVALID_INPUT
+	// 400 MEGAZINE_INVALID_INPUT
+	// 400 EVENT_INVALID_INPUT
+	// 400 RECIPE_INVALID_INPUT
+	// 400 GUIDE_INVALID_INPUT
+	// 401 COMMENT_UNAUTHORIZED_ACCESS
+	// 403 COMMENT_FORBIDDEN
+	// 404 USER_NOT_FOUND
+	// 404 VOTE_NOT_FOUND
+	// 404 MEGAZINE_NOT_FOUND
+	// 404 EVENT_NOT_FOUND
+	// 404 RECIPE_NOT_FOUND
+	// 404 GUIDE_NOT_FOUND
+	
+	// 작성한 댓글
+	@GetMapping("/users/{id}/comments")
+	public ResponseEntity<?> readUserCommentList(
+			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
+			@Parameter(description = "페이지 번호") @RequestParam int page,
+			@Parameter(description = "페이지 크기") @RequestParam int size) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
+		}
+
+		Pageable pageable = PageRequest.of(page, size);
+		Page<UserCommentReadesponseDto> commentPage = commentService.readCommentPageByUserId(id, pageable);
+		
+		return ResponseEntity.status(CommentSuccessCode.COMMENT_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(CommentSuccessCode.COMMENT_READ_LIST_SUCCESS, commentPage));
 	}
 	
 }

@@ -7,6 +7,7 @@
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/mypage/revenue.css">
+		<link rel="stylesheet" href="/css/common/pagination.css">
 		<script src="/js/mypage/revenue.js"></script>
 		<script src="/js/modal/change-account-modal.js"></script>
 		<script src="/js/modal/withdraw-point-modal.js"></script>
@@ -29,13 +30,13 @@
 					</div>
 					
 					<div class="support_util">
-						<p class="total">총 23개</p>
+						<p class="total"></p>
 					</div>
 					
 					<div class="support_point">
 						<div class="point">
-							<span>출금 가능 금액</span>
-							<span>0원</span>
+							<span>수익</span>
+							<span></span>
 						</div>
 						<div class="btn_wrap">
 							<button class="btn_outline" data-bs-toggle="modal" data-bs-target="#changeAccountModal"
@@ -49,46 +50,15 @@
 						</div>
 					</div>
 					
-					<c:if test="${ true }">
-						<ul class="support_list">
-							<%-- <c:forEach> --%>
-								<li>
-									<div class="support_info">
-										<div class="sponsor">
-											<p><b>다영</b> 님에게 후원받았습니다</p>
-											<p>2025.04.03</p>
-										</div>
-										<p class="point">5,000P</p>
-									</div>
-									<div class="support">
-										<a href="/recipe/viewRecipe.do" class="thumbnail">
-											<img src="/images/common/test.png">
-										</a>
-										<div class="info">
-											<p>레시피</p>
-											<a href="/recipe/viewRecipe.do">맛돌이 김치볶음밥</a>
-											<p>아잠만</p>
-										</div>
-									</div>
-								</li>
-							<%-- </c:forEach> --%>
-						</ul>
-					</c:if>
+						<ul class="support_list"></ul>
 				</div>
 				
 				<div class="pagination_wrap">
 					<div class="pagination">
-					    <ul>
-					        <li><a href="#" class="prev"><img src="/images/common/chevron_left.png"></a></li>
-					        <li><a href="#" class="page active">1</a></li>
-					        <li><a href="#" class="page">2</a></li>
-					        <li><a href="#" class="page">3</a></li>
-					        <li><a href="#" class="page">4</a></li>
-					        <li><a href="#" class="page">5</a></li>
-					        <li><a href="#" class="next"><img src="/images/common/chevron_right.png"></a></li>
-					    </ul>
+					    <ul></ul>
 					</div>
 				</div>
+				
 			</div>
 			
 			<!-- 출금 계좌 모달창 -->

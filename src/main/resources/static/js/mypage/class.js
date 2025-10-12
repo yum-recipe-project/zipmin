@@ -151,9 +151,54 @@ function renderUserClassList(classList) {
 		const li = document.createElement('li');
 
 		const statusDiv = document.createElement('div');
-		statusDiv.className = 'status';
-		statusDiv.textContent = classs.approval === 1 ? '승인 완료' : '승인 대기중';
-		statusDiv.classList.toggle('opened', classs.approval === 1);
+		if (classs.opened) {
+			switch (classs.approval) {
+				case 1:
+					statusDiv.className = 'status opened';
+					statusDiv.textContent = '승인 완료';
+					break;
+				case 2:
+					statusDiv.className = 'status';
+					statusDiv.textContent = '승인 대기중'
+					break;
+				case 0:
+					statusDiv.className = 'status';
+					statusDiv.textContent = '미승인';
+					break;
+			}
+		}
+		else  {
+			switch (classs.approval) {
+			case 1:
+				statusDiv.className = 'status';
+				statusDiv.textContent = '승인 완료';
+				break;
+			case 2:
+				statusDiv.className = 'status';
+				statusDiv.textContent = '대기 만료'
+				break;
+			case 0:
+				statusDiv.className = 'status';
+				statusDiv.textContent = '미승인';
+				break;
+			}
+		}
+		
+		
+		switch (classs.approval) {
+			case 1:
+				statusDiv.className = classs.opened ? 'status primary' : 'status';
+				statusDiv.textContent = '승인 완료';
+				break;
+			case 2:
+				statusDiv.className = classs.opened ? 'status warning' : 'status';
+				statusDiv.textContent = classs.opened ? '승인 대기중' : '대기 만료';
+				break;
+			case 0:
+				statusDiv.className = classs.opened ? 'status danger' : 'status';
+				statusDiv.textContent = '미승인';
+				break;
+		}
 		li.appendChild(statusDiv);
 
 		const classDiv = document.createElement('div');

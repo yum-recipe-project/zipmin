@@ -84,8 +84,16 @@
 	color: var(--txt-color-500);
 }
 
-#container .content .class_wrap .class_list .status.opened {
-	color: #00B96B;
+#container .content .class_wrap .class_list .status.primary {
+	color: var(--point-color2);
+}
+
+#container .content .class_wrap .class_list .status.warning {
+	color: #FFAE1F;
+}
+
+#container .content .class_wrap .class_list .status.danger {
+	color: #F45452;
 }
 	
 #container .content .class_wrap .class_list .class {
@@ -98,7 +106,7 @@
 	width: 252px;
 	min-width: 252px;
 	height: 142px;
-	margin-right: 16px;
+	margin-right: 22px;
 	border-radius: 4px;
 }
 
@@ -116,7 +124,7 @@
 }
 
 #container .content .class_wrap .class_list .info a {
-	font-size: 16px;
+	font-size: 18px;
 	line-height: 24px;
 	letter-spacing: -0.4px;
 	font-weight: 600;

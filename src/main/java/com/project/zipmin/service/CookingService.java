@@ -542,15 +542,25 @@ public class CookingService {
 		}
 		
 		// 클래스 목록 응답 구성
-		Date today = new Date();
 		List<UserClassReadResponseDto> classDtoList = new ArrayList<UserClassReadResponseDto>();
 		for (Class classs : classPage) {
 			UserClassReadResponseDto classDto = classMapper.toReadUserResponseDto(classs);
 			
 			// 이미지
 			classDto.setImage(publicPath + "/" + classDto.getImage());
+			
 			// 상태
-			classDto.setOpened(today.before(classDto.getNoticedate()));
+			if (classs.getApproval() == 1 && now.before(classs.getNoticedate())) {
+				classDto.setOpened(true);
+			}
+			
+			// 클래스 진행 완료 여부 조회
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(classDto.getEventdate());
+			calendar.add(Calendar.DAY_OF_YEAR, 7);
+			if (classs.getApproval() == 1 && now.after(classs.getEventdate()) && now.before(calendar.getTime())) {
+				classDto.setEvented(true);
+			}
 
 			classDtoList.add(classDto);
 		}

@@ -465,9 +465,9 @@ async function editApplySelected(applyId, selected) {
 			headers: getAuthHeaders()
 		});
 		
-		console.log(response);
-		
-		// TODO 성공시 
+		if (response.data.code === 'CLASS_APPLY_UPDATE_SUCCESS') {
+			fetchApplyList();
+		}
 	}
 	catch (error) {
 		const code = error?.response?.data?.code;
@@ -500,9 +500,9 @@ async function editApplyAttend(applyId, attend) {
 			headers: getAuthHeaders()
 		});
 		
-		console.log(response);
-		
-		// TODO 성공시 
+		if (response.data.code === 'CLASS_APPLY_UPDATE_SUCCESS') {
+			fetchApplyList();
+		}
 	}
 	catch (error) {
 		const code = error?.response?.data?.code;

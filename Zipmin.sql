@@ -663,8 +663,8 @@ create table class_apply (
     applydate date default sysdate,
     reason varchar2(1000) not null,
     question varchar2(1000),
-    selected number(1) default 0,
-    attend number(1) default 0,
+    selected number(1) default 2,
+    attend number(1) default 2,
     user_id number not null,
     class_id number not null
 );

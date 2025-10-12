@@ -23,5 +23,6 @@ public class UserClassReadResponseDto {
 	private int userId;
 
 	private boolean isOpened;
+	private boolean isEvented;
 	
 }

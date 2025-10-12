@@ -151,7 +151,7 @@ function renderUserClassList(classList) {
 		const statusDiv = document.createElement('div');
 		switch (classs.approval) {
 			case 1:
-				statusDiv.className = classs.opened ? 'status primary' : 'status';
+				statusDiv.className = (classs.opened || classs.evented) ? 'status primary' : 'status';
 				statusDiv.textContent = '승인 완료';
 				break;
 			case 2:

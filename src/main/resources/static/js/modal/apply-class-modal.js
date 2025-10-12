@@ -28,10 +28,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	form.addEventListener('submit', async function(event) {
 		event.preventDefault();
 	
-		if (!isLoggedIn()) {
-			redirectToLogin();
-		}
-		
 		try {
 			const token = localStorage.getItem('accessToken');
 
@@ -45,8 +41,6 @@ document.addEventListener('DOMContentLoaded', function() {
 				question: form.question.value.trim(),
 				class_id: form.id.value
 			};
-			
-			console.log(data);
 			
 			const response = await instance.post(`/classes/${form.id.value}/applies`, data, {
 				headers: headers

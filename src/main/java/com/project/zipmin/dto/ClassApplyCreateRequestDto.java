@@ -12,6 +12,7 @@ public class ClassApplyCreateRequestDto {
 	private String reason;
 	private String question;
 	private Integer selected;
+	private Integer attend;
 	private Integer userId;
 	private Integer classId;
 	

@@ -7,18 +7,10 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class UserUpdateRequestDto {
+public class PointCreateResponseDto {
 	
-	private Integer id;
-	private String password;
+	private int id;
 	private String username;
-	private String name;
-	private String nickname;
-	private String tel;
-	private String email;
-	
-	private String avatar;
-	private String introduce;
 	private int point;
 	
 }

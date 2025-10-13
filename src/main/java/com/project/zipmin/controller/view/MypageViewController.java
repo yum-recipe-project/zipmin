@@ -19,6 +19,10 @@ public class MypageViewController {
 	public String myPoint() {
 		return "mypage/revenue";
 	}
+	@GetMapping("/mypage/withdraw.do")
+	public String withdraw() {
+		return "mypage/withdraw";
+	}
 	
 	@GetMapping("/mypage/review.do")
 	public String review() {

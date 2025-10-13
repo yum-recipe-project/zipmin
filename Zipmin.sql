@@ -7,14 +7,11 @@
 
 
 -- 테이블과 시퀀스 일괄 삭제
-drop table vote_record cascade constraints;
-drop sequence seq_vote_record_id;
+drop table fund cascade constraints;
+drop sequence seq_fund_id;
 
-drop table vote_choice cascade constraints;
-drop sequence seq_vote_choice_id;
-
-drop table chomp cascade constraints;
-drop sequence seq_chomp_id;
+drop table fridge_memo cascade constraints;
+drop sequence seq_fridge_memo_id;
 
 drop table class_apply cascade constraints;
 drop sequence seq_class_apply_id;
@@ -70,17 +67,30 @@ drop sequence seq_recipe_id;
 drop table password_token cascade constraints;
 drop sequence seq_password_token_id;
 
+drop table user_fridge cascade constraints;
+drop sequence seq_user_fridge_id;
+
+drop table fridge cascade constraints;
+drop sequence seq_fridge_id;
+
 drop table user_account cascade constraints;
 drop sequence seq_user_account_id;
 
-drop table fund cascade constraints;
-drop sequence seq_fund_id;
+drop table users cascade constraints;
+drop sequence seq_user_id;
+
+drop table vote_record cascade constraints;
+drop sequence seq_vote_record_id;
+
+drop table vote_choice cascade constraints;
+drop sequence seq_vote_choice_id;
+
+drop table chomp cascade constraints;
+drop sequence seq_chomp_id;
 
 drop table withdraw cascade constraints;
 drop sequence seq_withdraw_id;
 
-drop table users cascade constraints;
-drop sequence seq_user_id;
 
 
 
@@ -732,10 +742,6 @@ commit;
 
 
 -- FUND 테이블
-
-
-
--- FUND 테이블
 --alter table fund drop constraint fk_fund_funder;
 --alter table fund drop constraint fk_fund_fundee;
 --alter table fund drop constraint fk_fund_recipe;
@@ -771,16 +777,17 @@ alter table fund
     
     
     
--- withdraw 테이블
+
+-- WITHDRAW 테이블
 CREATE TABLE withdraw (
-    id              NUMBER PRIMARY KEY,            
-    user_id         NUMBER NOT NULL,               
-    account_id      NUMBER NOT NULL,               
-    request_point   NUMBER NOT NULL,               
-    request_date    DATE DEFAULT SYSDATE NOT NULL,    
-    status          NUMBER DEFAULT 0 NOT NULL,        
-    complete_date   DATE,                             
-    admin_id        NUMBER                            
+    id              NUMBER PRIMARY KEY,       
+    user_id         NUMBER NOT NULL,          
+    account_id      NUMBER NOT NULL,          
+    request_point   NUMBER NOT NULL,          
+    request_date    DATE DEFAULT SYSDATE NOT NULL,
+    status          NUMBER DEFAULT 0 NOT NULL,    
+    complete_date   DATE,                         
+    admin_id        NUMBER                        
 );
 CREATE SEQUENCE seq_withdraw_id
     INCREMENT BY 1
@@ -800,6 +807,5 @@ ALTER TABLE withdraw
     ADD CONSTRAINT fk_withdraw_admin
     FOREIGN KEY (admin_id) REFERENCES users(id)
     ON DELETE SET NULL;
-
 commit;
 

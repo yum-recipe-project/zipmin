@@ -9,12 +9,12 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class FundDTO {
+public class WithdrawReadResponseDto {
+
 	private int id;
-	private int funderId;
-	private int fundeeId;
-	private int recipeId;
-	private int point;
-	private Date funddate;
-	private int status;
+    private int requestPoint;
+    private Date requestDate;
+    private int status;
+    private Date completeDate;
+	
 }

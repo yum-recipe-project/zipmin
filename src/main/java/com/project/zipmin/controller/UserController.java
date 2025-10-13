@@ -26,7 +26,6 @@ import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
-import com.project.zipmin.dto.UserCommentReadesponseDto;
 import com.project.zipmin.dto.GuideReadMySavedResponseDto;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
@@ -38,6 +37,7 @@ import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
 import com.project.zipmin.dto.UserPasswordCheckRequestDto;
 import com.project.zipmin.dto.UserPasswordUpdateRequestDto;
+import com.project.zipmin.dto.UserPointReadResponseDto;
 import com.project.zipmin.dto.UserProfileReadResponseDto;
 import com.project.zipmin.dto.UserReadPasswordRequestDto;
 import com.project.zipmin.dto.UserReadResponseDto;
@@ -47,6 +47,7 @@ import com.project.zipmin.dto.UserUpdateResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.CookingService;
+import com.project.zipmin.service.FundService;
 import com.project.zipmin.service.KitchenService;
 import com.project.zipmin.service.RecipeService;
 import com.project.zipmin.service.ReviewService;
@@ -90,8 +91,7 @@ public class UserController {
 	private final KitchenService kitchenService;
 	private final RecipeService recipeService;
 	private final ReviewService reviewService;
-
-	
+	private final FundService fundService;
 	
 	
 	
@@ -837,15 +837,14 @@ public class UserController {
 	
 	
 	
-	
+
+  
 	// 저장한(좋아요를 누른) 키친가이드
 	@GetMapping("/users/{id}/likes/guides")
 	public ResponseEntity<?> readUserSavedGuideList(
 			@PathVariable Integer id,
 			@RequestParam int page,
 			@RequestParam int size) {
-		
-		System.err.println("키친가이드 컨트롤러");
 		
 		// 입력값 검증
 		if (id == null) {
@@ -1138,10 +1137,25 @@ public class UserController {
 
 	
 	
+	// 사용자 포인트 조회
+	@GetMapping("/users/{id}/point")
+	public ResponseEntity<?> readUserPoint(
+	        @PathVariable int id) {
+
+	    UserPointReadResponseDto pointDto = userService.readUserPointById(id);
+
+	    return ResponseEntity.status(UserSuccessCode.USER_READ_SUCCESS.getStatus())
+	            .body(ApiResponse.success(UserSuccessCode.USER_READ_SUCCESS, pointDto));
+	}
+
+
+	
+	
+	
+	
 	
 	
 	
 
-	
 	
 }

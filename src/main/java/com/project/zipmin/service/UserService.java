@@ -24,19 +24,20 @@ import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.LikeReadResponseDto;
 import com.project.zipmin.dto.MailDto;
 import com.project.zipmin.dto.PasswordTokenDto;
-import com.project.zipmin.dto.UserReadUsernameRequestDto;
-import com.project.zipmin.dto.UserPasswordCheckRequestDto;
-import com.project.zipmin.dto.UserPasswordUpdateRequestDto;
-import com.project.zipmin.dto.UserProfileReadResponseDto;
-import com.project.zipmin.dto.UserReadPasswordRequestDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
+import com.project.zipmin.dto.UserPasswordCheckRequestDto;
+import com.project.zipmin.dto.UserPasswordUpdateRequestDto;
+import com.project.zipmin.dto.UserPointReadResponseDto;
+import com.project.zipmin.dto.UserProfileReadResponseDto;
+import com.project.zipmin.dto.UserReadPasswordRequestDto;
 import com.project.zipmin.dto.UserReadResponseDto;
+import com.project.zipmin.dto.UserReadUsernameRequestDto;
 import com.project.zipmin.dto.UserUpdateRequestDto;
 import com.project.zipmin.dto.UserUpdateResponseDto;
-import com.project.zipmin.entity.User;
 import com.project.zipmin.entity.PasswordToken;
 import com.project.zipmin.entity.Role;
+import com.project.zipmin.entity.User;
 import com.project.zipmin.mapper.PasswordTokenMapper;
 import com.project.zipmin.mapper.UserMapper;
 import com.project.zipmin.repository.PasswordTokenRepository;
@@ -208,9 +209,7 @@ public class UserService {
 	}
 	
 	
-	
-	
-	
+
 	// 아이디로 사용자 프로필 조회
 	public UserProfileReadResponseDto readUserProfileById(Integer id) {
 		
@@ -650,4 +649,91 @@ public class UserService {
 		}
 		
 	}
+	
+	
+	
+	// 아이디로 사용자 포인트 조회
+	public UserPointReadResponseDto readUserPointById(Integer id) {
+
+	    // 입력값 검증
+	    if (id == null) {
+	        throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+	    }
+
+	    // 사용자 조회
+	    User user = userRepository.findById(id)
+	            .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+
+	    return userMapper.toReadPointResponseDto(user);
+	}
+	
+	
+
+	
+	// 사용자 포인트 충전
+	public UserPointReadResponseDto addPointToUser(Integer id, int addPoint) {
+	    // 입력값 검증
+	    if (id == null) {
+	        throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+	    }
+
+	    // 사용자 조회
+	    User user = userRepository.findById(id)
+	            .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+
+	    // 포인트 충전
+	    int newPoint = user.getPoint() + addPoint;
+	    user.setPoint(newPoint);
+	    
+	    userRepository.save(user);
+	    
+	    return userMapper.toReadPointResponseDto(user);
+	}
+	
+
+	
+	// 사용자 포인트 정보 업데이트
+	public User saveUser(User user) {
+        if (user == null) {
+        	throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+        }
+        return userRepository.save(user);
+    }
+		
+	public User getUserEntityById(Integer id) {
+	    return userRepository.findById(id)
+	            .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+	}
+
+
+    
+    
+    
+    
+    
+    
+	
+    
+    
+    
+	
+	// 유저 정보 반환
+//	public User getUserEntityByUsername(String username) {
+//	    if (username == null) {
+//	        throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+//	    }
+//
+//	    return userRepository.findByUsername(username)
+//	            .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+//	}
+
+
+
+
+
+
+
+	
+
+
 }

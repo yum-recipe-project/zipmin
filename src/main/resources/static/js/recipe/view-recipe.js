@@ -105,6 +105,11 @@ document.addEventListener('DOMContentLoaded', async function() {
 				location.href = `/mypage/profile.do?id=${result.data.user_id}`;
 			});
 			
+			
+			// 레시피 작성자 ID를 hidden input에 저장
+			document.getElementById('fundeeIdInput').value = result.data.user_id;
+			
+			
 			// 리뷰 수
 			reviewCommentForm.querySelector('.review_count').innerText = result.data.reviewcount;
 			reviewCommentForm.querySelector('.comment_count').innerText = result.data.commentcount;

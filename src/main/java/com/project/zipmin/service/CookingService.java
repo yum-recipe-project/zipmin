@@ -500,44 +500,35 @@ public class CookingService {
 	
 	
 	// 사용자가 개설한 클래스 목록 조회
-	public Page<UserClassReadResponseDto> readClassPageByUserId(Integer userId, String sort, Pageable pageable) {
+	public Page<UserClassReadResponseDto> readClassPageByUserId(Integer userId, String status, Pageable pageable) {
 		
 		// 입력값 검증
 		if (userId == null || pageable == null) {
 			throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
 		}
 		
-		// 정렬 문자열을 객체로 변환
-		Sort sortSpec = Sort.by(Sort.Order.desc("id"));
-		if (sort != null && !sort.isBlank()) {
-			switch (sort) {
-				case "postdate-desc":
-					sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id"));
-					break;
-				case "eventdate-desc":
-					sortSpec = Sort.by(Sort.Order.desc("eventdate"), Sort.Order.desc("id"));
-					break;
-				case "applycount-desc":
-					sortSpec = Sort.by(Sort.Order.desc("applycount"), Sort.Order.desc("id"));
-					break;
-				default:
-					break;
-		    }
-		}
-		
-		// 기존 페이지 객체에 정렬 주입
-		Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
-		
 		// 클래스 목록 조회
-		Page<Class> classPage;
+		Page<Class> classPage = null;
+		
 		Date now = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(now);
+		calendar.add(Calendar.DAY_OF_YEAR, -7);
 		
 		try {
-			switch (sort) {
-				case "end" -> classPage = classRepository.findByUserIdAndNoticedateBefore(userId, now, sortedPageable);
-				case "progress" -> classPage = classRepository.findByUserIdAndNoticedateAfter(userId, now, sortedPageable);
-				default -> classPage = classRepository.findByUserId(userId, sortedPageable);
-			}
+			boolean hasStatus = status != null && !status.isBlank();
+	    	
+	    	if (!hasStatus) {
+	    		classPage = classRepository.findByUserId(userId, pageable); 	    
+	    	}
+	    	else {
+	    		if ("open".equals(status)) {
+	    			classPage = classRepository.findByUserIdAndEventdateAfter(userId, calendar, pageable);
+	    		}
+	    		else if ("close".equals(status)) {
+	    			classPage = classRepository.findByUserIdAndEventdateBefore(userId, calendar, pageable);
+	    		}
+	    	}
 		}
 		catch (Exception e) {
 			throw new ApiException(ClassErrorCode.CLASS_READ_LIST_FAIL);
@@ -557,7 +548,6 @@ public class CookingService {
 			}
 			
 			// 클래스 진행 완료 여부 조회
-			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(classDto.getEventdate());
 			calendar.add(Calendar.DAY_OF_YEAR, 7);
 			if (classs.getApproval() == 1 && now.after(classs.getEventdate()) && now.before(calendar.getTime())) {
@@ -572,13 +562,6 @@ public class CookingService {
 	
 	
 	
-	/*
-	        switch (sort) {
-	            case "end" -> applyPage = applyRepository.findByUserIdAndClasss_EventdateBefore(userId, now, pageable);
-	            case "progress" -> applyPage = applyRepository.findByUserIdAndClasss_EventdateAfter(userId, now, pageable);
-	            default -> applyPage = applyRepository.findByUserId(userId, pageable);
-	        }
-	 */
 	
 	
 	

@@ -363,12 +363,12 @@ public class CookingController {
 	@GetMapping("/users/{id}/classes")
 	public ResponseEntity<?> listUserClass(
 			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
-			@Parameter(description = "정렬") @RequestParam String sort,
+			@Parameter(description = "진행 상태") @RequestParam String status,
 			@Parameter(description = "조회할 페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지의 항목 수") @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<UserClassReadResponseDto> classPage = cookingService.readClassPageByUserId(id, sort, pageable);
+		Page<UserClassReadResponseDto> classPage = cookingService.readClassPageByUserId(id, status, pageable);
 		
 		return ResponseEntity.status(ClassSuccessCode.CLASS_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_READ_LIST_SUCCESS, classPage));

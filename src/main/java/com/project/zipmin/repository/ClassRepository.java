@@ -3,6 +3,7 @@ package com.project.zipmin.repository;
 import com.project.zipmin.entity.Class;
 import com.project.zipmin.entity.Guide;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -51,8 +52,8 @@ public interface ClassRepository extends JpaRepository<Class, Integer> {
 	
 	// 나의 쿠킹클래스에 사용 (수정 필요)
 	Page<Class> findByUserId(int userId, Pageable pageable);
-	Page<Class> findByUserIdAndNoticedateAfter(int userId, Date now, Pageable pageable);
-	Page<Class> findByUserIdAndNoticedateBefore(int userId, Date now, Pageable pageable);
+	Page<Class> findByUserIdAndEventdateAfter(int userId, Calendar now, Pageable pageable);
+	Page<Class> findByUserIdAndEventdateBefore(int userId, Calendar now, Pageable pageable);
 	
 	
 	

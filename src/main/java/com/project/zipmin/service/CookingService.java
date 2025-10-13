@@ -621,8 +621,21 @@ public class CookingService {
 	    // 신청한 클래스 목록 조회
 	    Page<Class> classPage = null;
 	    try {
-	    	// TODO : status 고려 (open/close 프론트도 수정 필요)
-	    	classPage = classRepository.findByIdIn(classIds, pageable); 	    
+	    	boolean hasStatus = status != null && !status.isBlank();
+	    	Date today = new Date();
+	    	
+	    	if (!hasStatus) {
+	    		classPage = classRepository.findByIdIn(classIds, pageable); 	    
+	    	}
+	    	else {
+	    		if ("open".equals(status)) {
+	    			classPage = classRepository.findAllByNoticedateAfter(today, pageable);
+	    		}
+	    		else if ("close".equals(status)) {
+	    			// TODO : 선정 여부에 따라 분기
+	    			classPage = classRepository.findAllByNoticedateBefore(today, pageable);
+	    		}
+	    	}
 	    }
 	    catch (Exception e) {
 	    	throw new ApiException(ClassErrorCode.CLASS_READ_LIST_FAIL);

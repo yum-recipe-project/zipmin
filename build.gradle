@@ -71,6 +71,7 @@ dependencies {
 	
 	// PortOne
 	implementation 'com.github.iamport:iamport-rest-client-java:0.2.23'
+	
 	// Email Send
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 }

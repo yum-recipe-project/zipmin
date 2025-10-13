@@ -7,90 +7,80 @@
 
 
 -- 테이블과 시퀀스 일괄 삭제
-drop table fund cascade constraints;
-drop sequence seq_fund_id;
-
-drop table fridge_memo cascade constraints;
-drop sequence seq_fridge_memo_id;
-
-drop table class_apply cascade constraints;
-drop sequence seq_class_apply_id;
-
-drop table class_target cascade constraints;
-drop sequence seq_class_target_id;
-
-drop table class_schedule cascade constraints;
-drop sequence seq_class_schedule_id;
-
-drop table class_tutor cascade constraints;
-drop sequence seq_class_tutor_id;
-
-drop table classes cascade constraints;
-drop sequence seq_classes_id;
-
-drop table report cascade constraints;
-drop sequence seq_report_id;
-
-drop table likes cascade constraints;
-drop sequence seq_likes_id;
-
-drop table fridge_memo cascade constraints;
-drop sequence seq_fridge_memo_id;
-
-drop table user_fridge cascade constraints;
-drop sequence seq_user_fridge_id;
-
-drop table fridge cascade constraints;
-drop sequence seq_fridge_id;
-
-drop table review cascade constraints;
-drop sequence seq_review_id;
-
-drop table comments cascade constraints;
-drop sequence seq_comments_id;
-
-drop table guide cascade constraints;
-drop sequence seq_guide_id;
-
-drop table recipe_step cascade constraints;
-drop sequence seq_recipe_step_id;
-
-drop table recipe_stock cascade constraints;
-drop sequence seq_recipe_stock_id;
-
-drop table recipe_category cascade constraints;
-drop sequence seq_recipe_category_id;
-
-drop table recipe cascade constraints;
-drop sequence seq_recipe_id;
-
-drop table password_token cascade constraints;
-drop sequence seq_password_token_id;
-
-drop table user_fridge cascade constraints;
-drop sequence seq_user_fridge_id;
-
-drop table fridge cascade constraints;
-drop sequence seq_fridge_id;
-
-drop table user_account cascade constraints;
-drop sequence seq_user_account_id;
-
-drop table users cascade constraints;
-drop sequence seq_user_id;
-
-drop table vote_record cascade constraints;
-drop sequence seq_vote_record_id;
-
-drop table vote_choice cascade constraints;
-drop sequence seq_vote_choice_id;
-
-drop table chomp cascade constraints;
-drop sequence seq_chomp_id;
-
-drop table withdraw cascade constraints;
+drop table withdraw;
 drop sequence seq_withdraw_id;
 
+drop table fund;
+drop sequence seq_fund_id;
+
+drop table vote_record;
+drop sequence seq_vote_record_id;
+
+drop table vote_choice;
+drop sequence seq_vote_choice_id;
+
+drop table chomp;
+drop sequence seq_chomp_id;
+
+drop table class_apply;
+drop sequence seq_class_apply_id;
+
+drop table class_target;
+drop sequence seq_class_target_id;
+
+drop table class_schedule;
+drop sequence seq_class_schedule_id;
+
+drop table class_tutor;
+drop sequence seq_class_tutor_id;
+
+drop table classes;
+drop sequence seq_classes_id;
+
+drop table report;
+drop sequence seq_report_id;
+
+drop table likes;
+drop sequence seq_likes_id;
+
+drop table fridge_memo;
+drop sequence seq_fridge_memo_id;
+
+drop table user_fridge;
+drop sequence seq_user_fridge_id;
+
+drop table fridge;
+drop sequence seq_fridge_id;
+
+drop table review;
+drop sequence seq_review_id;
+
+drop table comments;
+drop sequence seq_comments_id;
+
+drop table guide;
+drop sequence seq_guide_id;
+
+drop table recipe_step;
+drop sequence seq_recipe_step_id;
+
+drop table recipe_stock;
+drop sequence seq_recipe_stock_id;
+
+drop table recipe_category;
+drop sequence seq_recipe_category_id;
+
+drop table recipe;
+drop sequence seq_recipe_id;
+
+drop table password_token;
+drop sequence seq_password_token_id;
+
+drop table user_account;
+drop sequence seq_user_account_id;
+
+drop table users;
+drop sequence seq_user_id;
 
 
 
@@ -232,6 +222,31 @@ create sequence seq_user_fridge_id
     start with 1
     minvalue 1
     nomaxvalue
+    nocycle
+    nocache;
+commit;
+
+
+
+
+-- FRIDGE_MEMO 테이블
+-- drop table fridge_memo;
+-- drop sequence seq_fridge_memo_id;
+create table fridge_memo (
+    id number primary key,
+    name varchar2(50) not null, 
+    amount number,              
+    unit varchar2(30),          
+    note varchar2(300),         
+    user_id number not null     
+);
+alter table fridge_memo
+    add constraint const_fridge_memo_user foreign key(user_id)
+    references users(id) on delete cascade;
+create sequence seq_fridge_memo_id
+    increment by 1
+    start with 1
+    minvalue 1
     nocycle
     nocache;
 commit;
@@ -716,30 +731,6 @@ commit;
 
 
 
--- FRIDGE_MEMO 테이블
--- drop table fridge_memo;
--- drop sequence seq_fridge_memo_id;
-create table fridge_memo (
-    id number primary key,
-    name varchar2(50) not null, 
-    amount number,              
-    unit varchar2(30),          
-    note varchar2(300),         
-    user_id number not null     
-);
-alter table fridge_memo
-    add constraint const_fridge_memo_user foreign key(user_id)
-    references users(id) on delete cascade;
-create sequence seq_fridge_memo_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nocycle
-    nocache;
-commit;
-
-
-
 
 -- FUND 테이블
 --alter table fund drop constraint fk_fund_funder;
@@ -749,63 +740,56 @@ commit;
 --drop sequence seq_fund_id;
 create table fund (
     id number primary key,
-    funder_id number, 
-    fundee_id number, 
-    recipe_id number, 
+    funder_id number,
+    fundee_id number,
+    recipe_id number,
     point number not null,
     funddate date default sysdate not null,
     status number default 0 not null
 );
+alter table fund
+    add constraint const_fund_funder foreign key(funder_id)
+    references users(id) on delete set null;
+alter table fund
+    add constraint const_fund_fundee foreign key(fundee_id)
+    references users(id) on delete set null;
+alter table fund
+    add constraint const_fund_recipe foreign key(recipe_id)
+    references recipe(id) on delete set null;
 create sequence seq_fund_id
-    increment by 1
+	increment by 1
     start with 1
     minvalue 1
     nocycle
     nocache;
-alter table fund
-    add constraint fk_fund_funder foreign key(funder_id)
-    references users(id)
-    on delete set null;
-alter table fund
-    add constraint fk_fund_fundee foreign key(fundee_id)
-    references users(id)
-    on delete set null;
-alter table fund
-    add constraint fk_fund_recipe foreign key(recipe_id)
-    references recipe(id)
-    on delete set null;
-    
+commit;
     
     
 
 -- WITHDRAW 테이블
-CREATE TABLE withdraw (
-    id              NUMBER PRIMARY KEY,       
-    user_id         NUMBER NOT NULL,          
-    account_id      NUMBER NOT NULL,          
-    request_point   NUMBER NOT NULL,          
-    request_date    DATE DEFAULT SYSDATE NOT NULL,
-    status          NUMBER DEFAULT 0 NOT NULL,    
-    complete_date   DATE,                         
-    admin_id        NUMBER                        
+create table withdraw (
+    id number primary key,       
+    user_id number not null,
+    account_id number not null,
+    request_point number not null,
+    request_date date default sysdate not null,
+    status number default 0 not null,
+    complete_date date,                         
+    admin_id number                       
 );
-CREATE SEQUENCE seq_withdraw_id
-    INCREMENT BY 1
-    START WITH 1
-    MINVALUE 1
-    NOCYCLE
-    NOCACHE;
-ALTER TABLE withdraw 
-    ADD CONSTRAINT fk_withdraw_user
-    FOREIGN KEY (user_id) REFERENCES users(id)
-    ON DELETE CASCADE;
-ALTER TABLE withdraw 
-    ADD CONSTRAINT fk_withdraw_account
-    FOREIGN KEY (account_id) REFERENCES user_account(id)
-    ON DELETE CASCADE;
-ALTER TABLE withdraw
-    ADD CONSTRAINT fk_withdraw_admin
-    FOREIGN KEY (admin_id) REFERENCES users(id)
-    ON DELETE SET NULL;
+alter table withdraw 
+    add constraint const_withdraw_user foreign key (user_id)
+    references users(id) on delete cascade;
+alter table withdraw 
+    add constraint const_withdraw_account foreign key (account_id)
+    references user_account(id) on delete cascade;
+alter table withdraw
+    add constraint const_withdraw_admin foreign key (admin_id)
+    references users(id) on delete set null;
+create sequence seq_withdraw_id
+	increment by 1
+    start with 1
+    minvalue 1
+    nocycle
+    nocache;
 commit;
-

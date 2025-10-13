@@ -30,10 +30,7 @@ commit;
 
 
 
-
 -- USER_ACCOUNT 테이블 더미데이터
-
-
 
 
 
@@ -63,6 +60,17 @@ INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '개', TO_DATE('2
 
 
 
+
+-- FRDIDGE_MEMO 테이블 더미데이터
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '마라탕소스', 100, 'g', null, 5);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '닭다리살', 100, 'kg', null, 5);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '올리브유', 200, 'ml', null, 5);
+commit;
+
+
+
+
+
 -- RECIPE 테이블 더미데이터
 INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '19e755b9e5064d82a9a39ff268f0c118.png', '소불고기', '달콤짭짤한 불고기 요리', TO_DATE('25/09/10', 'RR/MM/DD'), '입문', '30분 이내', '매움', '2인분', '고기 재울 때 키위나 배를 갈아 넣으면 부드러워져요!', 4);
 INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '28839063da1a481e9dc625a0c6268e24.png', '쌈밥', '야채와 함께 먹는 건강한 쌈밥', TO_DATE('25/08/10', 'RR/MM/DD'), '초급', '20분 이내', '보통', '1인분', '고기를 굽기 전 밑간하면 더 맛있어요.', 4);
@@ -73,8 +81,6 @@ INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '79020acea31244bfbd5eb8505ffa4
 INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '28839063da1a481e9dc625a0c6268e24.png', '계란말이', '도시락 단골 반찬', TO_DATE('25/07/10', 'RR/MM/DD'), '입문', '10분 이내', '매움', '1인분', '육수나 우유를 조금 넣으면 부드러워져요.', 4);
 INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '19e755b9e5064d82a9a39ff268f0c118.png', '떡볶이', '매콤달콤 국민 간식', TO_DATE('25/06/10', 'RR/MM/DD'), '초급', '20분 이내', '보통', '2인분', '고추장에 설탕 대신 올리고당을 써보세요.', 4);
 commit;
-
--- test.png 08d967c50662482e9dae8bb1c2cb76ac.png
 
 
 
@@ -99,7 +105,6 @@ INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '재료별',
 INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '방법별', '비빔', 6);
 INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '재료별', '소스', 6);
 commit;
-
 
 
 
@@ -139,8 +144,6 @@ INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '상추에 밥
 INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '면을 삶아 찬물에 헹군다.', 3);
 INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '소스 재료와 비빈다.', 3);
 commit;
-
-
 
 
 
@@ -570,40 +573,22 @@ commit;
 
 
 
-
-
-
-
-
-
-
-
-
-
 -- REVIEW 테이블 더미데이터
--- 레시피 1번 리뷰
 INSERT INTO review VALUES (seq_review_id.NEXTVAL, SYSDATE, 5, '정말 맛있어요! 또 해먹을래요.', 1, 4);
 INSERT INTO review VALUES (seq_review_id.NEXTVAL, SYSDATE, 4, '조리도 쉽고 맛도 굿!', 1, 5);
 
--- 레시피 2번 리뷰
 INSERT INTO review VALUES (seq_review_id.NEXTVAL, SYSDATE, 3, '쏘쏘했어요. 무난한 맛.', 2, 6);
 
--- 레시피 3번 리뷰
 INSERT INTO review VALUES (seq_review_id.NEXTVAL, SYSDATE, 2, '제 입맛에는 좀 별로였어요.', 3, 5);
 INSERT INTO review VALUES (seq_review_id.NEXTVAL, SYSDATE, 4, '간단해서 좋고 맛도 괜찮아요.', 3, 7);
 
--- 레시피 5번 리뷰
 INSERT INTO review VALUES (seq_review_id.NEXTVAL, SYSDATE, 5, '가족들이 정말 좋아했어요!', 5, 4);
 INSERT INTO review VALUES (seq_review_id.NEXTVAL, SYSDATE, 4, '맛있고 재료도 간단해요.', 5, 5);
 INSERT INTO review VALUES (seq_review_id.NEXTVAL, SYSDATE, 5, '소스 조합이 예술입니다.', 5, 6);
 
--- 레시피 7번 리뷰
 INSERT INTO review VALUES (seq_review_id.NEXTVAL, SYSDATE, 3, '무난했어요. 한 번쯤 해볼만.', 7, 7);
 
--- 레시피 8번 리뷰
 INSERT INTO review VALUES (seq_review_id.NEXTVAL, SYSDATE, 4, '떡이 쫀득쫀득해서 좋았어요.', 8, 4);
-
-
 
 
 
@@ -674,8 +659,6 @@ commit;
 
 
 
-
-
 --- REPORT 테이블 더미데이터
 -- comments
 insert into report values (seq_report_id.NEXTVAL, 4,  'comments', 1,  '욕설/비하');
@@ -714,7 +697,6 @@ commit;
 
 
 
-
 -- CLASSES 테이블 더미데이터
 INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '홈메이드 김치 담그기 클래스', '한식', 'c6964d6b15e443ba936dc06228ce3b72.png', '전통 방식으로 김치를 직접 담가보는 클래스입니다.', '서울 강남구', TO_DATE('202509-05', 'YYYY-MM-DD'), TO_DATE('2025-10-05', 'YYYY-MM-DD'), TO_DATE('1970-01-01 10:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 12:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-10-01', 'YYYY-MM-DD'), 10, '앞치마, 밀폐용기', 1, 4);
 INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '프렌치 디저트 클래스', '제과제빵', 'b6a8281d5c0b43f688ac192a82c1f3f6.png', '마카롱과 에끌레어를 직접 만들어 보는 시간!', '서울 마포구', TO_DATE('2025-09-10', 'YYYY-MM-DD'), TO_DATE('2025-10-10', 'YYYY-MM-DD'), TO_DATE('1970-01-01 14:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 16:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-10-05', 'YYYY-MM-DD'), 8, '고무장갑, 에코백', 1, 5);
@@ -732,6 +714,7 @@ INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '홈메이드 케이크 클�
 INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '건강 주스와 스무디 클래스', '음료', '1b22d69be92d4af9a679882dac87351d.png', '제철 과일과 채소로 건강한 주스를 만들어보는 클래스입니다.', '서울 강북구', TO_DATE('2025-03-11', 'YYYY-MM-DD'), TO_DATE('2025-04-12', 'YYYY-MM-DD'), TO_DATE('1970-01-01 10:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 12:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-04-07', 'YYYY-MM-DD'), 6, '텀블러, 손수건', 1, 5);
 INSERT INTO classes VALUES (seq_classes_id.NEXTVAL, '저칼로리 샐러드 클래스', '기타', '728318ee738846b3a38a3e6b6acc827f.png', '다이어트에 좋은 다양한 샐러드 레시피를 배웁니다.', '서울 서대문구', TO_DATE('2025-02-05', 'YYYY-MM-DD'), TO_DATE('2025-09-15', 'YYYY-MM-DD'), TO_DATE('1970-01-01 18:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('1970-01-01 19:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2025-09-10', 'YYYY-MM-DD'), 9, '밀폐용기, 필기도구', 0, 4);
 commit;
+
 
 
 
@@ -762,6 +745,7 @@ commit;
 
 
 
+
 -- CLASS_TUTOR 테이블 더미데이터
 INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor1.jpg', '김지현', '10년 경력의 양식 셰프', 1);
 INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor2.jpg', '이민수', '한식 조리사 자격증 보유, 8년 경력', 1);
@@ -776,6 +760,7 @@ INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com
 INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor11.jpg', '정지영', '영양사 겸 쿠킹클래스 강사', 14);
 INSERT INTO class_tutor VALUES (seq_class_tutor_id.NEXTVAL, 'https://example.com/images/tutor12.jpg', '마르코 로시', '이탈리안 셰프, 14년 경력', 15);
 commit;
+
 
 
 
@@ -818,11 +803,15 @@ commit;
 
 
 
--- FRDIDGE_MEMO 테이블 더미데이터
-insert into fridge_memo values (seq_fridge_memo_id.nextval, '마라탕소스', 100, 'g', null, 5);
-insert into fridge_memo values (seq_fridge_memo_id.nextval, '닭다리살', 100, 'kg', null, 5);
-insert into fridge_memo values (seq_fridge_memo_id.nextval, '올리브유', 200, 'ml', null, 5);
-commit;
+-- FUND 테이블 더미데이터
+
+
+
+
+
+-- WITHDRAW 테이블 더미데이터
+
+
 
 
 

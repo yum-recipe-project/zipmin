@@ -15,7 +15,7 @@ import com.project.zipmin.dto.ClassApplyStatusUpdateRequestDto;
 import com.project.zipmin.dto.ClassApplyUpdateRequestDto;
 import com.project.zipmin.dto.ClassApplyUpdateResponseDto;
 import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
-import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
+import com.project.zipmin.dto.UserAppliedClassResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.UserClassReadResponseDto;
 import com.project.zipmin.entity.Role;
@@ -397,7 +397,6 @@ public class CookingController {
 	
 	
 	// 사용자가 신청한 쿠킹클래스
-	// TODO : 전면 수정 필요
 	@GetMapping("/users/{id}/applied-classes")
 	public ResponseEntity<?> readUserClassApplyList(
 			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
@@ -410,24 +409,8 @@ public class CookingController {
 			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
 		}
 		
-		// 인증 여부 확인 (비로그인)
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
-		}
-		
-		// 로그인 정보
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		
-		// 본인 확인
-		if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
-			if (id != userService.readUserByUsername(username).getId()) {
-				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
-			}
-		}
-		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<ClassMyApplyReadResponseDto> applyPage = cookingService.readApplyClassPageByUserId(id, sort, pageable);
+		Page<UserAppliedClassResponseDto> applyPage = cookingService.readAppliedClassPageByUserId(id, sort, pageable);
 		
 		return ResponseEntity.status(ClassSuccessCode.CLASS_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_READ_LIST_SUCCESS, applyPage));

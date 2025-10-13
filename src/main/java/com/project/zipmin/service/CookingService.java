@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -26,7 +28,7 @@ import com.project.zipmin.dto.ClassApplyStatusUpdateRequestDto;
 import com.project.zipmin.dto.ClassApplyUpdateRequestDto;
 import com.project.zipmin.dto.ClassApplyUpdateResponseDto;
 import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
-import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
+import com.project.zipmin.dto.UserAppliedClassResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.ClassScheduleReadResponseDto;
 import com.project.zipmin.dto.ClassTargetReadResponseDto;
@@ -52,6 +54,7 @@ import com.project.zipmin.repository.ClassRepository;
 import com.project.zipmin.repository.ClassScheduleRepository;
 import com.project.zipmin.repository.ClassTargetRepository;
 import com.project.zipmin.repository.ClassTutorRepository;
+import com.project.zipmin.repository.KitchenRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -570,41 +573,71 @@ public class CookingService {
 	
 	
 	
-	
-	
-	
-	// 사용자가 신청한 클래스 목록 조회
-	public Page<ClassMyApplyReadResponseDto> readApplyClassPageByUserId(Integer userId, String sort, Pageable pageable) {
-
-	    // 입력값 검증
-
-		
-		// 사용자 신청 목록 조회
-	    Page<ClassApply> applyPage;
-	    Date now = new Date();
-
-	    try {
+	/*
 	        switch (sort) {
 	            case "end" -> applyPage = applyRepository.findByUserIdAndClasss_EventdateBefore(userId, now, pageable);
 	            case "progress" -> applyPage = applyRepository.findByUserIdAndClasss_EventdateAfter(userId, now, pageable);
 	            default -> applyPage = applyRepository.findByUserId(userId, pageable);
 	        }
+	 */
+	
+	
+	
+	// 사용자가 신청한 클래스 목록 조회
+	public Page<UserAppliedClassResponseDto> readAppliedClassPageByUserId(Integer userId, String status, Pageable pageable) {
+		
+		// 입력값 검증
+		if (userId == null || pageable == null) {
+			throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
+		}
+
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto loginUser = userService.readUserByUsername(username);
+		if (!loginUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!loginUser.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (loginUser.getId() != userId) {
+					throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
+				}
+			}
+		}
+		
+		// 클래스 신청 목록 조회
+		List<ClassApply> applyList = null;
+		try {
+			applyList = applyRepository.findAllByUserId(userId);
+		}
+		catch (Exception e) {
+			throw new ApiException(ClassErrorCode.CLASS_APPLY_READ_LIST_FAIL);
+		}
+		
+		// 신청한 클래스 맵 생성
+		Map<Integer, ClassApply> applyMap = applyList.stream()
+				.collect(Collectors.toMap(apply -> apply.getClasss().getId(), apply -> apply));
+		
+		// 신청한 클래스 일련번호 목록 추출
+		List<Integer> classIds = new ArrayList<>(applyMap.keySet());
+	    
+	    // 신청한 클래스 목록 조회
+	    Page<Class> classPage = null;
+	    try {
+	    	classPage = classRepository.findByIdIn(classIds, pageable); 	    
 	    }
 	    catch (Exception e) {
-	        throw new ApiException(ClassErrorCode.CLASS_READ_LIST_FAIL);
-	    }
-
-	    List<ClassMyApplyReadResponseDto> classDtoList = new ArrayList<>();
-	    for (ClassApply apply : applyPage.getContent()) {
-	        ClassMyApplyReadResponseDto classDto = classMapper.toReadMyApplyResponseDto(apply.getClasss());
-	        classDto.setApplyId(apply.getId());
+	    	throw new ApiException(ClassErrorCode.CLASS_READ_LIST_FAIL);
+		}
+	    
+	    // 신청한 클래스 목록 응답 구성
+	    List<UserAppliedClassResponseDto> classDtoList = new ArrayList<>();
+	    for (Class classs : classPage) {
+	    	ClassApply apply = applyMap.get(classs.getId());
+	    	UserAppliedClassResponseDto classDto = classMapper.toReadUserAppliedResponseDto(classs, apply);
+	        
 	        classDtoList.add(classDto);
 	    }
-
-	    return new PageImpl<>(classDtoList, pageable, applyPage.getTotalElements());
+	    
+	    return new PageImpl<>(classDtoList, pageable, classPage.getTotalElements());
 	}
-
-	
 	
 	
 	

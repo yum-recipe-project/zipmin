@@ -15,7 +15,7 @@
 		<%@include file="../common/header.jsp" %>
 		<main id="container">
 			<div class="content">
-				<div class="class_wrap">
+				<div id="AppliedClassWrap" class="class_wrap">
 
 					<div class="class_header">
 						<a href="/mypage.do">

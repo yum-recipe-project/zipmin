@@ -16,6 +16,24 @@ let chompList = [];
 
 
 /**
+ * 접근 권한을 설정하는 함수
+ */
+document.addEventListener('DOMContentLoaded', async function() {
+
+	try {
+		await instance.get('/dummy');
+	}
+	catch (error) {
+		redirectToAdminLogin();
+	}
+	
+});
+
+
+
+
+
+/**
  * 쩝쩝박사 목록 검색 필터를 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
@@ -93,20 +111,17 @@ async function fetchChompList(scrollTop = true) {
 			size : size
 		}).toString();
 		
-		const response = await fetch(`/chomp?${params}`, {
-			method: 'GET',
+		const response = await instance.get(`/admin/chomp?${params}`, {
 			headers: getAuthHeaders()
 		});
 
-		const result = await response.json();
-		
-		if (result.code === 'CHOMP_READ_LIST_SUCCESS') {
+		if (response.data.code === 'CHOMP_READ_LIST_SUCCESS') {
 			
 			// 전역 변수 설정
-			totalPages = result.data.totalPages;
-			totalElements = result.data.totalElements;
-			page = result.data.number;
-			chompList = result.data.content;
+			totalPages = response.data.data.totalPages;
+			totalElements = response.data.data.totalElements;
+			page = response.data.data.number;
+			chompList = response.data.data.content;
 			
 			// 렌더링
 			renderChompList(chompList);
@@ -114,7 +129,7 @@ async function fetchChompList(scrollTop = true) {
 			document.querySelector('.total').innerText = `총 ${totalElements}개`;
 			
 			// 검색 결과 없음 표시
-			if (result.data.totalPages === 0) {
+			if (response.data.data.totalPages === 0) {
 				document.querySelector('.table_th').style.display = 'none';
 				document.querySelector('.search_empty')?.remove();
 				const table = document.querySelector('.fixed-table');
@@ -131,17 +146,32 @@ async function fetchChompList(scrollTop = true) {
 				window.scrollTo({ top: 0, behavior: 'smooth' });
 			}
 		}
-		else if (result.code === 'CHOMP_READ_LIST_FAIL') {
-			alertDanger('쩝쩝박사 목록 조회에 실패했습니다.');
-		}
-		else if (result.code === 'INTERNAL_SERVER_ERROR') {
-			alertDanger('서버 내부 오류가 발생했습니다.');
-		}
 	}
 	catch (error) {
-		console.log(error);
+		const code = error?.response?.data?.code;
+				
+		if (code === 'CHOMP_READ_LIST_FAIL') {
+			alertDanger('쩝쩝박사 목록 조회에 실패했습니다.');
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'AUTH_TOKEN_INVALID') {
+			redirectToAdminLogin();
+		}
+		else if (code === 'CHOMP_FORBIDDEN') {
+			redirectToAdminLogin();
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			redirectToAdminLogin();
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			console.log(error);
+		}
+		else {
+			console.log(error);
+		}
 	}
-	
 }
 
 

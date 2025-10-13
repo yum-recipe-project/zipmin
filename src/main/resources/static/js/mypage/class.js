@@ -1,33 +1,30 @@
 /**
- * 접근 권한을 설정하는 함수
+ * 전역 변수
  */
-document.addEventListener('DOMContentLoaded', async function() {
-	
-	if (!isLoggedIn()) {
-		redirectToLogin('/');
-		return;
-	}
-
-	try {
-		await instance.get('/dummy');
-	}
-	catch (error) {
-		console.log(error);
-	}
-});
+let sort = '';
+let totalPages = 0;
+let totalElements = 0;
+let page = 0;
+let size = 10;
+let classList = [];
 
 
 
 
 
 /**
- * 전역 변수 선언
+ * 접근 권한을 설정하는 함수
  */
-let sort = '';
-let totalPages = 0;
-let page = 0;
-let size = 10;
-let classList = [];
+document.addEventListener('DOMContentLoaded', async function() {
+
+	try {
+		await instance.get('/dummy');
+	}
+	catch (error) {
+		redirectToLogin('/');
+	}
+	
+});
 
 
 
@@ -49,11 +46,11 @@ document.addEventListener('DOMContentLoaded', function() {
 			page = 0;
 			classList = [];
 			
-			fetchClassList();
+			fetchUserClassList();
 		});
 	});
 	
-	fetchClassList();
+	fetchUserClassList();
 });
 
 
@@ -61,13 +58,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /**
- * 서버에서 개설한 쿠킹클래스 목록 데이터를 가져오는 함수
+ * 서버에서 사용자가 개설한 쿠킹클래스 목록 데이터를 가져오는 함수
  */
-async function fetchClassList() {
+async function fetchUserClassList() {
 	
+	// 클래스 목록 조회
 	try {
-		const token = localStorage.getItem('accessToken');
-		const payload = parseJwt(token);
+		const payload = parseJwt(localStorage.getItem('accessToken'));
 		
 		const params = new URLSearchParams({
 			sort: sort,
@@ -75,31 +72,45 @@ async function fetchClassList() {
 			size: size
 		}).toString();
 		
-		const headers = {
-			'Content-Type': 'application/json',
-			'Authorization' : `Bearer ${token}`
-		}
-		
 		const response = await instance.get(`/users/${payload.id}/classes?${params}`, {
-			headers: headers
+			headers: getAuthHeaders()
 		});
 		
-		if (response.data.code === 'USER_READ_LIST_SUCCESS') {
-			
+		if (response.data.code === 'CLASS_READ_LIST_SUCCESS') {
+			// 전역변수 설정
 			totalPages = response.data.data.totalPages;
+			totalElements = response.data.data.totalElements;
 			page = response.data.data.number;
 			classList = response.data.data.content;
 			
-			renderClassList(classList);
-			renderPagination();
-			
-			document.querySelector('.class_util .total').innerText = `총 ${response.data.data.totalElements}개`;
+			// 렌더링
+			renderUserClassList(classList);
+			document.querySelector('.class_util .total').innerText = `총 ${totalElements}개`;
+			renderPagination(fetchUserClassList);
 		}
 	}
 	catch (error) {
-		console.log(error);
+		const code = error?.response?.data?.code;
+		
+		if (code === 'CLASS_READ_LIST_FAIL') {
+			alertDanger('클래스 목록 조회에 실패했습니다.');
+		}
+		else if (code === 'CLASS_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			alertDanger('해당 사용자를 찾을 수 없습니다.');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			console.log(error);
+		}
+		else {
+			console.log(error);
+		}
 	}
-	
 }
 
 
@@ -107,22 +118,52 @@ async function fetchClassList() {
 
 
 /**
- * 쿠킹클래스 목록을 화면에 렌더링하는 함수
+ * 사용자가 개설한 쿠킹클래스 목록을 화면에 렌더링하는 함수
  */
-function renderClassList(classList) {
+function renderUserClassList(classList) {
 	
 	const container = document.querySelector('.class_list');
-	if (!container) return;
 	container.innerHTML = '';
 
+	// 사용자가 개설한 쿠킹클래스 목록이 존재하지 않는 경우
+	if (classList == null || classList.length === 0) {
+		container.style.display = 'none';
+		document.querySelector('.list_empty')?.remove();
+		
+		const wrapper = document.createElement('div');
+		wrapper.className = 'list_empty';
+		
+		const span = document.createElement('span');
+		span.textContent = '개설한 쿠킹클래스가 없습니다';
+		wrapper.appendChild(span);
+		container.insertAdjacentElement('afterend', wrapper);
+
+		return;
+	}
+	
+	// 사용자가 개설한 쿠킹클래스가 존재하는 경우
 	classList.forEach(classs => {
+		container.style.display = 'block';
+		document.querySelector('.list_empty')?.remove();
+		
 		const li = document.createElement('li');
 
 		const statusDiv = document.createElement('div');
-		statusDiv.className = 'status';
-		statusDiv.textContent = classs.approval === 1 ? '승인 완료' : '승인 대기중';
+		switch (classs.approval) {
+			case 1:
+				statusDiv.className = (classs.opened || classs.evented) ? 'status primary' : 'status';
+				statusDiv.textContent = '승인 완료';
+				break;
+			case 2:
+				statusDiv.className = classs.opened ? 'status warning' : 'status';
+				statusDiv.textContent = classs.opened ? '승인 대기중' : '대기 만료';
+				break;
+			case 0:
+				statusDiv.className = classs.opened ? 'status danger' : 'status';
+				statusDiv.textContent = '미승인';
+				break;
+		}
 		li.appendChild(statusDiv);
-		// 클래스 효과 있을수도 ..
 
 		const classDiv = document.createElement('div');
 		classDiv.className = 'class';
@@ -132,15 +173,13 @@ function renderClassList(classList) {
 		thumbnailLink.className = 'thumbnail';
 
 		const img = document.createElement('img');
-		// img.src = classs.image || '/images/common/test.png';
-		img.src = '/images/common/test.png';
+		img.src = classs.image;
 		thumbnailLink.appendChild(img);
 		classDiv.appendChild(thumbnailLink);
 
 		const infoDiv = document.createElement('div');
 		infoDiv.className = 'info';
 
-		// 제목
 		const titleLink = document.createElement('a');
 		titleLink.href = `/cooking/viewClass.do?id=${classs.id}`;
 		titleLink.textContent = classs.title;
@@ -148,7 +187,6 @@ function renderClassList(classList) {
 
 		const dateP = document.createElement('p');
 
-		// 수업일정
 		const scheduleSpan = document.createElement('span');
 		const scheduleEm = document.createElement('em');
 		scheduleEm.textContent = '수업일정';
@@ -156,7 +194,6 @@ function renderClassList(classList) {
 		scheduleSpan.append(`${formatDateWithDay(classs.eventdate)} ${formatTime(classs.starttime)}-${formatTime(classs.endtime)}`);
 		dateP.appendChild(scheduleSpan);
 
-		// 선정발표
 		const deadlineSpan = document.createElement('span');
 		const deadlineEm = document.createElement('em');
 		deadlineEm.textContent = '선정발표';
@@ -165,98 +202,23 @@ function renderClassList(classList) {
 		dateP.appendChild(deadlineSpan);
 
 		infoDiv.appendChild(dateP);
-
 		classDiv.appendChild(infoDiv);
 
 		const cancelDiv = document.createElement('div');
 		cancelDiv.className = 'cancel_btn';
 
-		const btn = document.createElement('button');
-		btn.className = 'btn_outline';
-		btn.textContent = '신청서 보기';
-		btn.onclick = function () {
-			location.href = `/mypage/class/application.do?id=${classs.id}`;
-		};
-
-		cancelDiv.appendChild(btn);
+		if (classs.approval === 1) {
+			const btn = document.createElement('button');
+			btn.className = 'btn_outline';
+			btn.textContent = '신청서 보기';
+			btn.onclick = function () {
+				location.href = `/mypage/class/application.do?id=${classs.id}`;
+			};
+			cancelDiv.appendChild(btn);
+		}
+		
 		classDiv.appendChild(cancelDiv);
-
 		li.appendChild(classDiv);
 		container.appendChild(li);
 	});
 }
-
-
-
-
-/**
- * 페이지네이션을 화면에 렌더링하는 함수
- */
-function renderPagination() {
-	const pagination = document.querySelector('.pagination ul');
-	pagination.innerHTML = '';
-
-	// 이전 버튼
-	const prevLi = document.createElement('li');
-	const prevLink = document.createElement('a');
-	prevLink.href = '#';
-	prevLink.className = 'prev';
-	prevLink.dataset.page = page - 1;
-
-	if (page === 0) {
-		prevLink.style.pointerEvents = 'none';
-		prevLink.style.opacity = '0';
-	}
-
-	const prevImg = document.createElement('img');
-	prevImg.src = '/images/common/chevron_left.png';
-	prevLink.appendChild(prevImg);
-	prevLi.appendChild(prevLink);
-	pagination.appendChild(prevLi);
-
-	// 페이지 번호
-	for (let i = 0; i < totalPages; i++) {
-		const li = document.createElement('li');
-		const a = document.createElement('a');
-		a.href = '#';
-		a.className = `page${i === page ? ' active' : ''}`;
-		a.dataset.page = i;
-		a.textContent = i + 1;
-		li.appendChild(a);
-		pagination.appendChild(li);
-	}
-
-	// 다음 버튼
-	const nextLi = document.createElement('li');
-	const nextLink = document.createElement('a');
-	nextLink.href = '#';
-	nextLink.className = 'next';
-	nextLink.dataset.page = page + 1;
-
-	if (page === totalPages - 1) {
-		nextLink.style.pointerEvents = 'none';
-		nextLink.style.opacity = '0';
-	}
-
-	const nextImg = document.createElement('img');
-	nextImg.src = '/images/common/chevron_right.png';
-	nextLink.appendChild(nextImg);
-	nextLi.appendChild(nextLink);
-	pagination.appendChild(nextLi);
-
-	// 바인딩
-	document.querySelectorAll('.pagination a').forEach(link => {
-		link.addEventListener('click', function (e) {
-			e.preventDefault();
-			const newPage = parseInt(this.dataset.page);
-			if (!isNaN(newPage) && newPage >= 0 && newPage < totalPages && newPage !== page) {
-				page = newPage;
-				fetchGuideList();
-			}
-		});
-	});
-}
-
-
-
-

@@ -34,6 +34,15 @@ drop sequence seq_report_id;
 drop table likes cascade constraints;
 drop sequence seq_likes_id;
 
+drop table fridge_memo cascade constraints;
+drop sequence seq_fridge_memo_id;
+
+drop table user_fridge cascade constraints;
+drop sequence seq_user_fridge_id;
+
+drop table fridge cascade constraints;
+drop sequence seq_fridge_id;
+
 drop table review cascade constraints;
 drop sequence seq_review_id;
 
@@ -684,8 +693,8 @@ create table class_apply (
     applydate date default sysdate,
     reason varchar2(1000) not null,
     question varchar2(1000),
-    selected number(1) default 0,
-    attend number(1) default 0,
+    selected number(1) default 2,
+    attend number(1) default 2,
     user_id number not null,
     class_id number not null
 );
@@ -733,6 +742,11 @@ commit;
 
 
 -- FUND 테이블
+--alter table fund drop constraint fk_fund_funder;
+--alter table fund drop constraint fk_fund_fundee;
+--alter table fund drop constraint fk_fund_recipe;
+--drop table fund cascade constraints;
+--drop sequence seq_fund_id;
 create table fund (
     id number primary key,
     funder_id number, 
@@ -763,7 +777,7 @@ alter table fund
     
     
     
-    
+
 -- WITHDRAW 테이블
 CREATE TABLE withdraw (
     id              NUMBER PRIMARY KEY,       
@@ -781,7 +795,6 @@ CREATE SEQUENCE seq_withdraw_id
     MINVALUE 1
     NOCYCLE
     NOCACHE;
-
 ALTER TABLE withdraw 
     ADD CONSTRAINT fk_withdraw_user
     FOREIGN KEY (user_id) REFERENCES users(id)
@@ -794,7 +807,5 @@ ALTER TABLE withdraw
     ADD CONSTRAINT fk_withdraw_admin
     FOREIGN KEY (admin_id) REFERENCES users(id)
     ON DELETE SET NULL;
-
-
-
 commit;
+

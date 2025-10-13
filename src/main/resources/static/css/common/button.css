@@ -91,7 +91,7 @@
 
 
 
-/* 넓은 파란 버튼 */
+/* 넓은 회색 버튼 */
 .btn_gray_wide {
 	display: inline-flex;
 	justify-content: center;
@@ -109,6 +109,25 @@
 	letter-spacing: -0.4px;
 }
 
+
+
+/* 작은 회색 버튼 */
+.btn_gray_small {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;	
+	width: fit-content;
+	height: 32px;
+	padding: 5px 12px 7px;
+	border-radius: 4px;
+	background: #EEE;
+	font-size: 14px;
+	color: #666;
+	font-weight: 500;
+	line-height: 20px;
+	letter-spacing: -0.4px;
+}
 
 
 /* 검은 버튼 */

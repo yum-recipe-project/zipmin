@@ -69,10 +69,9 @@ async function fetchUserCommentList() {
 			
 			// 렌더링
 			renderUserCommentList(commentList);
-			document.querySelector('.mycomment_count span').innerText = totalElements + '개';
+			document.querySelector('.mycomment_count span').innerText = `총 ${totalElements}개`;
 			document.querySelector('.btn_more').style.display = page >= totalPages - 1 ? 'none' : 'block';
 		}
-		
 	}
 	catch (error) {
 		const code = error?.response?.data?.code;
@@ -126,7 +125,7 @@ async function fetchUserCommentList() {
 			alertDanger('해당 키친가이드를 찾을 수 없습니다.');
 		}
 		else if (code === 'INTERNAL_SERVER_ERROR') {
-			alertDanger('서버 내부 오류가 발생했습니다.');
+			console.log(error);
 		}
 		else {
 			console.log(error);
@@ -167,7 +166,7 @@ function renderUserCommentList(commentList) {
 	// 사용자 댓글 목록이 존재하지 않는 경우
 	if (commentList == null || commentList.length === 0) {
 		container.style.display = 'none';
-		document.querySelector('list_empty')?.remove();
+		document.querySelector('.list_empty')?.remove();
 
 		const wrapper = document.createElement('div');
 		wrapper.className = 'list_empty';
@@ -182,8 +181,8 @@ function renderUserCommentList(commentList) {
 	
 	// 사용자 댓글 목록이 존재하는 경우
 	commentList.forEach(comment => {
-		container.style.disaply = 'block';
-		document.querySelector('list_empty')?.remove();
+		container.style.display = 'block';
+		document.querySelector('.list_empty')?.remove();
 		
 		const li = document.createElement('li');
 		li.className = 'mycomment_item';

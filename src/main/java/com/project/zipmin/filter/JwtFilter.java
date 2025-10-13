@@ -7,6 +7,7 @@ import java.util.Collections;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.project.zipmin.dto.CustomUserDetails;
@@ -24,11 +25,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 /**
- * JWT 필터 - 클라이언트 요청 시 JWT의 유효성 검사 및 인증 객체 생성
+ * 클라이언트 요청 시 Access Token의 유효성을 검사하고
+ * 인증이 성공하면 SecurityContext에 인증 객체를 저장합니다.
+ *
+ * - HTTP 헤더에서 Access Token을 추출하여 유효성을 검증합니다.
+ * - 유효한 경우 토큰의 username, nickname, role 정보를 기반으로 User 객체를 생성합니다.
+ * - 생성된 User 정보를 CustomUserDetails에 담아 SecurityContext에 등록합니다.
+ * - 인증이 실패하면 다음 필터로 요청을 넘기지 않고 401 응답을 반환합니다.
  * 
- * - Access Token이 유효한지 확인하는 필터이다.
- * - 헤더에 있는 Access Token을 가져와 유효성을 검증한다.
- * - Access Token이 유효하면 토큰의 username, nickname, role을 가져와 User를 생성하고 이를 CustomUserDetails에 넣어준다.
+ * @author 정하림
+ * @since 1.0 (2025-09-27)
  */
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
@@ -87,7 +93,7 @@ public class JwtFilter extends OncePerRequestFilter {
 		CustomUserDetails customUserDetails = new CustomUserDetails(user);
 		Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(authToken);
-
+		
 		// 다음 필터로 요청 전달
 		filterChain.doFilter(request, response);
 	}

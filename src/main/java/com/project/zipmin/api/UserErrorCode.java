@@ -49,7 +49,7 @@ public enum UserErrorCode implements Code {
     USER_SEND_EMAIL_FAIL(HttpStatus.BAD_REQUEST, "사용자 이메일 전송 실패"),
     
     USER_TOKEN_MISSING(HttpStatus.UNAUTHORIZED, "해당 사용자 토큰을 찾을 수 없음"),
-    USER_INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "사용자 토큰이 유효하지 않음"),
+    USER_TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "사용자 토큰이 유효하지 않음"),
     USER_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "사용자 토큰 만료"),
     USER_TOKEN_UPDATE_FAIL(HttpStatus.UNAUTHORIZED, "사용자 토큰 수정 실패"),
 

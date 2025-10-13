@@ -16,6 +16,7 @@ public class UserAppliedClassResponseDto {
 	private Date eventdate;
 	private Date starttime;
 	private Date endtime;
+	private Date noticedate;
 	private String image;
 	
 	private int selected;

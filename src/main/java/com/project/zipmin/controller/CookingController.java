@@ -265,10 +265,6 @@ public class CookingController {
 		    throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 로그인 정보
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		applyRequestDto.setUserId(userService.readUserByUsername(username).getId());
-		
 		ClassApplyCreateResponseDto applyResponseDto = cookingService.createApply(applyRequestDto);
 		
 		return ResponseEntity.status(ClassSuccessCode.CLASS_APPLY_CREATE_SUCCESS.getStatus())

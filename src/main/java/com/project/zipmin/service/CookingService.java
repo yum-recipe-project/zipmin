@@ -340,12 +340,12 @@ public class CookingService {
 		// 클래스 신청 여부 조회
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    classDto.setApplystatus(false);
+		    classDto.setApplied(false);
 			return classDto;
 		}
 		else {
 			int userId = userService.readUserByUsername(authentication.getName()).getId();
-			classDto.setApplystatus(applyRepository.existsByClasssIdAndUserId(id, userId));
+			classDto.setApplied(applyRepository.existsByClasssIdAndUserId(id, userId));
 		}
 		
 		// 클래스 오픈 여부 조회
@@ -666,13 +666,26 @@ public class CookingService {
 	
 	
 	
-	// 클래스 신청을 작성하는 함수
+	// 클래스 신청 작성
 	public ClassApplyCreateResponseDto createApply(ClassApplyCreateRequestDto applyDto) {
 		
 		// 입력값 검증
-		if (applyDto == null || applyDto.getClassId() == null
-				|| applyDto.getUserId() == null || applyDto.getReason() == null) {
+		if (applyDto == null || applyDto.getClassId() == null || applyDto.getReason() == null) {
 			throw new ApiException(ClassErrorCode.CLASS_APPLY_INVALID_INPUT);
+		}
+		
+		// 로그인 정보
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		applyDto.setUserId(userService.readUserByUsername(username).getId());
+		
+		// 클래스 조회
+		Class classs = classRepository.findById(applyDto.getClassId())
+				.orElseThrow(() -> new ApiException(ClassErrorCode.CLASS_NOT_FOUND));
+		
+		// 클래스 신청 기간 검사
+		Date now = new Date();
+		if (classs.getNoticedate().after(now)) {
+			throw new ApiException(ClassErrorCode.CLASS_ALREADY_ENDED);
 		}
 		
 		// 중복 신청 검사
@@ -774,7 +787,7 @@ public class CookingService {
 	
 	
 	
-	// 클래스 신청 수정
+	// 클래스 신청 상태 수정
 	public ClassApplyUpdateResponseDto updateApplySelected(ClassApplyStatusUpdateRequestDto applyDto) {
 		
 		// 입력값 검증

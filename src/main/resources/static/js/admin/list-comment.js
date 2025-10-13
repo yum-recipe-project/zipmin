@@ -16,6 +16,24 @@ let commentList = [];
 
 
 /**
+ * 접근 권한을 설정하는 함수
+ */
+document.addEventListener('DOMContentLoaded', async function() {
+
+	try {
+		await instance.get('/dummy');
+	}
+	catch (error) {
+		redirectToAdminLogin();
+	}
+	
+});
+
+
+
+
+
+/**
  * 댓글 검색 필터를 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
@@ -92,20 +110,17 @@ async function fetchCommentList(scrollTop = true) {
 			size : size
 		}).toString();
 		
-		const response = await fetch(`/admin/comments?${params}`, {
-			method: 'GET',
+		const response = await instance.get(`/admin/comments?${params}`, {
 			headers: getAuthHeaders()
 		});
 		
-		const result = await response.json();
-		
-		if (result.code === 'COMMENT_READ_LIST_SUCCESS') {
+		if (response.data.code === 'COMMENT_READ_LIST_SUCCESS') {
 			
 			// 전역 변수 설정
-			totalPages = result.data.totalPages;
-			totalElements = result.data.totalElements;
-			page = result.data.number;
-			commentList = result.data.content;
+			totalPages = response.data.data.totalPages;
+			totalElements = response.data.data.totalElements;
+			page = response.data.data.number;
+			commentList = response.data.data.content;
 			
 			// 렌더링
 			renderCommentList(commentList);
@@ -113,7 +128,7 @@ async function fetchCommentList(scrollTop = true) {
 			document.querySelector('.total').innerText = `총 ${totalElements}개`;
 			
 			// 검색 결과 없음 표시
-			if (result.data.totalPages === 0) {
+			if (response.data.data.totalPages === 0) {
 				document.querySelector('.table_th').style.display = 'none';
 				document.querySelector('.search_empty')?.remove();
 				const table = document.querySelector('.fixed-table');
@@ -130,39 +145,46 @@ async function fetchCommentList(scrollTop = true) {
 				window.scrollTo({ top: 0, behavior: 'smooth' });
 			}
 		}
-		else if (result.code === 'COMMENT_READ_LIST_FAIL') {
+	}
+	catch (error) {
+		const code = error?.response?.data?.code;
+						
+		if (code === 'COMMENT_READ_LIST_FAIL') {
 			alertDanger('댓글 목록 조회에 실패했습니다.');
 		}
-		else if (result.code === 'LIKE_COUNT_FAIL') {
+		else if (code === 'LIKE_COUNT_FAIL') {
 			alertDanger('댓글 목록 조회에 실패했습니다.');
 		}
-		else if (result.code === 'REPORT_COUNT_FAIL') {
+		else if (code === 'REPORT_COUNT_FAIL') {
 			alertDanger('댓글 목록 조회에 실패했습니다.');
 		}
-		else if (result.code === 'COMMENT_INVALID_FAIL') {
+		else if (code === 'COMMENT_INVALID_FAIL') {
 			alertDanger('입력값이 유효하지 않습니다.');
 		}
-		else if (result.code === 'USER_INVALID_FAIL') {
+		else if (code === 'USER_INVALID_FAIL') {
 			alertDanger('입력값이 유효하지 않습니다.');
 		}
-		else if (result.code === 'LIKE_INVALID_FAIL') {
+		else if (code === 'LIKE_INVALID_FAIL') {
 			alertDanger('입력값이 유효하지 않습니다.');
 		}
-		else if (result.code === 'REPORT_INVALID_FAIL') {
+		else if (code === 'REPORT_INVALID_FAIL') {
 			alertDanger('입력값이 유효하지 않습니다.');
 		}
-		else if (result.code === 'USER_NOT_FOUND') {
-			alertDanger('해당 사용자를 찾을 수 없습니다.');
+		else if (code === 'AUTH_TOKEN_INVALID') {
+			redirectToAdminLogin();
 		}
-		else if (result.code === 'USER_NOT_FOUND') {
-			alertDanger('서버 내부 오류가 발생했습니다.');
+		else if (code === 'CHOMP_FORBIDDEN') {
+			redirectToAdminLogin();
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			redirectToAdminLogin();
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			console.log(error);
 		}
 		else {
 			console.log(error);
 		}
-	}
-	catch (error) {
-		console.log(error);
 	}
 }
 

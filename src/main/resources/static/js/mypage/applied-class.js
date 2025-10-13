@@ -2,18 +2,14 @@
  * 접근 권한을 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', async function() {
-	
-	if (!isLoggedIn()) {
-		redirectToLogin('/');
-		return;
-	}
 
 	try {
 		await instance.get('/dummy');
 	}
 	catch (error) {
-		console.log(error);
+		redirectToLogin('/');
 	}
+	
 });
 
 
@@ -64,8 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
 async function fetchClassList() {
 	
 	try {
-		const token = localStorage.getItem('accessToken');
-		const payload = parseJwt(token);
+		const payload = parseJwt(localStorage.getItem('accessToken'));
 		
 		const params = new URLSearchParams({
 			sort: sort,
@@ -73,18 +68,13 @@ async function fetchClassList() {
 			size: size
 		}).toString();
 		
-		const headers = {
-			'Content-Type': 'application/json',
-			'Authorization' : `Bearer ${token}`
-		}
-		
 		const response = await instance.get(`/users/${payload.id}/applied-classes?${params}`, {
-			headers: headers
+			headers: getAuthHeaders()
 		});
 		
 		console.log(response);
 		
-		if (response.data.code === 'COOKING_READ_LIST_SUCCESS') {
+		if (response.data.code === 'CLASS_READ_LIST_SUCCESS') {
 			
 			totalPages = response.data.data.totalPages;
 			page = response.data.data.number;
@@ -141,9 +131,7 @@ function renderClassList(classList) {
 		thumbnailLink.className = 'thumbnail';
 
 		const img = document.createElement('img');
-		// img.src = classs.image || '/images/common/test.png';
-		img.src = '/images/common/test.png';
-
+		img.src = classs.image;
 		thumbnailLink.appendChild(img);
 
 		// info 영역
@@ -203,28 +191,21 @@ function renderClassList(classList) {
 async function deleteApply(id, classId) {
 	
 	try {
-		
-		const token = localStorage.getItem('accessToken');
-		const payload = parseJwt(token);
+		const payload = parseJwt(localStorage.getItem('accessToken'));
 
 		const data = {
 			id: id,
 			class_id: classId
 		}
 
-		const headers = {
-			'Content-Type': 'application/json',
-			'Authorization' : `Bearer ${token}`
-		}
-
 		const response = await instance.delete(`/classes/${payload.id}/applies`, {
 			data: data,
-			headers: headers
+			headers: getAuthHeaders()
 		});
 
 		console.log(response);
 		
-		if (response.data.code === 'COOKING_APPLY_DELETE_SUCCESS') {
+		if (response.data.code === 'CLASS_APPLY_DELETE_SUCCESS') {
 			alert('쿠킹클래스 신청이 성공적으로 취소되었습니다.');
 			const applyElement = document.querySelector(`.class_list li[data-apply-id='${id}']`);
 			if (applyElement) applyElement.remove();

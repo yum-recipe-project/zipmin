@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 		await instance.get('/dummy');
 	}
 	catch (error) {
-		redirectToAdminLogin();
+		redirectToLogin('/');
 	}
 	
 });

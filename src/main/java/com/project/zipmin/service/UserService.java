@@ -150,8 +150,6 @@ public class UserService {
 	
 	
 	
-	
-	
 	// 사용자를 좋아하는 사용자 목록 조회
 	public List<UserProfileReadResponseDto> readLikedUserList(Integer userId) {
 		
@@ -193,9 +191,6 @@ public class UserService {
 		
 		return userDtoList;
 	}
-	
-	
-	
 	
 	
 	// 아이디로 사용자 조회
@@ -401,7 +396,7 @@ public class UserService {
 		// 토큰 조회
 		String hashToken = PasswordTokenUtil.createHashToken(rawToken);
 		PasswordToken passwordToken = tokenRepository.findByToken(hashToken)
-				.orElseThrow(() ->  new ApiException(UserErrorCode.USER_INVALID_TOKEN));
+				.orElseThrow(() ->  new ApiException(UserErrorCode.USER_TOKEN_INVALID));
 		
 		// 만료 여부 확인
 		if (!passwordToken.getExpiresAt().after(new Date())) {
@@ -523,7 +518,7 @@ public class UserService {
 		
 		// 토큰 조회
 		PasswordToken token = tokenRepository.findByToken(PasswordTokenUtil.createHashToken(userDto.getToken()))
-				.orElseThrow(() ->  new ApiException(UserErrorCode.USER_INVALID_TOKEN));
+				.orElseThrow(() ->  new ApiException(UserErrorCode.USER_TOKEN_INVALID));
 		
 		// 만료 여부 확인
 		if (!token.getExpiresAt().after(new Date())) {

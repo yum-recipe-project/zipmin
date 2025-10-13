@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 		await instance.get('/dummy');
 	}
 	catch (error) {
-		redirectToLogin('/');
+		redirectToAdminLogin('/');
 	}
 	
 });
@@ -110,7 +110,7 @@ async function fetchRecipeList(scrollTop = true) {
 			size: size
 		}).toString();
 		
-		const response = await instance.get(`/recipes?${params}`, {
+		const response = await instance.get(`/admin/recipes?${params}`, {
 			headers: getAuthHeaders()
 		});
 		
@@ -155,11 +155,22 @@ async function fetchRecipeList(scrollTop = true) {
 		else if (code === 'RECIPE_INVALID_INPUT') {
 			alertDanger('입력값이 유효하지 않습니다.');
 		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'AUTH_TOKEN_INVALID') {
+			redirectToAdminLogin();
+		}
+		else if (code === 'RECIPE_FORBIDDEN') {
+			redirectToAdminLogin();
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			redirectToAdminLogin();
+		}
 		else if (code === 'INTERNAL_SERVER_ERROR') {
-			alertDanger('서버 내부에서 오류가 발생했습니다.');
+			console.log(error);
 		}
 		else {
-			alertDanger('알 수 없는 오류가 발생했습니다.')
 			console.log(error);
 		}
 	}

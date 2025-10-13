@@ -8,6 +8,7 @@ import com.project.zipmin.dto.ChompCreateResponseDto;
 import com.project.zipmin.dto.ChompReadResponseDto;
 import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
+import com.project.zipmin.dto.UserClassReadResponseDto;
 import com.project.zipmin.entity.Chomp;
 import com.project.zipmin.entity.Class;
 
@@ -20,6 +21,11 @@ public interface ClassMapper {
 	
 	@Mapping(target = "userId", source = "user.id")
 	ClassReadResponseDto toReadResponseDto(Class classs);
+	
+	@Mapping(target = "userId", source = "user.id")
+	UserClassReadResponseDto toReadUserResponseDto(Class classs);
+	
+	
 	
 	Class toEntity(ClassMyApplyReadResponseDto classDto);
 	

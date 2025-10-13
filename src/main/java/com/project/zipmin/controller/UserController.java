@@ -87,60 +87,9 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 	
 	private final UserService userService;
-	private final CommentService commentService;	
-	private final CookingService cookingService;	
 	private final KitchenService kitchenService;
 	private final RecipeService recipeService;
 	private final ReviewService reviewService;
-	
-	
-	
-	
-	
-	@Operation(
-	    summary = "사용자 목록 조회"
-	)
-	@ApiResponses(value = {
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "200",
-				description = "사용자 목록 조회 성공",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = UserReadListSuccessResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "400",
-				description = "사용자 목록 조회 실패",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = UserReadListFailResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "500",
-				description = "서버 내부 오류",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = InternalServerErrorResponse.class)))
-	})
-	// 사용자 목록 조회
-	@GetMapping("/users")
-	public ResponseEntity<?> readUserPage(
-			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
-			@Parameter(description = "페이지 번호") @RequestParam int page,
-			@Parameter(description = "페이지 크기") @RequestParam int size) {
-		
-		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
-			}
-		}
-		
-		Pageable pageable = PageRequest.of(page, size);
-		Page<UserReadResponseDto> userPage = userService.readUserPage(category, pageable);
-		
-		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, userPage));
-	}
 
 	
 	
@@ -421,7 +370,7 @@ public class UserController {
 	@ApiResponses(value = {
 		// USER_VALID_TOKEN
 		// USER_TOKEN_MISSING
-		// USER_INVALID_TOKEN
+		// USER_TOKEN_INVALID
 		// USER_TOKEN_EXPIRED
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "500",
@@ -741,7 +690,7 @@ public class UserController {
 			// TODO : 순서 적절히 변경 필요
 			// USER_UPDATE_PASSWORD_SUCCESS
 			// USER_TOKEN_MISSING
-			// USER_INVALID_TOKEN
+			// USER_TOKEN_INVALID
 			// USER_TOKEN_EXPIRED
 			// USER_UPDATE_FAIL
 			// USER_TOKEN_UPDATE_FAIL
@@ -885,71 +834,6 @@ public class UserController {
 	
 	
 	// TODO : 해당 도메인으로 옮기기
-	
-	
-	
-	
-
-	
-	
-	
-	// 신청한 쿠킹클래스
-	@GetMapping("/users/{id}/applied-classes")
-	public ResponseEntity<?> readUserClassApplyList(
-			@Parameter(description = "사용자의 일련번호", required = true, example = "1") @PathVariable Integer id,
-			@RequestParam String sort,
-			@Parameter(description = "조회할 페이지 번호", required = true, example = "1") @RequestParam int page,
-			@Parameter(description = "페이지의 항목 수", required = true, example = "10") @RequestParam int size) {
-		
-		// 입력값 검증
-		if (id == null) {
-			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-		}
-		
-		// 인증 여부 확인 (비로그인)
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
-		}
-		
-		// 로그인 정보
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		
-		// 본인 확인
-		if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN)) {
-			if (id != userService.readUserByUsername(username).getId()) {
-				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
-			}
-		}
-		
-		Pageable pageable = PageRequest.of(page, size);
-		Page<ClassMyApplyReadResponseDto> applyPage = cookingService.readApplyClassPageByUserId(id, sort, pageable);
-		
-		return ResponseEntity.status(ClassSuccessCode.CLASS_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(ClassSuccessCode.CLASS_READ_LIST_SUCCESS, applyPage));
-	}
-	
-	
-	
-	
-	// USER_READ_CLASS_LIST_SUCCESS
-	// USER_READ_CLASS_LIST_FAIL
-	// CLASS_INVALID_INPUT
-	// 개설한 쿠킹클래스
-	@GetMapping("/users/{id}/classes")
-	public ResponseEntity<?> listUserClass(
-			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
-			@Parameter(description = "정렬") @RequestParam String sort,
-			@Parameter(description = "조회할 페이지 번호") @RequestParam int page,
-			@Parameter(description = "페이지의 항목 수") @RequestParam int size) {
-		
-		Pageable pageable = PageRequest.of(page, size);
-		Page<ClassReadResponseDto> classPage = cookingService.readClassPageByUserId(id, sort, pageable);
-		
-		return ResponseEntity.status(UserSuccessCode.USER_READ_CLASS_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(UserSuccessCode.USER_READ_CLASS_LIST_SUCCESS, classPage));
-	}
-	
 	
 	
 	

@@ -57,7 +57,7 @@ public enum ClassErrorCode implements Code {
     CLASS_APPLY_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "신청 수정 실패"),
     CLASS_APPLY_DELETE_FAIL(HttpStatus.BAD_REQUEST, "신청 삭제 실패"),
     CLASS_APPLY_DUPLICATE(HttpStatus.CONFLICT, "신청 중복 작성 시도"),
-    
+
     CLASS_ALREADY_ENDED(HttpStatus.FORBIDDEN, "클래스 종료 후 접근 시도"),
 	
 	// 기타

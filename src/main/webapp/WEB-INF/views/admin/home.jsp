@@ -11,6 +11,10 @@
   <title>집밥의민족</title>
   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
   <link rel="stylesheet" href="../assets/css/styles.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="/js/common/jwt.js"></script>
+  <script src="/js/common/util.js"></script>
+  <script src="/js/admin/home.js"></script>
 </head>
 
 <body>

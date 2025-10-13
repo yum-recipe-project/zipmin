@@ -69,8 +69,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		if (isValid) {
 			
 			try {
-				const headers = { 'Content-Type' : 'application/json' };
-				
 				const data = {
 					username : form.username.value.trim(),
 					password : form.password.value.trim()
@@ -78,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				
 				const response = await fetch('/admin/login', {
 					method: 'POST',
-					headers: headers,
+					headers: getAuthHeaders(),
 					body: JSON.stringify(data)
 				});
 				

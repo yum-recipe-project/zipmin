@@ -191,18 +191,15 @@ function renderClassList(classList) {
 
 		const cancelDiv = document.createElement('div');
 		cancelDiv.className = 'cancel_btn';
-		const cancelBtn = document.createElement('button');
-		cancelBtn.className = 'btn_outline';
-		cancelBtn.textContent = '신청 취소';
-		cancelBtn.addEventListener('click', function(event) {
-			event.preventDefault();
-			if (confirm('정말 신청을 취소하시겠습니까?')) {
-				deleteApply(classs.apply_id, classs.id);
-			}
-		});
-		cancelDiv.appendChild(cancelBtn);
+		
+		if (classs.opened) {
+			const cancelBtn = document.createElement('button');
+			cancelBtn.className = 'btn_outline';
+			cancelBtn.textContent = '신청 취소';
+			cancelBtn.addEventListener('click', () => deleteApply(classs.apply_id, classs.id));
+			cancelDiv.appendChild(cancelBtn);
+		}
 
-		// 조립
 		classDiv.append(thumbnailLink, infoDiv, cancelDiv);
 		li.append(statusDiv, classDiv);
 		container.appendChild(li);
@@ -212,33 +209,42 @@ function renderClassList(classList) {
 
 
 
-async function deleteApply(id, classId) {
+
+/**
+ * 쿠킹클래스 신청을 삭제하는 함수
+ */
+async function deleteApply(applyId, classId) {
 	
-	try {
-		const payload = parseJwt(localStorage.getItem('accessToken'));
-
-		const data = {
-			id: id,
-			class_id: classId
+	if (confirm('정말 신청을 취소하시겠습니까?')) {
+		try {
+			const response = await instance.delete(`/classes/${classId}/applies/${applyId}`, {
+				headers: getAuthHeaders()
+			});
+	
+			if (response.data.code === 'CLASS_APPLY_DELETE_SUCCESS') {
+				alertPrimary('쿠킹클래스 신청이 성공적으로 취소되었습니다.');
+				fetchClassList();
+			}
 		}
+		catch (error) {
+			const code = error?.response?.data?.code;
 
-		const response = await instance.delete(`/classes/${payload.id}/applies`, {
-			data: data,
-			headers: getAuthHeaders()
-		});
-
-		console.log(response);
-		
-		if (response.data.code === 'CLASS_APPLY_DELETE_SUCCESS') {
-			alert('쿠킹클래스 신청이 성공적으로 취소되었습니다.');
-			const applyElement = document.querySelector(`.class_list li[data-apply-id='${id}']`);
-			if (applyElement) applyElement.remove();
+			if (code === '') {
+				alertDanger('');
+			}
+			else if (code === 'USER_INVALID_INPUT') {
+				alertDanger('입력값이 유효하지 않습니다.');
+			}
+			else if (code === 'USER_NOT_FOUND') {
+				alertDanger('해당 사용자를 찾을 수 없습니다.');
+			}
+			else if (code === 'INTERNAL_SERVER_ERROR') {
+				console.log(error);
+			}
+			else {
+				console.log(error);
+			}
 		}
-		
-	}
-	catch (error) {
-		/******** 여기에 에러 코드 추가 !!!!!! ********/
-		console.log(error);
 	}
 	
 }

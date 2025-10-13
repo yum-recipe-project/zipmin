@@ -22,7 +22,6 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ClassErrorCode;
 import com.project.zipmin.dto.ClassApplyCreateRequestDto;
 import com.project.zipmin.dto.ClassApplyCreateResponseDto;
-import com.project.zipmin.dto.ClassApplyDeleteRequestDto;
 import com.project.zipmin.dto.ClassApplyReadResponseDto;
 import com.project.zipmin.dto.ClassApplyStatusUpdateRequestDto;
 import com.project.zipmin.dto.ClassApplyUpdateRequestDto;
@@ -622,18 +621,17 @@ public class CookingService {
 	    Page<Class> classPage = null;
 	    try {
 	    	boolean hasStatus = status != null && !status.isBlank();
-	    	Date today = new Date();
+	    	Date now = new Date();
 	    	
 	    	if (!hasStatus) {
 	    		classPage = classRepository.findByIdIn(classIds, pageable); 	    
 	    	}
 	    	else {
 	    		if ("open".equals(status)) {
-	    			classPage = classRepository.findAllByNoticedateAfter(today, pageable);
+	    			classPage = classRepository.findByIdInAndNoticedateAfter(classIds, now, pageable);
 	    		}
 	    		else if ("close".equals(status)) {
-	    			// TODO : 선정 여부에 따라 분기
-	    			classPage = classRepository.findAllByNoticedateBefore(today, pageable);
+	    			classPage = classRepository.findByIdInAndNoticedateBefore(classIds, now, pageable);
 	    		}
 	    	}
 	    }
@@ -868,35 +866,54 @@ public class CookingService {
 	
 	
 	// 클래스 신청 삭제
-	public void deleteApply(ClassApplyDeleteRequestDto applyDto) {
+	public void deleteApply(Integer classId, Integer applyId) {
 		
 		// 입력값 검증
-		if (applyDto == null || applyDto.getId() == null || applyDto.getUserId() == null || applyDto.getClassId() == null) {
+		if (classId == null || applyId == null) {
 			throw new ApiException(ClassErrorCode.CLASS_APPLY_INVALID_INPUT);
 		}
 		
 		// 클래스 신청 존재 여부 판단
-		ClassApply apply = applyRepository.findById(applyDto.getId())
+		ClassApply apply = applyRepository.findById(applyId)
 				.orElseThrow(() -> new ApiException(ClassErrorCode.CLASS_APPLY_NOT_FOUND));
 		
-		// 소유자 검증
-		if (!userService.readUserById(applyDto.getUserId()).getRole().equals(Role.ROLE_ADMIN)) {
-			if (apply.getUser().getId() != applyDto.getUserId()) {
-				throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto loginUser = userService.readUserByUsername(username);
+		if (!loginUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (loginUser.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (apply.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
+				}
+				if (apply.getUser().getRole().equals(Role.ROLE_ADMIN)) {
+					if (loginUser.getId() != apply.getUser().getId()) {
+						throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
+					}
+				}
+			}
+			else {
+				if (loginUser.getId() != apply.getUser().getId()) {
+					throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
+				}
 			}
 		}
 		
-	    // 삭제 가능 여부 판단
-		Class classs = classRepository.findById(applyDto.getClassId())
+	    // 클래스 존재 여부 판단
+		Class classs = classRepository.findById(apply.getClasss().getId())
 				.orElseThrow(() -> new ApiException(ClassErrorCode.CLASS_NOT_FOUND));
-	    Date now = new Date();
-	    if (classs.getNoticedate().before(now) && apply.getSelected() == 1) {
-	        throw new ApiException(ClassErrorCode.CLASS_ALREADY_ENDED);
-	    }
+		if (classs.getId() != classId) {
+			throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
+		}
+		
+		// 클래스 기간 검증
+		Date now = new Date();
+		if (now.after(classs.getNoticedate())) {
+			throw new ApiException(ClassErrorCode.CLASS_ALREADY_ENDED);
+		}
 		
 		// 클래스 신청 삭제
 		try {
-			applyRepository.deleteById(applyDto.getId());
+			applyRepository.deleteById(apply.getId());
 		}
 		catch (Exception e) {
 			throw new ApiException(ClassErrorCode.CLASS_APPLY_DELETE_FAIL);

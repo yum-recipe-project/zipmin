@@ -9,19 +9,14 @@ import com.project.zipmin.api.ClassErrorCode;
 import com.project.zipmin.api.ClassSuccessCode;
 import com.project.zipmin.dto.ClassApplyCreateRequestDto;
 import com.project.zipmin.dto.ClassApplyCreateResponseDto;
-import com.project.zipmin.dto.ClassApplyDeleteRequestDto;
 import com.project.zipmin.dto.ClassApplyReadResponseDto;
 import com.project.zipmin.dto.ClassApplyStatusUpdateRequestDto;
-import com.project.zipmin.dto.ClassApplyUpdateRequestDto;
 import com.project.zipmin.dto.ClassApplyUpdateResponseDto;
-import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
 import com.project.zipmin.dto.UserAppliedClassResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.UserClassReadResponseDto;
-import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.CookingService;
 import com.project.zipmin.service.UserService;
-import com.project.zipmin.swagger.CommentReadListSuccessResponse;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.UserInvalidInputResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
@@ -282,23 +277,20 @@ public class CookingController {
 	
 	
 	
+	
 	// 특정 클래스에 참가 신청 취소
-	@DeleteMapping("/classes/{id}/applies")
+	@DeleteMapping("/classes/{classId}/applies/{applyId}")
 	public ResponseEntity<?> cancelApplyClass(
-			@PathVariable int id,
-			@RequestBody ClassApplyDeleteRequestDto applyDto) {
+			@PathVariable int classId,
+			@PathVariable int applyId) {
 		
-		// 인증 여부 확인 (비로그인)
+		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 로그인 정보
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		applyDto.setUserId(userService.readUserByUsername(username).getId());
-		
-		cookingService.deleteApply(applyDto);
+		cookingService.deleteApply(classId, applyId);
 		
 		return ResponseEntity.status(ClassSuccessCode.CLASS_APPLY_DELETE_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_APPLY_DELETE_SUCCESS, null));
@@ -308,7 +300,7 @@ public class CookingController {
 	
 	
 	
-	// 클래스 신청 수정 (출석)
+	// 클래스 신청 수정
 	// TODO : 수정 필요
 	/*
 	@PatchMapping("/classes/{classId}/applies/{applyId}")
@@ -362,10 +354,6 @@ public class CookingController {
 		return ResponseEntity.status(ClassSuccessCode.CLASS_APPLY_UPDATE_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_APPLY_UPDATE_SUCCESS, applyResponseDto));
 	}
-	
-	
-	
-	
 	
 	
 	

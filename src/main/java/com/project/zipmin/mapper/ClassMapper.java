@@ -30,6 +30,7 @@ public interface ClassMapper {
 	
 	
 	@Mapping(target = "id", source = "classs.id")
+	@Mapping(target = "applyId", source = "apply.id")
 	@Mapping(target = "selected", source = "apply.selected")
 	UserAppliedClassResponseDto toReadUserAppliedResponseDto(Class classs, ClassApply apply);
 

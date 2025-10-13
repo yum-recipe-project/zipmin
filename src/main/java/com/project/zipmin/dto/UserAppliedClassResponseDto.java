@@ -20,6 +20,7 @@ public class UserAppliedClassResponseDto {
 	private String image;
 	
 	private int selected;
+	private int applyId;
 	
 	private boolean isOpened;
 	private boolean isPlanned;

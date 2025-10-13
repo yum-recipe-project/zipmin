@@ -80,11 +80,25 @@ document.addEventListener('DOMContentLoaded', async function() {
 				basicWrap.querySelector('.btn_icon.like img').src = '/images/recipe/star_full_1a7ce2.png'
 			 	basicWrap.querySelector('.btn_icon.like').classList.add('active');
 			}
+			basicWrap.querySelector('.btn_report_modal').addEventListener('click', function(event) {
+				event.preventDefault();
+				if (!isLoggedIn()) {
+					bootstrap.Modal.getInstance(document.getElementById('reportRecipeModal'))?.hide();
+					redirectToLogin();
+				}
+			})
 			renderCategoryList(result.data.category_list);
 			
 			// 재료
 			originPortion = parseInt(result.data.portion, 10);
 			stockWrap.querySelector('.recipe_portion select').value = result.data.portion;
+			stockWrap.querySelector('.btn_stock_modal').addEventListener('click', function(event) {
+				event.preventDefault();
+				if (!isLoggedIn()) {
+					bootstrap.Modal.getInstance(document.getElementById('viewRecipeStockModal'))?.hide();
+					redirectToLogin();
+				}
+			});
 			renderStockList(result.data.stock_list);
 			renderMemoList(result.data.stock_list);
 			
@@ -102,11 +116,16 @@ document.addEventListener('DOMContentLoaded', async function() {
 				event.preventDefault();
 				location.href = `/mypage/profile.do?id=${result.data.user_id}`;
 			});
-			
+			supportWrap.querySelector('button').addEventListener('click', function(event) {
+				event.preventDefault();
+				if (!isLoggedIn()) {
+					bootstrap.Modal.getInstance(document.getElementById('supportRecipeModal'))?.hide();
+					redirectToLogin();
+				}
+			});
 			
 			// 레시피 작성자 ID를 hidden input에 저장
 			document.getElementById('fundeeIdInput').value = result.data.user_id;
-			
 			
 			// 리뷰 수
 			reviewCommentWrap.querySelector('.review_count').innerText = result.data.reviewcount;

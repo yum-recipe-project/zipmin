@@ -38,7 +38,7 @@
 							<button class="btn_icon print" onclick="window.print();">
 								<img src="/images/recipe/print.png">
 							</button>
-							<button class="btn_icon" data-bs-toggle="modal" data-bs-target="#reportRecipeModal">
+							<button class="btn_icon btn_report_modal" data-bs-toggle="modal" data-bs-target="#reportRecipeModal">
 								<img src="/images/recipe/siren.png">
 							</button>
 						</div>
@@ -79,7 +79,7 @@
 						<h3>재료</h3>
 						
 						<!-- 장보기메모에 재료 담기 버튼 -->
-						<button class="btn_tool" data-bs-toggle="modal" data-bs-target="#viewRecipeStockModal">
+						<button class="btn_stock_modal btn_tool" data-bs-toggle="modal" data-bs-target="#viewRecipeStockModal">
 							<img src="/images/recipe/pen.png"> 장보기메모에 재료 담기
 						</button>
 						
@@ -137,7 +137,7 @@
 							</div>
 						</div>
 						<div class="btn_wrap">
-							<button type="button" class="btn_outline" onclick="javascript:redirectToLogin();" data-bs-toggle="modal" data-bs-target="#supportRecipeModal">레시피 후원하기</button>
+							<button type="button" class="btn_outline" data-bs-toggle="modal" data-bs-target="#supportRecipeModal">레시피 후원하기</button>
 							<button type="button" class="btn_dark" onclick="javascript:redirectToLogin();" >구독</button>
 						</div>
 					</div>

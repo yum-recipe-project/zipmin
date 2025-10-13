@@ -402,6 +402,24 @@ public class CookingController {
 	
 	
 	
+	// 결석 수
+	// TODO : 수정 필요
+	@GetMapping("/users/{id}/attend-classes/count")
+	public ResponseEntity<?> countUserClassAttend(
+			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id) {
+		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		int count = (int) cookingService.countClassAttend(id);
+		
+		return ResponseEntity.status(ClassSuccessCode.CLASS_ATTEND_COUNT_SUCCESS.getStatus())
+				.body(ApiResponse.success(ClassSuccessCode.CLASS_ATTEND_COUNT_SUCCESS, count));
+	}
+	
+	
 	
 	
 	

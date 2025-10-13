@@ -32,6 +32,7 @@ import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.ClassScheduleReadResponseDto;
 import com.project.zipmin.dto.ClassTargetReadResponseDto;
 import com.project.zipmin.dto.ClassTutorReadResponseDto;
+import com.project.zipmin.dto.LikeReadResponseDto;
 import com.project.zipmin.dto.UserClassReadResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.entity.Approval;
@@ -53,7 +54,6 @@ import com.project.zipmin.repository.ClassRepository;
 import com.project.zipmin.repository.ClassScheduleRepository;
 import com.project.zipmin.repository.ClassTargetRepository;
 import com.project.zipmin.repository.ClassTutorRepository;
-import com.project.zipmin.repository.KitchenRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -63,7 +63,7 @@ import lombok.RequiredArgsConstructor;
 public class CookingService {
 	
 	private final ClassRepository classRepository;
-	private final  ClassTargetRepository targetRepository;
+	private final ClassTargetRepository targetRepository;
 	private final ClassScheduleRepository scheduleRepository;
 	private final ClassTutorRepository tutorRepository;
 	private final ClassApplyRepository applyRepository;
@@ -916,6 +916,68 @@ public class CookingService {
 		}
 		
 	}
+	
+	
+	
+	
+	
+	// 60일 이내 결석 수
+	public long countClassAttend(Integer id) {
+		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
+		}
+		
+		// 결석한 클래스 신청 목록 조회
+		List<ClassApply> applyList = null;
+		try {
+			applyList = applyRepository.findAllByUserIdAndAttend(id, 0);
+		}
+		catch (Exception e) {
+			throw new ApiException(ClassErrorCode.CLASS_APPLY_READ_LIST_FAIL);
+		}
+		
+		// 결석한 클래스 일련번호 추출
+		List<Integer> classIds = applyList.stream()
+				.map(apply -> apply.getClasss().getId())
+				.toList();
+		
+		if (classIds.isEmpty()) {
+			return 0; 
+		}
+		
+		// 결석한 클래스 목록 조회
+		List<Class> classList = new ArrayList<Class>();
+		try {
+			classList = classRepository.findAllByIdIn(classIds);
+		}
+		catch (Exception e) {
+			throw new ApiException(ClassErrorCode.CLASS_READ_LIST_FAIL);
+		}
+		
+		Date now = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_YEAR, -60);
+		Date batchdate = calendar.getTime();
+		
+		return classList.stream()
+				.filter(classs -> classs.getApproval() == 1)
+				.filter(classs -> {
+					Calendar tmp = Calendar.getInstance();
+					tmp.setTime(classs.getEventdate());
+					tmp.add(Calendar.DAY_OF_YEAR, 7);
+					return tmp.getTime().before(now);
+			})
+			.filter(classs -> classs.getEventdate().after(batchdate))
+			.count();
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	

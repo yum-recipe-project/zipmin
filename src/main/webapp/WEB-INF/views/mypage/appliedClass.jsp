@@ -38,7 +38,7 @@
 					
 					<div class="class_absent">
 						<button>
-							<span>최근 60일 0회 결석</span>
+							<span></span>
 						</button>
 					</div>
 					

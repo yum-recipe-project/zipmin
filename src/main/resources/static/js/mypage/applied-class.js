@@ -50,8 +50,44 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 	});
 	
+	fetchClassAttend();
 	fetchClassList();
 });
+
+
+
+
+
+/**
+ * 
+ */
+async function fetchClassAttend() {
+	
+	try {
+		const payload = parseJwt(localStorage.getItem('accessToken'));
+		
+		const response = await instance.get(`/users/${payload.id}/attend-classes/count`, {
+			headers: getAuthHeaders()
+		});
+		
+		console.log(response);
+		
+		if (response.data.code === 'CLASS_ATTEND_COUNT_SUCCESS') {
+			const wrap = document.getElementById('AppliedClassWrap');
+			wrap.querySelector('.class_absent span').innerText = `최근 60일 ${response.data.data}회 결석`
+		}
+	}
+	catch (error) {
+		
+		// TODO : 에러코드 작성 
+		console.log(error);
+	}
+	
+}
+
+
+
+
 
 
 

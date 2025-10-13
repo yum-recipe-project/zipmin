@@ -26,6 +26,7 @@ public interface ClassApplyRepository extends JpaRepository<ClassApply, Integer>
 	
 	
 	List<ClassApply> findAllByUserId(Integer userId);
+	List<ClassApply> findAllByUserIdAndAttend(Integer userId, Integer attend);
 
 	boolean existsByClasssIdAndUserId(int classId, int userId);
 	

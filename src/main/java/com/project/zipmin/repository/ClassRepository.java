@@ -61,6 +61,6 @@ public interface ClassRepository extends JpaRepository<Class, Integer> {
 	Page<Class> findByIdInAndNoticedateAfter(List<Integer> ids, Date now, Pageable pageable);
 	Page<Class> findByIdInAndNoticedateBefore(List<Integer> ids, Date now, Pageable pageable);
 
-
+	List<Class> findAllByIdIn(List<Integer> ids);
 
 }

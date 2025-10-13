@@ -213,3 +213,111 @@ $(document).ready(function () {
         scrollbar: true
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*****************************************/
+/** * 쿠킹클래스 개설 신청을 지원하는 함수 */
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('openClassForm');
+
+    function formatDateForServer(dateStr) {
+        // 입력이 MM/dd/yyyy이면 yyyy-MM-dd로 변환
+        const parts = dateStr.split('/');
+        if (parts.length === 3) {
+            return `${parts[2]}-${parts[0].padStart(2,'0')}-${parts[1].padStart(2,'0')}`;
+        }
+        return dateStr;
+    }
+
+    form.addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        try {
+            const createRequestDto = {
+                title: form.title.value.trim(),
+                place: form.place.value.trim(),
+                eventdate: formatDateForServer(form.eventdate.value.trim()),
+                starttime: form.starttime.value.trim(),
+                endtime: form.endtime.value.trim(),
+                headcount: form.headcount.value.trim(),
+                need: form.need.value.trim(),
+                introduce: form.introduce.value.trim(),
+                name: form.name.value.trim(),
+                career1: form.career1.value.trim(),
+                targetList: [],
+                scheduleList: []
+            };
+
+            // 추천 대상
+            ['target1','target2','target3'].forEach(name => {
+                const val = form[name]?.value.trim();
+                if (val) createRequestDto.targetList.push(val);
+            });
+
+            // 커리큘럼
+            const tableRows = document.querySelectorAll('#classSchedule table tbody');
+            tableRows.forEach((tbody, index) => {
+                const start = tbody.querySelector(`input[name=starttime${index+1}]`)?.value.trim();
+                const end = tbody.querySelector(`input[name=endtime${index+1}]`)?.value.trim();
+                const title = tbody.querySelector(`input[name=title${index+1}]`)?.value.trim();
+                if (start && end && title) {
+                    createRequestDto.scheduleList.push({starttime: start, endtime: end, title: title});
+                }
+            });
+
+            const formData = new FormData();
+            formData.append('createRequestDto', new Blob([JSON.stringify(createRequestDto)], { type: "application/json" }));
+
+            // 대표 이미지
+            const imageFile = document.getElementById('imageInput').files[0];
+            if (imageFile) formData.append('image', imageFile);
+
+            // 강사 이미지
+            const teacherFile = document.getElementById('teacherImgInput').files[0];
+            if (teacherFile) formData.append('teacher_img', teacherFile);
+
+            const response = await instance.post('/classes', formData, {
+                headers: {
+                    ...getAuthHeaders(),
+                    'Content-Type': undefined
+                }
+            });
+
+            if (response.data.code === 'CLASS_CREATE_SUCCESS') {
+                alert('쿠킹클래스 개설이 완료되었습니다.');
+                form.reset();
+                window.location.href = '/mypage/class.do';
+            }
+
+        } catch (error) {
+            const code = error?.response?.data?.code;
+            if (code === 'CLASS_CREATE_FAIL') alert('쿠킹클래스 개설에 실패했습니다.');
+            else if (code === 'CLASS_INVALID_INPUT') alert('입력값이 유효하지 않습니다.');
+            else if (code === 'CLASS_CREATE_DUPLICATE') alert('이미 개설한 클래스입니다.');
+            else if (code === 'CLASS_UNAUTHORIZED_ACCESS') alert('로그인되지 않은 사용자입니다.');
+            else if (code === 'INTERNAL_SERVER_ERROR') alert('서버 내부 오류가 발생했습니다.');
+            else console.log(error);
+        }
+    });
+});
+
+

@@ -1,27 +1,43 @@
 package com.project.zipmin.controller;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
-import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.ClassErrorCode;
 import com.project.zipmin.api.ClassSuccessCode;
+import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.dto.ClassApplyCreateRequestDto;
 import com.project.zipmin.dto.ClassApplyCreateResponseDto;
 import com.project.zipmin.dto.ClassApplyDeleteRequestDto;
 import com.project.zipmin.dto.ClassApplyReadResponseDto;
 import com.project.zipmin.dto.ClassApplyStatusUpdateRequestDto;
-import com.project.zipmin.dto.ClassApplyUpdateRequestDto;
 import com.project.zipmin.dto.ClassApplyUpdateResponseDto;
-import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
+import com.project.zipmin.dto.ClassCreateRequestDto;
 import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.UserClassReadResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.CookingService;
 import com.project.zipmin.service.UserService;
-import com.project.zipmin.swagger.CommentReadListSuccessResponse;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.UserInvalidInputResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
@@ -33,20 +49,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequiredArgsConstructor
@@ -154,10 +156,35 @@ public class CookingController {
 	
 	
 	// 클래스 작성
-	@PostMapping("/classes")
-	public ResponseEntity<?> writeClass() {
-		
-		return null;
+	@PostMapping(value = "/classes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<?> writeClass(
+			@RequestPart ClassCreateRequestDto createRequestDto,
+	        @RequestPart(required = false) MultipartFile classImage,
+	        @RequestPart(required = false) List<MultipartFile> tutorImages) {
+		System.err.println("1. 쿠킹클래스 컨트롤러 진입: " + createRequestDto);
+
+	    // 로그인 여부 확인
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+	        throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
+	    }
+	    
+	    // 로그인 사용자 정보
+	    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+	    createRequestDto.setUserId(userService.readUserByUsername(username).getId());
+	    
+	    try {
+	    	System.err.println("2. 쿠킹클래스 서비스 진입 전: " + createRequestDto);
+	    	// 서비스에 DTO + 파일 전달
+	        cookingService.createClass(createRequestDto, classImage, tutorImages);
+	    	System.err.println("3. 쿠킹클래스 서비스 완료");
+	    } catch (Exception e) {
+	        throw new ApiException(ClassErrorCode.CLASS_CREATE_FAIL);
+	    }
+	    
+	    
+	    return ResponseEntity.status(ClassSuccessCode.CLASS_CREATE_SUCCESS.getStatus())
+	            .body(ApiResponse.success(ClassSuccessCode.CLASS_CREATE_SUCCESS, null));
 	}
 	
 	

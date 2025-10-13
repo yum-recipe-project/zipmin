@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ClassErrorCode;
@@ -26,6 +27,7 @@ import com.project.zipmin.dto.ClassApplyStatusUpdateRequestDto;
 import com.project.zipmin.dto.ClassApplyUpdateRequestDto;
 import com.project.zipmin.dto.ClassApplyUpdateResponseDto;
 import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
+import com.project.zipmin.dto.ClassCreateRequestDto;
 import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.ClassScheduleReadResponseDto;
@@ -67,6 +69,7 @@ public class CookingService {
 	private final ClassApplyRepository applyRepository;
 	
 	private final UserService userService;
+	private final FileService fileService;
 	
 	private final ClassMapper classMapper;
 	private final ClassTargetMapper targetMapper;
@@ -368,9 +371,87 @@ public class CookingService {
 	
 	
 	// 클래스 작성
-	public void createClass() {
+	@Transactional  
+	public void createClass(ClassCreateRequestDto createRequestDto, MultipartFile classImage, List<MultipartFile> tutorImages)  {
 		
+		System.err.println("클라이언트 개설 신청: " + createRequestDto);
+		
+		 // 입력값 검증
+        if (createRequestDto == null || createRequestDto.getTitle() == null
+                || createRequestDto.getCategory() == null || createRequestDto.getUserId() == 0) {
+            throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
+        }
+        
+        // 중복 개설 검사 
+        if (classRepository.existsByTitleAndUserId(createRequestDto.getTitle(), createRequestDto.getUserId())) {
+            throw new ApiException(ClassErrorCode.CLASS_CREATE_DUPLICATE);
+        }
+        
+        
+        // 클래스 대표 이미지 저장
+        try {
+            if (classImage != null && !classImage.isEmpty()) {
+                String classImgUrl = fileService.store(classImage);
+                createRequestDto.setImage(classImgUrl);
+                System.err.println("대표 이미지 저장 성공: " + classImgUrl);
+            }
+        } catch (Exception e) {
+            throw new ApiException(ClassErrorCode.CLASS_FILE_UPLOAD_FAIL);
+        }
+        
+        
+        
+        // DTO → Entity 변환
+        Class classEntity = classMapper.toEntity(createRequestDto);
+        
+        try {
+            // 4. DB 저장
+            classRepository.save(classEntity);
+            System.err.println("1.클래스 테이블 저장 성공 ");
+
+            // 5. 연관 엔티티 저장 (target, schedule, tutor)
+            if (createRequestDto.getTargetList() != null) {
+                List<ClassTarget> targetList = targetMapper.toEntityList(createRequestDto.getTargetList(), classEntity);
+                targetRepository.saveAll(targetList);
+                System.err.println("2.타켓 테이블 저장 성공 ");
+            }
+
+            if (createRequestDto.getScheduleList() != null) {
+                List<ClassSchedule> scheduleList = scheduleMapper.toEntityList(createRequestDto.getScheduleList(), classEntity);
+                scheduleRepository.saveAll(scheduleList);
+                System.err.println("3.스케쥴 테이블 저장 성공 ");
+            }
+            
+            // 강사 이미지 저장
+            if (createRequestDto.getTutorList() != null) {
+                List<ClassTutor> tutorList = tutorMapper.toEntityList(createRequestDto.getTutorList(), classEntity);
+
+                // tutorImages와 매칭해서 이미지 URL 세팅
+                for (int i = 0; i < tutorList.size(); i++) {
+                    if (tutorImages != null && tutorImages.size() > i && !tutorImages.get(i).isEmpty()) {
+                        String tutorImgUrl = fileService.store(tutorImages.get(i));
+                        tutorList.get(i).setImage(tutorImgUrl);
+                        System.err.println("강사 이미지 저장 성공: " + tutorImgUrl);
+                    }
+                }
+
+                tutorRepository.saveAll(tutorList);
+                System.err.println("4.강사 테이블 저장 성공");
+            }
+
+        } catch (Exception e) {
+            throw new ApiException(ClassErrorCode.CLASS_CREATE_FAIL);
+        }
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

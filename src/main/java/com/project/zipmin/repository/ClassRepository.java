@@ -43,6 +43,9 @@ public interface ClassRepository extends JpaRepository<Class, Integer> {
 	Page<Class> findAllByCategoryAndApprovalAndTitleContainingIgnoreCaseAndNoticedateBefore(String category, Integer approval, String keyword, Date today, Pageable pageable);
 
 	
+	// 쿠킹 클래스 개설 -> 중복 개설 확인
+	boolean existsByTitleAndUserId(String title, int userId);
+	
 	
 	
 	

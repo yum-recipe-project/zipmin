@@ -12,7 +12,7 @@
 		<link rel="stylesheet" href="/css/common/review.css">
 		<script src="/js/recipe/view-recipe.js"></script>
 		<script src="/js/modal/report-recipe-modal.js"></script>
-		<script src="/js/modal/add-memo-modal.js"></script>
+		<script src="/js/modal/view-recipe-stock-modal.js"></script>
 		<script src="/js/modal/support-recipe-modal.js"></script>
 		<script src="/js/modal/top-up-point-modal.js"></script>
 		
@@ -26,7 +26,7 @@
 		<main id="container">
 			<div class="content">
 				<div class="recipe_wrap">
-					<div id="viewRecipeBasicForm" class="recipe_header">
+					<div id="viewRecipeBasicWrap" class="recipe_header">
 						<!-- 제목 -->
 						<h2 class="recipe_title"></h2>
 						
@@ -38,7 +38,7 @@
 							<button class="btn_icon print" onclick="window.print();">
 								<img src="/images/recipe/print.png">
 							</button>
-							<button class="btn_icon" data-bs-toggle="modal" data-bs-target="#reportRecipeModal">
+							<button class="btn_icon btn_report_modal" data-bs-toggle="modal" data-bs-target="#reportRecipeModal">
 								<img src="/images/recipe/siren.png">
 							</button>
 						</div>
@@ -75,11 +75,11 @@
 						<div class="recipe_category"></div>
 					</div>
 					
-					<div id="viewRecipeStockForm" class="recipe_stock">
+					<div id="viewRecipeStockWrap" class="recipe_stock">
 						<h3>재료</h3>
 						
 						<!-- 장보기메모에 재료 담기 버튼 -->
-						<button class="btn_tool" data-bs-toggle="modal" data-bs-target="#addMemoModal">
+						<button class="btn_stock_modal btn_tool" data-bs-toggle="modal" data-bs-target="#viewRecipeStockModal">
 							<img src="/images/recipe/pen.png"> 장보기메모에 재료 담기
 						</button>
 						
@@ -108,7 +108,7 @@
 						</table>
 					</div>
 					
-					<div id="viewRecipeStepForm" class="recipe_step">
+					<div id="viewRecipeStepWrap" class="recipe_step">
 						<!-- 제목 -->
 						<h3>조리 순서</h3>
 						
@@ -120,7 +120,7 @@
 					</div>
 					
 					<!-- 요리팁 -->
-					<div id="viewRecipeTipForm">
+					<div id="viewRecipeTipWrap">
 						<div class="recipe_tip">
 							<h3>주의사항</h3>
 							<p></p>
@@ -128,7 +128,7 @@
 					</div>
 					
 					<!-- 후원 -->
-					<div id="viewRecipeSupportForm" class="recipe_support">
+					<div id="viewRecipeSupportWrap" class="recipe_support">
 						<div class="recipe_writer">
 							<img src="/images/common/test.png">
 							<div>
@@ -137,14 +137,14 @@
 							</div>
 						</div>
 						<div class="btn_wrap">
-							<button type="button" class="btn_outline" onclick="javascript:redirectToLogin();" data-bs-toggle="modal" data-bs-target="#supportRecipeModal">레시피 후원하기</button>
+							<button type="button" class="btn_outline" data-bs-toggle="modal" data-bs-target="#supportRecipeModal">레시피 후원하기</button>
 							<button type="button" class="btn_dark" onclick="javascript:redirectToLogin();" >구독</button>
 						</div>
 					</div>
 				</div>
 				
 				<!-- 탭 메뉴 버튼 -->
-				<div id="viewRecipeReviewCommentForm" class="tab_button_wrap">
+				<div id="viewRecipeReviewCommentWrap" class="tab_button_wrap">
 					<div class="tab_button">
 						<button class="active">리뷰 (<em class="review_count" data-id="1"></em>)</button>
 						<button>댓글 (<em class="comment_count" data-id="1"></em>)</button>
@@ -166,7 +166,7 @@
 			<%@include file="../modal/reportRecipeModal.jsp" %>
 			
 			<!-- 장보기메모에 담기 모달창 -->
-			<%@include file="../modal/addMemoModal.jsp" %>
+			<%@include file="../modal/viewRecipeStockModal.jsp" %>
 			
 			<!-- 후원 모달창 -->
 			<%@include file="../modal/supportRecipeModal.jsp" %>

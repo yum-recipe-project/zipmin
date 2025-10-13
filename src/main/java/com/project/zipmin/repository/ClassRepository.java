@@ -1,8 +1,11 @@
 package com.project.zipmin.repository;
 
 import com.project.zipmin.entity.Class;
+import com.project.zipmin.entity.Guide;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,8 +52,18 @@ public interface ClassRepository extends JpaRepository<Class, Integer> {
 	
 	
 	
+	
 	// 나의 쿠킹클래스에 사용 (수정 필요)
 	Page<Class> findByUserId(int userId, Pageable pageable);
-	Page<Class> findByUserIdAndNoticedateAfter(int userId, Date now, Pageable pageable);
-	Page<Class> findByUserIdAndNoticedateBefore(int userId, Date now, Pageable pageable);
+	Page<Class> findByUserIdAndEventdateAfter(int userId, Calendar now, Pageable pageable);
+	Page<Class> findByUserIdAndEventdateBefore(int userId, Calendar now, Pageable pageable);
+	
+	
+	
+	Page<Class> findByIdIn(List<Integer> ids, Pageable pageable);
+	Page<Class> findByIdInAndNoticedateAfter(List<Integer> ids, Date now, Pageable pageable);
+	Page<Class> findByIdInAndNoticedateBefore(List<Integer> ids, Date now, Pageable pageable);
+
+	List<Class> findAllByIdIn(List<Integer> ids);
+
 }

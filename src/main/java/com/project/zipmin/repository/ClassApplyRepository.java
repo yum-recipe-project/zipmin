@@ -3,6 +3,7 @@ package com.project.zipmin.repository;
 import com.project.zipmin.entity.ClassApply;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +23,10 @@ public interface ClassApplyRepository extends JpaRepository<ClassApply, Integer>
 	Page<ClassApply> findByUserId(Integer userId, Pageable pageable);
 	Page<ClassApply> findByUserIdAndClasss_EventdateBefore(Integer userId, Date now, Pageable pageable);
 	Page<ClassApply> findByUserIdAndClasss_EventdateAfter(Integer userId, Date now, Pageable pageable);
-
+	
+	
+	List<ClassApply> findAllByUserId(Integer userId);
+	List<ClassApply> findAllByUserIdAndAttend(Integer userId, Integer attend);
 
 	boolean existsByClasssIdAndUserId(int classId, int userId);
 	

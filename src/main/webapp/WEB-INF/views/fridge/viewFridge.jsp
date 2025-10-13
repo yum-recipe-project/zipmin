@@ -129,8 +129,6 @@
 			<%@include file="../modal/writeUserFridgeModal.jsp" %>
 			<%@include file="../modal/editUserFridgeModal.jsp" %>
 
-			<!-- 메모 모달 -->
-			<%@include file="../modal/addMemoModal.jsp" %>
 			<!-- 장보기 메모 모달  -->
 			<%@include file="../modal/writeMemoModal.jsp" %>
 			<%@include file="../modal/editMemoModal.jsp" %>

@@ -4,10 +4,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import com.project.zipmin.dto.ClassCreateRequestDto;
-import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
+import com.project.zipmin.dto.UserAppliedClassResponseDto;
 import com.project.zipmin.dto.UserClassReadResponseDto;
 import com.project.zipmin.entity.Class;
+import com.project.zipmin.entity.ClassApply;
 
 @Mapper(componentModel = "spring")
 public interface ClassMapper {
@@ -24,9 +25,16 @@ public interface ClassMapper {
 	
 	
 	
-	Class toEntity(ClassMyApplyReadResponseDto classDto);
+	Class toEntity(UserAppliedClassResponseDto classDto);
 	
-	ClassMyApplyReadResponseDto toReadMyApplyResponseDto(Class classs);
+	// UserAppliedClassResponseDto toReadUserAppliedResponseDto(Class classs);
+	
+	
+	@Mapping(target = "id", source = "classs.id")
+	@Mapping(target = "applyId", source = "apply.id")
+	@Mapping(target = "selected", source = "apply.selected")
+	UserAppliedClassResponseDto toReadUserAppliedResponseDto(Class classs, ClassApply apply);
+
 	
 	
 	

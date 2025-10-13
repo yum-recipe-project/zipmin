@@ -2,7 +2,7 @@
  * 장보기메모에 재로 담기 모달창의 재료를 선택했는지 검증하는 함수
  */
 document.addEventListener("DOMContentLoaded", function() {
-    const memoElement = document.getElementById("memo");
+    const memoElement = document.getElementById('addMemoModal');
     const submitButton = document.querySelector("#addMemoForm button[type='submit']");
 
     memoElement.addEventListener("change", function(event) {

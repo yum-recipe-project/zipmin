@@ -137,8 +137,8 @@
 							</div>
 						</div>
 						<div class="btn_wrap">
-							<button class="btn_outline" type="button" data-bs-toggle="modal" data-bs-target="#supportRecipeModal">레시피 후원하기</button>
-							<button type="button" class="btn_dark">구독</button>
+							<button type="button" class="btn_outline" onclick="javascript:redirectToLogin();" data-bs-toggle="modal" data-bs-target="#supportRecipeModal">레시피 후원하기</button>
+							<button type="button" class="btn_dark" onclick="javascript:redirectToLogin();" >구독</button>
 						</div>
 					</div>
 				</div>

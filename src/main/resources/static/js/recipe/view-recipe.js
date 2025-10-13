@@ -62,8 +62,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 		
 		const result = await response.json();
 		
-		console.log(result);
-		
 		if (result.code === 'RECIPE_READ_SUCCESS') {
 			
 			// 기본 정보
@@ -262,13 +260,10 @@ function renderMemoList(stockList) {
 		tdAmount.textContent = `${ingredient.amount}${ingredient.unit}`;
 		
 		tdAmount.dataset.amount = ingredient.amount;
-		tdAmount.dataset.unit = ingredient.unit; // ← 여기 추가
+		tdAmount.dataset.unit = ingredient.unit;
 		
 		
 		tr.appendChild(tdAmount);
-		
-		
-		
 		
 		// 체크박스
 		const tdCheckbox = document.createElement('td');
@@ -379,7 +374,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     likeButton.addEventListener('click', async function(event) {
         event.preventDefault();
-
         if (!isLoggedIn()) {
             redirectToLogin();
             return;

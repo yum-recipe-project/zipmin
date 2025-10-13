@@ -394,13 +394,11 @@ public class CookingController {
 	
 	
 	
-	
-	
 	// 사용자가 신청한 쿠킹클래스
 	@GetMapping("/users/{id}/applied-classes")
 	public ResponseEntity<?> readUserClassApplyList(
 			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
-			@Parameter(description = "정렬") @RequestParam String sort,
+			@Parameter(description = "진행 상태") @RequestParam String status,
 			@Parameter(description = "페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지 크기") @RequestParam int size) {
 		
@@ -410,7 +408,7 @@ public class CookingController {
 		}
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<UserAppliedClassResponseDto> applyPage = cookingService.readAppliedClassPageByUserId(id, sort, pageable);
+		Page<UserAppliedClassResponseDto> applyPage = cookingService.readAppliedClassPageByUserId(id, status, pageable);
 		
 		return ResponseEntity.status(ClassSuccessCode.CLASS_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_READ_LIST_SUCCESS, applyPage));

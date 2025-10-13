@@ -19,4 +19,7 @@ public class UserAppliedClassResponseDto {
 	private String image;
 	
 	private int selected;
+	
+	private boolean isOpened;
+	private boolean isPlanned;
 }

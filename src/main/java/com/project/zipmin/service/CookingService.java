@@ -621,6 +621,7 @@ public class CookingService {
 	    // 신청한 클래스 목록 조회
 	    Page<Class> classPage = null;
 	    try {
+	    	// TODO : status 고려 (open/close 프론트도 수정 필요)
 	    	classPage = classRepository.findByIdIn(classIds, pageable); 	    
 	    }
 	    catch (Exception e) {
@@ -633,6 +634,17 @@ public class CookingService {
 	    	ClassApply apply = applyMap.get(classs.getId());
 	    	UserAppliedClassResponseDto classDto = classMapper.toReadUserAppliedResponseDto(classs, apply);
 	        
+	    	// 상태
+	    	Date now = new Date();
+			if (classs.getApproval() == 1 && now.before(classs.getNoticedate())) {
+				classDto.setOpened(true);
+			}
+			
+			// 클래스 진행 예정 여부 조회
+			if (classs.getApproval() == 1 && now.after(classs.getNoticedate()) && now.before(classs.getEventdate())) {
+				classDto.setPlanned(true);
+			}
+
 	        classDtoList.add(classDto);
 	    }
 	    

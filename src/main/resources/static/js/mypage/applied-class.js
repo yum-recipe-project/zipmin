@@ -1,7 +1,7 @@
 /**
  * 전역 변수 선언
  */
-let sort = '';
+let status = '';
 let totalPages = 0;
 let totalElements = 0;
 let page = 0;
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			document.querySelector('.btn_sort.active')?.classList.remove('active');
 			btn.classList.add('active');
 			
-			sort = btn.dataset.sort;
+			status = btn.dataset.status;
 			page = 0;
 			classList = [];
 			
@@ -65,7 +65,7 @@ async function fetchClassList() {
 		const payload = parseJwt(localStorage.getItem('accessToken'));
 		
 		const params = new URLSearchParams({
-			sort: sort,
+			status: status,
 			page: page,
 			size: size
 		}).toString();
@@ -134,28 +134,27 @@ function renderClassList(classList) {
 		document.querySelector('.list_empty')?.remove();
 		
 		const li = document.createElement('li');
-		// li.dataset.applyId = classs.apply_id;
 
 		// 상태 영역
 		const statusDiv = document.createElement('div');
-		statusDiv.className = 'status';
-		/*
-		if (classs.status === 'waiting') {
-			statusDiv.textContent = '대기 중이에요';
+		switch (classs.selected) {
+			case 1:
+				statusDiv.className = (classs.opened || classs.planned) ? 'status primary' : 'status';
+				statusDiv.textContent = '선정되었어요';
+				break;
+			case 2:
+				statusDiv.className = classs.opened ? 'status warning' : 'status';
+				statusDiv.textContent = classs.opened ? '대기 중이에요' : '선정 되지 않았어요';
+				break;
+			case 0:
+				statusDiv.className = classs.opened ? 'status danger' : 'status';
+				statusDiv.textContent = '선정 되지 않았어요';
+				break;
 		}
-		else if (classs.status === 'applied') {
-			statusDiv.textContent = '신청 완료';
-		}
-		else if (classs.status === 'rejected') {
-			statusDiv.textContent = '선정 되지 않았어요';
-		}
-		*/
 
-		// 클래스 정보 전체 wrapper
 		const classDiv = document.createElement('div');
 		classDiv.className = 'class';
 
-		// 썸네일 링크 및 이미지
 		const thumbnailLink = document.createElement('a');
 		thumbnailLink.href = `/cooking/viewClass.do?id=${classs.id}`;
 		thumbnailLink.className = 'thumbnail';
@@ -164,7 +163,6 @@ function renderClassList(classList) {
 		img.src = classs.image;
 		thumbnailLink.appendChild(img);
 
-		// info 영역
 		const infoDiv = document.createElement('div');
 		infoDiv.className = 'info';
 
@@ -174,7 +172,6 @@ function renderClassList(classList) {
 
 		const dateP = document.createElement('p');
 
-		// 수업일정
 		const scheduleSpan = document.createElement('span');
 		const scheduleEm = document.createElement('em');
 		scheduleEm.textContent = '수업일정';
@@ -182,7 +179,6 @@ function renderClassList(classList) {
 		scheduleSpan.append(`${formatDateWithDay(classs.eventdate)} ${formatTime(classs.starttime)}-${formatTime(classs.endtime)}`);
 		dateP.appendChild(scheduleSpan);
 
-		// 선정발표
 		const deadlineSpan = document.createElement('span');
 		const deadlineEm = document.createElement('em');
 		deadlineEm.textContent = '선정발표';
@@ -193,10 +189,8 @@ function renderClassList(classList) {
 		infoDiv.appendChild(dateP);
 		infoDiv.append(titleLink, dateP);
 
-		// 취소 버튼
 		const cancelDiv = document.createElement('div');
 		cancelDiv.className = 'cancel_btn';
-
 		const cancelBtn = document.createElement('button');
 		cancelBtn.className = 'btn_outline';
 		cancelBtn.textContent = '신청 취소';

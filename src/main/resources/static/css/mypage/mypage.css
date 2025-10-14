@@ -129,7 +129,6 @@
 	color: var(--txt-color-500);
 }
 
-
 /* 사용자 정보 > 소개 필드 */
 #container .user_wrap .user .introduce_field {
 	width: 100%;
@@ -146,6 +145,25 @@
 
 /* 사용자 정보 > 소개 수정 폼 */
 #container .user_wrap .user .introduce_field .introduce_form {
+	display: none;
+}
+
+/* 사용자 정보 > 링크 필드 */
+#container .user_wrap .user .link_field {
+	width: 100%;
+	margin: 0 0 16px 0;
+	padding: 16px 0;
+	border-bottom: 1px solid var(--line-color2);
+}
+
+#container .user_wrap .user .link_field .link_title {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+}
+
+/* 사용자 정보 > 소개 수정 폼 */
+#container .user_wrap .user .link_field .link_form {
 	display: none;
 }
 

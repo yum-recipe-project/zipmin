@@ -497,6 +497,9 @@ public class UserService {
 		if (userDto.getIntroduce() != null) {
 			user.setIntroduce(userDto.getIntroduce());
 		}
+		if (userDto.getLink() != null) {
+			user.setLink(userDto.getLink());
+		}
 		
 		// 사용자 수정
 		try {

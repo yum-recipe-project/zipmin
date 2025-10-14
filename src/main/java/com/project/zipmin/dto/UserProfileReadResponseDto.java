@@ -14,6 +14,7 @@ public class UserProfileReadResponseDto {
 	private String avatar;
 	private String introduce;
 	private String link;
+	private String point;
 	
 	private int likecount;
 	private boolean isLiked;

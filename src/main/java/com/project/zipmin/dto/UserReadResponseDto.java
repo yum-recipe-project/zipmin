@@ -19,6 +19,6 @@ public class UserReadResponseDto {
 	private String role;
 	private String introduce;
 	private String link;
-	
 	private int point;
+	
 }

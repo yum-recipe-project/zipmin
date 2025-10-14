@@ -589,6 +589,8 @@ public class UserController {
 
 	
 	
+	
+	// UPDATE_TOKEN
 	@Operation(
 	    summary = "사용자 수정"
 	)
@@ -701,9 +703,6 @@ public class UserController {
 		response.setHeader("Authorization", "Bearer " + access);
 		
 		TokenDto tokenDto = TokenDto.toDto(access);
-		// response.setContentType("application/json");
-		// response.setCharacterEncoding("utf-8");
-		// response.getWriter().write(objectMapper.writeValueAsString(ApiResponse.success(UserSuccessCode.USER_UPDATE_TOKEN_SUCCESS, tokenDto)));
 
 		return ResponseEntity.status(UserSuccessCode.USER_UPDATE_TOKEN_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_UPDATE_TOKEN_SUCCESS, tokenDto));

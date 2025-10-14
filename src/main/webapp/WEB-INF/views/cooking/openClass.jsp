@@ -86,26 +86,26 @@
 										</td>
 									</tr>
 									<tr>
-										<th scope="col">카테고리<span class="ess"></span></th>
+										<th scope="col" class="category_th">카테고리<span class="ess"></span></th>
 										<td>
 									        <div class="accept_notice">
-									            <div class="checkbox_wrap">
+									            <div class="radio_wrap">
 									                <input type="radio" id="category_korean" name="category" value="한식">
 									                <label for="category_korean">한식</label>
 									            </div>
-									            <div class="checkbox_wrap">
+									            <div class="radio_wrap">
 									                <input type="radio" id="category_western" name="category" value="양식">
 									                <label for="category_western">양식</label>
 									            </div>
-									            <div class="checkbox_wrap">
+									            <div class="radio_wrap">
 									                <input type="radio" id="category_chinese" name="category" value="중식">
 									                <label for="category_chinese">중식</label>
 									            </div>
-									            <div class="checkbox_wrap">
+									            <div class="radio_wrap">
 									                <input type="radio" id="category_bakery" name="category" value="제과제빵">
 									                <label for="category_bakery">제과제빵</label>
 									            </div>
-									            <div class="checkbox_wrap">
+									            <div class="radio_wrap">
 									                <input type="radio" id="category_other" name="category" value="기타">
 									                <label for="category_other">기타</label>
 									            </div>

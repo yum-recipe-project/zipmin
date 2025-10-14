@@ -178,9 +178,7 @@ function renderGuideList(guideList) {
         const dateP = document.createElement('p');
         dateP.textContent = formatDate(guide.postdate);
 
-		// todo: 관리자 페이지로 editBtn 이동 후 삭제
         infoDiv.append(scrapP, dateP);
-		// infoDiv.appendChild(editBtn);
 
         const writerDiv = document.createElement('div');
         writerDiv.className = 'writer';

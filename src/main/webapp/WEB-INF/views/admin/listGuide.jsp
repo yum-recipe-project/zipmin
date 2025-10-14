@@ -16,6 +16,7 @@
 		<script src="/js/common/jwt.js"></script>
 		<script src="/js/common/util.js"></script>
 		<script src="/js/admin/list-guide.js"></script>
+		<script src="/js/admin/modal/edit-guide-modal.js"></script>
 	</head>
 	
 	<body>
@@ -110,6 +111,9 @@
 		<script src="../assets/js/sidebarmenu.js"></script>
 		<script src="../assets/js/app.min.js"></script>
 		<script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+		
+		<!-- 가이드 수정 모달 -->
+		<%@include file="../admin/modal/editGuideModal.jsp" %>
 	</body>
 
 </html>

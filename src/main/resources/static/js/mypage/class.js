@@ -1,7 +1,7 @@
 /**
  * 전역 변수
  */
-let sort = '';
+let status = '';
 let totalPages = 0;
 let totalElements = 0;
 let page = 0;
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			document.querySelector('.btn_sort.active')?.classList.remove('active');
 			btn.classList.add('active');
 			
-			sort = btn.dataset.sort;
+			status = btn.dataset.status;
 			page = 0;
 			classList = [];
 			
@@ -67,7 +67,7 @@ async function fetchUserClassList() {
 		const payload = parseJwt(localStorage.getItem('accessToken'));
 		
 		const params = new URLSearchParams({
-			sort: sort,
+			status: status,
 			page: page,
 			size: size
 		}).toString();

@@ -1,27 +1,41 @@
 package com.project.zipmin.controller;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
-import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.ClassErrorCode;
 import com.project.zipmin.api.ClassSuccessCode;
+import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.dto.ClassApplyCreateRequestDto;
 import com.project.zipmin.dto.ClassApplyCreateResponseDto;
-import com.project.zipmin.dto.ClassApplyDeleteRequestDto;
 import com.project.zipmin.dto.ClassApplyReadResponseDto;
 import com.project.zipmin.dto.ClassApplyStatusUpdateRequestDto;
-import com.project.zipmin.dto.ClassApplyUpdateRequestDto;
 import com.project.zipmin.dto.ClassApplyUpdateResponseDto;
-import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
-import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
+import com.project.zipmin.dto.ClassCreateRequestDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
+import com.project.zipmin.dto.UserAppliedClassResponseDto;
 import com.project.zipmin.dto.UserClassReadResponseDto;
-import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.CookingService;
 import com.project.zipmin.service.UserService;
-import com.project.zipmin.swagger.CommentReadListSuccessResponse;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.UserInvalidInputResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
@@ -33,20 +47,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequiredArgsConstructor
@@ -154,10 +154,32 @@ public class CookingController {
 	
 	
 	// 클래스 작성
-	@PostMapping("/classes")
-	public ResponseEntity<?> writeClass() {
-		
-		return null;
+	@PostMapping(value = "/classes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<?> writeClass(
+			@RequestPart ClassCreateRequestDto createRequestDto,
+	        @RequestPart(required = false) MultipartFile classImage,
+	        @RequestPart(required = false) List<MultipartFile> tutorImages) {
+	    // 로그인 여부 확인
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+	        throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
+	    }
+	    
+	    // 로그인 사용자 정보
+	    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+	    createRequestDto.setUserId(userService.readUserByUsername(username).getId());
+	    
+	    try {
+	    	// 서비스에 DTO + 파일 전달
+	        cookingService.createClass(createRequestDto, classImage, tutorImages);
+	    	System.err.println("3. 쿠킹클래스 서비스 완료");
+	    } catch (Exception e) {
+	        throw new ApiException(ClassErrorCode.CLASS_CREATE_FAIL);
+	    }
+	    
+	    
+	    return ResponseEntity.status(ClassSuccessCode.CLASS_CREATE_SUCCESS.getStatus())
+	            .body(ApiResponse.success(ClassSuccessCode.CLASS_CREATE_SUCCESS, null));
 	}
 	
 	
@@ -270,10 +292,6 @@ public class CookingController {
 		    throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 로그인 정보
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		applyRequestDto.setUserId(userService.readUserByUsername(username).getId());
-		
 		ClassApplyCreateResponseDto applyResponseDto = cookingService.createApply(applyRequestDto);
 		
 		return ResponseEntity.status(ClassSuccessCode.CLASS_APPLY_CREATE_SUCCESS.getStatus())
@@ -282,23 +300,20 @@ public class CookingController {
 	
 	
 	
+	
 	// 특정 클래스에 참가 신청 취소
-	@DeleteMapping("/classes/{id}/applies")
+	@DeleteMapping("/classes/{classId}/applies/{applyId}")
 	public ResponseEntity<?> cancelApplyClass(
-			@PathVariable int id,
-			@RequestBody ClassApplyDeleteRequestDto applyDto) {
+			@PathVariable int classId,
+			@PathVariable int applyId) {
 		
-		// 인증 여부 확인 (비로그인)
+		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 로그인 정보
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		applyDto.setUserId(userService.readUserByUsername(username).getId());
-		
-		cookingService.deleteApply(applyDto);
+		cookingService.deleteApply(classId, applyId);
 		
 		return ResponseEntity.status(ClassSuccessCode.CLASS_APPLY_DELETE_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_APPLY_DELETE_SUCCESS, null));
@@ -308,7 +323,7 @@ public class CookingController {
 	
 	
 	
-	// 클래스 신청 수정 (출석)
+	// 클래스 신청 수정
 	// TODO : 수정 필요
 	/*
 	@PatchMapping("/classes/{classId}/applies/{applyId}")
@@ -367,10 +382,6 @@ public class CookingController {
 	
 	
 	
-	
-	
-	
-	
 	// CLASS_READ_LIST_SUCCESS
 	// CLASS_READ_LIST_FAIL
 	// CLASS_INVALID_INPUT
@@ -379,12 +390,12 @@ public class CookingController {
 	@GetMapping("/users/{id}/classes")
 	public ResponseEntity<?> listUserClass(
 			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
-			@Parameter(description = "정렬") @RequestParam String sort,
+			@Parameter(description = "진행 상태") @RequestParam String status,
 			@Parameter(description = "조회할 페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지의 항목 수") @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<UserClassReadResponseDto> classPage = cookingService.readClassPageByUserId(id, sort, pageable);
+		Page<UserClassReadResponseDto> classPage = cookingService.readClassPageByUserId(id, status, pageable);
 		
 		return ResponseEntity.status(ClassSuccessCode.CLASS_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_READ_LIST_SUCCESS, classPage));
@@ -394,14 +405,11 @@ public class CookingController {
 	
 	
 	
-	
-	
 	// 사용자가 신청한 쿠킹클래스
-	// TODO : 전면 수정 필요
 	@GetMapping("/users/{id}/applied-classes")
 	public ResponseEntity<?> readUserClassApplyList(
 			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
-			@Parameter(description = "정렬") @RequestParam String sort,
+			@Parameter(description = "진행 상태") @RequestParam String status,
 			@Parameter(description = "페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지 크기") @RequestParam int size) {
 		
@@ -410,24 +418,8 @@ public class CookingController {
 			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
 		}
 		
-		// 인증 여부 확인 (비로그인)
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
-		}
-		
-		// 로그인 정보
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		
-		// 본인 확인
-		if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
-			if (id != userService.readUserByUsername(username).getId()) {
-				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
-			}
-		}
-		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<ClassMyApplyReadResponseDto> applyPage = cookingService.readApplyClassPageByUserId(id, sort, pageable);
+		Page<UserAppliedClassResponseDto> applyPage = cookingService.readAppliedClassPageByUserId(id, status, pageable);
 		
 		return ResponseEntity.status(ClassSuccessCode.CLASS_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_READ_LIST_SUCCESS, applyPage));
@@ -435,6 +427,24 @@ public class CookingController {
 	
 	
 	
+	
+	
+	// 결석 수
+	// TODO : 수정 필요
+	@GetMapping("/users/{id}/attend-classes/count")
+	public ResponseEntity<?> countUserClassAttend(
+			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id) {
+		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		int count = (int) cookingService.countClassAttend(id);
+		
+		return ResponseEntity.status(ClassSuccessCode.CLASS_COUNT_ATTEND_SUCCESS.getStatus())
+				.body(ApiResponse.success(ClassSuccessCode.CLASS_COUNT_ATTEND_SUCCESS, count));
+	}
 	
 	
 	

@@ -15,7 +15,7 @@
 		<%@include file="../common/header.jsp" %>
 		<main id="container">
 			<div class="content">
-				<div class="class_wrap">
+				<div id="AppliedClassWrap" class="class_wrap">
 
 					<div class="class_header">
 						<a href="/mypage.do">
@@ -30,15 +30,15 @@
 					<div class="class_util">
 						<p class="total"></p>
 						<div class="class_sort">
-							<button class="btn_sort active" data-sort="">전체</button>
-							<button class="btn_sort" data-sort="progress">진행중</button>
-							<button class="btn_sort" data-sort="end">마감</button>
+							<button class="btn_sort active" data-status="">전체</button>
+							<button class="btn_sort" data-status="open">진행중</button>
+							<button class="btn_sort" data-status="close">마감</button>
 						</div>
 					</div>
 					
 					<div class="class_absent">
 						<button>
-							<span>최근 60일 0회 결석</span>
+							<span></span>
 						</button>
 					</div>
 					

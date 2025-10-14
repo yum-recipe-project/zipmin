@@ -74,8 +74,6 @@ async function fetchClass() {
 			headers: getAuthHeaders()
 		});
 		
-		console.log(response);
-		
 		if (response.data.code === 'CLASS_READ_SUCCESS') {
 			// 전역변수 설정
 			isOpened = response.data.data.opened;

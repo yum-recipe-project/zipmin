@@ -33,10 +33,11 @@ public class ClassReadResponseDto {
 	private List<ClassScheduleReadResponseDto> scheduleList;
 	private List<ClassTutorReadResponseDto> tutorList;
 	
-	private boolean applystatus;
+	private boolean isApplied;
 	private int applycount;
 	private boolean isOpened;
 	private boolean isEvented;
+	private boolean isAble;
 	
 	// 개설 신청자 정보
 	private String username;

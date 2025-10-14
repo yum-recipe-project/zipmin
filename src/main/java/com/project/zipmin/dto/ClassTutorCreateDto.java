@@ -7,11 +7,9 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ClassApplyDeleteRequestDto {
-	
-	private Integer id;
-	private Integer userId;
-	private Integer classId;
-	
+public class ClassTutorCreateDto {
+	private String name;
+    private String career;
+    private String image;
 }
 

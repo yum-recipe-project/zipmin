@@ -1,4 +1,18 @@
 /**
+ * 전역 변수 선언
+ */
+let status = '';
+let totalPages = 0;
+let totalElements = 0;
+let page = 0;
+let size = 10;
+let classList = [];
+
+
+
+
+
+/**
  * 접근 권한을 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', async function() {
@@ -11,18 +25,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 	}
 	
 });
-
-
-
-
-/**
- * 전역 변수 선언
- */
-let sort = '';
-let totalPages = 0;
-let page = 0;
-let size = 10;
-let classList = [];
 
 
 
@@ -40,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			document.querySelector('.btn_sort.active')?.classList.remove('active');
 			btn.classList.add('active');
 			
-			sort = btn.dataset.sort;
+			status = btn.dataset.status;
 			page = 0;
 			classList = [];
 			
@@ -48,8 +50,44 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 	});
 	
+	fetchClassAttend();
 	fetchClassList();
 });
+
+
+
+
+
+/**
+ * 
+ */
+async function fetchClassAttend() {
+	
+	try {
+		const payload = parseJwt(localStorage.getItem('accessToken'));
+		
+		const response = await instance.get(`/users/${payload.id}/attend-classes/count`, {
+			headers: getAuthHeaders()
+		});
+		
+		console.log(response);
+		
+		if (response.data.code === 'CLASS_ATTEND_COUNT_SUCCESS') {
+			const wrap = document.getElementById('AppliedClassWrap');
+			wrap.querySelector('.class_absent span').innerText = `최근 60일 ${response.data.data}회 결석`
+		}
+	}
+	catch (error) {
+		
+		// TODO : 에러코드 작성 
+		console.log(error);
+	}
+	
+}
+
+
+
+
 
 
 
@@ -63,7 +101,7 @@ async function fetchClassList() {
 		const payload = parseJwt(localStorage.getItem('accessToken'));
 		
 		const params = new URLSearchParams({
-			sort: sort,
+			status: status,
 			page: page,
 			size: size
 		}).toString();
@@ -75,18 +113,23 @@ async function fetchClassList() {
 		console.log(response);
 		
 		if (response.data.code === 'CLASS_READ_LIST_SUCCESS') {
-			
+			// 전역변수 설정
 			totalPages = response.data.data.totalPages;
+			totalElements = response.data.data.totalElements;
 			page = response.data.data.number;
 			classList = response.data.data.content;
 			
+			// 랜더링
 			renderClassList(classList);
-			renderPagination();
-			
-			document.querySelector('.class_util .total').innerText = `총 ${response.data.data.totalElements}개`;
+			renderPagination(fetchClassList);
+			document.querySelector('.class_util .total').innerText = `총 ${totalElements}개`;
 		}
 	}
 	catch (error) {
+		const code = error?.response?.data?.code;
+		
+		// TODO : 에러코드 작성
+		
 		console.log(error);
 	}
 	
@@ -100,32 +143,54 @@ async function fetchClassList() {
  * 쿠킹클래스 목록을 화면에 렌더링하는 함수
  */
 function renderClassList(classList) {
-	const container = document.querySelector('.class_list');
+	
+	const wrap = document.getElementById('AppliedClassWrap');
+	const container = wrap.querySelector('.class_list');
 	container.innerHTML = '';
 
+	// 쿠킹클래스의 신청 목록이 존재하지 않는 경우
+	if (classList == null || classList.length === 0) {
+		container.style.display = 'none';
+		wrap.querySelector('.list_empty')?.remove();
+
+		const wrapper = document.createElement('div');
+		wrapper.className = 'list_empty';
+
+		const span = document.createElement('span');
+		span.textContent = '신청한 쿠킹클래스가 없습니다';
+		wrapper.appendChild(span);
+		container.insertAdjacentElement('afterend', wrapper);
+
+		return;
+	}
+	
+	// 쿠킹클래스의 신청 목록이 존재하는 경우
 	classList.forEach(classs => {
+		container.style.display = 'block';
+		document.querySelector('.list_empty')?.remove();
+		
 		const li = document.createElement('li');
-		li.dataset.applyId = classs.apply_id;
 
 		// 상태 영역
 		const statusDiv = document.createElement('div');
-		statusDiv.className = 'status';
+		switch (classs.selected) {
+			case 1:
+				statusDiv.className = (classs.opened || classs.planned) ? 'status primary' : 'status';
+				statusDiv.textContent = '선정되었어요';
+				break;
+			case 2:
+				statusDiv.className = classs.opened ? 'status warning' : 'status';
+				statusDiv.textContent = classs.opened ? '대기 중이에요' : '선정 되지 않았어요';
+				break;
+			case 0:
+				statusDiv.className = classs.opened ? 'status danger' : 'status';
+				statusDiv.textContent = '선정 되지 않았어요';
+				break;
+		}
 
-		if (classs.status === 'waiting') {
-			statusDiv.textContent = '대기 중이에요';
-		}
-		else if (classs.status === 'applied') {
-			statusDiv.textContent = '신청 완료';
-		}
-		else if (classs.status === 'rejected') {
-			statusDiv.textContent = '선정 되지 않았어요';
-		}
-
-		// 클래스 정보 전체 wrapper
 		const classDiv = document.createElement('div');
 		classDiv.className = 'class';
 
-		// 썸네일 링크 및 이미지
 		const thumbnailLink = document.createElement('a');
 		thumbnailLink.href = `/cooking/viewClass.do?id=${classs.id}`;
 		thumbnailLink.className = 'thumbnail';
@@ -134,7 +199,6 @@ function renderClassList(classList) {
 		img.src = classs.image;
 		thumbnailLink.appendChild(img);
 
-		// info 영역
 		const infoDiv = document.createElement('div');
 		infoDiv.className = 'info';
 
@@ -144,7 +208,6 @@ function renderClassList(classList) {
 
 		const dateP = document.createElement('p');
 
-		// 수업일정
 		const scheduleSpan = document.createElement('span');
 		const scheduleEm = document.createElement('em');
 		scheduleEm.textContent = '수업일정';
@@ -152,7 +215,6 @@ function renderClassList(classList) {
 		scheduleSpan.append(`${formatDateWithDay(classs.eventdate)} ${formatTime(classs.starttime)}-${formatTime(classs.endtime)}`);
 		dateP.appendChild(scheduleSpan);
 
-		// 선정발표
 		const deadlineSpan = document.createElement('span');
 		const deadlineEm = document.createElement('em');
 		deadlineEm.textContent = '선정발표';
@@ -163,22 +225,17 @@ function renderClassList(classList) {
 		infoDiv.appendChild(dateP);
 		infoDiv.append(titleLink, dateP);
 
-		// 취소 버튼
 		const cancelDiv = document.createElement('div');
 		cancelDiv.className = 'cancel_btn';
+		
+		if (classs.opened) {
+			const cancelBtn = document.createElement('button');
+			cancelBtn.className = 'btn_outline';
+			cancelBtn.textContent = '신청 취소';
+			cancelBtn.addEventListener('click', () => deleteApply(classs.apply_id, classs.id));
+			cancelDiv.appendChild(cancelBtn);
+		}
 
-		const cancelBtn = document.createElement('button');
-		cancelBtn.className = 'btn_outline';
-		cancelBtn.textContent = '신청 취소';
-		cancelBtn.addEventListener('click', function(event) {
-			event.preventDefault();
-			if (confirm('정말 신청을 취소하시겠습니까?')) {
-				deleteApply(classs.apply_id, classs.id);
-			}
-		});
-		cancelDiv.appendChild(cancelBtn);
-
-		// 조립
 		classDiv.append(thumbnailLink, infoDiv, cancelDiv);
 		li.append(statusDiv, classDiv);
 		container.appendChild(li);
@@ -188,33 +245,42 @@ function renderClassList(classList) {
 
 
 
-async function deleteApply(id, classId) {
+
+/**
+ * 쿠킹클래스 신청을 삭제하는 함수
+ */
+async function deleteApply(applyId, classId) {
 	
-	try {
-		const payload = parseJwt(localStorage.getItem('accessToken'));
-
-		const data = {
-			id: id,
-			class_id: classId
+	if (confirm('정말 신청을 취소하시겠습니까?')) {
+		try {
+			const response = await instance.delete(`/classes/${classId}/applies/${applyId}`, {
+				headers: getAuthHeaders()
+			});
+	
+			if (response.data.code === 'CLASS_APPLY_DELETE_SUCCESS') {
+				alertPrimary('쿠킹클래스 신청이 성공적으로 취소되었습니다.');
+				fetchClassList();
+			}
 		}
+		catch (error) {
+			const code = error?.response?.data?.code;
 
-		const response = await instance.delete(`/classes/${payload.id}/applies`, {
-			data: data,
-			headers: getAuthHeaders()
-		});
-
-		console.log(response);
-		
-		if (response.data.code === 'CLASS_APPLY_DELETE_SUCCESS') {
-			alert('쿠킹클래스 신청이 성공적으로 취소되었습니다.');
-			const applyElement = document.querySelector(`.class_list li[data-apply-id='${id}']`);
-			if (applyElement) applyElement.remove();
+			if (code === '') {
+				alertDanger('');
+			}
+			else if (code === 'USER_INVALID_INPUT') {
+				alertDanger('입력값이 유효하지 않습니다.');
+			}
+			else if (code === 'USER_NOT_FOUND') {
+				alertDanger('해당 사용자를 찾을 수 없습니다.');
+			}
+			else if (code === 'INTERNAL_SERVER_ERROR') {
+				console.log(error);
+			}
+			else {
+				console.log(error);
+			}
 		}
-		
-	}
-	catch (error) {
-		/******** 여기에 에러 코드 추가 !!!!!! ********/
-		console.log(error);
 	}
 	
 }
@@ -226,73 +292,3 @@ async function deleteApply(id, classId) {
 // 발표일이 지나서 보이도록 선정 여부 보이도록 하기
 
 
-
-
-
-/**
- * 페이지네이션을 화면에 렌더링하는 함수
- */
-function renderPagination() {
-	const pagination = document.querySelector('.pagination ul');
-	pagination.innerHTML = '';
-
-	// 이전 버튼
-	const prevLi = document.createElement('li');
-	const prevLink = document.createElement('a');
-	prevLink.href = '#';
-	prevLink.className = 'prev';
-	prevLink.dataset.page = page - 1;
-
-	if (page === 0) {
-		prevLink.style.pointerEvents = 'none';
-		prevLink.style.opacity = '0';
-	}
-
-	const prevImg = document.createElement('img');
-	prevImg.src = '/images/common/chevron_left.png';
-	prevLink.appendChild(prevImg);
-	prevLi.appendChild(prevLink);
-	pagination.appendChild(prevLi);
-
-	// 페이지 번호
-	for (let i = 0; i < totalPages; i++) {
-		const li = document.createElement('li');
-		const a = document.createElement('a');
-		a.href = '#';
-		a.className = `page${i === page ? ' active' : ''}`;
-		a.dataset.page = i;
-		a.textContent = i + 1;
-		li.appendChild(a);
-		pagination.appendChild(li);
-	}
-
-	// 다음 버튼
-	const nextLi = document.createElement('li');
-	const nextLink = document.createElement('a');
-	nextLink.href = '#';
-	nextLink.className = 'next';
-	nextLink.dataset.page = page + 1;
-
-	if (page === totalPages - 1) {
-		nextLink.style.pointerEvents = 'none';
-		nextLink.style.opacity = '0';
-	}
-
-	const nextImg = document.createElement('img');
-	nextImg.src = '/images/common/chevron_right.png';
-	nextLink.appendChild(nextImg);
-	nextLi.appendChild(nextLink);
-	pagination.appendChild(nextLi);
-
-	// 바인딩
-	document.querySelectorAll('.pagination a').forEach(link => {
-		link.addEventListener('click', function (e) {
-			e.preventDefault();
-			const newPage = parseInt(this.dataset.page);
-			if (!isNaN(newPage) && newPage >= 0 && newPage < totalPages && newPage !== page) {
-				page = newPage;
-				fetchGuideList();
-			}
-		});
-	});
-}

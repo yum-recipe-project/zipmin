@@ -68,7 +68,7 @@
 					</div>
 					
 					<!-- 클래스 신청 -->
-					<div class="class_apply">
+					<div id="applyWrap" class="class_apply">
 						<div class="apply_header">
 							<h2></h2>
 						</div>

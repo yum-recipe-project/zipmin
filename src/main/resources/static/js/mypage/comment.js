@@ -345,6 +345,9 @@ async function deleteComment(id) {
 				alertPrimary('댓글이 성공적으로 삭제되었습니다.');
 				commentList = commentList.filter(comment => comment.id !== id && comment.comm_id !== id);
 				renderUserCommentList(commentList);
+				
+				totalElements--;
+				document.querySelector('.mycomment_count span').innerText = `총 ${totalElements}개`;
 			}
 		}
 		catch (error) {

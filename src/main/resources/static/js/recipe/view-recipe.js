@@ -51,7 +51,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 	const supportWrap = document.getElementById('viewRecipeSupportWrap');
 	const reviewCommentWrap = document.getElementById('viewRecipeReviewCommentWrap');
 	
-	
 	// 레시피 정보 조회
 	try {
 		const id = new URLSearchParams(window.location.search).get('id');
@@ -129,7 +128,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 			
 			// 리뷰 수
 			reviewCommentWrap.querySelector('.review_count').innerText = result.data.reviewcount;
-			reviewCommentWrap.querySelector('.comment_count').innerText = result.data.commentcount;
+			// reviewCommentWrap.querySelector('.comment_count').innerText = result.data.commentcount;
 		}
 		
 		if (result.code === 'RECIPE_READ_FAIL') {

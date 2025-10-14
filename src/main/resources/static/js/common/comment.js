@@ -1,4 +1,19 @@
 /**
+ * 전역변수
+ */
+let totalPages = 0;
+let totalElements = 0;
+let page = 0;
+const size = 15;
+let tablename = '';
+let sort = '';
+let commentList = [];
+
+
+
+
+
+/**
  * 댓글 폼값을 검증하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
@@ -57,8 +72,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 	
 	if (isLoggedIn()) {
 		const payload = parseJwt(localStorage.getItem('accessToken'));
-		document.getElementById('login_state').style.display = 'block';
-		document.getElementById('logout_state').style.display = 'none';
+		document.getElementById('commentLoginState').style.display = 'block';
+		document.getElementById('commentLogoutState').style.display = 'none';
 		document.getElementById('writeCommentAvatar').src = payload.avatar;
 		document.getElementById('writeCommentAvatar').addEventListener('click', function(event) {
 			event.preventDefault();
@@ -71,8 +86,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 		});
 	}
 	else {
-		document.getElementById('login_state').style.display = 'none';
-		document.getElementById('logout_state').style.display = 'block';
+		document.getElementById('commentLoginState').style.display = 'none';
+		document.getElementById('commentLogoutState').style.display = 'block';
 	}
 
 });
@@ -151,20 +166,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-/**
- * 전역변수
- */
-let totalPages = 0;
-let totalElements = 0;
-let page = 0;
-const size = 15;
-let tablename = '';
-let sort = '';
-let commentList = [];
-
-
-
-
 
 /**
  * 쩝쩝박사 목록 검색 필터를 설정하는 함수
@@ -237,6 +238,9 @@ async function fetchCommentList() {
 			// 렌더링
 			renderCommentList(commentList);
 			document.querySelector('.comment_count span:last-of-type').innerText = totalElements;
+			if (document.querySelector('#viewRecipeReviewCommentWrap .comment_count')) {
+				document.querySelector('#viewRecipeReviewCommentWrap .comment_count').innerText = totalElements;
+			}
 			
 			// 더보기 버튼 제어
 			document.querySelector('.btn_more').style.display = page >= totalPages - 1 ? 'none' : 'block';
@@ -828,7 +832,14 @@ async function deleteComment(id) {
 				alertPrimary('댓글을 성공적으로 삭제했습니다.');
 
 				// 댓글 제거
-				document.querySelector(`.comment[data-id='${id}']`)?.remove();
+				if (document.querySelector(`.comment[data-id='${id}']`)) {
+					document.querySelector(`.comment[data-id='${id}']`).remove();
+					totalElements--;
+					document.querySelector('.comment_count span:last-of-type').innerText = totalElements;
+					if (document.querySelector('#viewRecipeReviewCommentWrap .comment_count')) {
+						document.querySelector('#viewRecipeReviewCommentWrap .comment_count').innerText = totalElements;
+					}
+				}
 				document.querySelectorAll(`.subcomment[data-comm-id='${id}']`)
 					.forEach(subcomment => subcomment.remove());
 

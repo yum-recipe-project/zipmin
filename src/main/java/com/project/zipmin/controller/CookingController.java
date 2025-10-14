@@ -81,6 +81,7 @@ public class CookingController {
 	
 	
 	
+	// 클래스 목록 조회
 	@Operation(
 	    summary = "클래스 목록 조회"
 	)
@@ -141,6 +142,7 @@ public class CookingController {
 	
 	
 	
+	// 클래스 상세 조회
 	@Operation(
 	    summary = "클래스 상세 조회"
 	)
@@ -223,24 +225,15 @@ public class CookingController {
 			@RequestPart ClassCreateRequestDto createRequestDto,
 	        @RequestPart(required = false) MultipartFile classImage,
 	        @RequestPart(required = false) List<MultipartFile> tutorImages) {
+		
 	    // 로그인 여부 확인
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 	        throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
 	    }
+	    createRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 	    
-	    // 로그인 사용자 정보
-	    String username = SecurityContextHolder.getContext().getAuthentication().getName();
-	    createRequestDto.setUserId(userService.readUserByUsername(username).getId());
-	    
-	    try {
-	    	// 서비스에 DTO + 파일 전달
-	        cookingService.createClass(createRequestDto, classImage, tutorImages);
-	    	System.err.println("3. 쿠킹클래스 서비스 완료");
-	    } catch (Exception e) {
-	        throw new ApiException(ClassErrorCode.CLASS_CREATE_FAIL);
-	    }
-	    
+	    cookingService.createClass(createRequestDto, classImage, tutorImages);
 	    
 	    return ResponseEntity.status(ClassSuccessCode.CLASS_CREATE_SUCCESS.getStatus())
 	            .body(ApiResponse.success(ClassSuccessCode.CLASS_CREATE_SUCCESS, null));
@@ -262,6 +255,7 @@ public class CookingController {
 	
 	
 	
+	// 클래스 삭제
 	@Operation(
 	    summary = "클래스 삭제"
 	)
@@ -351,6 +345,7 @@ public class CookingController {
 	
 	
 	
+	// 클래스 신청 목록 조회
 	@Operation(
 	    summary = "클래스 신청 목록 조회"
 	)
@@ -432,6 +427,7 @@ public class CookingController {
 	
 	
 	
+	// 클래스 신청 작성
 	@Operation(
 	    summary = "클래스 신청 작성"
 	)
@@ -527,28 +523,7 @@ public class CookingController {
 	
 	
 	
-	// 특정 클래스에 참가 신청 취소
-	@DeleteMapping("/classes/{classId}/applies/{applyId}")
-	public ResponseEntity<?> cancelApplyClass(
-			@PathVariable int classId,
-			@PathVariable int applyId) {
-		
-		// 로그인 여부 확인
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
-		}
-		
-		cookingService.deleteApply(classId, applyId);
-		
-		return ResponseEntity.status(ClassSuccessCode.CLASS_APPLY_DELETE_SUCCESS.getStatus())
-				.body(ApiResponse.success(ClassSuccessCode.CLASS_APPLY_DELETE_SUCCESS, null));
-	}
-	
-	
-	
-	
-	
+	// 클래스 신청 상태 수정
 	@Operation(
 	    summary = "클래스 신청 상태 수정"
 	)
@@ -644,6 +619,28 @@ public class CookingController {
 	
 	
 	
+	// 클래스 신청 삭제
+	@DeleteMapping("/classes/{classId}/applies/{applyId}")
+	public ResponseEntity<?> cancelApplyClass(
+			@PathVariable int classId,
+			@PathVariable int applyId) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
+		}
+		
+		cookingService.deleteApply(classId, applyId);
+		
+		return ResponseEntity.status(ClassSuccessCode.CLASS_APPLY_DELETE_SUCCESS.getStatus())
+				.body(ApiResponse.success(ClassSuccessCode.CLASS_APPLY_DELETE_SUCCESS, null));
+	}
+	
+	
+	
+	
+	// 사용자의 클래스 목록 조회
 	@Operation(
 	    summary = "사용자의 클래스 목록 조회"
 	)
@@ -695,6 +692,7 @@ public class CookingController {
 	
 	
 	
+	// 사용자가 신청한 클래스 목록 조회
 	@Operation(
 	    summary = "사용자가 신청한 클래스 목록 조회"
 	)
@@ -781,6 +779,7 @@ public class CookingController {
 	
 	
 	
+	// 사용자의 클래스 결석 수 조회
 	@Operation(
 	    summary = "사용자의 클래스 결석 수 조회"
 	)
@@ -858,11 +857,5 @@ public class CookingController {
 		return ResponseEntity.status(ClassSuccessCode.CLASS_COUNT_ATTEND_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_COUNT_ATTEND_SUCCESS, count));
 	}
-	
-	
-	
-	
-	
-	
 	
 }

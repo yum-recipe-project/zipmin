@@ -406,7 +406,7 @@ function renderApplyAttend(apply) {
 			const span = document.createElement('span');
 			span.type = 'button';
 			span.className = 'btn_gray_small';
-			switch (apply.selected) {
+			switch (apply.attend) {
 				case 1:
 					span.textContent = '출석';
 					break;

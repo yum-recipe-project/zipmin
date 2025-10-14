@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -44,5 +45,15 @@ public class ClassApply {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")
 	private User user;
+	
+	@PrePersist
+    public void prePersist() {
+        if (this.selected == 0) {
+            this.selected = 2;
+        }
+        if (this.attend == 0) {
+        	this.attend = 2;
+        }
+    }
 	
 }

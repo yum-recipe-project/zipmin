@@ -670,10 +670,6 @@ public class CookingService {
 			throw new ApiException(ClassErrorCode.CLASS_APPLY_DUPLICATE);
 		}
 		
-		// 클래스 신청 초기값 설정
-		// applyDto.setSelected(2);
-		// applyDto.setAttend(2);
-		
 		// 클래스 신청 작성
 		ClassApply apply = applyMapper.toEntity(applyDto);
 		try {
@@ -882,7 +878,7 @@ public class CookingService {
 			classDto.setImage(publicPath + "/" + classDto.getImage());
 			
 			// 상태
-			if (classs.getApproval() == 1 && now.before(classs.getNoticedate())) {
+			if (now.before(classs.getNoticedate())) {
 				classDto.setOpened(true);
 			}
 			

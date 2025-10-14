@@ -49,7 +49,7 @@
 					</div>
 		
 					<!-- 목록 -->
-					<table class="table text-nowrap mb-0 align-middle">
+					<table class="table text-nowrap mb-0 align-middle fixed-table">
 					    <thead class="text-dark fs-4">
 					    	<colgroup>
 							    <col style="width:8%">  <!-- No -->

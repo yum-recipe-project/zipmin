@@ -351,3 +351,12 @@ async function deleteReview(id) {
     }
 
 }
+
+
+// 말줄임 클릭 시 펼침
+document.addEventListener('click', e => {
+	if (e.target.classList.contains('text-truncate')) {
+		e.target.classList.toggle('expanded');
+	}
+});
+

@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
 	
 	const form = document.getElementById('applyClassForm');
-
 	form.addEventListener('submit', async function(event) {
 		event.preventDefault();
 	
@@ -43,46 +42,50 @@ document.addEventListener('DOMContentLoaded', function() {
 				alert('쿠킹클래스 신청이 완료되었습니다.');
 				form.reason.value = '';
 				form.question.value = '';
-				bootstrap.Modal.getInstance(document.getElementById('applyClassModal')).hide();
+				bootstrap.Modal.getInstance(document.getElementById('applyClassModal'))?.hide();
 				fetchClass();
 			}
-
 		}
 		catch (error) {
 			const code = error?.response?.data?.code;
 			
+			form.reason.value = '';
+			form.question.value = '';
+			bootstrap.Modal.getInstance(document.getElementById('applyClassModal'))?.hide();
+			
 			if (code === 'CLASS_APPLY_CREATE_FAIL') {
-				alert('쿠킹클래스 신청에 실패했습니다.');
-				form.reason.value = '';
-				form.question.value = '';
-				bootstrap.Modal.getInstance(document.getElementById('applyClassModal')).hide();
+				alertDanger('쿠킹클래스 신청에 실패했습니다.');
 			}	
 			else if (code === 'CLASS_APPLY_INVALID_INPUT') {
-				alert('입력값이 유효하지 않습니다.');
+				alertDanger('입력값이 유효하지 않습니다.');
+			}
+			else if (code === 'USER_INVALID_INPUT') {
+				alertDanger('입력값이 유효하지 않습니다.');
 			}
 			else if (code === 'CLASS_UNAUTHORIZED_ACCESS') {
-				alert('로그인되지 않은 사용자입니다.');
-				form.reason.value = '';
-				form.question.value = '';
-				bootstrap.Modal.getInstance(document.getElementById('applyClassModal')).hide();
+				alertDanger('로그인되지 않은 사용자입니다.');
+			}
+			else if (code === 'CLASS_ALREADY_ENDED') {
+				alertDanger('이미 종료된 쿠킹클래스입니다.')
+			}
+			else if (code === 'CLASS_APPLY_UNABLE') {
+				alertDanger('최근 60일 내 결석이 3회를 초과하여 클래스 신청이 제한되었습니다.');
+			}
+			else if (code === 'CLASS_NOT_FOUND') {
+				alertDanger('해당 클래스를 찾을 수 없습니다.');
+			}
+			else if (code === 'USER_NOT_FOUND') {
+				alertDanger('해당 사용자를 찾을 수 없습니다.');
 			}
 			else if (code === 'CLASS_APPLY_DUPLICATE') {
-				alert('이미 신청한 클래스입니다.');
-				form.reason.value = '';
-				form.question.value = '';
-				bootstrap.Modal.getInstance(document.getElementById('applyClassModal')).hide();
+				alertDanger('이미 신청한 쿠킹클래스입니다.');
 			}
 			else if (code === 'INTERNAL_SERVER_ERROR') {
-				alert('서버 내부 오류가 발생했습니다.');
-				form.reason.value = '';
-				form.question.value = '';
-				bootstrap.Modal.getInstance(document.getElementById('applyClassModal')).hide();
+				alertDanger('서버 내부에서 오류가 발생했습니다.');
 			}
 			else {
 				console.log(error);
 			}
 		}
-		
 	});
-
 });

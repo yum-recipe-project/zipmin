@@ -180,14 +180,14 @@
 }
 
 #container .recipe_ranking .recipe_list .recipe {
-	width: calc(20% - 15px);
+	width: calc(25% - 15px);
 	display: block;
 }
 
 /* 키친가이드 랭킹 > 랭킹 리스트 > 이미지 */
 #container .recipe_ranking .recipe_list .recipe .recipe_image {
-	width: 170px;
-	height: 170px;
+	width: 220px;
+	height: 220px;
 	margin-bottom: 16px;
 	border-radius: 8px;
 	border: 1px solid #ddd;

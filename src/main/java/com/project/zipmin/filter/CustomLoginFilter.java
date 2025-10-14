@@ -58,7 +58,6 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		try {
 			loginDto = objectMapper.readValue(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), LoginDto.class);
 		}
-		// 엑세스가 거부되었습니다.
 		catch (IOException e) {
 			throw new ApiException(ErrorCode.FORBIDDEN);
 		}

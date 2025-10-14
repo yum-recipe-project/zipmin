@@ -15,6 +15,7 @@
 		<script src="/js/common/jwt.js"></script>
 		<script src="/js/common/util.js"></script>
 		<script src="/js/admin/list-review.js"></script>
+		<script src="/js/common/pagination.js"></script>
 	</head>
 	
 	<body>
@@ -50,8 +51,18 @@
 					<!-- 목록 -->
 					<table class="table text-nowrap mb-0 align-middle">
 					    <thead class="text-dark fs-4">
+					    	<colgroup>
+					    		<col style="width:8%">
+					    		<col style="width:9%">
+					    		<col style="width:22%">
+					    		<col style="width:14%">
+					    		<col style="width:15%">
+					    		<col style="width:11%">
+					    		<col style="width:10%">
+					    		<col style="width:11%">
+					    	</colgroup>
 					        <tr>
-					            <th class="total"></th>
+					            <th colspan="2" class="total text-start"></th>
 					            <th></th>
 					            <th></th>
 					            <th></th>
@@ -69,7 +80,7 @@
 					                <h6 class="fs-4 fw-semibold mb-0">No</h6>
 					            </th>
 					            <th>
-					                <h6 class="fs-4 fw-semibold mb-0">게시판명</h6>
+					                <h6 class="fs-4 fw-semibold mb-0">레시피명</h6>
 					            </th>
 					            <th>
 					                <h6 class="fs-4 fw-semibold mb-0">내용</h6>

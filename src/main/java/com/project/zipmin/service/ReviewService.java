@@ -345,4 +345,84 @@ public class ReviewService {
 
     
     
+    
+    // 전체 리뷰 목록 조회 (관리자용)
+    public Page<ReviewReadResponseDto> readAllReviewPage(String sort, Pageable pageable) {
+
+        // 입력값 검증
+        if (pageable == null) {
+            throw new ApiException(ReviewErrorCode.REVIEW_INVALID_INPUT);
+        }
+
+        // 정렬 문자열 객체 변환
+        Sort sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id"));
+        if (sort != null && !sort.isBlank()) {
+            switch (sort) {
+                case "postdate-desc":
+                    sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id")); // 최신순
+                    break;
+                case "postdate-asc":
+                    sortSpec = Sort.by(Sort.Order.asc("postdate"), Sort.Order.asc("id")); // 오래된순
+                    break;
+                case "likecount-desc":
+                    sortSpec = Sort.by(Sort.Order.desc("likecount"), Sort.Order.desc("id")); // 좋아요 많은순
+                    break;
+                case "likecount-asc":
+                    sortSpec = Sort.by(Sort.Order.asc("likecount"), Sort.Order.asc("id")); // 좋아요 적은순
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
+
+        // 리뷰 전체 조회
+        Page<Review> reviewPage;
+        try {
+            reviewPage = reviewRepository.findAll(sortedPageable);
+        } catch (Exception e) {
+            throw new ApiException(ReviewErrorCode.REVIEW_READ_LIST_FAIL);
+        }
+
+        // DTO 변환
+        List<ReviewReadResponseDto> reviewDtoList = new ArrayList<>();
+
+        for (Review review : reviewPage) {
+
+            ReviewReadResponseDto dto = reviewMapper.toReadResponseDto(review);
+
+            // 작성자 정보
+            dto.setUsername(review.getUser().getUsername());
+            dto.setNickname(review.getUser().getNickname());
+
+            // 좋아요, 신고 개수
+            dto.setLikecount(likeService.countLike("review", review.getId()));
+            dto.setReportcount(reportService.countReport("review", review.getId()));
+
+            // 관리자 조회이므로 좋아요 여부는 기본 false
+            dto.setLiked(false);
+            
+            // 리뷰가 속한 레시피 제목 가져오기
+            String title = null;
+            if (review.getRecipe() != null) {
+                title = review.getRecipe().getTitle();
+            }
+            dto.setTitle(title);
+            
+
+            reviewDtoList.add(dto);
+        }
+
+        System.err.println("관리자 전체 리뷰 목록: " + reviewDtoList);
+
+        return new PageImpl<>(reviewDtoList, pageable, reviewPage.getTotalElements());
+    }
+
+    
+    
+    
+    
+    
+    
 }

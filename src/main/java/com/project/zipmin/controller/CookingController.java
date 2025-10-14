@@ -445,8 +445,8 @@ public class CookingController {
 		
 		int count = (int) cookingService.countClassAttend(id);
 		
-		return ResponseEntity.status(ClassSuccessCode.CLASS_ATTEND_COUNT_SUCCESS.getStatus())
-				.body(ApiResponse.success(ClassSuccessCode.CLASS_ATTEND_COUNT_SUCCESS, count));
+		return ResponseEntity.status(ClassSuccessCode.CLASS_COUNT_ATTEND_SUCCESS.getStatus())
+				.body(ApiResponse.success(ClassSuccessCode.CLASS_COUNT_ATTEND_SUCCESS, count));
 	}
 	
 	

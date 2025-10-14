@@ -17,7 +17,7 @@
 		<script src="/js/common/util.js"></script>
 		<script src="/js/admin/list-guide.js"></script>
 		<script src="/js/admin/modal/edit-guide-modal.js"></script>
-		<script src="/js/kitchen/write-guide.js"></script>
+		<script src="/js/admin/modal/write-guide-modal.js"></script>
 	</head>
 	
 	<body>

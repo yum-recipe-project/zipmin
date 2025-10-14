@@ -560,6 +560,7 @@ public class CookingController {
 		// CLASS_APPLY_UPDATE_FAIL
 		// USER
 	
+	
 
 	@Operation(
 	    summary = "클래스 신청 상태 수정"

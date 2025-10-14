@@ -40,12 +40,12 @@ public enum ClassErrorCode implements Code {
     // CLASS_SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 교육일정을 찾을 수 없음"),
     
     CLASS_TUTOR_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
-    CLASS_TUTOR_CREATE_FAIL(HttpStatus.BAD_REQUEST, "강사 작성 실패"),
-    CLASS_TUTOR_READ_LIST_FAIL(HttpStatus.BAD_REQUEST, "강사 목록 조회 실패"),
-    CLASS_TUTOR_READ_FAIL(HttpStatus.BAD_REQUEST, "강사 조회 실패"),
-    CLASS_TUTOR_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "강사 수정 실패"),
-    CLASS_TUTOR_DELETE_FAIL(HttpStatus.BAD_REQUEST, "강사 삭제 실패"),
-    CLASS_TUTOR_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 강사를 찾을 수 없음"),
+    CLASS_TUTOR_CREATE_FAIL(HttpStatus.BAD_REQUEST, "클래스 강사 작성 실패"),
+    CLASS_TUTOR_READ_LIST_FAIL(HttpStatus.BAD_REQUEST, "클래스 강사 목록 조회 실패"),
+    // CLASS_TUTOR_READ_FAIL(HttpStatus.BAD_REQUEST, "클래스 강사 조회 실패"),
+    // CLASS_TUTOR_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "클래스 강사 수정 실패"),
+    // CLASS_TUTOR_DELETE_FAIL(HttpStatus.BAD_REQUEST, "클래스 강사 삭제 실패"),
+    // CLASS_TUTOR_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 클래스 강사를 찾을 수 없음"),
     
     CLASS_APPLY_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
     CLASS_APPLY_CREATE_FAIL(HttpStatus.BAD_REQUEST, "신청 작성 실패"),

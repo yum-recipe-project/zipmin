@@ -17,6 +17,7 @@
 		<script src="/js/common/util.js"></script>
 		<script src="/js/admin/list-guide.js"></script>
 		<script src="/js/admin/modal/edit-guide-modal.js"></script>
+		<script src="/js/kitchen/write-guide.js"></script>
 	</head>
 	
 	<body>
@@ -78,7 +79,6 @@
 					            	</form>
 					            </th>
 					        </tr>
-					        <!-- ********** 필요한 내용에 따라 적절히 수정 ********* -->
 					        <tr class="table_th">
 					            <th class="sort_btn" data-key="id">
 					                <h6 class="fs-4 fw-semibold mb-0">No</h6>
@@ -129,6 +129,7 @@
 		
 		<!-- 가이드 수정 모달 -->
 		<%@include file="../admin/modal/editGuideModal.jsp" %>
+		<%@include file="../admin/modal/writeGuideModal.jsp" %>
 	</body>
 
 </html>

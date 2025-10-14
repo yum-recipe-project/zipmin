@@ -303,6 +303,9 @@ function renderGuideList(guideList) {
 
         tr.append(noTd, categoryTd, titleTd,  dateTd, adminTd, likeTd, reportTd, actionTd);
         container.appendChild(tr);
+		
+		// 게시글 작성 버튼
+		renderAddGuideButton();
     });
 }
 
@@ -377,3 +380,30 @@ function convertCategory(code) {
         default: return code || '';
     }
 }
+
+
+
+
+/**
+ * 키친가이드 작성 버튼을 화면에 렌더링하는 함수
+ */
+function renderAddGuideButton() {
+    const container = document.querySelector('.bar');
+
+    container.querySelector('.btn-info[data-bs-toggle="modal"]')?.remove();
+
+    // 버튼 생성
+    const createBtn = document.createElement('button');
+    createBtn.type = 'button';
+    createBtn.className = 'btn btn-info m-1';
+    createBtn.dataset.bsToggle = 'modal';
+    createBtn.dataset.bsTarget = '#writeGuideModal'; 
+
+    const icon = document.createElement('i');
+    icon.className = 'ti ti-plus fs-4';
+    const text = document.createTextNode('키친가이드 작성하기');
+
+    createBtn.append(icon, text);
+    container.appendChild(createBtn);
+}
+

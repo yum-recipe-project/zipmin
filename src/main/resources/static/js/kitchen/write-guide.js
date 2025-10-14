@@ -33,8 +33,9 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             if (response.data.code === 'KITCHEN_CREATE_SUCCESS') {
-                alert('키친가이드 작성이 완료되었습니다.');
-                location.href = '/kitchen/listGuide.do';
+				alertPrimary('키친가이드를 성공적으로 작성했습니다.');
+				bootstrap.Modal.getInstance(document.getElementById('writeGuideModal'))?.hide();
+                fetchGuideList(false); 
             }
         } catch (error) {
             const code = error?.response?.data?.code;
@@ -92,3 +93,33 @@ function validateGuideForm() {
 
     return true;
 }
+
+
+
+/**
+ * 모달이 닫히면 폼을 초기화 하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	
+	const modal = document.getElementById('writeGuideModal');
+	modal.addEventListener('hidden.bs.modal', function() {
+		
+		const form = document.getElementById('writeGuideForm');
+
+		if (form) {
+			form.reset();
+		}
+		
+		modal.querySelectorAll('.is-invalid').forEach(el => 
+			{el.classList.remove('is-invalid')
+		});
+		modal.querySelectorAll('p[id*="Hint"]').forEach(p => {
+			p.style.display = 'none'
+		});
+
+	});
+	
+});
+
+
+

@@ -5,75 +5,122 @@
  * @returns {boolean} - 검증 결과
  */
 function validateOpenClassForm(form) {
+	
+	// 동의서
+	const accept1 = form.querySelector('#acceptNotice1');
+	const accept2 = form.querySelector('#acceptNotice2');
+	if (!accept1.checked) {
+		alertDanger("개인정보 수집 및 이용 동의에 체크해주세요.");
+		accept1.focus(); 
+		return false;
+	}
+	if (!accept2.checked) {
+		alertDanger("안전 수칙 및 책임 동의서에 체크해주세요.");
+		accept2.focus(); 
+		return false;
+	}
+	
 	if (form.title.value.trim() === "") {
+		alertDanger("제목을 입력해주세요.");
 		form.title.focus();
 		return false;
 	}
+	
+	const selectedCategory = form.querySelector('input[name="category"]:checked');
+	if (!selectedCategory) {
+		alertDanger("카테고리를 선택해주세요.");
+		form.querySelector('input[name="category"]').focus(); 
+		return false;
+	}
+	
 	if (form.place.value.trim() === "") {
+		alertDanger("장소를 입력해주세요.");
 		form.place.focus();
 		return false;
 	}
 	if (form.eventdate.value.trim() === "") {
+		alertDanger("날짜를 선택해주세요.");
 		form.eventdate.focus();
 		return false;
 	}
 	if (form.starttime.value.trim() === "") {
+		alertDanger("시작 시간을 선택해주세요.");
 		form.starttime.focus();
 		return false;
 	}
 	if (form.endtime.value.trim() === "") {
+		alertDanger("종료 시간을 선택해주세요.");
 		form.endtime.focus();
 		return false;
 	}
 	if (form.headcount.value.trim() === "") {
+		alertDanger("모집 인원을 입력해주세요.");
 		form.headcount.focus();
 		return false;
 	}
-	if (form.headcount.value.trim() === "") {
-		form.headcount.focus();
+	if (form.noticedate.value.trim() === "") {
+		alertDanger("신청 마감일을 선택해주세요.");
+		form.noticedate.focus();
 		return false;
 	}
 	if (form.need.value.trim() === "") {
+		alertDanger("준비물을 입력해주세요.");
 		form.need.focus();
 		return false;
 	}
 	if (form.image_url.value.trim() === "") {
+		alertDanger("대표 이미지를 선택해주세요.");
 		form.image_url.focus();
 		return false;
 	}
 	if (form.target1.value.trim() === "") {
 		form.target1.focus();
+		alertDanger("추천 대상을 입력해주세요.");
 		return false;
 	}
 	if (form.introduce.value.trim() === "") {
+		alertDanger("클래스 소개를 작성해주세요.");
 		form.introduce.focus();
 		return false;
 	}
+	
+	// 커리큘럼
 	if (form.starttime1.value.trim() === "") {
+		alertDanger("커리큘럼 시작 시간을 선택해주세요.");
 		form.starttime1.focus();
 		return false;
 	}
 	if (form.endtime1.value.trim() === "") {
+		alertDanger("커리큘럼 종료 시간을 선택해주세요.");
 		form.endtime1.focus();
 		return false;
 	}
 	if (form.title1.value.trim() === "") {
+		alertDanger("커리큘럼 제목을 입력해주세요.");
 		form.title1.focus();
 		return false;
 	}
+	
+	// 강사
 	if (form.name.value.trim() === "") {
+		alertDanger("강사 이름을 입력해주세요.");
 		form.name.focus();
 		return false;
 	}
 	if (form.career1.value.trim() === "") {
+		alertDanger("강사 경력을 입력해주세요.");
 		form.career1.focus();
 		return false;
 	}
 	if (form.teacher_img.value.trim() === "") {
+		alertDanger("강사 사진을 선택해주세요.");
 		form.teacher_img.focus();
 		return false;
 	}
+	
+	return true; 
 }
+
 
 
 
@@ -247,13 +294,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     form.addEventListener('submit', async function(event) {
         event.preventDefault();
+		
+		// 입력값 검증
+		if (!validateOpenClassForm(form)) {
+			return; 
+		}
 
         try {
             const createRequestDto = {
                 title: form.title.value.trim(),
                 introduce: document.getElementById('introduce').value.trim(),
                 place: form.place.value.trim(),
-                category: form.category.value.trim(),
+                category: form.querySelector('input[name="category"]:checked').value,
                 eventdate: formatDateForServer(form.eventdate.value.trim()),
                 noticedate: formatDateForServer(form.noticedate.value.trim()),
                 starttime: formatTimeForServer(form.starttime.value.trim()),

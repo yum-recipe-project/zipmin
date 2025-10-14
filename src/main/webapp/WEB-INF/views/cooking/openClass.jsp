@@ -14,7 +14,7 @@
 		
 		<main id="container">
 			<div class="content">
-				<form method="post" id="openClassForm" name="openClassForm" onsubmit="return validateOpenClassForm(this);">
+				<form id="openClassForm" name="openClassForm">
 					<div class="class_header">
 						<h2>쿠킹클래스 개설 신청</h2>
 					</div>
@@ -86,6 +86,33 @@
 										</td>
 									</tr>
 									<tr>
+										<th scope="col" class="category_th">카테고리<span class="ess"></span></th>
+										<td>
+									        <div class="accept_notice">
+									            <div class="radio_wrap">
+									                <input type="radio" id="category_korean" name="category" value="한식">
+									                <label for="category_korean">한식</label>
+									            </div>
+									            <div class="radio_wrap">
+									                <input type="radio" id="category_western" name="category" value="양식">
+									                <label for="category_western">양식</label>
+									            </div>
+									            <div class="radio_wrap">
+									                <input type="radio" id="category_chinese" name="category" value="중식">
+									                <label for="category_chinese">중식</label>
+									            </div>
+									            <div class="radio_wrap">
+									                <input type="radio" id="category_bakery" name="category" value="제과제빵">
+									                <label for="category_bakery">제과제빵</label>
+									            </div>
+									            <div class="radio_wrap">
+									                <input type="radio" id="category_other" name="category" value="기타">
+									                <label for="category_other">기타</label>
+									            </div>
+									        </div>
+									    </td>
+									</tr>
+									<tr>
 										<th scope="col">장소<span class="ess"></span></th>
 										<td>
 											<span class="form_text">
@@ -118,6 +145,14 @@
 										<td>
 											<span class="form_text">
 												<input maxlength="50" name="headcount" placeholder="모집 인원을 입력해주세요" type="text" value="">
+											</span>
+										</td>
+									</tr>
+									<tr>
+										<th scope="col">신청 마감일<span class="ess"></span></th>
+										<td>
+											<span class="form_datepicker">
+												<input type="text" class="form-control" id="noticedate" name="noticedate" placeholder="날짜를 선택하세요">
 											</span>
 										</td>
 									</tr>
@@ -219,15 +254,19 @@
 						</div>
 						
 						
-						<h3>강사 정보</h3>
-						<div class="class_intro">
+						<h3>강사 정보
+						<span id="addTutor">
+							<img src="/images/cooking/add_circle.png">
+							추가하기
+						</span></h3>
+						<div class="class_intro" id="classTutor">
 							<p class="rt_note">필수입력사항</p>
 							<table>
 								<colgroup>
 									<col width="130px">
 									<col width="*">
 								</colgroup>
-								<tbody>
+								<tbody class="tutor_row">
 									<tr>
 										<th scope="col">이름<span class="ess"></span></th>
 										<td>

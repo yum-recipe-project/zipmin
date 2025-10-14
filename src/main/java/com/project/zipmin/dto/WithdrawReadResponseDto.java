@@ -17,4 +17,7 @@ public class WithdrawReadResponseDto {
     private int status;
     private Date completeDate;
 	
+    // 관리자 필요
+    private Integer userId;           // 출금 요청한 사용자 ID
+    private String username;          // 사용자 계정명
 }

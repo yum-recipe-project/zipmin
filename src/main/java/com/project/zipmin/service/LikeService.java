@@ -151,17 +151,6 @@ public class LikeService {
 	
 	
 	
-	
-	
-	
-	public int selectLikeCountByTable(String tablename, int recodenum) {
-	    return (int) likeRepository.countByTablenameAndRecodenum(tablename, recodenum);
-	}
-	
-	
-	
-	
-	
 	// 특정 사용자가 특정 테이블에 좋아요 한 목록
 	public List<LikeReadResponseDto> readLikeListByTablenameAndUserId(String tablename, Integer userId) {
 		

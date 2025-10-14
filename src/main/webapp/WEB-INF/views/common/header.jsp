@@ -49,7 +49,6 @@
 					<li><a href="/chompessor/listChomp.do">쩝쩝박사</a></li>
 					<li><a href="/cooking/listClass.do">쿠킹클래스</a></li>
 					<li><a href="/fridge/viewFridge.do">나의 냉장고</a></li>
-					<!-- <li><a href="/fridge/viewMemo.do">장보기메모</a></li> -->
 				</ul>
 			</nav>
 			<!-- 검색창 -->

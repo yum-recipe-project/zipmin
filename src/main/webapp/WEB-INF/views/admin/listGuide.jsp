@@ -12,9 +12,12 @@
 		<link rel="stylesheet" href="../assets/css/styles.min.css" />
 		<link rel="stylesheet" href="/css/admin/list-guide.css" />
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script src="/js/common/pagination.js"></script>
 		<script src="/js/common/jwt.js"></script>
 		<script src="/js/common/util.js"></script>
 		<script src="/js/admin/list-guide.js"></script>
+		<script src="/js/admin/modal/edit-guide-modal.js"></script>
+		<script src="/js/admin/modal/write-guide-modal.js"></script>
 	</head>
 	
 	<body>
@@ -42,16 +45,29 @@
 						<div class="tab">
 							<ul>
 								<li class="btn_tab"><a href="" data-tab="" class="active"><span>전체</span></a></li>
-								<li class="btn_tab"><a href="" data-tab=""><span>어쩌구</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="preparation"><span>손질법</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="storage"><span>보관법</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="info"><span>요리정보</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="etc"><span>기타정보</span></a></li>
 							</ul>
 						</div>
 					</div>
 		
 					<!-- 목록 -->
-					<table class="table text-nowrap mb-0 align-middle">
+					<table class="table text-nowrap mb-0 align-middle fixed-table">
 					    <thead class="text-dark fs-4">
 					        <tr>
-					            <th class="total"></th>
+						        <colgroup>
+				    				<col style="width:8%">
+						    		<col style="width:9%">
+						    		<col style="width:22%">
+								    <col style="width:12%">
+								    <col style="width:12%"> 
+								    <col style="width:10%"> 
+								    <col style="width:10%"> 
+								    <col style="width:12%"> 
+						    	</colgroup>
+					            <th colspan="2" class="total text-start"></th>
 					            <th></th>
 					            <th></th>
 					            <th></th>
@@ -63,9 +79,8 @@
 					            	</form>
 					            </th>
 					        </tr>
-					        <!-- ********** 필요한 내용에 따라 적절히 수정 ********* -->
 					        <tr class="table_th">
-					            <th>
+					            <th class="sort_btn" data-key="id">
 					                <h6 class="fs-4 fw-semibold mb-0">No</h6>
 					            </th>
 					            <th>
@@ -74,12 +89,14 @@
 					            <th>
 					                <h6 class="fs-4 fw-semibold mb-0">내용</h6>
 					            </th>
-					            <th>
-					                <h6 class="fs-4 fw-semibold mb-0">작성자</h6>
-					            </th>
+					            
 					            <th class="sort_btn desc" data-key="postdate">
 					                <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
 					            </th>
+					            <th>
+					                <h6 class="fs-4 fw-semibold mb-0">작성자</h6>
+					            </th>
+					            
 					            <th class="sort_btn" data-key="likecount">
 					                <h6 class="fs-4 fw-semibold mb-0">좋아요수</h6>
 					            </th>
@@ -109,6 +126,10 @@
 		<script src="../assets/js/sidebarmenu.js"></script>
 		<script src="../assets/js/app.min.js"></script>
 		<script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+		
+		<!-- 가이드 수정 모달 -->
+		<%@include file="../admin/modal/editGuideModal.jsp" %>
+		<%@include file="../admin/modal/writeGuideModal.jsp" %>
 	</body>
 
 </html>

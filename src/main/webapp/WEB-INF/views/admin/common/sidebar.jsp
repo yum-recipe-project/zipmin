@@ -42,7 +42,7 @@
 					</a>
 				</li>
 				<li class="sidebar-item">
-					<a class="sidebar-link" href="/admin/button.do" aria-expanded="false">
+					<a class="sidebar-link" href="/admin/listWithdraw.do" aria-expanded="false">
 						<span><i class="ti ti-cash"></i></span>
 						<span class="hide-menu">인출</span>
 					</a>

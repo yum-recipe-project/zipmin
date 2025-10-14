@@ -214,16 +214,23 @@ instance.interceptors.response.use(
 /**
  * 로그인 페이지로 이동시키는 함수
  */
-function redirectToLogin(url) {
+function redirectToLogin(url, isBack = false) {
 	
 	// 로그인
 	if (isLoggedIn()) {
-		location.href = url;
+		if (url) {
+			location.href = url;
+		}
 	}
 	// 비로그인
 	else {
 		if (confirm('로그인이 필요합니다. 로그인 페이지로 이동합니다.')) {
 			location.href = '/user/login.do';
+		}
+		else {
+			if (isBack === true) {
+				history.back();
+			}
 		}
 	}
 	

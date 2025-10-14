@@ -24,7 +24,7 @@ import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.ClassSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
-import com.project.zipmin.dto.ClassMyApplyReadResponseDto;
+import com.project.zipmin.dto.UserAppliedClassResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.GuideReadMySavedResponseDto;
 import com.project.zipmin.dto.LikeCreateRequestDto;

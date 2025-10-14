@@ -45,11 +45,11 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 document.addEventListener('DOMContentLoaded', async function() {
 	
-	const basicForm = document.getElementById('viewRecipeBasicForm');
-	const stockForm = document.getElementById('viewRecipeStockForm');
-	const tipForm = document.getElementById('viewRecipeTipForm');
-	const supportForm = document.getElementById('viewRecipeSupportForm');
-	const reviewCommentForm = document.getElementById('viewRecipeReviewCommentForm');
+	const basicWrap = document.getElementById('viewRecipeBasicWrap');
+	const stockWrap = document.getElementById('viewRecipeStockWrap');
+	const tipWrap = document.getElementById('viewRecipeTipWrap');
+	const supportWrap = document.getElementById('viewRecipeSupportWrap');
+	const reviewCommentWrap = document.getElementById('viewRecipeReviewCommentWrap');
 	
 	
 	// 레시피 정보 조회
@@ -62,31 +62,43 @@ document.addEventListener('DOMContentLoaded', async function() {
 		
 		const result = await response.json();
 		
-		console.log(result);
-		
 		if (result.code === 'RECIPE_READ_SUCCESS') {
 			
 			// 기본 정보
-			basicForm.querySelector('.recipe_title').innerText = result.data.title;
-			basicForm.querySelector('.recipe_cooklevel').innerText = result.data.cooklevel;
-			basicForm.querySelector('.recipe_cooktime').innerText = result.data.cooktime;
-			basicForm.querySelector('.recipe_spicy').innerText = result.data.spicy;
-			basicForm.querySelector('.recipe_writer img').src = result.data.avatar;
-			basicForm.querySelector('.recipe_writer span').innerText = result.data.nickname;
-			basicForm.querySelector('.btn_nickname').addEventListener('click', function(event) {
+			basicWrap.querySelector('.recipe_title').innerText = result.data.title;
+			basicWrap.querySelector('.recipe_cooklevel').innerText = result.data.cooklevel;
+			basicWrap.querySelector('.recipe_cooktime').innerText = result.data.cooktime;
+			basicWrap.querySelector('.recipe_spicy').innerText = result.data.spicy;
+			basicWrap.querySelector('.recipe_writer img').src = result.data.avatar;
+			basicWrap.querySelector('.recipe_writer span').innerText = result.data.nickname;
+			basicWrap.querySelector('.btn_nickname').addEventListener('click', function(event) {
 				event.preventDefault();
 				location.href = `/mypage/profile.do?id=${result.data.user_id}`;
 			});
-			basicForm.querySelector('.recipe_introduce').innerText = result.data.introduce;
+			basicWrap.querySelector('.recipe_introduce').innerText = result.data.introduce;
 			if (result.data.liked) {
-				basicForm.querySelector('.btn_icon.like img').src = '/images/recipe/star_full_1a7ce2.png'
-			 	basicForm.querySelector('.btn_icon.like').classList.add('active');
+				basicWrap.querySelector('.btn_icon.like img').src = '/images/recipe/star_full_1a7ce2.png'
+			 	basicWrap.querySelector('.btn_icon.like').classList.add('active');
 			}
+			basicWrap.querySelector('.btn_report_modal').addEventListener('click', function(event) {
+				event.preventDefault();
+				if (!isLoggedIn()) {
+					bootstrap.Modal.getInstance(document.getElementById('reportRecipeModal'))?.hide();
+					redirectToLogin();
+				}
+			})
 			renderCategoryList(result.data.category_list);
 			
 			// 재료
 			originPortion = parseInt(result.data.portion, 10);
-			stockForm.querySelector('.recipe_portion select').value = result.data.portion;
+			stockWrap.querySelector('.recipe_portion select').value = result.data.portion;
+			stockWrap.querySelector('.btn_stock_modal').addEventListener('click', function(event) {
+				event.preventDefault();
+				if (!isLoggedIn()) {
+					bootstrap.Modal.getInstance(document.getElementById('viewRecipeStockModal'))?.hide();
+					redirectToLogin();
+				}
+			});
 			renderStockList(result.data.stock_list);
 			renderMemoList(result.data.stock_list);
 			
@@ -94,25 +106,30 @@ document.addEventListener('DOMContentLoaded', async function() {
 			renderStepList(result.data.step_list);
 			
 			// 레시피 팁
-			tipForm.querySelector('.recipe_tip p').innerText = result.data.tip;
+			tipWrap.querySelector('.recipe_tip p').innerText = result.data.tip;
 			
 			// 구독 및 후원
-			supportForm.querySelector('.recipe_writer img').src = result.data.avatar;
-			supportForm.querySelector('.recipe_writer h5').innerText = result.data.nickname;
-			supportForm.querySelector('.recipe_writer p').innerText = `구독자 ${result.data.follower}명`;
-			supportForm.querySelector('.recipe_writer').addEventListener('click', function(event) {
+			supportWrap.querySelector('.recipe_writer img').src = result.data.avatar;
+			supportWrap.querySelector('.recipe_writer h5').innerText = result.data.nickname;
+			supportWrap.querySelector('.recipe_writer p').innerText = `구독자 ${result.data.follower}명`;
+			supportWrap.querySelector('.recipe_writer').addEventListener('click', function(event) {
 				event.preventDefault();
 				location.href = `/mypage/profile.do?id=${result.data.user_id}`;
 			});
-			
+			supportWrap.querySelector('button').addEventListener('click', function(event) {
+				event.preventDefault();
+				if (!isLoggedIn()) {
+					bootstrap.Modal.getInstance(document.getElementById('supportRecipeModal'))?.hide();
+					redirectToLogin();
+				}
+			});
 			
 			// 레시피 작성자 ID를 hidden input에 저장
 			document.getElementById('fundeeIdInput').value = result.data.user_id;
 			
-			
 			// 리뷰 수
-			reviewCommentForm.querySelector('.review_count').innerText = result.data.reviewcount;
-			reviewCommentForm.querySelector('.comment_count').innerText = result.data.commentcount;
+			reviewCommentWrap.querySelector('.review_count').innerText = result.data.reviewcount;
+			reviewCommentWrap.querySelector('.comment_count').innerText = result.data.commentcount;
 		}
 		
 		if (result.code === 'RECIPE_READ_FAIL') {
@@ -163,10 +180,10 @@ document.addEventListener('DOMContentLoaded', async function() {
  */
 document.addEventListener('DOMContentLoaded', function() {
 
-	const stockForm = document.getElementById('viewRecipeStockForm');
-	stockForm.querySelector('.recipe_portion select').addEventListener('change', function() {
-		const portion = parseInt(stockForm.querySelector('.recipe_portion select').value, 10);
-		stockForm.querySelectorAll('.stock_list td.amount').forEach(td => {
+	const stockWrap = document.getElementById('viewRecipeStockWrap');
+	stockWrap.querySelector('.recipe_portion select').addEventListener('change', function() {
+		const portion = parseInt(stockWrap.querySelector('.recipe_portion select').value, 10);
+		stockWrap.querySelectorAll('.stock_list td.amount').forEach(td => {
 			const originAmount = parseFloat(td.dataset.amount);
 			const unit = td.dataset.unit;			
 			const amount = Math.round((originAmount / originPortion) * portion * 100) / 100;
@@ -184,8 +201,8 @@ document.addEventListener('DOMContentLoaded', function() {
  * 레시피 카테고리 목록을 화면에 렌더링하는 함수
  */
 function renderCategoryList(categoryList) {
-	const basicForm = document.getElementById('viewRecipeBasicForm');
-	const container = basicForm.querySelector('.recipe_category');
+	const basicWrap = document.getElementById('viewRecipeBasicWrap');
+	const container = basicWrap.querySelector('.recipe_category');
 	container.innerHTML = '';
 	
 	categoryList.forEach(category => {
@@ -208,8 +225,8 @@ function renderCategoryList(categoryList) {
  * 레시피 재료 목록을 화면에 렌더링하는 함수
  */
 function renderStockList(stockList) {
-	const stockForm = document.getElementById('viewRecipeStockForm');
-	const container = stockForm.querySelector('.stock');
+	const stockWrap = document.getElementById('viewRecipeStockWrap');
+	const container = stockWrap.querySelector('.stock');
 	container.innerHTML = '';
 	
 	stockList.forEach(stock => {
@@ -246,8 +263,10 @@ function renderStockList(stockList) {
  * 장보기 메모 렌더링 (모달창)
  */
 function renderMemoList(stockList) {
-	const memoElement = document.getElementById('memo');
-	memoElement.innerHTML = '';
+	
+	const modal = document.getElementById('viewRecipeStockModal');
+	const container = modal.querySelector('.stock_list');
+	container.innerHTML = '';
 	
 	stockList.forEach((ingredient, index) => {
 		const tr = document.createElement('tr');
@@ -262,13 +281,10 @@ function renderMemoList(stockList) {
 		tdAmount.textContent = `${ingredient.amount}${ingredient.unit}`;
 		
 		tdAmount.dataset.amount = ingredient.amount;
-		tdAmount.dataset.unit = ingredient.unit; // ← 여기 추가
+		tdAmount.dataset.unit = ingredient.unit;
 		
 		
 		tr.appendChild(tdAmount);
-		
-		
-		
 		
 		// 체크박스
 		const tdCheckbox = document.createElement('td');
@@ -286,7 +302,7 @@ function renderMemoList(stockList) {
 		tdCheckbox.appendChild(label);
 		tr.appendChild(tdCheckbox);
 		
-		memoElement.appendChild(tr);
+		container.appendChild(tr);
 	});
 }
 
@@ -298,8 +314,8 @@ function renderMemoList(stockList) {
  * 레시피 조리 과정을 화면에 렌더링하는 함수
  */
 function renderStepList(stepList) {
-	const stepForm = document.getElementById('viewRecipeStepForm');
-	const container = stepForm.querySelector('.step_list');
+	const stepWrap = document.getElementById('viewRecipeStepWrap');
+	const container = stepWrap.querySelector('.step_list');
 	container.innerHTML = '';
 
     stepList.forEach((step, index) => {
@@ -340,7 +356,7 @@ function renderStepList(stepList) {
  * 레시피 재료 목록의 사진 토글하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
-	const stepForm = document.getElementById('viewRecipeStepForm');
+	const stepWrap = document.getElementById('viewRecipeStepWrap');
 	
 	document.getElementById('togglePhotoButton').addEventListener('click', function(event) {
 		event.preventDefault();
@@ -348,13 +364,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 		if (photoMode) {
 			document.getElementById('togglePhotoButton').innerHTML = '<img src="/images/recipe/photo_999.png">사진 숨기기';
-			stepForm.querySelectorAll('.step_list .step_image').forEach(step => {
+			stepWrap.querySelectorAll('.step_list .step_image').forEach(step => {
 				step.style.display = 'block';
 			});
 		}
 		else {
 			document.getElementById('togglePhotoButton').innerHTML = '<img src="/images/recipe/photo_999.png">사진 보기';
-			stepForm.querySelectorAll('.step_list .step_image').forEach(step => {
+			stepWrap.querySelectorAll('.step_list .step_image').forEach(step => {
 				step.style.display = 'none';
 			});
 		}
@@ -379,7 +395,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     likeButton.addEventListener('click', async function(event) {
         event.preventDefault();
-
         if (!isLoggedIn()) {
             redirectToLogin();
             return;

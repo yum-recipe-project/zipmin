@@ -61,10 +61,10 @@
 						    		<col style="width:9%">
 						    		<col style="width:22%">
 								    <col style="width:12%">
-								    <col style="width:12%">  <!-- 작성일 -->
-								    <col style="width:10%">  <!-- 좋아요수 -->
-								    <col style="width:10%">  <!-- 신고수 -->
-								    <col style="width:12%">  <!-- 기능/빈 열 -->
+								    <col style="width:12%"> 
+								    <col style="width:10%"> 
+								    <col style="width:10%"> 
+								    <col style="width:12%"> 
 						    	</colgroup>
 					            <th colspan="2" class="total text-start"></th>
 					            <th></th>

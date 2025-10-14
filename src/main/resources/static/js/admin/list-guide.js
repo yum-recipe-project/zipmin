@@ -98,7 +98,7 @@ async function fetchGuideList() {
 
 
 /**
- * 키친가이드 목록 내용 정렬 필터를 설정하는 함수
+ * 키친가이드 목록 내용 정렬, 검색을 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
 	
@@ -124,6 +124,17 @@ document.addEventListener('DOMContentLoaded', function() {
 			console.log("sortOrder: " + sortOrder)
 			fetchGuideList();
 		});
+	});
+	
+	
+	
+	// 검색
+	document.querySelector('.search_form[data-type="kitchen"]').addEventListener('submit', function(e) {
+	    e.preventDefault();
+	    keyword = this.querySelector('.search_word').value.trim();
+	    page = 0;        
+	    guideList = [];
+	    fetchGuideList();
 	});
 });
 

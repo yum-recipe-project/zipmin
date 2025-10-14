@@ -1,4 +1,19 @@
 /**
+ * 전역변수
+ */
+let totalPages = 0;
+let totalElements = 0;
+let page = 0;
+const size = 15;
+let tablename = '';
+let sort = '';
+let commentList = [];
+
+
+
+
+
+/**
  * 댓글 폼값을 검증하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
@@ -147,20 +162,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-
-
-
-
-/**
- * 전역변수
- */
-let totalPages = 0;
-let totalElements = 0;
-let page = 0;
-const size = 15;
-let tablename = '';
-let sort = '';
-let commentList = [];
 
 
 
@@ -828,7 +829,11 @@ async function deleteComment(id) {
 				alertPrimary('댓글을 성공적으로 삭제했습니다.');
 
 				// 댓글 제거
-				document.querySelector(`.comment[data-id='${id}']`)?.remove();
+				if (document.querySelector(`.comment[data-id='${id}']`)) {
+					document.querySelector(`.comment[data-id='${id}']`).remove();
+					totalElements--;
+					document.querySelector('.comment_count span:last-of-type').innerText = totalElements;
+				}
 				document.querySelectorAll(`.subcomment[data-comm-id='${id}']`)
 					.forEach(subcomment => subcomment.remove());
 

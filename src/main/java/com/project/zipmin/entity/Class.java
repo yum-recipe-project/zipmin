@@ -59,6 +59,9 @@ public class Class {
         if (this.postdate == null) {
             this.postdate = new Date();
         }
+        if (this.approval == 0) {
+            this.approval = 2;
+        }
     }
 	
 }

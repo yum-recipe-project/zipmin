@@ -451,7 +451,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (response.data.code === 'CLASS_CREATE_SUCCESS') {
                 alertPrimary('쿠킹클래스 개설신청이 완료되었습니다.');
-                form.reset();
                 window.location.href = '/mypage/class.do';
             }
 

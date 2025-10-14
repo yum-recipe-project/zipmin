@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /**
- * 
+ * 사용자의 클래스 결석 횟수를 조회하는 함수
  */
 async function fetchClassAttend() {
 	
@@ -70,17 +70,41 @@ async function fetchClassAttend() {
 			headers: getAuthHeaders()
 		});
 		
-		console.log(response);
-		
-		if (response.data.code === 'CLASS_ATTEND_COUNT_SUCCESS') {
+		if (response.data.code === 'CLASS_COUNT_ATTEND_SUCCESS') {
 			const wrap = document.getElementById('AppliedClassWrap');
 			wrap.querySelector('.class_absent span').innerText = `최근 60일 ${response.data.data}회 결석`
 		}
 	}
 	catch (error) {
-		
-		// TODO : 에러코드 작성 
-		console.log(error);
+		const code = error?.response?.data?.code;
+								
+		if (code === 'CLASS_READ_LIST_FAIL') {
+			alertDanger('사용자의 쿠킹클래스 결석 횟수 조회에 실패했습니다.');
+		}
+		else if (code === 'CLASS_APPLY_READ_LIST_FAIL') {
+			alertDanger('사용자의 쿠킹클래스 결석 횟수 조회에 실패했습니다.');
+		}
+		else if (code === 'CLASS_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'CLASS_UNAUTHORIZED_ACCESS') {
+			alertDanger('로그인되지 않은 사용자입니다.');
+		}
+		else if (code === 'CLASS_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			alertDanger('해당 사용자를 찾을 수 없습니다.');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			console.log(error);
+		}
+		else {
+			console.log(error);
+		}
 	}
 	
 }
@@ -89,11 +113,8 @@ async function fetchClassAttend() {
 
 
 
-
-
-
 /**
- * 서버에서 개설한 쿠킹클래스 목록 데이터를 가져오는 함수
+ * 서버에서 사용자가 신청한 쿠킹클래스 목록 데이터를 가져오는 함수
  */
 async function fetchClassList() {
 	
@@ -110,8 +131,6 @@ async function fetchClassList() {
 			headers: getAuthHeaders()
 		});
 		
-		console.log(response);
-		
 		if (response.data.code === 'CLASS_READ_LIST_SUCCESS') {
 			// 전역변수 설정
 			totalPages = response.data.data.totalPages;
@@ -127,10 +146,34 @@ async function fetchClassList() {
 	}
 	catch (error) {
 		const code = error?.response?.data?.code;
-		
-		// TODO : 에러코드 작성
-		
-		console.log(error);
+										
+		if (code === 'CLASS_READ_LIST_FAIL') {
+			alertDanger('쿠킹클래스 목록 조회에 실패했습니다.');
+		}
+		else if (code === 'CLASS_APPLY_READ_LIST_FAIL') {
+			alertDanger('쿠킹클래스 목록 조회에 실패했습니다.');
+		}
+		else if (code === 'CLASS_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'CLASS_UNAUTHORIZED_ACCESS') {
+			alertDanger('로그인되지 않은 사용자입니다.');
+		}
+		else if (code === 'CLASS_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			alertDanger('해당 사용자를 찾을 수 없습니다.');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			console.log(error);
+		}
+		else {
+			console.log(error);
+		}
 	}
 	
 }
@@ -258,18 +301,33 @@ async function deleteApply(applyId, classId) {
 			});
 	
 			if (response.data.code === 'CLASS_APPLY_DELETE_SUCCESS') {
-				alertPrimary('쿠킹클래스 신청이 성공적으로 취소되었습니다.');
+				alert('쿠킹클래스 신청이 성공적으로 취소되었습니다.');
 				fetchClassList();
 			}
 		}
 		catch (error) {
 			const code = error?.response?.data?.code;
 
-			if (code === '') {
-				alertDanger('');
+			if (code === 'CLASS_APPLY_DELETE_FAIL') {
+				alertDanger('쿠킹클래스 신청 취소에 실패했습니다.');
+			}
+			else if (code === 'CLASS_APPLY_INVALID_INPUT') {
+				alertDanger('입력값이 유효하지 않습니다.');
 			}
 			else if (code === 'USER_INVALID_INPUT') {
 				alertDanger('입력값이 유효하지 않습니다.');
+			}
+			else if (code === 'CLASS_UNAUTHORIZED_ACCESS') {
+				alertDanger('로그인되지 않은 사용자입니다.');
+			}
+			else if (code === 'CLASS_FORBIDDEN') {
+				alertDanger('접근 권한이 없습니다.');
+			}
+			else if (code === 'CLASS_ALREADY_ENDED') {
+				alertDanger('쿠킹클래스가 이미 종료되었습니다.');
+			}
+			else if (code === 'CLASS_APPLY_NOT_FOUND') {
+				alertDanger('해당 쿠킹클래스 신청을 찾을 수 없습니다.');
 			}
 			else if (code === 'USER_NOT_FOUND') {
 				alertDanger('해당 사용자를 찾을 수 없습니다.');
@@ -282,13 +340,5 @@ async function deleteApply(applyId, classId) {
 			}
 		}
 	}
-	
 }
-
-
-
-
-// 삭제 동작 -> 신청 취소는 선정 이후에는 못하게 하고
-// 발표일이 지나서 보이도록 선정 여부 보이도록 하기
-
 

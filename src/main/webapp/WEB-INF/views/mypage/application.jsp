@@ -30,9 +30,9 @@
 					<div class="apply_util">
 						<p class="total"></p>
 						<div class="apply_sort">
-							<button class="btn_sort active" data-sort="-1">전체</button>
-							<button class="btn_sort" data-sort="1">선정</button>
-							<button class="btn_sort" data-sort="2">대기</button>
+							<button class="btn_sort active" data-status="">전체</button>
+							<button class="btn_sort" data-status="SELECTED">선정</button>
+							<button class="btn_sort" data-status="PENDING">대기</button>
 						</div>
 					</div>
 					

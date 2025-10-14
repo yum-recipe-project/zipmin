@@ -310,7 +310,7 @@ async function fetchClassList() {
 			alertDanger('입력값이 유효하지 않습니다.');
 		}
 		else if (code === 'INTERNAL_SERVER_ERROR') {
-			alertDanger('서버 내부에서 오류가 발생했습니다.');
+			console.log(error);
 		}
 		else {
 			console.log(error);

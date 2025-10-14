@@ -53,7 +53,7 @@ async function fetchGuideList() {
 			guideList = result.data.content;
 			
             renderGuideList(result.data.content);
-//            renderPagination();
+			renderAdminPagination(fetchGuideList);
 			
 		}
 	}
@@ -79,56 +79,45 @@ function renderGuideList(guideList) {
         const tr = document.createElement('tr');
         tr.dataset.id = guide.id;
 
+        // No
         const noTd = document.createElement('td');
         const noH6 = document.createElement('h6');
         noH6.className = 'fw-semibold mb-0';
-        noH6.textContent = totalPages * size - index; // 역순 번호
+		noH6.textContent = guide.id;
         noTd.appendChild(noH6);
 
-		const categoryTd = document.createElement('td');
-		const categoryH6 = document.createElement('h6');
-		categoryH6.className = 'fw-semibold mb-0';
+        // 카테고리
+        const categoryTd = document.createElement('td');
+        const categoryH6 = document.createElement('h6');
+        categoryH6.className = 'fw-semibold mb-0';
+        categoryH6.textContent = convertCategory(guide.category);
+        categoryTd.appendChild(categoryH6);
 
-		switch (guide.category) {
-		    case 'preparation':
-		        categoryH6.textContent = '손질법';
-		        break;
-		    case 'storage':
-		        categoryH6.textContent = '보관법';
-		        break;
-		    case 'info':
-		        categoryH6.textContent = '요리 정보';
-		        break;
-		    case 'etc':
-		        categoryH6.textContent = '기타 정보';
-		        break;
-		    default:
-		        categoryH6.textContent = guide.category || '';
-		}
-		categoryTd.appendChild(categoryH6);
+		// 제목 
+		const titleTd = document.createElement('td');
+		const titleH6 = document.createElement('h6');
+		titleH6.className = 'fw-semibold mb-1 view';
+		titleH6.textContent = guide.title;
+		titleH6.dataset.id = guide.id;
+		const subInfo = document.createElement('small');
+		subInfo.className = 'text-muted d-block';
+		subInfo.textContent = guide.subtitle || '-';
+		
+		titleTd.append(subInfo,titleH6);
 
-        // 제목 (title + subtitle)
-        const titleTd = document.createElement('td');
-        const titleH6 = document.createElement('h6');
-        titleH6.className = 'fw-semibold mb-0 truncate text-start';
-        titleH6.textContent = guide.title + (guide.subtitle ? ' - ' + guide.subtitle : '');
-        titleTd.appendChild(titleH6);
+        // 작성자
+        const adminTd = document.createElement('td');
+        const adminH6 = document.createElement('h6');
+        adminH6.className = 'fw-semibold mb-0';
+        adminH6.textContent = guide.username || '-';
+        adminTd.appendChild(adminH6);
 
         // 작성일
         const dateTd = document.createElement('td');
         const dateH6 = document.createElement('h6');
         dateH6.className = 'fw-semibold mb-0';
-        dateH6.textContent = formatDateTime(guide.postdate);
+        dateH6.textContent = formatDateDot(guide.postdate);
         dateTd.appendChild(dateH6);
-		
-		// 작성자
-		const adminTd = document.createElement('td');
-		const adminH6 = document.createElement('h6');
-		dateH6.className = 'fw-semibold mb-0';
-		dateH6.textContent = guide.username;
-		dateTd.appendChild(dateH6);
-		
-		
 
         // 좋아요 수
         const likeTd = document.createElement('td');
@@ -137,15 +126,29 @@ function renderGuideList(guideList) {
         likeH6.textContent = guide.likecount ?? 0;
         likeTd.appendChild(likeH6);
 
-        // 신고 수 (임시 0으로 표시, 필요시 API에서 가져오기)
+        // 신고 수 
+		// TODO: 신고 기능 연결하기
         const reportTd = document.createElement('td');
         const reportH6 = document.createElement('h6');
         reportH6.className = 'fw-semibold mb-0';
-//        reportH6.textContent = guide.reportcount ?? 0;
-        reportH6.textContent = 0;
+        reportH6.textContent = guide.reportcount ?? 0;
         reportTd.appendChild(reportH6);
 
-        tr.append(noTd, categoryTd, titleTd, dateTd, likeTd, reportTd);
+        tr.append(noTd, categoryTd, titleTd, adminTd, dateTd, likeTd, reportTd);
         container.appendChild(tr);
     });
+}
+
+
+/**
+ * 카테고리 code 한글 변환 함수
+ */
+function convertCategory(code) {
+    switch (code) {
+        case 'preparation': return '손질법';
+        case 'storage': return '보관법';
+        case 'info': return '요리 정보';
+        case 'etc': return '기타 정보';
+        default: return code || '';
+    }
 }

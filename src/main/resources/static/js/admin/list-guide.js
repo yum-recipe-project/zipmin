@@ -129,9 +129,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 	
 	// 검색
-	document.querySelector('.search_form[data-type="kitchen"]').addEventListener('submit', function(e) {
+//	document.querySelector('.search_form[data-type="kitchen"]').addEventListener('submit', function(e) {
+	document.querySelector('.search').addEventListener('submit', function(e) {
 	    e.preventDefault();
-	    keyword = this.querySelector('.search_word').value.trim();
+	    keyword = document.getElementById('text-srh').value.trim();
 	    page = 0;        
 	    guideList = [];
 	    fetchGuideList();

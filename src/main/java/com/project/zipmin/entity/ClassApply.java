@@ -48,6 +48,9 @@ public class ClassApply {
 	
 	@PrePersist
     public void prePersist() {
+		if (this.applydate == null) {
+            this.applydate = new Date();
+        }
         if (this.selected == 0) {
             this.selected = 2;
         }

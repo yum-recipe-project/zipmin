@@ -501,6 +501,7 @@ public class CookingController {
 		
 	})
 	// 클래스 신청 작성
+	// js/modal/apply-class-modal.js
 	@PostMapping("/classes/{id}/applies")
 	public ResponseEntity<?> applyClass(
 			@Parameter(description = "클래스의 일련번호") @PathVariable int id,

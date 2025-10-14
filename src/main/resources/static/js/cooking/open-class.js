@@ -282,11 +282,11 @@ document.addEventListener("DOMContentLoaded", function () {
  * 데이트 피커 및 타임 피커
  */
 $(document).ready(function () {
-    $("#eventdate").datepicker({
-      format: "yyyy-mm-dd",
-      autoclose: true,
-      todayHighlight: true,
-    });
+	$("#eventdate").datepicker({
+		format: "yyyy-mm-dd",
+		autoclose: true,
+		todayHighlight: true,
+  	});
     $("#noticedate").datepicker({
       format: "yyyy-mm-dd",
       autoclose: true,

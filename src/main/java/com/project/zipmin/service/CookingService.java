@@ -337,7 +337,7 @@ public class CookingService {
 			classDto.setTutorList(tutorDtoList);
 		}
 		catch (Exception e) {
-			throw new ApiException(ClassErrorCode.CLASS_TUTOR_READ_FAIL);
+			throw new ApiException(ClassErrorCode.CLASS_TUTOR_READ_LIST_FAIL);
 		}
 		
 		

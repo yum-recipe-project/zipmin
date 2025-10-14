@@ -44,16 +44,29 @@
 						<div class="tab">
 							<ul>
 								<li class="btn_tab"><a href="" data-tab="" class="active"><span>전체</span></a></li>
-								<li class="btn_tab"><a href="" data-tab=""><span>어쩌구</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="preparation"><span>손질법</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="storage"><span>보관법</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="info"><span>요리정보</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="etc"><span>기타정보</span></a></li>
 							</ul>
 						</div>
 					</div>
 		
 					<!-- 목록 -->
-					<table class="table text-nowrap mb-0 align-middle">
+					<table class="table text-nowrap mb-0 align-middle fixed-table">
 					    <thead class="text-dark fs-4">
 					        <tr>
-					            <th class="total"></th>
+						        <colgroup>
+				    				<col style="width:8%">
+						    		<col style="width:9%">
+						    		<col style="width:22%">
+								    <col style="width:12%">
+								    <col style="width:12%">  <!-- 작성일 -->
+								    <col style="width:10%">  <!-- 좋아요수 -->
+								    <col style="width:10%">  <!-- 신고수 -->
+								    <col style="width:12%">  <!-- 기능/빈 열 -->
+						    	</colgroup>
+					            <th colspan="2" class="total text-start"></th>
 					            <th></th>
 					            <th></th>
 					            <th></th>
@@ -76,12 +89,14 @@
 					            <th>
 					                <h6 class="fs-4 fw-semibold mb-0">내용</h6>
 					            </th>
-					            <th>
-					                <h6 class="fs-4 fw-semibold mb-0">작성자</h6>
-					            </th>
+					            
 					            <th class="sort_btn desc" data-key="postdate">
 					                <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
 					            </th>
+					            <th>
+					                <h6 class="fs-4 fw-semibold mb-0">작성자</h6>
+					            </th>
+					            
 					            <th class="sort_btn" data-key="likecount">
 					                <h6 class="fs-4 fw-semibold mb-0">좋아요수</h6>
 					            </th>

@@ -28,42 +28,73 @@ let guideList = [];
 let sortKey = 'postdate';
 let sortOrder = 'desc';  
 
+
 /**
  * 서버에서 키친가이드 목록 데이터를 가져오는 함수
  */
 async function fetchGuideList() {
-	
-	try {
-		const params = new URLSearchParams({
-			category: category,
-			keyword: keyword,  
-			sort: sortKey + '-' + sortOrder,
-			page: page,
-			size: size
-		});
-		
-		const response = await fetch(`/guides?${params}`, {
-			method: 'GET',
-			headers: getAuthHeaders()
-		});
-		
-		const result = await response.json();
-		
-		if (result.code === 'KITCHEN_READ_LIST_SUCCESS') {
-			
-            totalPages = result.data.totalPages;
-            page = result.data.number;
-			guideList = result.data.content;
-			
-            renderGuideList(result.data.content);
-			renderAdminPagination(fetchGuideList);
-		}
-	}
-	catch (error) {
-		console.log(error);
-	}
-	
+
+    try {
+        const params = new URLSearchParams({
+            category: category,
+            keyword: keyword,
+            sort: sortKey + '-' + sortOrder,
+            page: page,
+            size: size
+        }).toString();
+
+        const response = await instance.get(`/guides?${params}`, {
+            headers: getAuthHeaders()
+        });
+
+        if (response.data.code === 'KITCHEN_READ_LIST_SUCCESS') {
+
+            // 전역 변수 설정
+            totalPages = response.data.data.totalPages;
+            page = response.data.data.number;
+            guideList = response.data.data.content;
+			totalElements = response.data.data.totalElements;
+
+            // 렌더링
+            renderGuideList(guideList);
+            renderAdminPagination(fetchGuideList);
+			document.querySelector('.total').innerText = `총 ${totalElements}개`;
+
+			// 검색 결과 없음 표시
+			if (response.data.data.totalPages === 0) {
+				document.querySelector('.table_th').style.display = 'none';
+				document.querySelector('.search_empty')?.remove();
+				const table = document.querySelector('.fixed-table');
+				table.insertAdjacentElement('afterend', renderSearchEmpty());
+			}
+			// 검색 결과 표시
+			else {
+				document.querySelector('.search_empty')?.remove();
+				document.querySelector('.table_th').style.display = '';
+			}
+        }
+    }
+    catch (error) {
+        const code = error?.response?.data?.code;
+
+        if (code === 'KITCHEN_READ_LIST_FAIL') {
+            alertDanger('키친가이드 목록 조회에 실패했습니다.');
+        }
+        else if (code === 'USER_INVALID_INPUT') {
+            alertDanger('입력값이 유효하지 않습니다.');
+        }
+        else if (code === 'AUTH_TOKEN_INVALID' || code === 'KITCHEN_FORBIDDEN' || code === 'USER_NOT_FOUND') {
+            redirectToAdminLogin('/');
+        }
+        else if (code === 'INTERNAL_SERVER_ERROR') {
+            console.log(error);
+        }
+        else {
+            console.log(error);
+        }
+    }
 }
+
 
 
 /**
@@ -95,6 +126,51 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 	});
 });
+
+
+
+/**
+ * 키친가이드 카테고리 탭 설정하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+
+    // 카테고리 탭 클릭
+    document.querySelectorAll('.tab ul li a').forEach(tab => {
+        tab.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            // 활성화 클래스 토글
+            document.querySelector('.tab ul li a.active')?.classList.remove('active');
+            this.classList.add('active');
+
+            // 선택한 카테고리 설정
+            category = this.dataset.tab || ''; // data-tab 속성 사용
+            page = 0;
+            guideList = [];
+
+            fetchGuideList();
+        });
+    });
+    // 검색
+    const searchForm = document.querySelector('.search');
+    if (searchForm) {
+        searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            keyword = this.querySelector('#text-srh').value.trim();
+            page = 0;
+            guideList = [];
+            fetchGuideList();
+        });
+    }
+
+    fetchGuideList();
+});
+
+
+
+
+
+
 
 
 
@@ -138,6 +214,14 @@ function renderGuideList(guideList) {
         subInfo.textContent = guide.subtitle || '-';
         titleTd.append(subInfo, titleH6);
 
+		
+		// 작성일
+        const dateTd = document.createElement('td');
+        const dateH6 = document.createElement('h6');
+        dateH6.className = 'fw-semibold mb-0';
+        dateH6.textContent = formatDateDot(guide.postdate);
+        dateTd.appendChild(dateH6);
+				
         // 작성자
         const adminTd = document.createElement('td');
         const adminH6 = document.createElement('h6');
@@ -145,12 +229,6 @@ function renderGuideList(guideList) {
         adminH6.textContent = guide.username || '-';
         adminTd.appendChild(adminH6);
 
-        // 작성일
-        const dateTd = document.createElement('td');
-        const dateH6 = document.createElement('h6');
-        dateH6.className = 'fw-semibold mb-0';
-        dateH6.textContent = formatDateDot(guide.postdate);
-        dateTd.appendChild(dateH6);
 
         // 좋아요 수
         const likeTd = document.createElement('td');
@@ -212,7 +290,7 @@ function renderGuideList(guideList) {
 
         actionTd.appendChild(btnWrap);
 
-        tr.append(noTd, categoryTd, titleTd, adminTd, dateTd, likeTd, reportTd, actionTd);
+        tr.append(noTd, categoryTd, titleTd,  dateTd, adminTd, likeTd, reportTd, actionTd);
         container.appendChild(tr);
     });
 }

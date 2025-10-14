@@ -395,7 +395,6 @@ public class CookingService {
             if (classImage != null && !classImage.isEmpty()) {
                 String classImgUrl = fileService.store(classImage);
                 createRequestDto.setImage(classImgUrl);
-                System.err.println("대표 이미지 저장 성공: " + classImgUrl);
             }
         } catch (Exception e) {
             throw new ApiException(ClassErrorCode.CLASS_FILE_UPLOAD_FAIL);
@@ -403,28 +402,24 @@ public class CookingService {
         
         
         
-        // DTO → Entity 변환
         Class classEntity = classMapper.toEntity(createRequestDto);
         
         try {
-            // 4. DB 저장
             classRepository.save(classEntity);
-            System.err.println("1.클래스 테이블 저장 성공 ");
 
-            // 5. 연관 엔티티 저장 (target, schedule, tutor)
+            // target
             if (createRequestDto.getTargetList() != null) {
                 List<ClassTarget> targetList = targetMapper.toEntityList(createRequestDto.getTargetList(), classEntity);
                 targetRepository.saveAll(targetList);
-                System.err.println("2.타켓 테이블 저장 성공 ");
             }
 
+            // schedule
             if (createRequestDto.getScheduleList() != null) {
                 List<ClassSchedule> scheduleList = scheduleMapper.toEntityList(createRequestDto.getScheduleList(), classEntity);
                 scheduleRepository.saveAll(scheduleList);
-                System.err.println("3.스케쥴 테이블 저장 성공 ");
             }
             
-            // 강사 이미지 저장
+            // tutor 
             if (createRequestDto.getTutorList() != null) {
                 List<ClassTutor> tutorList = tutorMapper.toEntityList(createRequestDto.getTutorList(), classEntity);
 
@@ -433,12 +428,10 @@ public class CookingService {
                     if (tutorImages != null && tutorImages.size() > i && !tutorImages.get(i).isEmpty()) {
                         String tutorImgUrl = fileService.store(tutorImages.get(i));
                         tutorList.get(i).setImage(tutorImgUrl);
-                        System.err.println("강사 이미지 저장 성공: " + tutorImgUrl);
                     }
                 }
 
                 tutorRepository.saveAll(tutorList);
-                System.err.println("4.강사 테이블 저장 성공");
             }
 
         } catch (Exception e) {

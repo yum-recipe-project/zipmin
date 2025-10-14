@@ -168,6 +168,11 @@ $(document).ready(function () {
       autoclose: true,
       todayHighlight: true,
     });
+    $("#noticedate").datepicker({
+      format: "yyyy-mm-dd",
+      autoclose: true,
+      todayHighlight: true,
+    });
 	
 	$('#starttime').timepicker({
         timeFormat: 'HH:mm',
@@ -234,19 +239,11 @@ $(document).ready(function () {
 
 
 
-/*****************************************/
-/** * 쿠킹클래스 개설 신청을 지원하는 함수 */
+/**
+ * 쿠킹클래스 개설 신청을 지원하는 함수
+ */
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('openClassForm');
-
-    function formatDateForServer(dateStr) {
-        // 입력이 MM/dd/yyyy이면 yyyy-MM-dd로 변환
-        const parts = dateStr.split('/');
-        if (parts.length === 3) {
-            return `${parts[2]}-${parts[0].padStart(2,'0')}-${parts[1].padStart(2,'0')}`;
-        }
-        return dateStr;
-    }
 
     form.addEventListener('submit', async function(event) {
         event.preventDefault();
@@ -254,46 +251,74 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const createRequestDto = {
                 title: form.title.value.trim(),
+                introduce: document.getElementById('introduce').value.trim(),
                 place: form.place.value.trim(),
+                category: form.category.value.trim(),
                 eventdate: formatDateForServer(form.eventdate.value.trim()),
-                starttime: form.starttime.value.trim(),
-                endtime: form.endtime.value.trim(),
-                headcount: form.headcount.value.trim(),
+                noticedate: formatDateForServer(form.noticedate.value.trim()),
+                starttime: formatTimeForServer(form.starttime.value.trim()),
+                endtime: formatTimeForServer(form.endtime.value.trim()),
+                headcount: parseInt(form.headcount.value.trim(), 10),
                 need: form.need.value.trim(),
-                introduce: form.introduce.value.trim(),
-                name: form.name.value.trim(),
-                career1: form.career1.value.trim(),
-                targetList: [],
-                scheduleList: []
+                target_list: [],
+                schedule_list: [],
+                tutor_list: []
             };
 
-            // 추천 대상
-            ['target1','target2','target3'].forEach(name => {
+            // 2추천 대상 리스트
+            ['target1', 'target2', 'target3'].forEach(name => {
                 const val = form[name]?.value.trim();
-                if (val) createRequestDto.targetList.push(val);
+                if (val) createRequestDto.target_list.push(val);
             });
 
-            // 커리큘럼
-            const tableRows = document.querySelectorAll('#classSchedule table tbody');
-            tableRows.forEach((tbody, index) => {
-                const start = tbody.querySelector(`input[name=starttime${index+1}]`)?.value.trim();
-                const end = tbody.querySelector(`input[name=endtime${index+1}]`)?.value.trim();
-                const title = tbody.querySelector(`input[name=title${index+1}]`)?.value.trim();
+            // 스케줄 리스트 (커리큘럼)
+            const scheduleRows = document.querySelectorAll('#classSchedule table tbody');
+            scheduleRows.forEach((tbody) => {
+                const startInput = tbody.querySelector('input[name^="starttime"]');
+                const endInput = tbody.querySelector('input[name^="endtime"]');
+                const titleInput = tbody.querySelector('input[name^="title"]');
+
+                const start = startInput?.value.trim();
+                const end = endInput?.value.trim();
+                const title = titleInput?.value.trim();
+
                 if (start && end && title) {
-                    createRequestDto.scheduleList.push({starttime: start, endtime: end, title: title});
+                    createRequestDto.schedule_list.push({
+                        starttime: formatTimeForServer(start),
+                        endtime: formatTimeForServer(end),
+                        title: title
+                    });
                 }
             });
 
-            const formData = new FormData();
-            formData.append('createRequestDto', new Blob([JSON.stringify(createRequestDto)], { type: "application/json" }));
+            // 4강사 리스트
+            const tutorName = form.name.value.trim();
+            const careers = [form.career1.value, form.career2.value, form.career3.value]
+                .map(c => c.trim())
+                .filter(c => c);
 
-            // 대표 이미지
-            const imageFile = document.getElementById('imageInput').files[0];
-            if (imageFile) formData.append('image', imageFile);
+            if (tutorName) {
+                createRequestDto.tutor_list.push({
+                    name: tutorName,
+                    career: careers.join(', ')
+                });
+            }
+
+            const formData = new FormData();
+            formData.append(
+                'createRequestDto',
+                new Blob([JSON.stringify(createRequestDto)], { type: "application/json" })
+            );
+
+            // 클래스 이미지
+            const classImage = document.getElementById('imageInput').files[0];
+            if (classImage) formData.append('classImage', classImage);
 
             // 강사 이미지
-            const teacherFile = document.getElementById('teacherImgInput').files[0];
-            if (teacherFile) formData.append('teacher_img', teacherFile);
+            const teacherImgFile = document.getElementById('teacherImgInput').files[0];
+            if (teacherImgFile) formData.append('tutorImages', teacherImgFile);
+
+            console.log("📦 전송 직전 DTO:", createRequestDto);
 
             const response = await instance.post('/classes', formData, {
                 headers: {
@@ -303,21 +328,35 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             if (response.data.code === 'CLASS_CREATE_SUCCESS') {
-                alert('쿠킹클래스 개설이 완료되었습니다.');
+                alertPrimary('쿠킹클래스 개설신청이 완료되었습니다.');
                 form.reset();
                 window.location.href = '/mypage/class.do';
             }
 
         } catch (error) {
             const code = error?.response?.data?.code;
-            if (code === 'CLASS_CREATE_FAIL') alert('쿠킹클래스 개설에 실패했습니다.');
-            else if (code === 'CLASS_INVALID_INPUT') alert('입력값이 유효하지 않습니다.');
-            else if (code === 'CLASS_CREATE_DUPLICATE') alert('이미 개설한 클래스입니다.');
-            else if (code === 'CLASS_UNAUTHORIZED_ACCESS') alert('로그인되지 않은 사용자입니다.');
-            else if (code === 'INTERNAL_SERVER_ERROR') alert('서버 내부 오류가 발생했습니다.');
-            else console.log(error);
+            switch (code) {
+                case 'CLASS_CREATE_FAIL': alertDanger('쿠킹클래스 개설에 실패했습니다.'); break;
+                case 'CLASS_INVALID_INPUT': alertDanger('입력값이 유효하지 않습니다.'); break;
+                case 'CLASS_CREATE_DUPLICATE': alertDanger('이미 개설한 클래스입니다.'); break;
+                case 'CLASS_UNAUTHORIZED_ACCESS': alertDanger('로그인되지 않은 사용자입니다.'); break;
+                default: console.log(error); break;
+            }
         }
     });
 });
+
+function formatDateForServer(dateStr) {
+    const parts = dateStr.split('/');
+    if (parts.length === 3) {
+        return `${parts[2]}-${parts[0].padStart(2,'0')}-${parts[1].padStart(2,'0')}`;
+    }
+    return dateStr;
+}
+
+function formatTimeForServer(timeStr) {
+    if (!timeStr) return null;
+    return `1970-01-01T${timeStr}:00`;
+}
 
 

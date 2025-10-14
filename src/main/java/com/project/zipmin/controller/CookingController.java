@@ -159,8 +159,6 @@ public class CookingController {
 			@RequestPart ClassCreateRequestDto createRequestDto,
 	        @RequestPart(required = false) MultipartFile classImage,
 	        @RequestPart(required = false) List<MultipartFile> tutorImages) {
-		System.err.println("1. 쿠킹클래스 컨트롤러 진입: " + createRequestDto);
-
 	    // 로그인 여부 확인
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
@@ -172,7 +170,6 @@ public class CookingController {
 	    createRequestDto.setUserId(userService.readUserByUsername(username).getId());
 	    
 	    try {
-	    	System.err.println("2. 쿠킹클래스 서비스 진입 전: " + createRequestDto);
 	    	// 서비스에 DTO + 파일 전달
 	        cookingService.createClass(createRequestDto, classImage, tutorImages);
 	    	System.err.println("3. 쿠킹클래스 서비스 완료");

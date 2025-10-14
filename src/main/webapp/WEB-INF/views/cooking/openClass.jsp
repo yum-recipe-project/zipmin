@@ -86,6 +86,14 @@
 										</td>
 									</tr>
 									<tr>
+										<th scope="col">카테고리<span class="ess"></span></th>
+										<td>
+											<span class="form_text">
+												<input maxlength="50" name="category" placeholder="카테고리 입력해주세요" type="text" value="">
+											</span>
+										</td>
+									</tr>
+									<tr>
 										<th scope="col">장소<span class="ess"></span></th>
 										<td>
 											<span class="form_text">
@@ -118,6 +126,14 @@
 										<td>
 											<span class="form_text">
 												<input maxlength="50" name="headcount" placeholder="모집 인원을 입력해주세요" type="text" value="">
+											</span>
+										</td>
+									</tr>
+									<tr>
+										<th scope="col">신청 마감일<span class="ess"></span></th>
+										<td>
+											<span class="form_datepicker">
+												<input type="text" class="form-control" id="noticedate" name="noticedate" placeholder="날짜를 선택하세요">
 											</span>
 										</td>
 									</tr>

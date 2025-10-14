@@ -87,6 +87,9 @@ async function fetchUserClassList() {
 			renderUserClassList(classList);
 			document.querySelector('.class_util .total').innerText = `총 ${totalElements}개`;
 			renderPagination(fetchUserClassList);
+			
+			// 스크롤 최상단 이동
+			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
 	}
 	catch (error) {
@@ -97,12 +100,6 @@ async function fetchUserClassList() {
 		}
 		else if (code === 'CLASS_INVALID_INPUT') {
 			alertDanger('입력값이 유효하지 않습니다.');
-		}
-		else if (code === 'USER_INVALID_INPUT') {
-			alertDanger('입력값이 유효하지 않습니다.');
-		}
-		else if (code === 'USER_NOT_FOUND') {
-			alertDanger('해당 사용자를 찾을 수 없습니다.');
 		}
 		else if (code === 'INTERNAL_SERVER_ERROR') {
 			console.log(error);

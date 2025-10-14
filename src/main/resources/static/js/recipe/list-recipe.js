@@ -28,6 +28,14 @@ document.addEventListener('DOMContentLoaded', function() {
 		fetchRecipeList();
 	});
 	
+	// 검색창 빈 경우 초기화
+	searchForm.querySelector('.search_word')?.addEventListener('input', function () {
+		if (this.value.trim() === '') {
+			keyword = '';
+			fetchRecipeList();
+		}
+	});
+	
 	// 정렬
 	document.querySelectorAll('.btn_sort').forEach(btn => {
 		btn.addEventListener('click', function (event) {

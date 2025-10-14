@@ -24,8 +24,8 @@ public class ClassCreateRequestDto {
     private String need;
     private int userId;
 
-    private List<String> targetList;                 // class_target
-    private List<ClassScheduleCreateDto> scheduleList; // class_schedule
-    private List<ClassTutorCreateDto> tutorList;       // class_tutor
+    private List<String> targetList;
+    private List<ClassScheduleCreateDto> scheduleList;
+    private List<ClassTutorCreateDto> tutorList;
 }
 

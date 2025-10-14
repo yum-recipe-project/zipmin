@@ -491,7 +491,6 @@ public class RecipeService {
 			recipe = recipeRepository.save(recipe);
 			RecipeCreateResponseDto recipeResponseDto = recipeMapper.toCreateResponseDto(recipe);
 			
-			
 			// 카테고리 저장
 			List<RecipeCategoryCreateResponseDto> categoryDtoList = new ArrayList<>();
 			for (RecipeCategoryCreateRequestDto categoryDto : recipeRequestDto.getCategoryDtoList()) {

@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	// 탭 클릭 이벤트 설정
 	const tabItems = document.querySelectorAll('.tab a');
 	tabItems.forEach((item) => {
-	    item.addEventListener("click", function() {
+	    item.addEventListener('click', function() {
 	        tabItems.forEach(button => button.classList.remove('active'));
 	        this.classList.add('active');
 	    });
@@ -35,8 +35,6 @@ async function fetchClass() {
 		
 		const result = await response.json();
 		
-		console.log(result);
-		
 		if (result.code === 'CLASS_READ_SUCCESS') {
 			document.getElementById('applyClassId').value = id;
 			document.querySelector('.apply_header h2').innerText = result.data.title;
@@ -52,25 +50,39 @@ async function fetchClass() {
 			renderScheduleList(result.data.schedule_list);
 			renderTutorList(result.data.tutor_list);
 		}
-		else if (result.code === 'CLASS_NOT_FOUND') {
-			alert('해당 쿠킹클래스를 찾을 수 없습니다.');
-			location.href = '/cooking/listClass.do';
-		}
 		else if (result.code === 'CLASS_TARGET_READ_LIST_FAIL') {
-			alert('교육대상 목록 조회에 실패했습니다.');
-			location.href = '/cooking/listClass.do';
+			alert('쿠킹클래스 상세 조회에 실패했습니다.');
+			history.back();
 		}
 		else if (result.code === 'CLASS_SCHEDULE_READ_LIST_FAIL') {
-			alert('교육일정 목록 조회에 실패했습니다.');
-			location.href = '/cooking/listClass.do';
+			alert('쿠킹클래스 상세 조회에 실패했습니다.');
+			history.back();
 		}
 		else if (result.code === 'CLASS_TUTOR_READ_LIST_FAIL') {
-			alert('강사 목록 조회에 실패했습니다.');
-			location.href = '/cooking/listClass.do';
+			alert('쿠킹클래스 상세 조회에 실패했습니다.');
+			history.back();
+		}
+		else if (result.code === 'CLASS_INVALID_INPUT') {
+			alert('입력값이 유효하지 않습니다.');
+			history.back();
+		}
+		else if (result.code === 'USER_INVALID_INPUT') {
+			alert('입력값이 유효하지 않습니다.');
+			history.back();
+		}
+		else if (result.code === 'CLASS_NOT_FOUND') {
+			alert('해당 쿠킹클래스를 찾을 수 없습니다.');
+			history.back();
+		}
+		else if (result.code === 'USER_NOT_FOUND') {
+			alert('해당 사용자를 찾을 수 없습니다.');
+			history.back();
+		}
+		else if (result.code === 'INTERNAL_SERVER_ERROR') {
+			console.log(error);
 		}
 		else {
-			// alert('서버 내부에서 오류가 발생했습니다.');
-			// location.href = '/cooking/listClass.do';
+			console.log(error);
 		}
 	}
 	catch (error) {
@@ -88,7 +100,6 @@ async function fetchClass() {
 function renderTargetList(list) {
 	
 	const container = document.querySelector('.target');
-	if (!container) return;
 	container.innerHTML = '';
 	
 	const title = document.createElement('h4');
@@ -113,7 +124,6 @@ function renderTargetList(list) {
 function renderScheduleList(list) {
 	
 	const ul = document.querySelector('.curriculum_list');
-	if (!ul) return;
 	ul.innerHTML = '';
 
 	list.forEach((schedule, index) => {
@@ -151,13 +161,13 @@ function renderScheduleList(list) {
 
 
 
+
 /**
  * 쿠킹클래스 강사 목록을 화면에 렌더링하는 함수
  */
 function renderTutorList(list) {
 	
 	const ul = document.querySelector('.tutor_list');
-	if (!ul) return;
 	ul.innerHTML = '';
 
 	list.forEach(tutor => {
@@ -194,6 +204,7 @@ function renderTutorList(list) {
 
 
 
+
 /**
  * 클래스 신청 상태에 따라 신청 버튼을 화면에 렌더링하는 함수
  */
@@ -201,11 +212,7 @@ function renderApplyButton(classs) {
 	
 	const wrap = document.getElementById('applyWrap');
 	const container = wrap.querySelector('.apply_header');
-	if (!container) return;
-	
-	// 기존 버튼 제거
-	const oldButton = container.querySelector('button');
-	if (oldButton) oldButton.remove();
+	container.querySelector('button')?.remove();
 
 	const button = document.createElement('button');
 	button.type = 'button';
@@ -230,8 +237,6 @@ function renderApplyButton(classs) {
 		button.innerText = '신청 완료';
 	}
 	
-	// 신청하기 버튼 클릭시 로그인 여부를 확인
-	// 로그인 했다면 신청 가능 여부 확인
 	button.addEventListener('click', function() {
 		if (!isLoggedIn()) {
 			redirectToLogin();
@@ -247,6 +252,3 @@ function renderApplyButton(classs) {
 
 	container.appendChild(button);
 }
-
-
-

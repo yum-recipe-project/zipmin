@@ -32,12 +32,12 @@ public enum ClassErrorCode implements Code {
     // CLASS_TARGET_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 클래스 교육대상을 찾을 수 없음"),
     
     CLASS_SCHEDULE_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
-    CLASS_SCHEDULE_CREATE_FAIL(HttpStatus.BAD_REQUEST, "교육일정 작성 실패"),
-    CLASS_SCHEDULE_READ_LIST_FAIL(HttpStatus.BAD_REQUEST, "교육일정 목록 조회 실패"),
-    // CLASS_SCHEDULE_READ_FAIL(HttpStatus.BAD_REQUEST, "교육일정 조회 실패"),
-    // CLASS_SCHEDULE_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "교육일정 수정 실패"),
-    // CLASS_SCHEDULE_DELETE_FAIL(HttpStatus.BAD_REQUEST, "교육일정 삭제 실패"),
-    // CLASS_SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 교육일정을 찾을 수 없음"),
+    CLASS_SCHEDULE_CREATE_FAIL(HttpStatus.BAD_REQUEST, "클래스 교육일정 작성 실패"),
+    CLASS_SCHEDULE_READ_LIST_FAIL(HttpStatus.BAD_REQUEST, "클래스 교육일정 목록 조회 실패"),
+    // CLASS_SCHEDULE_READ_FAIL(HttpStatus.BAD_REQUEST, "클래스 교육일정 조회 실패"),
+    // CLASS_SCHEDULE_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "클래스 교육일정 수정 실패"),
+    // CLASS_SCHEDULE_DELETE_FAIL(HttpStatus.BAD_REQUEST, "클래스 교육일정 삭제 실패"),
+    // CLASS_SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 클래스 교육일정을 찾을 수 없음"),
     
     CLASS_TUTOR_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
     CLASS_TUTOR_CREATE_FAIL(HttpStatus.BAD_REQUEST, "클래스 강사 작성 실패"),

@@ -567,8 +567,8 @@ function renderMemoList(memoList) {
         <tr>
             <th width="20%">재료</th>
             <th width="20%">용량</th>
-            <th width="40%">비고</th>
-            <th width="10%">수정</th>
+            <th width="30%">비고</th>
+            <th width="20%"> </th> <!-- 버튼 칸 -->
             <th width="10%">선택</th>
         </tr>
     `;
@@ -588,48 +588,65 @@ function renderMemoList(memoList) {
         const tdNote = document.createElement('td');
         tdNote.textContent = memo.note || '';
 
-        const tdEdit = document.createElement('td');
+        const tdButtons = document.createElement('td');
+
         const editBtn = document.createElement('button');
-		
         editBtn.className = 'btn btn_tab memo_edit';
         editBtn.type = 'button';
         editBtn.textContent = '수정';
-		editBtn.setAttribute('data-bs-toggle', 'modal');
-		editBtn.setAttribute('data-bs-target', '#editMemoModal');
-		
-		editBtn.setAttribute('data-id', memo.id);
-		editBtn.setAttribute('data-name', memo.name);
-		editBtn.setAttribute('data-amount', memo.amount);
-		editBtn.setAttribute('data-unit', memo.unit || '');
-		editBtn.setAttribute('data-note', memo.note || '');
-		
-        tdEdit.appendChild(editBtn);	
+        editBtn.setAttribute('data-bs-toggle', 'modal');
+        editBtn.setAttribute('data-bs-target', '#editMemoModal');
+        editBtn.setAttribute('data-id', memo.id);
+        editBtn.setAttribute('data-name', memo.name);
+        editBtn.setAttribute('data-amount', memo.amount);
+        editBtn.setAttribute('data-unit', memo.unit || '');
+        editBtn.setAttribute('data-note', memo.note || '');
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn btn_tab memo_delete';
+        deleteBtn.type = 'button';
+        deleteBtn.textContent = '삭제';
+        deleteBtn.addEventListener('click', async function() {
+            if (!confirm('이 메모를 삭제하시겠습니까?')) return;
+            try {
+                const token = localStorage.getItem('accessToken');
+                const userId = parseJwt(token).id;
+                await instance.delete(`/users/${userId}/memos/${memo.id}`, {
+                    headers: getAuthHeaders()
+                });
+                alertPrimary('메모가 삭제되었습니다.');
+                fetchUserMemoList();
+            } catch (error) {
+                console.error(error);
+                alertDanger('메모 삭제 중 오류가 발생했습니다.');
+            }
+        });
 
-		const tdSelect = document.createElement('td');
-	    const checkbox = document.createElement('input');
-	    checkbox.type = 'checkbox';
-	    checkbox.id = `memo_${memo.id}`;
-	    checkbox.name = 'selectedMemo';
-	
-	    const label = document.createElement('label');
-	    label.setAttribute('for', `memo_${memo.id}`);
-	
-	    tdSelect.appendChild(checkbox);
-	    tdSelect.appendChild(label);
-	
-	    tr.append(tdName, tdAmount, tdNote, tdEdit, tdSelect);
-	    tbody.appendChild(tr);
+        tdButtons.append(editBtn, deleteBtn);
 
+        // 선택 칸
+        const tdSelect = document.createElement('td');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = `memo_${memo.id}`;
+        checkbox.name = 'selectedMemo';
+
+        const label = document.createElement('label');
+        label.setAttribute('for', `memo_${memo.id}`);
+
+        tdSelect.appendChild(checkbox);
+        tdSelect.appendChild(label);
+
+        tr.append(tdName, tdAmount, tdNote, tdButtons, tdSelect);
+        tbody.appendChild(tr);
     });
 
     table.appendChild(tbody);
 
+    // 버튼 영역
     const completeBtn = document.createElement('button');
     completeBtn.className = 'btn_outline delete_memo';
     completeBtn.textContent = '장보기 완료';
-//    completeBtn.onclick = () => {
-//        location.href = '/chompessor/listForum.do';
-//    };
 
     const addBtn = document.createElement('button');
     addBtn.className = 'btn_primary';
@@ -640,6 +657,7 @@ function renderMemoList(memoList) {
 
     btnWrap.append(completeBtn, addBtn);
 }
+
 
 
 

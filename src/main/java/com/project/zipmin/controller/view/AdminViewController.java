@@ -51,4 +51,9 @@ public class AdminViewController {
 		return "admin/listClass";
 	}
 	
+	@GetMapping("/admin/listWithdraw.do")
+	public String adminListWithdraw() {
+		return "admin/listWithdraw";
+	}
+	
 }

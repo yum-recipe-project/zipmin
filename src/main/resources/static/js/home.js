@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 		const params = new URLSearchParams({
 			sort: 'reviewscore-desc',
 			page: 0,
-			size: 5
+			size: 4
 		}).toString();
 
 		const response = await fetch(`/recipes?${params}`, {

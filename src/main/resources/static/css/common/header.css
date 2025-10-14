@@ -78,6 +78,7 @@
 #header .header_top .inner .util_menu .user_name {
 	color: #666;
 	font-weight: 600;
+	cursor: pointer;
 }
 
 

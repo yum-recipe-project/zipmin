@@ -497,6 +497,9 @@ public class UserService {
 		if (userDto.getIntroduce() != null) {
 			user.setIntroduce(userDto.getIntroduce());
 		}
+		if (userDto.getLink() != null) {
+			user.setLink(userDto.getLink());
+		}
 		
 		// 사용자 수정
 		try {
@@ -652,6 +655,8 @@ public class UserService {
 	
 	
 	
+	
+	
 	// 아이디로 사용자 포인트 조회
 	public UserPointReadResponseDto readUserPointById(Integer id) {
 
@@ -666,6 +671,7 @@ public class UserService {
 
 	    return userMapper.toReadPointResponseDto(user);
 	}
+	
 	
 	
 
@@ -690,6 +696,8 @@ public class UserService {
 	    return userMapper.toReadPointResponseDto(user);
 	}
 	
+	
+	
 
 	
 	// 사용자 포인트 정보 업데이트
@@ -704,31 +712,6 @@ public class UserService {
 	    return userRepository.findById(id)
 	            .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
 	}
-
-
-    
-    
-    
-    
-    
-    
-	
-    
-    
-    
-	
-	// 유저 정보 반환
-//	public User getUserEntityByUsername(String username) {
-//	    if (username == null) {
-//	        throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-//	    }
-//
-//	    return userRepository.findByUsername(username)
-//	            .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
-//	}
-
-
-
 
 
 

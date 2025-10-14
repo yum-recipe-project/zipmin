@@ -27,6 +27,14 @@ document.addEventListener('DOMContentLoaded', function() {
 		fetchChompList();
 	});
 	
+	// 검색창 빈 경우 초기화
+	searchForm.querySelector('.search_word')?.addEventListener('input', function () {
+		if (this.value.trim() === '') {
+			keyword = '';
+			fetchChompList();
+		}
+	});
+	
 	// 카테고리
 	document.querySelectorAll('.btn_tab').forEach(tab => {
 		tab.addEventListener('click', function (event) {
@@ -96,19 +104,6 @@ async function fetchChompList() {
 			renderChompList(chompList);
 			renderPagination(fetchChompList);
 			
-			// 검색 결과 없음 표시
-			if (result.data.totalPages === 0) {
-				document.querySelector('.forum_list').style.display = 'none';
-				document.querySelector('.search_empty')?.remove();
-				const content = document.querySelector('.forum_content');
-				content.insertAdjacentElement('afterend', renderSearchEmpty());
-			}
-			// 검색 결과 표시
-			else {
-				document.querySelector('.search_empty')?.remove();
-				document.querySelector('.forum_list').style.display = '';
-			}
-			
 			// 스크롤 최상단 이동
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
@@ -133,10 +128,38 @@ async function fetchChompList() {
  * 카테고리에 일치하는 목록을 렌더링 하는 함수
  */
 function renderChompList(chompList) {
+	
 	const container = document.getElementById('chomp');
 	container.innerHTML = '';
+	
+	// 쩝쩝박사 목록이 존재하지 않는 경우
+	if (chompList == null || chompList.length === 0) {
+		document.querySelector('.search_empty')?.remove();
+		
+		const wrapper = document.createElement('div');
+		wrapper.className = 'search_empty';
 
+	    const img = document.createElement('img');
+	    img.src = '/images/common/search_empty.png';
+	    wrapper.appendChild(img);
+
+	    const h2 = document.createElement('h2');
+	    h2.innerHTML = keyword ? `'${keyword}' 에 대한<br/>검색 결과가 없습니다` : '결과가 없습니다';
+	    wrapper.appendChild(h2);
+
+	    const span = document.createElement('span');
+	    span.textContent = keyword ? '단어의 철자가 정확한지 확인해보세요' : '조건을 변경하거나 초기화해 보세요';
+	    wrapper.appendChild(span);
+		document.querySelector('.forum_content').insertAdjacentElement('afterend', wrapper);
+
+	    return;
+	}
+	
+	// 쩝쩝박사의 목록이 존재하는 경우
 	chompList.forEach(chomp => {
+		container.style.display = 'flex';
+		document.querySelector('.search_empty')?.remove();
+		
 		const li = document.createElement('li');
 		li.className = 'forum';
 

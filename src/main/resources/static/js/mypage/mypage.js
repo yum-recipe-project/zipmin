@@ -57,6 +57,8 @@ async function fetchUser() {
 			}
 			userWrap.querySelector('.user_nickname').innerText = response.data.data.nickname;
 			userWrap.querySelector('.user_introduce').innerText = response.data.data.introduce;
+			userWrap.querySelector('.user_link').innerText = response.data.data.link;
+			userWrap.querySelector('.user_point').innerText = `${response.data.data.point}P`;
 		}
 	}
 	catch(error) {
@@ -320,6 +322,39 @@ document.addEventListener('DOMContentLoaded', function() {
 		introduceForm.querySelector('button[type="submit"]').disabled = isIntroduceEmpty;
 	});
 	
+	// 링크 수정폼 토글
+	const linkEditButton = userWrap.querySelector('.link_field .edit_btn');
+	const linkContent = userWrap.querySelector('.link_field .user_link');
+	const linkForm = document.getElementById('editUserLinkForm');
+	linkEditButton.addEventListener('click', function(event) {
+		event.preventDefault();
+		
+		if (linkContent.style.display === 'none') {
+			linkContent.style.display = 'block';
+			linkForm.style.display = 'none';
+			linkEditButton.querySelector('p').textContent = '수정';
+			linkEditButton.querySelector('img').src = '/images/mypage/edit_1a7ce2.png';
+			linkForm.link.value = '';
+			linkForm.querySelector('button[type="submit"]').classList.add('disable');
+			linkForm.querySelector('button[type="submit"]').disabled = true;
+		}
+		else {
+			linkContent.style.display = 'none';
+			linkForm.style.display = 'block';
+			linkForm.link.value = linkContent.innerText;
+			linkEditButton.querySelector('p').textContent = '취소';
+			linkEditButton.querySelector('img').src = '/images/mypage/cancel_1a7ce2.png';
+		}
+	});
+	
+	// 소개 실시간 검사
+	linkForm.link.addEventListener('input', function(event) {
+		event.preventDefault();
+		const isLinkEmpty = this.value.trim() === '';
+		linkForm.querySelector('button[type="submit"]').classList.toggle('disable', isLinkEmpty);
+		linkForm.querySelector('button[type="submit"]').disabled = isLinkEmpty;
+	});
+	
 });
 
 
@@ -331,7 +366,6 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 async function editUserAvatar() {
 	
-	// 이미지 수정 폼
 	const form = document.getElementById('editUserAvatarForm');
 	
 	// 폼값 검사
@@ -349,7 +383,8 @@ async function editUserAvatar() {
 		
 		const response = await instance.patch(`/users/${id}`, data);
 		
-		if (response.data.code === 'USER_UPDATE_SUCCESS') {
+		if (response.data.code === 'USER_UPDATE_TOKEN_SUCCESS') {
+			localStorage.setItem('accessToken', response.data.data.accessToken);
 			fetchUser();
 		}
 	}
@@ -395,11 +430,7 @@ async function editUserAvatar() {
  */
 document.addEventListener('DOMContentLoaded', function() {
 	
-	// 닉네임 수정 폼
 	const nicknameForm = document.getElementById('editUserNicknameForm');
-	const nicknameEditButton = userWrap.querySelector('.nickname_field .edit_btn');
-	const nicknameContent = userWrap.querySelector('.nickname_field .nickname_content');
-	
 	nicknameForm.addEventListener('submit', async function(event) {
 		event.preventDefault();
 		
@@ -418,15 +449,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			
 			const response = await instance.patch(`/users/${id}`, data);
 			
-			if (response.data.code === 'USER_UPDATE_SUCCESS') {
-				nicknameContent.style.display = 'flex';
-				nicknameForm.style.display = 'none';
-				nicknameEditButton.querySelector('p').textContent = '수정';
-				nicknameEditButton.querySelector('img').src = '/images/mypage/edit_1a7ce2.png';
-				nicknameForm.nickname.value = '';
-				nicknameForm.querySelector('button[type="submit"]').classList.add('disable');
-				nicknameForm.querySelector('button[type="submit"]').disabled = true;
-				fetchUser();
+			if (response.data.code === 'USER_UPDATE_TOKEN_SUCCESS') {
+				localStorage.setItem('accessToken', response.data.data.accessToken);
+				location.reload();
 			}
 		}
 		catch(error) {
@@ -495,7 +520,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			
 			const response = await instance.patch(`/users/${id}`, data);
 			
-			if (response.data.code === 'USER_UPDATE_SUCCESS') {
+			if (response.data.code === 'USER_UPDATE_TOKEN_SUCCESS') {
 				introduceContent.style.display = 'block';
 				introduceForm.style.display = 'none';
 				introduceEditButton.querySelector('p').textContent = '수정';
@@ -503,6 +528,83 @@ document.addEventListener('DOMContentLoaded', function() {
 				introduceForm.introduce.value = '';
 				introduceForm.querySelector('button[type="submit"]').classList.add('disable');
 				introduceForm.querySelector('button[type="submit"]').disabled = true;
+				fetchUser();
+			}
+		}
+		catch(error) {
+			const code = error?.response?.data?.code;
+							
+			if (code === 'USER_UPDATE_FAIL') {
+				alertDanger('사용자 정보 수정에 실패했습니다.');
+			}
+			else if (code === 'USER_INVALID_INPUT') {
+				alertDanger('입력값이 유효하지 않습니다.');
+			}
+			else if (code === 'USER_UNAUTHORIZED_ACCESS') {
+				alertDanger('로그인하지 않은 사용자입니다.');
+			}
+			else if (code === 'USER_FORBIDDEN') {
+				alertDanger('접근 권한이 없습니다.');
+			}
+			else if (code === 'USER_NOT_FOUND') {
+				alertDanger('해당 사용자를 찾을 수 없습니다.');
+			}
+			else if (code === 'USER_TEL_DUPLICATED') {
+				alertDanger('사용자 전화번호가 중복되었습니다.');
+			}
+			else if (code === 'USER_EMAIL_DUPLICATED') {
+				alertDanger('사용자 이메일이 중복되었습니다.');
+			}
+			else if (code === 'INTERNAL_SERVER_ERROR') {
+				alertDanger('서버 내부에서 알 수 없는 오류가 발생했습니다.');
+			}
+			else {
+				console.log('알 수 없는 오류가 발생했습니다.');
+			}
+		}
+	});
+});
+
+
+
+
+
+/**
+ * 사용자 링크를 수정하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	
+	// 링크 수정 폼
+	const linkForm = document.getElementById('editUserLinkForm');
+	const linkEditButton = userWrap.querySelector('.link_field .edit_btn');
+	const linkContent = userWrap.querySelector('.link_field .user_link');
+	
+	linkForm.addEventListener('submit', async function(event) {
+		event.preventDefault();
+		
+		// 폼값 검사
+		if (linkForm.link.value.trim() === '') {
+			return;
+		}
+		
+		// 이미지 수정
+		try {
+			const id = parseJwt(localStorage.getItem('accessToken')).id;
+			
+			const data = {
+				link: linkForm.link.value.trim()
+			};
+			
+			const response = await instance.patch(`/users/${id}`, data);
+			
+			if (response.data.code === 'USER_UPDATE_TOKEN_SUCCESS') {
+				linkContent.style.display = 'block';
+				linkForm.style.display = 'none';
+				linkEditButton.querySelector('p').textContent = '수정';
+				linkEditButton.querySelector('img').src = '/images/mypage/edit_1a7ce2.png';
+				linkForm.link.value = '';
+				linkForm.querySelector('button[type="submit"]').classList.add('disable');
+				linkForm.querySelector('button[type="submit"]').disabled = true;
 				fetchUser();
 			}
 		}

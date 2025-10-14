@@ -96,8 +96,28 @@
 							</form>
 						</div>
 						
+						<div class="link_field">
+							<div class="link_title">
+								<label>링크</label>
+								<button class="edit_btn">
+								    <img src="/images/mypage/edit_1a7ce2.png">
+								    <p>수정</p>
+								</button>
+							</div>
+							
+							<p class="user_link"></p>
+							
+							<!-- 링크 수정폼 -->
+							<form id="editUserLinkForm" class="link_form">
+								<div class="edit_input">
+									<input type="text" name="link" placeholder="링크를 입력해주세요">
+								</div>
+								<button type="submit" class="btn_primary_wide disable" disabled>저장</button>
+							</form>
+						</div>
+						
 						<div class="point_field">
-							<span>500P</span>
+							<span class="user_point"></span>
 							<button class="btn_primary" type="button" data-bs-toggle="modal" data-bs-target="#topUpPointModal" >충전</button>
 						</div>
 					</div>

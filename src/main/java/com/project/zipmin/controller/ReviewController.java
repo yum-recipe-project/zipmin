@@ -20,14 +20,19 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.ReviewErrorCode;
 import com.project.zipmin.api.ReviewSuccessCode;
+import com.project.zipmin.api.UserErrorCode;
+import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.ReviewCreateRequestDto;
 import com.project.zipmin.dto.ReviewCreateResponseDto;
+import com.project.zipmin.dto.ReviewReadMyResponseDto;
 import com.project.zipmin.dto.ReviewReadResponseDto;
 import com.project.zipmin.dto.ReviewUpdateRequestDto;
 import com.project.zipmin.dto.ReviewUpdateResponseDto;
+import com.project.zipmin.dto.UserReadResponseDto;
+import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.ReviewService;
 import com.project.zipmin.service.UserService;
 
@@ -170,6 +175,46 @@ public class ReviewController {
 
 	    return ResponseEntity.status(ReviewSuccessCode.REVIEW_UNLIKE_SUCCESS.getStatus())
 	            .body(ApiResponse.success(ReviewSuccessCode.REVIEW_UNLIKE_SUCCESS, null));
+	}
+	
+	
+	
+	
+	
+	
+	
+	// 사용자가 작성한 리뷰 조회
+	@GetMapping("/users/{id}/reviews")
+	public ResponseEntity<?> readUserReviewList(
+	        @PathVariable Integer id,
+	        @RequestParam int page,
+	        @RequestParam int size) {
+
+	    // 입력값 검증
+	    if (id == null) {
+	        throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+	    }
+
+	    // 인증 여부 확인 (비로그인)
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+	        throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
+	    }
+
+	    // 로그인 정보
+	    String username = authentication.getName();
+
+	    // 본인 확인 (관리자가 아니면 본인만 조회 가능)
+	    UserReadResponseDto loginUser = userService.readUserByUsername(username);
+	    if (!loginUser.getRole().equals(Role.ROLE_ADMIN.name()) && !id.equals(loginUser.getId())) {
+	        throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+	    }
+
+	    Pageable pageable = PageRequest.of(page, size);
+	    Page<ReviewReadMyResponseDto> reviewPage = reviewService.readReviewPageByUserId(id, pageable);
+
+	    return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
+	            .body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, reviewPage));
 	}
 
 }

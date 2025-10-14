@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 		const token = localStorage.getItem('accessToken');
 		const payload = parseJwt(token);
 		
-		setLoginState(true, payload.nickname);
+		setLoginState(true, payload.nickname, payload.id);
 	}
 	catch (error) {
 		setLoginState(false);
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 /**
  * 로그인 상태에 따라 헤더 표시를 변경하는 함수
  */
-function setLoginState(isLoggedIn, nickname = '') {
+function setLoginState(isLoggedIn, nickname = '', id) {
 	const logoutState = document.querySelector(".logout_state");
 	const loginState = document.querySelector(".login_state");
 	const userName = document.querySelector(".user_name");
@@ -72,6 +72,10 @@ function setLoginState(isLoggedIn, nickname = '') {
 		logoutState.style.display = "none";
 		loginState.style.display = "flex";
 		userName.innerText = `${nickname}님`;
+		userName.addEventListener('click', function(event) {
+			event.preventDefault();
+			location.href = `/mypage/profile.do?id=${id}`;
+		});
 	} else {
 		logoutState.style.display = "flex";
 		loginState.style.display = "none";

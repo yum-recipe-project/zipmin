@@ -43,7 +43,6 @@
 					<div class="form-group">
 						<label>내용</label>
 						<textarea class="form-control" id="editGuideContentInput" name="content" style="height: 200px;" placeholder="내용을 입력해주세요"></textarea>
-						<p id="editGuideContentHint" class="danger">내용을 입력해주세요.</p>
 					</div>
 					
 				</div>

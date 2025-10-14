@@ -125,7 +125,7 @@ function validateOpenClassForm(form) {
 
 
 /**
- * 
+ * 스케쥴 정보 입력창을 추가하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById("addSchedule").addEventListener("click", function(event) {
@@ -161,6 +161,78 @@ document.addEventListener('DOMContentLoaded', function() {
 		initializeTimepicker(`#endtime_${rowCount}`);
 	});
 });
+
+
+
+/**
+ * 강사 정보 입력창을 추가하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    let tutorCount = 1; // 초기 강사 1명
+
+    document.getElementById("addTutor").addEventListener("click", function(event) {
+        event.preventDefault();
+		console.log("추가버튼 클릭");
+        tutorCount++;
+        const classTutorDiv = document.querySelector("#classTutor"); // 기존 HTML 그대로 사용
+        const table = classTutorDiv.querySelector("table");
+
+        const newTutor = `
+        <tbody class="tutor_row">
+            <tr>
+                <th scope="col">이름<span class="ess"></span></th>
+                <td>
+                    <span class="form_text">
+                        <input maxlength="50" name="name${tutorCount}" placeholder="이름을 입력해주세요" type="text" value="">
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <th scope="col">경력<span class="ess"></span></th>
+                <td>
+                    <span class="form_text">
+                        <input maxlength="50" name="career${tutorCount}_1" placeholder="경력 및 자격증을 입력해주세요" type="text" value="">
+                    </span>
+                    <span class="form_text">
+                        <input maxlength="50" name="career${tutorCount}_2" placeholder="경력 및 자격증을 입력해주세요 (선택)" type="text" value="">
+                    </span>
+                    <span class="form_text">
+                        <input maxlength="50" name="career${tutorCount}_3" placeholder="경력 및 자격증을 입력해주세요 (선택)" type="text" value="">
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <th scope="col">강사 사진<span class="ess"></span></th>
+                <td>
+                    <label class="form_file">
+                        <input type="file" name="teacher_img${tutorCount}" class="teacherImgInput">
+                        <input type="text" readonly="readonly" placeholder="파일을 선택하세요" class="teacherFileName">
+                    </label>
+                </td>
+            </tr>
+        </tbody>
+        `;
+
+        // 테이블에 추가
+        table.insertAdjacentHTML("beforeend", newTutor);
+
+        // 새로 추가된 파일 input 이벤트 바인딩
+        const newImgInput = table.querySelector(`input[name="teacher_img${tutorCount}"]`);
+        const newFileName = newImgInput.nextElementSibling;
+        newImgInput.addEventListener("change", function () {
+            if (this.files.length > 0) {
+                newFileName.value = this.files[0].name;
+            }
+        });
+    });
+});
+
+
+
+
+
+
+
 
 
 /**
@@ -278,14 +350,6 @@ $(document).ready(function () {
 
 
 
-
-
-
-
-
-
-
-
 /**
  * 쿠킹클래스 개설 신청을 지원하는 함수
  */
@@ -294,11 +358,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     form.addEventListener('submit', async function(event) {
         event.preventDefault();
-		
-		// 입력값 검증
-		if (!validateOpenClassForm(form)) {
-			return; 
-		}
+
+        // 입력값 검증
+        if (!validateOpenClassForm(form)) {
+            return;
+        }
 
         try {
             const createRequestDto = {
@@ -317,13 +381,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 tutor_list: []
             };
 
-            // 2추천 대상 리스트
+			// 추천 대상 
             ['target1', 'target2', 'target3'].forEach(name => {
                 const val = form[name]?.value.trim();
                 if (val) createRequestDto.target_list.push(val);
             });
 
-            // 스케줄 리스트 (커리큘럼)
+			// 커리큘럼
             const scheduleRows = document.querySelectorAll('#classSchedule table tbody');
             scheduleRows.forEach((tbody) => {
                 const startInput = tbody.querySelector('input[name^="starttime"]');
@@ -343,18 +407,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
-            // 4강사 리스트
-            const tutorName = form.name.value.trim();
-            const careers = [form.career1.value, form.career2.value, form.career3.value]
-                .map(c => c.trim())
-                .filter(c => c);
+			// 강사
+            const tutorRows = document.querySelectorAll('#classTutor table tbody.tutor_row');
+            tutorRows.forEach((tbody) => {
+                const nameInput = tbody.querySelector('input[name^="name"]');
+                const careerInputs = Array.from(tbody.querySelectorAll('input[name^="career"]'));
 
-            if (tutorName) {
-                createRequestDto.tutor_list.push({
-                    name: tutorName,
-                    career: careers.join(', ')
-                });
-            }
+                const name = nameInput?.value.trim();
+                const careers = careerInputs.map(c => c.value.trim()).filter(c => c);
+
+                if (name) {
+                    createRequestDto.tutor_list.push({
+                        name: name,
+                        career: careers.join(', ')
+                    });
+                }
+            });
 
             const formData = new FormData();
             formData.append(
@@ -362,16 +430,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 new Blob([JSON.stringify(createRequestDto)], { type: "application/json" })
             );
 
-            // 클래스 이미지
+			// 클래스 이미지
             const classImage = document.getElementById('imageInput').files[0];
             if (classImage) formData.append('classImage', classImage);
 
-            // 강사 이미지
-            const teacherImgFile = document.getElementById('teacherImgInput').files[0];
-            if (teacherImgFile) formData.append('tutorImages', teacherImgFile);
-
-            console.log("📦 전송 직전 DTO:", createRequestDto);
-
+			// 강사 이미지
+			tutorRows.forEach((tbody, index) => {
+			    const imgInput = tbody.querySelector('input[type="file"]');
+			    if (imgInput?.files[0]) {
+			        formData.append(`tutorImages`, imgInput.files[0]); 
+			    }
+			});
+			
             const response = await instance.post('/classes', formData, {
                 headers: {
                     ...getAuthHeaders(),
@@ -397,6 +467,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+
 
 function formatDateForServer(dateStr) {
     const parts = dateStr.split('/');

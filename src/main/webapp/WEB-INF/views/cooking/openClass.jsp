@@ -254,15 +254,19 @@
 						</div>
 						
 						
-						<h3>강사 정보</h3>
-						<div class="class_intro">
+						<h3>강사 정보
+						<span id="addTutor">
+							<img src="/images/cooking/add_circle.png">
+							추가하기
+						</span></h3>
+						<div class="class_intro" id="classTutor">
 							<p class="rt_note">필수입력사항</p>
 							<table>
 								<colgroup>
 									<col width="130px">
 									<col width="*">
 								</colgroup>
-								<tbody>
+								<tbody class="tutor_row">
 									<tr>
 										<th scope="col">이름<span class="ess"></span></th>
 										<td>

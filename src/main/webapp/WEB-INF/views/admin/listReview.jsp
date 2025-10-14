@@ -43,7 +43,7 @@
 						<div class="tab">
 							<ul>
 								<li class="btn_tab"><a href="" data-tab="" class="active"><span>전체</span></a></li>
-								<li class="btn_tab"><a href="" data-tab="recipe"><span>레시피</span></a></li>
+<!-- 								<li class="btn_tab"><a href="" data-tab="recipe"><span>레시피</span></a></li> -->
 							</ul>
 						</div>
 					</div>
@@ -52,15 +52,15 @@
 					<table class="table text-nowrap mb-0 align-middle">
 					    <thead class="text-dark fs-4">
 					    	<colgroup>
-					    		<col style="width:8%">
-					    		<col style="width:9%">
-					    		<col style="width:22%">
-					    		<col style="width:14%">
-					    		<col style="width:15%">
-					    		<col style="width:11%">
-					    		<col style="width:10%">
-					    		<col style="width:11%">
-					    	</colgroup>
+							    <col style="width:8%">  <!-- No -->
+							    <col style="width:8%">  <!-- 별점 -->
+							    <col style="width:22%"> <!-- 내용 -->
+							    <col style="width:14%"> <!-- 작성자 -->
+							    <col style="width:15%"> <!-- 작성일 -->
+							    <col style="width:11%"> <!-- 좋아요 -->
+							    <col style="width:10%"> <!-- 신고수 -->
+							    <col style="width:11%"> <!-- 기능 -->
+							</colgroup>
 					        <tr>
 					            <th colspan="2" class="total text-start"></th>
 					            <th></th>
@@ -74,31 +74,30 @@
 					            	</form>
 					            </th>
 					        </tr>
-					        <!-- ********** 필요한 내용에 따라 적절히 수정 ********* -->
 					        <tr class="table_th">
-					            <th>
-					                <h6 class="fs-4 fw-semibold mb-0">No</h6>
-					            </th>
-					            <th>
-					                <h6 class="fs-4 fw-semibold mb-0">레시피명</h6>
-					            </th>
-					            <th>
-					                <h6 class="fs-4 fw-semibold mb-0">내용</h6>
-					            </th>
-					            <th>
-					                <h6 class="fs-4 fw-semibold mb-0">작성자</h6>
-					            </th>
-					            <th class="sort_btn desc" data-key="postdate">
-					                <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
-					            </th>
-					            <th class="sort_btn" data-key="likecount">
-					                <h6 class="fs-4 fw-semibold mb-0">좋아요수</h6>
-					            </th>
-					            <th class="sort_btn" data-key="reportcount">
-					                <h6 class="fs-4 fw-semibold mb-0">신고수</h6>
-					            </th>
-					            <th></th>
-					        </tr>
+							    <th>
+							        <h6 class="fs-4 fw-semibold mb-0">No</h6>
+							    </th>
+							    <th>
+							        <h6 class="fs-4 fw-semibold mb-0">별점</h6>
+							    </th>
+							    <th>
+							        <h6 class="fs-4 fw-semibold mb-0">내용</h6>
+							    </th>
+							    <th>
+							        <h6 class="fs-4 fw-semibold mb-0">작성자</h6>
+							    </th>
+							    <th class="sort_btn desc" data-key="postdate">
+							        <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
+							    </th>
+							    <th class="sort_btn" data-key="likecount">
+							        <h6 class="fs-4 fw-semibold mb-0">좋아요수</h6>
+							    </th>
+							    <th class="sort_btn" data-key="reportcount">
+							        <h6 class="fs-4 fw-semibold mb-0">신고수</h6>
+							    </th>
+							    <th></th>
+							</tr>
 					    </thead>
 					    <tbody class="review_list"></tbody>
 					</table>
@@ -112,6 +111,9 @@
 				
 				</div>
 			</div>
+			
+			<!-- 리뷰 수정 모달 -->
+			<%@include file="../modal/editReviewModal.jsp" %>
 			
 		</div>
 		

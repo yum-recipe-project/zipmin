@@ -331,7 +331,6 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 async function editUserAvatar() {
 	
-	// 이미지 수정 폼
 	const form = document.getElementById('editUserAvatarForm');
 	
 	// 폼값 검사
@@ -349,7 +348,8 @@ async function editUserAvatar() {
 		
 		const response = await instance.patch(`/users/${id}`, data);
 		
-		if (response.data.code === 'USER_UPDATE_SUCCESS') {
+		if (response.data.code === 'USER_UPDATE_TOKEN_SUCCESS') {
+			localStorage.setItem('accessToken', response.data.data.accessToken);
 			fetchUser();
 		}
 	}
@@ -395,11 +395,7 @@ async function editUserAvatar() {
  */
 document.addEventListener('DOMContentLoaded', function() {
 	
-	// 닉네임 수정 폼
 	const nicknameForm = document.getElementById('editUserNicknameForm');
-	const nicknameEditButton = userWrap.querySelector('.nickname_field .edit_btn');
-	const nicknameContent = userWrap.querySelector('.nickname_field .nickname_content');
-	
 	nicknameForm.addEventListener('submit', async function(event) {
 		event.preventDefault();
 		
@@ -418,15 +414,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			
 			const response = await instance.patch(`/users/${id}`, data);
 			
-			if (response.data.code === 'USER_UPDATE_SUCCESS') {
-				nicknameContent.style.display = 'flex';
-				nicknameForm.style.display = 'none';
-				nicknameEditButton.querySelector('p').textContent = '수정';
-				nicknameEditButton.querySelector('img').src = '/images/mypage/edit_1a7ce2.png';
-				nicknameForm.nickname.value = '';
-				nicknameForm.querySelector('button[type="submit"]').classList.add('disable');
-				nicknameForm.querySelector('button[type="submit"]').disabled = true;
-				fetchUser();
+			if (response.data.code === 'USER_UPDATE_TOKEN_SUCCESS') {
+				localStorage.setItem('accessToken', response.data.data.accessToken);
+				location.reload();
 			}
 		}
 		catch(error) {
@@ -495,7 +485,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			
 			const response = await instance.patch(`/users/${id}`, data);
 			
-			if (response.data.code === 'USER_UPDATE_SUCCESS') {
+			if (response.data.code === 'USER_UPDATE_TOKEN_SUCCESS') {
 				introduceContent.style.display = 'block';
 				introduceForm.style.display = 'none';
 				introduceEditButton.querySelector('p').textContent = '수정';

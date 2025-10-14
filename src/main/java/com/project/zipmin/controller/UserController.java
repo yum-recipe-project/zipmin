@@ -1,5 +1,6 @@
 package com.project.zipmin.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.ClassSuccessCode;
@@ -33,6 +35,7 @@ import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.RecipeReadMyResponseDto;
 import com.project.zipmin.dto.RecipeReadMySavedResponseDto;
 import com.project.zipmin.dto.ReviewReadMyResponseDto;
+import com.project.zipmin.dto.TokenDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
 import com.project.zipmin.dto.UserPasswordCheckRequestDto;
@@ -50,6 +53,7 @@ import com.project.zipmin.service.CookingService;
 import com.project.zipmin.service.FundService;
 import com.project.zipmin.service.KitchenService;
 import com.project.zipmin.service.RecipeService;
+import com.project.zipmin.service.ReissueService;
 import com.project.zipmin.service.ReviewService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
@@ -73,6 +77,8 @@ import com.project.zipmin.swagger.UserUpdateFailResponse;
 import com.project.zipmin.swagger.UserUpdateSuccessResponse;
 import com.project.zipmin.swagger.UserUsernameDuplicatedResponse;
 import com.project.zipmin.swagger.UserUsernameNotDuplicatedResponse;
+import com.project.zipmin.util.CookieUtil;
+import com.project.zipmin.util.JwtUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -80,6 +86,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -92,6 +99,12 @@ public class UserController {
 	private final RecipeService recipeService;
 	private final ReviewService reviewService;
 	private final FundService fundService;
+	private final ReissueService reissueService;
+	
+	private final ObjectMapper objectMapper;
+	private final JwtUtil jwtUtil;
+	
+	
 	
 	
 	
@@ -639,7 +652,8 @@ public class UserController {
 	@PatchMapping("/users/{id}")
 	public ResponseEntity<?> updateUser(
 			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
-			@Parameter(description = "사용자 수정 요청 정보") @RequestBody UserUpdateRequestDto userRequestDto) {
+			@Parameter(description = "사용자 수정 요청 정보") @RequestBody UserUpdateRequestDto userRequestDto,
+			HttpServletResponse response) {
 
 		// 입력값 검증
 		if (id == null) {
@@ -674,9 +688,25 @@ public class UserController {
 		userRequestDto.setId(id);
 		
 		UserUpdateResponseDto userResponseDto = userService.updateUser(userRequestDto);
+		
+		// 토큰 재발급
+		String access = jwtUtil.createJwt("access", userResponseDto.getId(), userResponseDto.getUsername(),
+				userResponseDto.getNickname(), userResponseDto.getAvatar(), userResponseDto.getRole(), 60 * 60 * 60L);
+		String refresh = jwtUtil.createJwt("refresh", userResponseDto.getId(), userResponseDto.getUsername(),
+				userResponseDto.getNickname(), userResponseDto.getAvatar(), userResponseDto.getRole(), 86400_000L);
+		
+		reissueService.addRefresh(userResponseDto.getUsername(), refresh, 86400_000L);
+		
+		response.addCookie(CookieUtil.createCookie("refresh", refresh, 86_400));
+		response.setHeader("Authorization", "Bearer " + access);
+		
+		TokenDto tokenDto = TokenDto.toDto(access);
+		// response.setContentType("application/json");
+		// response.setCharacterEncoding("utf-8");
+		// response.getWriter().write(objectMapper.writeValueAsString(ApiResponse.success(UserSuccessCode.USER_UPDATE_TOKEN_SUCCESS, tokenDto)));
 
-		return ResponseEntity.status(UserSuccessCode.USER_UPDATE_SUCCESS.getStatus())
-				.body(ApiResponse.success(UserSuccessCode.USER_UPDATE_SUCCESS, userResponseDto));
+		return ResponseEntity.status(UserSuccessCode.USER_UPDATE_TOKEN_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_UPDATE_TOKEN_SUCCESS, tokenDto));
 	}
 	
 	

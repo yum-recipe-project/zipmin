@@ -448,7 +448,7 @@ public class CookingService {
 
         } catch (Exception e) {
             throw new ApiException(ClassErrorCode.CLASS_CREATE_FAIL);
-        }
+        } 
 	}
 	
 	
@@ -458,8 +458,7 @@ public class CookingService {
 	
 	
 	
-	
-	
+	 
 	
 	
 	

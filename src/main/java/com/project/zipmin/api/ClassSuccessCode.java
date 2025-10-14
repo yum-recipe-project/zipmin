@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ClassSuccessCode implements Code {
 	
-	// 데이터 처리
 	CLASS_CREATE_SUCCESS(HttpStatus.CREATED, "클래스 작성 성공"),
 	CLASS_READ_LIST_SUCCESS(HttpStatus.OK, "클래스 목록 조회 성공"),
 	CLASS_READ_SUCCESS(HttpStatus.OK, "클래스 조회 성공"),

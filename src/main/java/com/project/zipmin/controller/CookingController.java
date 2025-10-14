@@ -24,7 +24,6 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.ClassErrorCode;
 import com.project.zipmin.api.ClassSuccessCode;
-import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.dto.ClassApplyCreateRequestDto;
 import com.project.zipmin.dto.ClassApplyCreateResponseDto;
 import com.project.zipmin.dto.ClassApplyReadResponseDto;
@@ -41,9 +40,12 @@ import com.project.zipmin.swagger.ClassApplyCreateFailResponse;
 import com.project.zipmin.swagger.ClassApplyCreateSuccessResponse;
 import com.project.zipmin.swagger.ClassApplyDuplicateResponse;
 import com.project.zipmin.swagger.ClassApplyInvalidInputResponse;
+import com.project.zipmin.swagger.ClassApplyNotFoundResponse;
 import com.project.zipmin.swagger.ClassApplyReadListFailResponse;
 import com.project.zipmin.swagger.ClassApplyUnableResponse;
+import com.project.zipmin.swagger.ClassApplyUpdateFailResponse;
 import com.project.zipmin.swagger.ClassApplyUpdateSuccessResponse;
+import com.project.zipmin.swagger.ClassCountAttendSuccessResponse;
 import com.project.zipmin.swagger.ClassDeleteFailResponse;
 import com.project.zipmin.swagger.ClassDeleteSuccessResponse;
 import com.project.zipmin.swagger.ClassForbiddenResponse;
@@ -379,7 +381,7 @@ public class CookingController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = ClassUnauthorizedAccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "401",
+				responseCode = "403",
 				description = "권한 없는 사용자의 접근",
 				content = @Content(
 						mediaType = "application/json",
@@ -547,21 +549,6 @@ public class CookingController {
 	
 	
 	
-	
-	
-	// CLASS_UNAUTHORIZED_ACCESS
-		// CLASS_APPLY_INVALID_INPUT
-		// CLASS_NOT_FOUND
-		// CLASS_FORBIDDEN
-		// CLASS_APPLY_NOT_FOUND
-		// CLASS_ALREADY_ENDED
-		// CLASS_APPLY_INVALID_INPUT
-		// CLASS_ALREADY_ENDED
-		// CLASS_APPLY_UPDATE_FAIL
-		// USER
-	
-	
-
 	@Operation(
 	    summary = "클래스 신청 상태 수정"
 	)
@@ -574,10 +561,10 @@ public class CookingController {
 						schema = @Schema(implementation = ClassApplyUpdateSuccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
-				description = "클래스 신청 작성 실패",
+				description = "클래스 신청 수정 실패",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = ClassApplyCreateFailResponse.class))),
+						schema = @Schema(implementation = ClassApplyUpdateFailResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
 				description = "입력값이 유효하지 않음",
@@ -597,17 +584,17 @@ public class CookingController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = ClassUnauthorizedAccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "401",
+				responseCode = "403",
+				description = "권한 없는 사용자의 접근",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
 				description = "클래스 종료 후 접근 시도",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = ClassAlreadyEndedResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "401",
-				description = "클래스 신청 작성 불가",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = ClassApplyUnableResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
 				description = "해당 클래스를 찾을 수 없음",
@@ -616,16 +603,16 @@ public class CookingController {
 						schema = @Schema(implementation = ClassNotFoundResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
+				description = "해당 클래스 신청을 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassApplyNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
 				description = "해당 사용자를 찾을 수 없음",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserNotFoundResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "409",
-				description = "클래스 신청 중복 작성 시도",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = ClassApplyDuplicateResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "500",
 				description = "서버 내부 오류",
@@ -657,11 +644,39 @@ public class CookingController {
 	
 	
 	
-	// CLASS_READ_LIST_SUCCESS
-	// CLASS_READ_LIST_FAIL
-	// CLASS_INVALID_INPUT
-	
-	// 사용자가 개설한 쿠킹클래스
+	@Operation(
+	    summary = "사용자의 클래스 목록 조회"
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "클래스 목록 조회 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassReadSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "클래스 목록 조회 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassReadListFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassApplyInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+		
+	})
+	// 사용자의 클래스 목록 조회
+	// js/mypage/classes.js
+	// js/mypage/profile.js
 	@GetMapping("/users/{id}/classes")
 	public ResponseEntity<?> listUserClass(
 			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
@@ -680,7 +695,68 @@ public class CookingController {
 	
 	
 	
+	@Operation(
+	    summary = "사용자가 신청한 클래스 목록 조회"
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "클래스 목록 조회 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassReadSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "클래스 목록 조회 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassReadListFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "클래스 신청 목록 조회 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassApplyReadListFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassUnauthorizedAccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "권한 없는 사용자의 접근",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+		
+	})
 	// 사용자가 신청한 쿠킹클래스
+	// js/mypage/applied-class.js
 	@GetMapping("/users/{id}/applied-classes")
 	public ResponseEntity<?> readUserClassApplyList(
 			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
@@ -688,11 +764,12 @@ public class CookingController {
 			@Parameter(description = "페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지 크기") @RequestParam int size) {
 		
-		// 입력값 검증
-		if (id == null) {
-			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
 		}
-		
+				
 		Pageable pageable = PageRequest.of(page, size);
 		Page<UserAppliedClassResponseDto> applyPage = cookingService.readAppliedClassPageByUserId(id, status, pageable);
 		
@@ -704,18 +781,79 @@ public class CookingController {
 	
 	
 	
-	// 결석 수
-	// TODO : 수정 필요
+	@Operation(
+	    summary = "사용자의 클래스 결석 수 조회"
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "클래스 출석 집계 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassCountAttendSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "클래스 목록 조회 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassReadListFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "클래스 신청 목록 조회 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassApplyReadListFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassUnauthorizedAccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "권한 없는 사용자의 접근",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+		
+	})
+	// 사용자의 클래스 결석 수 조회
+	// js/mypage/applied-classes.js
 	@GetMapping("/users/{id}/attend-classes/count")
 	public ResponseEntity<?> countUserClassAttend(
 			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id) {
 		
-		// 입력값 검증
-		if (id == null) {
-			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
 		}
 		
-		int count = (int) cookingService.countClassAttend(id);
+		int count = cookingService.countClassAttend(id);
 		
 		return ResponseEntity.status(ClassSuccessCode.CLASS_COUNT_ATTEND_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_COUNT_ATTEND_SUCCESS, count));

@@ -569,10 +569,7 @@ public class CookingService {
 	
 	
 	
-	
-	
-	
-	// 사용자가 개설한 클래스 목록 조회
+	// 사용자의 클래스 목록 조회
 	public Page<UserClassReadResponseDto> readClassPageByUserId(Integer userId, String status, Pageable pageable) {
 		
 		// 입력값 검증
@@ -582,12 +579,10 @@ public class CookingService {
 		
 		// 클래스 목록 조회
 		Page<Class> classPage = null;
-		
 		Date now = new Date();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(now);
 		calendar.add(Calendar.DAY_OF_YEAR, -7);
-		
 		try {
 			boolean hasStatus = status != null && !status.isBlank();
 	    	
@@ -986,12 +981,23 @@ public class CookingService {
 	
 	
 	
-	// 60일 이내 결석 수
-	public long countClassAttend(Integer id) {
+	// 사용자의 클래스 결석 수 조회
+	public int countClassAttend(Integer id) {
 		
 		// 입력값 검증
 		if (id == null) {
 			throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
+		}
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto loginUser = userService.readUserByUsername(username);
+		if (!loginUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!loginUser.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (loginUser.getId() != id) {
+					throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
+				}
+			}
 		}
 		
 		// 결석한 클래스 신청 목록 조회
@@ -1021,12 +1027,12 @@ public class CookingService {
 			throw new ApiException(ClassErrorCode.CLASS_READ_LIST_FAIL);
 		}
 		
+		// 기간 이내 결석 클래스 목록
 		Date now = new Date();
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_YEAR, -60);
 		Date batchdate = calendar.getTime();
-		
-		return classList.stream()
+		int count = (int) classList.stream()
 				.filter(classs -> classs.getApproval() == 1)
 				.filter(classs -> {
 					Calendar tmp = Calendar.getInstance();
@@ -1036,6 +1042,8 @@ public class CookingService {
 			})
 			.filter(classs -> classs.getEventdate().after(batchdate))
 			.count();
+		
+		return count;
 	}
 	
 	

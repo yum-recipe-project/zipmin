@@ -115,6 +115,9 @@ async function fetchClassList() {
 		else if (result.code === 'INTERNAL_SERVER_ERROR') {
 			console.log(error);
 		}
+		else {
+			console.log(error);
+		}
 	}
 	catch (error) {
 		console.log(error);

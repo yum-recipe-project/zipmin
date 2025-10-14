@@ -27,6 +27,14 @@ document.addEventListener('DOMContentLoaded', function() {
 		fetchClassList();
 	});
 	
+	// 검색창 빈 경우 초기화
+	searchForm.querySelector('.search_word')?.addEventListener('input', function () {
+		if (this.value.trim() === '') {
+			keyword = '';
+			fetchClassList();
+		}
+	});
+	
 	// 카테고리
 	document.querySelectorAll('.btn_tab').forEach(tab => {
 		tab.addEventListener('click', function (event) {

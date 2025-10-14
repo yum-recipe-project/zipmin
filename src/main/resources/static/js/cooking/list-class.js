@@ -13,8 +13,6 @@ let classList = [];
 
 
 
-
-
 /**
  * 탭 메뉴 클릭시 탭 메뉴를 활성화하고 해당 내용을 표시하는 함수
  */
@@ -88,10 +86,7 @@ async function fetchClassList() {
 		
 		const result = await response.json();
 		
-		console.log(result);
-		
 		if (result.code === 'CLASS_READ_LIST_SUCCESS') {
-			
 			// 전역변수 설정
 			page = result.data.number;
 			totalPages = result.data.totalPages;
@@ -102,24 +97,24 @@ async function fetchClassList() {
 			renderPagination(fetchClassList);
 			document.querySelector('.class_util .total').innerText = `총 ${result.data.totalElements}개`;
 			
-			// 검색 결과 없음 표시
-			if (result.data.totalPages === 0) {
-				document.querySelector('.class_list').style.display = 'none';
-				document.querySelector('.search_empty')?.remove();
-				const content = document.querySelector('.class_content');
-				content.insertAdjacentElement('afterend', renderSearchEmpty());
-			}
-			// 검색 결과 표시
-			else {
-				document.querySelector('.search_empty')?.remove();
-				document.querySelector('.class_list').style.display = '';
-			}
-			
 			// 스크롤 최상단 이동
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
-		
-		/***** 에러 코드 추가 *****/
+		else if (result.code === 'CLASS_READ_LIST_FAIL') {
+			alertDanger('쿠킹클래스 목록 조회에 실패했습니다.');
+		}
+		else if (result.code === 'CLASS_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (result.code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (result.code === 'USER_NOT_FOUND') {
+			alertDanger('해당 사용자를 찾을 수 없습니다.');
+		}
+		else if (result.code === 'INTERNAL_SERVER_ERROR') {
+			console.log(error);
+		}
 	}
 	catch (error) {
 		console.log(error);
@@ -132,22 +127,47 @@ async function fetchClassList() {
 
 
 /**
- * 
+ * 쿠킹클래스의 목록을 화면에 렌더링하는 함수
  */
 function renderClassList(classList) {
+	
 	const container = document.querySelector('.class_list');
 	container.innerHTML = '';
 	
+	// 쿠킹클래스 목록이 존재하지 않는 경우
+	if (classList == null || classList.length === 0) {
+		document.querySelector('.search_empty')?.remove();
+		
+		const wrapper = document.createElement('div');
+		wrapper.className = 'search_empty';
+
+	    const img = document.createElement('img');
+	    img.src = '/images/common/search_empty.png';
+	    wrapper.appendChild(img);
+
+	    const h2 = document.createElement('h2');
+	    h2.innerHTML = keyword ? `'${keyword}' 에 대한<br/>검색 결과가 없습니다` : '결과가 없습니다';
+	    wrapper.appendChild(h2);
+
+	    const span = document.createElement('span');
+	    span.textContent = keyword ? '단어의 철자가 정확한지 확인해보세요' : '조건을 변경하거나 초기화해 보세요';
+	    wrapper.appendChild(span);
+		container.insertAdjacentElement('afterend', wrapper);
+
+	    return;
+	}
+	
+	// 쿠킹클래스의 목록이 존재하는 경우
 	classList.forEach(classs => {
-		// li
+		container.style.display = 'block';
+		document.querySelector('.search_empty')?.remove();
+		
 		const li = document.createElement('li');
 		li.className = 'class';
 		
-		// a
 		const link = document.createElement('a');
 		link.href = `/cooking/viewClass.do?id=${classs.id}`;
 		
-		// 썸네일 div
 		const thumbnailDiv = document.createElement('div');
 		thumbnailDiv.className = 'class_thumbnail';
 		
@@ -155,7 +175,6 @@ function renderClassList(classList) {
 		img.src = classs.image;
 		thumbnailDiv.appendChild(img);
 		
-		// 정보 div
 		const infoDiv = document.createElement('div');
 		infoDiv.className = 'class_info';
 		
@@ -177,26 +196,3 @@ function renderClassList(classList) {
 		container.appendChild(li);
 	});
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

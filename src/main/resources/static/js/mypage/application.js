@@ -82,6 +82,9 @@ async function fetchClass() {
 			// 렌더링
 			const wrap = document.getElementById('applyWrap');
 			wrap.querySelector('.apply_title').innerText = `${response.data.data.title} 신청서`;
+			
+			// 스크롤 최상단 이동
+			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
 	}
 	catch (error) {

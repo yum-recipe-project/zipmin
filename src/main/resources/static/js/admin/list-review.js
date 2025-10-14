@@ -20,6 +20,10 @@ let page = 0;
 let size = 10;
 let ReviewList = [];
 
+let sortKey = 'id';    
+let sortOrder = 'desc'; 
+
+
 /**
  * 서버에서 전체 리뷰 목록 데이터를 가져오는 함수 (관리자용)
  */
@@ -27,12 +31,12 @@ async function fetchAdminReviewList() {
     try {
         const params = new URLSearchParams({
             page: page,
-            size: size
+            size: size,
+			sort: sortKey + '-' + sortOrder 
         }).toString();
-
-        // ✅ 관리자용 전체 리뷰 목록 API 호출
+		
         const response = await instance.get(`/admin/reviews?${params}`, {
-            headers: getAuthHeaders() // 관리자 토큰 인증 필요 시
+            headers: getAuthHeaders() 
         });
 
 		if (response.data.code === 'REVIEW_READ_LIST_SUCCESS') {
@@ -360,3 +364,30 @@ document.addEventListener('click', e => {
 	}
 });
 
+
+
+document.addEventListener('DOMContentLoaded', function() {
+	
+	// 정렬 버튼 클릭 이벤트
+	document.querySelectorAll('.sort_btn').forEach(btn => {
+		btn.addEventListener('click', function(event) {
+			event.preventDefault();
+
+			const key = btn.dataset.key;
+
+			if (sortKey === key) {
+				sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+			} else {
+				sortKey = key;
+				sortOrder = 'desc';
+			}
+
+			// 모든 sort_btn 클래스 초기화 후 현재 버튼만 적용
+			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
+			btn.classList.add(sortOrder);
+
+			page = 0; // 첫 페이지로 초기화
+			fetchAdminReviewList();
+		});
+	});
+});

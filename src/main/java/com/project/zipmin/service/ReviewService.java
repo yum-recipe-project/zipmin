@@ -58,21 +58,33 @@ public class ReviewService {
         Sort sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id"));
         if (sort != null && !sort.isBlank()) {
             switch (sort) {
-                case "postdate-desc":
-                    sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id")); //최신
-                    break;
-                case "postdate-asc":
-                    sortSpec = Sort.by(Sort.Order.asc("postdate"), Sort.Order.asc("id")); //오래된
-                    break;
-                case "likecount-desc":
-                    sortSpec = Sort.by(Sort.Order.desc("likecount"), Sort.Order.desc("id")); //평점 높은
-                    break;
-                case "likecount-asc":
-                    sortSpec = Sort.by(Sort.Order.asc("likecount"), Sort.Order.asc("id"));
-                    break;
-                default:
-                    break;
-            }
+	            case "id-desc":
+	                sortSpec = Sort.by(Sort.Order.desc("id")); 
+	                break;
+	            case "id-asc":
+	                sortSpec = Sort.by(Sort.Order.asc("id")); 
+	                break;
+	            case "postdate-desc":
+	                sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id")); // 최신순
+	                break;
+	            case "postdate-asc":
+	                sortSpec = Sort.by(Sort.Order.asc("postdate"), Sort.Order.asc("id")); // 오래된순
+	                break;
+	            case "score-desc":
+	                sortSpec = Sort.by(Sort.Order.desc("score"), Sort.Order.desc("id")); // 별점 높은순
+	                break;
+	            case "score-asc":
+	                sortSpec = Sort.by(Sort.Order.asc("score"), Sort.Order.asc("id")); // 별점 낮은순
+	                break;
+	            case "likecount-desc":
+	                sortSpec = Sort.by(Sort.Order.desc("likecount"), Sort.Order.desc("id")); // 좋아요 높은순
+	                break;
+	            case "likecount-asc":
+	                sortSpec = Sort.by(Sort.Order.asc("likecount"), Sort.Order.asc("id")); // 좋아요 낮은순
+	                break;
+	            default:
+	                break;
+	        }
         }
 
         Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
@@ -116,7 +128,7 @@ public class ReviewService {
         System.err.println("리뷰 목록" + reviewDtoList);
         
         
-        return new PageImpl<>(reviewDtoList, pageable, reviewPage.getTotalElements());
+        return new PageImpl<>(reviewDtoList, sortedPageable, reviewPage.getTotalElements());
     }
 
 	

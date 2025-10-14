@@ -75,10 +75,10 @@
 					            </th>
 					        </tr>
 					        <tr class="table_th">
-							    <th>
+							    <th class="sort_btn desc" data-key="id">
 							        <h6 class="fs-4 fw-semibold mb-0">No</h6>
 							    </th>
-							    <th>
+							    <th class="sort_btn desc" data-key="score">
 							        <h6 class="fs-4 fw-semibold mb-0">별점</h6>
 							    </th>
 							    <th>

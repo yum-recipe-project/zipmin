@@ -15,7 +15,7 @@
 		<script src="/js/common/pagination.js"></script>
 		<script src="/js/common/jwt.js"></script>
 		<script src="/js/common/util.js"></script>
-		<script src="/js/admin/list-guide.js"></script>
+		<script src="/js/admin/list-withdraw.js"></script>
 		<script src="/js/admin/modal/edit-guide-modal.js"></script>
 		<script src="/js/admin/modal/write-guide-modal.js"></script>
 	</head>
@@ -40,15 +40,11 @@
 					</div>
 					
 					<!-- 제목 -->
-					<h1>키친가이드 게시판</h1>
+					<h1>출금관리 게시판</h1>
 					<div class="bar">
 						<div class="tab">
 							<ul>
 								<li class="btn_tab"><a href="" data-tab="" class="active"><span>전체</span></a></li>
-								<li class="btn_tab"><a href="" data-tab="preparation"><span>손질법</span></a></li>
-								<li class="btn_tab"><a href="" data-tab="storage"><span>보관법</span></a></li>
-								<li class="btn_tab"><a href="" data-tab="info"><span>요리정보</span></a></li>
-								<li class="btn_tab"><a href="" data-tab="etc"><span>기타정보</span></a></li>
 							</ul>
 						</div>
 					</div>
@@ -56,56 +52,53 @@
 					<!-- 목록 -->
 					<table class="table text-nowrap mb-0 align-middle fixed-table">
 					    <thead class="text-dark fs-4">
+					        <colgroup>
+					            <col style="width:8%">
+					            <col style="width:12%">
+					            <col style="width:15%">
+					            <col style="width:15%">
+					            <col style="width:10%">
+					            <col style="width:10%">
+					            <col style="width:10%">
+					        </colgroup>
+					
+					        <!-- 검색/총계 row -->
 					        <tr>
-						        <colgroup>
-				    				<col style="width:8%">
-						    		<col style="width:9%">
-						    		<col style="width:22%">
-								    <col style="width:12%">
-								    <col style="width:12%"> 
-								    <col style="width:10%"> 
-								    <col style="width:10%"> 
-								    <col style="width:12%"> 
-						    	</colgroup>
-					            <th colspan="2" class="total text-start"></th>
-					            <th></th>
-					            <th></th>
-					            <th></th>
-					            <th></th>
+					            <th colspan="4" class="total text-start"></th>
 					            <th colspan="3" class="text-end">
-					            	<form class="search position-relative text-end">
-					            		<input type="text" class="form-control search-chat py-2 ps-5" id="text-srh" placeholder="검색어를 입력하세요">
-					            		<i class="ti ti-search position-absolute top-50 start-0 translate-middle-y fs-6 text-dark ms-3"></i>
-					            	</form>
+					                <form class="search position-relative text-end">
+					                    <input type="text" class="form-control search-chat py-2 ps-5" id="text-srh" placeholder="검색어를 입력하세요">
+					                    <i class="ti ti-search position-absolute top-50 start-0 translate-middle-y fs-6 text-dark ms-3"></i>
+					                </form>
 					            </th>
 					        </tr>
+					
+					        <!-- 컬럼명 row -->
 					        <tr class="table_th">
 					            <th class="sort_btn" data-key="id">
 					                <h6 class="fs-4 fw-semibold mb-0">No</h6>
 					            </th>
 					            <th>
-					                <h6 class="fs-4 fw-semibold mb-0">게시판명</h6>
+					                <h6 class="fs-4 fw-semibold mb-0">출금 요청자</h6>
 					            </th>
 					            <th>
-					                <h6 class="fs-4 fw-semibold mb-0">내용</h6>
-					            </th>
-					            
-					            <th class="sort_btn desc" data-key="postdate">
-					                <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
+					                <h6 class="fs-4 fw-semibold mb-0">출금 요청일</h6>
 					            </th>
 					            <th>
-					                <h6 class="fs-4 fw-semibold mb-0">작성자</h6>
+					                <h6 class="fs-4 fw-semibold mb-0">요청 금액</h6>
 					            </th>
-					            
-					            <th class="sort_btn" data-key="likecount">
-					                <h6 class="fs-4 fw-semibold mb-0">좋아요수</h6>
+					            <th>
+					                <h6 class="fs-4 fw-semibold mb-0">승인여부</h6>
 					            </th>
-					            <th class="sort_btn" data-key="reportcount">
-					                <h6 class="fs-4 fw-semibold mb-0">신고수</h6>
+					            <th>
+					                <h6 class="fs-4 fw-semibold mb-0">기타</h6>
 					            </th>
-					            <th></th>
+					            <th>
+					                <h6 class="fs-4 fw-semibold mb-0">관리</h6>
+					            </th>
 					        </tr>
 					    </thead>
+					
 					    <tbody class="guide_list"></tbody>
 					</table>
 

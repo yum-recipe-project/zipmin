@@ -22,6 +22,7 @@ public class GuideReadResponseDto {
 	
 	private long likecount;
 	private boolean likestatus;
+	private String username;
 	
 }
 

@@ -57,6 +57,7 @@ public class KitchenController {
 		    @RequestParam(required = false) String sort,
 		    @RequestParam int page,
 		    @RequestParam int size) {
+		System.err.println("컨트롤러 진입");
 		
 		Pageable pageable = PageRequest.of(page, size);
 		Page<GuideReadResponseDto> guidePage = null;

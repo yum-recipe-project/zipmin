@@ -25,6 +25,7 @@ import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.CommentSuccessCode;
 import com.project.zipmin.api.RecipeErrorCode;
 import com.project.zipmin.api.RecipeSuccessCode;
+import com.project.zipmin.api.ReviewSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.dto.ChompReadResponseDto;
@@ -32,7 +33,9 @@ import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.RecipeReadResponseDto;
+import com.project.zipmin.dto.ReviewReadResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
+import com.project.zipmin.dto.WithdrawReadResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
@@ -41,6 +44,7 @@ import com.project.zipmin.service.KitchenService;
 import com.project.zipmin.service.RecipeService;
 import com.project.zipmin.service.ReviewService;
 import com.project.zipmin.service.UserService;
+import com.project.zipmin.service.WithdrawService;
 import com.project.zipmin.swagger.ChompReadListFailResponse;
 import com.project.zipmin.swagger.ChompReadListSuccessResponse;
 import com.project.zipmin.swagger.CommentForbiddenResponse;
@@ -82,6 +86,7 @@ public class AdminController {
 	private final CommentService commentService;
 	private final ReviewService reviewService;
 	private final CookingService cookingService;
+	private final WithdrawService withdrawService;
 	
 	
 	
@@ -475,5 +480,52 @@ public class AdminController {
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_UPDATE_APPROVAL_SUCCESS, null));
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// 전체 사용자 출금 내역 목록 조회
+	@GetMapping("/admin/withdraw")
+	public ResponseEntity<?> readWithdrawList(
+	        @RequestParam int page,
+	        @RequestParam int size) {
+	    System.err.println("입력값 page: " + page + " size: " + size);
+
+	    // 페이지 정보 생성
+	    Pageable pageable = PageRequest.of(page, size);
+
+	    // 서비스 호출: 모든 출금 내역 조회
+	    Page<WithdrawReadResponseDto> withdrawPage = withdrawService.readAllWithdrawPage(pageable);
+	    System.err.println("서비스 호출 완료: " + withdrawPage);
+
+	    // 응답 반환
+	    return ResponseEntity.status(UserSuccessCode.USER_WITHDRAW_HISTORY_READ_SUCCESS.getStatus())
+	            .body(ApiResponse.success(UserSuccessCode.USER_WITHDRAW_HISTORY_READ_SUCCESS, withdrawPage));
+	}
+	
+	
+	// 전체 사용자 리뷰 내역 목록 조회
+    @GetMapping("/admin/reviews")
+    public ResponseEntity<?> readAllReviews(
+            @RequestParam(required = false) String sort,
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam(required = false) String keyword) {
+    	
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ReviewReadResponseDto> reviewPage = reviewService.readAllReviewPage(sort, pageable, keyword);
+
+        return ResponseEntity.status(ReviewSuccessCode.REVIEW_READ_LIST_SUCCESS.getStatus())
+                .body(ApiResponse.success(ReviewSuccessCode.REVIEW_READ_LIST_SUCCESS, reviewPage));
+    }
+	
+	
+	
+
 	
 }

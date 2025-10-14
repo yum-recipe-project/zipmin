@@ -22,4 +22,5 @@ public class ReviewReadResponseDto {
     private int likecount; // 좋아요 개수
 	private int reportcount; // 신고 개수
 	private boolean isLiked; // 좋아요 여부
+	private String title; // 좋아요 여부
 }

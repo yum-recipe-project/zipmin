@@ -72,8 +72,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 	
 	if (isLoggedIn()) {
 		const payload = parseJwt(localStorage.getItem('accessToken'));
-		document.getElementById('login_state').style.display = 'block';
-		document.getElementById('logout_state').style.display = 'none';
+		document.getElementById('commentLoginState').style.display = 'block';
+		document.getElementById('commentLogoutState').style.display = 'none';
 		document.getElementById('writeCommentAvatar').src = payload.avatar;
 		document.getElementById('writeCommentAvatar').addEventListener('click', function(event) {
 			event.preventDefault();
@@ -86,8 +86,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 		});
 	}
 	else {
-		document.getElementById('login_state').style.display = 'none';
-		document.getElementById('logout_state').style.display = 'block';
+		document.getElementById('commentLoginState').style.display = 'none';
+		document.getElementById('commentLogoutState').style.display = 'block';
 	}
 
 });

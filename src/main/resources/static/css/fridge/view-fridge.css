@@ -356,6 +356,17 @@
 }
 
 
+/* 전체 선택 버튼 */
+#container .content .memo_wrap .memo_content .btn_gray_small {
+	border: none !important; 
+}
+#selectAllBtn.btn_gray_small:active,
+#selectAllBtn.btn_gray_small:hover {
+    background: #EEE !important; 
+    border: none !important;
+}
+
+
 /* 메모 > 목록 없음 */
 #container .memo_wrap .memo_content .memo_empty_wrap {
 	padding: 14px;

@@ -568,8 +568,10 @@ function renderMemoList(memoList) {
             <th width="20%">재료</th>
             <th width="20%">용량</th>
             <th width="30%">비고</th>
-            <th width="20%"> </th> <!-- 버튼 칸 -->
-            <th width="10%">선택</th>
+            <th width="15%"></th>
+			<th width="15%">
+	           <button type="button" id="selectAllBtn" class=" btn btn_gray_small">전체선택</button>
+	       </th>
         </tr>
     `;
     table.appendChild(thead);
@@ -656,6 +658,18 @@ function renderMemoList(memoList) {
     addBtn.textContent = '추가하기';
 
     btnWrap.append(completeBtn, addBtn);
+	
+	
+	// 전체선택 버튼 기능
+	const selectAllBtn = document.getElementById('selectAllBtn');
+	selectAllBtn.addEventListener('click', function() {
+	    const checkboxes = document.querySelectorAll('input[name="selectedMemo"]');
+	    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+
+	    checkboxes.forEach(cb => cb.checked = !allChecked);
+	});
+
+	
 }
 
 

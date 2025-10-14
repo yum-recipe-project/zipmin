@@ -120,6 +120,7 @@ public class CookingController {
 		
 	})
 	// 클래스 목록 조회
+	// js/admin/list-class.js
 	// js/cooking/list-class.js
 	@GetMapping("/classes")
 	public ResponseEntity<?> listClass(
@@ -324,7 +325,6 @@ public class CookingController {
 	})
 	// 클래스 삭제
 	// js/admin/list-class.js
-	// js/mypage/classes.js
 	@DeleteMapping("/classes/{id}")
 	public ResponseEntity<?> deleteClass(
 			@Parameter(description = "클래스의 일련번호") @PathVariable int id) {
@@ -597,6 +597,7 @@ public class CookingController {
 		
 	})
 	// 클래스 신청 상태 수정
+	// js/mypage/application.js
 	@PatchMapping("/classes/{classId}/applies/{applyId}/status")
 	public ResponseEntity<?> attendClass(
 			@PathVariable int classId,

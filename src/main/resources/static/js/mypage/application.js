@@ -90,17 +90,31 @@ async function fetchClass() {
 	catch (error) {
 		const code = error?.response?.data?.code;
 		
-		if (code === 'CLASS_NOT_FOUND') {
-			console.log(error);
-		}
-		else if (code === 'CLASS_TARGET_READ_LIST_FAIL') {
-			console.log(error);
+		if (code === 'CLASS_TARGET_READ_LIST_FAIL') {
+			alert('쿠킹클래스 상세 조회에 실패했습니다.');
+			history.back();
 		}
 		else if (code === 'CLASS_SCHEDULE_READ_LIST_FAIL') {
-			console.log(error);
+			alert('쿠킹클래스 상세 조회에 실패했습니다.');
 		}
 		else if (code === 'CLASS_TUTOR_READ_LIST_FAIL') {
-			console.log(error);
+			alert('쿠킹클래스 상세 조회에 실패했습니다.');
+		}
+		else if (code === 'CLASS_INVALID_INPUT') {
+			alert('입력값이 유효하지 않습니다.');
+			history.back();
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alert('입력값이 유효하지 않습니다.');
+			history.back();
+		}
+		else if (code === 'CLASS_NOT_FOUND') {
+			alert('해당 쿠킹클래스를 찾을 수 없습니다.');
+			history.back();
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			alert('해당 사용자를 찾을 수 없습니다.');
+			history.back();
 		}
 		else if (code === 'INTERNAL_SERVER_ERROR') {
 			console.log(error);
@@ -135,8 +149,6 @@ async function fetchApplyList() {
 			headers: getAuthHeaders()
 		});
 		
-		console.log(response);
-		
 		if (response.data.code === 'CLASS_APPLY_READ_LIST_SUCCESS') {
 			// 전역변수 설정
 			totalPages = response.data.data.totalPages;
@@ -152,10 +164,41 @@ async function fetchApplyList() {
 	}
 	catch (error) {
 		const code = error?.response?.data?.code;
-		// TODO : 에러코드
-		console.log(error);
+				
+		if (code === 'CLASS_APPLY_READ_LIST_FAIL') {
+			alert('쿠킹클래스 지원 목록 조회에 실패했습니다.');
+			history.back();
+		}
+		else if (code === 'CLASS_APPLY_INVALID_INPUT') {
+			alert('입력값이 유효하지 않습니다.');
+			history.back();
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alert('입력값이 유효하지 않습니다.');
+			history.back();
+		}
+		else if (code === 'CLASS_UNAUTHORIZED_ACCESS') {
+			redirectToLogin('/', true);
+		}
+		else if (code === 'CLASS_FORBIDDEN') {
+			alert('접근 권한이 없습니다.');
+			history.back();
+		}
+		else if (code === 'CLASS_NOT_FOUND') {
+			alert('해당 쿠킹클래스를 찾을 수 없습니다.');
+			history.back();
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			alert('해당 사용자를 찾을 수 없습니다.');
+			history.back();
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			console.log(error);
+		}
+		else {
+			console.log(error);
+		}
 	}
-	
 }
 
 
@@ -218,9 +261,9 @@ function renderApplyList(applyList) {
 		const writerH6 = document.createElement('h6');
 		writerTd.className = 'text-start';
 		writerH6.innerHTML = `
-			<b>이름 :</b> ${apply.name}<br>
-			<b>신청 동기 :</b> ${apply.reason}<br>
-			<b>질문 :</b> ${apply.question}
+		<b>이름 :</b> ${apply.name}<br>
+		    <b>신청 동기 :</b> ${apply.reason}
+		    ${apply.question ? `<br><b>질문 :</b> ${apply.question}` : ''}
 		`;
 
 		writerTd.appendChild(writerH6);
@@ -454,7 +497,7 @@ function renderApplyAttend(apply) {
 
 
 /**
- * 
+ * 쿠킹클래스 신청서의 선정 여부를 수정하는 함수
  */
 async function editApplySelected(applyId, selected) {
 	
@@ -477,20 +520,49 @@ async function editApplySelected(applyId, selected) {
 	}
 	catch (error) {
 		const code = error?.response?.data?.code;
-		
-		// TODO : 에러코드
-		
-		console.log(error);
+						
+		if (code === 'CLASS_APPLY_UPDATE_FAIL') {
+			alertDanger('쿠킹클래스 신청서 상태 변경에 실패했습니다.');
+		}
+		else if (code === 'CLASS_APPLY_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'CLASS_UNAUTHORIZED_ACCESS') {
+			alertDanger('로그인되지 않은 사용자입니다.');
+		}
+		else if (code === 'CLASS_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (code === 'CLASS_ALREADY_ENDED') {
+			alertDanger('이미 종료된 클래스입니다.');
+		}
+		else if (code === 'CLASS_NOT_FOUND') {
+			alertDanger('해당 쿠킹클래스를 찾을 수 없습니다.');
+		}
+		else if (code === 'CLASS_APPLY_NOT_FOUND') {
+			alertDanger('해당 쿠킹클래스 신청서를 찾을 수 없습니다.');
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			alertDanger('해당 사용자를 찾을 수 없습니다.');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alertDanger('서버 내부에서 오류가 발생했습니다.');
+		}
+		else {
+			console.log(error);
+		}
 	}
 }
 
 
 
 
-
 /**
- * 
- */
+* 쿠킹클래스 신청서의 출석 여부를 수정하는 함수
+*/
 async function editApplyAttend(applyId, attend) {
 	
 	try {
@@ -512,10 +584,39 @@ async function editApplyAttend(applyId, attend) {
 	}
 	catch (error) {
 		const code = error?.response?.data?.code;
-		
-		// TODO : 에러코드
-		
-		console.log(error);
+								
+		if (code === 'CLASS_APPLY_UPDATE_FAIL') {
+			alertDanger('쿠킹클래스 신청서 상태 변경에 실패했습니다.');
+		}
+		else if (code === 'CLASS_APPLY_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'CLASS_UNAUTHORIZED_ACCESS') {
+			alertDanger('로그인되지 않은 사용자입니다.');
+		}
+		else if (code === 'CLASS_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (code === 'CLASS_ALREADY_ENDED') {
+			alertDanger('이미 종료된 클래스입니다.');
+		}
+		else if (code === 'CLASS_NOT_FOUND') {
+			alertDanger('해당 쿠킹클래스를 찾을 수 없습니다.');
+		}
+		else if (code === 'CLASS_APPLY_NOT_FOUND') {
+			alertDanger('해당 쿠킹클래스 신청서를 찾을 수 없습니다.');
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			alertDanger('해당 사용자를 찾을 수 없습니다.');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alertDanger('서버 내부에서 오류가 발생했습니다.');
+		}
+		else {
+			console.log(error);
+		}
 	}
 }
-

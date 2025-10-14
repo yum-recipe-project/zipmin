@@ -238,6 +238,9 @@ async function fetchCommentList() {
 			// 렌더링
 			renderCommentList(commentList);
 			document.querySelector('.comment_count span:last-of-type').innerText = totalElements;
+			if (document.querySelector('#viewRecipeReviewCommentWrap .comment_count')) {
+				document.querySelector('#viewRecipeReviewCommentWrap .comment_count').innerText = totalElements;
+			}
 			
 			// 더보기 버튼 제어
 			document.querySelector('.btn_more').style.display = page >= totalPages - 1 ? 'none' : 'block';
@@ -833,6 +836,9 @@ async function deleteComment(id) {
 					document.querySelector(`.comment[data-id='${id}']`).remove();
 					totalElements--;
 					document.querySelector('.comment_count span:last-of-type').innerText = totalElements;
+					if (document.querySelector('#viewRecipeReviewCommentWrap .comment_count')) {
+						document.querySelector('#viewRecipeReviewCommentWrap .comment_count').innerText = totalElements;
+					}
 				}
 				document.querySelectorAll(`.subcomment[data-comm-id='${id}']`)
 					.forEach(subcomment => subcomment.remove());

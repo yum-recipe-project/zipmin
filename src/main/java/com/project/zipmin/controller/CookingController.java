@@ -525,6 +525,7 @@ public class CookingController {
 	
 	
 	// 클래스 신청 상태 수정
+	// 클래스 신청 상태 수정
 	@Operation(
 	    summary = "클래스 신청 상태 수정"
 	)
@@ -621,6 +622,9 @@ public class CookingController {
 	
 	
 	
+	
+	// 클래스 신청 삭제
+	// TODO : API 문서 작성
 	// 클래스 신청 삭제
 	@DeleteMapping("/classes/{classId}/applies/{applyId}")
 	public ResponseEntity<?> cancelApplyClass(
@@ -642,6 +646,9 @@ public class CookingController {
 	
 	
 	
+	
+	
+	// 사용자의 클래스 목록 조회
 	// 사용자의 클래스 목록 조회
 	@Operation(
 	    summary = "사용자의 클래스 목록 조회"
@@ -674,7 +681,7 @@ public class CookingController {
 		
 	})
 	// 사용자의 클래스 목록 조회
-	// js/mypage/classes.js
+	// js/mypage/class.js
 	// js/mypage/profile.js
 	@GetMapping("/users/{id}/classes")
 	public ResponseEntity<?> listUserClass(

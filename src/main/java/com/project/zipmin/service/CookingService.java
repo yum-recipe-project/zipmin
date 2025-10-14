@@ -264,7 +264,7 @@ public class CookingService {
 		for (Class classs : classPage) {
 			ClassReadResponseDto classDto = classMapper.toReadResponseDto(classs);
 			
-			// 개설 신청자 정보
+			// 클래스 개설자 정보
 			classDto.setUsername(classs.getUser().getUsername());			
 			classDto.setNickname(classs.getUser().getNickname());			
 			
@@ -288,12 +288,16 @@ public class CookingService {
 	
 	
 	// 클래스 상세 조회
-	public ClassReadResponseDto readClassById(int id) {
+	public ClassReadResponseDto readClassById(Integer id) {
 		
-		Class classs = classRepository.findById(id)
-				.orElseThrow(() -> new ApiException(ClassErrorCode.CLASS_NOT_FOUND));
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
+		}
 		
 		// 클래스 조회
+		Class classs = classRepository.findById(id)
+				.orElseThrow(() -> new ApiException(ClassErrorCode.CLASS_NOT_FOUND));
 		ClassReadResponseDto classDto = classMapper.toReadResponseDto(classs);
 		classDto.setImage(publicPath + "/" + classDto.getImage());
 		
@@ -339,7 +343,6 @@ public class CookingService {
 		catch (Exception e) {
 			throw new ApiException(ClassErrorCode.CLASS_TUTOR_READ_LIST_FAIL);
 		}
-		
 		
 		// 클래스 오픈 여부 조회
 		Date now = new Date();
@@ -451,14 +454,6 @@ public class CookingService {
         } 
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	 
 	
 	
 	
@@ -738,13 +733,10 @@ public class CookingService {
 	public ClassApplyCreateResponseDto createApply(ClassApplyCreateRequestDto applyDto) {
 		
 		// 입력값 검증
-		if (applyDto == null || applyDto.getClassId() == null || applyDto.getReason() == null) {
+		if (applyDto == null || applyDto.getClassId() == null
+				|| applyDto.getReason() == null || applyDto.getUserId() == null) {
 			throw new ApiException(ClassErrorCode.CLASS_APPLY_INVALID_INPUT);
 		}
-		
-		// 로그인 정보
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		applyDto.setUserId(userService.readUserByUsername(username).getId());
 		
 		// 클래스 조회
 		Class classs = classRepository.findById(applyDto.getClassId())
@@ -752,7 +744,7 @@ public class CookingService {
 		
 		// 클래스 신청 기간 검사
 		Date now = new Date();
-		if (classs.getNoticedate().after(now)) {
+		if (classs.getNoticedate().before(now)) {
 			throw new ApiException(ClassErrorCode.CLASS_ALREADY_ENDED);
 		}
 		
@@ -766,9 +758,9 @@ public class CookingService {
 			throw new ApiException(ClassErrorCode.CLASS_APPLY_DUPLICATE);
 		}
 		
-		// 클래스 신청 상태값 설정
-		applyDto.setSelected(2);
-		applyDto.setAttend(2);
+		// 클래스 신청 초기값 설정
+		// applyDto.setSelected(2);
+		// applyDto.setAttend(2);
 		
 		// 클래스 신청 작성
 		ClassApply apply = applyMapper.toEntity(applyDto);
@@ -784,25 +776,58 @@ public class CookingService {
 	
 	
 	
+	
 	// 클래스 신청 목록 조회
-	public Page<ClassApplyReadResponseDto> readApplyPageById(Integer id, Integer sort, Pageable pageable) {
+	public Page<ClassApplyReadResponseDto> readApplyPageById(Integer id, String seleted, Pageable pageable) {
 		
 		// 입력값 검증
 		if (id == null) {
 			throw new ApiException(ClassErrorCode.CLASS_APPLY_INVALID_INPUT);
 		}
 		
+		// 클래스 조회
+		Class classs = classRepository.findById(id)
+				.orElseThrow(() -> new ApiException(ClassErrorCode.CLASS_NOT_FOUND));
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto loginUser = userService.readUserByUsername(username);
+		if (!loginUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!loginUser.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (loginUser.getId() != classs.getUser().getId()) {
+					throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
+				}
+			}
+		}
+		
 		// 클래스 신청 목록 조회
-		Page<ClassApply> applyPage;
+		Page<ClassApply> applyPage = null;
 		try {
-			applyPage = (sort == -1)
-					? applyRepository.findByClasssId(id, pageable)
-					: applyRepository.findByClasssIdAndSelected(id, sort, pageable);
+			boolean hasSelected = seleted != null && !seleted.isBlank();
+			
+			// 선정 상태
+			Integer selectedCode = null;
+			if (hasSelected) {
+				try {
+					selectedCode = Selected.valueOf(seleted).getCode();
+				}
+				catch (Exception e) {
+					throw new ApiException(ClassErrorCode.CLASS_APPLY_INVALID_INPUT);
+				}
+			}
+			
+			if (!hasSelected) {
+				applyPage = applyRepository.findByClasssId(id, pageable);
+			}
+			else {
+				applyPage = applyRepository.findByClasssIdAndSelected(id, selectedCode, pageable);
+			}
 		}
 		catch (Exception e) {
 			throw new ApiException(ClassErrorCode.CLASS_APPLY_READ_LIST_FAIL);
 		}
 		
+		// 클래스 신청 목록 응답 구성
 		List<ClassApplyReadResponseDto> applyDtoList = new ArrayList<ClassApplyReadResponseDto>();
 		for (ClassApply apply : applyPage) {
 			ClassApplyReadResponseDto applyDto = applyMapper.toReadResponseDto(apply);
@@ -813,49 +838,6 @@ public class CookingService {
 		return new PageImpl<>(applyDtoList, pageable, applyPage.getTotalElements());
 	}
 	
-	
-	
-	
-	// 클래스 신청 수정
-	// TOOD : 사용하나 ?
-	public ClassApplyUpdateResponseDto updateApply(ClassApplyUpdateRequestDto applyDto) {
-		
-		// 입력값 검증
-		if (applyDto == null || applyDto.getId() == null) {
-			throw new ApiException(ClassErrorCode.CLASS_APPLY_INVALID_INPUT);
-		}
-		
-		// 클래스 여부 판단
-		Class classs = classRepository.findById(applyDto.getClassId())
-				.orElseThrow(() -> new ApiException(ClassErrorCode.CLASS_NOT_FOUND));
- 		
-		// 클래스 지원 여부 판단
-		ClassApply apply = applyRepository.findById(applyDto.getId())
-				.orElseThrow(() -> new ApiException(ClassErrorCode.CLASS_APPLY_NOT_FOUND));
-		
-		// 필요한 필드만 수정
-		if (applyDto.getReason() != null) {
-			apply.setReason(applyDto.getReason());
-		}
-		if (applyDto.getQuestion() != null) {
-			apply.setQuestion(applyDto.getQuestion());
-		}
-		if (applyDto.getSelected() != null) {
-			apply.setSelected(applyDto.getSelected());
-		}
-		if (applyDto.getAttend() != null) {
-			apply.setAttend(applyDto.getAttend());
-		}
-		
-		// 클래스 지원 수정
-		try {
-			apply = applyRepository.save(apply);
-			return applyMapper.toUpdateResponseDto(apply);
-		}
-		catch (Exception e) {
-			throw new ApiException(ClassErrorCode.CLASS_APPLY_CREATE_FAIL);
-		}
-	}
 	
 	
 	
@@ -943,7 +925,7 @@ public class CookingService {
 			return applyMapper.toUpdateResponseDto(apply);
 		}
 		catch (Exception e) {
-			throw new ApiException(ClassErrorCode.CLASS_APPLY_CREATE_FAIL);
+			throw new ApiException(ClassErrorCode.CLASS_APPLY_UPDATE_FAIL);
 		}
 	}
 	

@@ -1,7 +1,7 @@
 /**
  * 전역 변수
  */
-let sort = -1;
+let selected = '';
 let totalPages = 0;
 let totalElements = 0;
 let page = 0;
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 			wrap.querySelector('.btn_sort.active')?.classList.remove('active');
 			btn.classList.add('active');
 			
-			sort = btn.dataset.sort;
+			selected = btn.dataset.selected;
 			page = 0;
 			applyList = [];
 			
@@ -123,7 +123,7 @@ async function fetchApplyList() {
 		const id = new URLSearchParams(window.location.search).get('id');
 		
 		const params = new URLSearchParams({
-			sort: Number(sort),
+			selected: selected,
 			page: page,
 			size: size
 		}).toString();

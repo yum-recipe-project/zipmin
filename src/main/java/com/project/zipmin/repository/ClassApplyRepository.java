@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 public interface ClassApplyRepository extends JpaRepository<ClassApply, Integer> {
 	
 	Page<ClassApply> findByClasssId(int classId, Pageable page);
-	Page<ClassApply> findByClasssIdAndSelected(int classId, int selected, Pageable page);
+	Page<ClassApply> findByClasssIdAndSelected(int classId, Integer selected, Pageable page);
 	
 	
 	Page<ClassApply> findByUserId(Integer userId, Pageable pageable);

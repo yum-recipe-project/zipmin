@@ -1,12 +1,8 @@
 package com.project.zipmin.controller;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,21 +16,13 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
-import com.project.zipmin.api.ClassSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
-import com.project.zipmin.dto.UserAppliedClassResponseDto;
-import com.project.zipmin.dto.ClassReadResponseDto;
-import com.project.zipmin.dto.GuideReadMySavedResponseDto;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
-import com.project.zipmin.dto.RecipeReadMyResponseDto;
-import com.project.zipmin.dto.RecipeReadMySavedResponseDto;
-import com.project.zipmin.dto.ReviewReadMyResponseDto;
 import com.project.zipmin.dto.TokenDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
@@ -48,13 +36,7 @@ import com.project.zipmin.dto.UserReadUsernameRequestDto;
 import com.project.zipmin.dto.UserUpdateRequestDto;
 import com.project.zipmin.dto.UserUpdateResponseDto;
 import com.project.zipmin.entity.Role;
-import com.project.zipmin.service.CommentService;
-import com.project.zipmin.service.CookingService;
-import com.project.zipmin.service.FundService;
-import com.project.zipmin.service.KitchenService;
-import com.project.zipmin.service.RecipeService;
 import com.project.zipmin.service.ReissueService;
-import com.project.zipmin.service.ReviewService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.UserCorrectPassworResponse;
@@ -67,8 +49,6 @@ import com.project.zipmin.swagger.UserForbiddenResponse;
 import com.project.zipmin.swagger.UserIncorrectPassworResponse;
 import com.project.zipmin.swagger.UserInvalidInputResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
-import com.project.zipmin.swagger.UserReadListFailResponse;
-import com.project.zipmin.swagger.UserReadListSuccessResponse;
 import com.project.zipmin.swagger.UserReadSuccessResponse;
 import com.project.zipmin.swagger.UserReadUsernameSuccessResponse;
 import com.project.zipmin.swagger.UserTelDuplicatedResponse;
@@ -95,19 +75,15 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 	
 	private final UserService userService;
-	private final KitchenService kitchenService;
-	private final RecipeService recipeService;
-	private final ReviewService reviewService;
-	private final FundService fundService;
 	private final ReissueService reissueService;
 	
-	private final ObjectMapper objectMapper;
 	private final JwtUtil jwtUtil;
 	
 	
 	
 	
 	
+	// 사용자 조회
 	@Operation(
 	    summary = "사용자 조회"
 	)

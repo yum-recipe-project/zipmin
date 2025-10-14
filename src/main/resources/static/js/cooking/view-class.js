@@ -197,7 +197,7 @@ function renderTutorList(list) {
 /**
  * 클래스 신청 상태에 따라 신청 버튼을 화면에 렌더링하는 함수
  */
-function renderApplyButton(apply) {
+function renderApplyButton(classs) {
 	
 	const wrap = document.getElementById('applyWrap');
 	const container = wrap.querySelector('.apply_header');
@@ -210,8 +210,8 @@ function renderApplyButton(apply) {
 	const button = document.createElement('button');
 	button.type = 'button';
 	
-	if (apply.opened) {
-		if (apply.applied === true) {
+	if (classs.opened) {
+		if (classs.applied === true) {
 			button.disabled = true;
 			button.className = 'btn_gray_wide';
 			button.innerText = '신청 완료';
@@ -231,10 +231,17 @@ function renderApplyButton(apply) {
 	}
 	
 	// 신청하기 버튼 클릭시 로그인 여부를 확인
+	// 로그인 했다면 신청 가능 여부 확인
 	button.addEventListener('click', function() {
 		if (!isLoggedIn()) {
 			redirectToLogin();
 			bootstrap.Modal.getInstance(document.getElementById('applyClassModal'))?.hide();
+		}
+		else {
+			if (classs.able === false) {
+				alert('최근 60일 내 결석이 3회를 초과하여 클래스 신청이 제한됩니다.');
+				bootstrap.Modal.getInstance(document.getElementById('applyClassModal'))?.hide();
+			}
 		}
 	});
 

@@ -109,8 +109,12 @@ public class KitchenService {
 			throw new ApiException(KitchenErrorCode.KITCHEN_READ_LIST_FAIL);
 		}
 		
+		
 		// dto 변경
 		List<GuideReadResponseDto> guideDtoList = new ArrayList<GuideReadResponseDto>();
+		
+
+		
 		for (Guide guide : guidePage) {
 			GuideReadResponseDto guideDto = guideMapper.toReadResponseDto(guide);
 			guideDto.setLikecount(likeService.countLike("guide", guide.getId()));
@@ -124,6 +128,9 @@ public class KitchenService {
 			    
 			    guideDto.setLikestatus(likeService.existsUserLike("guide", guideDto.getId(), userId));
 			}
+			
+			UserReadResponseDto userInfo = userService.readUserById(guideDto.getUserId());
+			guideDto.setUsername(userInfo.getUsername());
 			guideDtoList.add(guideDto);
 		}
 		

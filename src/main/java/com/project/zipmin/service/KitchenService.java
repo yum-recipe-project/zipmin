@@ -68,6 +68,10 @@ public class KitchenService {
 		
 		if(sort != null && !sort.isBlank()) {
 			switch (sort) {
+		    case "id-asc": {
+		        sortSpec = Sort.by(Sort.Order.asc("id"));
+		        break;
+		    }
 			case "id-desc": {
 				sortSpec = Sort.by(Sort.Order.desc("id"));
 				break;
@@ -75,6 +79,10 @@ public class KitchenService {
 			case "likecount-desc": {
 				sortSpec = Sort.by(Sort.Order.desc("likecount"), Sort.Order.desc("id"));
 				break;
+			}
+			case "likecount-asc": {
+		        sortSpec = Sort.by(Sort.Order.asc("likecount"), Sort.Order.desc("id"));
+		        break;
 			}
 			case "postdate-desc": {  
 	            sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id"));

@@ -129,7 +129,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 	
 	// 검색
-//	document.querySelector('.search_form[data-type="kitchen"]').addEventListener('submit', function(e) {
 	document.querySelector('.search').addEventListener('submit', function(e) {
 	    e.preventDefault();
 	    keyword = document.getElementById('text-srh').value.trim();

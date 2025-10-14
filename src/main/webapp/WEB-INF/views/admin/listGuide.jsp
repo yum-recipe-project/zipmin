@@ -80,7 +80,7 @@
 					        </tr>
 					        <!-- ********** 필요한 내용에 따라 적절히 수정 ********* -->
 					        <tr class="table_th">
-					            <th>
+					            <th class="sort_btn" data-key="id">
 					                <h6 class="fs-4 fw-semibold mb-0">No</h6>
 					            </th>
 					            <th>

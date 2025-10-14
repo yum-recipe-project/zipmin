@@ -340,16 +340,6 @@ public class CookingService {
 			throw new ApiException(ClassErrorCode.CLASS_TUTOR_READ_FAIL);
 		}
 		
-		// 클래스 신청 여부 조회
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    classDto.setApplied(false);
-			return classDto;
-		}
-		else {
-			int userId = userService.readUserByUsername(authentication.getName()).getId();
-			classDto.setApplied(applyRepository.existsByClasssIdAndUserId(id, userId));
-		}
 		
 		// 클래스 오픈 여부 조회
 		Date now = new Date();
@@ -363,6 +353,21 @@ public class CookingService {
 		calendar.add(Calendar.DAY_OF_YEAR, 7);
 		if (classs.getApproval() == 1 && now.after(classs.getEventdate()) && now.before(calendar.getTime())) {
 			classDto.setEvented(true);
+		}
+		
+		// 클래스 신청 여부와 가능 여부 조회
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			classDto.setApplied(false);
+			classDto.setAble(false);
+			return classDto;
+		}
+		else {
+			int userId = userService.readUserByUsername(authentication.getName()).getId();
+			classDto.setApplied(applyRepository.existsByClasssIdAndUserId(id, userId));
+			if (countClassAttend(userId) < 3) {
+				classDto.setAble(true);
+			}
 		}
 		
 		return classDto;
@@ -752,6 +757,11 @@ public class CookingService {
 			throw new ApiException(ClassErrorCode.CLASS_ALREADY_ENDED);
 		}
 		
+		// 신청 가능 여부 조회
+		if (countClassAttend(applyDto.getUserId()) > 3) {
+			throw new ApiException(ClassErrorCode.CLASS_APPLY_UNABLE);
+		}
+		
 		// 중복 신청 검사
 		if (applyRepository.existsByClasssIdAndUserId(applyDto.getClassId(), applyDto.getUserId())) {
 			throw new ApiException(ClassErrorCode.CLASS_APPLY_DUPLICATE);
@@ -1013,7 +1023,7 @@ public class CookingService {
 		// 결석한 클래스 신청 목록 조회
 		List<ClassApply> applyList = null;
 		try {
-			applyList = applyRepository.findAllByUserIdAndAttend(id, 0);
+			applyList = applyRepository.findAllByUserIdAndSelectedAndAttend(id, 1, 0);
 		}
 		catch (Exception e) {
 			throw new ApiException(ClassErrorCode.CLASS_APPLY_READ_LIST_FAIL);

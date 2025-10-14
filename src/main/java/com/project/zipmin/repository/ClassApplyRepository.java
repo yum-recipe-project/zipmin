@@ -16,9 +16,6 @@ public interface ClassApplyRepository extends JpaRepository<ClassApply, Integer>
 	Page<ClassApply> findByClasssId(int classId, Pageable page);
 	Page<ClassApply> findByClasssIdAndSelected(int classId, int selected, Pageable page);
 	
-	// @Query("SELECT a.classs.id FROM ClassApply a WHERE a.user.id = :userId")
-	// List<Integer> findClasssIdsByUserId(Integer userId);
-	
 	
 	Page<ClassApply> findByUserId(Integer userId, Pageable pageable);
 	Page<ClassApply> findByUserIdAndClasss_EventdateBefore(Integer userId, Date now, Pageable pageable);
@@ -26,7 +23,7 @@ public interface ClassApplyRepository extends JpaRepository<ClassApply, Integer>
 	
 	
 	List<ClassApply> findAllByUserId(Integer userId);
-	List<ClassApply> findAllByUserIdAndAttend(Integer userId, Integer attend);
+	List<ClassApply> findAllByUserIdAndSelectedAndAttend(Integer userId, Integer selected, Integer attend);
 
 	boolean existsByClasssIdAndUserId(int classId, int userId);
 	

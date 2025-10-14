@@ -18,6 +18,7 @@ let totalPages = 0;
 let totalElements = 0;
 let page = 0;
 let size = 10;
+let keyword = '';
 let ReviewList = [];
 
 let sortKey = 'id';    
@@ -32,6 +33,7 @@ async function fetchAdminReviewList() {
         const params = new URLSearchParams({
             page: page,
             size: size,
+			keyword: keyword,
 			sort: sortKey + '-' + sortOrder 
         }).toString();
 		
@@ -365,7 +367,9 @@ document.addEventListener('click', e => {
 });
 
 
-
+/**
+ * 리뷰 목록 내용 정렬, 검색을 설정하는 함수
+ */
 document.addEventListener('DOMContentLoaded', function() {
 	
 	// 정렬 버튼 클릭 이벤트
@@ -389,5 +393,15 @@ document.addEventListener('DOMContentLoaded', function() {
 			page = 0; // 첫 페이지로 초기화
 			fetchAdminReviewList();
 		});
+	});
+	
+	
+	// 검색
+	document.querySelector('.search').addEventListener('submit', function(e) {
+	    e.preventDefault();
+	    keyword = document.getElementById('text-srh').value.trim();
+	    page = 0;        
+	    reviewList = [];
+	    fetchAdminReviewList();
 	});
 });

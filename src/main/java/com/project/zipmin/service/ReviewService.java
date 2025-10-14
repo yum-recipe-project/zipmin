@@ -359,7 +359,7 @@ public class ReviewService {
     
     
     // 전체 리뷰 목록 조회 (관리자용)
-    public Page<ReviewReadResponseDto> readAllReviewPage(String sort, Pageable pageable) {
+    public Page<ReviewReadResponseDto> readAllReviewPage(String sort, Pageable pageable, String keyword) {
 
         // 입력값 검증
         if (pageable == null) {
@@ -389,10 +389,14 @@ public class ReviewService {
 
         Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
 
-        // 리뷰 전체 조회
+        // 리뷰 전체 조회 (keyword 적용)
         Page<Review> reviewPage;
         try {
-            reviewPage = reviewRepository.findAll(sortedPageable);
+            if (keyword == null || keyword.isBlank()) {
+                reviewPage = reviewRepository.findAll(sortedPageable);
+            } else {
+                reviewPage = reviewRepository.findAllByContentContainingIgnoreCase(keyword, sortedPageable);
+            }
         } catch (Exception e) {
             throw new ApiException(ReviewErrorCode.REVIEW_READ_LIST_FAIL);
         }

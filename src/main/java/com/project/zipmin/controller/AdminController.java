@@ -514,10 +514,11 @@ public class AdminController {
     public ResponseEntity<?> readAllReviews(
             @RequestParam(required = false) String sort,
             @RequestParam int page,
-            @RequestParam int size) {
-
+            @RequestParam int size,
+            @RequestParam(required = false) String keyword) {
+    	
         Pageable pageable = PageRequest.of(page, size);
-        Page<ReviewReadResponseDto> reviewPage = reviewService.readAllReviewPage(sort, pageable);
+        Page<ReviewReadResponseDto> reviewPage = reviewService.readAllReviewPage(sort, pageable, keyword);
 
         return ResponseEntity.status(ReviewSuccessCode.REVIEW_READ_LIST_SUCCESS.getStatus())
                 .body(ApiResponse.success(ReviewSuccessCode.REVIEW_READ_LIST_SUCCESS, reviewPage));

@@ -87,6 +87,9 @@ async function fetchUserClassList() {
 			renderUserClassList(classList);
 			document.querySelector('.class_util .total').innerText = `총 ${totalElements}개`;
 			renderPagination(fetchUserClassList);
+			
+			// 스크롤 최상단 이동
+			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
 	}
 	catch (error) {

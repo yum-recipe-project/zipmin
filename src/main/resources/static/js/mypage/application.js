@@ -160,6 +160,9 @@ async function fetchApplyList() {
 			renderApplyList(applyList);
 			renderPagination(fetchApplyList);
 			wrap.querySelector('.apply_util .total').innerText = `총 ${totalElements}개`;
+			
+			// 스크롤 최상단 이동
+			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
 	}
 	catch (error) {

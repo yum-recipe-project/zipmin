@@ -38,6 +38,8 @@ import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.ClassAlreadyEndedResponse;
 import com.project.zipmin.swagger.ClassApplyCreateFailResponse;
 import com.project.zipmin.swagger.ClassApplyCreateSuccessResponse;
+import com.project.zipmin.swagger.ClassApplyDeleteFailResponse;
+import com.project.zipmin.swagger.ClassApplyDeleteSuccessResponse;
 import com.project.zipmin.swagger.ClassApplyDuplicateResponse;
 import com.project.zipmin.swagger.ClassApplyInvalidInputResponse;
 import com.project.zipmin.swagger.ClassApplyNotFoundResponse;
@@ -624,8 +626,74 @@ public class CookingController {
 	
 	
 	// 클래스 신청 삭제
-	// TODO : API 문서 작성
+	@Operation(
+	    summary = "클래스 신청 삭제"
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "클래스 신청 삭제 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassApplyDeleteSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "클래스 신청 삭제 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassApplyDeleteFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassApplyInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassUnauthorizedAccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "권한 없는 사용자의 접근",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "클래스 종료 후 접근 시도",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassAlreadyEndedResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 클래스 신청을 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassApplyNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+		
+	})
 	// 클래스 신청 삭제
+	// js/mypage/applied-class.js
 	@DeleteMapping("/classes/{classId}/applies/{applyId}")
 	public ResponseEntity<?> cancelApplyClass(
 			@PathVariable int classId,
@@ -701,6 +769,8 @@ public class CookingController {
 	
 	
 	
+	
+	// 사용자가 신청한 클래스 목록 조회
 	// 사용자가 신청한 클래스 목록 조회
 	@Operation(
 	    summary = "사용자가 신청한 클래스 목록 조회"
@@ -788,9 +858,11 @@ public class CookingController {
 	
 	
 	
+	
+	// 사용자의 클래스 결석 횟수 조회
 	// 사용자의 클래스 결석 수 조회
 	@Operation(
-	    summary = "사용자의 클래스 결석 수 조회"
+	    summary = "사용자의 클래스 결석 횟수 조회"
 	)
 	@ApiResponses(value = {
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -849,7 +921,7 @@ public class CookingController {
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 		
 	})
-	// 사용자의 클래스 결석 수 조회
+	// 사용자의 클래스 결석 횟수 조회
 	// js/mypage/applied-classes.js
 	@GetMapping("/users/{id}/attend-classes/count")
 	public ResponseEntity<?> countUserClassAttend(
@@ -866,5 +938,6 @@ public class CookingController {
 		return ResponseEntity.status(ClassSuccessCode.CLASS_COUNT_ATTEND_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_COUNT_ATTEND_SUCCESS, count));
 	}
+	
 	
 }

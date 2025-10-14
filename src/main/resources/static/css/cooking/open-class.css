@@ -409,3 +409,12 @@
 
 
 
+
+/* 라디오 버튼 */
+#container .class_wrap .accept_notice .radio_wrap label {
+	color: #999;
+}
+#container .class_wrap .category_th {
+	padding: 12px 0;
+}
+

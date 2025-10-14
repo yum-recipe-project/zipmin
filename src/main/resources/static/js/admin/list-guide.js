@@ -25,6 +25,9 @@ let keyword = '';
 const size = 10;
 let guideList = [];
 
+let sortKey = 'postdate';  // 기본 정렬 키
+let sortOrder = 'desc';    // 기본 정렬 순서
+
 /**
  * 서버에서 키친가이드 목록 데이터를 가져오는 함수
  */
@@ -34,7 +37,8 @@ async function fetchGuideList() {
 		const params = new URLSearchParams({
 			category: category,
 			keyword: keyword,  
-			sort: sort,
+//			sort: sort,
+			sort: sortKey + '-' + sortOrder,
 			page: page,
 			size: size
 		});
@@ -62,6 +66,38 @@ async function fetchGuideList() {
 	}
 	
 }
+
+
+/**
+ * 키친가이드 목록 내용 정렬 필터를 설정하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	
+	// 정렬 버튼
+	document.querySelectorAll('.sort_btn').forEach(btn => {
+		btn.addEventListener('click', function(event) {
+			event.preventDefault();
+			const key = btn.dataset.key;
+
+		    if (sortKey === key) {
+		      sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+		    }
+			else {
+		      sortKey = key;
+		      sortOrder = 'desc';
+		    }
+			
+			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
+			this.classList.add(sortOrder);
+			
+			page = 0;
+			
+			console.log("sortOrder: " + sortOrder)
+			fetchGuideList();
+		});
+	});
+});
+
 
 
 

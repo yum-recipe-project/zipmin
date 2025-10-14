@@ -56,6 +56,8 @@ public class KitchenService {
 	// 가이드 목록 조회
 	public Page<GuideReadResponseDto> readGuidePage(String category, String keyword, String sort, Pageable pageable) {
 		
+		System.err.println("sort: " + sort);
+		
 		// 입력값 검증
 		if (pageable == null) {
 			throw new ApiException(KitchenErrorCode.KITCHEN_INVALID_INPUT);
@@ -74,6 +76,14 @@ public class KitchenService {
 				sortSpec = Sort.by(Sort.Order.desc("likecount"), Sort.Order.desc("id"));
 				break;
 			}
+			case "postdate-desc": {  
+	            sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id"));
+	            break;
+	        }
+	        case "postdate-asc": {  
+	            sortSpec = Sort.by(Sort.Order.asc("postdate"), Sort.Order.desc("id"));
+	            break;
+	        }
 			default:
 				sortSpec = Sort.by(Sort.Order.desc("id"));
 			}

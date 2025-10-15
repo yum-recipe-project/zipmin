@@ -530,6 +530,9 @@
 }
 
 /* 내 주변 마트 > 헤더 버튼 */
+#container .mart_wrap .mart_header .btn_icon.dimmed {
+	background: var(--line-color2);
+}
 #container .mart_wrap .mart_header .btn_icon img {
 	width: 60%;
 }

@@ -732,10 +732,6 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-
-/**
- * 장보기 메모 완료 기능
- */
 /**
  * 장보기 메모 완료 기능 (체크한 메모 삭제)
  */

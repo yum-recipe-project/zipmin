@@ -13,8 +13,8 @@
 <!-- 		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4ef8517d8339aa6a8dfad64cec477a46"></script> -->
 		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4ef8517d8339aa6a8dfad64cec477a46&libraries=services,clusterer,drawing"></script>
 <!-- 		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d6d54df7108a43be083a8f1b1eb83da8&libraries=services,clusterer,drawing"></script> -->
-		<script src="/js/fridge/view-fridge-map.js"></script>
 		<script src="/js/fridge/view-fridge.js"></script>
+		<script src="/js/fridge/view-fridge-map.js"></script>
 		<script src="/js/modal/write-fridge-modal.js"></script>
 		<script src="/js/modal/write-user-fridge-modal.js"></script>
 		<script src="/js/modal/edit-user-fridge-modal.js"></script>
@@ -96,74 +96,7 @@
 						<!-- 지도 -->
 						<div id="map" class="map"></div>
 						<!-- 마트 목록 -->
-						<ul class="mart_list">
-							<li>
-								<div class="mart_box">
-									<div class="mart_txt">
-										<span>이마트1</span>
-										<div class="ping">
-											<img src="/images/fridge/location.png">
-											<p>0.8km</p>
-										</div>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="mart_box">
-									<div class="mart_txt">
-										<span>이마트2</span>
-										<div class="ping">
-											<img src="/images/fridge/location.png">
-											<p>0.8km</p>
-										</div>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="mart_box">
-									<div class="mart_txt">
-										<span>이마트3</span>
-										<div class="ping">
-											<img src="/images/fridge/location.png">
-											<p>0.8km</p>
-										</div>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="mart_box">
-									<div class="mart_txt">
-										<span>이마트4</span>
-										<div class="ping">
-											<img src="/images/fridge/location.png">
-											<p>0.8km</p>
-										</div>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="mart_box">
-									<div class="mart_txt">
-										<span>이마트5</span>
-										<div class="ping">
-											<img src="/images/fridge/location.png">
-											<p>0.8km</p>
-										</div>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="mart_box">
-									<div class="mart_txt">
-										<span>이마트6</span>
-										<div class="ping">
-											<img src="/images/fridge/location.png">
-											<p>0.8km</p>
-										</div>
-									</div>
-								</div>
-							</li>
-						</ul>
+						<ul class="mart_list"></ul>
 					</div>
 				</div>
 				

@@ -1,6 +1,5 @@
 package com.project.zipmin.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +32,6 @@ import com.project.zipmin.dto.ReportCreateRequestDto;
 import com.project.zipmin.dto.ReportCreateResponseDto;
 import com.project.zipmin.dto.ReportDeleteRequestDto;
 import com.project.zipmin.service.CommentService;
-import com.project.zipmin.service.CookingService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.CommentCreateFailResponse;
 import com.project.zipmin.swagger.CommentCreateSuccessResponse;

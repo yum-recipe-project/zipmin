@@ -15,11 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.CommentErrorCode;
-import com.project.zipmin.api.LikeErrorCode;
-import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.CommentCreateRequestDto;
 import com.project.zipmin.dto.CommentCreateResponseDto;
-import com.project.zipmin.dto.CommentDeleteRequestDto;
 import com.project.zipmin.dto.UserCommentReadesponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.CommentUpdateRequestDto;

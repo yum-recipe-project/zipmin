@@ -305,7 +305,7 @@ function renderCommentList(commentList) {
 		const span = document.createElement('span');
 		span.textContent = '댓글이 없습니다';
 		wrapper.appendChild(span);
-		container.querySelector('.comment_write').insertAdjacentElement('afterend', wrapper);
+		wrap.querySelector('.comment_write').insertAdjacentElement('afterend', wrapper);
 
 		return;
 	}
@@ -567,22 +567,6 @@ function renderSubcommentList(subcommentList) {
 }
 
 
-
-
-
-/**
- * 목록 결과 없음 화면을 화면에 렌더링하는 함수
- */
-function renderListEmpty() {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'list_empty';
-	
-    const span = document.createElement('span');
-    span.textContent = '작성된 댓글이 없습니다';
-    wrapper.appendChild(span);
-
-    return wrapper;
-}
 
 
 

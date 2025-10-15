@@ -220,7 +220,7 @@ function renderReviewList(reviewList) {
 		const span = document.createElement('span');
 		span.textContent = '리뷰가 없습니다';
 		wrapper.appendChild(span);
-		container.querySelector('.review_write').insertAdjacentElement('afterend', wrapper);
+		wrap.querySelector('.review_write').insertAdjacentElement('afterend', wrapper);
 
 		return;
 	}

@@ -683,6 +683,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					fetchUser();
 				}
 			}
+			
 			catch(error) {
 				const code = error?.response?.data?.code;
 				

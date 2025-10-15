@@ -124,8 +124,8 @@ public class RecipeController {
 			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) List<String> categoryList,
 			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
 			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
-			@RequestParam int page,
-			@RequestParam int size) {
+			@Parameter(description = "페이지 번호") @RequestParam int page,
+			@Parameter(description = "페이지 크기") @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
 		Page<RecipeReadResponseDto> recipePage = recipeService.readRecipePage(categoryList, keyword, sort, pageable);
@@ -199,7 +199,8 @@ public class RecipeController {
 	})
 	// 레시피 조회
 	@GetMapping("/recipes/{id}")
-	public ResponseEntity<?> viewRecipe(@Parameter(description = "레시피의 일련번호") @PathVariable int id) {
+	public ResponseEntity<?> viewRecipe(
+			@Parameter(description = "레시피의 일련번호") @PathVariable int id) {
 		
 		RecipeReadResponseDto recipeDto = recipeService.readRecipdById(id);
 		

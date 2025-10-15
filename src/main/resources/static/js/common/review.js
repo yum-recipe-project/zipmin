@@ -1,32 +1,12 @@
 /**
- * 리뷰 정렬 및 더보기 기능
+ * 전역변수
  */
-document.addEventListener('DOMContentLoaded', function () {
-	
-	fetchReviewList();
-
-    // 정렬 버튼 클릭 이벤트
-    document.querySelectorAll('.review_order .btn_sort_small').forEach(btn => {
-        btn.addEventListener('click', function (event) {
-            event.preventDefault();
-
-            document.querySelector('.review_order .btn_sort_small.active')?.classList.remove('active');
-            btn.classList.add('active');
-
-            reviewSort = btn.dataset.sort;
-            reviewPage = 0;
-            reviewList = [];
-
-            fetchReviewList();
-        });
-    });
-
-    document.querySelector('.more_review_btn .btn_more').addEventListener('click', function () {
-        reviewPage = reviewPage + 1;
-        fetchReviewList();
-    });
-});
-
+const reviewSize = 15;
+let reviewTotalPages = 0;
+let reviewTotalElements = 0;
+let reviewPage = 0;
+let reviewSort = '';
+let reviewList = [];
 
 
 
@@ -39,29 +19,135 @@ document.addEventListener('DOMContentLoaded', async function () {
 	
 	if (isLoggedIn()) {
 		const payload = parseJwt(localStorage.getItem('accessToken'));
-		document.getElementById('login_state').style.display = 'block';
-		document.getElementById('logout_state').style.display = 'none';
+		document.getElementById('reviewLoginState').style.display = 'block';
+		document.getElementById('reviewLogoutState').style.display = 'none';
+		document.getElementById('writeReviewAvatar').src = payload.avatar;
+		document.getElementById('writeReviewAvatar').onclick = () => { location.href = `/mypage/profile.do?id=${payload.id}` };
 		document.getElementById('writeReviewNickname').innerText = payload.nickname;
+		document.getElementById('writeReviewNickname').onclick = () => { location.href = `/mypage/profile.do?id=${payload.id}` };
 	}
 	else {
-		document.getElementById('login_state').style.display = 'none';
-		document.getElementById('logout_state').style.display = 'block';
+		document.getElementById('reviewLoginState').style.display = 'none';
+		document.getElementById('reviewLogoutState').style.display = 'block';
 	}
 
 });
 
 
 
+
+
 /**
- * 전역변수
+ * 리뷰 목록 검색 필터를 설정하는 함수
  */
-let reviewTotalPages = 0;
-let reviewTotalElements = 0;
-let reviewPage = 0;
-const reviewSize = 15;
-let reviewTablename = '';
-let reviewSort = '';
-let reviewList = [];
+document.addEventListener('DOMContentLoaded', function () {
+	
+	wrap = document.getElementById('reviewWrap');
+
+    // 정렬 버튼
+    wrap.querySelectorAll('.review_order .btn_sort_small').forEach(btn => {
+        btn.addEventListener('click', function (event) {
+            event.preventDefault();
+            wrap.querySelector('.review_order .btn_sort_small.active')?.classList.remove('active');
+            btn.classList.add('active');
+
+            reviewSort = btn.dataset.sort;
+            reviewPage = 0;
+            reviewList = [];
+
+            fetchReviewList();
+        });
+    });
+
+	// 더보기 기능
+    wrap.querySelector('.btn_more').addEventListener('click', function () {
+        reviewPage = reviewPage + 1;
+        fetchReviewList();
+    });
+	
+	fetchReviewList();
+});
+
+
+
+
+
+/**
+ * 리뷰 폼값을 검증하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	
+	// 리뷰를 작성하는 폼값 검증 및 포커스
+	const writeReviewContent = document.getElementById("writeReviewContent");
+	const reviewContentBorder = document.querySelector('.review_input');
+	const writeReviewButton = document.querySelector('#writeReviewForm button[type="submit"]');
+	writeReviewContent.addEventListener('focus', function() {
+		reviewContentBorder.classList.add('focus');
+	});
+	writeReviewContent.addEventListener('blur', function() {
+		reviewContentBorder.classList.remove('focus');
+	});
+	writeReviewContent.addEventListener('input', function() {
+		const isReviewCommentEmpty = writeReviewContent.value.trim() === "";
+		writeReviewButton.classList.toggle('disable', isReviewCommentEmpty);
+		writeReviewButton.disabled = isReviewCommentEmpty;
+	});
+	
+	// 리뷰를 작성하는 폼의 별점 선택
+	const writeReviewStarGroup = document.querySelectorAll('#writeReviewStarGroup .star');
+	const writeReviewStar = document.getElementById('writeReviewStar');
+	writeReviewStarGroup.forEach(starI => {
+		starI.addEventListener('click', function() {
+			writeReviewStar.value = this.getAttribute('data-value');
+			writeReviewStarGroup.forEach(starJ => {
+				const value = Number(starJ.getAttribute('data-value'));
+				starJ.src = value <= this.getAttribute('data-value') ? '/images/common/star_full.png' : '/images/common/star_outline.png';
+			});
+		});
+	});
+	
+	// 리뷰를 수정하는 모달창의 폼값을 검증
+	const editReviewContent = document.getElementById("editReviewContent");
+	const editReviewButton = document.querySelector("#editReviewForm button[type='submit']");
+	editReviewContent.addEventListener("input", function() {
+		const isReviewContentEmpty = editReviewContent.value.trim() === "";
+		editReviewButton.classList.toggle("disabled", isReviewContentEmpty);
+	});
+	
+	// 리뷰를 수정하는 폼의 별점 선택
+	const editReviewStarGroup = document.querySelectorAll('#editReviewStarGroup .star');
+	const editReviewStar = document.getElementById('editReviewStar');
+	editReviewStarGroup.forEach(starI => {
+		starI.addEventListener('click', function() {
+			editReviewStar.value = this.getAttribute('data-value');
+			editReviewStarGroup.forEach(starJ => {
+				const value = Number(starJ.getAttribute('data-value'));
+				starJ.src = value <= this.getAttribute('data-value') ? '/images/common/star_full.png' : '/images/common/star_outline.png';
+			});
+		});
+	});
+	
+	// 리뷰를 신고하는 모달창의 폼값 검증
+	const reasonRadio = document.querySelectorAll("#reportReviewForm input[name='reason']");
+	const submitButton = document.querySelector("#reportReviewForm button[type='submit']");
+	reasonRadio.forEach(function(radio) {
+        radio.addEventListener("change", function() {
+			const isChecked = Array.from(reasonRadio).some(radio => radio.checked);
+			submitButton.classList.toggle("disabled", !isChecked);
+        });
+    });
+});
+
+
+
+
+
+/**
+ * TODO : 모달이 닫히면 폼을 초기화하는 함수
+ */
+
+
+
 
 
 /**
@@ -72,51 +158,38 @@ async function fetchReviewList() {
         const id = new URLSearchParams(window.location.search).get('id');
 
         const params = new URLSearchParams({
-            recipeId: id,            // 리뷰는 recipeId 기준
+            recodenum: id,
             sort: reviewSort,
             page: reviewPage,
             size: reviewSize
         }).toString();
-
+		
         const response = await fetch(`/reviews?${params}`, {
-            method: 'GET',
-            headers: getAuthHeaders()  // 인증 헤더 포함
+			method: 'GET',
+			headers: getAuthHeaders()
         });
-
+		
         const result = await response.json();
-
+		
         if (result.code === 'REVIEW_READ_LIST_SUCCESS') {
-
             // 전역 변수 설정
             reviewTotalPages = result.data.totalPages;
             reviewTotalElements = result.data.totalElements;
             reviewList = [...reviewList, ...result.data.content];
 
+			// 렌더링
             renderReviewList(reviewList);
-
-            // 리뷰 총 개수 표시
             document.querySelector('.review_count span:last-of-type').innerText = reviewTotalElements;
-
-            // 더보기 버튼 제어
-            document.querySelector('.more_review_btn .btn_more').style.display = reviewPage >= reviewTotalPages - 1 ? 'none' : 'block';
-
-            // 리뷰 목록이 없을 때 처리
-            if (reviewTotalPages === 0) {
-                document.querySelector('.review_list').style.display = 'none';
-                document.querySelector('.list_empty')?.remove();
-                const content = document.querySelector('.review_write');
-                content.insertAdjacentElement('afterend', renderListEmpty());
-            } else {
-                document.querySelector('.list_empty')?.remove();
-                document.querySelector('.review_list').style.display = '';
-            }
+            document.querySelector('.btn_more').style.display = reviewPage >= reviewTotalPages - 1 ? 'none' : 'block';
+			if (document.querySelector('#viewRecipeReviewRecipeWrap .comment_count')) {
+				document.querySelector('#viewRecipeReviewRecipeWrap .comment_count').innerText = commentTotalElements;
+			}
         }
         else if (result.code === 'REVIEW_READ_LIST_FAIL') {
             alertDanger('리뷰 목록 조회에 실패했습니다.');
         }
-        else {
-            console.log('알 수 없는 에러:', result);
-        }
+		
+		// TODO : 에러 코드 추가
     }
     catch (error) {
         console.log(error);
@@ -127,15 +200,35 @@ async function fetchReviewList() {
 
 
 
-
 /**
  * 리뷰 목록을 화면에 렌더링하는 함수
  */
 function renderReviewList(reviewList) {
 	
-    const container = document.getElementById('reviewList');
+	const wrap = document.getElementById('reviewWrap');
+    const container = wrap.querySelector('.review_list');
     container.innerHTML = ''; 
 
+	// 리뷰 목록이 존재하지 않는 경우
+	if (reviewList == null || reviewList.length === 0) {
+		container.style.display = 'block';
+		wrap.querySelector('.list_empty')?.remove();
+		
+		const wrapper = document.createElement('div');
+		wrapper.className = 'list_empty';
+
+		const span = document.createElement('span');
+		span.textContent = '리뷰가 없습니다';
+		wrapper.appendChild(span);
+		container.querySelector('.review_write').insertAdjacentElement('afterend', wrapper);
+
+		return;
+	}
+	
+	// 리뷰 목록이 존재하는 경우
+	container.style.display = 'block';
+	wrap.querySelector('.list_empty')?.remove();
+	
     reviewList.forEach(review => {
         const reviewList = document.createElement('li');
         reviewList.className = 'review';
@@ -152,15 +245,17 @@ function renderReviewList(reviewList) {
         // 작성자 정보
         const writerDiv = document.createElement('div');
         writerDiv.className = 'review_writer';
-        const avatar = document.createElement('img');
-        avatar.className = 'review_avatar';
-        avatar.src = '/images/common/test.png';
+        const avatarImg = document.createElement('img');
+        avatarImg.className = 'review_avatar';
+        avatarImg.src = review.avatar;
+		avatarImg.onclick = () => { location.href = `/mypage/profile.do?id=${review.user_id}`; }
         const nameSpan = document.createElement('span');
+		nameSpan.onclick = () => { location.href = `/mypage/profile.do?id=${review.user_id}`; }
         nameSpan.textContent = review.nickname;
 		
         const dateSpan = document.createElement('span');
         dateSpan.textContent = formatDate(review.postdate);
-        writerDiv.append(avatar, nameSpan, dateSpan);
+        writerDiv.append(avatarImg, nameSpan, dateSpan);
 
         // 기능 버튼 (신고 / 수정 / 삭제)
         const actionDiv = document.createElement('div');
@@ -172,7 +267,6 @@ function renderReviewList(reviewList) {
             payload?.role === 'ROLE_SUPER_ADMIN' ||
             (payload?.role === 'ROLE_ADMIN' && review.role === 'ROLE_USER') ||
             (payload?.id === review.user_id);
-			
 
         // 수정 / 삭제 버튼
         if (canAction) {
@@ -420,7 +514,9 @@ function renderReviewLikeButton(id, likecount, isLiked) {
  * 리뷰를 작성하는 함수
  */
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('writeReviewForm').addEventListener('submit', async function (event) {
+	
+	const form = document.getElementById('writeReviewForm');
+    form.addEventListener('submit', async function (event) {
         event.preventDefault();
 
         try {
@@ -440,8 +536,8 @@ document.addEventListener('DOMContentLoaded', function () {
             if (response.data.code === 'REVIEW_CREATE_SUCCESS') {
                 alertPrimary('리뷰 작성에 성공했습니다.');
 
-                document.getElementById("writeReviewContent").value = '';
-                const submitBtn = document.querySelector("#writeReviewForm button[type='submit']");
+                document.getElementById('writeReviewContent').value = '';
+                const submitBtn = form.querySelector('button[type="submit"]');
                 submitBtn.disabled = true;
                 submitBtn.classList.add('disable');
 
@@ -487,9 +583,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	editForm.addEventListener('submit', async function(event) {
 		event.preventDefault();
 
-		const id = document.getElementById('editReviewId').value;  // 리뷰 ID (hidden input)
-		const content = document.getElementById('editReviewContent').value.trim(); // 수정할 리뷰 내용
-		const score = Number(document.getElementById('editReviewStar').value || 0); // 수정할 별점 (hidden input)
+		const id = document.getElementById('editReviewId').value;
+		const content = document.getElementById('editReviewContent').value.trim();
+		const score = Number(document.getElementById('editReviewStar').value || 0);
 
 		try {
 			const data = {
@@ -629,102 +725,6 @@ async function deleteReview(id) {
 
 
 
-
-
-
-
-/***** comment.js의 전역변수를 그대로 사용하면 레시피 상세 페이지에서 에러가 남!! 주의 필요 *****/
-/***** 클래스명도 안겹치게 주의 필요 *****/
-
-
-
-/**
- * 리뷰 폼 값을 검증하는 함수
- */
-document.addEventListener('DOMContentLoaded', function() {
-	
-	// 리뷰 정렬 탭 메뉴 클릭 시 탭 메뉴를 활성화하는 함수
-	const tabList = document.querySelectorAll('.review_order button');
-	tabList.forEach(tabI => {
-		tabI.addEventListener('click', function(event) {
-			event.preventDefault();
-			tabList.forEach(tabJ => tabJ.classList.remove('active'));
-			this.classList.add('active');
-        });
-	});
-	
-	// 리뷰 작성 폼의 포커스 여부에 따라 입력창을 활성화하는 함수
-	const writeReviewContent = document.getElementById("writeReviewContent");
-	const reviewContentBorder = document.querySelector('.review_input');
-	writeReviewContent.addEventListener('focus', function() {
-		reviewContentBorder.classList.add('focus');
-	});
-	writeReviewContent.addEventListener('blur', function() {
-		reviewContentBorder.classList.remove('focus');
-	});
-	
-	// 리뷰를 작성하는 폼의 별점을 선택하는 함수
-	const writeReviewStarGroup = document.querySelectorAll('#writeReviewStarGroup .star');
-	const writeReviewStar = document.getElementById('writeReviewStar');
-	writeReviewStarGroup.forEach(starI => {
-		starI.addEventListener('click', function() {
-			writeReviewStar.value = this.getAttribute('data-value');
-			writeReviewStarGroup.forEach(starJ => {
-				const value = Number(starJ.getAttribute('data-value'));
-				starJ.src = value <= this.getAttribute('data-value') ? '/images/common/star_full.png' : '/images/common/star_outline.png';
-			});
-		});
-	});
-	
-	// 리뷰 작성 폼값을 검증하고 버튼을 활성화하는 함수
-	const writeReviewButton = document.querySelector("#writeReviewForm button[type='submit']");
-	writeReviewContent.addEventListener("input", function() {
-		const isReviewCommentEmpty = writeReviewContent.value.trim() === "";
-		writeReviewButton.classList.toggle("disable", isReviewCommentEmpty);
-		writeReviewButton.disabled = isReviewCommentEmpty;
-	});
-	
-	// 리뷰를 수정하는 폼의 별점을 선택하는 함수
-	const editReviewStarGroup = document.querySelectorAll('#editReviewStarGroup .star');
-	const editReviewStar = document.getElementById('editReviewStar');
-
-	editReviewStarGroup.forEach(starI => {
-		starI.addEventListener('click', function() {
-			editReviewStar.value = this.getAttribute('data-value');
-			editReviewStarGroup.forEach(starJ => {
-				const value = Number(starJ.getAttribute('data-value'));
-				starJ.src = value <= this.getAttribute('data-value') ? '/images/common/star_full.png' : '/images/common/star_outline.png';
-			});
-		});
-	});
-	
-	// 리뷰를 수정하는 모달창의 폼값을 검증하고 버튼을 활성화하는 함수
-	const editReviewContent = document.getElementById("editReviewContent");
-	const editReviewButton = document.querySelector("#editReviewForm button[type='submit']");
-	editReviewContent.addEventListener("input", function() {
-		const isReviewContentEmpty = editReviewContent.value.trim() === "";
-		editReviewButton.classList.toggle("disabled", isReviewContentEmpty);
-	});
-	
-	// 리뷰를 신고하는 모달창의 신고 사유를 선택했는지 검증하는 함수
-	const reasonRadio = document.querySelectorAll("#reportReviewForm input[name='reason']");
-	const submitButton = document.querySelector("#reportReviewForm button[type='submit']");
-
-	reasonRadio.forEach(function(radio) {
-        radio.addEventListener("change", function() {
-			const isChecked = Array.from(reasonRadio).some(radio => radio.checked);
-			submitButton.classList.toggle("disabled", !isChecked);
-        });
-    });
-	
-});
-
-
-
-
-/**
- * 모달이 닫히면 폼을 초기화하는 함수
- */
 
 
 

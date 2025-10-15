@@ -406,6 +406,28 @@ public class AdminController {
 	
 	
 	// 리뷰
+	// 댓글 목록 조회 (관리자)
+	@GetMapping("/admin/reviews")
+	public ResponseEntity<?> readAdminReview(
+			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
+			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
+			@Parameter(description = "페이지 번호") @RequestParam int page,
+			@Parameter(description = "페이지 크기") @RequestParam int size) {
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(RecipeErrorCode.RECIPE_FORBIDDEN);
+			}
+		}
+		
+		Pageable pageable = PageRequest.of(page, size);
+		Page<ReviewReadResponseDto> reviewPage = reviewService.readAdminReviewPage(keyword, sort, pageable);
+		
+		return ResponseEntity.status(RecipeSuccessCode.RECIPE_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(RecipeSuccessCode.RECIPE_READ_LIST_SUCCESS, reviewPage));
+	}
 	
 	
 	
@@ -507,22 +529,7 @@ public class AdminController {
 	    return ResponseEntity.status(UserSuccessCode.USER_WITHDRAW_HISTORY_READ_SUCCESS.getStatus())
 	            .body(ApiResponse.success(UserSuccessCode.USER_WITHDRAW_HISTORY_READ_SUCCESS, withdrawPage));
 	}
-	
-	
-	// 전체 사용자 리뷰 내역 목록 조회
-    @GetMapping("/admin/reviews")
-    public ResponseEntity<?> readAllReviews(
-            @RequestParam(required = false) String sort,
-            @RequestParam int page,
-            @RequestParam int size,
-            @RequestParam(required = false) String keyword) {
-    	
-        Pageable pageable = PageRequest.of(page, size);
-        Page<ReviewReadResponseDto> reviewPage = reviewService.readAllReviewPage(sort, pageable, keyword);
 
-        return ResponseEntity.status(ReviewSuccessCode.REVIEW_READ_LIST_SUCCESS.getStatus())
-                .body(ApiResponse.success(ReviewSuccessCode.REVIEW_READ_LIST_SUCCESS, reviewPage));
-    }
 	
 	
 	

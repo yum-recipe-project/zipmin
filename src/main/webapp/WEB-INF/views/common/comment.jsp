@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<div class="comment_wrap">
+<div id="commentWrap" class="comment_wrap">
 	<!-- 댓글 헤더 -->
 	<div class="comment_header">
 		<div class="comment_count">
@@ -35,7 +35,7 @@
 				<span>400</span>
 			</div>
 			<div class="write_btn">
-				<button class="btn_primary disable" type="submit" class="disable" disabled>작성하기</button>
+				<button class="btn_primary disable" type="submit" disabled>작성하기</button>
 			</div>
 		</div>
 	</form>
@@ -44,10 +44,8 @@
 	<ul class="comment_list"></ul>
 	
 	<!-- 댓글 더보기 버튼 -->
-	<div class="more_comment_btn">
-		<button class="btn_more">
-			<span>더보기</span>
-			<img src="/images/common/arrow_down.png">
-		</button>
-	</div>
+	<button class="btn_more btn_comment_more">
+		<span>더보기</span>
+		<img src="/images/common/arrow_down.png">
+	</button>
 </div>

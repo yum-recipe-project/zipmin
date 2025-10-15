@@ -152,6 +152,8 @@ public class SecurityConfig {
 				
 				.requestMatchers("/comments", "/comments/**").permitAll()
 				
+				.requestMatchers("/reviews", "/reviews/**").permitAll()
+				
 				.requestMatchers("/cooking/**").permitAll()
 				.requestMatchers("/classes", "/classes/**").permitAll()
 				

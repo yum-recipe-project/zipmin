@@ -1,7 +1,7 @@
 /**
  * 전역변수
  */
-const reviewSize = 15;
+const reviewSize = 2;
 let reviewTotalPages = 0;
 let reviewTotalElements = 0;
 let reviewPage = 0;

@@ -75,7 +75,6 @@
 
 #container .review_write .login_user img {
 	border-radius: 50%;
-	background: #ddd;
 	width: 24px;
 	height: 24px;
 	margin-right: 4px;
@@ -172,9 +171,8 @@
 
 #container .review_avatar {
 	border-radius: 50%;
-	background: #ddd;
-	width: 32px;
-	height: 32px;
+	width: 24px;
+	height: 24px;
 }
 
 #container .review_inner {

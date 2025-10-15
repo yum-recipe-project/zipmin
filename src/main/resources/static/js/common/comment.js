@@ -1,7 +1,7 @@
 /**
  * 전역변수
  */
-const commentSize = 15;
+const commentSize = 2;
 let commentTotalPages = 0;
 let commentTotalElements = 0;
 let commentTablename = '';

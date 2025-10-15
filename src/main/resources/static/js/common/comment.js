@@ -1,7 +1,7 @@
 /**
  * 전역변수
  */
-const commentSize = 2;
+const commentSize = 15;
 let commentTotalPages = 0;
 let commentTotalElements = 0;
 let commentTablename = '';
@@ -209,6 +209,8 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 async function fetchCommentList() {
 	
+	const wrap = document.getElementById('commentWrap');
+	
 	try {
 		const id = new URLSearchParams(window.location.search).get('id');
 		
@@ -239,7 +241,7 @@ async function fetchCommentList() {
 			if (document.querySelector('#viewRecipeReviewCommentWrap .comment_count')) {
 				document.querySelector('#viewRecipeReviewCommentWrap .comment_count').innerText = commentTotalElements;
 			}
-			document.querySelector('.btn_more').style.display = commentPage >= commentTotalPages - 1 ? 'none' : 'block';
+			wrap.querySelector('.btn_more').style.display = commentPage >= commentTotalPages - 1 ? 'none' : 'block';
 		}
 		else if (result.code === 'COMMENT_READ_LIST_FAIL') {
 			alertDanger('댓글 목록 조회에 실패했습니다.');

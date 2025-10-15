@@ -1,7 +1,7 @@
 /**
  * 전역변수
  */
-const reviewSize = 2;
+const reviewSize = 15;
 let reviewTotalPages = 0;
 let reviewTotalElements = 0;
 let reviewPage = 0;
@@ -154,6 +154,9 @@ document.addEventListener('DOMContentLoaded', function() {
  * 서버에서 리뷰 목록 데이터를 가져오는 함수
  */
 async function fetchReviewList() {
+	
+	const wrap = document.getElementById('reviewWrap');
+	
     try {
         const id = new URLSearchParams(window.location.search).get('id');
 
@@ -180,10 +183,10 @@ async function fetchReviewList() {
 			// 렌더링
             renderReviewList(reviewList);
             document.querySelector('.review_count span:last-of-type').innerText = reviewTotalElements;
-            document.querySelector('.btn_more').style.display = reviewPage >= reviewTotalPages - 1 ? 'none' : 'block';
-			if (document.querySelector('#viewRecipeReviewRecipeWrap .comment_count')) {
-				document.querySelector('#viewRecipeReviewRecipeWrap .comment_count').innerText = commentTotalElements;
+			if (document.querySelector('#viewRecipeReviewCommentWrap .review_count')) {
+				document.querySelector('#viewRecipeReviewCommentWrap .review_count').innerText = reviewTotalElements;
 			}
+            wrap.querySelector('.btn_more').style.display = reviewPage >= reviewTotalPages - 1 ? 'none' : 'block';
         }
         else if (result.code === 'REVIEW_READ_LIST_FAIL') {
             alertDanger('리뷰 목록 조회에 실패했습니다.');
@@ -541,7 +544,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 submitBtn.disabled = true;
                 submitBtn.classList.add('disable');
 
-                page = 0;
+                reviewPage = 0;
                 reviewList = [];
                 fetchReviewList();
             }
@@ -606,7 +609,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					document.querySelector(`.review[data-id='${id}'] .review_content`).textContent = response.data.data.content;
 				}
 
-				// 리뷰 별점 업데이트 (⭐ 아이콘 변경)
+				// 리뷰 별점 업데이트 (아이콘 변경)
 				const starContainer = document.querySelector(`.review[data-id='${id}'] .star`);
 				if (starContainer) {
 				    const starImgs = starContainer.querySelectorAll('img');
@@ -680,7 +683,11 @@ async function deleteReview(id) {
                 alertPrimary('리뷰를 성공적으로 삭제했습니다.');
 
                 document.querySelector(`.review[data-id='${id}']`)?.remove();
-
+				reviewTotalElements--;
+				document.querySelector('.review_count span:last-of-type').innerText = reviewTotalElements;
+				if (document.querySelector('#viewRecipeReviewCommentWrap .review_count')) {
+					document.querySelector('#viewRecipeReviewCommentWrap .review_count').innerText = reviewTotalElements;
+			}
                 reviewList = reviewList.filter(review => review.id !== id);
             }
 

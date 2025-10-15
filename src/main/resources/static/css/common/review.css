@@ -78,6 +78,7 @@
 	width: 24px;
 	height: 24px;
 	margin-right: 4px;
+	cursor: pointer;
 }
 
 #container .review_write .login_user span {
@@ -86,6 +87,7 @@
 	line-height: 1.4;
 	letter-spacing: -0.02em;
 	font-size: 14px;
+	cursor: pointer;
 }
 
 /* 리뷰 작성 (로그인 - 별점) */
@@ -173,6 +175,7 @@
 	border-radius: 50%;
 	width: 24px;
 	height: 24px;
+	cursor: pointer;
 }
 
 #container .review_inner {
@@ -196,6 +199,7 @@
 #container .review_info .review_writer span {
 	font-size: 14px;
 	font-weight: 500;
+	cursor: pointer;
 }
 
 #container .review_info .review_writer span:last-child {

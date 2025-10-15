@@ -15,11 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.CommentErrorCode;
-import com.project.zipmin.api.LikeErrorCode;
-import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.CommentCreateRequestDto;
 import com.project.zipmin.dto.CommentCreateResponseDto;
-import com.project.zipmin.dto.CommentDeleteRequestDto;
 import com.project.zipmin.dto.UserCommentReadesponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.CommentUpdateRequestDto;
@@ -251,7 +248,7 @@ public class CommentService {
 	
 	
 	
-	// 사용자가 작성한 댓글 목록을 조회하는 함수
+	// 사용자의 댓글 목록 조회
 	public Page<UserCommentReadesponseDto> readCommentPageByUserId(Integer userId, Pageable pageable) {
 		
 		// 입력값 검증
@@ -333,7 +330,7 @@ public class CommentService {
 
 	
 	
-	// 댓글을 작성하는 함수
+	// 댓글 작성
 	public CommentCreateResponseDto createComment(CommentCreateRequestDto commentRequestDto) {
 
 		// 입력값 검증
@@ -372,7 +369,7 @@ public class CommentService {
 	
 	
 	
-	// 댓글을 수정하는 함수
+	// 댓글 수정
 	public CommentUpdateResponseDto updateComment(CommentUpdateRequestDto commentDto) {
 		
 		// 입력값 검증
@@ -420,6 +417,8 @@ public class CommentService {
 		}
 		
 	}
+	
+	
 	
 	
 	

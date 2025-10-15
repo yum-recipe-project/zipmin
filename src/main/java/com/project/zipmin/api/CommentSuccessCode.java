@@ -9,10 +9,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum CommentSuccessCode implements Code {
 	
-	// 데이터 처리
+	COMMENT_CREATE_SUCCESS(HttpStatus.CREATED, "댓글 작성 성공"),
 	COMMENT_READ_LIST_SUCCESS(HttpStatus.OK, "댓글 목록 조회 성공"),
 	COMMENT_READ_SUCCESS(HttpStatus.OK, "댓글 조회 성공"),
-	COMMENT_CREATE_SUCCESS(HttpStatus.CREATED, "댓글 작성 성공"),
     COMMENT_UPDATE_SUCCESS(HttpStatus.OK, "댓글 수정 성공"),
     COMMENT_DELETE_SUCCESS(HttpStatus.OK, "댓글 삭제 성공"),
     

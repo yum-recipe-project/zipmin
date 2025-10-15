@@ -1,6 +1,5 @@
 package com.project.zipmin.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,13 +19,9 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.CommentSuccessCode;
-import com.project.zipmin.api.UserErrorCode;
-import com.project.zipmin.api.UserSuccessCode;
-import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.CommentCreateRequestDto;
 import com.project.zipmin.dto.CommentCreateResponseDto;
 import com.project.zipmin.dto.UserCommentReadesponseDto;
-import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.CommentUpdateRequestDto;
 import com.project.zipmin.dto.CommentUpdateResponseDto;
@@ -36,7 +31,6 @@ import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.ReportCreateRequestDto;
 import com.project.zipmin.dto.ReportCreateResponseDto;
 import com.project.zipmin.dto.ReportDeleteRequestDto;
-import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.CommentCreateFailResponse;
@@ -58,6 +52,10 @@ import com.project.zipmin.swagger.CommentUnlikeSuccessResponse;
 import com.project.zipmin.swagger.CommentUnreportSuccessResponse;
 import com.project.zipmin.swagger.CommentUpdateFailResponse;
 import com.project.zipmin.swagger.CommentUpdateSuccessResponse;
+import com.project.zipmin.swagger.EventInvalidInputResponse;
+import com.project.zipmin.swagger.EventNotFoundResponse;
+import com.project.zipmin.swagger.GuideInvalidInputResponse;
+import com.project.zipmin.swagger.GuideNotFoundResponse;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.LikeCountFailResponse;
 import com.project.zipmin.swagger.LikeCreateFailResponse;
@@ -67,6 +65,10 @@ import com.project.zipmin.swagger.LikeExistFailResponse;
 import com.project.zipmin.swagger.LikeForbiddenResponse;
 import com.project.zipmin.swagger.LikeInvalidInputResponse;
 import com.project.zipmin.swagger.LikeNotFoundResponse;
+import com.project.zipmin.swagger.MegazineInvalidInputResponse;
+import com.project.zipmin.swagger.MegazineNotFoundResponse;
+import com.project.zipmin.swagger.RecipeInvalidInputResponse;
+import com.project.zipmin.swagger.RecipeNotFoundResponse;
 import com.project.zipmin.swagger.ReportCountFailResponse;
 import com.project.zipmin.swagger.ReportCreateFailResponse;
 import com.project.zipmin.swagger.ReportDeleteFailResponse;
@@ -76,6 +78,8 @@ import com.project.zipmin.swagger.ReportInvalidInputResponse;
 import com.project.zipmin.swagger.ReportNotFoundResponse;
 import com.project.zipmin.swagger.UserInvalidInputResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
+import com.project.zipmin.swagger.VoteInvalidInputResponse;
+import com.project.zipmin.swagger.VoteNotFoundResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -83,21 +87,21 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequiredArgsConstructor
 @Tag(name = "Comment API", description = "댓글 관련 API")
 public class CommentController {
 	
-	@Autowired
-	CommentService commentService;
-	
-	@Autowired
-	UserService userService;
+	private final CommentService commentService;
+	private final UserService userService;
 	
 	
 	
 	
 	
+	// 댓글 목록 조회
 	@Operation(
 	    summary = "댓글 목록 조회"
 	)
@@ -190,6 +194,7 @@ public class CommentController {
 	
 	
 	
+	// 댓글 작성
 	@Operation(
 	    summary = "댓글 작성"
 	)
@@ -267,6 +272,7 @@ public class CommentController {
 	
 	
 	
+	// 댓글 수정
 	@Operation(
 	    summary = "댓글 수정"
 	)
@@ -330,10 +336,10 @@ public class CommentController {
 	// 댓글 수정
 	@PatchMapping("/comments/{id}")
 	public ResponseEntity<?> updateComment(
-			@Parameter(description = "댓글의 일련번호", required = true, example = "1") @PathVariable int id,
-			@Parameter(description = "댓글 수정 요청 정보", required = true) @RequestBody CommentUpdateRequestDto commentRequestDto) {
+			@Parameter(description = "댓글의 일련번호") @PathVariable int id,
+			@Parameter(description = "댓글 수정 요청 정보") @RequestBody CommentUpdateRequestDto commentRequestDto) {
 		
-		// 인증 여부 확인 (비로그인)
+		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
@@ -349,6 +355,7 @@ public class CommentController {
 	
 	
 	
+	// 댓글 삭제
 	@Operation(
 	    summary = "댓글 삭제"
 	)
@@ -411,7 +418,8 @@ public class CommentController {
 	})
 	// 댓글 삭제
 	@DeleteMapping("/comments/{id}")
-	public ResponseEntity<?> deleteComment(@Parameter(description = "댓글의 일련번호") @PathVariable int id) {
+	public ResponseEntity<?> deleteComment(
+			@Parameter(description = "댓글의 일련번호") @PathVariable int id) {
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -429,6 +437,7 @@ public class CommentController {
 	
 	
 	
+	// 댓글 좋아요
 	@Operation(
 	    summary = "댓글 좋아요"
 	)
@@ -494,7 +503,7 @@ public class CommentController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserNotFoundResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "404",
+				responseCode = "409",
 				description = "좋아요 중복 작성 시도",
 				content = @Content(
 						mediaType = "application/json",
@@ -529,6 +538,7 @@ public class CommentController {
 	
 	
 	
+	// 댓글 좋아요 취소
 	@Operation(
 	    summary = "댓글 좋아요 취소"
 	)
@@ -630,6 +640,7 @@ public class CommentController {
 	
 	
 	
+	// 댓글 신고
 	@Operation(
 	    summary = "댓글 신고"
 	)
@@ -731,6 +742,7 @@ public class CommentController {
 	
 	
 	
+	// 댓글 신고 취소
 	@Operation(
 	    summary = "댓글 신고 취소"
 	)
@@ -844,33 +856,122 @@ public class CommentController {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	// 200 COMMENT_READ_LIST_SUCCESS
-	// 400 COMMENT_READ_LIST_FAIL
-	// 400 COMMENT_INVALID_INPUT
-	// 400 USER_INVALID_INPUT
-	// 400 VOTE_INVALID_INPUT
-	// 400 MEGAZINE_INVALID_INPUT
-	// 400 EVENT_INVALID_INPUT
-	// 400 RECIPE_INVALID_INPUT
-	// 400 GUIDE_INVALID_INPUT
-	// 401 COMMENT_UNAUTHORIZED_ACCESS
-	// 403 COMMENT_FORBIDDEN
-	// 404 USER_NOT_FOUND
-	// 404 VOTE_NOT_FOUND
-	// 404 MEGAZINE_NOT_FOUND
-	// 404 EVENT_NOT_FOUND
-	// 404 RECIPE_NOT_FOUND
-	// 404 GUIDE_NOT_FOUND
-	
-	// 작성한 댓글
+	// 사용자의 댓글 목록 조회
+	@Operation(
+	    summary = "사용자의 댓글 목록 조회"
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "댓글 목록 조회 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = CommentReadListSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "댓글 목록 조회 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = CommentReadListFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = CommentInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = GuideInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인 되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = CommentUnauthorizedAccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "권한 없는 사용자의 접근",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = CommentForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 투표를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 매거진을 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 이벤트를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 레시피를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 가이드를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = GuideNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+		
+	})
+	// 사용자의 댓글 목록 조회
 	@GetMapping("/users/{id}/comments")
 	public ResponseEntity<?> readUserCommentList(
 			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,

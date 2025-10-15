@@ -356,6 +356,17 @@
 }
 
 
+/* 전체 선택 버튼 */
+#container .content .memo_wrap .memo_content .btn_gray_small {
+	border: none !important; 
+}
+#selectAllBtn.btn_gray_small:active,
+#selectAllBtn.btn_gray_small:hover {
+    background: #EEE !important; 
+    border: none !important;
+}
+
+
 /* 메모 > 목록 없음 */
 #container .memo_wrap .memo_content .memo_empty_wrap {
 	padding: 14px;
@@ -502,7 +513,6 @@
 #container .mart_wrap {
 	padding: 0 0 80px 0;
 }
-
 #container .mart_wrap .mart_header {
 	margin: 0px auto;
 	display: flex;
@@ -519,6 +529,9 @@
 }
 
 /* 내 주변 마트 > 헤더 버튼 */
+#container .mart_wrap .mart_header .btn_icon.dimmed {
+	background: var(--line-color2);
+}
 #container .mart_wrap .mart_header .btn_icon img {
 	width: 60%;
 }
@@ -562,6 +575,12 @@
 #container .mart_wrap .mart_content .mart_list .mart_box .mart_txt span {
 	font-size: 16px;
 	font-weight: 600;
+	
+	white-space: nowrap;      
+    overflow: hidden;         
+    text-overflow: ellipsis;  
+    max-width: 180px;         
+    display: inline-block;     
 }
 #container .mart_wrap .mart_content .mart_list .mart_box .mart_txt .ping {
 	margin-top: 2px;
@@ -579,13 +598,67 @@
 }
 
 
-    
-    
-    
-    
-
 #selectAll {
 	width: 15px;
 	height: 15px;
 	outline: auto;
+}
+
+
+
+
+/* 내 주변 마트 > 지도 요소 */
+.custom-overlay {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 8px 12px;
+    border: 1px solid rgba(0,0,0,0.3);
+    font-size: 13px;
+    line-height: 1.4;
+    color: #333;
+    display: flex;
+    flex-direction: column; 
+    gap: 2px;
+    position: relative;
+    white-space: nowrap; 
+}
+
+.custom-overlay::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px 6px 0 6px;
+    border-style: solid;
+    border-color: #fff transparent transparent transparent;
+    z-index: 2;
+}
+.custom-overlay::before {
+    content: '';
+    position: absolute;
+    bottom: -7px; 
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 7px 7px 0 7px; 
+    border-style: solid;
+    border-color: rgba(0,0,0,0.3) transparent transparent transparent; 
+    z-index: 1;
+}
+
+.custom-overlay .place_info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.custom-overlay .place_info span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.custom-overlay .place_info .place_name {
+	font-weight: 600;
+}
+.custom-overlay .place_info .place_distance {
+	color: var(--txt-color-500);
 }

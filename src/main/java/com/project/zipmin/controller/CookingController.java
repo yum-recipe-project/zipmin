@@ -44,6 +44,7 @@ import com.project.zipmin.swagger.ClassApplyDuplicateResponse;
 import com.project.zipmin.swagger.ClassApplyInvalidInputResponse;
 import com.project.zipmin.swagger.ClassApplyNotFoundResponse;
 import com.project.zipmin.swagger.ClassApplyReadListFailResponse;
+import com.project.zipmin.swagger.ClassApplyReadListSuccessResponse;
 import com.project.zipmin.swagger.ClassApplyUnableResponse;
 import com.project.zipmin.swagger.ClassApplyUpdateFailResponse;
 import com.project.zipmin.swagger.ClassApplyUpdateSuccessResponse;
@@ -54,6 +55,7 @@ import com.project.zipmin.swagger.ClassForbiddenResponse;
 import com.project.zipmin.swagger.ClassInvalidInputResponse;
 import com.project.zipmin.swagger.ClassNotFoundResponse;
 import com.project.zipmin.swagger.ClassReadListFailResponse;
+import com.project.zipmin.swagger.ClassReadListSuccessResponse;
 import com.project.zipmin.swagger.ClassReadSuccessResponse;
 import com.project.zipmin.swagger.ClassScheduleReadListFailResponse;
 import com.project.zipmin.swagger.ClassTargetReadListFailResponse;
@@ -88,7 +90,12 @@ public class CookingController {
 	    summary = "클래스 목록 조회"
 	)
 	@ApiResponses(value = {
-		// 200 CLASS_READ_LIST_SUCCESS
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "클래스 목록 조회 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassReadListSuccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
 				description = "클래스 목록 조회 실패",
@@ -223,6 +230,10 @@ public class CookingController {
 	
 	
 	// 클래스 작성
+	
+	// TODO : API 문서 작성
+	
+	// 클래스 작성
 	@PostMapping(value = "/classes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<?> writeClass(
 			@RequestPart ClassCreateRequestDto createRequestDto,
@@ -240,18 +251,6 @@ public class CookingController {
 	    
 	    return ResponseEntity.status(ClassSuccessCode.CLASS_CREATE_SUCCESS.getStatus())
 	            .body(ApiResponse.success(ClassSuccessCode.CLASS_CREATE_SUCCESS, null));
-	}
-	
-	
-	
-	
-	
-	// 클래스 수정
-	@PatchMapping("/classes/{id}")
-	public ResponseEntity<?> editClass(
-			@Parameter(description = "클래스의 일련번호") @PathVariable int id) {
-		
-		return null;
 	}
 	
 	
@@ -352,7 +351,12 @@ public class CookingController {
 	    summary = "클래스 신청 목록 조회"
 	)
 	@ApiResponses(value = {
-		// 200 CLASS_APPLY_READ_LIST_SUCCESS
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "클래스 신청 목록 조회 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassApplyReadListSuccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
 				description = "클래스 신청 목록 조회 실패",
@@ -435,7 +439,7 @@ public class CookingController {
 	)
 	@ApiResponses(value = {
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "200",
+				responseCode = "201",
 				description = "클래스 신청 작성 성공",
 				content = @Content(
 						mediaType = "application/json",
@@ -526,7 +530,6 @@ public class CookingController {
 	
 	
 	
-	// 클래스 신청 상태 수정
 	// 클래스 신청 상태 수정
 	@Operation(
 	    summary = "클래스 신청 상태 수정"
@@ -717,7 +720,6 @@ public class CookingController {
 	
 	
 	// 사용자의 클래스 목록 조회
-	// 사용자의 클래스 목록 조회
 	@Operation(
 	    summary = "사용자의 클래스 목록 조회"
 	)
@@ -770,7 +772,6 @@ public class CookingController {
 	
 	
 	
-	// 사용자가 신청한 클래스 목록 조회
 	// 사용자가 신청한 클래스 목록 조회
 	@Operation(
 	    summary = "사용자가 신청한 클래스 목록 조회"
@@ -860,7 +861,6 @@ public class CookingController {
 	
 	
 	// 사용자의 클래스 결석 횟수 조회
-	// 사용자의 클래스 결석 수 조회
 	@Operation(
 	    summary = "사용자의 클래스 결석 횟수 조회"
 	)

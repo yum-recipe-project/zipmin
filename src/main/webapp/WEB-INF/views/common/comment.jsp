@@ -18,14 +18,14 @@
 	<!-- 댓글 작성 -->
 	<form id="writeCommentForm" class="comment_write">
 		<!-- 로그인 하지 않은 경우 -->
-		<div id="logout_state">
+		<div id="commentLogoutState">
 			<a href="javascript: redirectToLogin('/');">
 				<span>댓글 작성을 위해 로그인을 해주세요.</span>
 				<span>400</span>
 			</a>
 		</div>
 		<!-- 로그인 한 경우 -->
-		<div id="login_state">
+		<div id="commentLoginState">
 			<div class="login_user">
 				<img id="writeCommentAvatar">
 				<span id="writeCommentNickname"></span>

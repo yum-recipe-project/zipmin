@@ -46,11 +46,14 @@ public class ReviewService {
 	private final ReviewMapper reviewMapper;
 	
 
+	
+	
+	
 	// 리뷰 목록 조회
-    public Page<ReviewReadResponseDto> readReviewPage(Integer recipeId, String sort, Pageable pageable) {
+    public Page<ReviewReadResponseDto> readReviewPage(Integer recodenum, String sort, Pageable pageable) {
 
         // 입력값 검증
-        if (recipeId == null || pageable == null) {
+        if (recodenum == null ||  pageable == null) {
             throw new ApiException(ReviewErrorCode.REVIEW_INVALID_INPUT);
         }
 
@@ -58,82 +61,150 @@ public class ReviewService {
         Sort sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id"));
         if (sort != null && !sort.isBlank()) {
             switch (sort) {
-	            case "id-desc":
-	                sortSpec = Sort.by(Sort.Order.desc("id")); 
-	                break;
-	            case "id-asc":
-	                sortSpec = Sort.by(Sort.Order.asc("id")); 
-	                break;
 	            case "postdate-desc":
 	                sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id")); // 최신순
-	                break;
-	            case "postdate-asc":
-	                sortSpec = Sort.by(Sort.Order.asc("postdate"), Sort.Order.asc("id")); // 오래된순
 	                break;
 	            case "score-desc":
 	                sortSpec = Sort.by(Sort.Order.desc("score"), Sort.Order.desc("id")); // 별점 높은순
 	                break;
-	            case "score-asc":
-	                sortSpec = Sort.by(Sort.Order.asc("score"), Sort.Order.asc("id")); // 별점 낮은순
-	                break;
 	            case "likecount-desc":
 	                sortSpec = Sort.by(Sort.Order.desc("likecount"), Sort.Order.desc("id")); // 좋아요 높은순
-	                break;
-	            case "likecount-asc":
-	                sortSpec = Sort.by(Sort.Order.asc("likecount"), Sort.Order.asc("id")); // 좋아요 낮은순
 	                break;
 	            default:
 	                break;
 	        }
         }
 
+        // 기존 페이지 객체에 정렬 주입
         Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
 
-        // 리뷰 조회
+        // 리뷰 목록 조회
         Page<Review> reviewPage;
         try {
-            reviewPage = reviewRepository.findAllByRecipeId(recipeId, sortedPageable);
-        } catch (Exception e) {
+            reviewPage = reviewRepository.findAllByRecipeId(recodenum, sortedPageable);
+        }
+        catch (Exception e) {
             throw new ApiException(ReviewErrorCode.REVIEW_READ_LIST_FAIL);
         }
 
-        // DTO 변환
+        // 리뷰 목록 응답 구성
         List<ReviewReadResponseDto> reviewDtoList = new ArrayList<>();
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Integer currentUserId = null;
-
-        if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
-            String username = authentication.getName();
-            currentUserId = userService.readUserByUsername(username).getId();
-        }
-
         for (Review review : reviewPage) {
-        	
-            ReviewReadResponseDto dto = reviewMapper.toReadResponseDto(review);
+            ReviewReadResponseDto reviewDto = reviewMapper.toReadResponseDto(review);
             
-            dto.setUsername(review.getUser().getUsername());
-            dto.setNickname(review.getUser().getNickname());
+            // 사용자명
+            reviewDto.setUsername(review.getUser().getUsername());
+            // 닉네임
+            reviewDto.setNickname(review.getUser().getNickname());
+            // 프로필 사진
+            reviewDto.setAvatar(review.getUser().getAvatar());
+            // 좋아요수
+            reviewDto.setLikecount(likeService.countLike("review", review.getId()));
+            // 신고수
+            reviewDto.setReportcount(reportService.countReport("review", review.getId()));
 
-            // 좋아요, 신고, 로그인 사용자 좋아요 여부
-            dto.setLikecount(likeService.countLike("review", review.getId()));
-            dto.setReportcount(reportService.countReport("review", review.getId()));
+			// 좋아요 여부
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
+				String username = authentication.getName();
+				int userId = userService.readUserByUsername(username).getId();
+				reviewDto.setLiked(likeService.existsUserLike("review", review.getId(), userId));
+			}
 
-            if (currentUserId != null) {
-                dto.setLiked(likeService.existsUserLike("review", review.getId(), currentUserId));
-            }
-
-            reviewDtoList.add(dto);
+            reviewDtoList.add(reviewDto);
         }
 
-        System.err.println("리뷰 목록" + reviewDtoList);
-        
-        
         return new PageImpl<>(reviewDtoList, sortedPageable, reviewPage.getTotalElements());
+    }
+    
+    
+    
+    
+    
+    
+    // 리뷰 목록 조회 (관리자)
+    public Page<ReviewReadResponseDto> readAdminReviewPage(String keyword, String sort, Pageable pageable) {
+    	
+    	// 입력값 검증
+    	if (pageable == null) {
+    		throw new ApiException(ReviewErrorCode.REVIEW_INVALID_INPUT);
+    	}
+    	
+    	// 정렬 문자열 객체 변환
+    	Sort sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id"));
+    	if (sort != null && !sort.isBlank()) {
+    		switch (sort) {
+    		case "id-desc":
+    			sortSpec = Sort.by(Sort.Order.desc("id")); 
+    			break;
+    		case "id-asc":
+    			sortSpec = Sort.by(Sort.Order.asc("id")); 
+    			break;
+    		case "postdate-desc":
+    			sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id")); // 최신순
+    			break;
+    		case "postdate-asc":
+    			sortSpec = Sort.by(Sort.Order.asc("postdate"), Sort.Order.asc("id")); // 오래된순
+    			break;
+    		case "score-desc":
+    			sortSpec = Sort.by(Sort.Order.desc("score"), Sort.Order.desc("id")); // 별점 높은순
+    			break;
+    		case "score-asc":
+    			sortSpec = Sort.by(Sort.Order.asc("score"), Sort.Order.asc("id")); // 별점 낮은순
+    			break;
+    		case "likecount-desc":
+    			sortSpec = Sort.by(Sort.Order.desc("likecount"), Sort.Order.desc("id")); // 좋아요 높은순
+    			break;
+    		case "likecount-asc":
+    			sortSpec = Sort.by(Sort.Order.asc("likecount"), Sort.Order.asc("id")); // 좋아요 낮은순
+    			break;
+    		default:
+    			break;
+    		}
+    	}
+    	
+    	// 기존 페이지 객체에 정렬 주입
+    	Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
+    	
+    	// 리뷰 목록 조회
+    	Page<Review> reviewPage;
+    	try {
+    		boolean hasKeyword = keyword != null && !keyword.isBlank();
+    		
+    		reviewPage = hasKeyword
+    				? reviewRepository.findAllByContentContainingIgnoreCase(keyword, sortedPageable)
+    				: reviewRepository.findAll(sortedPageable);
+    	}
+    	catch (Exception e) {
+    		throw new ApiException(ReviewErrorCode.REVIEW_READ_LIST_FAIL);
+    	}
+    	
+    	// 리뷰 목록 응답 구성
+    	List<ReviewReadResponseDto> reviewDtoList = new ArrayList<>();
+    	for (Review review : reviewPage) {
+    		ReviewReadResponseDto reviewDto = reviewMapper.toReadResponseDto(review);
+    		
+    		// 사용자명
+    		reviewDto.setUsername(review.getUser().getUsername());
+    		// 닉네임
+    		reviewDto.setNickname(review.getUser().getNickname());
+    		// 좋아요수
+    		reviewDto.setLikecount(likeService.countLike("review", review.getId()));
+    		// 신고수
+    		reviewDto.setReportcount(reportService.countReport("review", review.getId()));
+    		// 레시피 제목
+    		reviewDto.setTitle(review.getRecipe().getTitle());
+    		
+    		reviewDtoList.add(reviewDto);
+    	}
+    	
+    	return new PageImpl<>(reviewDtoList, sortedPageable, reviewPage.getTotalElements());
     }
 
 	
 	
 	
+    
     // 리뷰 작성
     public ReviewCreateResponseDto createReview(ReviewCreateRequestDto reviewRequestDto) {
 
@@ -145,12 +216,9 @@ public class ReviewService {
                 || reviewRequestDto.getUserId() == null) {
             throw new ApiException(ReviewErrorCode.REVIEW_INVALID_INPUT);
         }
-        
-        
 
         // DTO → 엔티티 변환
         Review review = reviewMapper.toEntity(reviewRequestDto);
-        System.err.println(review);
 
         try {
             // 리뷰 저장
@@ -159,13 +227,16 @@ public class ReviewService {
             // 응답 DTO 생성
             ReviewCreateResponseDto reviewResponseDto = reviewMapper.toCreateResponseDto(review);
             reviewResponseDto.setNickname(userService.readUserById(reviewRequestDto.getUserId()).getNickname());
+            
             reviewResponseDto.setLikecount(likeService.countLike("review", review.getId()));
-            reviewResponseDto.setLikestatus(false); // 작성 직후는 기본적으로 좋아요 안 누른 상태
+            reviewResponseDto.setLikestatus(false);
 
             return reviewResponseDto;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new ApiException(ReviewErrorCode.REVIEW_CREATE_FAIL);
         }
+        
     }
 
 	
@@ -354,88 +425,6 @@ public class ReviewService {
 
         return new PageImpl<>(reviewDtoList, pageable, reviewPage.getTotalElements());
     }
-
-    
-    
-    
-    // 전체 리뷰 목록 조회 (관리자용)
-    public Page<ReviewReadResponseDto> readAllReviewPage(String sort, Pageable pageable, String keyword) {
-
-        // 입력값 검증
-        if (pageable == null) {
-            throw new ApiException(ReviewErrorCode.REVIEW_INVALID_INPUT);
-        }
-
-        // 정렬 문자열 객체 변환
-        Sort sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id"));
-        if (sort != null && !sort.isBlank()) {
-            switch (sort) {
-                case "postdate-desc":
-                    sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id")); // 최신순
-                    break;
-                case "postdate-asc":
-                    sortSpec = Sort.by(Sort.Order.asc("postdate"), Sort.Order.asc("id")); // 오래된순
-                    break;
-                case "likecount-desc":
-                    sortSpec = Sort.by(Sort.Order.desc("likecount"), Sort.Order.desc("id")); // 좋아요 많은순
-                    break;
-                case "likecount-asc":
-                    sortSpec = Sort.by(Sort.Order.asc("likecount"), Sort.Order.asc("id")); // 좋아요 적은순
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
-
-        // 리뷰 전체 조회 (keyword 적용)
-        Page<Review> reviewPage;
-        try {
-            if (keyword == null || keyword.isBlank()) {
-                reviewPage = reviewRepository.findAll(sortedPageable);
-            } else {
-                reviewPage = reviewRepository.findAllByContentContainingIgnoreCase(keyword, sortedPageable);
-            }
-        } catch (Exception e) {
-            throw new ApiException(ReviewErrorCode.REVIEW_READ_LIST_FAIL);
-        }
-
-        // DTO 변환
-        List<ReviewReadResponseDto> reviewDtoList = new ArrayList<>();
-
-        for (Review review : reviewPage) {
-
-            ReviewReadResponseDto dto = reviewMapper.toReadResponseDto(review);
-
-            // 작성자 정보
-            dto.setUsername(review.getUser().getUsername());
-            dto.setNickname(review.getUser().getNickname());
-
-            // 좋아요, 신고 개수
-            dto.setLikecount(likeService.countLike("review", review.getId()));
-            dto.setReportcount(reportService.countReport("review", review.getId()));
-
-            // 관리자 조회이므로 좋아요 여부는 기본 false
-            dto.setLiked(false);
-            
-            // 리뷰가 속한 레시피 제목 가져오기
-            String title = null;
-            if (review.getRecipe() != null) {
-                title = review.getRecipe().getTitle();
-            }
-            dto.setTitle(title);
-            
-
-            reviewDtoList.add(dto);
-        }
-
-        System.err.println("관리자 전체 리뷰 목록: " + reviewDtoList);
-
-        return new PageImpl<>(reviewDtoList, pageable, reviewPage.getTotalElements());
-    }
-
-    
     
     
     

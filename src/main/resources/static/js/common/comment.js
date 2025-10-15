@@ -1,15 +1,78 @@
 /**
  * 전역변수
  */
-let totalPages = 0;
-let totalElements = 0;
-let page = 0;
-const size = 15;
-let tablename = '';
-let sort = '';
+const commentSize = 15;
+let commentTotalPages = 0;
+let commentTotalElements = 0;
+let commentTablename = '';
+let commentPage = 0;
+let commentSort = '';
 let commentList = [];
 
 
+
+
+
+/**
+ * 로그인 여부에 따라 댓글 작성폼을 다르게 표시하는 함수
+ */
+document.addEventListener('DOMContentLoaded', async function () {
+	
+	if (isLoggedIn()) {
+		const payload = parseJwt(localStorage.getItem('accessToken'));
+		document.getElementById('commentLoginState').style.display = 'block';
+		document.getElementById('commentLogoutState').style.display = 'none';
+		document.getElementById('writeCommentAvatar').src = payload.avatar;
+		document.getElementById('writeCommentAvatar').onclick = () => { location.href = `/mypage/profile.do?id=${payload.id}` };
+		document.getElementById('writeCommentNickname').innerText = payload.nickname;
+		document.getElementById('writeCommentNickname').onclick = () => { location.href = `/mypage/profile.do?id=${payload.id}` };
+	}
+	else {
+		document.getElementById('commentLoginState').style.display = 'none';
+		document.getElementById('commentLogoutState').style.display = 'block';
+	}
+
+});
+
+
+
+
+
+/**
+ * 댓글 목록 검색 필터를 설정하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	
+	const wrap = document.getElementById('commentWrap');
+	
+	// 테이블 이름
+	const pathname = location.pathname;
+	const match = pathname.match(/\/view([A-Za-z]+)\.do$/i);
+	commentTablename = match ? match[1].toLowerCase() : null;
+	
+	// 정렬 버튼
+	wrap.querySelectorAll('.comment_order .btn_sort_small').forEach(btn => {
+		btn.addEventListener('click', function(event) {
+			event.preventDefault();
+			wrap.querySelector('.comment_order .btn_sort_small.active')?.classList.remove('active');
+			btn.classList.add('active');
+			
+			commentSort = btn.dataset.sort;
+			commentPage = 0;
+			commentList = [];
+			
+			fetchCommentList();
+		});
+	});
+	
+	// 더보기 버튼
+	wrap.querySelector('.btn_more').addEventListener('click', function () {
+		commentPage = commentPage + 1;
+		fetchCommentList();
+	});
+	
+	fetchCommentList();
+});
 
 
 
@@ -65,32 +128,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-/**
- * 로그인 여부에 따라 댓글 작성폼을 다르게 표시하는 함수
- */
-document.addEventListener('DOMContentLoaded', async function () {
-	
-	if (isLoggedIn()) {
-		const payload = parseJwt(localStorage.getItem('accessToken'));
-		document.getElementById('commentLoginState').style.display = 'block';
-		document.getElementById('commentLogoutState').style.display = 'none';
-		document.getElementById('writeCommentAvatar').src = payload.avatar;
-		document.getElementById('writeCommentAvatar').addEventListener('click', function(event) {
-			event.preventDefault();
-			location.href = `/mypage/profile.do?id=${payload.id}`;
-		});
-		document.getElementById('writeCommentNickname').innerText = payload.nickname;
-		document.getElementById('writeCommentNickname').addEventListener('click', function(event) {
-			event.preventDefault();
-			location.href = `/mypage/profile.do?id=${payload.id}`;
-		});
-	}
-	else {
-		document.getElementById('commentLoginState').style.display = 'none';
-		document.getElementById('commentLogoutState').style.display = 'block';
-	}
-
-});
 
 
 
@@ -168,57 +205,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /**
- * 쩝쩝박사 목록 검색 필터를 설정하는 함수
- */
-document.addEventListener('DOMContentLoaded', function() {
-	
-	// 요청명에 따라 tablename 설정
-	const pathname = location.pathname;
-	const match = pathname.match(/\/view([A-Za-z]+)\.do$/i);
-	tablename = match ? match[1].toLowerCase() : null;
-	
-	// 정렬 버튼
-	document.querySelectorAll('.comment_order .btn_sort_small').forEach(btn => {
-		btn.addEventListener('click', function(event) {
-			event.preventDefault();
-			document.querySelector('.comment_order .btn_sort_small.active')?.classList.remove('active');
-			btn.classList.add('active');
-			
-			sort = btn.dataset.sort;
-			page = 0;
-			commentList = [];
-			
-			fetchCommentList();
-		});
-	});
-	
-	// 더보기 버튼 클릭 시 다음 페이지 로드
-	document.querySelector('.btn_more').addEventListener('click', function () {
-		page = page + 1;
-		fetchCommentList();
-	});
-	
-	fetchCommentList();
-});
-
-
-
-
-
-/**
  * 서버에서 댓글 목록 데이터를 가져오는 함수
  */
 async function fetchCommentList() {
+	
+	const wrap = document.getElementById('commentWrap');
 	
 	try {
 		const id = new URLSearchParams(window.location.search).get('id');
 		
 		const params = new URLSearchParams({
-			tablename : tablename,
+			tablename : commentTablename,
 			recodenum : id,
-			sort : sort,
-			page : page,
-			size : size
+			sort : commentSort,
+			page : commentPage,
+			size : commentSize
 		}).toString();
 		
 		const response = await fetch(`/comments?${params}`, {
@@ -229,35 +230,18 @@ async function fetchCommentList() {
 		const result = await response.json();
 		
 		if (result.code === 'COMMENT_READ_LIST_SUCCESS') {
-			
 			// 전역변수 설정
-			totalPages = result.data.totalPages;
-			totalElements = result.data.totalElements;
+			commentTotalPages = result.data.totalPages;
+			commentTotalElements = result.data.totalElements;
 			commentList = [...commentList, ...result.data.content];
 			
 			// 렌더링
 			renderCommentList(commentList);
-			document.querySelector('.comment_count span:last-of-type').innerText = totalElements;
+			document.querySelector('.comment_count span:last-of-type').innerText = commentTotalElements;
 			if (document.querySelector('#viewRecipeReviewCommentWrap .comment_count')) {
-				document.querySelector('#viewRecipeReviewCommentWrap .comment_count').innerText = totalElements;
+				document.querySelector('#viewRecipeReviewCommentWrap .comment_count').innerText = commentTotalElements;
 			}
-			
-			// 더보기 버튼 제어
-			document.querySelector('.btn_more').style.display = page >= totalPages - 1 ? 'none' : 'block';
-			
-			// TODO : render 함수로 옮기기
-			// 검색 결과 없음 표시
-			if (result.data.totalPages === 0) {
-				document.querySelector('.comment_list').style.display = 'none';
-				document.querySelector('.list_empty')?.remove();
-				const content = document.querySelector('.comment_write');
-				content.insertAdjacentElement('afterend', renderListEmpty());
-			}
-			// 검색 결과 표시
-			else {
-				document.querySelector('.list_empty')?.remove();
-				document.querySelector('.comment_list').style.display = '';
-			}
+			wrap.querySelector('.btn_more').style.display = commentPage >= commentTotalPages - 1 ? 'none' : 'block';
 		}
 		else if (result.code === 'COMMENT_READ_LIST_FAIL') {
 			alertDanger('댓글 목록 조회에 실패했습니다.');
@@ -308,8 +292,29 @@ async function fetchCommentList() {
  */
 function renderCommentList(commentList) {
 	
-	const container = document.querySelector('.comment_list');
+	const wrap = document.getElementById('commentWrap'); 
+	const container = wrap.querySelector('.comment_list');
 	container.innerHTML = '';
+	
+	// 댓글 목록이 존재하지 않는 경우
+	if (commentList == null || commentList.length === 0) {
+		container.style.display = 'block';
+		wrap.querySelector('.list_empty')?.remove();
+		
+		const wrapper = document.createElement('div');
+		wrapper.className = 'list_empty';
+
+		const span = document.createElement('span');
+		span.textContent = '댓글이 없습니다';
+		wrapper.appendChild(span);
+		wrap.querySelector('.comment_write').insertAdjacentElement('afterend', wrapper);
+
+		return;
+	}
+	
+	// 댓글 목록이 존재하는 경우
+	container.style.display = 'block';
+	wrap.querySelector('.list_empty')?.remove();
 	
 	commentList.forEach(comment => {
 		const commentLi = document.createElement('li');
@@ -325,16 +330,10 @@ function renderCommentList(commentList) {
 		writerDiv.className = 'comment_writer';
 		const avatarImg = document.createElement('img');
 		avatarImg.src = comment.avatar;
-		avatarImg.addEventListener('click', function(event) {
-			event.preventDefault();
-			location.href = `/mypage/profile.do?id=${comment.user_id}`;
-		});
+		avatarImg.onclick = () => { location.href = `/mypage/profile.do?id=${comment.user_id}`; }
 		const nameSpan = document.createElement('span');
 		nameSpan.textContent = comment.nickname;
-		nameSpan.addEventListener('click', function(event) {
-			event.preventDefault();
-			location.href = `/mypage/profile.do?id=${comment.user_id}`;
-		});
+		nameSpan.onclick = () => { location.href = `/mypage/profile.do?id=${comment.user_id}`; }
 		const dateSpan = document.createElement('span');
 		dateSpan.textContent = formatDate(comment.postdate);
 		writerDiv.append(avatarImg, nameSpan, dateSpan);
@@ -573,22 +572,6 @@ function renderSubcommentList(subcommentList) {
 
 
 
-/**
- * 목록 결과 없음 화면을 화면에 렌더링하는 함수
- */
-function renderListEmpty() {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'list_empty';
-	
-    const span = document.createElement('span');
-    span.textContent = '작성된 댓글이 없습니다';
-    wrapper.appendChild(span);
-
-    return wrapper;
-}
-
-
-
 
 
 /**
@@ -604,7 +587,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			
 			const data = {
 				content: document.getElementById('writeCommentContent').value.trim(),
-				tablename: tablename,
+				tablename: commentTablename,
 				recodenum: Number(id)
 			}; 
 			
@@ -620,7 +603,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				submitBtn.disabled = true;
 				submitBtn.classList.add('disable');
 				
-				page = 0;
+				commentPage = 0;
 				commentList = [];
 				fetchCommentList();
 			}
@@ -677,7 +660,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			const data = {
 				content: document.getElementById('writeSubcommentContent').value.trim(),
-				tablename: tablename,
+				tablename: commentTablename,
 				recodenum: Number(id),
 				comm_id: document.getElementById('writeSubcommentCommId').value
 			};
@@ -690,17 +673,17 @@ document.addEventListener('DOMContentLoaded', function () {
 				alertPrimary('댓글이 성공적으로 작성되었습니다.');
 				bootstrap.Modal.getInstance(document.getElementById('writeSubcommentModal'))?.hide();
 				
-				const lastVisiblePage = page;
+				const lastVisiblePage = commentPage;
 				let maxPages;
 				
-				page = 0;
+				commentPage = 0;
 				commentList = [];
 				await fetchCommentList();
-				maxPages = totalPages;
+				maxPages = commentTotalPages;
 				
 				const end = Math.min(lastVisiblePage, maxPages - 1);
 				for (let p = 1; p <= end; p++) {
-					page = p;
+					commentPage = p;
 					await fetchCommentList();
 				}
 			}
@@ -834,10 +817,10 @@ async function deleteComment(id) {
 				// 댓글 제거
 				if (document.querySelector(`.comment[data-id='${id}']`)) {
 					document.querySelector(`.comment[data-id='${id}']`).remove();
-					totalElements--;
-					document.querySelector('.comment_count span:last-of-type').innerText = totalElements;
+					commentTotalElements--;
+					document.querySelector('.comment_count span:last-of-type').innerText = commentTotalElements;
 					if (document.querySelector('#viewRecipeReviewCommentWrap .comment_count')) {
-						document.querySelector('#viewRecipeReviewCommentWrap .comment_count').innerText = totalElements;
+						document.querySelector('#viewRecipeReviewCommentWrap .comment_count').innerText = commentTotalElements;
 					}
 				}
 				document.querySelectorAll(`.subcomment[data-comm-id='${id}']`)

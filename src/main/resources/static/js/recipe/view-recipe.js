@@ -125,10 +125,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 			
 			// 레시피 작성자 ID를 hidden input에 저장
 			document.getElementById('fundeeIdInput').value = result.data.user_id;
-			
-			// 리뷰 수
-			reviewCommentWrap.querySelector('.review_count').innerText = result.data.reviewcount;
-			// reviewCommentWrap.querySelector('.comment_count').innerText = result.data.commentcount;
 		}
 		
 		if (result.code === 'RECIPE_READ_FAIL') {

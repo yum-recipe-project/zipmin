@@ -15,12 +15,10 @@ import com.project.zipmin.entity.Review;
 public interface ReviewMapper {
 	
     // Read
-    @Mapping(target = "recipeId", source = "recipe.id")
-    @Mapping(target = "userId", source = "user.id")
+	@Mapping(target = "userId", source = "user.id")
     ReviewReadResponseDto toReadResponseDto(Review review);
 	
-    @Mapping(target = "recipe.id", source = "recipeId")
-    @Mapping(target = "user.id", source = "userId")
+	@Mapping(target = "user.id", source = "userId")
     Review toEntity(ReviewReadResponseDto reviewDto);
 
     // Create

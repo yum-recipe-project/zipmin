@@ -91,7 +91,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Comment API", description = "댓글 관련 API")
+@Tag(name = "COMMENT API", description = "댓글 관련 API")
 public class CommentController {
 	
 	private final CommentService commentService;
@@ -177,8 +177,8 @@ public class CommentController {
 	// 댓글 목록 조회
 	@GetMapping("/comments")
 	public ResponseEntity<?> readComment(
-			@Parameter(description = "테이블명", required = false) @RequestParam(required = false) String tablename,
-			@Parameter(description = "레코드 번호", required = false) @RequestParam(required = false) Integer recodenum,
+			@Parameter(description = "테이블명") @RequestParam String tablename,
+			@Parameter(description = "레코드 번호") @RequestParam Integer recodenum,
 			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
 			@Parameter(description = "페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지 크기") @RequestParam int size) {

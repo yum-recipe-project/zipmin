@@ -208,9 +208,10 @@ function renderClassList(classList) {
 	}
 	
 	// 쿠킹클래스의 신청 목록이 존재하는 경우
+	container.style.display = 'block';
+	document.querySelector('.list_empty')?.remove();
+	
 	classList.forEach(classs => {
-		container.style.display = 'block';
-		document.querySelector('.list_empty')?.remove();
 		
 		const li = document.createElement('li');
 

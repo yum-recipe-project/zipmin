@@ -1,6 +1,5 @@
 package com.project.zipmin.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,27 +36,29 @@ import com.project.zipmin.service.ReviewService;
 import com.project.zipmin.service.UserService;
 
 import io.swagger.v3.oas.annotations.Parameter;
+import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequiredArgsConstructor
 public class ReviewController {
 	
-	@Autowired
-	ReviewService reviewService;
+	private final ReviewService reviewService;
+	private final UserService userService;
 	
-	@Autowired
-	UserService userService;
+	
+	
 	
 	
 	// 리뷰 목록 조회 
 	@GetMapping("/reviews")
 	public ResponseEntity<?> readReview(
-	        @RequestParam Integer recipeId,
-	        @RequestParam(required = false) String sort,
-	        @RequestParam int page,
-	        @RequestParam int size) {
+			@Parameter(description = "레코드 번호", required = false)  @RequestParam(required = false) Integer recodenum,
+			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String sort,
+			@Parameter(description = "페이지 번호") @RequestParam int page,
+			@Parameter(description = "페이지 크기") @RequestParam int size) {
 		
 	    Pageable pageable = PageRequest.of(page, size);
-	    Page<ReviewReadResponseDto> reviewPage = reviewService.readReviewPage(recipeId, sort, pageable);
+	    Page<ReviewReadResponseDto> reviewPage = reviewService.readReviewPage(recodenum, sort, pageable);
 	    
 	    return ResponseEntity.status(ReviewSuccessCode.REVIEW_READ_LIST_SUCCESS.getStatus())
 	            .body(ApiResponse.success(ReviewSuccessCode.REVIEW_READ_LIST_SUCCESS, reviewPage));

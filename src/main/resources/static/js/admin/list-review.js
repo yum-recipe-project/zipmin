@@ -175,13 +175,6 @@ function renderAdminReviewList(reviewList) {
 		}
         noTd.appendChild(noH6);
 
-        // 별점
-        const scoreTd = document.createElement('td');
-        const scoreH6 = document.createElement('h6');
-        scoreH6.className = 'fw-semibold mb-0';
-        scoreH6.textContent = review.score ?? 0;
-        scoreTd.appendChild(scoreH6);
-
         // 내용
         const contentTd = document.createElement('td');
         const contentH6 = document.createElement('h6');
@@ -201,8 +194,15 @@ function renderAdminReviewList(reviewList) {
         const dateTd = document.createElement('td');
         const dateH6 = document.createElement('h6');
         dateH6.className = 'fw-semibold mb-0';
-        dateH6.textContent = formatDate(review.postdate);
+        dateH6.textContent = formatDateTime(review.postdate);
         dateTd.appendChild(dateH6);
+		
+		// 별점
+		const scoreTd = document.createElement('td');
+		const scoreH6 = document.createElement('h6');
+		scoreH6.className = 'fw-semibold mb-0';
+		scoreH6.textContent = review.score ?? 0;
+		scoreTd.appendChild(scoreH6);
 
         // 좋아요
         const likeTd = document.createElement('td');
@@ -269,7 +269,7 @@ function renderAdminReviewList(reviewList) {
         }
         actionTd.appendChild(btnWrap);
 
-        tr.append(noTd, scoreTd, contentTd, writerTd, dateTd, likeTd, reportTd, actionTd);
+        tr.append(noTd, contentTd, writerTd, dateTd, scoreTd, likeTd, reportTd, actionTd);
         container.appendChild(tr);
     });
 }

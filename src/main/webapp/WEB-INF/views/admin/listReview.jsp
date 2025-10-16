@@ -56,12 +56,10 @@
 							    <col style="width:22%">
 							    <col style="width:14%">
 							    <col style="width:15%">
+							    <col style="width:9%">
 							    <col style="width:11%">
-							    <col style="width:8%">
 							    <col style="width:10%">
 							    <col style="width:11%">
-							    
-							</colgroup>
 					        <tr>
 					            <th colspan="2" class="total text-start"></th>
 					            <th></th>

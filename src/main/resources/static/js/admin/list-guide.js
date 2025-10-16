@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	    keyword = document.getElementById('text-srh').value.trim();
 	    page = 0;        
 	    guideList = [];
-	    fetchGuideList();
+	    fetchAdminGuideList();
 	});
 	
     // 카테고리 탭 클릭
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			document.querySelector(`.sort_btn[data-key="${sortKey}"]`).classList.add(sortOrder);
 			
             guideList = [];
-            fetchGuideList();
+            fetchAdminGuideList();
         });
     });
 	
@@ -73,7 +73,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		btn.addEventListener('click', function(event) {
 			event.preventDefault();
 			const key = btn.dataset.key;
-
 		    if (sortKey === key) {
 		      sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
 		    }
@@ -81,16 +80,14 @@ document.addEventListener('DOMContentLoaded', function() {
 		      sortKey = key;
 		      sortOrder = 'desc';
 		    }
-			
 			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
 			this.classList.add(sortOrder);
-			
 			page = 0;
-			fetchGuideList();
+			fetchAdminGuideList();
 		});
 	});
 	
-	fetchGuideList();
+	fetchAdminGuideList();
 });
 
 
@@ -100,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
 /**
  * 서버에서 키친가이드 목록 데이터를 가져오는 함수
  */
-async function fetchGuideList(scrollTop = true) {
+async function fetchAdminGuideList(scrollTop = true) {
 
     try {
         const params = new URLSearchParams({
@@ -123,8 +120,8 @@ async function fetchGuideList(scrollTop = true) {
 			totalElements = response.data.data.totalElements;
 
             // 렌더링
-            renderGuideList(guideList);
-            renderAdminPagination(fetchGuideList);
+            renderAdminGuideList(guideList);
+            renderAdminPagination(fetchAdminGuideList);
 			document.querySelector('.total').innerText = `총 ${totalElements}개`;
 			
 			// 스크롤 최상단 이동
@@ -165,9 +162,9 @@ async function fetchGuideList(scrollTop = true) {
 
 
 /**
- * 키친가이드 목록을 화면에 렌더링하는 함수 (관리자용)
+ * 키친가이드 목록을 화면에 렌더링하는 함수
  */
-function renderGuideList(guideList) {
+function renderAdminGuideList(guideList) {
 	
     const container = document.querySelector('.guide_list');
     container.innerHTML = '';
@@ -177,10 +174,10 @@ function renderGuideList(guideList) {
 		document.querySelector('.table_th').style.display = 'none';
 		document.querySelector('.search_empty')?.remove();
 		document.querySelector('.fixed-table').insertAdjacentElement('afterend', renderSearchEmpty());
-		
 		return;
 	}
 
+	// 키친가이드의 목록이 존재하는 경우
 	document.querySelector('.search_empty')?.remove();
 	document.querySelector('.table_th').style.display = '';
 	
@@ -309,10 +306,8 @@ function renderGuideList(guideList) {
 
 
 
-
-
 /**
- * 키친가이드 삭제 함수
+ * 키친가이드를 삭제하는 함수
 */
 async function deleteGuide(id) {
 
@@ -324,7 +319,7 @@ async function deleteGuide(id) {
 			
 			if (response.data.code === 'KITCHEN_DELETE_SUCCESS') {
                alertPrimary('키친가이드를 성공적으로 삭제했습니다.');
-               fetchGuideList(false); 
+               fetchAdminGuideList(false); 
            }
 		}
 		catch (error) {
@@ -388,4 +383,3 @@ function renderAddGuideButton() {
     createBtn.append(icon, text);
     container.appendChild(createBtn);
 }
-

@@ -1,8 +1,24 @@
 /**
+ * 전역 변수
+ */
+let totalPages = 0;
+let totalElements = 0;
+let page = 0;
+const size = 10;
+let keyword = '';
+let category = '';
+let sortKey = 'id';
+let sortOrder = 'desc';
+let guideList = [];
+
+
+
+
+
+/**
  * 접근 권한을 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', async function() {
-	fetchGuideList();
 	
 	try {
 		await instance.get('/dummy');
@@ -14,86 +30,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 });
 
 
-/**
- * 전역 변수
- */
-let category = '';
-let sort = 'id-desc';
-let totalPages = 0;
-let page = 0;
-let keyword = '';
-const size = 10;
-let guideList = [];
-
-let sortKey = 'postdate';
-let sortOrder = 'desc';  
-
-
-/**
- * 서버에서 키친가이드 목록 데이터를 가져오는 함수
- */
-async function fetchGuideList() {
-
-    try {
-        const params = new URLSearchParams({
-            category: category,
-            keyword: keyword,
-            sort: sortKey + '-' + sortOrder,
-            page: page,
-            size: size
-        }).toString();
-
-        const response = await instance.get(`/guides?${params}`, {
-            headers: getAuthHeaders()
-        });
-
-        if (response.data.code === 'KITCHEN_READ_LIST_SUCCESS') {
-
-            // 전역 변수 설정
-            totalPages = response.data.data.totalPages;
-            page = response.data.data.number;
-            guideList = response.data.data.content;
-			totalElements = response.data.data.totalElements;
-
-            // 렌더링
-            renderGuideList(guideList);
-            renderAdminPagination(fetchGuideList);
-			document.querySelector('.total').innerText = `총 ${totalElements}개`;
-
-			// 검색 결과 없음 표시
-			if (response.data.data.totalPages === 0) {
-				document.querySelector('.table_th').style.display = 'none';
-				document.querySelector('.search_empty')?.remove();
-				const table = document.querySelector('.fixed-table');
-				table.insertAdjacentElement('afterend', renderSearchEmpty());
-			}
-			// 검색 결과 표시
-			else {
-				document.querySelector('.search_empty')?.remove();
-				document.querySelector('.table_th').style.display = '';
-			}
-        }
-    }
-    catch (error) {
-        const code = error?.response?.data?.code;
-
-        if (code === 'KITCHEN_READ_LIST_FAIL') {
-            alertDanger('키친가이드 목록 조회에 실패했습니다.');
-        }
-        else if (code === 'USER_INVALID_INPUT') {
-            alertDanger('입력값이 유효하지 않습니다.');
-        }
-        else if (code === 'AUTH_TOKEN_INVALID' || code === 'KITCHEN_FORBIDDEN' || code === 'USER_NOT_FOUND') {
-            redirectToAdminLogin('/');
-        }
-        else if (code === 'INTERNAL_SERVER_ERROR') {
-            console.log(error);
-        }
-        else {
-            console.log(error);
-        }
-    }
-}
 
 
 
@@ -101,6 +37,36 @@ async function fetchGuideList() {
  * 키친가이드 목록 내용 정렬, 검색을 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
+	
+	// 검색
+	document.querySelector('.search').addEventListener('submit', function(e) {
+	    e.preventDefault();
+	    keyword = document.getElementById('text-srh').value.trim();
+	    page = 0;        
+	    guideList = [];
+	    fetchGuideList();
+	});
+	
+    // 카테고리 탭 클릭
+    document.querySelectorAll('.tab ul li a').forEach(tab => {
+        tab.addEventListener('click', function(event) {
+            event.preventDefault();
+            document.querySelector('.tab ul li a.active')?.classList.remove('active');
+            this.classList.add('active');
+			
+			category = this.getAttribute('data-tab');
+			page = 0;
+			keyword = '';
+			document.getElementById('text-srh').value = '';
+			sortKey = 'id';
+			sortOrder = 'desc';
+			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
+			document.querySelector(`.sort_btn[data-key="${sortKey}"]`).classList.add(sortOrder);
+			
+            guideList = [];
+            fetchGuideList();
+        });
+    });
 	
 	// 정렬 버튼
 	document.querySelectorAll('.sort_btn').forEach(btn => {
@@ -120,68 +86,74 @@ document.addEventListener('DOMContentLoaded', function() {
 			this.classList.add(sortOrder);
 			
 			page = 0;
-			
-			console.log("sortOrder: " + sortOrder)
 			fetchGuideList();
 		});
 	});
 	
-	
-	
-	// 검색
-	document.querySelector('.search').addEventListener('submit', function(e) {
-	    e.preventDefault();
-	    keyword = document.getElementById('text-srh').value.trim();
-	    page = 0;        
-	    guideList = [];
-	    fetchGuideList();
-	});
+	fetchGuideList();
 });
+
+
 
 
 
 /**
- * 키친가이드 카테고리 탭 설정하는 함수
+ * 서버에서 키친가이드 목록 데이터를 가져오는 함수
  */
-document.addEventListener('DOMContentLoaded', function() {
+async function fetchGuideList() {
 
-    // 카테고리 탭 클릭
-    document.querySelectorAll('.tab ul li a').forEach(tab => {
-        tab.addEventListener('click', function(event) {
-            event.preventDefault();
+    try {
+        const params = new URLSearchParams({
+            category: category,
+            keyword: keyword,
+            sort: sortKey + '-' + sortOrder,
+            page: page,
+            size: size
+        }).toString();
 
-            // 활성화 클래스 토글
-            document.querySelector('.tab ul li a.active')?.classList.remove('active');
-            this.classList.add('active');
-
-            // 선택한 카테고리 설정
-            category = this.dataset.tab || ''; // data-tab 속성 사용
-            page = 0;
-            guideList = [];
-
-            fetchGuideList();
+        const response = await instance.get(`/admin/guides?${params}`, {
+            headers: getAuthHeaders()
         });
-    });
-    // 검색
-    const searchForm = document.querySelector('.search');
-    if (searchForm) {
-        searchForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            keyword = this.querySelector('#text-srh').value.trim();
-            page = 0;
-            guideList = [];
-            fetchGuideList();
-        });
+
+        if (response.data.code === 'KITCHEN_READ_LIST_SUCCESS') {
+            // 전역 변수 설정
+            totalPages = response.data.data.totalPages;
+            page = response.data.data.number;
+            guideList = response.data.data.content;
+			totalElements = response.data.data.totalElements;
+
+            // 렌더링
+            renderGuideList(guideList);
+            renderAdminPagination(fetchGuideList);
+			document.querySelector('.total').innerText = `총 ${totalElements}개`;
+        }
     }
+    catch (error) {
+        const code = error?.response?.data?.code;
 
-    fetchGuideList();
-});
-
-
-
-
-
-
+        if (code === 'KITCHEN_READ_LIST_FAIL') {
+            alertDanger('키친가이드 목록 조회에 실패했습니다.');
+        }
+        else if (code === 'USER_INVALID_INPUT') {
+            alertDanger('입력값이 유효하지 않습니다.');
+        }
+        else if (code === 'AUTH_TOKEN_INVALID') {
+			redirectToAdminLogin();
+		}
+		else if (code === 'KITCHEN_FORBIDDEN') {
+			redirectToAdminLogin();
+		}
+		else if (code === 'USER_NOT_FOUND') {
+            redirectToAdminLogin();
+        }
+        else if (code === 'INTERNAL_SERVER_ERROR') {
+            console.log(error);
+        }
+        else {
+            console.log(error);
+        }
+    }
+}
 
 
 
@@ -191,11 +163,22 @@ document.addEventListener('DOMContentLoaded', function() {
  * 키친가이드 목록을 화면에 렌더링하는 함수 (관리자용)
  */
 function renderGuideList(guideList) {
+	
     const container = document.querySelector('.guide_list');
     container.innerHTML = '';
+	
+	// 키친가이드의 목록이 존재하지 않는 경우
+	if (guideList == null || guideList.length === 0) {
+		document.querySelector('.table_th').style.display = 'none';
+		document.querySelector('.search_empty')?.remove();
+		document.querySelector('.fixed-table').insertAdjacentElement('afterend', renderSearchEmpty());
+		
+		return;
+	}
 
-    if (!Array.isArray(guideList)) return;
-
+	document.querySelector('.search_empty')?.remove();
+	document.querySelector('.table_th').style.display = '';
+	
     guideList.forEach((guide, index) => {
         const tr = document.createElement('tr');
         tr.dataset.id = guide.id;
@@ -204,7 +187,13 @@ function renderGuideList(guideList) {
         const noTd = document.createElement('td');
         const noH6 = document.createElement('h6');
         noH6.className = 'fw-semibold mb-0';
-        noH6.textContent = guide.id;
+		const offset = page * size + index;
+		if (sortKey === 'id' && sortOrder === 'asc') {
+			noH6.textContent = offset + 1;
+		}
+		else {
+			noH6.textContent = totalElements - offset;
+		}
         noTd.appendChild(noH6);
 
         // 카테고리

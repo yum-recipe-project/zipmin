@@ -23,6 +23,7 @@ import com.project.zipmin.api.ClassErrorCode;
 import com.project.zipmin.api.ClassSuccessCode;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.CommentSuccessCode;
+import com.project.zipmin.api.KitchenSuccessCode;
 import com.project.zipmin.api.RecipeErrorCode;
 import com.project.zipmin.api.RecipeSuccessCode;
 import com.project.zipmin.api.ReviewSuccessCode;
@@ -32,6 +33,7 @@ import com.project.zipmin.dto.ChompReadResponseDto;
 import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
+import com.project.zipmin.dto.GuideReadResponseDto;
 import com.project.zipmin.dto.RecipeReadResponseDto;
 import com.project.zipmin.dto.ReviewReadResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
@@ -92,6 +94,7 @@ public class AdminController {
 	
 	
 	
+	// 사용자 목록 조회
 	@Operation(
 	    summary = "사용자 목록 조회"
 	)
@@ -234,9 +237,23 @@ public class AdminController {
 	
 	
 	
-	// 여기에 키친가이드
-	
-	
+	// 가이드 목록 조회
+	@GetMapping("/admin/guides")
+	public ResponseEntity<?> listGuide(
+			@RequestParam(required = false) String category,
+			@RequestParam(required = false) String keyword, 
+		    @RequestParam(required = false) String sort,
+		    @RequestParam int page,
+		    @RequestParam int size) {
+		
+		Pageable pageable = PageRequest.of(page, size);
+		Page<GuideReadResponseDto> guidePage = null;
+		
+		guidePage = kitchenService.readGuidePage(category, keyword, sort, pageable);
+		
+        return ResponseEntity.status(KitchenSuccessCode.KITCHEN_READ_LIST_SUCCESS.getStatus())
+                .body(ApiResponse.success(KitchenSuccessCode.KITCHEN_READ_LIST_SUCCESS, guidePage));
+	}
 	
 	
 	

@@ -15,6 +15,7 @@
 		<script src="/js/modal/view-recipe-stock-modal.js"></script>
 		<script src="/js/modal/support-recipe-modal.js"></script>
 		<script src="/js/modal/top-up-point-modal.js"></script>
+		<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 		
 		
 		<script src="/js/common/comment.js"></script>

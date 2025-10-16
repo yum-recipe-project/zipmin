@@ -54,70 +54,7 @@
 					
 					
 					
-					<ul class="withdraw_list">
-					
-			          <li>
-			            <div class="withdraw_info">
-			              <div class="request_date">
-			                <p>2025년 10월 27일</p>
-			              </div>
-			            </div>
-			            <div class="withdraw_info">
-			              <div class="request_point">
-			                <p>신청 금액</p>
-			                <p>7,000원</p>
-			              </div>
-			            </div>
-			            <div class="withdraw_info">
-			              <div class="withdraw_status">
-			                <p>출금 대기</p>
-			              </div>
-			            </div>
-			          </li>
-			
-			          <li>
-			            <div class="withdraw_info">
-			              <div class="request_date">
-			                <p>2025년 10월 27일</p>
-			              </div>
-			            </div>
-			            <div class="withdraw_info">
-			              <div class="request_point">
-			                <p>신청 금액</p>
-			                <p>7,000원</p>
-			              </div>
-			            </div>
-			            <div class="withdraw_info">
-			              <div class="withdraw_status">
-			                <p>출금 대기</p>
-			              </div>
-			            </div>
-			          </li>
-			          
-		              <li>
-			            <div class="withdraw_info">
-			              <div class="request_date">
-			                <p>2025년 10월 27일</p>
-			              </div>
-			            </div>
-			            <div class="withdraw_info">
-			              <div class="request_point">
-			                <p>신청 금액</p>
-			                <p>7,000원</p>
-			              </div>
-			            </div>
-			            <div class="withdraw_info">
-			              <div class="withdraw_status">
-			                <p class="complete">출금 완료</p>
-			                <p>입금일 2025.10.11</p>
-			              </div>
-			            </div>
-			          </li>
-			          
-			          
-			          
-			          
-			        </ul>
+					<ul class="withdraw_list"></ul>
 					
 				</div>
 				

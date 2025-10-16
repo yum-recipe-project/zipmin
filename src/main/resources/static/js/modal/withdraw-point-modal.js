@@ -70,10 +70,8 @@ async function submitWithdrawRequest() {
             const modal = bootstrap.Modal.getInstance(document.getElementById('withdrawPointModal'));
             modal.hide();
 
-            // 보유 포인트 갱신
-            totalRevenue -= withdrawPoint;
-            document.getElementById("ownedPoint").innerText = totalRevenue.toLocaleString();
-            document.getElementById("remainPoint").innerText = "-";
+            // 수익 갱신
+			await fetchRevenueTotal();
         } else {
             alertDanger(result.message || "출금 신청에 실패했습니다.");
         }

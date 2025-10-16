@@ -37,6 +37,7 @@ public class WithdrawService {
 	private final WithdrawMapper withdrawMapper;
 
 	// 사용자 포인트 출금 신청
+	@Transactional
     public WithdrawReadResponseDto createWithdrawRequest(Integer userId, WithdrawCreateRequestDto withdrawRequestDto) {
 
     	System.err.println("서비스 출금 신청자: " + userId + "출금 정보: " + withdrawRequestDto);
@@ -62,11 +63,13 @@ public class WithdrawService {
                 .status(0) 
                 .build();
         
-        System.err.println("출금 엔티티: " + withdraw);
-
         try {
             withdraw = withdrawRepository.saveAndFlush(withdraw);
-            
+
+            // 수익차감
+            user.setRevenue(user.getRevenue() - withdrawRequestDto.getPoint());
+            userRepository.save(user);
+
             return withdrawMapper.toReadResponseDto(withdraw);
         } catch (Exception e) {
             throw new ApiException(UserErrorCode.USER_WITHDRAW_REQUEST_FAIL);

@@ -36,7 +36,7 @@
                             <option value="">-- 선택하세요 --</option>
                             <option value="preparation">손질법</option>
                             <option value="storage">보관법</option>
-                            <option value="info">요리 정보</option>
+                            <option value="cooking">요리 정보</option>
                             <option value="etc">기타 정보</option>
                         </select>
 <!--                         <p id="categoryHint" class="danger">카테고리를 선택해주세요.</p> -->

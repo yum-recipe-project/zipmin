@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
 /**
  * 서버에서 키친가이드 목록 데이터를 가져오는 함수
  */
-async function fetchGuideList() {
+async function fetchGuideList(scrollTop = true) {
 
     try {
         const params = new URLSearchParams({
@@ -126,6 +126,11 @@ async function fetchGuideList() {
             renderGuideList(guideList);
             renderAdminPagination(fetchGuideList);
 			document.querySelector('.total').innerText = `총 ${totalElements}개`;
+			
+			// 스크롤 최상단 이동
+			if (scrollTop) {
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			}
         }
     }
     catch (error) {
@@ -200,7 +205,21 @@ function renderGuideList(guideList) {
         const categoryTd = document.createElement('td');
         const categoryH6 = document.createElement('h6');
         categoryH6.className = 'fw-semibold mb-0';
-        categoryH6.textContent = convertCategory(guide.category);
+		categoryH6.textContent = guide.category;
+		switch (guide.category) {
+			case 'preparation' :
+				categoryH6.textContent = '손질법';
+				break;
+			case 'storage' :
+				categoryH6.textContent = '보관법';
+				break;
+			case 'cooking' :
+				categoryH6.textContent = '요리 정보';
+				break;
+			case 'etc' :
+				categoryH6.textContent = '기타 정보';
+				break;
+		}
         categoryTd.appendChild(categoryH6);
 
         // 제목
@@ -214,21 +233,19 @@ function renderGuideList(guideList) {
         subInfo.textContent = guide.subtitle || '-';
         titleTd.append(subInfo, titleH6);
 
+        // 작성자
+        const writerTd = document.createElement('td');
+        const writerH6 = document.createElement('h6');
+        writerH6.className = 'fw-semibold mb-0';
+        writerH6.textContent = guide.username || '-';
+        writerTd.appendChild(writerH6);
 		
 		// 작성일
         const dateTd = document.createElement('td');
         const dateH6 = document.createElement('h6');
         dateH6.className = 'fw-semibold mb-0';
-        dateH6.textContent = formatDateDot(guide.postdate);
+        dateH6.textContent = formatDateTime(guide.postdate);
         dateTd.appendChild(dateH6);
-				
-        // 작성자
-        const adminTd = document.createElement('td');
-        const adminH6 = document.createElement('h6');
-        adminH6.className = 'fw-semibold mb-0';
-        adminH6.textContent = guide.username || '-';
-        adminTd.appendChild(adminH6);
-
 
         // 좋아요 수
         const likeTd = document.createElement('td');
@@ -236,13 +253,6 @@ function renderGuideList(guideList) {
         likeH6.className = 'fw-semibold mb-0';
         likeH6.textContent = guide.likecount ?? 0;
         likeTd.appendChild(likeH6);
-
-        // 신고 수
-        const reportTd = document.createElement('td');
-        const reportH6 = document.createElement('h6');
-        reportH6.className = 'fw-semibold mb-0';
-        reportH6.textContent = guide.reportcount ?? 0;
-        reportTd.appendChild(reportH6);
 
         // 기능 버튼 (수정 / 삭제)
         const actionTd = document.createElement('td');
@@ -286,14 +296,11 @@ function renderGuideList(guideList) {
 		    deleteBtn.onclick = () => deleteGuide(guide.id);
 		    btnWrap.appendChild(deleteBtn);
 		}
-
-
         actionTd.appendChild(btnWrap);
 
-        tr.append(noTd, categoryTd, titleTd,  dateTd, adminTd, likeTd, reportTd, actionTd);
+        tr.append(noTd, categoryTd, titleTd, writerTd,  dateTd, likeTd, actionTd);
         container.appendChild(tr);
 		
-		// 게시글 작성 버튼
 		renderAddGuideButton();
     });
 }
@@ -316,10 +323,9 @@ async function deleteGuide(id) {
 			});
 			
 			if (response.data.code === 'KITCHEN_DELETE_SUCCESS') {
-                   alertPrimary('키친가이드를 성공적으로 삭제했습니다.');
-                   fetchGuideList(false); 
-               }
-			
+               alertPrimary('키친가이드를 성공적으로 삭제했습니다.');
+               fetchGuideList(false); 
+           }
 		}
 		catch (error) {
 			const code = error?.response?.data?.code;
@@ -356,19 +362,6 @@ async function deleteGuide(id) {
 	
 }
 
-
-/**
- * 카테고리 code 한글 변환 함수
- */
-function convertCategory(code) {
-    switch (code) {
-        case 'preparation': return '손질법';
-        case 'storage': return '보관법';
-        case 'info': return '요리 정보';
-        case 'etc': return '기타 정보';
-        default: return code || '';
-    }
-}
 
 
 

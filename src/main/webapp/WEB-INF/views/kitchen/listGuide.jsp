@@ -30,7 +30,7 @@
 						<a class="btn_tab active" href="" data-category=""><span>전체</span></a>
 						<a class="btn_tab" href="" data-category="preparation"><span>손질법</span></a>
 						<a class="btn_tab" href="" data-category="storage"><span>보관법</span></a>
-						<a class="btn_tab" href="" data-category="info"><span>요리 정보</span></a>
+						<a class="btn_tab" href="" data-category="cooking"><span>요리 정보</span></a>
 						<a class="btn_tab" href="" data-category="etc"><span>기타 정보</span></a>
 					</div>
 				</div>

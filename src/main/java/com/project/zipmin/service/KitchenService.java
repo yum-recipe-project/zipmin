@@ -76,6 +76,14 @@ public class KitchenService {
 				sortSpec = Sort.by(Sort.Order.desc("id"));
 				break;
 			}
+			case "title-desc": {
+				sortSpec = Sort.by(Sort.Order.desc("title"), Sort.Order.desc("id"));
+				break;
+			}
+			case "title-asc": {
+				sortSpec = Sort.by(Sort.Order.asc("title"), Sort.Order.desc("id"));
+				break;
+			}
 			case "likecount-desc": {
 				sortSpec = Sort.by(Sort.Order.desc("likecount"), Sort.Order.desc("id"));
 				break;
@@ -127,12 +135,8 @@ public class KitchenService {
 			throw new ApiException(KitchenErrorCode.KITCHEN_READ_LIST_FAIL);
 		}
 		
-		
 		// dto 변경
 		List<GuideReadResponseDto> guideDtoList = new ArrayList<GuideReadResponseDto>();
-		
-
-		
 		for (Guide guide : guidePage) {
 			GuideReadResponseDto guideDto = guideMapper.toReadResponseDto(guide);
 			guideDto.setLikecount(likeService.countLike("guide", guide.getId()));
@@ -152,9 +156,11 @@ public class KitchenService {
 			guideDtoList.add(guideDto);
 		}
 		
-		
 		return new PageImpl<>(guideDtoList, sortedPageable, guidePage.getTotalElements());
 	}
+	
+	
+	
 	
 	
 	// 특정 가이드 상세 조회 (좋아요 상태 포함)

@@ -141,22 +141,22 @@ public class ReviewService {
     			sortSpec = Sort.by(Sort.Order.asc("id")); 
     			break;
     		case "postdate-desc":
-    			sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id")); // 최신순
+    			sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id"));
     			break;
     		case "postdate-asc":
-    			sortSpec = Sort.by(Sort.Order.asc("postdate"), Sort.Order.asc("id")); // 오래된순
+    			sortSpec = Sort.by(Sort.Order.asc("postdate"), Sort.Order.asc("id"));
     			break;
     		case "score-desc":
-    			sortSpec = Sort.by(Sort.Order.desc("score"), Sort.Order.desc("id")); // 별점 높은순
+    			sortSpec = Sort.by(Sort.Order.desc("score"), Sort.Order.desc("id"));
     			break;
     		case "score-asc":
-    			sortSpec = Sort.by(Sort.Order.asc("score"), Sort.Order.asc("id")); // 별점 낮은순
+    			sortSpec = Sort.by(Sort.Order.asc("score"), Sort.Order.asc("id")); 
     			break;
     		case "likecount-desc":
-    			sortSpec = Sort.by(Sort.Order.desc("likecount"), Sort.Order.desc("id")); // 좋아요 높은순
+    			sortSpec = Sort.by(Sort.Order.desc("likecount"), Sort.Order.desc("id"));
     			break;
     		case "likecount-asc":
-    			sortSpec = Sort.by(Sort.Order.asc("likecount"), Sort.Order.asc("id")); // 좋아요 낮은순
+    			sortSpec = Sort.by(Sort.Order.asc("likecount"), Sort.Order.asc("id"));
     			break;
     		default:
     			break;

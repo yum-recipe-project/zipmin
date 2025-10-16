@@ -405,8 +405,11 @@ public class AdminController {
 	
 	
 	
-	// 리뷰
-	// 댓글 목록 조회 (관리자)
+	// 리뷰 목록 조회 (관리자)
+	
+	// TODO : API 문서 작성
+	
+	// 리뷰 목록 조회 (관리자)
 	@GetMapping("/admin/reviews")
 	public ResponseEntity<?> readAdminReview(
 			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
@@ -425,8 +428,8 @@ public class AdminController {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<ReviewReadResponseDto> reviewPage = reviewService.readAdminReviewPage(keyword, sort, pageable);
 		
-		return ResponseEntity.status(RecipeSuccessCode.RECIPE_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(RecipeSuccessCode.RECIPE_READ_LIST_SUCCESS, reviewPage));
+		return ResponseEntity.status(ReviewSuccessCode.REVIEW_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(ReviewSuccessCode.REVIEW_READ_LIST_SUCCESS, reviewPage));
 	}
 	
 	

@@ -52,18 +52,17 @@
 					<table class="table text-nowrap mb-0 align-middle fixed-table">
 					    <thead class="text-dark fs-4">
 					    	<colgroup>
-							    <col style="width:8%">  <!-- No -->
-							    <col style="width:8%">  <!-- 별점 -->
-							    <col style="width:22%"> <!-- 내용 -->
-							    <col style="width:14%"> <!-- 작성자 -->
-							    <col style="width:15%"> <!-- 작성일 -->
-							    <col style="width:11%"> <!-- 좋아요 -->
-							    <col style="width:10%"> <!-- 신고수 -->
-							    <col style="width:11%"> <!-- 기능 -->
+							    <col style="width:8%">
+							    <col style="width:22%">
+							    <col style="width:14%">
+							    <col style="width:15%">
+							    <col style="width:11%">
+							    <col style="width:8%">
+							    <col style="width:10%">
+							    <col style="width:11%">
 							</colgroup>
 					        <tr>
 					            <th colspan="2" class="total text-start"></th>
-					            <th></th>
 					            <th></th>
 					            <th></th>
 					            <th></th>
@@ -78,17 +77,17 @@
 							    <th class="sort_btn desc" data-key="id">
 							        <h6 class="fs-4 fw-semibold mb-0">No</h6>
 							    </th>
-							    <th class="sort_btn desc" data-key="score">
-							        <h6 class="fs-4 fw-semibold mb-0">별점</h6>
-							    </th>
-							    <th>
+							    <th class="sort_btn" data-key="content">
 							        <h6 class="fs-4 fw-semibold mb-0">내용</h6>
 							    </th>
 							    <th>
 							        <h6 class="fs-4 fw-semibold mb-0">작성자</h6>
 							    </th>
-							    <th class="sort_btn desc" data-key="postdate">
+							    <th class="sort_btn" data-key="postdate">
 							        <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
+							    </th>
+							    <th class="sort_btn" data-key="score">
+							        <h6 class="fs-4 fw-semibold mb-0">별점</h6>
 							    </th>
 							    <th class="sort_btn" data-key="likecount">
 							        <h6 class="fs-4 fw-semibold mb-0">좋아요수</h6>

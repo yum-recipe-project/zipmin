@@ -23,6 +23,7 @@ import com.project.zipmin.api.ClassErrorCode;
 import com.project.zipmin.api.ClassSuccessCode;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.CommentSuccessCode;
+import com.project.zipmin.api.FundErrorCode;
 import com.project.zipmin.api.KitchenSuccessCode;
 import com.project.zipmin.api.RecipeErrorCode;
 import com.project.zipmin.api.RecipeSuccessCode;
@@ -159,6 +160,30 @@ public class AdminController {
 	}
 	
 	
+	
+	
+	
+	// 출금 목록 조회
+	@GetMapping("/admin/withdraw")
+	public ResponseEntity<?> readWithdrawList(
+	        @RequestParam int page,
+	        @RequestParam int size) {
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(FundErrorCode.FUND_FORBIDDEN);
+			}
+		}
+
+	    Pageable pageable = PageRequest.of(page, size);
+	    Page<WithdrawReadResponseDto> withdrawPage = withdrawService.readWithdrawPage(pageable);
+
+	    // TODO : 에러코드 수정
+	    return ResponseEntity.status(UserSuccessCode.USER_WITHDRAW_HISTORY_READ_SUCCESS.getStatus())
+	            .body(ApiResponse.success(UserSuccessCode.USER_WITHDRAW_HISTORY_READ_SUCCESS, withdrawPage));
+	}
 	
 	
 	
@@ -521,38 +546,6 @@ public class AdminController {
 		return ResponseEntity.status(ClassSuccessCode.CLASS_UPDATE_APPROVAL_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_UPDATE_APPROVAL_SUCCESS, null));
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// 전체 사용자 출금 내역 목록 조회
-	@GetMapping("/admin/withdraw")
-	public ResponseEntity<?> readWithdrawList(
-	        @RequestParam int page,
-	        @RequestParam int size) {
-	    System.err.println("입력값 page: " + page + " size: " + size);
-
-	    // 페이지 정보 생성
-	    Pageable pageable = PageRequest.of(page, size);
-
-	    // 서비스 호출: 모든 출금 내역 조회
-	    Page<WithdrawReadResponseDto> withdrawPage = withdrawService.readAllWithdrawPage(pageable);
-	    System.err.println("서비스 호출 완료: " + withdrawPage);
-
-	    // 응답 반환
-	    return ResponseEntity.status(UserSuccessCode.USER_WITHDRAW_HISTORY_READ_SUCCESS.getStatus())
-	            .body(ApiResponse.success(UserSuccessCode.USER_WITHDRAW_HISTORY_READ_SUCCESS, withdrawPage));
-	}
-
-	
-	
-	
 
 	
 }

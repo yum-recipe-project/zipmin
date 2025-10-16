@@ -4,7 +4,7 @@
 let category = '';
 let totalPages = 0;
 let page = 0;
-const size = 10;
+const size = 15;
 let userList = [];
 
 

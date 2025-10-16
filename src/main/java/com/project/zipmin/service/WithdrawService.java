@@ -101,7 +101,7 @@ public class WithdrawService {
     
     
     // 모든 사용자의 출금 내역 목록 조회 (관리자용)
-    public Page<WithdrawReadResponseDto> readAllWithdrawPage(Pageable pageable) {
+    public Page<WithdrawReadResponseDto> readWithdrawPage(Pageable pageable) {
 
         if (pageable == null) {
             throw new ApiException(UserErrorCode.USER_INVALID_INPUT);

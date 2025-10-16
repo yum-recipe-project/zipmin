@@ -60,6 +60,7 @@
 							    <col style="width:8%">
 							    <col style="width:10%">
 							    <col style="width:11%">
+							    
 							</colgroup>
 					        <tr>
 					            <th colspan="2" class="total text-start"></th>

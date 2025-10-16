@@ -67,7 +67,7 @@ public class FundService {
 	    userService.saveUser(funder);  
 	    userService.saveUser(fundee);
 	    
-	    return new FundSupportResponseDto(fund.getId(), funder.getPoint(), fundee.getPoint());
+	    return new FundSupportResponseDto(fund.getId(), funder.getPoint(), fundee.getRevenue());
 	}
 	 
 	

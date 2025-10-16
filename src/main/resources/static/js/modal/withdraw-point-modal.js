@@ -11,14 +11,14 @@ function openWithdrawPointModal() {
 	const userOwned = totalRevenue || 0;
 	ownedPoint.innerText = userOwned.toLocaleString();
 
-	pointInput.value = 10000; 
+	pointInput.value = 1000; 
 
 	// 남은 포인트 계산 
 	const updateRemain = () => {
 		const withdrawValue = parseInt(pointInput.value) || 0;
 		const remain = userOwned - withdrawValue;
 
-		if (withdrawValue < 10000 || withdrawValue > userOwned) {
+		if (withdrawValue < 1000 || withdrawValue > userOwned) {
 			remainPoint.innerText = "-";
 			submitButton.classList.add("disabled");
 		} else {
@@ -43,8 +43,8 @@ async function submitWithdrawRequest() {
     const pointInput = document.getElementById("pointInput");
     const withdrawPoint = parseInt(pointInput.value);
 
-    if (isNaN(withdrawPoint) || withdrawPoint < 10000) {
-        alert("출금 포인트는 10,000 이상이어야 합니다.");
+    if (isNaN(withdrawPoint) || withdrawPoint < 1000) {
+        alertDanger("출금 포인트는 1,000 이상이어야 합니다.");
         return;
     }
 

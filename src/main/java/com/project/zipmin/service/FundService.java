@@ -36,11 +36,6 @@ public class FundService {
 		User funder = userService.getUserEntityById(funderId);
 		User fundee = userService.getUserEntityById(fundeeId);
 
-		
-		System.err.println("======== 후원 전 ============");
-		System.err.println("후원자:" + funder);
-		System.err.println("후원받은 사람:" + fundee);
-		
 		// 후원자의 보유 포인트와 후원하려는 포인트 검증
         if (funder.getPoint() < requestDto.getPoint()) {
             throw new ApiException(FundErrorCode.FUND_POINT_EXCEED);
@@ -71,13 +66,6 @@ public class FundService {
 	    fundee.setRevenue(fundee.getRevenue() + requestDto.getPoint());
 	    userService.saveUser(funder);  
 	    userService.saveUser(fundee);
-	    
-	    
-		System.err.println("======== 후원 후 ============");
-		System.err.println("후원자:" + funder);
-		System.err.println("후원받은 사람:" + fundee);
-	    
-	    
 	    
 	    return new FundSupportResponseDto(fund.getId(), funder.getPoint(), fundee.getPoint());
 	}

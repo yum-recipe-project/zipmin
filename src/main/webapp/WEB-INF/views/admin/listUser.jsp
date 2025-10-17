@@ -12,11 +12,11 @@
 		<link rel="stylesheet" href="../assets/css/styles.min.css" />
 		<link rel="stylesheet" href="/css/admin/list-user.css" />
 		<link rel="stylesheet" href="/css/admin/common/modal.css" />
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script src="/js/common/jwt.js"></script>
 		<script src="/js/common/util.js"></script>
 		<script src="/js/common/pagination.js"></script>
 		<script src="/js/admin/list-user.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-		<script src="/js/common/jwt.js"></script>
 		<script src="/js/admin/modal/edit-user-modal.js"></script>
 		<script src="/js/admin/modal/add-admin-modal.js"></script>
 	</head>
@@ -78,16 +78,16 @@
 					            </th>
 					        </tr>
 					        <tr class="table_th">
-					            <th>
+					            <th class="sort_btn desc" data-key="id">
 					                <h6 class="fs-4 fw-semibold mb-0">No</h6>
 					            </th>
-					            <th>
+					            <th class="sort_btn" data-key="username">
 					                <h6 class="fs-4 fw-semibold mb-0">아이디</h6>
 					            </th>
-					            <th>
+					            <th class="sort_btn" data-key="name">
 					                <h6 class="fs-4 fw-semibold mb-0">이름</h6>
 					            </th>
-					            <th>
+					            <th class="sort_btn" data-key="nickname">
 					                <h6 class="fs-4 fw-semibold mb-0">닉네임</h6>
 					            </th>
 					            <th>
@@ -96,7 +96,7 @@
 					            <th>
 					                <h6 class="fs-4 fw-semibold mb-0">이메일</h6>
 					            </th>
-					            <th>
+					            <th class="sort_btn" data-key="role">
 					                <h6 class="fs-4 fw-semibold mb-0">권한</h6>
 					            </th>
 					            <th></th>

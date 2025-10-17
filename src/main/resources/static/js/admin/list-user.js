@@ -1,10 +1,14 @@
 /**
  * 전역변수
  */
-let category = '';
 let totalPages = 0;
+let totalElements = 0;
 let page = 0;
 const size = 15;
+let keyword = '';
+let category = '';
+let sortKey = 'id';
+let sortOrder = 'desc';
 let userList = [];
 
 
@@ -34,26 +38,54 @@ document.addEventListener('DOMContentLoaded', async function() {
  */
 document.addEventListener('DOMContentLoaded', function() {
 	
+	// 검색
+	document.querySelector('form.search').addEventListener('submit', function(event) {
+		event.preventDefault();
+		keyword = document.getElementById('text-srh').value.trim();
+		page = 0;
+		fetchUserList();
+	});
+	
+	// 카테고리
 	document.querySelectorAll('.btn_tab a').forEach(tab => {
 		tab.addEventListener('click', function (event) {
 			event.preventDefault();
 			document.querySelector('.btn_tab a.active')?.classList.remove('active');
 			this.classList.add('active');
-			
 			category = this.getAttribute('data-tab');
 			page = 0;
 			userList = [];
-			
 			fetchUserList();
 		});
 	});
 	
+	// 정렬 버튼
+	document.querySelectorAll('.sort_btn').forEach(btn => {
+		btn.addEventListener('click', function(event) {
+			event.preventDefault();
+			const key = btn.dataset.key;
+		    if (sortKey === key) {
+		      sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+		    }
+			else {
+		      sortKey = key;
+		      sortOrder = 'desc';
+		    }
+			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
+			this.classList.add(sortOrder);
+			page = 0;
+			fetchUserList();
+		});
+	});
+	
+	// 관리자 추가 버튼
 	const token = localStorage.getItem('accessToken');
 	const payload = parseJwt(token);
-	
 	if (payload.role === 'ROLE_SUPER_ADMIN') {
 		renderAddAdminButton();
 	}
+	
+	// 초기 실행
 	fetchUserList();
 });
 
@@ -67,32 +99,32 @@ document.addEventListener('DOMContentLoaded', function() {
 async function fetchUserList() {
 	
 	try {
-		const token = localStorage.getItem('accessToken');
-		
 		const params = new URLSearchParams({
-			page : page,
-			size : size,
-			category : category
+			category: category,
+			sort: sortKey + '-' + sortOrder,
+			keyword: keyword,
+			page: page,
+			size: size,
 		}).toString();
 		
-		const headers = {
-			'Content-Type': 'application/json',
-			'Authorization': `Bearer ${token}`
-		}
+		console.log(params);
 		
 		const response = await instance.get(`/admin/users?${params}`, {
-			headers: headers
+			headers: getAuthHeaders()
 		});
 		
+		console.log(response);
+		
 		if (response.data.code === 'USER_READ_LIST_SUCCESS') {
+			// 전역변수 설정
 			totalPages = response.data.data.totalPages;
+			totalElements = response.data.data.totalElements;
 			page = response.data.data.number;
-			megazineList = response.data.data.content;
+			userList = response.data.data.content;
 			
-			renderUserList(response.data.data.content);
+			renderUserList(userList);
 			renderAdminPagination(fetchUserList);
-			
-			document.querySelector('.total').innerText = `총 ${response.data.data.totalElements}개`;
+			document.querySelector('.total').innerText = `총 ${totalElements}개`;
 		}
 	}
 	catch (error) {

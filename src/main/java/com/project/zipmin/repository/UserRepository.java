@@ -19,8 +19,17 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 	
-	Page<User> findByRoleIn(Collection<Role> roles, Pageable pageable);
+	
+	Page<User> findAll(Pageable pageable);
+	Page<User> findAllByUsernameContainingIgnoreCaseOrNameContainingIgnoreCaseOrNicknameContainingIgnoreCase(String keyword1, String keyword2, String keyword3, Pageable pageable);
+	
+	Page<User> findAllByRoleIn(Collection<Role> roles, Pageable pageable);
+	Page<User> findAllByRoleInAndUsernameContainingIgnoreCaseOrNameContainingIgnoreCaseOrNicknameContainingIgnoreCase(Collection<Role> roles, String keyword1, String keyword2, String keyword3, Pageable pageable);
+	
+	
+	
 
+	List<User> findAllByIdIn(List<Integer> idList);
 	
 	Optional<User> findByUsername(String username);
 	Optional<User> findByNameAndTel(String name, String tel);
@@ -29,7 +38,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	boolean existsByUsername(String username);
 	boolean existsByTel(String tel);
 	boolean existsByEmail(String email);
-	
-	List<User> findAllByIdIn(List<Integer> idList);
 	
 }

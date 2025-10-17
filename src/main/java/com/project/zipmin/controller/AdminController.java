@@ -96,6 +96,7 @@ public class AdminController {
 	
 	
 	// 사용자 목록 조회
+	// TODO : 에러코드 재확인
 	@Operation(
 	    summary = "사용자 목록 조회"
 	)
@@ -141,6 +142,8 @@ public class AdminController {
 	@GetMapping("/admin/users")
 	public ResponseEntity<?> readUserPage(
 			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
+			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
+			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
 			@Parameter(description = "페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지 크기") @RequestParam int size) {
 		
@@ -153,7 +156,7 @@ public class AdminController {
 		}
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<UserReadResponseDto> userPage = userService.readUserPage(category, pageable);
+		Page<UserReadResponseDto> userPage = userService.readUserPage(category, keyword, sort, pageable);
 		
 		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, userPage));
@@ -180,10 +183,12 @@ public class AdminController {
 	    Pageable pageable = PageRequest.of(page, size);
 	    Page<WithdrawReadResponseDto> withdrawPage = withdrawService.readWithdrawPage(pageable);
 
-	    // TODO : 에러코드 수정
+	    // TODO : 성공시 반환하는 에러코드를 FundSuccessCode.WITHDRAW_READ_LIST_SUCCESS로 변경
 	    return ResponseEntity.status(UserSuccessCode.USER_WITHDRAW_HISTORY_READ_SUCCESS.getStatus())
 	            .body(ApiResponse.success(UserSuccessCode.USER_WITHDRAW_HISTORY_READ_SUCCESS, withdrawPage));
 	}
+	
+	
 	
 	
 	
@@ -240,8 +245,8 @@ public class AdminController {
 			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) List<String> categoryList,
 			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
 			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
-			@RequestParam int page,
-			@RequestParam int size) {
+			@Parameter(description = "페이지 번호") @RequestParam int page,
+			@Parameter(description = "페이지 크기") @RequestParam int size) {
 		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();

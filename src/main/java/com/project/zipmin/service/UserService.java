@@ -9,7 +9,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -68,25 +70,82 @@ public class UserService {
 
 	
 	
-	// 사용자 목록 조회
-	public Page<UserReadResponseDto> readUserPage(String category, Pageable pageable) {
+	// 사용자 목록 조회 (관리자)
+	public Page<UserReadResponseDto> readUserPage(String category, String keyword, String sort, Pageable pageable) {
+		
+		// 입력값 검증
+		if (pageable == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		// 정렬 문자열을 객체로 변환
+		Sort sortSpec = Sort.by(Sort.Order.desc("id"));
+		if (sort != null && !sort.isBlank()) {
+			switch (sort) {
+				case "id-desc":
+					sortSpec = Sort.by(Sort.Order.desc("id"));
+					break;
+				case "id-asc":
+					sortSpec = Sort.by(Sort.Order.asc("id"));
+					break;
+				case "username-desc":
+					sortSpec = Sort.by(Sort.Order.desc("username"));
+					break;
+				case "username-asc":
+					sortSpec = Sort.by(Sort.Order.asc("username"));
+					break;
+				case "name-desc":
+					sortSpec = Sort.by(Sort.Order.desc("name"));
+					break;
+				case "name-asc":
+					sortSpec = Sort.by(Sort.Order.asc("name"));
+					break;
+				case "nickname-desc":
+					sortSpec = Sort.by(Sort.Order.desc("nickname"));
+					break;
+				case "nickname-asc":
+					sortSpec = Sort.by(Sort.Order.asc("nickname"));
+					break;
+				case "role-desc":
+					sortSpec = Sort.by(Sort.Order.desc("role"));
+					break;
+				case "role-asc":
+					sortSpec = Sort.by(Sort.Order.asc("role"));
+					break;
+				default:
+					break;
+			}
+		}
+		
+		// 기존 페이지 객체에 정렬 주입
+		Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
 		
 		// 사용자 목록 조회
-		Page<User> userPage;
+		Page<User> userPage = null;
 		try {
-			if (category == null || category.isBlank()) {
-	            userPage = userRepository.findAll(pageable);
-	        }
+			boolean hasCategory = category != null && !category.isBlank();
+			boolean hasKeyword = keyword != null && !keyword.isBlank();
+			
+			if (!hasCategory) {
+				// 전체
+				userPage = hasKeyword
+						? userRepository.findAllByUsernameContainingIgnoreCaseOrNameContainingIgnoreCaseOrNicknameContainingIgnoreCase(keyword, keyword, keyword, sortedPageable)
+						: userRepository.findAll(sortedPageable);
+			}
 			else {
+				// 카테고리
 				List<Role> roles = null;
 				if (category.equalsIgnoreCase("admin")) {
-				    roles = List.of(Role.ROLE_ADMIN, Role.ROLE_SUPER_ADMIN);
+					roles = List.of(Role.ROLE_ADMIN, Role.ROLE_SUPER_ADMIN);
 				}
 				else if (category.equalsIgnoreCase("user")) {
-				    roles = List.of(Role.ROLE_USER);
+					roles = List.of(Role.ROLE_USER);
 				}
-				userPage = userRepository.findByRoleIn(roles, pageable);
-	        }
+				
+				userPage = hasKeyword
+						? userRepository.findAllByRoleInAndUsernameContainingIgnoreCaseOrNameContainingIgnoreCaseOrNicknameContainingIgnoreCase(roles, keyword, keyword, keyword, sortedPageable)
+						: userRepository.findAllByRoleIn(roles, pageable);
+			}
 		}
 		catch (Exception e) {
 			throw new ApiException(UserErrorCode.USER_READ_LIST_FAIL);

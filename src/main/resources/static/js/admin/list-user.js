@@ -57,8 +57,18 @@ document.addEventListener('DOMContentLoaded', function() {
 			event.preventDefault();
 			document.querySelector('.btn_tab a.active')?.classList.remove('active');
 			this.classList.add('active');
+			
 			category = this.getAttribute('data-tab');
 			page = 0;
+			field = 'username';
+			keyword = '';
+			document.getElementById('field-srh').value = 'username';
+			document.getElementById('text-srh').value = '';
+			sortKey = 'id';
+			sortOrder = 'desc';
+			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
+			document.querySelector(`.sort_btn[data-key="${sortKey}"]`).classList.add(sortOrder);
+			
 			userList = [];
 			fetchUserList();
 		});
@@ -113,13 +123,9 @@ async function fetchUserList() {
 			size: size,
 		}).toString();
 		
-		console.log(params);
-		
 		const response = await instance.get(`/admin/users?${params}`, {
 			headers: getAuthHeaders()
 		});
-		
-		console.log(response);
 		
 		if (response.data.code === 'USER_READ_LIST_SUCCESS') {
 			// 전역변수 설정

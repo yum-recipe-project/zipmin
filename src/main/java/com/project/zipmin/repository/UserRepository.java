@@ -21,13 +21,14 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	
 	
 	Page<User> findAll(Pageable pageable);
-	Page<User> findAllByUsernameContainingIgnoreCaseOrNameContainingIgnoreCaseOrNicknameContainingIgnoreCase(String keyword1, String keyword2, String keyword3, Pageable pageable);
+	Page<User> findAllByUsernameContainingIgnoreCase(String keyword, Pageable pageable);
+	Page<User> findAllByNameContainingIgnoreCase(String keyword, Pageable pageable);
+	Page<User> findAllByNicknameContainingIgnoreCase(String keyword, Pageable pageable);
 	
 	Page<User> findAllByRoleIn(Collection<Role> roles, Pageable pageable);
-	Page<User> findAllByRoleInAndUsernameContainingIgnoreCaseOrNameContainingIgnoreCaseOrNicknameContainingIgnoreCase(Collection<Role> roles, String keyword1, String keyword2, String keyword3, Pageable pageable);
-	
-	
-	
+	Page<User> findAllByRoleInAndUsernameContainingIgnoreCase(Collection<Role> roles, String keyword, Pageable pageable);
+	Page<User> findAllByRoleInAndNameContainingIgnoreCase(Collection<Role> roles, String keyword, Pageable pageable);
+	Page<User> findAllByRoleInAndNicknameContainingIgnoreCase(Collection<Role> roles, String keyword, Pageable pageable);
 
 	List<User> findAllByIdIn(List<Integer> idList);
 	

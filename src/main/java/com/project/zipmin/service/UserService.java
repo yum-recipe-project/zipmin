@@ -71,7 +71,7 @@ public class UserService {
 	
 	
 	// 사용자 목록 조회 (관리자)
-	public Page<UserReadResponseDto> readUserPage(String category, String keyword, String sort, Pageable pageable) {
+	public Page<UserReadResponseDto> readUserPage(String category, String field, String keyword, String sort, Pageable pageable) {
 		
 		// 입력값 검증
 		if (pageable == null) {
@@ -128,9 +128,20 @@ public class UserService {
 			
 			if (!hasCategory) {
 				// 전체
-				userPage = hasKeyword
-						? userRepository.findAllByUsernameContainingIgnoreCaseOrNameContainingIgnoreCaseOrNicknameContainingIgnoreCase(keyword, keyword, keyword, sortedPageable)
-						: userRepository.findAll(sortedPageable);
+				if (!hasKeyword) {
+					userPage = userRepository.findAll(sortedPageable);
+				}
+				else {
+					if (field.equalsIgnoreCase("username")) {
+						userPage = userRepository.findAllByUsernameContainingIgnoreCase(keyword, sortedPageable);
+					}
+					else if (field.equalsIgnoreCase("name")) {
+						userPage = userRepository.findAllByNameContainingIgnoreCase(keyword, sortedPageable);
+		            }
+					else if (field.equalsIgnoreCase("nickname")) {
+		                userPage = userRepository.findAllByNicknameContainingIgnoreCase(keyword, sortedPageable);
+		            }
+				}
 			}
 			else {
 				// 카테고리
@@ -142,9 +153,21 @@ public class UserService {
 					roles = List.of(Role.ROLE_USER);
 				}
 				
-				userPage = hasKeyword
-						? userRepository.findAllByRoleInAndUsernameContainingIgnoreCaseOrNameContainingIgnoreCaseOrNicknameContainingIgnoreCase(roles, keyword, keyword, keyword, sortedPageable)
-						: userRepository.findAllByRoleIn(roles, pageable);
+				if (!hasKeyword) {
+					userPage = userRepository.findAllByRoleIn(roles, sortedPageable);
+				}
+				else {
+					System.err.println("출력 = "  + field + " " + keyword);
+					if (field.equalsIgnoreCase("username")) {
+						userPage = userRepository.findAllByRoleInAndUsernameContainingIgnoreCase(roles, keyword, sortedPageable);
+					}
+					else if (field.equalsIgnoreCase("name")) {
+						userPage = userRepository.findAllByRoleInAndNameContainingIgnoreCase(roles, keyword, sortedPageable);
+		            }
+					else if (field.equalsIgnoreCase("nickname")) {
+		                userPage = userRepository.findAllByRoleInAndNicknameContainingIgnoreCase(roles, keyword, sortedPageable);
+		            }
+				}
 			}
 		}
 		catch (Exception e) {

@@ -5,6 +5,7 @@ let totalPages = 0;
 let totalElements = 0;
 let page = 0;
 const size = 15;
+let field = 'username';
 let keyword = '';
 let category = '';
 let sortKey = 'id';
@@ -39,6 +40,10 @@ document.addEventListener('DOMContentLoaded', async function() {
 document.addEventListener('DOMContentLoaded', function() {
 	
 	// 검색
+	document.getElementById('field-srh').addEventListener('change', function() {
+		field = this.value;
+		fetchUserList();
+	});
 	document.querySelector('form.search').addEventListener('submit', function(event) {
 		event.preventDefault();
 		keyword = document.getElementById('text-srh').value.trim();
@@ -102,6 +107,7 @@ async function fetchUserList() {
 		const params = new URLSearchParams({
 			category: category,
 			sort: sortKey + '-' + sortOrder,
+			field: field,
 			keyword: keyword,
 			page: page,
 			size: size,

@@ -38,15 +38,16 @@ public class RevenueController {
 	private final WithdrawService withdrawService;
 	
 	
-	// 사용자 총 수익 조회
+	// 사용자 수익 조회
 	@GetMapping("/users/{id}/revenue/total")
-	public ResponseEntity<Integer> readUserTotalRevenue(@PathVariable Integer id) {
+	public ResponseEntity<Integer> readUserRevenue(@PathVariable Integer id) {
+		System.err.println("수익 조회 컨트롤러");
 	    // 입력값 검증
 	    if (id == null || id <= 0) {
 	        throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
 	    }
 
-	    int totalRevenue = revenueService.getUserTotalRevenue(id);
+	    int totalRevenue = revenueService.getUserRevenue(id);
 	    return ResponseEntity.ok(totalRevenue);
 	}
 

@@ -103,10 +103,11 @@ function renderRevenueList(revenueList) {
         titleA.href = `/recipe/viewRecipe.do?id=${revenue.recipe_id}`;
         titleA.textContent = revenue.recipe_title || '제목 없음';
 
-        const nicknameP = document.createElement('p');
-        nicknameP.textContent = revenue.funder_nickname;
+//        const nicknameP = document.createElement('p');
+//        nicknameP.textContent = revenue.funder_nickname;
 
-        infoDiv.append(labelP, titleA, nicknameP);
+//        infoDiv.append(labelP, titleA, nicknameP);
+        infoDiv.append(labelP, titleA);
         supportDiv.append(recipeLink, infoDiv);
 
         li.append(supportInfoDiv, supportDiv);

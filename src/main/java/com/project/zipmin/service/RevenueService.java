@@ -2,6 +2,7 @@ package com.project.zipmin.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -200,6 +201,18 @@ public class RevenueService {
         Integer total = fundRepository.sumPointByFundeeId(userId);
 
         return total != null ? total : 0;
+    }
+    
+    
+    
+    // 사용자의 출금 가능한 수익 
+    public int getUserRevenue(Integer userId) {
+        if (userId == null || userId <= 0) {
+            throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+        }
+        User user =  userRepository.findById(userId).get();
+
+        return user.getRevenue();
     }
 	
 	

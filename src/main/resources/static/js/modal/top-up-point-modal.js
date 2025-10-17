@@ -99,6 +99,45 @@ async function fetchPoint() {
 }
 
 
+/**
+ * 사용자 정보를 가져오는 함수
+ */
+async function fetchBuyer() {
+    
+    try {
+        const id = parseJwt(localStorage.getItem('accessToken')).id;
+        
+        const response = await fetch(`/users/${id}`, {
+            method: 'GET',
+            headers: getAuthHeaders()  
+        });
+        
+        const result = await response.json();
+		
+        if (result.code === 'USER_READ_SUCCESS') {
+			console.log("사용자 조회 성공");
+		    return result.data;
+        }
+        else if (result.code === 'USER_INVALID_INPUT') {
+            alertDanger('입력값이 유효하지 않습니다.');
+        }
+        else if (result.code === 'USER_NOT_FOUND') {
+            alertDanger('해당 사용자를 찾을 수 없습니다.');
+        }
+        else if (result.code === 'INTERNAL_SERVER_ERROR') {
+            alertDanger('서버 내부에서 오류가 발생했습니다.');
+        }
+        else {
+            console.log('알 수 없는 에러:', result);
+        }
+    }
+    catch(error) {
+        console.log(error);
+        alertDanger('알 수 없는 오류가 발생했습니다.');
+    }
+}
+
+
 
 
 
@@ -117,7 +156,8 @@ async function fetchPoint() {
 document.addEventListener("DOMContentLoaded", function() {
     const topUpForm = document.getElementById("topUpPointForm");
 
-    topUpForm.addEventListener("submit", function(e) {
+	
+    topUpForm.addEventListener("submit", async function(e) {
         e.preventDefault(); // 폼 제출 막기
 
         const ownedPoint = parseInt(document.getElementById("ownedPoint").innerText);
@@ -130,6 +170,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const amount = parseInt(selectedRadio.value);
         const merchantUid = `test_${Date.now()}_${Math.floor(Math.random() * 10000)}`
+		
+		const user = await fetchBuyer();
 
 
         // Iamport SDK 초기화
@@ -144,9 +186,9 @@ document.addEventListener("DOMContentLoaded", function() {
 			merchant_uid: merchantUid,
             name: '포인트 충전',
             amount: amount,
-            buyer_email: 'dyboo1346@naver.com',
-            buyer_name: '부다영',           
-            buyer_tel: '010-2084-0204'
+            buyer_email: user.email,
+            buyer_name: user.username,           
+            buyer_tel: user.tel
         }, async function(response) {
             if (response.success) {
 				PostPoint(response);
@@ -167,8 +209,6 @@ document.addEventListener("DOMContentLoaded", function() {
  * 사용자 포인트를 충전하는 함수
  */
 async function PostPoint(pointInfo) {
-	console.log("postpoint 진입");
-	
 	
     try {
         const id = parseJwt(localStorage.getItem('accessToken')).id;

@@ -19,11 +19,13 @@ import com.project.zipmin.dto.FundSupportRequestDto;
 import com.project.zipmin.dto.FundSupportResponseDto;
 import com.project.zipmin.service.FundService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/funds")
 @RequiredArgsConstructor
+@Tag(name = "FUND API", description = "후원 관련 API")
 public class FundController {
 	
 	private final FundService fundService;

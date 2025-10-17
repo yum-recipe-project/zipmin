@@ -56,8 +56,8 @@
 					<table class="table text-nowrap mb-0 align-middle fixed-table">
 					    <thead class="text-dark fs-4">
 					    	<colgroup>
-					    		<col style="width:4%">
-					    		<col style="width:18%">
+					    		<col style="width:8%">
+					    		<col style="width:14%">
 					    		<col style="width:11%">
 					    		<col style="width:13%">
 					    		<col style="width:14%">
@@ -71,10 +71,17 @@
 					            <th></th>
 					            <th></th>
 					            <th colspan="3" class="text-end">
-					            	<form class="search position-relative text-end">
-					            		<input type="text" class="form-control search-chat py-2 ps-5" id="text-srh" placeholder="검색어를 입력하세요">
-					            		<i class="ti ti-search position-absolute top-50 start-0 translate-middle-y fs-6 text-dark ms-3"></i>
-					            	</form>
+					            	<div class="d-flex justify-content-end align-items-center">
+						            	<select class="form-select w-auto mr-sm-2" id="field-srh">
+						            		<option value="username">아이디</option>
+						            		<option value="name">이름</option>
+						            		<option value="nickname">닉네임</option>
+						            	</select>
+						            	<form class="search position-relative text-end ms-1">
+						            		<input type="text" class="form-control search-chat py-2 ps-5" id="text-srh" placeholder="검색어를 입력하세요">
+						            		<i class="ti ti-search position-absolute top-50 start-0 translate-middle-y fs-6 text-dark ms-3"></i>
+						            	</form>
+					            	</div>
 					            </th>
 					        </tr>
 					        <tr class="table_th">

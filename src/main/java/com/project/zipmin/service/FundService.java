@@ -57,15 +57,18 @@ public class FundService {
 	    try {
 	        fund = fundRepository.save(fund);
 	    } catch (Exception e) {
-	        throw new ApiException(FundErrorCode.FUND_INVALID_REQUEST);
+	        throw new ApiException(FundErrorCode.FUND_RECORD_FAIL);
 	    }
 	    
-	    
-	    // 포인트 업데이트
-	    funder.setPoint(funder.getPoint() - requestDto.getPoint());
-	    fundee.setRevenue(fundee.getRevenue() + requestDto.getPoint());
-	    userService.saveUser(funder);  
-	    userService.saveUser(fundee);
+	    // 포인트 및 수익 업데이트
+	    try {
+	        funder.setPoint(funder.getPoint() - requestDto.getPoint());
+	        fundee.setRevenue(fundee.getRevenue() + requestDto.getPoint());
+	        userService.saveUser(funder);
+	        userService.saveUser(fundee);
+	    } catch (Exception e) {
+	        throw new ApiException(FundErrorCode.FUND_POINT_UPDATE_FAIL);
+	    }
 	    
 	    return new FundSupportResponseDto(fund.getId(), funder.getPoint(), fundee.getRevenue());
 	}

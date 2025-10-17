@@ -128,6 +128,7 @@ async function fetchUserList() {
 			page = response.data.data.number;
 			userList = response.data.data.content;
 			
+			// 렌더링
 			renderUserList(userList);
 			renderAdminPagination(fetchUserList);
 			document.querySelector('.total').innerText = `총 ${totalElements}개`;
@@ -193,8 +194,21 @@ function renderAddAdminButton() {
  * 회원 목록을 화면에 렌더링하는 함수
  */
 function renderUserList(userList) {
+	
 	const container = document.querySelector('.user_list');
 	container.innerHTML = '';
+	
+	// 사용자 목록이 존재하지 않는 경우
+	if (userList == null || userList.length === 0) {
+		document.querySelector('.table_th').style.display = 'none';
+		document.querySelector('.search_empty')?.remove();
+		document.querySelector('.fixed-table').insertAdjacentElement('afterend', renderSearchEmpty());
+		return;
+	}
+	
+	// 사용자 목록이 존재하는 경우
+	document.querySelector('.search_empty')?.remove();
+	document.querySelector('.table_th').style.display = '';
 	
 	userList.forEach((user, index) => {
 		const tr = document.createElement('tr');
@@ -204,7 +218,13 @@ function renderUserList(userList) {
 		const noTd = document.createElement('td');
 		const noH6 = document.createElement('h6');
 		noH6.className = 'fw-semibold mb-0';
-		noH6.textContent = index + 1;
+		const offset = page * size + index;
+		if (sortKey === 'id' && sortOrder === 'asc') {
+			noH6.textContent = offset + 1;
+		}
+		else {
+			noH6.textContent = totalElements - offset;
+		}
 		noTd.appendChild(noH6);
 		
 		// 아이디

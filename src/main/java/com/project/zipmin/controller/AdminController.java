@@ -96,7 +96,6 @@ public class AdminController {
 	
 	
 	// 사용자 목록 조회
-	// TODO : 에러코드 재확인
 	@Operation(
 	    summary = "사용자 목록 조회"
 	)

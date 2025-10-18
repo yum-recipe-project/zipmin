@@ -89,7 +89,7 @@ function renderReviewList(reviews) {
         const titleDiv = document.createElement('div');
         titleDiv.className = 'myreview_title';
         const a = document.createElement('a');
-        a.href = `/recipe/viewRecipe.do?id=${review.recipeId}`;
+        a.href = `/recipe/viewRecipe.do?id=${review.recipe_id}`;
         a.textContent = review.title;
         titleDiv.appendChild(a);
 

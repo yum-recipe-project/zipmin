@@ -68,13 +68,13 @@
 	color: var(--txt-color-500);
 }
 
-#container .user_wrap .user_link {
+#container .user_wrap .user_link p {
 	font-size: 18px;
 	font-weight: 400;
 	cursor: pointer;
 }
 
-#container .user_wrap .user_link:before {
+#container .user_wrap .user_link p:before {
 	content: '';
 	display: inline-block;
 	width: 22px;

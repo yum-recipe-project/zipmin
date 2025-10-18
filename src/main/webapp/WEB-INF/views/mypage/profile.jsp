@@ -34,13 +34,14 @@
 							</div>
 						</div>
 					</div>
+					<div class="user_link"></div>
 				</div>
 				
 				<!-- 네비게이션 버튼 -->
 				<div class="nav_wrap">
 					<ul>
 						<li class="btn_tab"><a href="" data-tab="recipe" class="active"><span>레시피</span></a></li>
-						<li class="btn_tab"><a href="" data-tab="classes"><span>클래스</span></a></li>
+						<li class="btn_tab"><a href="" data-tab="cooking"><span>클래스</span></a></li>
 					</ul>
 				</div>
 				

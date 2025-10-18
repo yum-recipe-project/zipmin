@@ -1,11 +1,16 @@
 /**
  * 전역변수
  */
-const size = 20;
-let totalPages = 0;
-let totalElements = 0;
-let page = 0;
-let sort = 'postdate-desc';
+const recipeSize = 20;
+const classSize = 20;
+let recipeTotalPages = 0;
+let classTotalPages = 0;
+let recipeTotalElements = 0;
+let classTotalElements = 0;
+let recipePage = 0;
+let classPage = 0;
+let recipeSort = 'postdate-desc';
+let classSort = 'postdate-desc';
 let recipeList = [];
 let classList = [];
 
@@ -27,12 +32,13 @@ document.addEventListener('DOMContentLoaded', function() {
             
             tabItems.forEach(button => button.classList.remove('active'));
             this.classList.add('active');
-            
             contentItems.forEach(content => content.style.display = 'none');
             contentItems[index].style.display = 'flex';
 			
-			sort = 'postdate-desc';
-			page = 0;
+			recipeSort = 'postdate-desc';
+			classSort = 'postdate-desc';
+			recipeSort = 0;
+			classSort = 0;
 			recipeList = [];
 			classList = [];
 
@@ -49,10 +55,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // 선택된 탭 활성화
     tabItems.forEach(button => button.classList.remove('active'));
     contentItems.forEach(content => content.style.display = 'none');
-
     tabItems[0].classList.add('active');
     contentItems[0].style.display = 'flex';
-	
 });
 
 
@@ -132,10 +136,11 @@ async function fetchUser() {
 			userWrap.querySelector('.user_introduce').innerText = result.data.introduce;
 			userWrap.querySelector('.likecount').innerText = `${result.data.likecount}명`;
 			if (result.data.link) {
+				userWrap.querySelector('.user_link').innerHTML = '';
 				const p = document.createElement('p');
 				p.className = 'user_link';
 				p.textContent = result.data.link;
-				userWrap.appendChild(p);
+				userWrap.querySelector('.user_link').appendChild(p);
 			}
 		}
 		else if (result.code === 'LIKE_COUNT_FAIL') {

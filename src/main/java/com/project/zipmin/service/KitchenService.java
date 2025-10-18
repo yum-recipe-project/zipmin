@@ -404,14 +404,4 @@ public class KitchenService {
 
         return new PageImpl<>(dtoList, pageable, guidePage.getTotalElements());
     }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

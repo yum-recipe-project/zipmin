@@ -1,7 +1,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
 	
-	fetchReviewtList();
+	fetchReviewList();
 	
 	document.querySelector('.btn_more').addEventListener('click', function() {
 		fetchReviewtList();
@@ -17,9 +17,9 @@ let size = 10;
 let reviewList = [];
 
 /**
- * 서버에서 댓글 목록 데이터를 가져오는 함수
+ * 서버에서 리뷰 목록 데이터를 가져오는 함수
  */
-async function fetchReviewtList() {
+async function fetchReviewList() {
 	
 	try {
 		const token = localStorage.getItem('accessToken');
@@ -31,14 +31,41 @@ async function fetchReviewtList() {
 		}).toString();
 		
 		const response = await instance.get(`/users/${payload.id}/reviews?${params}`);
+		const result = response.data; 
 		
-		console.log(response);
+		if (result.code === 'USER_READ_LIST_SUCCESS') {
+            const reviews = result.data.content;
+
+            // reviewList 누적 저장
+            reviewList = [...reviewList, ...reviews];
+
+            renderReviewList(reviewList);
+
+            page = result.data.number + 1;
+            totalPages = result.data.totalPages;
+            document.querySelector('.myreview_count span').innerText = result.data.totalElements + '개';
+            document.querySelector('.btn_more').style.display = page >= totalPages ? 'none' : 'block';
+        } 
+		else if (result.code === 'REVIEW_READ_LIST_FAIL') {
+            alertDanger('리뷰 목록 조회에 실패했습니다.');
+        }
+		else if (result.code === 'USER_INVALID_INPUT') {
+            alertDanger('입력값이 유효하지 않습니다.');
+        }
+        else if (result.code === 'USER_UNAUTHORIZED_ACCESS') {
+            alertDanger('로그인되지 않은 사용자입니다.');
+        }
+        else if (result.code === 'USER_FORBIDDEN') {
+            alertDanger('접근 권한이 없습니다.');
+        }
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alert('서버 내부에서 오류가 발생했습니다.');
+		}
+		else {
+			console.log(error);
+		}
+				
 		
-		renderReviewList(response.data.data.content);
-		page = response.data.data.number + 1;
-		totalPages = response.data.data.totalPages;
-		document.querySelector('.myreview_count span').innerText = response.data.data.totalElements + '개';
-		document.querySelector('.btn_more').style.display = page >= totalPages ? 'none' : 'block';
 	}
 	catch (error) {
 		console.log(error);
@@ -178,9 +205,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	editForm.addEventListener('submit', async function(event) {
 		event.preventDefault();
 
-		const id = document.getElementById('editReviewId').value;  // 리뷰 ID (hidden input)
-		const content = document.getElementById('editReviewContent').value.trim(); // 수정할 리뷰 내용
-		const score = Number(document.getElementById('editReviewStar').value || 0); // 수정할 별점 (hidden input)
+		const id = document.getElementById('editReviewId').value; 
+		const content = document.getElementById('editReviewContent').value.trim();
+		const score = Number(document.getElementById('editReviewStar').value || 0);
 
 		try {
 			const data = {
@@ -218,6 +245,12 @@ document.addEventListener('DOMContentLoaded', function() {
 				const scoreP = document.querySelector(`.myreview[data-id='${id}'] p`);
 				if (scoreP) scoreP.textContent = response.data.data.score;
 				
+				// reviewList의 해당 리뷰 데이터 업데이트
+				const updatedIndex = reviewList.findIndex(r => r.id == id);
+				if (updatedIndex !== -1) {
+				    reviewList[updatedIndex].content = response.data.data.content;
+				    reviewList[updatedIndex].score = response.data.data.score;
+				}
 				
 			}
 		}

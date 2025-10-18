@@ -178,6 +178,7 @@ async function fetchReviewList() {
             // 전역 변수 설정
             reviewTotalPages = result.data.totalPages;
             reviewTotalElements = result.data.totalElements;
+			// 최신 데이터 설정
             reviewList = [...reviewList, ...result.data.content];
 
 			// 렌더링

@@ -1,12 +1,14 @@
 
 document.addEventListener('DOMContentLoaded', function() {
-	fetchReviewList();
 	document.querySelector('.btn_more').addEventListener('click', function() {
+		page = page + 1;
 		fetchReviewList();
 	});
+	fetchReviewList();
 });
 
 let totalPages = 0;
+let totalElements = 0;
 let page = 0;
 let size = 10;
 let reviewList = [];
@@ -29,17 +31,16 @@ async function fetchReviewList() {
 		const result = response.data; 
 		
 		if (result.code === 'USER_READ_LIST_SUCCESS') {
-            const reviews = result.data.content;
-
-            // reviewList 누적 저장
-            reviewList = [...reviewList, ...reviews];
+			totalPages = response.data.data.totalPages;
+			totalElements = response.data.data.totalElements;
+			reviewList = [...reviewList, ...response.data.data.content];
 
             renderReviewList(reviewList);
-
-            page = result.data.number + 1;
-            totalPages = result.data.totalPages;
             document.querySelector('.myreview_count span').innerText = result.data.totalElements + '개';
-            document.querySelector('.btn_more').style.display = page >= totalPages ? 'none' : 'block';
+			
+			const btnMore = document.querySelector('.btn_more');
+			btnMore.style.display = (reviewList.length < totalElements) ? 'block' : 'none';
+
         } 
 		else if (result.code === 'REVIEW_READ_LIST_FAIL') {
             alertDanger('리뷰 목록 조회에 실패했습니다.');
@@ -79,6 +80,7 @@ async function fetchReviewList() {
 function renderReviewList(reviews) {
 
     const ul = document.querySelector('.myreview_list');
+	ul.innerHTML = '';
 
     reviews.forEach(review => {
         const li = document.createElement('li');
@@ -302,18 +304,18 @@ async function deleteReview(id) {
 
 			if (response.data.code === 'REVIEW_DELETE_SUCCESS') {
                alertPrimary('리뷰를 성공적으로 삭제했습니다.');
-
-               const li = document.querySelector(`.myreview[data-id='${id}']`)?.closest('li');
-               if (li) li.remove();
-
-               reviewList = reviewList.filter(review => review.id !== id);
+			   reviewList = reviewList.filter(review => review.id !== id);
+			   renderReviewList(reviewList);
 			   
-			   // 리뷰 총 개수 업데이트
-		       const reviewCountEl = document.querySelector('.myreview_count span');
-		       if (reviewCountEl) {
-		           reviewCountEl.textContent = reviewList.length + '개';
+			   totalElements--;
+			   document.querySelector('.myreview_count span').textContent = totalElements + '개';
+			   
+		       const btnMore = document.querySelector('.btn_more');
+		       if (reviewList.length < size || reviewList.length >= totalElements) {
+		           btnMore.style.display = 'none';
+		       } else {
+		           btnMore.style.display = 'block';
 		       }
-
            }
         } catch (error) {
             const code = error?.response?.data?.code;

@@ -1,14 +1,9 @@
 
 document.addEventListener('DOMContentLoaded', function() {
-	
 	fetchReviewList();
-	
 	document.querySelector('.btn_more').addEventListener('click', function() {
 		fetchReviewtList();
 	});
-		
-	
-	
 });
 
 let totalPages = 0;
@@ -72,7 +67,6 @@ async function fetchReviewList() {
 	}
 	
 }
-
 
 
 
@@ -196,6 +190,7 @@ function renderReviewList(reviews) {
 
 
 
+
 /**
  * 리뷰를 수정하는 함수
  */
@@ -294,7 +289,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
 /**
  * 리뷰를 삭제하는 함수
  */
@@ -306,14 +300,14 @@ async function deleteReview(id) {
                 headers: getAuthHeaders()
             });
 
-            if (response.data.code === 'REVIEW_DELETE_SUCCESS') {
-                alertPrimary('리뷰를 성공적으로 삭제했습니다.');
+			if (response.data.code === 'REVIEW_DELETE_SUCCESS') {
+               alertPrimary('리뷰를 성공적으로 삭제했습니다.');
 
-                document.querySelector(`.myreview[data-id='${id}']`)?.remove();
+               const li = document.querySelector(`.myreview[data-id='${id}']`)?.closest('li');
+               if (li) li.remove();
 
-                reviewList = reviewList.filter(review => review.id !== id);
-            }
-
+               reviewList = reviewList.filter(review => review.id !== id);
+           }
         } catch (error) {
             const code = error?.response?.data?.code;
 
@@ -348,6 +342,9 @@ async function deleteReview(id) {
     }
 
 }
+
+
+
 
 
 /**

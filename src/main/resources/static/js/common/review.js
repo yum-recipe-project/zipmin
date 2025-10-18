@@ -577,6 +577,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+
 /**
  * 리뷰를 수정하는 함수
  */
@@ -624,7 +625,13 @@ document.addEventListener('DOMContentLoaded', function() {
 				const scoreP = document.querySelector(`.review[data-id='${id}'] p`);
 				if (scoreP) scoreP.textContent = response.data.data.score;
 				
-				
+				// reviewList의 해당 리뷰 데이터 업데이트
+				const updatedIndex = reviewList.findIndex(r => r.id == id);
+				if (updatedIndex !== -1) {
+				    reviewList[updatedIndex].content = response.data.data.content;
+				    reviewList[updatedIndex].score = response.data.data.score;
+				}
+
 			}
 		}
 		catch (error) {
@@ -662,7 +669,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		bootstrap.Modal.getInstance(document.getElementById('editReviewModal'))?.hide();
 	});
 });
-
 
 
 
@@ -725,18 +731,6 @@ async function deleteReview(id) {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -820,9 +814,3 @@ document.addEventListener('DOMContentLoaded', function() {
 		bootstrap.Modal.getInstance(document.getElementById('reportReviewModal'))?.hide();
 	});
 });
-
-
-
-
-
-

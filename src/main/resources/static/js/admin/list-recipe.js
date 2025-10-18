@@ -45,6 +45,12 @@ document.addEventListener('DOMContentLoaded', function() {
 		page = 0;
 		fetchRecipeList();
 	});
+	document.getElementById('text-srh')?.addEventListener('input', function () {
+		if (this.value.trim() === '') {
+			keyword = '';
+			fetchRecipeList();
+		}
+	});
 	
 	// 카테고리
 	document.querySelectorAll('.btn_tab a').forEach(tab => {
@@ -72,7 +78,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		btn.addEventListener('click', function(event) {
 			event.preventDefault();
 			const key = btn.dataset.key;
-
 		    if (sortKey === key) {
 		      sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
 		    }
@@ -80,10 +85,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		      sortKey = key;
 		      sortOrder = 'desc';
 		    }
-			
 			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
 			this.classList.add(sortOrder);
-			
 			page = 0;
 			fetchRecipeList();
 		});

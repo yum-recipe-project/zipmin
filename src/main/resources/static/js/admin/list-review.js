@@ -45,6 +45,12 @@ document.addEventListener('DOMContentLoaded', function() {
 	    reviewList = [];
 	    fetchAdminReviewList();
 	});
+	document.getElementById('text-srh')?.addEventListener('input', function () {
+		if (this.value.trim() === '') {
+			keyword = '';
+			fetchAdminReviewList();
+		}
+	});
 	
 	// 정렬
 	document.querySelectorAll('.sort_btn').forEach(btn => {

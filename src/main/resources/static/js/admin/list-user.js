@@ -50,6 +50,12 @@ document.addEventListener('DOMContentLoaded', function() {
 		page = 0;
 		fetchUserList();
 	});
+	document.getElementById('text-srh')?.addEventListener('input', function () {
+		if (this.value.trim() === '') {
+			keyword = '';
+			fetchUserList();
+		}
+	});
 	
 	// 카테고리
 	document.querySelectorAll('.btn_tab a').forEach(tab => {

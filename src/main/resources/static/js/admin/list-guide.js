@@ -46,6 +46,12 @@ document.addEventListener('DOMContentLoaded', function() {
 	    guideList = [];
 	    fetchAdminGuideList();
 	});
+	document.getElementById('text-srh')?.addEventListener('input', function () {
+		if (this.value.trim() === '') {
+			keyword = '';
+			fetchAdminGuideList();
+		}
+	});
 	
     // 카테고리 탭 클릭
     document.querySelectorAll('.tab ul li a').forEach(tab => {

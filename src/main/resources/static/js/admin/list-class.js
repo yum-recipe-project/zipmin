@@ -47,6 +47,12 @@ document.addEventListener('DOMContentLoaded', function() {
 		page = 0;
 		fetchClassList();
 	});
+	document.getElementById('text-srh')?.addEventListener('input', function () {
+		if (this.value.trim() === '') {
+			keyword = '';
+			fetchClassList();
+		}
+	});
 	
 	// 카테고리
 	document.querySelectorAll('.btn_tab a').forEach(tab => {
@@ -74,7 +80,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		btn.addEventListener('click', function(event) {
 			event.preventDefault();
 			const key = btn.dataset.key;
-
 		    if (sortKey === key) {
 		      sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
 		    }
@@ -82,10 +87,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		      sortKey = key;
 		      sortOrder = 'desc';
 		    }
-			
 			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
 			this.classList.add(sortOrder);
-			
 			page = 0;
 			fetchClassList();
 		});
@@ -112,7 +115,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		page = 0;
 		fetchClassList();
 	});
-
 	
 	fetchClassList();
 });
@@ -142,7 +144,6 @@ async function fetchClassList(scrollTop = true) {
 		});
 		
 		if (response.data.code === 'CLASS_READ_LIST_SUCCESS') {
-			
 			// 전역 변수 설정
 			totalPages = response.data.data.totalPages;
 			totalElements = response.data.data.totalElements;
@@ -153,19 +154,6 @@ async function fetchClassList(scrollTop = true) {
 			renderClassList(classList);
 			renderAdminPagination(fetchClassList);
 			document.querySelector('.total').innerText = `총 ${totalElements}개`;
-			
-			// 검색 결과 없음 표시
-			if (response.data.data.totalPages === 0) {
-				document.querySelector('.table_th').style.display = 'none';
-				document.querySelector('.search_empty')?.remove();
-				const table = document.querySelector('.fixed-table');
-				table.insertAdjacentElement('afterend', renderSearchEmpty());
-			}
-			// 검색 결과 표시
-			else {
-				document.querySelector('.search_empty')?.remove();
-				document.querySelector('.table_th').style.display = '';
-			}
 			
 			// 스크롤 최상단 이동
 			if (scrollTop) {
@@ -211,8 +199,21 @@ async function fetchClassList(scrollTop = true) {
  * 쿠킹클래스 목록을 화면에 렌더링하는 함수
  */
 function renderClassList(classList) {
+	
 	const container = document.querySelector('.class_list');
 	container.innerHTML = '';
+	
+	// 쿠킹클래스 목록이 존재하지 않는 경우
+	if (classList == null || classList.length === 0) {
+		document.querySelector('.table_th').style.display = 'none';
+		document.querySelector('.search_empty')?.remove();
+		document.querySelector('.fixed-table').insertAdjacentElement('afterend', renderSearchEmpty());
+		return;
+	}
+	
+	// 쿠킹클래스 목록이 존재하는 경우
+	document.querySelector('.search_empty')?.remove();
+	document.querySelector('.table_th').style.display = '';
 
 	classList.forEach((classs, index) => {
 	    const tr = document.createElement('tr');

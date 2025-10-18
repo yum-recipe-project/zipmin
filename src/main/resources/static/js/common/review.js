@@ -139,17 +139,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-
-
-
-/**
- * TODO : 모달이 닫히면 폼을 초기화하는 함수
- */
-
-
-
-
-
 /**
  * 서버에서 리뷰 목록 데이터를 가져오는 함수
  */
@@ -192,8 +181,33 @@ async function fetchReviewList() {
         else if (result.code === 'REVIEW_READ_LIST_FAIL') {
             alertDanger('리뷰 목록 조회에 실패했습니다.');
         }
-		
-		// TODO : 에러 코드 추가
+		else if (result.code === 'INTERVAL_SERVER_ERROR') {
+			alert('서버 내부에서 오류가 발생했습니다.');
+		}
+		else if (result.code === 'LIKE_COUNT_FAIL') {
+		    alertDanger('리뷰 좋아요 수 조회에 실패했습니다.');
+		}
+		else if (result.code === 'REPORT_COUNT_FAIL') {
+		    alertDanger('리뷰 신고 수 조회에 실패했습니다.');
+		}
+		else if (result.code === 'LIKE_EXIST_FAIL') {
+		    alertDanger('리뷰 좋아요 여부 조회에 실패했습니다.');
+		}
+		else if (result.code === 'REVIEW_INVALID_INPUT') {
+		    alert('입력값이 유효하지 않습니다.');
+		}
+		else if (result.code === 'USER_INVALID_INPUT') {
+		    alert('입력값이 유효하지 않습니다.');
+		}
+		else if (result.code === 'USER_NOT_FOUND') {
+		    alert('해당 사용자를 찾을 수 없습니다.');
+		}
+		else if (result.code === 'INTERNAL_SERVER_ERROR') {
+		    alert('서버 내부에서 오류가 발생했습니다.');
+		}
+		else {
+			console.log(error);
+		}
     }
     catch (error) {
         console.log(error);

@@ -108,8 +108,21 @@ async function fetchGuideList() {
 			// 스크롤 최상단 이동
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
-		// ****** 여기에 다른 에러 코드들 else if로 추가 ********
-		// common/comment.js 참고 !!
+		else if (result.code === 'KITCHEN_READ_LIST_FAIL') {
+		    alertDanger('가이드 목록 조회에 실패했습니다.');
+		}
+		else if (result.code === 'KITCHEN_INVALID_INPUT') {
+		    alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (result.code === 'USER_NOT_FOUND') {
+		    alertDanger('사용자를 찾을 수 없습니다.');
+		}
+		else if (result.code === 'INTERVAL_SERVER_ERROR') {
+		    alertDanger('서버 내부에서 오류가 발생했습니다.');
+		}
+		else {
+		    console.log('알 수 없는 에러:', result);
+		}
 	}
 	catch (error) {
 		console.log(error);

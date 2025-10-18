@@ -71,6 +71,11 @@
 	align-items: center;
 }
 
+/* 마지막 가이드 아이템 밑줄 제거 */
+#container .content .guide_wrap .guide_list .guide_item:last-child {
+    border-bottom: none;
+}
+
 #container .content .guide_wrap .guide_list .guide_item a {
 	display: flex;
 	width: 100%;

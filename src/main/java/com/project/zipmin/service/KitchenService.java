@@ -360,8 +360,6 @@ public class KitchenService {
 	    guide.setCategory(guideRequestDto.getCategory());
 	    guide.setContent(guideRequestDto.getContent());
 	    
-	    
-	    
 	    // 이벤트 수정
  		try {
  			guide = kitchenRepository.save(guide);

@@ -51,24 +51,52 @@ async function fetchGuideDetail(guideId) {
 /**
  * 가이드 상세 데이터 UI 렌더링 함수
  * @param {Object} guide - 가이드 객체
+ * @param {number} likeCount - 스크랩 수
  */
 function renderGuide(guide, likeCount) {
-	
-	console.log("likestatus:", guide.likestatus)
-	
-	document.querySelector('.subtitle').textContent = guide.subtitle || '';
-	document.querySelector('.title').textContent = guide.title || '';
-	document.querySelector('.post_date').textContent = formatDate(guide.postdate);
-	document.querySelector('.guide_content').textContent = guide.content || '';
-	document.querySelector('.scrap').textContent = (likeCount != null) ? likeCount : '0'; // 데이터가 없을 경우 스크랩 수가 0
-	document.querySelector('.writer').textContent = '집밥의민족';
-	
-	const btn_wrap = document.querySelector('.btn_wrap');
-	btn_wrap.innerHTML = '';
-	
-	const favBtn = renderFavoriteButton(guide.id, guide.likecount, guide.likestatus);
+    document.querySelector('.subtitle').textContent = guide.subtitle || '';
+    document.querySelector('.title').textContent = guide.title || '';
+
+    document.querySelector('.guide_content').textContent = guide.content || '';
+
+    // 가이드 헤더 정보
+    const guideWriterDiv = document.querySelector('.guide_writer');
+    guideWriterDiv.innerHTML = '';
+
+    // 작성자 프로필 이미지
+    if (guide.avatar) {
+        const img = document.createElement('img');
+        img.src = guide.avatar;
+        img.alt = '작성자 프로필';
+        guideWriterDiv.appendChild(img);
+    } else {
+        const profileSpan = document.createElement('span');
+        profileSpan.className = 'profile_img';
+        guideWriterDiv.appendChild(profileSpan);
+    }
+
+    const nicknameSpan = document.createElement('span');
+    nicknameSpan.innerHTML = `<b>${guide.username || '집밥의민족'}</b>`;
+    guideWriterDiv.appendChild(nicknameSpan);
+
+    guideWriterDiv.append(' ・ ');
+
+    const scrapSpan = document.createElement('span');
+    scrapSpan.textContent = `스크랩 ${likeCount != null ? likeCount : 0}`;
+    guideWriterDiv.appendChild(scrapSpan);
+
+    guideWriterDiv.append(' ・ ');
+
+    const dateSpan = document.createElement('span');
+    dateSpan.textContent = formatDate(guide.postdate);
+    guideWriterDiv.appendChild(dateSpan);
+
+    const btn_wrap = document.querySelector('.btn_wrap');
+    btn_wrap.innerHTML = '';
+    const favBtn = renderFavoriteButton(guide.id, guide.likecount, guide.likestatus);
     btn_wrap.append(favBtn);
 }
+
 
 
 

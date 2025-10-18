@@ -20,24 +20,13 @@
 			<div class="content">
 				<!-- 가이드 -->
 				<div class="guide_wrap">
-					<!-- 가이드 헤더 -->
-					<div class="guide_header">
-						<span class="subtitle"></span>
-						<h2 class="title"></h2>
-						<div class="guide_writer">
-							<img src="/images/common/test.png">
-							<span><b class="writer"></b></span>
-							<span> ・ </span>
-							<span>스크랩</span>
-							<span class="scrap"></span>
-							<span> ・ </span>
-							<span class="post_date"></span>
-						</div>
-						<div class="btn_wrap">
-							<button class="btn_tool" onclick="">
-							</button>
-						</div>
-					</div>
+					 <!-- 가이드 헤더 -->
+	                <div class="guide_header">
+	                    <span class="subtitle"></span>
+	                    <h2 class="title"></h2>
+	                    <div class="guide_writer"></div>
+	                    <div class="btn_wrap"></div>
+	                </div>
 					
 					<!-- 가이드 내용 -->
 					<p class="guide_content"></p>

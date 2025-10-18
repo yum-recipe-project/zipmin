@@ -180,6 +180,8 @@ public class KitchenService {
 	        int userId = userService.readUserByUsername(username).getId();
 	        likestatus = likeService.existsUserLike("guide", guideDto.getId(), userId);
 	    }
+	    UserReadResponseDto userInfo = userService.readUserById(guideDto.getUserId());
+	    guideDto.setAvatar(userInfo.getAvatar());
 	    guideDto.setLikestatus(likestatus);
 
 	    return guideDto;

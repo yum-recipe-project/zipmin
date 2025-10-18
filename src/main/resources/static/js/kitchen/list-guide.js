@@ -127,10 +127,31 @@ async function fetchGuideList() {
  * @param {Array} guideList - 키친가이드 목록 배열
  */
 function renderGuideList(guideList) {
-
-	    
 	const container = document.querySelector('.guide_list');
     container.innerHTML = '';
+	
+	const wrap = document.querySelector('.guide_content');
+	
+	// 목록이 없는 경우
+	if (!guideList || guideList.length === 0) {
+	    wrap.querySelector('.list_empty')?.remove(); 
+
+	    const emptyDiv = document.createElement('div');
+	    emptyDiv.className = 'list_empty';
+	    const span = document.createElement('span');
+	    span.textContent = '가이드가 없습니다';
+	    emptyDiv.appendChild(span);
+
+	    const guideUtil = wrap.querySelector('.guide_util');
+	    if (guideUtil) {
+	        guideUtil.insertAdjacentElement('afterend', emptyDiv);
+	    } else {
+	        wrap.appendChild(emptyDiv);
+	    }
+
+	    return;
+	}
+	
 
     guideList.forEach(guide => {
         const li = document.createElement('li');

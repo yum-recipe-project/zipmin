@@ -7,14 +7,14 @@ document.addEventListener('DOMContentLoaded', function () {
 	// 아이디 실시간 검사
 	form.username.addEventListener('input', function() {
 		const isUsernameEmpty = this.value.trim() === '';
-		this.classList.toggle('danger', isUsernameEmpty);
+		this.classList.toggle('is-invalid', isUsernameEmpty);
 		document.getElementById('usernameHint').style.display = isUsernameEmpty ? 'block' : 'none';
 	});
 	
 	// 이름 실시간 검사
 	form.name.addEventListener('input', function() {
 		const isNameEmpty = this.value.trim() === '';
-		this.classList.toggle('danger', isNameEmpty);
+		this.classList.toggle('is-invalid', isNameEmpty);
 		document.getElementById('nameHint').style.display = isNameEmpty ? 'block' : 'none';
 	});
 	
@@ -23,10 +23,10 @@ document.addEventListener('DOMContentLoaded', function () {
 		const isPassword1Empty = form.password1.value.trim() === '';
 		const isPassword2Empty = form.password2.value.trim() === '';
 		const isPasswordAccord = form.password1.value.trim() === form.password2.value.trim();
-		this.classList.toggle('danger', isPassword1Empty);
+		this.classList.toggle('is-invalid', isPassword1Empty);
 		document.getElementById('passwordHint').style.display = isPassword1Empty ? 'block' : 'none';
 		if (!isPasswordAccord && !isPassword2Empty) {
-			this.classList.add('danger');
+			this.classList.add('is-invalid');
 			document.getElementById('passwordHint').style.display = 'block';
 		}
 	});
@@ -34,10 +34,10 @@ document.addEventListener('DOMContentLoaded', function () {
 		const isPassword1Empty = form.password1.value.trim() === '';
 		const isPassword2Empty = form.password2.value.trim() === '';
 		const isPasswordAccord = form.password1.value.trim() === form.password2.value.trim();
-		this.classList.toggle('danger', isPassword2Empty);
+		this.classList.toggle('is-invalid', isPassword2Empty);
 		document.getElementById('passwordHint').style.display = isPassword2Empty ? 'block' : 'none';
 		if (!isPasswordAccord && !isPassword1Empty) {
-			this.classList.add('danger');
+			this.classList.add('is-invalid');
 			document.getElementById('passwordHint').style.display = 'block';
 		}
 	});
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	// 닉네임 실시간 검사
 	form.nickname.addEventListener('input', function() {
 		const isNicknameEmpty = this.value.trim() === '';
-		this.classList.toggle('danger', isNicknameEmpty);
+		this.classList.toggle('is-invalid', isNicknameEmpty);
 		document.getElementById('nicknameHint').style.display = isNicknameEmpty ? 'block' : 'none';
 	});
 	
@@ -66,43 +66,43 @@ document.addEventListener('DOMContentLoaded', function() {
 		let isValid = true;
 		
 		if (form.nickname.value.trim() === '') {
-			form.nickname.classList.add('danger');
+			form.nickname.classList.add('is-invalid');
 			document.getElementById('nicknameHint').style.display = 'block';
 			form.nickname.focus();
 			isValid = false;
 		}
 		
 		if (form.name.value.trim() === '') {
-			form.name.classList.add('danger');
+			form.name.classList.add('is-invalid');
 			document.getElementById('nameHint').style.display = 'block';
 			form.name.focus();
 			isValid = false;
 		}
 		
 		if (form.password1.value.trim() !== form.password2.value.trim()) {
-			form.password1.classList.add('danger');
-			form.password2.classList.add('danger');
+			form.password1.classList.add('is-invalid');
+			form.password2.classList.add('is-invalid');
 			document.getElementById('passwordHint').style.display = 'block';
 			form.password1.focus();
 			isValid = false;
 		}
 		
 		if (form.password2.value.trim() === '') {
-			form.password2.classList.add('danger');
+			form.password2.classList.add('is-invalid');
 			document.getElementById('passwordHint').style.display = 'block';
 			form.password2.focus();
 			isValid = false;
 		}
 		
 		if (form.password1.value.trim() === '') {
-			form.password1.classList.add('danger');
+			form.password1.classList.add('is-invalid');
 			document.getElementById('passwordHint').style.display = 'block';
 			form.password1.focus();
 			isValid = false;
 		}
 		
 		if (form.username.value.trim() === '') {
-			form.username.classList.add('danger');
+			form.username.classList.add('is-invalid');
 			document.getElementById('usernameHint').style.display = 'block';
 			form.username.focus();
 			isValid = false;

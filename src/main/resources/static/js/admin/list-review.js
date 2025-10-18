@@ -4,12 +4,11 @@
 let totalPages = 0;
 let totalElements = 0;
 let page = 0;
-let size = 10;
+let size = 15;
 let keyword = '';
-let reviewList = [];
-
 let sortKey = 'id';    
 let sortOrder = 'desc';
+let reviewList = [];
 
 
 
@@ -33,8 +32,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
 
-
-
 /**
  * 리뷰 목록 검색 필터를 설정하는 함수
  */
@@ -48,13 +45,18 @@ document.addEventListener('DOMContentLoaded', function() {
 	    reviewList = [];
 	    fetchAdminReviewList();
 	});
+	document.getElementById('text-srh')?.addEventListener('input', function () {
+		if (this.value.trim() === '') {
+			keyword = '';
+			fetchAdminReviewList();
+		}
+	});
 	
 	// 정렬
 	document.querySelectorAll('.sort_btn').forEach(btn => {
 		btn.addEventListener('click', function(event) {
 			event.preventDefault();
 			const key = btn.dataset.key;
-
 			if (sortKey === key) {
 				sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
 			}
@@ -62,16 +64,12 @@ document.addEventListener('DOMContentLoaded', function() {
 				sortKey = key;
 				sortOrder = 'desc';
 			}
-
 			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
 			btn.classList.add(sortOrder);
-
 			page = 0;
 			fetchAdminReviewList();
 		});
 	});
-	
-	
 	
 	fetchAdminReviewList();
 });
@@ -81,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /**
- * 서버에서 전체 리뷰 목록 데이터를 가져오는 함수 (관리자용)
+ * 서버에서 전체 리뷰 목록 데이터를 가져오는 함수
  */
 async function fetchAdminReviewList() {
 	
@@ -97,10 +95,7 @@ async function fetchAdminReviewList() {
             headers: getAuthHeaders() 
         });
 		
-		console.log(response);
-		
 		if (response.data.code === 'REVIEW_READ_LIST_SUCCESS') {
-			
 			// 전역 변수 설정
 			totalPages = response.data.data.totalPages;
 			totalElements = response.data.data.totalElements;
@@ -143,8 +138,9 @@ async function fetchAdminReviewList() {
 			console.log(error);
 		}
     }
-	
 }
+
+
 
 
 
@@ -152,22 +148,21 @@ async function fetchAdminReviewList() {
  * 관리자 리뷰 목록을 화면에 렌더링하는 함수
  */
 function renderAdminReviewList(reviewList) {
-    const tableBody = document.querySelector('.review_list');
-    tableBody.innerHTML = ''; 
-
-    if (!reviewList || reviewList.length === 0) {
-        const tr = document.createElement('tr');
-        const td = document.createElement('td');
-        td.colSpan = 8;
-        td.className = 'text-center py-4';
-        td.textContent = '등록된 리뷰가 없습니다.';
-        tr.appendChild(td);
-        tableBody.appendChild(tr);
-        return;
-    }
-
-    const token = localStorage.getItem('accessToken');
-    const payload = parseJwt(token);
+	
+    const container = document.querySelector('.review_list');
+    container.innerHTML = ''; 
+	
+	// 리뷰의 목록이 존재하지 않는 경우
+	if (reviewList == null || reviewList.length === 0) {
+		document.querySelector('.table_th').style.display = 'none';
+		document.querySelector('.search_empty')?.remove();
+		document.querySelector('.fixed-table').insertAdjacentElement('afterend', renderSearchEmpty());
+		return;
+	}
+	
+	// 리뷰의 목록이 존재하는 경우
+	document.querySelector('.search_empty')?.remove();
+	document.querySelector('.table_th').style.display = '';
 
     reviewList.forEach((review, index) => {
         const tr = document.createElement('tr');
@@ -177,15 +172,14 @@ function renderAdminReviewList(reviewList) {
         const noTd = document.createElement('td');
         const noH6 = document.createElement('h6');
         noH6.className = 'fw-semibold mb-0';
-        noH6.textContent = index + 1 + page * size;
+		const offset = page * size + index;
+		if (sortKey === 'id' && sortOrder === 'asc') {
+			noH6.textContent = offset + 1;
+		}
+		else {
+			noH6.textContent = totalElements - offset;
+		}
         noTd.appendChild(noH6);
-
-        // 별점
-        const scoreTd = document.createElement('td');
-        const scoreH6 = document.createElement('h6');
-        scoreH6.className = 'fw-semibold mb-0';
-        scoreH6.textContent = review.score ?? 0;
-        scoreTd.appendChild(scoreH6);
 
         // 내용
         const contentTd = document.createElement('td');
@@ -206,8 +200,15 @@ function renderAdminReviewList(reviewList) {
         const dateTd = document.createElement('td');
         const dateH6 = document.createElement('h6');
         dateH6.className = 'fw-semibold mb-0';
-        dateH6.textContent = formatDate(review.postdate);
+        dateH6.textContent = formatDateTime(review.postdate);
         dateTd.appendChild(dateH6);
+		
+		// 별점
+		const scoreTd = document.createElement('td');
+		const scoreH6 = document.createElement('h6');
+		scoreH6.className = 'fw-semibold mb-0';
+		scoreH6.textContent = review.score ?? 0;
+		scoreTd.appendChild(scoreH6);
 
         // 좋아요
         const likeTd = document.createElement('td');
@@ -228,6 +229,9 @@ function renderAdminReviewList(reviewList) {
         actionTd.className = 'text-end';
         const btnWrap = document.createElement('div');
         btnWrap.className = 'd-flex justify-content-end gap-2';
+		
+	    const token = localStorage.getItem('accessToken');
+	    const payload = parseJwt(token);
 
         const canAction =
             payload.role === 'ROLE_SUPER_ADMIN' ||
@@ -271,8 +275,8 @@ function renderAdminReviewList(reviewList) {
         }
         actionTd.appendChild(btnWrap);
 
-        tr.append(noTd, scoreTd, contentTd, writerTd, dateTd, likeTd, reportTd, actionTd);
-        tableBody.appendChild(tr);
+        tr.append(noTd, contentTd, writerTd, dateTd, scoreTd, likeTd, reportTd, actionTd);
+        container.appendChild(tr);
     });
 }
 

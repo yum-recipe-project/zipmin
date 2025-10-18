@@ -140,6 +140,12 @@ public class ReviewService {
     		case "id-asc":
     			sortSpec = Sort.by(Sort.Order.asc("id")); 
     			break;
+    		case "content-desc":
+    			sortSpec = Sort.by(Sort.Order.desc("content"), Sort.Order.desc("id"));
+    			break;
+    		case "content-asc":
+    			sortSpec = Sort.by(Sort.Order.asc("content"), Sort.Order.asc("id"));
+    			break;
     		case "postdate-desc":
     			sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id"));
     			break;

@@ -45,6 +45,12 @@ document.addEventListener('DOMContentLoaded', function() {
 		page = 0;
 		fetchChompList();
 	});
+	document.getElementById('text-srh')?.addEventListener('input', function () {
+		if (this.value.trim() === '') {
+			keyword = '';
+			fetchChompList();
+		}
+	});
 	
 	// 카테고리
 	document.querySelectorAll('.btn_tab a').forEach(tab => {
@@ -73,7 +79,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		btn.addEventListener('click', function(event) {
 			event.preventDefault();
 			const key = btn.dataset.key;
-
 		    if (sortKey === key) {
 		      sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
 		    }
@@ -81,10 +86,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		      sortKey = key;
 		      sortOrder = 'desc';
 		    }
-			
 			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
 			this.classList.add(sortOrder);
-			
 			page = 0;
 			fetchChompList();
 		});
@@ -116,7 +119,6 @@ async function fetchChompList(scrollTop = true) {
 		});
 
 		if (response.data.code === 'CHOMP_READ_LIST_SUCCESS') {
-			
 			// 전역 변수 설정
 			totalPages = response.data.data.totalPages;
 			totalElements = response.data.data.totalElements;
@@ -127,19 +129,6 @@ async function fetchChompList(scrollTop = true) {
 			renderChompList(chompList);
 			renderAdminPagination(fetchChompList);
 			document.querySelector('.total').innerText = `총 ${totalElements}개`;
-			
-			// 검색 결과 없음 표시
-			if (response.data.data.totalPages === 0) {
-				document.querySelector('.table_th').style.display = 'none';
-				document.querySelector('.search_empty')?.remove();
-				const table = document.querySelector('.fixed-table');
-				table.insertAdjacentElement('afterend', renderSearchEmpty());
-			}
-			// 검색 결과 표시
-			else {
-				document.querySelector('.search_empty')?.remove();
-				document.querySelector('.table_th').style.display = '';
-			}
 			
 			// 스크롤 최상단 이동
 			if (scrollTop) {
@@ -235,8 +224,21 @@ function renderAddChompButton(category) {
  * 쩝쩝박사 목록을 화면에 렌더링하는 함수
  */
 function renderChompList(chompList) {
+	
     const container = document.querySelector('.chomp_list');
     container.innerHTML = '';
+	
+	// 쩝쩝박사 목록이 존재하지 않는 경우
+	if (chompList == null || chompList.length === 0) {
+		document.querySelector('.table_th').style.display = 'none';
+		document.querySelector('.search_empty')?.remove();
+		document.querySelector('.fixed-table').insertAdjacentElement('afterend', renderSearchEmpty());
+		return;
+	}
+	
+	// 쩝쩝박사 목록이 존재하는 경우
+	document.querySelector('.search_empty')?.remove();
+	document.querySelector('.table_th').style.display = '';
 
     chompList.forEach((chomp, index) => {
         const tr = document.createElement('tr');

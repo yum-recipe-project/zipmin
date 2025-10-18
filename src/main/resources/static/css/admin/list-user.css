@@ -191,6 +191,53 @@
 
 
 
+/* 정렬 버튼 */
+.body-wrapper .container-fluid th.sort_btn {
+	position: relative;
+}
+
+.body-wrapper .container-fluid th.sort_btn:before {
+	bottom: 52%;
+	content: '▲';
+	opacity: 0.125;
+	position: absolute;
+    display: block;
+    right: 10px;
+    line-height: 9px;
+    font-size: .8em;
+}
+
+.body-wrapper .container-fluid th.sort_btn:after {
+	top: 52%;
+	content: '▼';
+	position: absolute;
+    display: block;
+    opacity: 0.125;
+    right: 10px;
+    line-height: 9px;
+    font-size: .8em;
+}
+
+.body-wrapper .container-fluid th.sort_btn.asc::before {
+    opacity: 0.6;
+}
+
+.body-wrapper .container-fluid th.sort_btn.asc::after {
+    opacity: 0.125;
+}
+
+.body-wrapper .container-fluid th.sort_btn.desc::before {
+    opacity: 0.125;
+}
+
+.body-wrapper .container-fluid th.sort_btn.desc::after {
+    opacity: 0.6;
+}
+
+
+
+
+
 
 
 /* 페이지네이션 */
@@ -245,4 +292,40 @@
     height: 16px;
     vertical-align: middle;
     margin-right: 5px; 
+}
+
+
+
+
+
+/* 목록 없음 표시 */
+.body-wrapper .container-fluid .search_empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.body-wrapper .container-fluid .search_empty img {
+	margin-top: 40px !important;
+	width: 88px;
+}
+
+.body-wrapper .container-fluid .search_empty h2 {
+	text-align: center !important;
+	padding-top: 16px !important;
+	padding-bottom: 16px !important;
+	font-weight: 900;
+	line-height: 1.3;
+	letter-spacing: -0.02em;
+	font-size: 24px;
+}
+
+.body-wrapper .container-fluid .search_empty span {
+	text-align: center !important;
+	margin-bottom: 32px !important;
+	color: #7E8082;
+	font-weight: 400;
+	line-height: 1.5;
+	letter-spacing: -0.025em;
+	font-size: 16px;
 }

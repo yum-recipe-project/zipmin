@@ -4,7 +4,7 @@
 let totalPages = 0;
 let totalElements = 0;
 let page = 0;
-const size = 20;
+const size = 15;
 let keyword = '';
 let category = '';
 let sortKey = 'id';
@@ -45,6 +45,12 @@ document.addEventListener('DOMContentLoaded', function() {
 		page = 0;
 		fetchRecipeList();
 	});
+	document.getElementById('text-srh')?.addEventListener('input', function () {
+		if (this.value.trim() === '') {
+			keyword = '';
+			fetchRecipeList();
+		}
+	});
 	
 	// 카테고리
 	document.querySelectorAll('.btn_tab a').forEach(tab => {
@@ -72,7 +78,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		btn.addEventListener('click', function(event) {
 			event.preventDefault();
 			const key = btn.dataset.key;
-
 		    if (sortKey === key) {
 		      sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
 		    }
@@ -80,10 +85,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		      sortKey = key;
 		      sortOrder = 'desc';
 		    }
-			
 			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
 			this.classList.add(sortOrder);
-			
 			page = 0;
 			fetchRecipeList();
 		});
@@ -115,7 +118,6 @@ async function fetchRecipeList(scrollTop = true) {
 		});
 		
 		if (response.data.code === 'RECIPE_READ_LIST_SUCCESS') {
-			
 			// 전역 변수 설정
 			totalPages = response.data.data.totalPages;
 			totalElements = response.data.data.totalElements;
@@ -126,19 +128,6 @@ async function fetchRecipeList(scrollTop = true) {
 			renderRecipeList(recipeList);
 			renderAdminPagination(fetchRecipeList);
 			document.querySelector('.total').innerText = `총 ${totalElements}개`;
-			
-			// 검색 결과 없음 표시
-			if (response.data.data.totalPages === 0) {
-				document.querySelector('.table_th').style.display = 'none';
-				document.querySelector('.search_empty')?.remove();
-				const table = document.querySelector('.fixed-table');
-				table.insertAdjacentElement('afterend', renderSearchEmpty());
-			}
-			// 검색 결과 표시
-			else {
-				document.querySelector('.search_empty')?.remove();
-				document.querySelector('.table_th').style.display = '';
-			}
 
 			// 스크롤 최상단 이동
 			if (scrollTop) {
@@ -182,11 +171,24 @@ async function fetchRecipeList(scrollTop = true) {
 
 
 /**
- * 쩝쩝박사 목록을 화면에 렌더링하는 함수
+ * 레시피 목록을 화면에 렌더링하는 함수
  */
 function renderRecipeList(recipeList) {
+	
 	const container = document.querySelector('.recipe_list');
 	container.innerHTML = '';
+	
+	// 레시피 목록이 존재하지 않는 경우
+	if (recipeList == null || recipeList.length === 0) {
+		document.querySelector('.table_th').style.display = 'none';
+		document.querySelector('.search_empty')?.remove();
+		document.querySelector('.fixed-table').insertAdjacentElement('afterend', renderSearchEmpty());
+		return;
+	}
+	
+	// 레시피 목록이 존재하는 경우
+	document.querySelector('.search_empty')?.remove();
+	document.querySelector('.table_th').style.display = '';
 	
 	recipeList.forEach((recipe, index) => {
 		const tr = document.createElement('tr');

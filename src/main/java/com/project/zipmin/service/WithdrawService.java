@@ -40,12 +40,12 @@ public class WithdrawService {
 	@Transactional
     public WithdrawReadResponseDto createWithdrawRequest(Integer userId, WithdrawCreateRequestDto withdrawRequestDto) {
 
-    	System.err.println("서비스 출금 신청자: " + userId + "출금 정보: " + withdrawRequestDto);
     	// 입력값 검증
         if (userId == null || userId <= 0 || withdrawRequestDto == null || withdrawRequestDto.getPoint() <= 0) {
             throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
         }
 
+        // TODO : 사용자 service사용
         // 사용자 조회
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
@@ -104,7 +104,7 @@ public class WithdrawService {
     
     
     // 모든 사용자의 출금 내역 목록 조회 (관리자용)
-    public Page<WithdrawReadResponseDto> readAllWithdrawPage(Pageable pageable) {
+    public Page<WithdrawReadResponseDto> readWithdrawPage(Pageable pageable) {
 
         if (pageable == null) {
             throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
@@ -113,26 +113,8 @@ public class WithdrawService {
         Page<Withdraw> withdrawPage;
         try {
             withdrawPage = withdrawRepository.findAll(pageable);
-            
-         // 페이지 정보와 실제 데이터 출력
-            System.err.println("=================== page findAll 디버깅 =================== ");
-            System.err.println("withdrawPage totalElements: " + withdrawPage.getTotalElements());
-            System.err.println("withdrawPage totalPages: " + withdrawPage.getTotalPages());
-            System.err.println("withdrawPage content size: " + withdrawPage.getContent().size());
-            
-            for (Withdraw w : withdrawPage.getContent()) {
-                System.err.println("Withdraw entity -> id: " + w.getId() 
-                        + ", requestPoint: " + w.getRequestPoint() 
-                        + ", requestDate: " + w.getRequestDate() 
-                        + ", completeDate: " + w.getCompleteDate() 
-                        + ", user: " + (w.getUser() != null ? w.getUser().getUsername() : null));
-            }
-            
-            System.err.println("===================================== ");
-            
-            
-            
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new ApiException(UserErrorCode.USER_WITHDRAW_HISTORY_READ_FAIL);
         }
 
@@ -143,10 +125,6 @@ public class WithdrawService {
             WithdrawReadResponseDto dto = withdrawMapper.toReadResponseDto(withdraw);
             withdrawDtoList.add(dto);
         }
-        
-        System.err.println("=================== 엔티티 -> DTO 변환 디버깅 =================== ");
-        System.err.println("withdrawDtoList: " + withdrawDtoList);
-        System.err.println("===================================== ");
 
         return new PageImpl<>(withdrawDtoList, pageable, withdrawPage.getTotalElements());
     }

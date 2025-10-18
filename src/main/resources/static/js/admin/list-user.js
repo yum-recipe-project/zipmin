@@ -1,10 +1,15 @@
 /**
  * 전역변수
  */
-let category = '';
 let totalPages = 0;
+let totalElements = 0;
 let page = 0;
-const size = 10;
+const size = 15;
+let field = 'username';
+let keyword = '';
+let category = '';
+let sortKey = 'id';
+let sortOrder = 'desc';
 let userList = [];
 
 
@@ -34,6 +39,25 @@ document.addEventListener('DOMContentLoaded', async function() {
  */
 document.addEventListener('DOMContentLoaded', function() {
 	
+	// 검색
+	document.getElementById('field-srh').addEventListener('change', function() {
+		field = this.value;
+		fetchUserList();
+	});
+	document.querySelector('form.search').addEventListener('submit', function(event) {
+		event.preventDefault();
+		keyword = document.getElementById('text-srh').value.trim();
+		page = 0;
+		fetchUserList();
+	});
+	document.getElementById('text-srh')?.addEventListener('input', function () {
+		if (this.value.trim() === '') {
+			keyword = '';
+			fetchUserList();
+		}
+	});
+	
+	// 카테고리
 	document.querySelectorAll('.btn_tab a').forEach(tab => {
 		tab.addEventListener('click', function (event) {
 			event.preventDefault();
@@ -42,18 +66,47 @@ document.addEventListener('DOMContentLoaded', function() {
 			
 			category = this.getAttribute('data-tab');
 			page = 0;
-			userList = [];
+			field = 'username';
+			keyword = '';
+			document.getElementById('field-srh').value = 'username';
+			document.getElementById('text-srh').value = '';
+			sortKey = 'id';
+			sortOrder = 'desc';
+			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
+			document.querySelector(`.sort_btn[data-key="${sortKey}"]`).classList.add(sortOrder);
 			
+			userList = [];
 			fetchUserList();
 		});
 	});
 	
+	// 정렬 버튼
+	document.querySelectorAll('.sort_btn').forEach(btn => {
+		btn.addEventListener('click', function(event) {
+			event.preventDefault();
+			const key = btn.dataset.key;
+		    if (sortKey === key) {
+		      sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+		    }
+			else {
+		      sortKey = key;
+		      sortOrder = 'desc';
+		    }
+			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
+			this.classList.add(sortOrder);
+			page = 0;
+			fetchUserList();
+		});
+	});
+	
+	// 관리자 추가 버튼
 	const token = localStorage.getItem('accessToken');
 	const payload = parseJwt(token);
-	
 	if (payload.role === 'ROLE_SUPER_ADMIN') {
 		renderAddAdminButton();
 	}
+	
+	// 초기 실행
 	fetchUserList();
 });
 
@@ -67,32 +120,30 @@ document.addEventListener('DOMContentLoaded', function() {
 async function fetchUserList() {
 	
 	try {
-		const token = localStorage.getItem('accessToken');
-		
 		const params = new URLSearchParams({
-			page : page,
-			size : size,
-			category : category
+			category: category,
+			sort: sortKey + '-' + sortOrder,
+			field: field,
+			keyword: keyword,
+			page: page,
+			size: size,
 		}).toString();
 		
-		const headers = {
-			'Content-Type': 'application/json',
-			'Authorization': `Bearer ${token}`
-		}
-		
 		const response = await instance.get(`/admin/users?${params}`, {
-			headers: headers
+			headers: getAuthHeaders()
 		});
 		
 		if (response.data.code === 'USER_READ_LIST_SUCCESS') {
+			// 전역변수 설정
 			totalPages = response.data.data.totalPages;
+			totalElements = response.data.data.totalElements;
 			page = response.data.data.number;
-			megazineList = response.data.data.content;
+			userList = response.data.data.content;
 			
-			renderUserList(response.data.data.content);
+			// 렌더링
+			renderUserList(userList);
 			renderAdminPagination(fetchUserList);
-			
-			document.querySelector('.total').innerText = `총 ${response.data.data.totalElements}개`;
+			document.querySelector('.total').innerText = `총 ${totalElements}개`;
 		}
 	}
 	catch (error) {
@@ -155,8 +206,21 @@ function renderAddAdminButton() {
  * 회원 목록을 화면에 렌더링하는 함수
  */
 function renderUserList(userList) {
+	
 	const container = document.querySelector('.user_list');
 	container.innerHTML = '';
+	
+	// 사용자 목록이 존재하지 않는 경우
+	if (userList == null || userList.length === 0) {
+		document.querySelector('.table_th').style.display = 'none';
+		document.querySelector('.search_empty')?.remove();
+		document.querySelector('.fixed-table').insertAdjacentElement('afterend', renderSearchEmpty());
+		return;
+	}
+	
+	// 사용자 목록이 존재하는 경우
+	document.querySelector('.search_empty')?.remove();
+	document.querySelector('.table_th').style.display = '';
 	
 	userList.forEach((user, index) => {
 		const tr = document.createElement('tr');
@@ -166,7 +230,13 @@ function renderUserList(userList) {
 		const noTd = document.createElement('td');
 		const noH6 = document.createElement('h6');
 		noH6.className = 'fw-semibold mb-0';
-		noH6.textContent = index + 1;
+		const offset = page * size + index;
+		if (sortKey === 'id' && sortOrder === 'asc') {
+			noH6.textContent = offset + 1;
+		}
+		else {
+			noH6.textContent = totalElements - offset;
+		}
 		noTd.appendChild(noH6);
 		
 		// 아이디

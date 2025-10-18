@@ -79,9 +79,27 @@ async function fetchReviewList() {
  */
 function renderReviewList(reviews) {
 
-    const ul = document.querySelector('.myreview_list');
-	ul.innerHTML = '';
+    const container = document.querySelector('.myreview_list');
+	container.innerHTML = '';
+	
+	// 작성한 리뷰 목록이 존재하지 않는 경우
+	if (reviews == null || reviews.length === 0) {
+		container.style.display = 'none';
+		document.querySelector('.list_empty')?.remove();
 
+		const wrapper = document.createElement('div');
+		wrapper.className = 'list_empty';
+
+		const span = document.createElement('span');
+		span.textContent = '작성한 리뷰가 없습니다';
+		wrapper.appendChild(span);
+		container.insertAdjacentElement('afterend', wrapper);
+
+		return;
+	}
+	
+	
+	// 작성한 리뷰 목록이 존재하는 경우
     reviews.forEach(review => {
         const li = document.createElement('li');
 
@@ -185,7 +203,7 @@ function renderReviewList(reviews) {
         li.appendChild(titleDiv);
         li.appendChild(reviewDiv);
 
-        ul.appendChild(li);
+        container.appendChild(li);
     });
 }
 

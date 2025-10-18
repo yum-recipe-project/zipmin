@@ -42,7 +42,6 @@ async function fetchSavedGuideList() {
             renderSavedGuideList(savedGuides);
             document.getElementById('guideCount').innerText = result.data.totalElements + '개';
             document.querySelector('.btn_more').style.display = page >= totalPages ? 'none' : 'block';
-
         }
         else if (result.code === 'USER_INVALID_INPUT') {
             alertDanger('입력값이 유효하지 않습니다.');
@@ -76,8 +75,18 @@ async function fetchSavedGuideList() {
  */
 function renderSavedGuideList(guideList) {
 	
-	
     const container = document.getElementById('savedGuideList');
+	
+	// 목록이 비어있는 경우 처리
+	if (!guideList || guideList.length === 0) {
+	    const emptyDiv = document.createElement('div');
+	    emptyDiv.className = 'list_empty';
+	    const span = document.createElement('span');
+	    span.textContent = '저장한 키친가이드가 없습니다.';
+	    emptyDiv.appendChild(span);
+	    container.appendChild(emptyDiv);
+	    return;
+	}
 
     guideList.forEach(guide => {
         const li = document.createElement('li');

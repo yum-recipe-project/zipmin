@@ -2,11 +2,13 @@
  * 전역변수
  */
 let totalPages = 0;
+let totalElements = 0;
 let page = 0;
-const size = 16;
+const size = 15;
 let keyword = '';
 let category = '';
-let sort = 'id-desc';
+let sortKey = 'id';
+let sortOrder = 'desc';
 let chompList = [];
 
 
@@ -24,14 +26,14 @@ document.addEventListener('DOMContentLoaded', function() {
 		event.preventDefault();
 		keyword = searchForm.querySelector('.search_word').value.trim();
 		page = 0;
-		fetchChompList();
+		fetchAdminChompList();
 	});
 	
 	// 검색창 빈 경우 초기화
 	searchForm.querySelector('.search_word')?.addEventListener('input', function () {
 		if (this.value.trim() === '') {
 			keyword = '';
-			fetchChompList();
+			fetchAdminChompList();
 		}
 	});
 	
@@ -46,26 +48,30 @@ document.addEventListener('DOMContentLoaded', function() {
 			page = 0;
 			chompList = [];
 			
-			fetchChompList();
+			fetchAdminChompList();
 		});
 	});
 	
-	// 정렬 버튼
+	// 정렬
 	document.querySelectorAll('.btn_sort').forEach(btn => {
 		btn.addEventListener('click', function(event) {
 			event.preventDefault();
-			document.querySelector('.btn_sort.active')?.classList.remove('active');
-			btn.classList.add('active');
-			
-			sort = btn.dataset.sort;
+			const key = btn.dataset.key;
+			if (sortKey === key) {
+				sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+			}
+			else {
+				sortKey = key;
+				sortOrder = 'desc';
+			}
+			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
+			btn.classList.add(sortOrder);
 			page = 0;
-			chompList = [];
-			
-			fetchChompList();
+			fetchAdminChompList();
 		});
 	});
 
-	fetchChompList();
+	fetchAdminChompList();
 });
 
 
@@ -75,48 +81,61 @@ document.addEventListener('DOMContentLoaded', function() {
 /**
  * 쩝쩝박사 목록 데이터를 가져오는 함수
  */
-async function fetchChompList() {
+async function fetchAdminChompList() {
 	
 	try {
 		const params = new URLSearchParams({
 			category: category,
-			sort: sort,
+			sort: sortKey + '-' + sortOrder,
 			keyword : keyword,
 			page : page,
 			size : size
 		}).toString();
 		
-		const response = await fetch(`/chomp?${params}`, {
-			method: 'GET',
+		const response = await instance.get(`/chomp?${params}`, {
 			headers: getAuthHeaders()
 		});
 		
-		const result = await response.json();
-		
-		if (result.code === 'CHOMP_READ_LIST_SUCCESS') {
-			
+		if (response.data.code === 'CHOMP_READ_LIST_SUCCESS') {
 			// 전역변수 설정
-			page = result.data.number;
-			totalPages = result.data.totalPages;
-			chompList = result.data.content;
+			page = response.data.data.number;
+			totalPages = response.data.data.totalPages;
+			chompList = response.data.data.content;
 			
 			// 렌더링
-			renderChompList(chompList);
-			renderPagination(fetchChompList);
+			renderAdminChompList(chompList);
+			renderPagination(fetchAdminChompList);
 			
 			// 스크롤 최상단 이동
-			window.scrollTo({ top: 0, behavior: 'smooth' });
+			if (scrollTop) {
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			}
 		}
-		else if (result.code === 'CHOMP_READ_LIST_FAIL') {
-			alertDanger('쩝쩝박사 목록 조회에 실패했습니다.');
-		}
-		else if (result.code === 'INTERNAL_SERVER_ERROR') {
-			alertDanger('서버 내부 오류가 발생했습니다.');
-		}
-		
 	}
 	catch (error) {
-		console.log(error);
+		const code = error?.response?.data?.code;
+		
+		if (code === 'CHOMP_READ_LIST_FAIL') {
+			alertDanger('쩝쩝박사 목록 조회에 실패했습니다.');
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'AUTH_TOKEN_INVALID') {
+			redirectToAdminLogin();
+		}
+		else if (code === 'CHOMP_FORBIDDEN') {
+			redirectToAdminLogin();
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			redirectToAdminLogin();
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			console.log(error);
+		}
+		else {
+			console.log(error);
+		}
 	}
 }
 
@@ -127,39 +146,24 @@ async function fetchChompList() {
 /**
  * 카테고리에 일치하는 목록을 렌더링 하는 함수
  */
-function renderChompList(chompList) {
+function renderAdminChompList(chompList) {
 	
 	const container = document.getElementById('chomp');
 	container.innerHTML = '';
 	
 	// 쩝쩝박사 목록이 존재하지 않는 경우
 	if (chompList == null || chompList.length === 0) {
+		document.querySelector('.table_th').style.display = 'none';
 		document.querySelector('.search_empty')?.remove();
-		
-		const wrapper = document.createElement('div');
-		wrapper.className = 'search_empty';
-
-	    const img = document.createElement('img');
-	    img.src = '/images/common/search_empty.png';
-	    wrapper.appendChild(img);
-
-	    const h2 = document.createElement('h2');
-	    h2.innerHTML = keyword ? `'${keyword}' 에 대한<br/>검색 결과가 없습니다` : '결과가 없습니다';
-	    wrapper.appendChild(h2);
-
-	    const span = document.createElement('span');
-	    span.textContent = keyword ? '단어의 철자가 정확한지 확인해보세요' : '조건을 변경하거나 초기화해 보세요';
-	    wrapper.appendChild(span);
-		document.querySelector('.forum_content').insertAdjacentElement('afterend', wrapper);
-
-	    return;
+		document.querySelector('.fixed-table').insertAdjacentElement('afterend', renderSearchEmpty());
+		return;
 	}
 	
 	// 쩝쩝박사의 목록이 존재하는 경우
+	document.querySelector('.search_empty')?.remove();
+	container.style.display = 'flex';
+	
 	chompList.forEach(chomp => {
-		container.style.display = 'flex';
-		document.querySelector('.search_empty')?.remove();
-		
 		const li = document.createElement('li');
 		li.className = 'forum';
 

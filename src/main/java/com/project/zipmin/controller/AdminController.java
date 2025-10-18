@@ -24,6 +24,7 @@ import com.project.zipmin.api.ClassSuccessCode;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.CommentSuccessCode;
 import com.project.zipmin.api.FundErrorCode;
+import com.project.zipmin.api.FundSuccessCode;
 import com.project.zipmin.api.KitchenSuccessCode;
 import com.project.zipmin.api.RecipeErrorCode;
 import com.project.zipmin.api.RecipeSuccessCode;
@@ -209,9 +210,8 @@ public class AdminController {
 	    Pageable pageable = PageRequest.of(page, size);
 	    Page<WithdrawReadResponseDto> withdrawPage = withdrawService.readWithdrawPage(pageable);
 
-	    // TODO : 성공시 반환하는 에러코드를 FundSuccessCode.WITHDRAW_READ_LIST_SUCCESS로 변경
-	    return ResponseEntity.status(UserSuccessCode.USER_WITHDRAW_HISTORY_READ_SUCCESS.getStatus())
-	            .body(ApiResponse.success(UserSuccessCode.USER_WITHDRAW_HISTORY_READ_SUCCESS, withdrawPage));
+	    return ResponseEntity.status(FundSuccessCode.WITHDRAW_READ_LIST_SUCCESS.getStatus())
+	            .body(ApiResponse.success(FundSuccessCode.WITHDRAW_READ_LIST_SUCCESS, withdrawPage));
 	}
 	
 	

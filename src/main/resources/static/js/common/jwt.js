@@ -116,10 +116,12 @@ async function reissueJwt() {
 			return result.data.accessToken;
 		}
 		else {
+			alert('토큰 재발급 실패 1 jwt.js')
 			throw new Error(result.code);
 		}
 	}
 	catch (error) {
+		alert('토큰 재발급 실패 2 jwt.js');
 		throw error;
 	}
 }

@@ -119,7 +119,7 @@ async function fetchAdminGuideList(scrollTop = true) {
         });
 
         if (response.data.code === 'KITCHEN_READ_LIST_SUCCESS') {
-            // 전역 변수 설정
+            // 전역변수 설정
             totalPages = response.data.data.totalPages;
             page = response.data.data.number;
             guideList = response.data.data.content;

@@ -56,8 +56,6 @@ public class KitchenService {
 	// 가이드 목록 조회
 	public Page<GuideReadResponseDto> readGuidePage(String category, String keyword, String sort, Pageable pageable) {
 		
-		System.err.println("sort: " + sort);
-		
 		// 입력값 검증
 		if (pageable == null) {
 			throw new ApiException(KitchenErrorCode.KITCHEN_INVALID_INPUT);
@@ -153,6 +151,7 @@ public class KitchenService {
 			
 			UserReadResponseDto userInfo = userService.readUserById(guideDto.getUserId());
 			guideDto.setUsername(userInfo.getUsername());
+			guideDto.setAvatar(userInfo.getAvatar());
 			guideDtoList.add(guideDto);
 		}
 		
@@ -166,7 +165,7 @@ public class KitchenService {
 	// 특정 가이드 상세 조회 (좋아요 상태 포함)
 	public GuideReadResponseDto readGuideById(int id) {
 	    Guide guide = kitchenRepository.findById(id)
-	            .orElseThrow(() -> new IllegalArgumentException("해당 가이드를 찾을 수 없습니다. ID: " + id));
+	            .orElseThrow(() -> new ApiException(KitchenErrorCode.KITCHEN_NOT_FOUND));
 	    
 	    GuideReadResponseDto guideDto = guideMapper.toReadResponseDto(guide);
 
@@ -181,6 +180,8 @@ public class KitchenService {
 	        int userId = userService.readUserByUsername(username).getId();
 	        likestatus = likeService.existsUserLike("guide", guideDto.getId(), userId);
 	    }
+	    UserReadResponseDto userInfo = userService.readUserById(guideDto.getUserId());
+	    guideDto.setAvatar(userInfo.getAvatar());
 	    guideDto.setLikestatus(likestatus);
 
 	    return guideDto;
@@ -359,8 +360,6 @@ public class KitchenService {
 	    guide.setCategory(guideRequestDto.getCategory());
 	    guide.setContent(guideRequestDto.getContent());
 	    
-	    
-	    
 	    // 이벤트 수정
  		try {
  			guide = kitchenRepository.save(guide);
@@ -403,14 +402,4 @@ public class KitchenService {
 
         return new PageImpl<>(dtoList, pageable, guidePage.getTotalElements());
     }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

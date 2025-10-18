@@ -127,7 +127,9 @@ async function fetchGuideList() {
  * @param {Array} guideList - 키친가이드 목록 배열
  */
 function renderGuideList(guideList) {
-    const container = document.querySelector('.guide_list');
+
+	    
+	const container = document.querySelector('.guide_list');
     container.innerHTML = '';
 
     guideList.forEach(guide => {
@@ -164,30 +166,31 @@ function renderGuideList(guideList) {
         dateP.textContent = formatDate(guide.postdate);
 
         infoDiv.append(scrapP, dateP);
+		
+		const writerDiv = document.createElement('div');
+		writerDiv.className = 'writer';
 
-        const writerDiv = document.createElement('div');
-        writerDiv.className = 'writer';
+		if (guide.avatar) {
+		    const img = document.createElement('img');
+		    img.src = guide.avatar;
+		    writerDiv.appendChild(img);
+		} else {
+		    const profileSpan = document.createElement('span');
+		    profileSpan.className = 'profile_img'; 
+		    writerDiv.appendChild(profileSpan);
+		}
 
-        if (guide.writerImage) {
-            const img = document.createElement('img');
-            img.src = guide.writerImage;
-            writerDiv.appendChild(img);
-        }
-		else {
-            const profileImg = document.createElement('span');
-            profileImg.className = 'profile_img';
-            writerDiv.appendChild(profileImg);
-        }
+		const nicknameP = document.createElement('p');
+		nicknameP.textContent = '집밥의민족';
+		writerDiv.appendChild(nicknameP);
 
-        const nicknameP = document.createElement('p');
-        nicknameP.textContent = '집밥의민족';
-        writerDiv.appendChild(nicknameP);
 
-        guideDetails.append(guideTop, titleSpan, infoDiv, writerDiv);
-        guideItem.appendChild(guideDetails);
-        a.appendChild(guideItem);
-        li.appendChild(a);
-        container.appendChild(li);
+		guideDetails.append(guideTop, titleSpan, infoDiv, writerDiv);
+		guideItem.appendChild(guideDetails);
+		a.appendChild(guideItem);
+		li.appendChild(a);
+		container.appendChild(li);
+		
     });
 }
 

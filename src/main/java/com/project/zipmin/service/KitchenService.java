@@ -56,8 +56,6 @@ public class KitchenService {
 	// 가이드 목록 조회
 	public Page<GuideReadResponseDto> readGuidePage(String category, String keyword, String sort, Pageable pageable) {
 		
-		System.err.println("sort: " + sort);
-		
 		// 입력값 검증
 		if (pageable == null) {
 			throw new ApiException(KitchenErrorCode.KITCHEN_INVALID_INPUT);
@@ -153,6 +151,7 @@ public class KitchenService {
 			
 			UserReadResponseDto userInfo = userService.readUserById(guideDto.getUserId());
 			guideDto.setUsername(userInfo.getUsername());
+			guideDto.setAvatar(userInfo.getAvatar());
 			guideDtoList.add(guideDto);
 		}
 		

@@ -165,7 +165,7 @@ public class KitchenService {
 	// 특정 가이드 상세 조회 (좋아요 상태 포함)
 	public GuideReadResponseDto readGuideById(int id) {
 	    Guide guide = kitchenRepository.findById(id)
-	            .orElseThrow(() -> new IllegalArgumentException("해당 가이드를 찾을 수 없습니다. ID: " + id));
+	            .orElseThrow(() -> new ApiException(KitchenErrorCode.KITCHEN_NOT_FOUND));
 	    
 	    GuideReadResponseDto guideDto = guideMapper.toReadResponseDto(guide);
 

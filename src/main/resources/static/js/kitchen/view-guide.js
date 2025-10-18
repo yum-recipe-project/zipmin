@@ -5,6 +5,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+
+
+
+
 /**
  * 요청 URL에서 guideId 추출
  */
@@ -12,6 +16,8 @@ function getGuideIdFromQuery() {
     const params = new URLSearchParams(window.location.search);
     return params.get('id');
 }
+
+
 
 
 
@@ -23,26 +29,36 @@ async function fetchGuideDetail(guideId) {
     try {
         const response = await fetch(`/guides/${guideId}`, {
             method: 'GET',
-            headers: getAuthHeaders() 
+            headers: getAuthHeaders()
         });
 
-        if (!response.ok) {
-            console.error('Failed to fetch guide detail:', response.status, response.statusText);
-            return;
-        }
-
         const result = await response.json();
-        const guide = result.data;
 
-		if (!guide) return;
-
-		renderGuide(guide, guide.likecount);
-
+        if (result.code === 'KITCHEN_READ_SUCCESS') {
+            const guide = result.data;
+            if (!guide) return;
+            renderGuide(guide, guide.likecount);
+        }
+        else if (result.code === 'KITCHEN_READ_FAIL') {
+            alertDanger('가이드 조회에 실패했습니다.');
+        }
+        else if (result.code === 'KITCHEN_INVALID_INPUT') {
+            alertDanger('입력값이 유효하지 않습니다.');
+        }
+        else if (result.code === 'USER_NOT_FOUND') {
+            alertDanger('사용자를 찾을 수 없습니다.');
+        }
+        else if (result.code === 'INTERVAL_SERVER_ERROR') {
+            alertDanger('서버 내부에서 오류가 발생했습니다.');
+        }
+        else {
+            console.log('알 수 없는 에러:', result);
+        }
     } catch (error) {
         console.error(error);
+        alertDanger('가이드 상세 조회 중 오류가 발생했습니다.');
     }
 }
-
 
 
 

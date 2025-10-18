@@ -24,6 +24,8 @@ import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
+import com.project.zipmin.dto.ReportCreateRequestDto;
+import com.project.zipmin.dto.ReportCreateResponseDto;
 import com.project.zipmin.dto.ReviewCreateRequestDto;
 import com.project.zipmin.dto.ReviewCreateResponseDto;
 import com.project.zipmin.dto.ReviewReadMyResponseDto;
@@ -217,6 +219,33 @@ public class ReviewController {
 	    return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
 	            .body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, reviewPage));
 	}
+	
+	
+	
+	
+	
+	// 리뷰 신고
+	@PostMapping("/reviews/{id}/reports")
+	public ResponseEntity<?> reportReview(
+			@PathVariable int id,
+			@RequestBody ReportCreateRequestDto reportRequestDto) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(ReviewErrorCode.REVIEW_UNAUTHORIZED_ACCESS);
+		}
+		reportRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
+		
+		ReportCreateResponseDto reportReponseDto = reviewService.reportReview(reportRequestDto);
+		
+		return ResponseEntity.status(ReviewSuccessCode.REVIEW_REPORT_SUCCESS.getStatus())
+				.body(ApiResponse.success(ReviewSuccessCode.REVIEW_REPORT_SUCCESS, reportReponseDto));
+	}
+	
+	
+	
+	
 
 }
 

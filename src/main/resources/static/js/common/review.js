@@ -413,7 +413,7 @@ function renderReviewLikeButton(id, likecount, isLiked) {
 					else if (code === 'LIKE_DELETE_FAIL') {
 						alertDanger('좋아요 삭제에 실패했습니다');
 					}
-					else if (code === 'COMMENT_INVALID_INPUT') {
+					else if (code === 'REVIEW_INVALID_INPUT') {
 						alertDanger('입력값이 유효하지 않습니다.');
 					}
 					else if (code === 'USER_INVALID_INPUT') {
@@ -422,7 +422,7 @@ function renderReviewLikeButton(id, likecount, isLiked) {
 					else if (code === 'LIKE_INVALID_INPUT') {
 						alertDanger('입력값이 유효하지 않습니다.');
 					}
-					else if (code === 'COMMENT_UNAUTHORIZED') {
+					else if (code === 'REVIEW_UNAUTHORIZED_ACCESS') {
 						alertDanger('로그인되지 않은 사용자입니다.');
 					}
 					else if (code === 'LIKE_FORBIDDEN') {
@@ -431,7 +431,7 @@ function renderReviewLikeButton(id, likecount, isLiked) {
 					else if (code === 'LIKE_NOT_FOUND') {
 						alertDanger('해당 좋아요를 찾을 수 없습니다');
 					}
-					else if (code === 'COMMENT_NOT_FOUND') {
+					else if (code === 'REVIEW_NOT_FOUND') {
 						alertDanger('해당 댓글을 찾을 수 없습니다.');
 					}
 					else if (code === 'INTERNAL_SERVER_ERROR') {
@@ -471,7 +471,7 @@ function renderReviewLikeButton(id, likecount, isLiked) {
 					else if (code === 'LIKE_CREATE_FAIL') {
 						alertDanger('좋아요 작성에 실패했습니다.');
 					}
-					else if (code === 'COMMENT_INVALID_INPUT') {
+					else if (code === 'REVIEW_INVALID_INPUT') {
 						alertDanger('입력값이 유효하지 않습니다.');
 					}
 					else if (code === 'USER_INVALID_INPUT') {
@@ -480,13 +480,13 @@ function renderReviewLikeButton(id, likecount, isLiked) {
 					else if (code === 'LIKE_INVALID_INPUT') {
 						alertDanger('입력값이 유효하지 않습니다.');
 					}
-					else if (code === 'COMMENT_UNAUTHORIZED') {
+					else if (code === 'REVIEW_UNAUTHORIZED_ACCESS') {
 						alertDanger('로그인되지 않은 사용자입니다.');
 					}
 					else if (code === 'LIKE_FORBIDDEN') {
 						alertDanger('접근 권한이 없습니다.');
 					}
-					else if (code === 'COMMENT_NOT_FOUND') {
+					else if (code === 'REVIEW_NOT_FOUND') {
 						alertDanger('해당 댓글을 찾을 수 없습니다.');
 					}
 					else if (code === 'USER_NOT_FOUND') {
@@ -742,7 +742,84 @@ async function deleteReview(id) {
 
 
 
-
+/**
+ * 리뷰를 신고하는 함수 
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const reportForm = document.getElementById('reportReviewForm');
+	
+	reportForm.addEventListener('submit', async function(event) {
+		event.preventDefault();
+		
+		if (!isLoggedIn()) {
+			redirectToLogin();
+		}
+		
+		const reviewId = document.getElementById('reportReviewId').value;
+		const reason = document.querySelector('input[name="reason"]:checked')?.value;
+		
+		console.log("reason:"+ reason);
+		
+		try {
+			const data = {
+				tablename: 'review',
+				recodenum: reviewId,
+				reason: reason
+			};
+			
+			const response = await instance.post(`/reviews/${reviewId}/reports`, data, {
+				headers: getAuthHeaders()
+			});
+			
+			if (response.data.code === 'REVIEW_REPORT_SUCCESS') {
+				alertPrimary('리뷰가 정상적으로 신고 처리되었습니다.');
+			}
+			
+		}
+		catch (error) {
+			const code = error?.response?.data?.code;
+			
+			if (code === 'REVIEW_REPORT_FAIL') {
+				alertDanger('리뷰 신고에 실패했습니다.');
+			}
+			else if (code === 'REPORT_CREATE_FAIL') {
+				alertDanger('신고 작성에 실패했습니다.');
+			}
+			else if (code === 'REVIEW_INVALID_INPUT') {
+				alertDanger('입력값이 유효하지 않습니다.');
+			}
+			else if (code === 'USER_INVALID_INPUT') {
+				alertDanger('입력값이 유효하지 않습니다.');
+			}
+			else if (code === 'REPORT_INVALID_INPUT') {
+				alertDanger('입력값이 유효하지 않습니다.');
+			}
+			else if (code === 'REVIEW_UNAUTHORIZED_ACCESS') {
+				alertDanger('로그인되지 않은 사용자입니다.');
+			}
+			else if (code === 'REPORT_FORBIDDEN') {
+				alertDanger('접근 권한이 없습니다.');
+			}
+			else if (code === 'REVIEW_NOT_FOUND') {
+				alertDanger('해당 리뷰를 찾을 수 없습니다.');
+			}
+			else if (code === 'USER_NOT_FOUND') {
+				alertDanger('해당 사용자를 찾을 수 없습니다.');
+			}
+			else if (code === 'REPORT_DUPLICATE') {
+				alertDanger('이미 신고한 리뷰입니다.');
+			}
+			else if (code === 'INTERNAL_SERVER_ERROR') {
+				alertDanger('서버 내부에서 오류가 발생했습니다.');
+			}
+			else {
+				console.log(error);
+			}
+		}
+		
+		bootstrap.Modal.getInstance(document.getElementById('reportReviewModal'))?.hide();
+	});
+});
 
 
 

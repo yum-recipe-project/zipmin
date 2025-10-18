@@ -18,6 +18,8 @@ import com.project.zipmin.api.ReviewErrorCode;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
+import com.project.zipmin.dto.ReportCreateRequestDto;
+import com.project.zipmin.dto.ReportCreateResponseDto;
 import com.project.zipmin.dto.ReviewCreateRequestDto;
 import com.project.zipmin.dto.ReviewCreateResponseDto;
 import com.project.zipmin.dto.ReviewReadMyResponseDto;
@@ -428,6 +430,32 @@ public class ReviewService {
     
     
     
+    // 리뷰 신고
+ 	public ReportCreateResponseDto reportReview(ReportCreateRequestDto reportDto) {
+ 		
+ 		// 입력값 검증
+ 		if (reportDto == null || reportDto.getTablename() == null
+ 				|| reportDto.getRecodenum() == null || reportDto.getReason() == null
+ 				|| reportDto.getUserId() == null) {
+ 			throw new ApiException(ReviewErrorCode.REVIEW_INVALID_INPUT);
+ 		}
+ 		
+ 		// 리뷰 존재 여부 확인
+ 		if (reviewRepository.existsById(reportDto.getRecodenum())) {
+ 			new ApiException(ReviewErrorCode.REVIEW_NOT_FOUND);
+ 		}
+ 		
+ 		// 신고 작성
+ 		try {
+ 			return reportService.createReport(reportDto);
+ 		}
+ 		catch (ApiException e) {
+ 		    throw e;
+ 		}
+ 		catch (Exception e) {
+ 		    throw new ApiException(ReviewErrorCode.REVIEW_REPORT_FAIL);
+ 		}
+ 	}
     
     
 }

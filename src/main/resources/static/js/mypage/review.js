@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 	fetchReviewList();
 	document.querySelector('.btn_more').addEventListener('click', function() {
-		fetchReviewtList();
+		fetchReviewList();
 	});
 });
 
@@ -307,6 +307,13 @@ async function deleteReview(id) {
                if (li) li.remove();
 
                reviewList = reviewList.filter(review => review.id !== id);
+			   
+			   // 리뷰 총 개수 업데이트
+		       const reviewCountEl = document.querySelector('.myreview_count span');
+		       if (reviewCountEl) {
+		           reviewCountEl.textContent = reviewList.length + '개';
+		       }
+
            }
         } catch (error) {
             const code = error?.response?.data?.code;

@@ -93,10 +93,22 @@ document.addEventListener('DOMContentLoaded', async function() {
 			stockWrap.querySelector('.recipe_portion select').value = result.data.portion;
 			stockWrap.querySelector('.btn_stock_modal').addEventListener('click', function(event) {
 				event.preventDefault();
+				
+				// 모달 창 오픈 시 현재 인분에 따른 데이터로 렌더링
+				const stockList = Array.from(stockWrap.querySelectorAll('.stock_list tbody tr')).map(tr => {
+					const name = tr.children[0].textContent;
+					const amountText = tr.children[1].textContent;
+					const match = amountText.match(/^(\d+(?:\.\d+)?)(.*)$/);
+					const amount = match ? parseFloat(match[1]) : 0;
+					const unit = match ? match[2] : '';
+					return { name, amount, unit };
+				});
+
 				if (!isLoggedIn()) {
 					bootstrap.Modal.getInstance(document.getElementById('viewRecipeStockModal'))?.hide();
 					redirectToLogin();
 				}
+				renderMemoList(stockList);
 			});
 			renderStockList(result.data.stock_list);
 			renderMemoList(result.data.stock_list);

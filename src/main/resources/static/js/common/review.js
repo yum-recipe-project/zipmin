@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', async function () {
  */
 document.addEventListener('DOMContentLoaded', function () {
 	
-	wrap = document.getElementById('reviewWrap');
+	const wrap = document.getElementById('reviewWrap');
 
     // 정렬 버튼
     wrap.querySelectorAll('.review_order .btn_sort_small').forEach(btn => {
@@ -139,6 +139,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+
+
+
 /**
  * 서버에서 리뷰 목록 데이터를 가져오는 함수
  */
@@ -167,7 +170,6 @@ async function fetchReviewList() {
             // 전역 변수 설정
             reviewTotalPages = result.data.totalPages;
             reviewTotalElements = result.data.totalElements;
-			// 최신 데이터 설정
             reviewList = [...reviewList, ...result.data.content];
 
 			// 렌더링
@@ -781,7 +783,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			});
 			
 			if (response.data.code === 'REVIEW_REPORT_SUCCESS') {
-				alertPrimary('리뷰가 정상적으로 신고 처리되었습니다.');
+				alertPrimary('신고 처리되었습니다.');
 			}
 			
 		}

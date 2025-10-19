@@ -36,7 +36,7 @@
 						<!-- 이미지 목록 영역 -->
 						<form id="editUserAvatarForm">
 							<ul class="image_list">
-								<li><button><img src="/images/user/user1.png"></button></li>
+								<li><button><img src="/images/user/user1.svg"></button></li>
 								<li><button><img src="/images/user/user2.png"></button></li>
 								<li><button><img src="/images/user/user3.png"></button></li>
 								<li><button><img src="/images/user/user4.png"></button></li>
@@ -57,6 +57,13 @@
 								<li><button><img src="/images/user/user19.png"></button></li>
 								<li><button><img src="/images/user/user20.png"></button></li>
 								<li><button><img src="/images/user/user21.png"></button></li>
+								<li><button><img src="/images/user/user22.png"></button></li>
+								<li><button><img src="/images/user/user23.png"></button></li>
+								<li><button><img src="/images/user/user24.png"></button></li>
+								<li><button><img src="/images/user/user25.png"></button></li>
+								<li><button><img src="/images/user/user26.png"></button></li>
+								<li><button><img src="/images/user/user27.png"></button></li>
+								<li><button><img src="/images/user/user28.png"></button></li>
 							</ul>
 							<input type="hidden" name="avatar">
 						</form>

@@ -515,11 +515,7 @@ let memoList = [];
  * 서버에서 장보기 메모를 가져오는 함수
  */
 async function fetchUserMemoList() {
-	
-	// 사용자 냉장고 목록 조회
 	try {
-		
-		// 요청 URL
 		const token = localStorage.getItem('accessToken');
 		const id = parseJwt(token).id;
 		
@@ -530,17 +526,43 @@ async function fetchUserMemoList() {
 		if (response.data.code === 'MEMO_READ_LIST_SUCCESS') {
 			memoList = response.data.data;
 			
-			// 검색 결과 없음 표시
-			if (memoList.length === 0) {
-				document.querySelector('.ingredient_list').style.display = 'none';
-				const content = document.querySelector('.ingredient_list');
-				content.insertAdjacentElement('afterend', renderMemoListEmpty());
+			const ingredientList = document.querySelector('.ingredient_list');
+			const btnWrap = document.querySelector('.btn_wrap');
+
+			document.querySelector('.memo_empty_wrap')?.remove();
+			btnWrap.querySelector('.btn_primary')?.remove();
+			
+			// 장보기 메모 목록이 존재하지 않는 경우
+			if (!memoList || memoList.length === 0) {
+				ingredientList.style.display = 'none';
+
+				const wrapper = document.createElement('div');
+				wrapper.className = 'memo_empty_wrap';
+
+				const list = document.createElement('div');
+				list.className = 'memo_list_empty';
+				wrapper.appendChild(list);
+
+				const span = document.createElement('span');
+				span.textContent = '작성한 장보기 메모가 없습니다.';
+				list.appendChild(span);
+
+				ingredientList.insertAdjacentElement('afterend', wrapper);
+
+				const addBtn = document.createElement('button');
+				addBtn.className = 'btn_primary';
+				addBtn.type = 'button';
+				addBtn.setAttribute('data-bs-toggle', 'modal');
+				addBtn.setAttribute('data-bs-target', '#writeMemoModal');
+				addBtn.textContent = '추가하기';
+
+				btnWrap.append(addBtn);
 			}
-			// 검색 결과 표시
+			// 장보기 메모 목록이 존재하는 경우
 			else {
+				ingredientList.style.display = 'block';
 				renderMemoList(memoList);
 			}
-			
 		}
 	}
 	catch (error) {
@@ -672,38 +694,6 @@ function renderMemoList(memoList) {
 	
 }
 
-
-
-
-/**
- * 장보기 메모 목록 결과 없음 화면을 화면에 렌더링하는 함수
- */
-function renderMemoListEmpty() {
-
-	const wrapper = document.createElement('div');
-  	wrapper.className = 'memo_empty_wrap';
-
-	const list = document.createElement('div');
-	list.className = 'memo_list_empty';
-	wrapper.appendChild(list);
-	
-    const span = document.createElement('span');
-    span.textContent = '작성한 장보기 메모가 없습니다.';
-    list.appendChild(span);
-
-	const btnWrap = document.querySelector('.btn_wrap');
-	const addBtn = document.createElement('button');
-	addBtn.className = 'btn_primary';
-	addBtn.type = 'button';
-	addBtn.setAttribute('data-bs-toggle', 'modal');
-	addBtn.setAttribute('data-bs-target', '#writeMemoModal');
-	addBtn.textContent = '추가하기';
-
-	btnWrap.append(addBtn);
-	
-
-    return wrapper;
-}
 
 
 

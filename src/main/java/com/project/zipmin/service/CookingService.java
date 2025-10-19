@@ -878,8 +878,6 @@ public class CookingService {
 				}
 			}
 			
-			System.err.println("approvalCode = " + approvalCode + ", statusCode = " + statusCode);
-			
 	    	if (!hasStatus) {
 	    		classPage = hasApproval
 	    				? classRepository.findAllByUserIdAndApproval(userId, approvalCode, pageable)

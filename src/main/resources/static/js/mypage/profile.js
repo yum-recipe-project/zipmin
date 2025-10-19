@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			recipeWrap.querySelector('.btn_sort.active')?.classList.remove('active');
 			btn.classList.add('active');
 			
-			sort = btn.dataset.sort;
+			recipeSort = btn.dataset.sort;
 			page = 0;
 			recipeList = [];
 			
@@ -259,8 +259,6 @@ async function fetchUserClassList() {
 		});
 		
 		const result = await response.json();
-		
-		console.log(result);
 		
 		if (result.code === 'CLASS_READ_LIST_SUCCESS') {
 			// 전역변수 설정
@@ -456,15 +454,6 @@ function renderUserClassList(classList) {
 		container.appendChild(li);
 	});
 }
-
-
-
-
-
-
-
-
-
 
 
 

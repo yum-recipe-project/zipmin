@@ -669,9 +669,35 @@ function renderMemoList(memoList) {
 
     // 버튼 영역
     const completeBtn = document.createElement('button');
-    completeBtn.className = 'btn_outline delete_memo';
+    completeBtn.className = 'btn_outline';
     completeBtn.textContent = '장보기 완료';
+	completeBtn.addEventListener('click', function(event) {
+	    event.preventDefault();
 
+	    const tbody = document.querySelector('.ingredient_list tbody');
+	    const rows = Array.from(tbody.querySelectorAll('tr'));
+
+	    // 선택된 재료만 추출
+	    const selectedStock = rows
+	        .filter(row => row.querySelector('input[name="selectedMemo"]').checked)
+	        .map(row => ({
+	            name: row.children[0].textContent,
+	            amount: row.children[1].textContent.replace(/[^\d.]/g, ''), 
+	            unit: row.children[1].textContent.replace(/[\d.]/g, '')     
+	        }));
+
+	    if (selectedStock.length === 0) {
+	        alertDanger('장보기 완료한 재료를 선택해주세요');
+	        return;
+	    }
+
+	    // 모달에 렌더링
+	    renderComleteMemoList(selectedStock);
+
+	    const memoModal = new bootstrap.Modal(document.getElementById('memoToFridgeModal'));
+	    memoModal.show();
+	});
+	
     const addBtn = document.createElement('button');
     addBtn.className = 'btn_primary';
     addBtn.type = 'button';
@@ -680,7 +706,6 @@ function renderMemoList(memoList) {
     addBtn.textContent = '추가하기';
 
     btnWrap.append(completeBtn, addBtn);
-	
 	
 	// 전체선택 버튼 기능
 	const selectAllBtn = document.getElementById('selectAllBtn');
@@ -691,8 +716,8 @@ function renderMemoList(memoList) {
 	    checkboxes.forEach(cb => cb.checked = !allChecked);
 	});
 
-	
 }
+
 
 
 
@@ -723,7 +748,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 /**
- * 장보기 메모 완료 기능 (체크한 메모 삭제)
+ * 체크한 메모 삭제
  */
 document.addEventListener('click', async function(event) {
     if (event.target.classList.contains('delete_memo')) {
@@ -761,5 +786,72 @@ document.addEventListener('click', async function(event) {
 
 
 
+
+
+
+
+/**
+ * 장보기 완료한 메모 렌더링 (모달창)
+ */
+function renderComleteMemoList(stockList) {
+    const modal = document.getElementById('memoToFridgeModal');
+    const container = modal.querySelector('.complete_memo_list');
+    container.innerHTML = '';
+
+    stockList.forEach((ingredient, index) => {
+        const tr = document.createElement('tr');
+
+        // 이름
+        const tdName = document.createElement('td');
+        tdName.textContent = ingredient.name;
+        tr.appendChild(tdName);
+
+        // 수량
+        const tdAmount = document.createElement('td');
+        tdAmount.textContent = `${ingredient.amount}${ingredient.unit || ''}`;
+        tr.appendChild(tdAmount);
+
+        // 카테고리 선택
+        const tdCategory = document.createElement('td');
+        const selectCat = document.createElement('select');
+        selectCat.className = 'form-select';
+        const categories = ["육류","어패류","채소류","과일류","견과류","유제품","완제품","소스류","기타"];
+        categories.forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat;
+            option.textContent = cat;
+            if(ingredient.category === cat) option.selected = true;
+            selectCat.appendChild(option);
+        });
+        tdCategory.appendChild(selectCat);
+        tr.appendChild(tdCategory);
+
+        // 보관방법 선택
+        const tdStorage = document.createElement('td');
+        const selectStorage = document.createElement('select');
+        selectStorage.className = 'form-select';
+        const storageOptions = ["냉장","냉동","상온"];
+        storageOptions.forEach(storage => {
+            const option = document.createElement('option');
+            option.value = storage;
+            option.textContent = storage;
+            if(ingredient.storage === storage) option.selected = true;
+            selectStorage.appendChild(option);
+        });
+        tdStorage.appendChild(selectStorage);
+        tr.appendChild(tdStorage);
+
+        // 소비기한
+        const tdExpire = document.createElement('td');
+        const inputExpire = document.createElement('input');
+        inputExpire.type = 'date';
+        inputExpire.className = 'form-control';
+        inputExpire.value = ingredient.expdate ? ingredient.expdate.slice(0,10) : '';
+        tdExpire.appendChild(inputExpire);
+        tr.appendChild(tdExpire);
+
+        container.appendChild(tr);
+    });
+}
 
 

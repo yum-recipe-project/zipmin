@@ -53,10 +53,16 @@ public interface ClassRepository extends JpaRepository<Class, Integer> {
 	
 	
 	
-	// 나의 쿠킹클래스에 사용 (수정 필요)
-	Page<Class> findByUserId(int userId, Pageable pageable);
-	Page<Class> findByUserIdAndEventdateAfter(int userId, Calendar now, Pageable pageable);
-	Page<Class> findByUserIdAndEventdateBefore(int userId, Calendar now, Pageable pageable);
+	// 사용자의 클래스 목록 조회
+	Page<Class> findAllByUserId(int userId, Pageable pageable);
+	Page<Class> findAllByUserIdAndApproval(int userId, Integer approval, Pageable pageable);
+	
+	Page<Class> findAllByUserIdAndApprovalAndNoticedateAfter(int userId, Integer approval, Date day, Pageable pageable);
+	Page<Class> findAllByUserIdAndApprovalNotAndNoticedateAfterOrUserIdAndApprovalAndEventdateAfter(int userId1, Integer approval1, Date day1, int userId2, Integer approval2, Calendar day2, Pageable pageable);
+	
+	Page<Class> findAllByUserIdAndApprovalAndNoticedateBefore(int userId, Integer approval, Date day, Pageable pageable);
+	Page<Class> findAllByUserIdAndApprovalNotOrUserIdAndApprovalAndEventdateBefore(int userId1, Integer approval1, int userId2, Integer approval2, Calendar day, Pageable pageable);
+	
 	
 	
 	

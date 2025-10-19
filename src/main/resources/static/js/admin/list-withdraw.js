@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
 
+
 /**
  * 출금 목록을 검색하는 함수
  */

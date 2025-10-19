@@ -176,7 +176,7 @@ function renderAdminGuideList(guideList) {
     container.innerHTML = '';
 	
 	// 키친가이드의 목록이 존재하지 않는 경우
-	if (guideList == null || guideList.length === 0) {
+	if (guideList === null || guideList.length === 0) {
 		document.querySelector('.table_th').style.display = 'none';
 		document.querySelector('.search_empty')?.remove();
 		document.querySelector('.fixed-table').insertAdjacentElement('afterend', renderSearchEmpty());

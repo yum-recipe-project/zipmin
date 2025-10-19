@@ -756,12 +756,13 @@ public class CookingController {
 	@GetMapping("/users/{id}/classes")
 	public ResponseEntity<?> listUserClass(
 			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
-			@Parameter(description = "진행 상태") @RequestParam String status,
+			@Parameter(description = "승인 상태", required = false) @RequestParam(required = false) String approval,
+			@Parameter(description = "진행 상태", required = false) @RequestParam(required = false) String status,
 			@Parameter(description = "조회할 페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지의 항목 수") @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<UserClassReadResponseDto> classPage = cookingService.readClassPageByUserId(id, status, pageable);
+		Page<UserClassReadResponseDto> classPage = cookingService.readClassPageByUserId(id, approval, status, pageable);
 		
 		return ResponseEntity.status(ClassSuccessCode.CLASS_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_READ_LIST_SUCCESS, classPage));
@@ -838,7 +839,8 @@ public class CookingController {
 	@GetMapping("/users/{id}/applied-classes")
 	public ResponseEntity<?> readUserClassApplyList(
 			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
-			@Parameter(description = "진행 상태") @RequestParam String status,
+			@Parameter(description = "승인 상태", required = false) @RequestParam(required = false) String approval,
+			@Parameter(description = "진행 상태", required = false) @RequestParam(required = false) String status,
 			@Parameter(description = "페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지 크기") @RequestParam int size) {
 		

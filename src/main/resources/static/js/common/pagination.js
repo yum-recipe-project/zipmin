@@ -1,8 +1,12 @@
 /**
  * 페이지네이션을 생성하는 함수
  */
-function renderPagination(fetchFunction) {
-	const pagination = document.querySelector('.pagination ul');
+function renderPagination(fetchFunction, wrap) {
+	
+	let pagination = document.querySelector('.pagination ul');
+	if (wrap) {
+		pagination = wrap.querySelector('.pagination ul');
+	}
 	pagination.innerHTML = '';
 	
 	if (totalPages === 0) {

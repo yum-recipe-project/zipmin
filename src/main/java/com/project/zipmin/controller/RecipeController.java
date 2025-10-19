@@ -392,7 +392,8 @@ public class RecipeController {
 	})
 	// 레시피 삭제 (관리자)
 	@DeleteMapping("/recipes/{id}")
-	public ResponseEntity<?> deleteRecipe(@Parameter(description = "레시피의 일련번호") @PathVariable int id) {
+	public ResponseEntity<?> deleteRecipe(
+			@Parameter(description = "레시피의 일련번호") @PathVariable int id) {
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -469,63 +470,24 @@ public class RecipeController {
 	
 	
 	
-	// 저장한(좋아요를 누른) 레시피
-	@GetMapping("/users/{id}/likes/recipes")
-	public ResponseEntity<?> readUserSavedRecipeList(
-	        @PathVariable Integer id,
-	        @RequestParam int page,
-	        @RequestParam int size) {
 	
-	    // 입력값 검증
-	    if (id == null) {
-	        throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-	    }
-
-	    // 인증 여부 확인 (비로그인)
-	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-	        throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
-	    }
-
-	    // 로그인 정보
-	    String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
-	    // 본인 확인
-	    if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
-	        if (id != userService.readUserByUsername(username).getId()) {
-	            throw new ApiException(UserErrorCode.USER_FORBIDDEN);
-	        }
-	    }
-
-	    Pageable pageable = PageRequest.of(page, size);
-	    
-	    // 레시피 저장 페이지 조회
-	    Page<RecipeReadMySavedResponseDto> savedRecipePage = recipeService.readSavedRecipePageByUserId(id, pageable);
-	    
-	    return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
-	            .body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, savedRecipePage));
-	}
-	
-	
-	
-	
-	
-
-	
-	// USER_READ_LIST_SUCCESS
-	// USER_READ_RECIPE_LIST_FAIL
+	// 사용자의 레시피 목록 조회
+	// RECIPE_READ_LIST_SUCCESS
+	// RECIPE_READ_LIST_FAIL
 	// RECIPE_CATEGORY_READ_LIST_FAIL
 	// LIKE_COUNT_FAIL
 	// USER_INVALID_INPUT
 	// RECIPE_INVALID_INPUT
 	// LIKE_INVALID_INPUT
-	// 사용자가 작성한 레시피
+	// INTERNAL_SERVER_ERROR
+	
+	// 사용자의 레시피 목록 조회
 	@GetMapping("/users/{id}/recipes")
 	public ResponseEntity<?> readUserRecipeList(
-			@PathVariable Integer id,
-			@RequestParam(required = false) String sort,
-			@RequestParam int page,
-			@RequestParam int size) {
+			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
+			@Parameter(description = "정렬") @RequestParam(required = false) String sort,
+			@Parameter(description = "페이지 번호") @RequestParam int page,
+			@Parameter(description = "페이지 크기") @RequestParam int size) {
 		
 		// 입력값 검증
 		if (id == null) {
@@ -535,9 +497,51 @@ public class RecipeController {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<RecipeReadMyResponseDto> recipePage = recipeService.readRecipePageByUserId(id, sort, pageable);
 		
-		return ResponseEntity.status(UserSuccessCode.USER_READ_RECIPE_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(UserSuccessCode.USER_READ_RECIPE_LIST_SUCCESS, recipePage));
+		return ResponseEntity.status(RecipeSuccessCode.RECIPE_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(RecipeSuccessCode.RECIPE_READ_LIST_SUCCESS, recipePage));
 	}
+	
+	
+	
+	
+	
+	// 사용자가 저장한 레시피 목록 조회
+	@GetMapping("/users/{id}/likes/recipes")
+	public ResponseEntity<?> readUserSavedRecipeList(
+			@PathVariable Integer id,
+			@RequestParam int page,
+			@RequestParam int size) {
+		
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		// 인증 여부 확인 (비로그인)
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 로그인 정보
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		// 본인 확인
+		if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
+			if (id != userService.readUserByUsername(username).getId()) {
+				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+			}
+		}
+		
+		Pageable pageable = PageRequest.of(page, size);
+		
+		// 레시피 저장 페이지 조회
+		Page<RecipeReadMySavedResponseDto> savedRecipePage = recipeService.readSavedRecipePageByUserId(id, pageable);
+		
+		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, savedRecipePage));
+	}
+	
 	
 	
 }

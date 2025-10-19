@@ -217,11 +217,11 @@ public class RecipeService {
 			List<RecipeStock> stockList;
 			try {
 				stockList = stockRepository.findAllByRecipeId(recipe.getId());
+				recipeDto.setStockList(stockMapper.toReadResponseDtoList(stockList));
 			}
 			catch (Exception e) {
 				throw new ApiException(RecipeErrorCode.RECIPE_STOCK_READ_LIST_FAIL);
 			}
-			recipeDto.setStockList(stockMapper.toReadResponseDtoList(stockList));
 			
 			recipeDtoList.add(recipeDto);
 		}
@@ -233,7 +233,7 @@ public class RecipeService {
 	
 	
 	
-	// 사용자가 작성한 레시피 목록을 조회하는 함수
+	// 사용자의 레시피 목록 조회
 	public Page<RecipeReadMyResponseDto> readRecipePageByUserId(Integer userId, String sort, Pageable pageable) {
 	    
 		// 입력값 검증
@@ -265,10 +265,10 @@ public class RecipeService {
 	    // 레시피 목록 조회
 	    Page<Recipe> recipePage;
 	    try {
-	        recipePage = recipeRepository.findByUserId(userId, sortedPageable);
+	        recipePage = recipeRepository.findAllByUserId(userId, sortedPageable);
 	    }
 	    catch (Exception e) {
-	        throw new ApiException(UserErrorCode.USER_READ_RECIPE_LIST_FAIL);
+	        throw new ApiException(RecipeErrorCode.RECIPE_READ_LIST_FAIL);
 	    }
 
 	    // 레시피 목록 응답 구성
@@ -278,20 +278,17 @@ public class RecipeService {
 	        
 	        // 이미지
 	     	recipeDto.setImage(publicPath + "/" + recipeDto.getImage());	
-	        // 좋아요 수
+	        // 좋아요수
 	        recipeDto.setLikecount(likeService.countLike("recipe", recipe.getId()));
 	        
-	        // 레시피 카테고리 조회
+	        // 레시피 카테고리 목록
 			try {
 				List<RecipeCategory> categoryList = categoryRepository.findAllByRecipeId(recipe.getId());
-				
-				// 레시피 카테고리 목록 응답 구성
 				List<RecipeCategoryReadResponseDto> categoryDtoList = new ArrayList<>();
 				for (RecipeCategory category : categoryList) {
 					RecipeCategoryReadResponseDto categoryDto = categoryMapper.toReadResponseDto(category);
 					categoryDtoList.add(categoryDto);
 				}
-				
 				recipeDto.setCategoryList(categoryDtoList);
 			}
 			catch (Exception e) {

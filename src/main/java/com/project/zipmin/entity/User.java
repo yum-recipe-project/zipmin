@@ -1,5 +1,7 @@
 package com.project.zipmin.entity;
 
+import java.util.Date;
+
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -9,6 +11,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -43,6 +46,7 @@ public class User {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 	private String provider;
+	
 	@Column(name = "PROVIDER_ID")
 	private String providerId;
 	private String refresh;
@@ -51,6 +55,13 @@ public class User {
 	
 	private int point;
 	private int revenue;
+	
+	@PrePersist
+    public void prePersist() {
+        if (this.avatar == null) {
+            this.avatar = "/images/user/user1.svg";
+        }
+    }
 	
 	// 정적 팩토리 메서드
 	public static User createUser(String username, Role role) {

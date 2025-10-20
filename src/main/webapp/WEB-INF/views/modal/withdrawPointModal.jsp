@@ -23,7 +23,7 @@
 								<td id="ownedPoint"></td>
 								<td>
 									<div class="form-input">
-										<input id="pointInput" type="number" value="10000" min="10000" step="1">
+										<input id="pointInput" type="number"step="1">
 									</div>
 								</td>
 								<td id="remainPoint"></td>

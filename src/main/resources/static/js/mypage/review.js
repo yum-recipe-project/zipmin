@@ -1,25 +1,22 @@
 
 document.addEventListener('DOMContentLoaded', function() {
-	
-	fetchReviewtList();
-	
 	document.querySelector('.btn_more').addEventListener('click', function() {
-		fetchReviewtList();
+		page = page + 1;
+		fetchReviewList();
 	});
-		
-	
-	
+	fetchReviewList();
 });
 
 let totalPages = 0;
+let totalElements = 0;
 let page = 0;
 let size = 10;
 let reviewList = [];
 
 /**
- * 서버에서 댓글 목록 데이터를 가져오는 함수
+ * 서버에서 리뷰 목록 데이터를 가져오는 함수
  */
-async function fetchReviewtList() {
+async function fetchReviewList() {
 	
 	try {
 		const token = localStorage.getItem('accessToken');
@@ -31,14 +28,40 @@ async function fetchReviewtList() {
 		}).toString();
 		
 		const response = await instance.get(`/users/${payload.id}/reviews?${params}`);
+		const result = response.data; 
 		
-		console.log(response);
+		if (result.code === 'USER_READ_LIST_SUCCESS') {
+			totalPages = response.data.data.totalPages;
+			totalElements = response.data.data.totalElements;
+			reviewList = [...reviewList, ...response.data.data.content];
+
+            renderReviewList(reviewList);
+            document.querySelector('.myreview_count span').innerText = result.data.totalElements + '개';
+			
+			const btnMore = document.querySelector('.btn_more');
+			btnMore.style.display = (reviewList.length < totalElements) ? 'block' : 'none';
+
+        } 
+		else if (result.code === 'REVIEW_READ_LIST_FAIL') {
+            alertDanger('리뷰 목록 조회에 실패했습니다.');
+        }
+		else if (result.code === 'USER_INVALID_INPUT') {
+            alertDanger('입력값이 유효하지 않습니다.');
+        }
+        else if (result.code === 'USER_UNAUTHORIZED_ACCESS') {
+            alertDanger('로그인되지 않은 사용자입니다.');
+        }
+        else if (result.code === 'USER_FORBIDDEN') {
+            alertDanger('접근 권한이 없습니다.');
+        }
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alert('서버 내부에서 오류가 발생했습니다.');
+		}
+		else {
+			console.log(error);
+		}
+				
 		
-		renderReviewList(response.data.data.content);
-		page = response.data.data.number + 1;
-		totalPages = response.data.data.totalPages;
-		document.querySelector('.myreview_count span').innerText = response.data.data.totalElements + '개';
-		document.querySelector('.btn_more').style.display = page >= totalPages ? 'none' : 'block';
 	}
 	catch (error) {
 		console.log(error);
@@ -50,15 +73,33 @@ async function fetchReviewtList() {
 
 
 
-
 /**
  * 리뷰 목록을 화면에 렌더링하는 함수
  * @param {Array} reviewList - 서버에서 받은 리뷰 목록
  */
 function renderReviewList(reviews) {
 
-    const ul = document.querySelector('.myreview_list');
+    const container = document.querySelector('.myreview_list');
+	container.innerHTML = '';
+	
+	// 작성한 리뷰 목록이 존재하지 않는 경우
+	if (reviews == null || reviews.length === 0) {
+		container.style.display = 'none';
+		document.querySelector('.list_empty')?.remove();
 
+		const wrapper = document.createElement('div');
+		wrapper.className = 'list_empty';
+
+		const span = document.createElement('span');
+		span.textContent = '작성한 리뷰가 없습니다';
+		wrapper.appendChild(span);
+		container.insertAdjacentElement('afterend', wrapper);
+
+		return;
+	}
+	
+	
+	// 작성한 리뷰 목록이 존재하는 경우
     reviews.forEach(review => {
         const li = document.createElement('li');
 
@@ -66,7 +107,7 @@ function renderReviewList(reviews) {
         const titleDiv = document.createElement('div');
         titleDiv.className = 'myreview_title';
         const a = document.createElement('a');
-        a.href = `/recipe/viewRecipe.do?id=${review.recipeId}`;
+        a.href = `/recipe/viewRecipe.do?id=${review.recipe_id}`;
         a.textContent = review.title;
         titleDiv.appendChild(a);
 
@@ -162,9 +203,10 @@ function renderReviewList(reviews) {
         li.appendChild(titleDiv);
         li.appendChild(reviewDiv);
 
-        ul.appendChild(li);
+        container.appendChild(li);
     });
 }
+
 
 
 
@@ -178,9 +220,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	editForm.addEventListener('submit', async function(event) {
 		event.preventDefault();
 
-		const id = document.getElementById('editReviewId').value;  // 리뷰 ID (hidden input)
-		const content = document.getElementById('editReviewContent').value.trim(); // 수정할 리뷰 내용
-		const score = Number(document.getElementById('editReviewStar').value || 0); // 수정할 별점 (hidden input)
+		const id = document.getElementById('editReviewId').value; 
+		const content = document.getElementById('editReviewContent').value.trim();
+		const score = Number(document.getElementById('editReviewStar').value || 0);
 
 		try {
 			const data = {
@@ -218,6 +260,12 @@ document.addEventListener('DOMContentLoaded', function() {
 				const scoreP = document.querySelector(`.myreview[data-id='${id}'] p`);
 				if (scoreP) scoreP.textContent = response.data.data.score;
 				
+				// reviewList의 해당 리뷰 데이터 업데이트
+				const updatedIndex = reviewList.findIndex(r => r.id == id);
+				if (updatedIndex !== -1) {
+				    reviewList[updatedIndex].content = response.data.data.content;
+				    reviewList[updatedIndex].score = response.data.data.score;
+				}
 				
 			}
 		}
@@ -261,7 +309,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
 /**
  * 리뷰를 삭제하는 함수
  */
@@ -273,14 +320,21 @@ async function deleteReview(id) {
                 headers: getAuthHeaders()
             });
 
-            if (response.data.code === 'REVIEW_DELETE_SUCCESS') {
-                alertPrimary('리뷰를 성공적으로 삭제했습니다.');
-
-                document.querySelector(`.myreview[data-id='${id}']`)?.remove();
-
-                reviewList = reviewList.filter(review => review.id !== id);
-            }
-
+			if (response.data.code === 'REVIEW_DELETE_SUCCESS') {
+               alertPrimary('리뷰를 성공적으로 삭제했습니다.');
+			   reviewList = reviewList.filter(review => review.id !== id);
+			   renderReviewList(reviewList);
+			   
+			   totalElements--;
+			   document.querySelector('.myreview_count span').textContent = totalElements + '개';
+			   
+		       const btnMore = document.querySelector('.btn_more');
+		       if (reviewList.length < size || reviewList.length >= totalElements) {
+		           btnMore.style.display = 'none';
+		       } else {
+		           btnMore.style.display = 'block';
+		       }
+           }
         } catch (error) {
             const code = error?.response?.data?.code;
 
@@ -315,6 +369,9 @@ async function deleteReview(id) {
     }
 
 }
+
+
+
 
 
 /**

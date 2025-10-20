@@ -1,8 +1,24 @@
 /**
+ * 전역 변수
+ */
+let totalPages = 0;
+let totalElements = 0;
+let page = 0;
+const size = 10;
+let keyword = '';
+let category = '';
+let sortKey = 'id';
+let sortOrder = 'desc';
+let withdrawList = [];
+
+
+
+
+
+/**
  * 접근 권한을 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', async function() {
-	fetchAllWithdrawList();
 	
 	try {
 		await instance.get('/dummy');
@@ -14,19 +30,26 @@ document.addEventListener('DOMContentLoaded', async function() {
 });
 
 
+
+
+
 /**
- * 전역 변수
+ * 출금 목록을 검색하는 함수
  */
-let page = 0;
-let size = 10;
-let totalPages = 0;
-let totalElements = 0;
-let withdrawList = [];
+document.addEventListener('DOMContentLoaded', function() {
+	
+	fetchAdminWithdrawList();
+	
+});
+
+
+
+
 
 /**
  * 서버에서 모든 사용자의 출금 내역 데이터를 가져오는 함수 (관리자용)
  */
-async function fetchAllWithdrawList() {
+async function fetchAdminWithdrawList(scrollTop = true) {
     try {
         const params = new URLSearchParams({
             page: page,
@@ -35,35 +58,54 @@ async function fetchAllWithdrawList() {
 
         const response = await instance.get(`/admin/withdraw?${params}`);
 
-        page = response.data.data.number;
-        totalPages = response.data.data.totalPages;
-        totalElements = response.data.data.totalElements;
-
-        withdrawList = response.data.data.content;
-
-        console.log("총 출금 내역:", totalElements);
-        console.log(withdrawList);
-		renderAllWithdrawList(withdrawList);
+		if (response.data.code === 'WITHDRAW_READ_LIST_SUCCESS') {
+	        // 전역변수 설정
+	        totalPages = response.data.data.totalPages;
+			page = response.data.data.number;
+	        withdrawList = response.data.data.content;
+	        totalElements = response.data.data.totalElements;
+	
+			// 렌더링
+			renderAdminWithdrawList(withdrawList);
+			renderAdminPagination(fetchAdminWithdrawList);
+			document.querySelector('.total').innerText = `총 ${totalElements}개`;
+			
+			// 스크롤 최상단 이동
+			if (scrollTop) {
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			}
+		}
+    }
+	catch (error) {
+		const code = error?.response?.data?.code;
 		
-
-    } catch (error) {
-        console.error("출금 내역 조회 실패:", error);
+        console.error(error);
     }
 }
 
 
 
-/**
- * 화면에 모든 사용자의 출금 내역 데이터를 출력하는 함수 (관리자용)
- */
-function renderAllWithdrawList(withdrawList) {
-    const tbody = document.querySelector('.guide_list');
-    tbody.innerHTML = '';
 
-    if (!withdrawList || withdrawList.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="text-center">출금 내역이 없습니다.</td></tr>';
-        return;
-    }
+
+/**
+ * 출금 내역 목록을 화면에 렌더링하는 함수
+ */
+function renderAdminWithdrawList(withdrawList) {
+	
+    const container = document.querySelector('.guide_list');
+    container.innerHTML = '';
+
+	// 출금 목록이 존재하지 않는 경우
+	if (withdrawList == null || withdrawList.length === 0) {
+		document.querySelector('.table_th').style.display = 'none';
+		document.querySelector('.search_empty')?.remove();
+		document.querySelector('.fixed-table').insertAdjacentElement('afterend', renderSearchEmpty());
+		return;
+	}
+
+	// 출금 목록이 존재하는 경우
+	document.querySelector('.search_empty')?.remove();
+	document.querySelector('.table_th').style.display = '';
 
     withdrawList.forEach((withdraw, index) => {
         const tr = document.createElement('tr');
@@ -107,6 +149,6 @@ function renderAllWithdrawList(withdrawList) {
 //        tdManage.innerHTML = `<button class="btn btn-sm btn-primary">상세</button>`;
 //        tr.appendChild(tdManage);
 
-        tbody.appendChild(tr);
+        container.appendChild(tr);
     });
 }

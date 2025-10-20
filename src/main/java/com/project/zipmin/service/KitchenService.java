@@ -56,8 +56,6 @@ public class KitchenService {
 	// 가이드 목록 조회
 	public Page<GuideReadResponseDto> readGuidePage(String category, String keyword, String sort, Pageable pageable) {
 		
-		System.err.println("sort: " + sort);
-		
 		// 입력값 검증
 		if (pageable == null) {
 			throw new ApiException(KitchenErrorCode.KITCHEN_INVALID_INPUT);
@@ -74,6 +72,14 @@ public class KitchenService {
 		    }
 			case "id-desc": {
 				sortSpec = Sort.by(Sort.Order.desc("id"));
+				break;
+			}
+			case "title-desc": {
+				sortSpec = Sort.by(Sort.Order.desc("title"), Sort.Order.desc("id"));
+				break;
+			}
+			case "title-asc": {
+				sortSpec = Sort.by(Sort.Order.asc("title"), Sort.Order.desc("id"));
 				break;
 			}
 			case "likecount-desc": {
@@ -127,12 +133,8 @@ public class KitchenService {
 			throw new ApiException(KitchenErrorCode.KITCHEN_READ_LIST_FAIL);
 		}
 		
-		
 		// dto 변경
 		List<GuideReadResponseDto> guideDtoList = new ArrayList<GuideReadResponseDto>();
-		
-
-		
 		for (Guide guide : guidePage) {
 			GuideReadResponseDto guideDto = guideMapper.toReadResponseDto(guide);
 			guideDto.setLikecount(likeService.countLike("guide", guide.getId()));
@@ -149,18 +151,21 @@ public class KitchenService {
 			
 			UserReadResponseDto userInfo = userService.readUserById(guideDto.getUserId());
 			guideDto.setUsername(userInfo.getUsername());
+			guideDto.setAvatar(userInfo.getAvatar());
 			guideDtoList.add(guideDto);
 		}
-		
 		
 		return new PageImpl<>(guideDtoList, sortedPageable, guidePage.getTotalElements());
 	}
 	
 	
+	
+	
+	
 	// 특정 가이드 상세 조회 (좋아요 상태 포함)
 	public GuideReadResponseDto readGuideById(int id) {
 	    Guide guide = kitchenRepository.findById(id)
-	            .orElseThrow(() -> new IllegalArgumentException("해당 가이드를 찾을 수 없습니다. ID: " + id));
+	            .orElseThrow(() -> new ApiException(KitchenErrorCode.KITCHEN_NOT_FOUND));
 	    
 	    GuideReadResponseDto guideDto = guideMapper.toReadResponseDto(guide);
 
@@ -175,6 +180,8 @@ public class KitchenService {
 	        int userId = userService.readUserByUsername(username).getId();
 	        likestatus = likeService.existsUserLike("guide", guideDto.getId(), userId);
 	    }
+	    UserReadResponseDto userInfo = userService.readUserById(guideDto.getUserId());
+	    guideDto.setAvatar(userInfo.getAvatar());
 	    guideDto.setLikestatus(likestatus);
 
 	    return guideDto;
@@ -353,8 +360,6 @@ public class KitchenService {
 	    guide.setCategory(guideRequestDto.getCategory());
 	    guide.setContent(guideRequestDto.getContent());
 	    
-	    
-	    
 	    // 이벤트 수정
  		try {
  			guide = kitchenRepository.save(guide);
@@ -397,14 +402,4 @@ public class KitchenService {
 
         return new PageImpl<>(dtoList, pageable, guidePage.getTotalElements());
     }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

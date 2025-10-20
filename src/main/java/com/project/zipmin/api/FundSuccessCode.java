@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum FundSuccessCode implements Code {
+	
+	WITHDRAW_READ_LIST_SUCCESS(HttpStatus.OK, "출금 목록 조회 성공"),
 
     // 후원 처리
     FUND_REQUEST_SUCCESS(HttpStatus.OK, "후원 요청이 성공적으로 전송되었습니다."),

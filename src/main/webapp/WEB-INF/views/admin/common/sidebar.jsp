@@ -99,8 +99,6 @@
 						<span class="hide-menu">쿠킹클래스 관리</span>
 					</a>
 				</li>
-				
-				<!-- 여기에 쿠킹클래스 같은거 들어가야겠지.. -->
 		</nav>
 		<!-- End Sidebar navigation -->
 	</div>

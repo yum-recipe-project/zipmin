@@ -76,6 +76,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+
+
 /**
  * 댓글 폼값을 검증하는 함수
  */
@@ -123,11 +125,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		writeSubcommentButton.classList.toggle('disabled', isWriteSubcommentContentEmpty);
     });
 });
-
-
-
-
-
 
 
 
@@ -198,7 +195,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 
 });
-
 
 
 
@@ -757,6 +753,24 @@ document.addEventListener('DOMContentLoaded', function() {
 				}
 				if (document.querySelector(`.subcomment[data-id='${id}'] .subcomment_content`)) {
 					document.querySelector(`.subcomment[data-id='${id}'] .subcomment_content`).textContent = response.data.data.content;
+				}
+			}
+			
+			// 수정 모달창을 위한 업데이트
+			const index = commentList.findIndex(comment => comment.id == id);
+			if (index !== -1) {
+				commentList[index].content = response.data.data.content;
+			}
+			else {
+				console.log(commentList);
+				for (const comment of commentList) {
+					if (comment.subcomment_list) {
+						const subIndex = comment.subcomment_list.findIndex(sub => sub.id == id);
+						if (subIndex !== -1) {
+							comment.subcomment_list[subIndex].content = response.data.data.content;
+							break;
+						}
+					}
 				}
 			}
 		}

@@ -18,8 +18,8 @@ public enum ReviewErrorCode implements Code {
     
     // 데이터 처리
     REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 리뷰를 찾을 수 없음"),
-    REVIEW_READ_LIST_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "리뷰 목록 조회 실패"),
-    REVIEW_READ_COUNT_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "리뷰 개수 조회 실패"),
+    REVIEW_READ_LIST_FAIL(HttpStatus.BAD_REQUEST, "리뷰 목록 조회 실패"),
+    REVIEW_READ_COUNT_FAIL(HttpStatus.BAD_REQUEST, "리뷰 개수 조회 실패"),
     REVIEW_CREATE_FAIL(HttpStatus.BAD_REQUEST, "리뷰 작성 실패"),
     REVIEW_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "리뷰 수정 실패"),
     REVIEW_DELETE_FAIL(HttpStatus.BAD_REQUEST, "리뷰 삭제 실패"),
@@ -39,5 +39,5 @@ public enum ReviewErrorCode implements Code {
     public String getCode() {
         return this.name();
     }
-
+    
 }

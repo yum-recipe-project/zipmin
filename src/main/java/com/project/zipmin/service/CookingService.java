@@ -44,6 +44,7 @@ import com.project.zipmin.entity.ClassTarget;
 import com.project.zipmin.entity.ClassTutor;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.entity.Selected;
+import com.project.zipmin.entity.Status;
 import com.project.zipmin.mapper.ClassApplyMapper;
 import com.project.zipmin.mapper.ClassMapper;
 import com.project.zipmin.mapper.ClassScheduleMapper;
@@ -343,16 +344,16 @@ public class CookingService {
 		}
 		
 		// 클래스 오픈 여부 조회
-		Date now = new Date();
-		if (classs.getApproval() == 1 && now.before(classs.getNoticedate())) {
+		Date today = new Date();
+		if (classs.getApproval() == 1 && today.before(classs.getNoticedate())) {
 			classDto.setOpened(true);
 		}
 		
 		// 클래스 진행 완료 여부 조회
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(classDto.getEventdate());
-		calendar.add(Calendar.DAY_OF_YEAR, 7);
-		if (classs.getApproval() == 1 && now.after(classs.getEventdate()) && now.before(calendar.getTime())) {
+		Calendar nextweek = Calendar.getInstance();
+		nextweek.setTime(classDto.getEventdate());
+		nextweek.add(Calendar.DAY_OF_YEAR, 7);
+		if (classs.getApproval() == 1 && today.after(classs.getEventdate()) && today.before(nextweek.getTime())) {
 			classDto.setEvented(true);
 		}
 		
@@ -489,8 +490,8 @@ public class CookingService {
 		}
 		
 		// 클래스 기간 검증
-		Date now = new Date();
-		if (now.after(classs.getNoticedate())) {
+		Date today = new Date();
+		if (today.after(classs.getNoticedate())) {
 			throw new ApiException(ClassErrorCode.CLASS_ALREADY_ENDED);
 		}
 		
@@ -553,10 +554,10 @@ public class CookingService {
 		}
 		
 		// 클래스 삭제 기한 검사
-		Date now = new Date();
+		Date today = new Date();
 		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 			if (user.getRole().equals(Role.ROLE_ADMIN.name())) {
-				if (now.after(classs.getNoticedate())) {
+				if (today.after(classs.getNoticedate())) {
 					throw new ApiException(ClassErrorCode.CLASS_ALREADY_ENDED);
 				}
 			}
@@ -655,8 +656,8 @@ public class CookingService {
 				.orElseThrow(() -> new ApiException(ClassErrorCode.CLASS_NOT_FOUND));
 		
 		// 클래스 신청 기간 검사
-		Date now = new Date();
-		if (classs.getNoticedate().before(now)) {
+		Date today = new Date();
+		if (classs.getNoticedate().before(today)) {
 			throw new ApiException(ClassErrorCode.CLASS_ALREADY_ENDED);
 		}
 		
@@ -715,9 +716,9 @@ public class CookingService {
 		}
 		
 		// 클래스 선정 기간 검증
-		Date now = new Date();
+		Date today = new Date();
 		if (applyDto.getSelected() != null) {
-			if (classs.getApproval() != 1 || now.after(classs.getNoticedate())) {
+			if (classs.getApproval() != 1 || today.after(classs.getNoticedate())) {
 				throw new ApiException(ClassErrorCode.CLASS_ALREADY_ENDED);
 			}
 		}
@@ -735,10 +736,10 @@ public class CookingService {
 		
 		// 클래스 출석 기간 검증
 		if (applyDto.getAttend() != null) {
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(classs.getEventdate());
-			calendar.add(Calendar.DAY_OF_YEAR, 7);
-			if (classs.getApproval() != 1 || now.before(classs.getEventdate()) || now.after(calendar.getTime())) {
+			Calendar nextweek = Calendar.getInstance();
+			nextweek.setTime(classs.getEventdate());
+			nextweek.add(Calendar.DAY_OF_YEAR, 7);
+			if (classs.getApproval() != 1 || today.before(classs.getEventdate()) || today.after(nextweek.getTime())) {
 				throw new ApiException(ClassErrorCode.CLASS_ALREADY_ENDED);
 			}
 		}
@@ -817,8 +818,8 @@ public class CookingService {
 		}
 		
 		// 클래스 기간 검증
-		Date now = new Date();
-		if (now.after(classs.getNoticedate())) {
+		Date today = new Date();
+		if (today.after(classs.getNoticedate())) {
 			throw new ApiException(ClassErrorCode.CLASS_ALREADY_ENDED);
 		}
 		
@@ -837,7 +838,7 @@ public class CookingService {
 	
 	
 	// 사용자의 클래스 목록 조회
-	public Page<UserClassReadResponseDto> readClassPageByUserId(Integer userId, String status, Pageable pageable) {
+	public Page<UserClassReadResponseDto> readClassPageByUserId(Integer userId,  String approval, String status, Pageable pageable) {
 		
 		// 입력값 검증
 		if (userId == null || pageable == null) {
@@ -846,24 +847,54 @@ public class CookingService {
 		
 		// 클래스 목록 조회
 		Page<Class> classPage = null;
-		Date now = new Date();
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(now);
-		calendar.add(Calendar.DAY_OF_YEAR, -7);
 		try {
+			boolean hasApproval = approval != null && !approval.isBlank();
 			boolean hasStatus = status != null && !status.isBlank();
-	    	
+			
+			Date today = new Date();
+			Calendar lastweek = Calendar.getInstance();
+			lastweek.setTime(today);
+			lastweek.add(Calendar.DAY_OF_YEAR, -7);
+			
+			// 승인
+			Integer approvalCode = null;
+			if (hasApproval) {
+				try {
+					approvalCode = Approval.valueOf(approval).getCode();
+				}
+				catch (Exception e) {
+					throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
+				}
+			}
+			
+			// 상태
+			Integer statusCode = null;
+			if (hasStatus) {
+				try {
+					statusCode = Status.valueOf(status).getCode();
+				}
+				catch (Exception e) {
+					throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
+				}
+			}
+			
 	    	if (!hasStatus) {
-	    		classPage = classRepository.findByUserId(userId, pageable); 	    
-	    	}
-	    	else {
-	    		if ("open".equals(status)) {
-	    			classPage = classRepository.findByUserIdAndEventdateAfter(userId, calendar, pageable);
-	    		}
-	    		else if ("close".equals(status)) {
-	    			classPage = classRepository.findByUserIdAndEventdateBefore(userId, calendar, pageable);
-	    		}
-	    	}
+	    		classPage = hasApproval
+	    				? classRepository.findAllByUserIdAndApproval(userId, approvalCode, pageable)
+	    				: classRepository.findAllByUserId(userId, pageable);
+            }
+			else {
+				if (statusCode == 0) {
+					classPage = hasApproval
+							? classRepository.findAllByUserIdAndApprovalAndNoticedateBefore(userId, approvalCode, today, pageable)
+							: classRepository.findAllByUserIdAndApprovalNotOrUserIdAndApprovalAndEventdateBefore(userId, 1, userId, 1, lastweek, pageable);
+				}
+				else if (statusCode == 1) {
+					classPage = hasApproval
+		    				? classRepository.findAllByUserIdAndApprovalAndNoticedateAfter(userId, approvalCode, today, pageable)
+		    				: classRepository.findAllByUserIdAndApprovalNotAndNoticedateAfterOrUserIdAndApprovalAndEventdateAfter(userId, 1, today, userId, 1, lastweek, pageable);
+				}
+            }
 		}
 		catch (Exception e) {
 			throw new ApiException(ClassErrorCode.CLASS_READ_LIST_FAIL);
@@ -878,14 +909,13 @@ public class CookingService {
 			classDto.setImage(publicPath + "/" + classDto.getImage());
 			
 			// 상태
-			if (now.before(classs.getNoticedate())) {
+			Date today = new Date();
+			if (today.before(classs.getNoticedate())) {
 				classDto.setOpened(true);
 			}
 			
-			// 클래스 진행 완료 여부 조회
-			calendar.setTime(classDto.getEventdate());
-			calendar.add(Calendar.DAY_OF_YEAR, 7);
-			if (classs.getApproval() == 1 && now.after(classs.getEventdate()) && now.before(calendar.getTime())) {
+			// 클래스 진행 완료 여부
+			if (today.after(classs.getEventdate())) {
 				classDto.setEvented(true);
 			}
 
@@ -938,17 +968,17 @@ public class CookingService {
 	    Page<Class> classPage = null;
 	    try {
 	    	boolean hasStatus = status != null && !status.isBlank();
-	    	Date now = new Date();
+	    	Date today = new Date();
 	    	
 	    	if (!hasStatus) {
 	    		classPage = classRepository.findByIdIn(classIds, pageable); 	    
 	    	}
 	    	else {
 	    		if ("open".equals(status)) {
-	    			classPage = classRepository.findByIdInAndNoticedateAfter(classIds, now, pageable);
+	    			classPage = classRepository.findByIdInAndNoticedateAfter(classIds, today, pageable);
 	    		}
 	    		else if ("close".equals(status)) {
-	    			classPage = classRepository.findByIdInAndNoticedateBefore(classIds, now, pageable);
+	    			classPage = classRepository.findByIdInAndNoticedateBefore(classIds, today, pageable);
 	    		}
 	    	}
 	    }
@@ -963,13 +993,13 @@ public class CookingService {
 	    	UserAppliedClassResponseDto classDto = classMapper.toReadUserAppliedResponseDto(classs, apply);
 	        
 	    	// 상태
-	    	Date now = new Date();
-			if (classs.getApproval() == 1 && now.before(classs.getNoticedate())) {
+	    	Date today = new Date();
+			if (classs.getApproval() == 1 && today.before(classs.getNoticedate())) {
 				classDto.setOpened(true);
 			}
 			
 			// 클래스 진행 예정 여부 조회
-			if (classs.getApproval() == 1 && now.after(classs.getNoticedate()) && now.before(classs.getEventdate())) {
+			if (classs.getApproval() == 1 && today.after(classs.getNoticedate()) && today.before(classs.getEventdate())) {
 				classDto.setPlanned(true);
 			}
 
@@ -1030,17 +1060,17 @@ public class CookingService {
 		}
 		
 		// 기간 이내 결석 클래스 목록
-		Date now = new Date();
-		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DAY_OF_YEAR, -60);
-		Date batchdate = calendar.getTime();
+		Date today = new Date();
+		Calendar past = Calendar.getInstance();
+		past.add(Calendar.DAY_OF_YEAR, -60);
+		Date batchdate = past.getTime();
 		int count = (int) classList.stream()
 				.filter(classs -> classs.getApproval() == 1)
 				.filter(classs -> {
 					Calendar tmp = Calendar.getInstance();
 					tmp.setTime(classs.getEventdate());
 					tmp.add(Calendar.DAY_OF_YEAR, 7);
-					return tmp.getTime().before(now);
+					return tmp.getTime().before(today);
 			})
 			.filter(classs -> classs.getEventdate().after(batchdate))
 			.count();

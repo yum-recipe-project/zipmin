@@ -1,8 +1,24 @@
 /**
+ * 전역 변수
+ */
+let totalPages = 0;
+let totalElements = 0;
+let page = 0;
+let size = 15;
+let keyword = '';
+let sortKey = 'id';    
+let sortOrder = 'desc';
+let reviewList = [];
+
+
+
+
+
+/**
  * 접근 권한을 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', async function() {
-	fetchAdminReviewList();
+	
 	try {
 		await instance.get('/dummy');
 	}
@@ -14,51 +30,117 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
 
-let totalPages = 0;
-let totalElements = 0;
-let page = 0;
-let size = 10;
-let keyword = '';
-let ReviewList = [];
-
-let sortKey = 'id';    
-let sortOrder = 'desc'; 
 
 
 /**
- * 서버에서 전체 리뷰 목록 데이터를 가져오는 함수 (관리자용)
+ * 리뷰 목록 검색 필터를 설정하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	
+	// 검색
+	document.querySelector('.search').addEventListener('submit', function(e) {
+	    e.preventDefault();
+	    keyword = document.getElementById('text-srh').value.trim();
+	    page = 0;        
+	    reviewList = [];
+	    fetchAdminReviewList();
+	});
+	document.getElementById('text-srh')?.addEventListener('input', function () {
+		if (this.value.trim() === '') {
+			keyword = '';
+			fetchAdminReviewList();
+		}
+	});
+	
+	// 정렬
+	document.querySelectorAll('.sort_btn').forEach(btn => {
+		btn.addEventListener('click', function(event) {
+			event.preventDefault();
+			const key = btn.dataset.key;
+			if (sortKey === key) {
+				sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+			}
+			else {
+				sortKey = key;
+				sortOrder = 'desc';
+			}
+			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
+			btn.classList.add(sortOrder);
+			page = 0;
+			fetchAdminReviewList();
+		});
+	});
+	
+	fetchAdminReviewList();
+});
+
+
+
+
+
+/**
+ * 서버에서 전체 리뷰 목록 데이터를 가져오는 함수
  */
 async function fetchAdminReviewList() {
+	
     try {
         const params = new URLSearchParams({
-            page: page,
-            size: size,
 			keyword: keyword,
-			sort: sortKey + '-' + sortOrder 
+			sort: sortKey + '-' + sortOrder,
+            page: page,
+            size: size
         }).toString();
 		
         const response = await instance.get(`/admin/reviews?${params}`, {
             headers: getAuthHeaders() 
         });
-
+		
 		if (response.data.code === 'REVIEW_READ_LIST_SUCCESS') {
+			// 전역 변수 설정
+			totalPages = response.data.data.totalPages;
+			totalElements = response.data.data.totalElements;
+			page = response.data.data.number;
+			reviewList = response.data.data.content;
 			
-			  // 전역 변수 설정
-			  totalPages = response.data.data.totalPages;
-			  totalElements = response.data.data.totalElements;
-			  page = response.data.data.number;
-			  ReviewList = response.data.data.content;
+			// 렌더링
+			renderAdminReviewList(reviewList);
+			renderAdminPagination(fetchAdminReviewList);
+			document.querySelector('.total').innerText = `총 ${totalElements}개`;
 			
-			  
-		      renderAdminReviewList(ReviewList);
-			  renderAdminPagination(fetchAdminReviewList);
-			  document.querySelector('.total').innerText = `총 ${totalElements}개`;
-			
+			// 스크롤 최상단 이동
+			if (scrollTop) {
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			}
 		}
-    } catch (error) {
-        console.error("전체 리뷰 목록 불러오기 실패:", error);
+    }
+	catch (error) {
+		const code = error?.response?.data?.code;
+		
+		if (code === 'REVIEW_READ_LIST_FAIL') {
+			alertDanger('사용자 목록 조회에 실패했습니다.');
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'AUTH_TOKEN_INVALID') {
+			redirectToAdminLogin();
+		}
+		else if (code === 'USER_FORBIDDEN') {
+			redirectToAdminLogin();
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			redirectToAdminLogin();
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			console.log(error);
+		}
+		else {
+			console.log(error);
+		}
     }
 }
+
+
 
 
 
@@ -66,22 +148,21 @@ async function fetchAdminReviewList() {
  * 관리자 리뷰 목록을 화면에 렌더링하는 함수
  */
 function renderAdminReviewList(reviewList) {
-    const tableBody = document.querySelector('.review_list');
-    tableBody.innerHTML = ''; 
-
-    if (!reviewList || reviewList.length === 0) {
-        const tr = document.createElement('tr');
-        const td = document.createElement('td');
-        td.colSpan = 8;
-        td.className = 'text-center py-4';
-        td.textContent = '등록된 리뷰가 없습니다.';
-        tr.appendChild(td);
-        tableBody.appendChild(tr);
-        return;
-    }
-
-    const token = localStorage.getItem('accessToken');
-    const payload = parseJwt(token);
+	
+    const container = document.querySelector('.review_list');
+    container.innerHTML = ''; 
+	
+	// 리뷰의 목록이 존재하지 않는 경우
+	if (reviewList == null || reviewList.length === 0) {
+		document.querySelector('.table_th').style.display = 'none';
+		document.querySelector('.search_empty')?.remove();
+		document.querySelector('.fixed-table').insertAdjacentElement('afterend', renderSearchEmpty());
+		return;
+	}
+	
+	// 리뷰의 목록이 존재하는 경우
+	document.querySelector('.search_empty')?.remove();
+	document.querySelector('.table_th').style.display = '';
 
     reviewList.forEach((review, index) => {
         const tr = document.createElement('tr');
@@ -91,15 +172,14 @@ function renderAdminReviewList(reviewList) {
         const noTd = document.createElement('td');
         const noH6 = document.createElement('h6');
         noH6.className = 'fw-semibold mb-0';
-        noH6.textContent = index + 1 + page * size;
+		const offset = page * size + index;
+		if (sortKey === 'id' && sortOrder === 'asc') {
+			noH6.textContent = offset + 1;
+		}
+		else {
+			noH6.textContent = totalElements - offset;
+		}
         noTd.appendChild(noH6);
-
-        // 별점
-        const scoreTd = document.createElement('td');
-        const scoreH6 = document.createElement('h6');
-        scoreH6.className = 'fw-semibold mb-0';
-        scoreH6.textContent = review.score ?? 0;
-        scoreTd.appendChild(scoreH6);
 
         // 내용
         const contentTd = document.createElement('td');
@@ -120,8 +200,15 @@ function renderAdminReviewList(reviewList) {
         const dateTd = document.createElement('td');
         const dateH6 = document.createElement('h6');
         dateH6.className = 'fw-semibold mb-0';
-        dateH6.textContent = formatDate(review.postdate);
+        dateH6.textContent = formatDateTime(review.postdate);
         dateTd.appendChild(dateH6);
+		
+		// 별점
+		const scoreTd = document.createElement('td');
+		const scoreH6 = document.createElement('h6');
+		scoreH6.className = 'fw-semibold mb-0';
+		scoreH6.textContent = review.score ?? 0;
+		scoreTd.appendChild(scoreH6);
 
         // 좋아요
         const likeTd = document.createElement('td');
@@ -142,6 +229,9 @@ function renderAdminReviewList(reviewList) {
         actionTd.className = 'text-end';
         const btnWrap = document.createElement('div');
         btnWrap.className = 'd-flex justify-content-end gap-2';
+		
+	    const token = localStorage.getItem('accessToken');
+	    const payload = parseJwt(token);
 
         const canAction =
             payload.role === 'ROLE_SUPER_ADMIN' ||
@@ -159,7 +249,6 @@ function renderAdminReviewList(reviewList) {
 			editBtn.addEventListener('click', () => {
 				// 리뷰 ID 설정
 			    document.getElementById('editReviewId').value = review.id;
-			
 			    document.getElementById('editReviewContent').value = review.content;
 			
 			    // 별점 설정 (별점 이미지와 hidden input 초기화)
@@ -175,15 +264,6 @@ function renderAdminReviewList(reviewList) {
 			    });
 			});
 			
-			
-			
-			
-			
-			
-			
-			
-			
-
             // 삭제 버튼
             const deleteBtn = document.createElement('button');
             deleteBtn.type = 'button';
@@ -193,12 +273,10 @@ function renderAdminReviewList(reviewList) {
 
             btnWrap.append(editBtn, deleteBtn);
         }
-
         actionTd.appendChild(btnWrap);
 
-        // tr에 td 순서대로 붙이기
-        tr.append(noTd, scoreTd, contentTd, writerTd, dateTd, likeTd, reportTd, actionTd);
-        tableBody.appendChild(tr);
+        tr.append(noTd, contentTd, writerTd, dateTd, scoreTd, likeTd, reportTd, actionTd);
+        container.appendChild(tr);
     });
 }
 
@@ -359,49 +437,12 @@ async function deleteReview(id) {
 }
 
 
+
+
+
 // 말줄임 클릭 시 펼침
 document.addEventListener('click', e => {
 	if (e.target.classList.contains('text-truncate')) {
 		e.target.classList.toggle('expanded');
 	}
-});
-
-
-/**
- * 리뷰 목록 내용 정렬, 검색을 설정하는 함수
- */
-document.addEventListener('DOMContentLoaded', function() {
-	
-	// 정렬 버튼 클릭 이벤트
-	document.querySelectorAll('.sort_btn').forEach(btn => {
-		btn.addEventListener('click', function(event) {
-			event.preventDefault();
-
-			const key = btn.dataset.key;
-
-			if (sortKey === key) {
-				sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-			} else {
-				sortKey = key;
-				sortOrder = 'desc';
-			}
-
-			// 모든 sort_btn 클래스 초기화 후 현재 버튼만 적용
-			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
-			btn.classList.add(sortOrder);
-
-			page = 0; // 첫 페이지로 초기화
-			fetchAdminReviewList();
-		});
-	});
-	
-	
-	// 검색
-	document.querySelector('.search').addEventListener('submit', function(e) {
-	    e.preventDefault();
-	    keyword = document.getElementById('text-srh').value.trim();
-	    page = 0;        
-	    reviewList = [];
-	    fetchAdminReviewList();
-	});
 });

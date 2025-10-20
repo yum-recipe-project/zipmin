@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <form id="reportReviewForm" onsubmit="">
+	<input type="hidden" id="reportReviewId" name="id">
 	<div class="modal" id="reportReviewModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -10,42 +11,42 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 				</div>
 				<div class="modal-body">
-					<label>키친 한마디 신고 사유</label>
+					<label>레시피 리뷰 신고 사유</label>
 					<div class="report">
 						<div class="reason">
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportReviewReason1" name="reason" value="">
+									<input type="radio" id="reportReviewReason1" name="reason" value="정당/정치인 비하 및 선거운동">
 									<label for="reportReviewReason1">정당/정치인 비하 및 선거운동</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportReviewReason2" name="reason" value="">
+									<input type="radio" id="reportReviewReason2" name="reason" value="유출/사칭/사기">
 									<label for="reportReviewReason2">유출/사칭/사기</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportReviewReason3" name="reason" value="">
+									<input type="radio" id="reportReviewReason3" name="reason" value="욕설/비하">
 									<label for="reportReviewReason3">욕설/비하</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportReviewReason4" name="reason" value="">
+									<input type="radio" id="reportReviewReason4" name="reason" value="낚시/놀람/도배">
 									<label for="reportReviewReason4">낚시/놀람/도배</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportReviewReason5" name="reason" value="">
+									<input type="radio" id="reportReviewReason5" name="reason" value="상업적 광고 및 판매">
 									<label for="reportReviewReason5">상업적 광고 및 판매</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportReviewReason6" name="reason" value="">
+									<input type="radio" id="reportReviewReason6" name="reason" value="불법촬영물 등의 유통">
 									<label for="reportReviewReason6">불법촬영물 등의 유통</label>
 								</div>
 							</div>

@@ -20,6 +20,7 @@ public class GuideReadResponseDto {
 	private String content;
 	private int userId;
 	
+	private String avatar;
 	private long likecount;
 	private boolean likestatus;
 	private String username;

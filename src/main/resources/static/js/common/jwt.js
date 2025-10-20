@@ -97,11 +97,6 @@ function isTokenExpired(token) {
  * @throws {Error} - 재발급 실패 시 에러 발생
  */
 async function reissueJwt() {
-	const token = localStorage.getItem('accessToken');
-
-	if (!isTokenExpired(token)) {
-		throw new Error('액세스 토큰 유효기간 만료');
-	}
 
 	try {
 		const response = await fetch('/reissue', {
@@ -110,16 +105,28 @@ async function reissueJwt() {
 		});
 
 		const result = await response.json();
+		
+		console.log(result);
 
 		if (result.code === 'AUTH_TOKEN_REISSUE_SUCCESS') {
 			localStorage.setItem('accessToken', result.data.accessToken);
 			return result.data.accessToken;
 		}
 		else {
+			console.log(result);
+			alert('토큰 재발급 실패 1 jwt.js')
 			throw new Error(result.code);
 		}
 	}
 	catch (error) {
+		alert('토큰 재발급 실패 2 jwt.js');
+		localStorage.removeItem('accessToken');
+		// TODO : 쿠키는 서버에서 지우도록 HttpOnly는 js에서 수정 못하므로 백엔드수정 (계속 오류가 나타난다면)
+		// document.cookie = 'refresh=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT;';
+		
+		// TODO : 로그인할거임?
+		alert('jwt.js 테스트 - 로그인 만료되었음 로그인할거임?');
+		redirectToLogin();
 		throw error;
 	}
 }
@@ -224,6 +231,7 @@ function redirectToLogin(url, isBack = false) {
 	}
 	// 비로그인
 	else {
+		reissueJwt();
 		if (confirm('로그인이 필요합니다. 로그인 페이지로 이동합니다.')) {
 			location.href = '/user/login.do';
 		}

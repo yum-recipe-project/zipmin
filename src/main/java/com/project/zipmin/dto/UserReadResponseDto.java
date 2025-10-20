@@ -21,4 +21,6 @@ public class UserReadResponseDto {
 	private String link;
 	private int point;
 	
+	private int revenue;
+	
 }

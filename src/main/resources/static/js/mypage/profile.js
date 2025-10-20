@@ -1,11 +1,14 @@
 /**
  * 전역변수
  */
-const size = 20;
+const recipeSize = 16;
+const classSize = 16;
 let totalPages = 0;
-let totalElements = 0;
+let recipeTotalElements = 0;
+let classTotalElements = 0;
 let page = 0;
-let sort = 'postdate-desc';
+let recipeSort = 'postdate-desc';
+let classStatus = '';
 let recipeList = [];
 let classList = [];
 
@@ -27,11 +30,11 @@ document.addEventListener('DOMContentLoaded', function() {
             
             tabItems.forEach(button => button.classList.remove('active'));
             this.classList.add('active');
-            
             contentItems.forEach(content => content.style.display = 'none');
             contentItems[index].style.display = 'flex';
 			
-			sort = 'postdate-desc';
+			recipeSort = 'postdate-desc';
+			classStatus = '';
 			page = 0;
 			recipeList = [];
 			classList = [];
@@ -41,18 +44,16 @@ document.addEventListener('DOMContentLoaded', function() {
 			classWrap.querySelector('.btn_sort.active')?.classList.remove('active');
 			classWrap.querySelectorAll('.btn_sort')[0].classList.add('active');
 			
-			fetchRecipeList();
-			fetchClassList();
+			fetchUserRecipeList();
+			fetchUserClassList();
         });
     });
 
     // 선택된 탭 활성화
     tabItems.forEach(button => button.classList.remove('active'));
     contentItems.forEach(content => content.style.display = 'none');
-
     tabItems[0].classList.add('active');
     contentItems[0].style.display = 'flex';
-	
 });
 
 
@@ -74,11 +75,11 @@ document.addEventListener('DOMContentLoaded', function() {
 			recipeWrap.querySelector('.btn_sort.active')?.classList.remove('active');
 			btn.classList.add('active');
 			
-			sort = btn.dataset.sort;
+			recipeSort = btn.dataset.sort;
 			page = 0;
 			recipeList = [];
 			
-			fetchRecipeList();
+			fetchUserRecipeList();
 		});
 	});
 	
@@ -89,17 +90,17 @@ document.addEventListener('DOMContentLoaded', function() {
 			classWrap.querySelector('.btn_sort.active')?.classList.remove('active');
 			btn.classList.add('active');
 			
-			sort = btn.dataset.sort;
+			classStatus = btn.dataset.status;
 			page = 0;
 			classList = [];
 			
-			fetchClassList();
+			fetchUserClassList();
 		});
 	});
 	
 	fetchUser();
-	fetchRecipeList();
-	fetchClassList();
+	fetchUserRecipeList();
+	fetchUserClassList();
 });
 
 
@@ -132,14 +133,15 @@ async function fetchUser() {
 			userWrap.querySelector('.user_introduce').innerText = result.data.introduce;
 			userWrap.querySelector('.likecount').innerText = `${result.data.likecount}명`;
 			if (result.data.link) {
+				userWrap.querySelector('.user_link').innerHTML = '';
 				const p = document.createElement('p');
 				p.className = 'user_link';
 				p.textContent = result.data.link;
-				userWrap.appendChild(p);
+				userWrap.querySelector('.user_link').appendChild(p);
 			}
 		}
 		else if (result.code === 'LIKE_COUNT_FAIL') {
-			alertDanger('좋아요 수 집계에 실패했습니다.');
+			alertDanger('프로필 조회에 실패했습니다.');
 		}
 		else if (result.code === 'USER_INVALID_INPUT') {
 			alertDanger('입력값이 유효하지 않습니다.');
@@ -150,16 +152,12 @@ async function fetchUser() {
 		else if (result.code === 'USER_NOT_FOUND') {
 			alertDanger('해당 사용자를 찾을 수 없습니다.');
 		}
-		else if (code === 'INTERNAL_SERVER_ERROR') {
-			alertDanger('서버 내부에서 오류가 발생했습니다.');
-		}
-		else {
-			console.log(error);
+		else if (result.code === 'INTERNAL_SERVER_ERROR') {
+			throw new Error('서버 내부 오류 발생');
 		}
 	}
 	catch(error) {
 		console.log(error);
-		alertDanger('알 수 없는 오류가 발생했습니다.');
 	}
 }
 
@@ -168,9 +166,9 @@ async function fetchUser() {
 
 
 /**
- * 레시피 목록 데이터를 가져오는 함수
+ * 사용자의 레시피 목록 데이터를 가져오는 함수
  */
-async function fetchRecipeList() {
+async function fetchUserRecipeList() {
 	
 	const userWrap = document.getElementById('userWrap');
 	const recipeWrap = document.getElementById('recipeWrap');
@@ -180,9 +178,9 @@ async function fetchRecipeList() {
 		const id = new URLSearchParams(window.location.search).get('id');
 		
 		const params = new URLSearchParams({
-			sort: sort,
+			sort: recipeSort,
 			page : page,
-			size : size
+			size : recipeSize
 		}).toString();
 		
 		const response = await fetch(`/users/${id}/recipes?${params}`, {
@@ -192,42 +190,30 @@ async function fetchRecipeList() {
 		
 		const result = await response.json();
 		
-		if (result.code === 'USER_READ_RECIPE_LIST_SUCCESS') {
-			
+		if (result.code === 'RECIPE_READ_LIST_SUCCESS') {
 			// 전역변수 설정
 			totalPages = result.data.totalPages;
-			totalElements = result.data.totalElements;
+			recipeTotalElements = result.data.totalElements;
 			page = result.data.number;
 			recipeList = result.data.content;
 			
 			// 렌더링
-			userWrap.querySelector('.recipecount').innerText = `${totalElements}개`;
-			recipeWrap.querySelector('.recipe_header').innerText = `레시피 ${totalElements}개`;
-			renderRecipeList(recipeList);
-			renderRecipePagination();
-			
-			// 결과 없음 표시
-			if (totalPages === 0) {
-				recipeWrap.querySelector('.recipe_list').style.display = 'none';
-				recipeWrap.querySelector('.list_empty')?.remove();
-				recipeWrap.querySelector('.recipe_list').insertAdjacentElement('afterend', renderRecipeListEmpty());
-			}
-			else {
-				recipeWrap.querySelector('.list_empty')?.remove();
-				recipeWrap.querySelector('.recipe_list').style.display = '';
-			}
+			userWrap.querySelector('.recipecount').innerText = `${recipeTotalElements}개`;
+			recipeWrap.querySelector('.recipe_header').innerText = `레시피 ${recipeTotalElements}개`;
+			renderUserRecipeList(recipeList);
+			renderPagination(fetchUserRecipeList, recipeWrap);
 			
 			// 스크롤 최상단 이동
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
-		else if (result.code === 'USER_READ_RECIPE_LIST_FAIL') {
-			alertDanger('사용자 레시피 목록 조회에 실패했습니다.');
+		else if (result.code === 'RECIPE_READ_LIST_FAIL') {
+			alertDanger('사용자의 레시피 목록 조회에 실패했습니다.');
 		}
 		else if (result.code === 'RECIPE_CATEGORY_READ_LIST_FAIL') {
-			alertDanger('레시피 카테고리 목록 조회에 실패했습니다.');
+			alertDanger('사용자의 레시피 목록 조회에 실패했습니다.');
 		}
 		else if (result.code === 'LIKE_COUNT_FAIL') {
-			alertDanger('좋아요 수 집계에 실패했습니다.');
+			alertDanger('사용자의 레시피 목록 조회에 실패했습니다.');
 		}
 		else if (result.code === 'USER_INVALID_INPUT') {
 			alertDanger('입력값이 유효하지 않습니다.');
@@ -238,16 +224,12 @@ async function fetchRecipeList() {
 		else if (result.code === 'LIKE_INVALID_INPUT') {
 			alertDanger('입력값이 유효하지 않습니다.');
 		}
-		else if (code === 'INTERNAL_SERVER_ERROR') {
-			alertDanger('서버 내부에서 오류가 발생했습니다.');
-		}
-		else {
-			console.log(error);
+		else if (result.code === 'INTERNAL_SERVER_ERROR') {
+			throw new Error('서버 내부 오류 발생');
 		}
 	}
 	catch (error) {
 		console.log(error);
-		alertDanger('알 수 없는 오류가 발생했습니다.');
 	}
 }
 
@@ -255,9 +237,9 @@ async function fetchRecipeList() {
 
 
 /**
- * 클래스 목록 데이터를 가져오는 함수
+ * 사용자 클래스 목록 데이터를 가져오는 함수
  */
-async function fetchClassList() {
+async function fetchUserClassList() {
 	
 	const classWrap = document.getElementById('classWrap');
 	
@@ -265,9 +247,10 @@ async function fetchClassList() {
 		const id = new URLSearchParams(window.location.search).get('id');
 				
 		const params = new URLSearchParams({
-			sort: sort,
+			approval: 'APPROVED',
+			status: classStatus.toUpperCase(),
 			page : page,
-			size : size
+			size : classSize
 		}).toString();
 		
 		const response = await fetch(`/users/${id}/classes?${params}`, {
@@ -277,43 +260,29 @@ async function fetchClassList() {
 		
 		const result = await response.json();
 		
-		if (result.code === 'USER_READ_CLASS_LIST_SUCCESS') {
+		if (result.code === 'CLASS_READ_LIST_SUCCESS') {
 			// 전역변수 설정
 			totalPages = result.data.totalPages;
-			totalElements = result.data.totalElements;
+			classTotalElements = result.data.totalElements;
 			page = result.data.number;
 			classList = result.data.content;
 			
 			// 렌더링
-			classWrap.querySelector('.class_header').innerText = `클래스 ${totalElements}개`;
-			renderClassList(classList);
-			renderClassPagination();
-			
-			// 결과 없음 표시
-			if (totalPages === 0) {
-				classWrap.querySelector('.class_list').style.display = 'none';
-				classWrap.querySelector('.list_empty')?.remove();
-				classWrap.querySelector('.class_list').insertAdjacentElement('afterend', renderClassListEmpty());
-			}
-			else {
-				classWrap.querySelector('.list_empty')?.remove();
-				classWrap.querySelector('.class_list').style.display = '';
-			}
+			classWrap.querySelector('.class_header').innerText = `클래스 ${classTotalElements}개`;
+			renderUserClassList(classList);
+			renderPagination(fetchUserClassList, classWrap);
 			
 			// 스크롤 최상단 이동
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
-		else if (result.code === 'USER_READ_CLASS_LIST_FAIL') {
-			alertDanger('사용자 클래스 목록 조회에 실패했습니다.');
+		else if (result.code === 'CLASS_READ_LIST_FAIL') {
+			alertDanger('사용자의 클래스 목록 조회에 실패했습니다.');
 		}
 		else if (result.code === 'CLASS_INVALID_INPUT') {
 			alertDanger('입력값이 유효하지 않습니다.');
 		}
-		else if (code === 'INTERNAL_SERVER_ERROR') {
-			console.log(error);
-		}
-		else {
-			console.log(error);
+		else if (result.code === 'INTERNAL_SERVER_ERROR') {
+			throw new Error('서버 내부 오류 발생');
 		}
 	}
 	catch (error) {
@@ -327,12 +296,33 @@ async function fetchClassList() {
 
 
 /**
- * 레시피 목록을 화면에 렌더링하는 함수
+ * 사용자 레시피 목록을 화면에 렌더링하는 함수
  */
-function renderRecipeList(recipeList) {
+function renderUserRecipeList(recipeList) {
+	
 	const recipeWrap = document.getElementById('recipeWrap');
 	const container = recipeWrap.querySelector('.recipe_list');
 	container.innerHTML = '';
+	
+	// 사용자의 레시피 목록이 존재하지 않는 경우
+	if (recipeList === null || recipeList.length === 0) {
+		recipeWrap.querySelector('.recipe_list').style.display = 'none';
+		recipeWrap.querySelector('.list_empty')?.remove();
+		
+		const wrapper = document.createElement('div');
+	    wrapper.className = 'list_empty';
+		
+	    const span = document.createElement('span');
+	    span.textContent = '작성된 레시피가 없습니다';
+	    wrapper.appendChild(span);
+		container.insertAdjacentElement('afterend', wrapper);
+
+	    return;
+	}
+	
+	// 사용자의 레시피 목록이 존재하는 경우
+	recipeWrap.querySelector('.list_empty')?.remove();
+	recipeWrap.querySelector('.recipe_list').style.display = '';
 	
 	recipeList.forEach(recipe => {
 		const li = document.createElement('li');
@@ -396,10 +386,31 @@ function renderRecipeList(recipeList) {
 /**
  * 클래스 목록을 화면에 랜더링하는 함수
  */
-function renderClassList(classList) {
+function renderUserClassList(classList) {
+	
 	const classWrap = document.getElementById('classWrap');
 	const container = classWrap.querySelector('.class_list');
 	container.innerHTML = '';
+	
+	// 사용자의 클래스 목록이 존재하지 않는 경우
+	if (classList === null || classList.length === 0) {
+		classWrap.querySelector('.class_list').style.display = 'none';
+		classWrap.querySelector('.list_empty')?.remove();
+		
+		const wrapper = document.createElement('div');
+	    wrapper.className = 'list_empty';
+		
+	    const span = document.createElement('span');
+	    span.textContent = '작성된 클래스가 없습니다';
+	    wrapper.appendChild(span);
+		container.insertAdjacentElement('afterend', wrapper);
+
+	    return;
+	}
+
+	// 사용자의 클래스 목록이 존재하는 경우
+	classWrap.querySelector('.list_empty')?.remove();
+	classWrap.querySelector('.class_list').style.display = '';
 	
 	classList.forEach(classs => {
 		const li = document.createElement('li');
@@ -441,206 +452,6 @@ function renderClassList(classList) {
 		info.append(title, introduce, detail);
 		li.append(link, info);
 		container.appendChild(li);
-	});
-}
-
-
-
-
-
-/**
- * 레시피 목록 결과 없음을 화면에 렌더링하는 함수
- */
-function renderRecipeListEmpty() {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'list_empty';
-	
-    const span = document.createElement('span');
-    span.textContent = '작성된 레시피가 없습니다';
-    wrapper.appendChild(span);
-
-    return wrapper;
-}
-
-
-
-
-
-/**
- * 클래스 목록 결과 없음을 화면에 렌더링하는 함수
- */
-function renderClassListEmpty() {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'list_empty';
-	
-    const span = document.createElement('span');
-    span.textContent = '개설된 쿠킹클래스가 없습니다';
-    wrapper.appendChild(span);
-
-    return wrapper;
-}
-
-
-
-
-
-/**
- * 레시피 페이지네이션을 생성하는 함수
- */
-function renderRecipePagination() {
-	const recipeWrap = document.getElementById('recipeWrap');
-	const pagination = recipeWrap.querySelector('.pagination ul');
-	pagination.innerHTML = '';
-	
-	if (totalPages === 0) {
-		return;
-	}
-	
-	let startPage = Math.floor(page / 5) * 5;
-	let endPage = Math.min(startPage + 5 - 1, totalPages - 1);
-	
-	// 이전 버튼 (5개씩 이동)
-	const prevLi = document.createElement('li');
-	const prevLink = document.createElement('a');
-	prevLink.href = '#';
-	prevLink.className = 'prev';
-	prevLink.dataset.page = Math.max(0, startPage - 5);
-	
-	const prevImg = document.createElement('img');
-	prevImg.src = '/images/common/chevron_left.png';
-	prevLink.appendChild(prevImg);
-	
-	if (startPage === 0) {
-		prevLink.style.pointerEvents = 'none';
-		prevLink.style.opacity = '0.3';
-	}
-	
-	prevLi.appendChild(prevLink);
-	pagination.appendChild(prevLi);
-
-	// 페이지 번호
-	for (let i = startPage; i <= endPage; i++) {
-		const li = document.createElement('li');
-		const a = document.createElement('a');
-		a.href = '#';
-		a.className = 'page' + (i === page ? ' active' : '');
-		a.dataset.page = i;
-		a.textContent = i + 1;
-		li.appendChild(a);
-		pagination.appendChild(li);
-	}
-
-	// 다음 버튼 (5개씩 이동)
-	const nextLi = document.createElement('li');
-	const nextLink = document.createElement('a');
-	nextLink.href = '#';
-	nextLink.className = 'next';
-	nextLink.dataset.page = Math.min(totalPages - 1, startPage + 5);
-
-	const nextImg = document.createElement('img');
-	nextImg.src = '/images/common/chevron_right.png';
-	nextLink.appendChild(nextImg);
-	
-	if (page === totalPages - 1) {
-		nextLink.style.pointerEvents = 'none';
-		nextLink.style.opacity = '0.3';
-	}
-
-	nextLi.appendChild(nextLink);
-	pagination.appendChild(nextLi);
-
-	// 데이터 패치
-	pagination.querySelectorAll('a').forEach(link => {
-		link.addEventListener('click', function (event) {
-			event.preventDefault();
-			const newPage = Number(this.dataset.page);
-			if (!isNaN(newPage) && newPage >= 0 && newPage < totalPages) {
-				page = newPage;
-				fetchRecipeList();
-			}
-		});
-	});
-}
-
-
-
-
-
-/**
- * 클래스 페이지네이션을 생성하는 함수
- */
-function renderClassPagination() {
-	const classWrap = document.getElementById('classWrap');
-	const pagination = classWrap.querySelector('.pagination ul');
-	pagination.innerHTML = '';
-	
-	if (totalPages === 0) {
-		return;
-	}
-	
-	let startPage = Math.floor(page / 5) * 5;
-	let endPage = Math.min(startPage + 5 - 1, totalPages - 1);
-	
-	// 이전 버튼 (5개씩 이동)
-	const prevLi = document.createElement('li');
-	const prevLink = document.createElement('a');
-	prevLink.href = '#';
-	prevLink.className = 'prev';
-	prevLink.dataset.page = Math.max(0, startPage - 5);
-	
-	const prevImg = document.createElement('img');
-	prevImg.src = '/images/common/chevron_left.png';
-	prevLink.appendChild(prevImg);
-	
-	if (startPage === 0) {
-		prevLink.style.pointerEvents = 'none';
-		prevLink.style.opacity = '0.3';
-	}
-	
-	prevLi.appendChild(prevLink);
-	pagination.appendChild(prevLi);
-
-	// 페이지 번호
-	for (let i = startPage; i <= endPage; i++) {
-		const li = document.createElement('li');
-		const a = document.createElement('a');
-		a.href = '#';
-		a.className = 'page' + (i === page ? ' active' : '');
-		a.dataset.page = i;
-		a.textContent = i + 1;
-		li.appendChild(a);
-		pagination.appendChild(li);
-	}
-
-	// 다음 버튼 (5개씩 이동)
-	const nextLi = document.createElement('li');
-	const nextLink = document.createElement('a');
-	nextLink.href = '#';
-	nextLink.className = 'next';
-	nextLink.dataset.page = Math.min(totalPages - 1, startPage + 5);
-
-	const nextImg = document.createElement('img');
-	nextImg.src = '/images/common/chevron_right.png';
-	nextLink.appendChild(nextImg);
-	
-	if (page === totalPages - 1) {
-		nextLink.style.pointerEvents = 'none';
-		nextLink.style.opacity = '0.3';
-	}
-
-	nextLi.appendChild(nextLink);
-	pagination.appendChild(nextLi);
-
-	// 데이터 패치
-	pagination.querySelectorAll('a').forEach(link => {
-		link.addEventListener('click', function (event) {
-			event.preventDefault();
-			const newPage = Number(this.dataset.page);
-			if (!isNaN(newPage) && newPage >= 0 && newPage < totalPages) {
-				page = newPage;
-				fetchClassList();
-			}
-		});
 	});
 }
 

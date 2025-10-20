@@ -23,8 +23,12 @@ import com.project.zipmin.api.ClassErrorCode;
 import com.project.zipmin.api.ClassSuccessCode;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.CommentSuccessCode;
+import com.project.zipmin.api.FundErrorCode;
+import com.project.zipmin.api.FundSuccessCode;
+import com.project.zipmin.api.KitchenSuccessCode;
 import com.project.zipmin.api.RecipeErrorCode;
 import com.project.zipmin.api.RecipeSuccessCode;
+import com.project.zipmin.api.ReviewErrorCode;
 import com.project.zipmin.api.ReviewSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
@@ -32,6 +36,7 @@ import com.project.zipmin.dto.ChompReadResponseDto;
 import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
+import com.project.zipmin.dto.GuideReadResponseDto;
 import com.project.zipmin.dto.RecipeReadResponseDto;
 import com.project.zipmin.dto.ReviewReadResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
@@ -47,10 +52,20 @@ import com.project.zipmin.service.UserService;
 import com.project.zipmin.service.WithdrawService;
 import com.project.zipmin.swagger.ChompReadListFailResponse;
 import com.project.zipmin.swagger.ChompReadListSuccessResponse;
+import com.project.zipmin.swagger.ClassAlreadyEndedResponse;
+import com.project.zipmin.swagger.ClassForbiddenResponse;
+import com.project.zipmin.swagger.ClassInvalidInputResponse;
+import com.project.zipmin.swagger.ClassNotFoundResponse;
+import com.project.zipmin.swagger.ClassReadListFailResponse;
+import com.project.zipmin.swagger.ClassReadListSuccessResponse;
+import com.project.zipmin.swagger.ClassUnauthorizedAccessResponse;
+import com.project.zipmin.swagger.ClassUpdateApprovalFailResponse;
+import com.project.zipmin.swagger.ClassUpdateApprovalSuccessResponse;
 import com.project.zipmin.swagger.CommentForbiddenResponse;
 import com.project.zipmin.swagger.CommentInvalidInputResponse;
 import com.project.zipmin.swagger.CommentReadListFailResponse;
 import com.project.zipmin.swagger.CommentReadListSuccessResponse;
+import com.project.zipmin.swagger.CommentUnauthorizedAccessResponse;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.LikeCountFailResponse;
 import com.project.zipmin.swagger.LikeInvalidInputResponse;
@@ -65,6 +80,7 @@ import com.project.zipmin.swagger.UserInvalidInputResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
 import com.project.zipmin.swagger.UserReadListFailResponse;
 import com.project.zipmin.swagger.UserReadListSuccessResponse;
+import com.project.zipmin.swagger.UserUnauthorizedAccessResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -92,6 +108,7 @@ public class AdminController {
 	
 	
 	
+	// 사용자 목록 조회
 	@Operation(
 	    summary = "사용자 목록 조회"
 	)
@@ -109,11 +126,17 @@ public class AdminController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserReadListFailResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "401",
+				responseCode = "400",
 				description = "입력값이 유효하지 않음",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserUnauthorizedAccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
 				description = "권한 없는 사용자의 접근",
@@ -137,8 +160,17 @@ public class AdminController {
 	@GetMapping("/admin/users")
 	public ResponseEntity<?> readUserPage(
 			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
+			@Parameter(description = "검색 필드", required = false) @RequestParam(required = false) String field,
+			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
+			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
 			@Parameter(description = "페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지 크기") @RequestParam int size) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
+		}
 		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -149,10 +181,37 @@ public class AdminController {
 		}
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<UserReadResponseDto> userPage = userService.readUserPage(category, pageable);
+		Page<UserReadResponseDto> userPage = userService.readUserPage(category, field, keyword, sort, pageable);
 		
 		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, userPage));
+	}
+	
+	
+	
+	
+	
+	// 출금 목록 조회
+	@GetMapping("/admin/withdraw")
+	public ResponseEntity<?> readWithdrawList(
+	        @RequestParam int page,
+	        @RequestParam int size) {
+		
+		// TODO : 로그인 여부 확인
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(FundErrorCode.FUND_FORBIDDEN);
+			}
+		}
+
+	    Pageable pageable = PageRequest.of(page, size);
+	    Page<WithdrawReadResponseDto> withdrawPage = withdrawService.readWithdrawPage(pageable);
+
+	    return ResponseEntity.status(FundSuccessCode.WITHDRAW_READ_LIST_SUCCESS.getStatus())
+	            .body(ApiResponse.success(FundSuccessCode.WITHDRAW_READ_LIST_SUCCESS, withdrawPage));
 	}
 	
 	
@@ -182,11 +241,17 @@ public class AdminController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = RecipeInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "401",
+				responseCode = "400",
 				description = "입력값이 유효하지 않음",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserUnauthorizedAccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
 				description = "권한 없는 사용자의 접근",
@@ -212,8 +277,15 @@ public class AdminController {
 			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) List<String> categoryList,
 			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
 			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
-			@RequestParam int page,
-			@RequestParam int size) {
+			@Parameter(description = "페이지 번호") @RequestParam int page,
+			@Parameter(description = "페이지 크기") @RequestParam int size) {
+		
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(RecipeErrorCode.RECIPE_UNAUTHORIZED_ACCESS);
+		}
 		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -234,9 +306,27 @@ public class AdminController {
 	
 	
 	
-	// 여기에 키친가이드
-	
-	
+	// 가이드 목록 조회
+	@GetMapping("/admin/guides")
+	public ResponseEntity<?> listGuide(
+			@RequestParam(required = false) String category,
+			@RequestParam(required = false) String keyword, 
+		    @RequestParam(required = false) String sort,
+		    @RequestParam int page,
+		    @RequestParam int size) {
+		
+		// TODO : 로그인 여부 확인
+		
+		// TODO : 권한 확인
+		
+		Pageable pageable = PageRequest.of(page, size);
+		Page<GuideReadResponseDto> guidePage = null;
+		
+		guidePage = kitchenService.readGuidePage(category, keyword, sort, pageable);
+		
+        return ResponseEntity.status(KitchenSuccessCode.KITCHEN_READ_LIST_SUCCESS.getStatus())
+                .body(ApiResponse.success(KitchenSuccessCode.KITCHEN_READ_LIST_SUCCESS, guidePage));
+	}
 	
 	
 	
@@ -264,6 +354,7 @@ public class AdminController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		// 401 CHOMP_UNAUTHORIZED_ACCESS
 		// 403 CHOMP_FORBIDDEN
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
@@ -286,6 +377,12 @@ public class AdminController {
 			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
 		    @Parameter(description = "페이지 번호") @RequestParam int page,
 		    @Parameter(description = "페이지 크기") @RequestParam int size) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(ChompErrorCode.CHOMP_UNAUTHORIZED_ACCESS);
+		}
 		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -359,7 +456,13 @@ public class AdminController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = ReportInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "404",
+				responseCode = "401",
+				description = "로그인되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = CommentUnauthorizedAccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
 				description = "권한 없는 사용자의 접근",
 				content = @Content(
 						mediaType = "application/json",
@@ -386,6 +489,12 @@ public class AdminController {
 			@Parameter(description = "페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지 크기") @RequestParam int size) {
 		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
+		}
+		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
@@ -405,14 +514,23 @@ public class AdminController {
 	
 	
 	
-	// 리뷰
-	// 댓글 목록 조회 (관리자)
+	// 리뷰 목록 조회 (관리자)
+	
+	// TODO : API 문서 작성
+	
+	// 리뷰 목록 조회 (관리자)
 	@GetMapping("/admin/reviews")
 	public ResponseEntity<?> readAdminReview(
 			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
 			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
 			@Parameter(description = "페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지 크기") @RequestParam int size) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(ReviewErrorCode.REVIEW_UNAUTHORIZED_ACCESS);
+		}
 		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -425,23 +543,68 @@ public class AdminController {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<ReviewReadResponseDto> reviewPage = reviewService.readAdminReviewPage(keyword, sort, pageable);
 		
-		return ResponseEntity.status(RecipeSuccessCode.RECIPE_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(RecipeSuccessCode.RECIPE_READ_LIST_SUCCESS, reviewPage));
+		return ResponseEntity.status(ReviewSuccessCode.REVIEW_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(ReviewSuccessCode.REVIEW_READ_LIST_SUCCESS, reviewPage));
 	}
 	
 	
 	
 	
 	
-	// 쿠킹클래스
-	// 200 CLASS_READ_LIST_SUCCESS
-	// 400 CLASS_READ_LIST_FAIL
-	// 400 CLASS_INVALID_INPUT
-	// 400 USER_INVALID_INPUT
-	// 403 CLASS_FORBIDDEN
-	// 404 USER_NOT_FOUND
-	// 500
-
+	// 쿠킹클래스 목록 조회
+	@Operation(
+	    summary = "쿠킹클래스 목록 조회"
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "쿠킹클래스 목록 조회 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassReadListSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "쿠킹클래스 목록 조회 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassReadListFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassUnauthorizedAccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "권한 없는 사용자의 접근",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
 	// 쿠킹클래스 목록 조회
 	@GetMapping("/admin/classes")
 	public ResponseEntity<?> listClass(
@@ -452,6 +615,12 @@ public class AdminController {
 			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
 		    @Parameter(description = "페이지 번호") @RequestParam int page,
 		    @Parameter(description = "페이지 크기") @RequestParam int size) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
+		}
 		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -472,18 +641,71 @@ public class AdminController {
 	
 	
 	
-	
-	// 200 CLASS_UPDATE_APPROVAL_SUCCESS
-	// 400 CLASS_UPDATE_APPROVAL_FAIL
-	// 400 CLASS_INVALID_INPUT
-	// 400 USER_INVALID_INPUT
-	// 401 로그인되지 않은 사용자 CLASS_UNAUTHRIZED
-	// 403 CLASS_FORBIDDEN
-	// 403 CLASS_ALREADY_ENDED
-	// 404 CLASS_NOT_FOUND
-	// 404 USER_NOT_FOUND
-	// 500 서버 내부 오류
-	
+	@Operation(
+	    summary = "쿠킹클래스 승인 수정"
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "쿠킹클래스 승인 수정 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassUpdateApprovalSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "쿠킹클래스 승인 수정 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassUpdateApprovalFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassUnauthorizedAccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "권한 없는 사용자의 접근",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "클래스 종료 후 접근 시도",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassAlreadyEndedResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 클래스를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ClassNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
 	// 클래스 승인 수정
 	@PatchMapping("/admin/classes/{id}/approval")
 	public ResponseEntity<?>  updateClassApproval(
@@ -501,38 +723,5 @@ public class AdminController {
 		return ResponseEntity.status(ClassSuccessCode.CLASS_UPDATE_APPROVAL_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_UPDATE_APPROVAL_SUCCESS, null));
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// 전체 사용자 출금 내역 목록 조회
-	@GetMapping("/admin/withdraw")
-	public ResponseEntity<?> readWithdrawList(
-	        @RequestParam int page,
-	        @RequestParam int size) {
-	    System.err.println("입력값 page: " + page + " size: " + size);
-
-	    // 페이지 정보 생성
-	    Pageable pageable = PageRequest.of(page, size);
-
-	    // 서비스 호출: 모든 출금 내역 조회
-	    Page<WithdrawReadResponseDto> withdrawPage = withdrawService.readAllWithdrawPage(pageable);
-	    System.err.println("서비스 호출 완료: " + withdrawPage);
-
-	    // 응답 반환
-	    return ResponseEntity.status(UserSuccessCode.USER_WITHDRAW_HISTORY_READ_SUCCESS.getStatus())
-	            .body(ApiResponse.success(UserSuccessCode.USER_WITHDRAW_HISTORY_READ_SUCCESS, withdrawPage));
-	}
-
-	
-	
-	
-
 	
 }

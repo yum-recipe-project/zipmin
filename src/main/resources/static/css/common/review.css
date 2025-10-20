@@ -246,6 +246,7 @@
 }
 
 #container .review_content {
+	white-space: pre-line;
 	font-size: 14px;
 	font-weight: 400;
 	line-height: 1.4;

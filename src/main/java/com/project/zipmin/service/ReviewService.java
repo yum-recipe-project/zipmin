@@ -18,6 +18,8 @@ import com.project.zipmin.api.ReviewErrorCode;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
+import com.project.zipmin.dto.ReportCreateRequestDto;
+import com.project.zipmin.dto.ReportCreateResponseDto;
 import com.project.zipmin.dto.ReviewCreateRequestDto;
 import com.project.zipmin.dto.ReviewCreateResponseDto;
 import com.project.zipmin.dto.ReviewReadMyResponseDto;
@@ -140,23 +142,29 @@ public class ReviewService {
     		case "id-asc":
     			sortSpec = Sort.by(Sort.Order.asc("id")); 
     			break;
+    		case "content-desc":
+    			sortSpec = Sort.by(Sort.Order.desc("content"), Sort.Order.desc("id"));
+    			break;
+    		case "content-asc":
+    			sortSpec = Sort.by(Sort.Order.asc("content"), Sort.Order.asc("id"));
+    			break;
     		case "postdate-desc":
-    			sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id")); // 최신순
+    			sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id"));
     			break;
     		case "postdate-asc":
-    			sortSpec = Sort.by(Sort.Order.asc("postdate"), Sort.Order.asc("id")); // 오래된순
+    			sortSpec = Sort.by(Sort.Order.asc("postdate"), Sort.Order.asc("id"));
     			break;
     		case "score-desc":
-    			sortSpec = Sort.by(Sort.Order.desc("score"), Sort.Order.desc("id")); // 별점 높은순
+    			sortSpec = Sort.by(Sort.Order.desc("score"), Sort.Order.desc("id"));
     			break;
     		case "score-asc":
-    			sortSpec = Sort.by(Sort.Order.asc("score"), Sort.Order.asc("id")); // 별점 낮은순
+    			sortSpec = Sort.by(Sort.Order.asc("score"), Sort.Order.asc("id")); 
     			break;
     		case "likecount-desc":
-    			sortSpec = Sort.by(Sort.Order.desc("likecount"), Sort.Order.desc("id")); // 좋아요 높은순
+    			sortSpec = Sort.by(Sort.Order.desc("likecount"), Sort.Order.desc("id"));
     			break;
     		case "likecount-asc":
-    			sortSpec = Sort.by(Sort.Order.asc("likecount"), Sort.Order.asc("id")); // 좋아요 낮은순
+    			sortSpec = Sort.by(Sort.Order.asc("likecount"), Sort.Order.asc("id"));
     			break;
     		default:
     			break;
@@ -428,6 +436,32 @@ public class ReviewService {
     
     
     
+    // 리뷰 신고
+ 	public ReportCreateResponseDto reportReview(ReportCreateRequestDto reportDto) {
+ 		
+ 		// 입력값 검증
+ 		if (reportDto == null || reportDto.getTablename() == null
+ 				|| reportDto.getRecodenum() == null || reportDto.getReason() == null
+ 				|| reportDto.getUserId() == null) {
+ 			throw new ApiException(ReviewErrorCode.REVIEW_INVALID_INPUT);
+ 		}
+ 		
+ 		// 리뷰 존재 여부 확인
+ 		if (reviewRepository.existsById(reportDto.getRecodenum())) {
+ 			new ApiException(ReviewErrorCode.REVIEW_NOT_FOUND);
+ 		}
+ 		
+ 		// 신고 작성
+ 		try {
+ 			return reportService.createReport(reportDto);
+ 		}
+ 		catch (ApiException e) {
+ 		    throw e;
+ 		}
+ 		catch (Exception e) {
+ 		    throw new ApiException(ReviewErrorCode.REVIEW_REPORT_FAIL);
+ 		}
+ 	}
     
     
 }

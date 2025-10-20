@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 });
 
+
+
+
+
 /**
  * 사용자가 저장한 키친가이드 목록 데이터를 가져오는 함수
  */
@@ -28,19 +32,41 @@ async function fetchSavedGuideList() {
         }).toString();
 
         const response = await instance.get(`/users/${payload.id}/likes/guides?${params}`);
+        const result = response.data;
 
-		
-		console.log(response);
-		
-		renderSavedGuideList(response.data.data.content);
-		page = response.data.data.number + 1;
-		totalPages = response.data.data.totalPages;
-		document.getElementById('guideCount').innerText = response.data.data.totalElements + '개';
-		document.querySelector('.btn_more').style.display = page >= totalPages ? 'none' : 'block';
+        if (result.code === 'USER_READ_LIST_SUCCESS') {
+            const savedGuides = result.data.content || [];
+            page = result.data.number + 1;
+            totalPages = result.data.totalPages;
+
+            renderSavedGuideList(savedGuides);
+            document.getElementById('guideCount').innerText = result.data.totalElements + '개';
+            document.querySelector('.btn_more').style.display = page >= totalPages ? 'none' : 'block';
+        }
+        else if (result.code === 'USER_INVALID_INPUT') {
+            alertDanger('입력값이 유효하지 않습니다.');
+        }
+        else if (result.code === 'USER_UNAUTHORIZED_ACCESS') {
+            alertDanger('로그인이 필요합니다.');
+        }
+        else if (result.code === 'USER_FORBIDDEN') {
+            alertDanger('권한이 없습니다.');
+        }
+        else if (result.code === 'INTERVAL_SERVER_ERROR') {
+            alertDanger('서버 내부에서 오류가 발생했습니다.');
+        }
+        else {
+            console.log('알 수 없는 에러:', result);
+        }
     } catch (error) {
         console.error(error);
+        alertDanger('저장한 키친가이드 목록 조회 중 오류가 발생했습니다.');
     }
 }
+
+
+
+
 
 
 
@@ -49,8 +75,18 @@ async function fetchSavedGuideList() {
  */
 function renderSavedGuideList(guideList) {
 	
-	
     const container = document.getElementById('savedGuideList');
+	
+	// 목록이 비어있는 경우 처리
+	if (!guideList || guideList.length === 0) {
+	    const emptyDiv = document.createElement('div');
+	    emptyDiv.className = 'list_empty';
+	    const span = document.createElement('span');
+	    span.textContent = '저장한 키친가이드가 없습니다.';
+	    emptyDiv.appendChild(span);
+	    container.appendChild(emptyDiv);
+	    return;
+	}
 
     guideList.forEach(guide => {
         const li = document.createElement('li');

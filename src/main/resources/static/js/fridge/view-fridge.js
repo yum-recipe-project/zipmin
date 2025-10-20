@@ -602,6 +602,7 @@ function renderMemoList(memoList) {
 
     memoList.forEach(memo => {
         const tr = document.createElement('tr');
+		tr.dataset.memoId = memo.id;		
 
         const tdName = document.createElement('td');
         tdName.textContent = memo.name;
@@ -681,9 +682,10 @@ function renderMemoList(memoList) {
 	    const selectedStock = rows
 	        .filter(row => row.querySelector('input[name="selectedMemo"]').checked)
 	        .map(row => ({
+				id: row.dataset.memoId,
 	            name: row.children[0].textContent,
 	            amount: row.children[1].textContent.replace(/[^\d.]/g, ''), 
-	            unit: row.children[1].textContent.replace(/[\d.]/g, '')     
+	            unit: row.children[1].textContent.replace(/[\d.]/g, '')
 	        }));
 
 	    if (selectedStock.length === 0) {
@@ -798,23 +800,26 @@ function renderComleteMemoList(stockList) {
     const container = modal.querySelector('.complete_memo_list');
     container.innerHTML = '';
 
-    stockList.forEach((ingredient, index) => {
+    stockList.forEach((ingredient) => {
         const tr = document.createElement('tr');
-
-        // 이름
+		tr.dataset.memoId = ingredient.id;
+		
+		// 재료명
         const tdName = document.createElement('td');
         tdName.textContent = ingredient.name;
+        tdName.className = 'memoInfo-name';
         tr.appendChild(tdName);
 
-        // 수량
+		// 용량
         const tdAmount = document.createElement('td');
         tdAmount.textContent = `${ingredient.amount}${ingredient.unit || ''}`;
+        tdAmount.className = 'memoInfo-amount'; 
         tr.appendChild(tdAmount);
 
-        // 카테고리 선택
+        // 카테고리 
         const tdCategory = document.createElement('td');
         const selectCat = document.createElement('select');
-        selectCat.className = 'form-select';
+        selectCat.className = 'form-select memoInfo-category';
         const categories = ["육류","어패류","채소류","과일류","견과류","유제품","완제품","소스류","기타"];
         categories.forEach(cat => {
             const option = document.createElement('option');
@@ -826,10 +831,10 @@ function renderComleteMemoList(stockList) {
         tdCategory.appendChild(selectCat);
         tr.appendChild(tdCategory);
 
-        // 보관방법 선택
+        // 보관방법 
         const tdStorage = document.createElement('td');
         const selectStorage = document.createElement('select');
-        selectStorage.className = 'form-select';
+        selectStorage.className = 'form-select memoInfo-storage';
         const storageOptions = ["냉장","냉동","상온"];
         storageOptions.forEach(storage => {
             const option = document.createElement('option');
@@ -841,11 +846,11 @@ function renderComleteMemoList(stockList) {
         tdStorage.appendChild(selectStorage);
         tr.appendChild(tdStorage);
 
-        // 소비기한
+        // 소비기한 
         const tdExpire = document.createElement('td');
         const inputExpire = document.createElement('input');
         inputExpire.type = 'date';
-        inputExpire.className = 'form-control';
+        inputExpire.className = 'form-control memoInfo-expdate';
         inputExpire.value = ingredient.expdate ? ingredient.expdate.slice(0,10) : '';
         tdExpire.appendChild(inputExpire);
         tr.appendChild(tdExpire);
@@ -853,5 +858,3 @@ function renderComleteMemoList(stockList) {
         container.appendChild(tr);
     });
 }
-
-

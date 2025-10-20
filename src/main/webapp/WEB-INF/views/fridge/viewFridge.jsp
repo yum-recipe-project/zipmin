@@ -18,7 +18,7 @@
 		<script src="/js/modal/edit-user-fridge-modal.js"></script>
 		<script src="/js/modal/write-memo-modal.js"></script>
 		<script src="/js/modal/edit-memo-modal.js"></script>
-<!-- 		<script src="/js/modal/memo-to-fridge-modal.js"></script> -->
+		<script src="/js/modal/memo-to-fridge-modal.js"></script>
 		
 	</head>
 	

@@ -1,21 +1,47 @@
+
 /**
- * 장보기메모에 재료 담기 모달창의 재료를 선택했는지 검증하는 함수
+ * 장보기 완료 모달 폼 검증
  */
-//document.addEventListener('DOMContentLoaded', function() {
-//    const modal = document.getElementById('viewRecipeStockModal');
-//    const button = modal.querySelector('button[type="submit"]');
-//
-//    modal.addEventListener('change', function(event) {
-//		if (event.target.matches('input[name="ingredient"]')) {
-//			const isChecked = modal.querySelector('input[name=ingredient]:checked');
-//			button.classList.toggle('disabled', !isChecked);
-//		}
-//	});
-//});
+function validateCompleteMemoForm() {
+    const modal = document.getElementById('memoToFridgeModal');
+    const rows = modal.querySelectorAll('.complete_memo_list tr');
+    let isValid = true;
 
+    rows.forEach(row => {
+        // 카테고리
+        const categorySelect = row.querySelector('.memoInfo-category');
+        if (!categorySelect.value || categorySelect.value.trim() === '') {
+            categorySelect.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            categorySelect.classList.remove('is-invalid');
+        }
 
+        // 보관방법
+        const storageSelect = row.querySelector('.memoInfo-storage');
+        if (!storageSelect.value || storageSelect.value.trim() === '') {
+            storageSelect.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            storageSelect.classList.remove('is-invalid');
+        }
 
+        // 소비기한
+        const expInput = row.querySelector('.memoInfo-expdate');
+        if (!expInput.value || expInput.value.trim() === '') {
+            expInput.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            expInput.classList.remove('is-invalid');
+        }
+    });
 
+    if (!isValid) {
+        alertDanger('모든 재료의 카테고리, 보관방법, 소비기한을 선택해주세요.');
+    }
+
+    return isValid;
+}
 
 
 
@@ -30,6 +56,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	form.addEventListener('submit', async function(event) {
 		event.preventDefault();
+		// 폼값 검증
+		if (!validateCompleteMemoForm()) return;
+		
 		try {
 		    const rows = document.querySelectorAll('.complete_memo_list tr');
 		    const fridgeItems = Array.from(rows).map(tr => ({

@@ -535,6 +535,7 @@ async function fetchUserMemoList() {
 			// 장보기 메모 목록이 존재하지 않는 경우
 			if (!memoList || memoList.length === 0) {
 				ingredientList.style.display = 'none';
+				btnWrap.innerHTML = '';
 
 				const wrapper = document.createElement('div');
 				wrapper.className = 'memo_empty_wrap';
@@ -709,7 +710,6 @@ function renderMemoList(memoList) {
 
     table.appendChild(tbody);
 
-    // 버튼 영역
     const completeBtn = document.createElement('button');
     completeBtn.className = 'btn_outline';
     completeBtn.textContent = '장보기 완료';

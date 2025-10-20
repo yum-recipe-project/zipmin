@@ -190,10 +190,6 @@ async function createUserFridge(userId, item, fridgeId) {
         const response = await instance.post(`/users/${userId}/fridges`, userFridgeData, {
             headers: getAuthHeaders()
         });
-
-        if (response.data.code === 'USER_FRIDGE_CREATE_SUCCESS') {
-            console.log(`✅ ${item.name} 사용자 냉장고 등록 완료`);
-        } 
     } 
 	catch(error) {
 		const code = error?.response?.data?.code;
@@ -241,7 +237,6 @@ async function deleteMemo(memoId) {
         });
 		
 		if (response.data.code === 'MEMO_DELETE_SUCCESS') {
-		    alertPrimary(`메모(ID: ${memoId})가 삭제되었습니다.`);
 		    return true;
 		} else {
 		    return false;

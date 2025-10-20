@@ -86,10 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 			        if (item.memoId) {
 						// 메모에서 삭제
-			            const deleted = await deleteMemo(item.memoId);
-			            if (deleted) {
-							console.log('메모 삭제완료');
-			            }
+			            await deleteMemo(item.memoId);
 			        }
 			    }
 			}
@@ -114,12 +111,20 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 async function createFridge(item) {
     try {
-		// 카테고리별 이미지 설정
-		// TODO: 카테고리별 이미지 추가하기
-		let imagePath = '/images/fridge/onion.png';
-		if (item.category === '육류') {
-		    imagePath = '/images/fridge/pig.png';
-		}
+		// 카테고리별 이미지 매핑
+		const categoryImages = {
+		    '육류': '/images/fridge/pig.png',
+		    '어패류': '/images/fridge/fish.png',
+		    '채소류': '/images/fridge/grass.png',   
+		    '과일류': '/images/fridge/apple.png',
+		    '견과류': '/images/fridge/almond.png',
+		    '유제품': '/images/fridge/milk.png',
+		    '완제품': '/images/fridge/dinner.png',
+		    '소스류': '/images/fridge/ketchup.png',   
+		    '기타': '/images/fridge/cutlery.png'  
+		};
+
+		const imagePath = categoryImages[item.category] || '/images/fridge/cutlery.png';
 		
         const data = {
             image: imagePath,
@@ -232,7 +237,7 @@ async function deleteMemo(memoId) {
         const token = localStorage.getItem('accessToken');
         const userId = parseJwt(token).id;
 
-        await instance.delete(`/users/${userId}/memos/${memoId}`, {
+        const response = await instance.delete(`/users/${userId}/memos/${memoId}`, {
             headers: getAuthHeaders()
         });
 		

@@ -566,7 +566,26 @@ async function fetchUserMemoList() {
 		}
 	}
 	catch (error) {
-		console.log(error);
+		const code = error?.response?.data?.code;
+
+		if (code === 'MEMO_UNAUTHORIZED_ACCESS') {
+			alertDanger('로그인되지 않은 사용자입니다.');
+		}
+		else if (code === 'MEMO_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (code === 'MEMO_INVALID_INPUT' || code === 'MEMO_CONTENT_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'MEMO_READ_LIST_FAIL') {
+			alertDanger('장보기 메모 목록 조회에 실패했습니다.');
+		}
+		else if (code === 'MEMO_UNKNOWN_ERROR') {
+			alertDanger('알 수 없는 오류가 발생했습니다.');
+		}
+		else {
+			console.log(error);
+		}
 	}
 	
 }
@@ -636,15 +655,37 @@ function renderMemoList(memoList) {
             try {
                 const token = localStorage.getItem('accessToken');
                 const userId = parseJwt(token).id;
-                await instance.delete(`/users/${userId}/memos/${memo.id}`, {
+                const response = await instance.delete(`/users/${userId}/memos/${memo.id}`, {
                     headers: getAuthHeaders()
                 });
-                alertPrimary('메모가 삭제되었습니다.');
-                fetchUserMemoList();
-            } catch (error) {
-                console.error(error);
-                alertDanger('메모 삭제 중 오류가 발생했습니다.');
-            }
+				
+				if (response.data.code === 'MEMO_DELETE_SUCCESS') {
+				    alertPrimary('메모가 삭제되었습니다.');
+	                fetchUserMemoList();
+				}
+			} catch (error) {
+			    const code = error?.response?.data?.code;
+
+			    if (code === 'MEMO_UNAUTHORIZED_ACCESS') {
+			        alertDanger('로그인되지 않은 사용자입니다.');
+			    }
+			    else if (code === 'MEMO_FORBIDDEN') {
+			        alertDanger('접근 권한이 없습니다.');
+			    }
+			    else if (code === 'MEMO_INVALID_INPUT') {
+			        alertDanger('잘못된 입력값입니다.');
+			    }
+			    else if (code === 'MEMO_NOT_FOUND') {
+			        alertDanger('삭제하려는 메모를 찾을 수 없습니다.');
+			    }
+			    else if (code === 'MEMO_DELETE_FAIL') {
+			        alertDanger('메모 삭제에 실패했습니다.');
+			    }
+			    else {
+			        console.error(error);
+			        alertDanger('알 수 없는 오류가 발생했습니다.');
+			    }
+			}
         });
 
         tdButtons.append(editBtn, deleteBtn);
@@ -773,19 +814,40 @@ document.addEventListener('click', async function(event) {
                 await instance.delete(`/users/${userId}/memos/${memoId}`, {
                     headers: getAuthHeaders()
                 });
+				
+				if (response.data.code === 'MEMO_DELETE_SUCCESS') {
+				    alertPrimary(`메모가 삭제되었습니다.`);
+				} else {
+				    alertDanger(`메모 삭제에 실패했습니다.`);
+				}
             }
 
             fetchUserMemoList();
-
-            alertPrimary('선택한 메모가 삭제되었습니다.');
-
         } catch (error) {
-            console.error(error);
-            alertDanger('메모 삭제 중 오류가 발생했습니다.');
+            const code = error?.response?.data?.code;
+
+            if (code === 'MEMO_UNAUTHORIZED_ACCESS') {
+                alertDanger('로그인되지 않은 사용자입니다.');
+            }
+            else if (code === 'MEMO_FORBIDDEN') {
+                alertDanger('접근 권한이 없습니다.');
+            }
+            else if (code === 'MEMO_INVALID_INPUT') {
+                alertDanger('잘못된 입력값입니다.');
+            }
+            else if (code === 'MEMO_NOT_FOUND') {
+                alertDanger('삭제하려는 메모를 찾을 수 없습니다.');
+            }
+            else if (code === 'MEMO_DELETE_FAIL') {
+                alertDanger('메모 삭제에 실패했습니다.');
+            }
+            else {
+                console.error(error);
+                alertDanger('알 수 없는 오류가 발생했습니다.');
+            }
         }
     }
 });
-
 
 
 

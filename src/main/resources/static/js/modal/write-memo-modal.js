@@ -24,9 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
             isValid = false;
         } 
 
-
         if (!isValid) return false;
-		
 		
 		// 재료 양/단위 분리
 		const match = form.amount.value.trim().match(/^(\d+)([a-zA-Z가-힣]+)$/);
@@ -65,14 +63,24 @@ document.addEventListener("DOMContentLoaded", function() {
 	                if (modal) modal.hide();
 				}
 				
-			}
-			catch(error){
-				console.log(error);
-			}
-		}
-		
-		
-		
+			} catch (error) {
+                const code = error?.response?.data?.code;
+
+                if (code === 'MEMO_UNAUTHORIZED_ACCESS') {
+                    alertDanger('로그인되지 않은 사용자입니다.');
+                }
+                else if (code === 'MEMO_INVALID_INPUT') {
+                    alertDanger('입력값이 유효하지 않습니다.');
+                }
+                else if (code === 'MEMO_CREATE_FAIL') {
+                    alertDanger('장보기 메모 등록에 실패했습니다.');
+                }
+                else {
+                    console.error(error);
+                    alertDanger('알 수 없는 오류가 발생했습니다.');
+                }
+            }
+        }
     });
 });
 

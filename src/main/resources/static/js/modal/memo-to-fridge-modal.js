@@ -210,8 +210,35 @@ async function deleteMemo(memoId) {
         await instance.delete(`/users/${userId}/memos/${memoId}`, {
             headers: getAuthHeaders()
         });
-        return true;
+		
+		if (response.data.code === 'MEMO_DELETE_SUCCESS') {
+		    alertPrimary(`메모(ID: ${memoId})가 삭제되었습니다.`);
+		    return true;
+		} else {
+		    return false;
+		}
     } catch (error) {
+        const code = error?.response?.data?.code;
+
+        if (code === 'MEMO_UNAUTHORIZED_ACCESS') {
+            alertDanger('로그인되지 않은 사용자입니다.');
+        }
+        else if (code === 'MEMO_FORBIDDEN') {
+            alertDanger('접근 권한이 없습니다.');
+        }
+        else if (code === 'MEMO_INVALID_INPUT') {
+            alertDanger('잘못된 입력값입니다.');
+        }
+        else if (code === 'MEMO_NOT_FOUND') {
+            alertDanger('삭제하려는 메모를 찾을 수 없습니다.');
+        }
+        else if (code === 'MEMO_DELETE_FAIL') {
+            alertDanger('메모 삭제에 실패했습니다.');
+        }
+        else {
+            console.error(error);
+            alertDanger('알 수 없는 오류가 발생했습니다.');
+        }
         return false;
     }
 }

@@ -14,13 +14,13 @@
 							<thead>
 								<tr>
 									<th width="20%">재료</th>
-									<th width="12%">용량</th>
-									<th width="23%">카테고리</th>
-									<th width="23%">보관</th>
+									<th width="22%">용량</th>
+									<th width="18%">카테고리</th>
+									<th width="18%">보관</th>
 									<th width="20%">소비기한</th>
 								</tr>
 							</thead>
-							<tbody class="complete_memo_list"></tbody>
+							<tbody class="complete_memo_list memo_tbody"></tbody>
 						</table>
 				</div>
 				<div class="modal-footer">

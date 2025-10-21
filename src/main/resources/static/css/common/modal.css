@@ -301,14 +301,10 @@
     color: #0073E6 !important;
     border-color: #0073E6 !important;
 }
-
-
-
-
-
-
-
-
+#container .modal-content .modal-body .memo_tbody .form-select,
+#container .modal-content .modal-body .memo_tbody .memoInfo-expdate {
+    font-size: 14px;
+}
 
 
 

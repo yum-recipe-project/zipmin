@@ -515,11 +515,7 @@ let memoList = [];
  * 서버에서 장보기 메모를 가져오는 함수
  */
 async function fetchUserMemoList() {
-	
-	// 사용자 냉장고 목록 조회
 	try {
-		
-		// 요청 URL
 		const token = localStorage.getItem('accessToken');
 		const id = parseJwt(token).id;
 		
@@ -530,21 +526,67 @@ async function fetchUserMemoList() {
 		if (response.data.code === 'MEMO_READ_LIST_SUCCESS') {
 			memoList = response.data.data;
 			
-			// 검색 결과 없음 표시
-			if (memoList.length === 0) {
-				document.querySelector('.ingredient_list').style.display = 'none';
-				const content = document.querySelector('.ingredient_list');
-				content.insertAdjacentElement('afterend', renderMemoListEmpty());
+			const ingredientList = document.querySelector('.ingredient_list');
+			const btnWrap = document.querySelector('.btn_wrap');
+
+			document.querySelector('.memo_empty_wrap')?.remove();
+			btnWrap.querySelector('.btn_primary')?.remove();
+			
+			// 장보기 메모 목록이 존재하지 않는 경우
+			if (!memoList || memoList.length === 0) {
+				ingredientList.style.display = 'none';
+				btnWrap.innerHTML = '';
+
+				const wrapper = document.createElement('div');
+				wrapper.className = 'memo_empty_wrap';
+
+				const list = document.createElement('div');
+				list.className = 'memo_list_empty';
+				wrapper.appendChild(list);
+
+				const span = document.createElement('span');
+				span.textContent = '작성한 장보기 메모가 없습니다.';
+				list.appendChild(span);
+
+				ingredientList.insertAdjacentElement('afterend', wrapper);
+
+				const addBtn = document.createElement('button');
+				addBtn.className = 'btn_primary';
+				addBtn.type = 'button';
+				addBtn.setAttribute('data-bs-toggle', 'modal');
+				addBtn.setAttribute('data-bs-target', '#writeMemoModal');
+				addBtn.textContent = '추가하기';
+
+				btnWrap.append(addBtn);
 			}
-			// 검색 결과 표시
+			// 장보기 메모 목록이 존재하는 경우
 			else {
+				ingredientList.style.display = 'block';
 				renderMemoList(memoList);
 			}
-			
 		}
 	}
 	catch (error) {
-		console.log(error);
+		const code = error?.response?.data?.code;
+
+		if (code === 'MEMO_UNAUTHORIZED_ACCESS') {
+			alertDanger('로그인되지 않은 사용자입니다.');
+		}
+		else if (code === 'MEMO_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (code === 'MEMO_INVALID_INPUT' || code === 'MEMO_CONTENT_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'MEMO_READ_LIST_FAIL') {
+			alertDanger('장보기 메모 목록 조회에 실패했습니다.');
+		}
+		else if (code === 'MEMO_UNKNOWN_ERROR') {
+			alertDanger('알 수 없는 오류가 발생했습니다.');
+		}
+		else {
+			console.log(error);
+		}
 	}
 	
 }
@@ -567,10 +609,10 @@ function renderMemoList(memoList) {
         <tr>
             <th width="20%">재료</th>
             <th width="20%">용량</th>
-            <th width="30%">비고</th>
+            <th width="36%">비고</th>
             <th width="15%"></th>
-			<th width="15%">
-	           <button type="button" id="selectAllBtn" class=" btn btn_gray_small">전체선택</button>
+			<th width="9%">
+	           <button type="button" id="selectAllBtn" class=" btn btn_gray_small btn_tab">선택</button>
 	       </th>
         </tr>
     `;
@@ -580,17 +622,24 @@ function renderMemoList(memoList) {
 
     memoList.forEach(memo => {
         const tr = document.createElement('tr');
+		tr.dataset.memoId = memo.id;		
 
         const tdName = document.createElement('td');
         tdName.textContent = memo.name;
 
-        const tdAmount = document.createElement('td');
-        tdAmount.textContent = `${memo.amount}${memo.unit || ''}`;
+		const tdAmount = document.createElement('td');
+		if (memo.amount === 0) {
+		    tdAmount.textContent = '-';
+		} else {
+		    tdAmount.textContent = `${memo.amount}${memo.unit || ''}`;
+		}
+
 
         const tdNote = document.createElement('td');
-        tdNote.textContent = memo.note || '';
+        tdNote.textContent = memo.note || '-';
 
         const tdButtons = document.createElement('td');
+		tdButtons.className = 'btn_td';
 
         const editBtn = document.createElement('button');
         editBtn.className = 'btn btn_tab memo_edit';
@@ -600,7 +649,7 @@ function renderMemoList(memoList) {
         editBtn.setAttribute('data-bs-target', '#editMemoModal');
         editBtn.setAttribute('data-id', memo.id);
         editBtn.setAttribute('data-name', memo.name);
-        editBtn.setAttribute('data-amount', memo.amount);
+		editBtn.setAttribute('data-amount', (memo.amount === 0 || memo.amount === '0') ? '' : memo.amount);
         editBtn.setAttribute('data-unit', memo.unit || '');
         editBtn.setAttribute('data-note', memo.note || '');
         
@@ -613,15 +662,37 @@ function renderMemoList(memoList) {
             try {
                 const token = localStorage.getItem('accessToken');
                 const userId = parseJwt(token).id;
-                await instance.delete(`/users/${userId}/memos/${memo.id}`, {
+                const response = await instance.delete(`/users/${userId}/memos/${memo.id}`, {
                     headers: getAuthHeaders()
                 });
-                alertPrimary('메모가 삭제되었습니다.');
-                fetchUserMemoList();
-            } catch (error) {
-                console.error(error);
-                alertDanger('메모 삭제 중 오류가 발생했습니다.');
-            }
+				
+				if (response.data.code === 'MEMO_DELETE_SUCCESS') {
+				    alertPrimary('메모가 삭제되었습니다.');
+	                fetchUserMemoList();
+				}
+			} catch (error) {
+			    const code = error?.response?.data?.code;
+
+			    if (code === 'MEMO_UNAUTHORIZED_ACCESS') {
+			        alertDanger('로그인되지 않은 사용자입니다.');
+			    }
+			    else if (code === 'MEMO_FORBIDDEN') {
+			        alertDanger('접근 권한이 없습니다.');
+			    }
+			    else if (code === 'MEMO_INVALID_INPUT') {
+			        alertDanger('잘못된 입력값입니다.');
+			    }
+			    else if (code === 'MEMO_NOT_FOUND') {
+			        alertDanger('삭제하려는 메모를 찾을 수 없습니다.');
+			    }
+			    else if (code === 'MEMO_DELETE_FAIL') {
+			        alertDanger('메모 삭제에 실패했습니다.');
+			    }
+			    else {
+			        console.error(error);
+			        alertDanger('알 수 없는 오류가 발생했습니다.');
+			    }
+			}
         });
 
         tdButtons.append(editBtn, deleteBtn);
@@ -645,20 +716,45 @@ function renderMemoList(memoList) {
 
     table.appendChild(tbody);
 
-    // 버튼 영역
     const completeBtn = document.createElement('button');
-    completeBtn.className = 'btn_outline delete_memo';
+    completeBtn.className = 'btn_outline btn_tab complete_btn';
     completeBtn.textContent = '장보기 완료';
+	completeBtn.addEventListener('click', function(event) {
+	    event.preventDefault();
 
+	    const tbody = document.querySelector('.ingredient_list tbody');
+	    const rows = Array.from(tbody.querySelectorAll('tr'));
+
+	    // 선택된 재료만 추출
+	    const selectedStock = rows
+	        .filter(row => row.querySelector('input[name="selectedMemo"]').checked)
+	        .map(row => ({
+				id: row.dataset.memoId,
+	            name: row.children[0].textContent,
+	            amount: row.children[1].textContent.replace(/[^\d.]/g, ''), 
+	            unit: row.children[1].textContent.replace(/[\d.]/g, '')
+	        }));
+
+	    if (selectedStock.length === 0) {
+	        alertDanger('장보기 완료한 재료를 선택해주세요');
+	        return;
+	    }
+
+	    // 모달에 렌더링
+	    renderComleteMemoList(selectedStock);
+
+	    const memoModal = new bootstrap.Modal(document.getElementById('memoToFridgeModal'));
+	    memoModal.show();
+	});
+	
     const addBtn = document.createElement('button');
-    addBtn.className = 'btn_primary';
+    addBtn.className = 'btn_primary btn_tab';
     addBtn.type = 'button';
     addBtn.setAttribute('data-bs-toggle', 'modal');
     addBtn.setAttribute('data-bs-target', '#writeMemoModal');
     addBtn.textContent = '추가하기';
 
     btnWrap.append(completeBtn, addBtn);
-	
 	
 	// 전체선택 버튼 기능
 	const selectAllBtn = document.getElementById('selectAllBtn');
@@ -669,41 +765,9 @@ function renderMemoList(memoList) {
 	    checkboxes.forEach(cb => cb.checked = !allChecked);
 	});
 
-	
 }
 
 
-
-
-/**
- * 장보기 메모 목록 결과 없음 화면을 화면에 렌더링하는 함수
- */
-function renderMemoListEmpty() {
-
-	const wrapper = document.createElement('div');
-  	wrapper.className = 'memo_empty_wrap';
-
-	const list = document.createElement('div');
-	list.className = 'memo_list_empty';
-	wrapper.appendChild(list);
-	
-    const span = document.createElement('span');
-    span.textContent = '작성한 장보기 메모가 없습니다.';
-    list.appendChild(span);
-
-	const btnWrap = document.querySelector('.btn_wrap');
-	const addBtn = document.createElement('button');
-	addBtn.className = 'btn_primary';
-	addBtn.type = 'button';
-	addBtn.setAttribute('data-bs-toggle', 'modal');
-	addBtn.setAttribute('data-bs-target', '#writeMemoModal');
-	addBtn.textContent = '추가하기';
-
-	btnWrap.append(addBtn);
-	
-
-    return wrapper;
-}
 
 
 
@@ -733,7 +797,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 /**
- * 장보기 메모 완료 기능 (체크한 메모 삭제)
+ * 체크한 메모 삭제
  */
 document.addEventListener('click', async function(event) {
     if (event.target.classList.contains('delete_memo')) {
@@ -756,15 +820,37 @@ document.addEventListener('click', async function(event) {
                 await instance.delete(`/users/${userId}/memos/${memoId}`, {
                     headers: getAuthHeaders()
                 });
+				
+				if (response.data.code === 'MEMO_DELETE_SUCCESS') {
+				    alertPrimary(`메모가 삭제되었습니다.`);
+				} else {
+				    alertDanger(`메모 삭제에 실패했습니다.`);
+				}
             }
 
             fetchUserMemoList();
-
-            alertPrimary('선택한 메모가 삭제되었습니다.');
-
         } catch (error) {
-            console.error(error);
-            alertDanger('메모 삭제 중 오류가 발생했습니다.');
+            const code = error?.response?.data?.code;
+
+            if (code === 'MEMO_UNAUTHORIZED_ACCESS') {
+                alertDanger('로그인되지 않은 사용자입니다.');
+            }
+            else if (code === 'MEMO_FORBIDDEN') {
+                alertDanger('접근 권한이 없습니다.');
+            }
+            else if (code === 'MEMO_INVALID_INPUT') {
+                alertDanger('잘못된 입력값입니다.');
+            }
+            else if (code === 'MEMO_NOT_FOUND') {
+                alertDanger('삭제하려는 메모를 찾을 수 없습니다.');
+            }
+            else if (code === 'MEMO_DELETE_FAIL') {
+                alertDanger('메모 삭제에 실패했습니다.');
+            }
+            else {
+                console.error(error);
+                alertDanger('알 수 없는 오류가 발생했습니다.');
+            }
         }
     }
 });
@@ -773,3 +859,82 @@ document.addEventListener('click', async function(event) {
 
 
 
+
+/**
+ * 장보기 완료한 메모 렌더링 (모달창)
+ */
+function renderComleteMemoList(stockList) {
+    const modal = document.getElementById('memoToFridgeModal');
+    const container = modal.querySelector('.complete_memo_list');
+    container.innerHTML = '';
+
+    stockList.forEach((ingredient) => {
+        const tr = document.createElement('tr');
+		tr.dataset.memoId = ingredient.id;
+		
+		// 재료명
+        const tdName = document.createElement('td');
+        tdName.textContent = ingredient.name;
+        tdName.className = 'memoInfo-name';
+        tr.appendChild(tdName);
+
+		// 용량
+        const tdAmount = document.createElement('td');
+        tdAmount.className = 'memoInfo-amount'; 
+		
+		if (ingredient.amount && ingredient.amount !== 0 && ingredient.unit) {
+			// 용량 정보가 있을 때
+		    tdAmount.textContent = `${ingredient.amount}${ingredient.unit}`;
+		} else {
+		    const input = document.createElement('input');
+		    input.type = 'text';
+		    input.name = 'amount';
+		    input.placeholder = '단위를 포함한 양';
+		    input.className = 'form-control form-control-sm';
+		    tdAmount.appendChild(input);
+		}
+		
+        tr.appendChild(tdAmount);
+
+        // 카테고리 
+        const tdCategory = document.createElement('td');
+        const selectCat = document.createElement('select');
+        selectCat.className = 'form-select memoInfo-category';
+        const categories = ["육류","어패류","채소류","과일류","견과류","유제품","완제품","소스류","기타"];
+        categories.forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat;
+            option.textContent = cat;
+            if(ingredient.category === cat) option.selected = true;
+            selectCat.appendChild(option);
+        });
+        tdCategory.appendChild(selectCat);
+        tr.appendChild(tdCategory);
+
+        // 보관방법 
+        const tdStorage = document.createElement('td');
+        const selectStorage = document.createElement('select');
+        selectStorage.className = 'form-select memoInfo-storage memoInfo-amount';
+        const storageOptions = ["냉장","냉동","상온"];
+        storageOptions.forEach(storage => {
+            const option = document.createElement('option');
+            option.value = storage;
+            option.textContent = storage;
+            if(ingredient.storage === storage) option.selected = true;
+            selectStorage.appendChild(option);
+        });
+        tdStorage.appendChild(selectStorage);
+        tr.appendChild(tdStorage);
+
+        // 소비기한 
+        const tdExpire = document.createElement('td');
+        const inputExpire = document.createElement('input');
+        inputExpire.type = 'date';
+        inputExpire.className = 'form-control memoInfo-expdate';
+        inputExpire.value = ingredient.expdate ? ingredient.expdate.slice(0,10) : '';
+        tdExpire.appendChild(inputExpire);
+        tr.appendChild(tdExpire);
+
+        container.appendChild(tr);
+    });
+}

@@ -56,8 +56,7 @@ public class MemoService {
 		
 		// 입력값 검증
 	    if (memoRequestDto == null 
-	            || memoRequestDto.getName() == null 
-	            || memoRequestDto.getAmount() == null)
+	            || memoRequestDto.getName() == null)
 	        throw new ApiException(MemoErrorCode.MEMO_INVALID_INPUT);
 	    
 	    // 엔티티 변환 및 저장

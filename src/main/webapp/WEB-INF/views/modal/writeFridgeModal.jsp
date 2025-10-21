@@ -32,14 +32,20 @@
 								<li><button><img src="/images/fridge/chicken.png"></button></li>
 								<li><button><img src="/images/fridge/pig.png"></button></li>
 								<li><button><img src="/images/fridge/cow.png"></button></li>
+								<li><button><img src="/images/fridge/fish.png"></button></li>
+								<li><button><img src="/images/fridge/apple.png"></button></li>
 								<li><button><img src="/images/fridge/grass.png"></button></li>
 								<li><button><img src="/images/fridge/carrot.png"></button></li>
 								<li><button><img src="/images/fridge/onion.png"></button></li>
 								<li><button><img src="/images/fridge/eggplant.png"></button></li>
+								<li><button><img src="/images/fridge/milk.png"></button></li>
 								<li><button><img src="/images/fridge/ketchup.png"></button></li>
 								<li><button><img src="/images/fridge/soysauce.png"></button></li>
 								<li><button><img src="/images/fridge/mayonnaise.png"></button></li>
 								<li><button><img src="/images/fridge/chili.png"></button></li>
+								<li><button><img src="/images/fridge/almond.png"></button></li>
+								<li><button><img src="/images/fridge/dinner.png"></button></li>
+								<li><button><img src="/images/fridge/cutlery.png"></button></li>
 							</ul>
 							<input type="hidden" name="image">
 						</div>

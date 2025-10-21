@@ -21,9 +21,9 @@
 							</thead>
 							<tbody class="memo_tbody" id="memo">
 								<tr>
-									<td><input type="text" name="name" placeholder="재료명" /></th>
+									<td><input type="text" name="name" placeholder="재료명*" /></th>
 									<td><input type="text" name="amount" placeholder="단위를 포함한 양" /></th>
-									<td><input type="text" name="note" placeholder="비고(선택사항)" /></th>
+									<td><input type="text" name="note" placeholder="비고" /></th>
 								</tr>
 							</tbody>
 						</table>

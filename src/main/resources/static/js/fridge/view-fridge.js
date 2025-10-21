@@ -636,7 +636,7 @@ function renderMemoList(memoList) {
 
 
         const tdNote = document.createElement('td');
-        tdNote.textContent = memo.note || '';
+        tdNote.textContent = memo.note || '-';
 
         const tdButtons = document.createElement('td');
 
@@ -648,7 +648,6 @@ function renderMemoList(memoList) {
         editBtn.setAttribute('data-bs-target', '#editMemoModal');
         editBtn.setAttribute('data-id', memo.id);
         editBtn.setAttribute('data-name', memo.name);
-//        editBtn.setAttribute('data-amount', memo.amount);
 		editBtn.setAttribute('data-amount', (memo.amount === 0 || memo.amount === '0') ? '' : memo.amount);
         editBtn.setAttribute('data-unit', memo.unit || '');
         editBtn.setAttribute('data-note', memo.note || '');

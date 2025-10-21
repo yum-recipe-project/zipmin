@@ -8,6 +8,17 @@ function validateCompleteMemoForm() {
     let isValid = true;
 
     rows.forEach(row => {
+		// 용량 (입력창 있는 경우만 검사)
+		const amountInput = row.querySelector('input[name="amount"]');
+		if (amountInput) {
+		    if (!amountInput.value || amountInput.value.trim() === '') {
+		        amountInput.classList.add('is-invalid');
+		        isValid = false;
+		    } else {
+		        amountInput.classList.remove('is-invalid');
+		    }
+		}
+		
         // 카테고리
         const categorySelect = row.querySelector('.memoInfo-category');
         if (!categorySelect.value || categorySelect.value.trim() === '') {
@@ -37,7 +48,7 @@ function validateCompleteMemoForm() {
     });
 
     if (!isValid) {
-        alertDanger('모든 재료의 카테고리, 보관방법, 소비기한을 선택해주세요.');
+        alertDanger('모든 재료의 용량 카테고리, 보관방법, 소비기한을 선택해주세요.');
     }
 
     return isValid;
@@ -61,14 +72,23 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 		try {
 		    const rows = document.querySelectorAll('.complete_memo_list tr');
-		    const fridgeItems = Array.from(rows).map(tr => ({
-				memoId: tr.dataset.memoId, 
-		        name: tr.querySelector('.memoInfo-name').textContent.trim(),
-		        amount: tr.querySelector('.memoInfo-amount').textContent.trim(),
-		        category: tr.querySelector('.memoInfo-category').value.trim(),
-		        zone: tr.querySelector('.memoInfo-storage').value.trim(),
-		        expdate: tr.querySelector('.memoInfo-expdate').value.trim()
-		    }));
+			
+			const fridgeItems = Array.from(rows).map(tr => {
+			    const amountTd = tr.querySelector('.memoInfo-amount');
+			    const amountInput = amountTd.querySelector('input[name="amount"]');
+			    const amountValue = amountInput 
+			        ? amountInput.value.trim() 
+			        : amountTd.textContent.trim();
+
+			    return {
+			        memoId: tr.dataset.memoId, 
+			        name: tr.querySelector('.memoInfo-name').textContent.trim(),
+			        amount: amountValue, 
+			        category: tr.querySelector('.memoInfo-category').value.trim(),
+			        zone: tr.querySelector('.memoInfo-storage').value.trim(),
+			        expdate: tr.querySelector('.memoInfo-expdate').value.trim()
+			    };
+			});
 			
 		    if (fridgeItems.length === 0) {
 		        alertDanger('냉장고에 추가할 재료가 없습니다.');

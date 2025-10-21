@@ -874,8 +874,20 @@ function renderComleteMemoList(stockList) {
 
 		// 용량
         const tdAmount = document.createElement('td');
-        tdAmount.textContent = `${ingredient.amount}${ingredient.unit || ''}`;
         tdAmount.className = 'memoInfo-amount'; 
+		
+		if (ingredient.amount && ingredient.amount !== 0 && ingredient.unit) {
+			// 용량 정보가 있을 때
+		    tdAmount.textContent = `${ingredient.amount}${ingredient.unit}`;
+		} else {
+		    const input = document.createElement('input');
+		    input.type = 'text';
+		    input.name = 'amount';
+		    input.placeholder = '단위를 포함한 양';
+		    input.className = 'form-control form-control-sm';
+		    tdAmount.appendChild(input);
+		}
+		
         tr.appendChild(tdAmount);
 
         // 카테고리 
@@ -896,7 +908,7 @@ function renderComleteMemoList(stockList) {
         // 보관방법 
         const tdStorage = document.createElement('td');
         const selectStorage = document.createElement('select');
-        selectStorage.className = 'form-select memoInfo-storage';
+        selectStorage.className = 'form-select memoInfo-storage memoInfo-amount';
         const storageOptions = ["냉장","냉동","상온"];
         storageOptions.forEach(storage => {
             const option = document.createElement('option');

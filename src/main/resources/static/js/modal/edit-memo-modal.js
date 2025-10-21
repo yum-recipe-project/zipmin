@@ -18,35 +18,48 @@ document.addEventListener("DOMContentLoaded", function() {
             isValid = false;
         }
 
-        if (form.amount.value.trim() === '') {
-            form.amount.classList.add('is-invalid');
-            document.getElementById('sheetAmountHint1').style.display = 'block';
-            form.amount.focus();
-            isValid = false;
-        } 
-
-        if (!isValid) return false;
+		let amount = null;
+		let unit = null;
 		
-		// 재료 양/단위 분리
-		const match = form.amount.value.trim().match(/^(\d+)([a-zA-Z가-힣]+)$/);
-		if (form.amount.value.trim() === '') {
-			form.amount.classList.add('is-invalid');
-			form.amount.focus();
-			isValid = false;
+		console.warn('amount값: '+ (form.amount.value.trim() !== ''));
+		
+		if(form.amount.value.trim() === ''){
+			amount = 0;
 		}
-		else if (!match) {
-			form.amount.classList.add('is-invalid');
-			form.amount.focus();
-			isValid = false;
+		if (form.amount.value.trim() !== '') {
+		    const match = form.amount.value.trim().match(/^(\d+)([a-zA-Z가-힣]+)$/);
+		
+		    if (match) {
+		        amount = match[1];
+		        unit = match[2];
+		    } else {
+				alertDanger('양/단위 형식으로 작성해주세요. (ex: 300g)');
+				form.amount.focus();
+				isValid = false;
+		    }
 		}
+        if (!isValid) return false;
+//		
+//		// 재료 양/단위 분리
+//		const match = form.amount.value.trim().match(/^(\d+)([a-zA-Z가-힣]+)$/);
+//		if (form.amount.value.trim() === '') {
+//			form.amount.classList.add('is-invalid');
+//			form.amount.focus();
+//			isValid = false;
+//		}
+//		else if (!match) {
+//			form.amount.classList.add('is-invalid');
+//			form.amount.focus();
+//			isValid = false;
+//		}
 		 
 		if (isValid){
 			try{
 				const userId = parseJwt(localStorage.getItem('accessToken')).id;
 				const data = {
 					name: form.name.value.trim(),
-				    amount: match[1],
-				    unit: match[2],
+				    amount: amount,
+				    unit: unit,
 				    note: form.note.value.trim(),
 				}
 				

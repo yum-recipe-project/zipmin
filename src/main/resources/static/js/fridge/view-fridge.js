@@ -609,10 +609,10 @@ function renderMemoList(memoList) {
         <tr>
             <th width="20%">재료</th>
             <th width="20%">용량</th>
-            <th width="30%">비고</th>
+            <th width="36%">비고</th>
             <th width="15%"></th>
-			<th width="15%">
-	           <button type="button" id="selectAllBtn" class=" btn btn_gray_small">전체선택</button>
+			<th width="9%">
+	           <button type="button" id="selectAllBtn" class=" btn btn_gray_small">선택</button>
 	       </th>
         </tr>
     `;
@@ -639,6 +639,7 @@ function renderMemoList(memoList) {
         tdNote.textContent = memo.note || '-';
 
         const tdButtons = document.createElement('td');
+		tdButtons.className = 'btn_td';
 
         const editBtn = document.createElement('button');
         editBtn.className = 'btn btn_tab memo_edit';

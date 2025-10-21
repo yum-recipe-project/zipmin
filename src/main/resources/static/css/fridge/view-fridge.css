@@ -323,6 +323,11 @@
 
 
 /* 메모 (재료 표) */
+#container .content .memo_wrap .memo_content .ingredient_list {
+	width: 100%;     
+    border-collapse: collapse;
+    table-layout: fixed; 
+}
 #container .content .memo_wrap .memo_content .ingredient_list thead th {
 	text-align: left;
 	background: #F9F9F9;
@@ -331,7 +336,9 @@
 	border-bottom: 1px solid var(--line-color2);
 	font-size: 14px;
 }
-
+#container .content .memo_wrap .memo_content .ingredient_list thead th:last-child {
+    text-align: right;
+}
 #container .content .memo_wrap .memo_content .ingredient_list tbody tr {
 	height: 50px;
 	border-bottom: 1px solid var(--line-color2);
@@ -341,6 +348,28 @@
 #container .content .memo_wrap .memo_content .ingredient_list tbody tr td {
 	padding: 16px;
 }
+#container .content .memo_wrap .memo_content .ingredient_list tbody tr td:last-child {
+	text-align: right;
+}
+.btn_td {
+    text-align: left;    
+    vertical-align: middle;
+}
+.btn_td button {
+    display: inline-block;
+    margin-right: 2px;    
+}
+.btn_td button:last-child {
+    margin-right: 0;  
+}
+.memo_delete:hover {
+	color: #d5707c !important;
+    border-color: #d5707c !important;
+}
+
+
+
+
 
 #container .content .memo_wrap .memo_content .ingredient_list .delete_btn {
 	background: none;
@@ -348,6 +377,15 @@
 	width:25px;
 	height: 25px;
 }
+.ingredient_list th,
+.ingredient_list td {
+    box-sizing: border-box;
+}
+
+
+
+
+
 
 /* 메모 (버튼) */
 #container .memo_content .btn_wrap {

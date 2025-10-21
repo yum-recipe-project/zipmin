@@ -612,7 +612,7 @@ function renderMemoList(memoList) {
             <th width="36%">비고</th>
             <th width="15%"></th>
 			<th width="9%">
-	           <button type="button" id="selectAllBtn" class=" btn btn_gray_small">선택</button>
+	           <button type="button" id="selectAllBtn" class=" btn btn_gray_small btn_tab">선택</button>
 	       </th>
         </tr>
     `;
@@ -717,7 +717,7 @@ function renderMemoList(memoList) {
     table.appendChild(tbody);
 
     const completeBtn = document.createElement('button');
-    completeBtn.className = 'btn_outline';
+    completeBtn.className = 'btn_outline btn_tab complete_btn';
     completeBtn.textContent = '장보기 완료';
 	completeBtn.addEventListener('click', function(event) {
 	    event.preventDefault();
@@ -748,7 +748,7 @@ function renderMemoList(memoList) {
 	});
 	
     const addBtn = document.createElement('button');
-    addBtn.className = 'btn_primary';
+    addBtn.className = 'btn_primary btn_tab';
     addBtn.type = 'button';
     addBtn.setAttribute('data-bs-toggle', 'modal');
     addBtn.setAttribute('data-bs-target', '#writeMemoModal');

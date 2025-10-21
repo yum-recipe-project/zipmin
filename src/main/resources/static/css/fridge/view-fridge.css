@@ -366,11 +366,6 @@
 	color: #d5707c !important;
     border-color: #d5707c !important;
 }
-
-
-
-
-
 #container .content .memo_wrap .memo_content .ingredient_list .delete_btn {
 	background: none;
 	border: none;
@@ -383,16 +378,18 @@
 }
 
 
-
-
-
-
 /* 메모 (버튼) */
 #container .memo_content .btn_wrap {
 	margin-top: 16px;
 	margin-left: auto;
 }
-
+#container .memo_content .btn_wrap .btn_tab {
+    color: #fff;
+    padding: 0 15px;
+}
+#container .memo_content .btn_wrap .btn_tab.complete_btn {
+	color: var(--txt-color-600);
+}
 
 /* 전체 선택 버튼 */
 #container .content .memo_wrap .memo_content .btn_gray_small {

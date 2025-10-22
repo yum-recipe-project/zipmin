@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
 /**
- * 카테고리 클릭 시 데이터를 가져오는 함수
+ * 사용자 목록 검색 필터를 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
 	

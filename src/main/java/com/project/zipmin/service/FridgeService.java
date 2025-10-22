@@ -5,22 +5,17 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.access.method.P;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
-import com.project.zipmin.api.CommentErrorCode;
-import com.project.zipmin.api.EventErrorCode;
 import com.project.zipmin.api.FridgeErrorCode;
 import com.project.zipmin.dto.FridgeCreateRequestDto;
 import com.project.zipmin.dto.FridgeCreateResponseDto;
@@ -40,9 +35,7 @@ import com.project.zipmin.dto.UserFridgeUpdateRequestDto;
 import com.project.zipmin.dto.UserFridgeUpdateResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.entity.Fridge;
-import com.project.zipmin.entity.Like;
 import com.project.zipmin.entity.Role;
-import com.project.zipmin.entity.User;
 import com.project.zipmin.entity.UserFridge;
 import com.project.zipmin.mapper.FridgeMapper;
 import com.project.zipmin.mapper.UserFridgeMapper;
@@ -93,11 +86,10 @@ public class FridgeService {
 					sortSpec = Sort.by(Sort.Order.desc("name"), Sort.Order.desc("id"));
 					break;
 				case "name-asc":
-					sortSpec = Sort.by(Sort.Order.asc("name"), Sort.Order.desc("id"));
+					sortSpec = Sort.by(Sort.Order.asc("name"), Sort.Order.asc("id"));
 					break;
 				default:
 					break;
-				// ***** TODO : 사용된 횟수 추가하기 *****
 			}
 		}
 		
@@ -131,6 +123,11 @@ public class FridgeService {
 		List<FridgeReadResponseDto> fridgeDtoList = new ArrayList<>();
 		for (Fridge fridge : fridgePage) {
 			FridgeReadResponseDto fridgeDto = fridgeMapper.toReadResponseDto(fridge);
+			
+			// 작성자
+			fridgeDto.setUsername(fridge.getUser().getUsername());
+			fridgeDto.setNickname(fridge.getUser().getNickname());
+			fridgeDto.setRole(fridge.getUser().getRole().toString());
 			
 			// 좋아요 여부
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

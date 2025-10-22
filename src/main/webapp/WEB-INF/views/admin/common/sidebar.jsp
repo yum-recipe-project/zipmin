@@ -99,6 +99,17 @@
 						<span class="hide-menu">쿠킹클래스 관리</span>
 					</a>
 				</li>
+				
+				<li class="nav-small-cap">
+					<i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+					<span class="hide-menu">냉장고</span>
+				</li>
+				<li class="sidebar-item">
+					<a class="sidebar-link" href="/admin/listFridge.do" aria-expanded="false">
+						<span><i class="ti ti-cheese"></i></span>
+						<span class="hide-menu">냉장고 관리</span>
+					</a>
+				</li>
 		</nav>
 		<!-- End Sidebar navigation -->
 	</div>

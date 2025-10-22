@@ -23,6 +23,8 @@ import com.project.zipmin.api.ClassErrorCode;
 import com.project.zipmin.api.ClassSuccessCode;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.CommentSuccessCode;
+import com.project.zipmin.api.FridgeErrorCode;
+import com.project.zipmin.api.FridgeSuccessCode;
 import com.project.zipmin.api.FundErrorCode;
 import com.project.zipmin.api.FundSuccessCode;
 import com.project.zipmin.api.KitchenSuccessCode;
@@ -36,6 +38,7 @@ import com.project.zipmin.dto.ChompReadResponseDto;
 import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
+import com.project.zipmin.dto.FridgeReadResponseDto;
 import com.project.zipmin.dto.GuideReadResponseDto;
 import com.project.zipmin.dto.RecipeReadResponseDto;
 import com.project.zipmin.dto.ReviewReadResponseDto;
@@ -45,6 +48,7 @@ import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.CookingService;
+import com.project.zipmin.service.FridgeService;
 import com.project.zipmin.service.KitchenService;
 import com.project.zipmin.service.RecipeService;
 import com.project.zipmin.service.ReviewService;
@@ -103,6 +107,7 @@ public class AdminController {
 	private final ReviewService reviewService;
 	private final CookingService cookingService;
 	private final WithdrawService withdrawService;
+	private final FridgeService fridgeService;
 	
 	
 	
@@ -722,6 +727,44 @@ public class AdminController {
 		
 		return ResponseEntity.status(ClassSuccessCode.CLASS_UPDATE_APPROVAL_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_UPDATE_APPROVAL_SUCCESS, null));
+	}
+	
+	
+	
+	
+	
+	// 냉장고 목록 조회
+	
+	// TODO : API 문서 작성
+	
+	// 냉장고 목록 조회
+	@GetMapping("/admin/fridges")
+	public ResponseEntity<?> readAdminFridgePage(
+			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
+			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
+			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
+		    @Parameter(description = "페이지 번호") @RequestParam int page,
+		    @Parameter(description = "페이지 크기") @RequestParam int size) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
+			}
+		}
+		
+		Pageable pageable = PageRequest.of(page, size);
+		Page<FridgeReadResponseDto> fridgePage = fridgeService.readFridgePage(category, keyword, sort, pageable);
+		
+		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS, fridgePage));
 	}
 	
 }

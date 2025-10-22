@@ -2,6 +2,7 @@ package com.project.zipmin.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.project.zipmin.entity.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,4 +22,7 @@ public class FridgeReadResponseDto {
 	private int userId;
 	
 	private boolean isLiked;
+	private String username;
+	private String nickname;
+	private String role;
 }

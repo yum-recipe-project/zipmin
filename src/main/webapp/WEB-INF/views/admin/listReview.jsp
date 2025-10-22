@@ -34,11 +34,11 @@
 					<div class="nav_wrap">
 						<a href="/admin/home.do"><span>메인</span></a>
 						<a href=""><img src="/images/cooking/arrow_right.png"><span>댓글/리뷰</span></a>
-						<a href="/admin/listReview.do" class="active"><img src="/images/cooking/arrow_right.png"><span>리뷰</span></a>
+						<a href="/admin/listReview.do" class="active"><img src="/images/cooking/arrow_right.png"><span>리뷰 관리</span></a>
 					</div>
 					
 					<!-- 제목 -->
-					<h1>리뷰</h1>
+					<h1>리뷰 관리</h1>
 					<div class="bar">
 						<div class="tab">
 							<ul>

@@ -46,24 +46,18 @@
 						<ul class="fridge_list"></ul>
 					</div>
 				</div>
-							
-				<div class="memo_wrap">
 				
+				<!-- 메모 -->	
+				<div class="memo_wrap">
 					<div class="memo_header">
 						<h2>장보기 메모</h2>
 					</div>
-				
 					<div class="memo_content">
-					
 						<!-- 재료 표 -->
 						<table class="ingredient_list"></table>
 						<div class="btn_wrap"></div>
-						
-						
 					</div>
-					
 				</div>
-			
 				
 				<!-- 냉장고 파먹기 -->
 				<div class="pick_wrap">
@@ -95,12 +89,6 @@
 						<ul class="mart_list"></ul>
 					</div>
 				</div>
-				
-				
-				
-
-			
-				
 			</div>
 			
 			<!-- 냉장고 채우기 모달 -->

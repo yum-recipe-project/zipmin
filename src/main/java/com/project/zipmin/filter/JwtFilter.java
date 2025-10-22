@@ -72,7 +72,6 @@ public class JwtFilter extends OncePerRequestFilter {
 		}
 		catch (ExpiredJwtException e) {
 			PrintWriter writer = response.getWriter();
-			System.err.println("이거 실행되는건가");
 			writer.println("access token expired");
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			return;
@@ -86,8 +85,6 @@ public class JwtFilter extends OncePerRequestFilter {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			return;
 		}
-		
-		System.err.println("jwtFilter 실행");
 		
 		// JWT에서 사용자 정보 추출
 		String username = jwtUtil.getUsername(accessToken);

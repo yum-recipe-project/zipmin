@@ -38,7 +38,7 @@
 					</div>
 					
 					<!-- 제목 -->
-					<h1>쿠킹클래스</h1>
+					<h1>쿠킹클래스 관리</h1>
 					<div class="bar">
 						<div class="tab">
 							<ul>

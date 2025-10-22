@@ -162,8 +162,8 @@ public class SecurityConfig {
 				.requestMatchers("/mypage.do").permitAll()
 				.requestMatchers("/mypage/**").permitAll()
 				
-				.requestMatchers("/admin/login.do", "/admin/home.do", "/admin/listChomp.do", "/admin/listClass.do", "/admin/listComment.do").permitAll()
-				.requestMatchers("/admin/listGuide.do", "/admin/listRecipe.do", "/admin/listReview.do", "/admin/listUser.do", "/admin/listWithdraw.do").permitAll()
+				.requestMatchers("/admin/login.do", "/admin/home.do", "/admin/listUser.do", "/admin/listChomp.do", "/admin/listClass.do", "/admin/listComment.do").permitAll()
+				.requestMatchers("/admin/listGuide.do", "/admin/listRecipe.do", "/admin/listReview.do",  "/admin/listWithdraw.do", "/admin/listFridge.do").permitAll()
 				.requestMatchers("/admin/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
 				.requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**", "/assets/**", "/files/**").permitAll()
 				

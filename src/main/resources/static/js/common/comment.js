@@ -266,11 +266,8 @@ async function fetchCommentList() {
 		else if (result.code === 'USER_NOT_FOUND') {
 			alert('해당 사용자를 찾을 수 없습니다.');
 		}
-		else if (result.code === 'INTERVAL_SERVER_ERROR') {
-			alert('서버 내부에서 오류가 발생했습니다.');
-		}
-		else {
-			console.log(error);
+		else if (result.code === 'INTERNAL_SERVER_ERROR') {
+			throw new Error('서버 내부 오류 발생');
 		}
 	}
 	catch (error) {

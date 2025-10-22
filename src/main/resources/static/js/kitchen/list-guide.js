@@ -109,7 +109,7 @@ async function fetchGuideList() {
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
 		else if (result.code === 'KITCHEN_READ_LIST_FAIL') {
-		    alertDanger('가이드 목록 조회에 실패했습니다.');
+		    alertDanger('키친가이드 목록 조회에 실패했습니다.');
 		}
 		else if (result.code === 'KITCHEN_INVALID_INPUT') {
 		    alertDanger('입력값이 유효하지 않습니다.');
@@ -117,11 +117,8 @@ async function fetchGuideList() {
 		else if (result.code === 'USER_NOT_FOUND') {
 		    alertDanger('사용자를 찾을 수 없습니다.');
 		}
-		else if (result.code === 'INTERVAL_SERVER_ERROR') {
-		    alertDanger('서버 내부에서 오류가 발생했습니다.');
-		}
-		else {
-		    console.log('알 수 없는 에러:', result);
+		else if (result.code === 'INTERNAL_SERVER_ERROR') {
+			throw new Error('서버 내부 오류 발생');
 		}
 	}
 	catch (error) {

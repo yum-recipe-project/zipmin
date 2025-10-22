@@ -1,23 +1,4 @@
 /**
- * 토큰을 디코딩하는 함수
- * 
- * @param {string} token - JWT access token
- * @returns {object} - payload 객체
- */
-function parseJwt(token) {
-	const base64Url = token.split('.')[1];
-	const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-	const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-		return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-	}).join(''));
-	return JSON.parse(jsonPayload);
-}
-
-
-
-
-
-/**
  * 로그인 여부를 확인하는 함수
  */
 function isLoggedIn() {
@@ -29,10 +10,43 @@ function isLoggedIn() {
 
 
 /**
- * 로그인 여부를 확인하는 함수
+ * 관리자 로그인 여부를 확인하는 함수
  */
 function isAdminLoggedIn() {
 	return !!localStorage.getItem('accessToken');
+}
+
+
+
+
+
+/**
+ * 토큰을 디코딩하는 함수
+ */
+function parseJwt(token) {
+	
+	const base64Url = token.split('.')[1];
+	const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+	const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+		return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+	}).join(''));
+	
+	return JSON.parse(jsonPayload);
+}
+
+
+
+
+
+/**
+ * 페이로드를 얻는 함수
+ */
+function getPayload() {
+	
+	const token = localStorage.getItem('accessToken');
+	const payload = parseJwt(token);
+	
+	return payload;
 }
 
 
@@ -61,40 +75,22 @@ function getAuthHeaders() {
 
 
 /**
- * 페이로드를 얻는 함수
- */
-function getPayload() {
-	
-	const token = localStorage.getItem('accessToken');
-	const payload = parseJwt(token);
-	
-	return payload;
-}
-
-
-
-
-
-
-/**
  * 토큰 만료 여부를 확인하는 함수
- * 
- * @param {string} token - JWT access token
- * @returns {boolean} - true/false
  */
 function isTokenExpired(token) {
+	
 	const payload = parseJwt(token);
 	const now = Math.floor(Date.now() / 1000);
+	
 	return payload.exp < now;
 }
 
 
 
+
+
 /**
  * 토큰을 재발급하는 함수
- * 
- * @returns {Promise<string>} - 새 access token
- * @throws {Error} - 재발급 실패 시 에러 발생
  */
 async function reissueJwt() {
 
@@ -124,9 +120,6 @@ async function reissueJwt() {
 		// TODO : 쿠키는 서버에서 지우도록 HttpOnly는 js에서 수정 못하므로 백엔드수정 (계속 오류가 나타난다면)
 		// document.cookie = 'refresh=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT;';
 		
-		// TODO : 로그인할거임?
-		alert('jwt.js 테스트 - 로그인 만료되었음 로그인할거임?');
-		redirectToLogin();
 		throw error;
 	}
 }

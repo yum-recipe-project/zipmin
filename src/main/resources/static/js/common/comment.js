@@ -19,7 +19,7 @@ let commentList = [];
 document.addEventListener('DOMContentLoaded', async function () {
 	
 	if (isLoggedIn()) {
-		const payload = parseJwt(localStorage.getItem('accessToken'));
+		const payload = getPayload();
 		document.getElementById('commentLoginState').style.display = 'block';
 		document.getElementById('commentLogoutState').style.display = 'none';
 		document.getElementById('writeCommentAvatar').src = payload.avatar;

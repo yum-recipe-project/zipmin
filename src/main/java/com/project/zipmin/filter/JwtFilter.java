@@ -47,7 +47,9 @@ public class JwtFilter extends OncePerRequestFilter {
 		
 		// 비밀번호 재설정 API는 JWT 인증 패스
 	    String path = request.getRequestURI();
-	    if (path.startsWith("/users/password") || path.startsWith("/users/check-token")) {
+	    if (path.startsWith("/admin/login") || path.startsWith("/admin/login.do") ||
+	    	path.startsWith("/users/login") || path.startsWith("/user/login.do") ||
+	        path.startsWith("/users/password") || path.startsWith("/users/check-token") || path.startsWith("/reissue")) {
 	        filterChain.doFilter(request, response);
 	        return;
 	    }
@@ -70,6 +72,7 @@ public class JwtFilter extends OncePerRequestFilter {
 		}
 		catch (ExpiredJwtException e) {
 			PrintWriter writer = response.getWriter();
+			System.err.println("이거 실행되는건가");
 			writer.println("access token expired");
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			return;
@@ -83,6 +86,8 @@ public class JwtFilter extends OncePerRequestFilter {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			return;
 		}
+		
+		System.err.println("jwtFilter 실행");
 		
 		// JWT에서 사용자 정보 추출
 		String username = jwtUtil.getUsername(accessToken);

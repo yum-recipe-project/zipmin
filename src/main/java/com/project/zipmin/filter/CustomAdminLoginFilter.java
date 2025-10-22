@@ -93,8 +93,6 @@ public class CustomAdminLoginFilter extends UsernamePasswordAuthenticationFilter
 			return;
 		}
 		
-		System.err.println("CustomAdminLogin: role = " + role);
-		
 		// JWT 토큰 발급 및 응답
 		String access = jwtUtil.createJwt("access", id, username, nickname, avatar, role, 60 * 60 * 60L);
 		String refresh = jwtUtil.createJwt("refresh", id, username, nickname, avatar, role, 86400_000L);

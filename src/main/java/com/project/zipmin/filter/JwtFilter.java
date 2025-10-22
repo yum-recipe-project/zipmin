@@ -17,6 +17,7 @@ import com.project.zipmin.entity.Role;
 import com.project.zipmin.oauth2.CustomOAuth2User;
 import com.project.zipmin.util.JwtUtil;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -52,16 +53,16 @@ public class JwtFilter extends OncePerRequestFilter {
 	    }
 		
 		// Authorization 헤더에서 토큰 추출
-		String authrization = request.getHeader("Authorization");
+		String authorization = request.getHeader("Authorization");
 		
 		// 헤더가 없거나 Bearer 토큰이 아닌 경우 다음 필터로 이동
-		if (authrization == null || !authrization.startsWith("Bearer ")) {
+		if (authorization == null || !authorization.startsWith("Bearer ")) {
 			filterChain.doFilter(request, response);
 			return;
 		}
 		
 		// 엑세스 토큰 추출
-		String accessToken = authrization.split(" ")[1];
+		String accessToken = authorization.split(" ")[1];
 		
 		// 토큰 만료 여부 확인
 		try {

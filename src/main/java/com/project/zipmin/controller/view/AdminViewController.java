@@ -21,6 +21,11 @@ public class AdminViewController {
 		return "admin/listUser";
 	}
 	
+	@GetMapping("/admin/listWithdraw.do")
+	public String adminListWithdraw() {
+		return "admin/listWithdraw";
+	}
+	
 	@GetMapping("/admin/listRecipe.do")
 	public String adminListRecipe() {
 		return "admin/listRecipe";
@@ -51,9 +56,10 @@ public class AdminViewController {
 		return "admin/listClass";
 	}
 	
-	@GetMapping("/admin/listWithdraw.do")
-	public String adminListWithdraw() {
-		return "admin/listWithdraw";
+	@GetMapping("/admin/listFridge.do")
+	public String adminListFridge() {
+		return "admin/listFridge";
 	}
+	
 	
 }

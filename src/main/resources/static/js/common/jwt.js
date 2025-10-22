@@ -148,18 +148,14 @@ let refreshQueue = []; // 재발급 기다리는 요청들
  * 요청 전 액세스 토큰의 만료 여부를 확인하고 필요시 자동 재발급하는 요청 인터셉터
  */
 instance.interceptors.request.use(async (config) => {
-	const token = localStorage.getItem('accessToken');
 	
-	// 토큰이 없으면 요청 전송 (**** 이거 수정 필요 ****)
-	if (!token) {
-		throw new Error('ACCESS_TOKEN_MISSING');
-	}
-
-	if (!token) {
+	// 토큰이 없으면 요청 전송
+	if (!isLoggedIn()) {
 		return config;
 	}
 	
 	// 토큰이 만료되었는지 검사
+	const token = localStorage.getItem('accessToken');
 	if (isTokenExpired(token)) {
 		// 이미 재발급 중이 아니라면 재발급 시도
 		if (!isRefreshing) {

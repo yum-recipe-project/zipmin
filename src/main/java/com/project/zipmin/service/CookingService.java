@@ -932,6 +932,7 @@ public class CookingService {
 					throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
 				}
 			}
+			System.err.println("hasApproval 변환성공");
 			
 			// 상태
 			Integer statusCode = null;
@@ -943,6 +944,8 @@ public class CookingService {
 					throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
 				}
 			}
+			System.err.println("statusCode 변환성공");
+
 			
 	    	if (!hasStatus) {
 	    		classPage = hasApproval

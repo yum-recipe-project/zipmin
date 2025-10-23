@@ -487,3 +487,119 @@ function formatTimeForServer(timeStr) {
 }
 
 
+
+
+
+
+/**
+ * 클래스 시간 선택 제한 함수
+ * starttime 변경 시 endtime의 최소 시간 갱신, 기존 값이 작으면 초기화
+ */
+document.addEventListener('DOMContentLoaded', function() {
+
+	function bindTimepickers(startSelector, endSelector) {
+	    $(startSelector).timepicker({
+	        timeFormat: 'HH:mm',
+	        interval: 30,
+	        minTime: '08:00',
+	        maxTime: '22:00',
+	        startTime: '08:00',
+	        dynamic: false,
+	        dropdown: true,
+	        scrollbar: true,
+	        change: function(startTime) {
+	            const $end = $(endSelector);
+
+	            // startTime을 문자열로 변환 
+	            let startStr, startDate;
+	            if (startTime instanceof Date) {
+	                const h = startTime.getHours().toString().padStart(2, '0');
+	                const m = startTime.getMinutes().toString().padStart(2, '0');
+	                startStr = `${h}:${m}`;
+	                startDate = startTime;
+	            } else {
+	                startStr = startTime;
+	                const [h, m] = startStr.split(':').map(Number);
+	                startDate = new Date();
+	                startDate.setHours(h, m, 0, 0);
+	            }
+
+	            // endtime 최소 시간을 starttime + 30분으로 설정
+	            const minEndDate = new Date(startDate.getTime() + 30 * 60000);
+	            const h = minEndDate.getHours().toString().padStart(2, '0');
+	            const m = minEndDate.getMinutes().toString().padStart(2, '0');
+	            const minEndStr = `${h}:${m}`;
+	            $end.timepicker('option', 'minTime', minEndStr);
+
+	            // endtime 값이 starttime보다 작거나 같으면 초기화
+	            const endVal = $end.val();
+	            if (endVal) {
+	                const [eh, em] = endVal.split(':').map(Number);
+	                const endMinutes = eh*60 + em;
+	                const startMinutes = startDate.getHours()*60 + startDate.getMinutes();
+	                if (endMinutes <= startMinutes) {
+	                    $end.val('');
+	                }
+	            }
+	        }
+	    });
+
+	    $(endSelector).timepicker({
+	        timeFormat: 'HH:mm',
+	        interval: 30,
+	        minTime: '08:30', 
+	        maxTime: '22:00',
+	        startTime: '08:30',
+	        dynamic: false,
+	        dropdown: true,
+	        scrollbar: true
+	    });
+	}
+
+
+
+    // 메인 클래스 시간
+    bindTimepickers('#starttime', '#endtime');
+
+    // 초기 커리큘럼 1번
+    bindTimepickers('#starttime_1', '#endtime_1');
+
+    // 커리큘럼 추가 버튼
+    document.getElementById('addSchedule').addEventListener('click', function(event) {
+        event.preventDefault();
+        const table = document.querySelector("#classSchedule table");
+        const rowCount = table.querySelectorAll("tbody").length / 2 + 1;
+
+        const newRow = `
+        <tbody>
+            <tr>
+                <th scope="col">시간<span class="ess"></span></th>
+                <td>
+                    <span class="form_timepicker">
+                        <input type="text" class="form-control" id="starttime_${rowCount}" name="starttime${rowCount}" placeholder="시작 시간을 선택하세요">
+                    </span>
+                    &nbsp;&nbsp;-&nbsp;&nbsp;
+                    <span class="form_timepicker">
+                        <input type="text" class="form-control" id="endtime_${rowCount}" name="endtime${rowCount}" placeholder="종료 시간을 선택하세요">
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <th scope="col">제목<span class="ess"></span></th>
+                <td>
+                    <span class="form_text">
+                        <input maxlength="50" name="title${rowCount}" placeholder="수업 제목을 입력해주세요" type="text" value="">
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+        `;
+        table.insertAdjacentHTML('beforeend', newRow);
+
+        // 새로 추가된 스케줄에도 start/end timepicker 바인딩
+        bindTimepickers(`#starttime_${rowCount}`, `#endtime_${rowCount}`);
+    });
+
+});
+
+

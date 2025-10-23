@@ -14,7 +14,7 @@
 		
 		<main id="container">
 			<div class="content">
-				<form id="openClassForm" name="openClassForm">
+				<form id="openClassForm" name="openClassForm" autocomplete="off">
 					<div class="class_header">
 						<h2>쿠킹클래스 개설 신청</h2>
 					</div>

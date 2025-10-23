@@ -82,11 +82,23 @@ public class FridgeService {
 				case "id-asc":
 					sortSpec = Sort.by(Sort.Order.asc("id"));
 					break;
+				case "image-desc":
+					sortSpec = Sort.by(Sort.Order.desc("image"), Sort.Order.desc("id"));
+					break;
+				case "image-asc":
+					sortSpec = Sort.by(Sort.Order.asc("image"), Sort.Order.asc("id"));
+					break;
 				case "name-desc":
 					sortSpec = Sort.by(Sort.Order.desc("name"), Sort.Order.desc("id"));
 					break;
 				case "name-asc":
 					sortSpec = Sort.by(Sort.Order.asc("name"), Sort.Order.asc("id"));
+					break;
+				case "zone-desc":
+					sortSpec = Sort.by(Sort.Order.desc("zone"), Sort.Order.desc("id"));
+					break;
+				case "zone-asc":
+					sortSpec = Sort.by(Sort.Order.asc("zone"), Sort.Order.asc("id"));
 					break;
 				default:
 					break;

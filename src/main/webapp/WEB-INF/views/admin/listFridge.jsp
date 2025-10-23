@@ -42,9 +42,15 @@
 						<div class="tab">
 							<ul>
 								<li class="btn_tab"><a href="" data-tab="" class="active"><span>전체</span></a></li>
-								<li class="btn_tab"><a href="" data-tab="상온"><span>상온</span></a></li>
-								<li class="btn_tab"><a href="" data-tab="냉장"><span>냉장</span></a></li>
-								<li class="btn_tab"><a href="" data-tab="냉동"><span>냉동</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="육류"><span>육류</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="어패류"><span>어패류</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="채소류"><span>채소류</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="과일류"><span>과일류</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="견과류"><span>견과류</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="유제품"><span>유제품</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="완제품"><span>완제품</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="소스류"><span>소스류</span></a></li>
+								<li class="btn_tab"><a href="" data-tab="기타"><span>기타</span></a></li>
 							</ul>
 						</div>
 					</div>
@@ -55,11 +61,11 @@
 					        <tr>
 						        <colgroup>
 				    				<col style="width:8%">
-						    		<col style="width:9%">
-						    		<col style="width:32%">
-								    <col style="width:14%">
-								    <col style="width:15%"> 
-								    <col style="width:11%"> 
+						    		<col style="width:16%">
+						    		<col style="width:16%">
+								    <col style="width:16%">
+								    <col style="width:16%"> 
+								    <col style="width:17%"> 
 								    <col style="width:11%">
 						    	</colgroup>
 					            <th colspan="2" class="total text-start"></th>
@@ -76,7 +82,7 @@
 					            <th class="sort_btn desc" data-key="id">
 					                <h6 class="fs-4 fw-semibold mb-0">No</h6>
 					            </th>
-					            <th>
+					            <th class="sort_btn" data-key="image">
 					                <h6 class="fs-4 fw-semibold mb-0">이미지</h6>
 					            </th>
 					            <th class="sort_btn" data-key="name">
@@ -88,7 +94,7 @@
 					            <th class="sort_btn" data-key="zone">
 					                <h6 class="fs-4 fw-semibold mb-0">보관장소</h6>
 					            </th>
-					            <th class="sort_btn">
+					            <th>
 					                <h6 class="fs-4 fw-semibold mb-0">작성자</h6>
 					            </th>
 					            <th></th>

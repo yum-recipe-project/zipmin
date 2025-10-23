@@ -197,7 +197,11 @@ function renderAdminFridgeList(fridgeList) {
 		
 		// 이미지
 		const imageTd = document.createElement('td');
-		const image = document.createElement('image');
+		imageTd.className = 'd-flex justify-content-center align-items-center';
+		const imageSpan = document.createElement('span');
+		imageSpan.className = 'fridge_image';
+		imageSpan.style.backgroundImage = `url(${fridge.image})`;
+		imageTd.appendChild(imageSpan);
 		
 		// 재료명
 		const nameTd = document.createElement('td');

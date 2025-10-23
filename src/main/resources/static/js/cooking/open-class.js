@@ -137,7 +137,6 @@ function validateOpenClassForm(form) {
 
 
 
-
 /**
  * 강사 정보 입력창을 추가하는 함수
  */
@@ -146,9 +145,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById("addTutor").addEventListener("click", function(event) {
         event.preventDefault();
-		console.log("추가버튼 클릭");
         tutorCount++;
-        const classTutorDiv = document.querySelector("#classTutor"); // 기존 HTML 그대로 사용
+        const classTutorDiv = document.querySelector("#classTutor");
         const table = classTutorDiv.querySelector("table");
 
         const newTutor = `
@@ -158,6 +156,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>
                     <span class="form_text">
                         <input maxlength="50" name="name${tutorCount}" placeholder="이름을 입력해주세요" type="text" value="">
+                    </span>
+                    &nbsp;&nbsp;
+                    <span class="minusTutor" style="cursor:pointer;">
+                        <img src="/images/cooking/minus_circle.png" alt="삭제">
+                        제거하기
                     </span>
                 </td>
             </tr>
@@ -187,7 +190,6 @@ document.addEventListener('DOMContentLoaded', function() {
         </tbody>
         `;
 
-        // 테이블에 추가
         table.insertAdjacentHTML("beforeend", newTutor);
 
         // 새로 추가된 파일 input 이벤트 바인딩
@@ -199,11 +201,21 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    /**
+     * 강사 삭제 버튼 (-) 이벤트
+     * - 각 강사 블록(tbody)에 있는 삭제 버튼 클릭 시 해당 tbody 제거
+     */
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.minusTutor')) {
+            e.preventDefault();
+            const tbody = e.target.closest('tbody');
+            if (tbody) {
+                tbody.remove();
+            }
+        }
+    });
 });
-
-
-
-
 
 
 
@@ -512,19 +524,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return `${h}:${m}`;
     }
 
-	
-	/**
-	 * parseTime
-	 * - "HH:mm" 문자열을 Date 객체로 변환
-	 * - 필요시 Date 기반 비교/계산에 활용
-	 */
-//    function parseTime(str) {
-//        const [h,m] = str.split(':').map(Number);
-//        const d = new Date();
-//        d.setHours(h, m, 0, 0);
-//        return d;
-//    }
-
 	/**
 	 * bindTimepickers
 	 * - 클래스 전체 시간 선택 시 종료시간이 시작시간보다 같거나 빠르지 않도록 제한하는 함수
@@ -686,33 +685,60 @@ document.addEventListener('DOMContentLoaded', function() {
         const table = document.querySelector('#classSchedule table');
         const rowCount = table.querySelectorAll('tbody').length + 1;
 
-        const newRow = `
-        <tbody>
-            <tr>
-                <th scope="col">시간<span class="ess"></span></th>
-                <td>
-                    <span class="form_timepicker">
-                        <input type="text" class="form-control" id="starttime_${rowCount}" name="starttime${rowCount}" placeholder="시작 시간을 선택하세요">
-                    </span>
-                    &nbsp;&nbsp;-&nbsp;&nbsp;
-                    <span class="form_timepicker">
-                        <input type="text" class="form-control" id="endtime_${rowCount}" name="endtime${rowCount}" placeholder="종료 시간을 선택하세요">
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <th scope="col">제목<span class="ess"></span></th>
-                <td>
-                    <span class="form_text">
-                        <input maxlength="50" name="title${rowCount}" placeholder="수업 제목을 입력해주세요" type="text" value="">
-                    </span>
-                </td>
-            </tr>
-        </tbody>`;
+		const newRow = `
+		<tbody>
+		    <tr>
+		        <th scope="col">
+		            시간<span class="ess"></span>
+		        </th>
+		        <td>
+		            <span class="form_timepicker">
+		                <input type="text" class="form-control" id="starttime_${rowCount}" name="starttime${rowCount}" placeholder="시작 시간을 선택하세요">
+		            </span>
+		            &nbsp;&nbsp;-&nbsp;&nbsp;
+		            <span class="form_timepicker">
+		                <input type="text" class="form-control" id="endtime_${rowCount}" name="endtime${rowCount}" placeholder="종료 시간을 선택하세요">
+		            </span>
+		            &nbsp;&nbsp;
+		            <span class="minusSchedule" style="cursor:pointer;">
+		                <img src="/images/cooking/minus_circle.png" alt="삭제">
+		                제거하기
+		            </span>
+		        </td>
+		    </tr>
+		    <tr>
+		        <th scope="col">제목<span class="ess"></span></th>
+		        <td>
+		            <span class="form_text">
+		                <input maxlength="50" name="title${rowCount}" placeholder="수업 제목을 입력해주세요" type="text" value="">
+		            </span>
+		        </td>
+		    </tr>
+		</tbody>`;
+
+
 
         table.insertAdjacentHTML('beforeend', newRow);
         bindCurriculumTimepickers(`#starttime_${rowCount}`, `#endtime_${rowCount}`);
     });
+	
+	/**
+	 * 커리큘럼 삭제 버튼 (-) 이벤트
+	 * - 각 커리큘럼 블록(tbody)에 있는 삭제 버튼 클릭 시 해당 tbody 제거
+	 * - 삭제 후 시간 제한 재계산
+	 */
+	document.addEventListener('click', function(e) {
+	    if (e.target.closest('.minusSchedule')) {
+	        e.preventDefault();
+	        const tbody = e.target.closest('tbody');
+	        if (tbody) {
+	            tbody.remove();
+	            updateCurriculumLimits();
+	        }
+	    }
+	});
+
+
 
 });
 

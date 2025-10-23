@@ -382,11 +382,15 @@ document.addEventListener('DOMContentLoaded', function() {
             };
 
 			// 추천 대상 
-            ['target1', 'target2', 'target3'].forEach(name => {
-                const val = form[name]?.value.trim();
-                if (val) createRequestDto.target_list.push(val);
-            });
-
+			['target1', 'target2', 'target3'].forEach(name => {
+			    const val = form[name]?.value.trim();
+			    if (val) {
+			        createRequestDto.target_list.push({
+			            content: val 
+			        });
+			    }
+			});
+			
 			// 커리큘럼
             const scheduleRows = document.querySelectorAll('#classSchedule table tbody');
             scheduleRows.forEach((tbody) => {

@@ -30,6 +30,7 @@ import com.project.zipmin.dto.ClassApplyReadResponseDto;
 import com.project.zipmin.dto.ClassApplyStatusUpdateRequestDto;
 import com.project.zipmin.dto.ClassApplyUpdateResponseDto;
 import com.project.zipmin.dto.ClassCreateRequestDto;
+import com.project.zipmin.dto.ClassCreateResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.UserAppliedClassResponseDto;
 import com.project.zipmin.dto.UserClassReadResponseDto;
@@ -247,10 +248,11 @@ public class CookingController {
 	    }
 	    createRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 	    
-	    cookingService.createClass(createRequestDto, classImage, tutorImages);
+	    ClassCreateResponseDto classResponseDto = cookingService.createClass(createRequestDto, classImage, tutorImages);
+
 	    
 	    return ResponseEntity.status(ClassSuccessCode.CLASS_CREATE_SUCCESS.getStatus())
-	            .body(ApiResponse.success(ClassSuccessCode.CLASS_CREATE_SUCCESS, null));
+	            .body(ApiResponse.success(ClassSuccessCode.CLASS_CREATE_SUCCESS, classResponseDto));
 	}
 	
 	

@@ -9,9 +9,11 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ClassScheduleCreateDto {
-	private Date starttime;
-    private Date endtime;
-    private String title;
+public class ClassScheduleCreateResponseDto {
+    private int id;         
+    private int classId;    
+    private String title;   
+    private Date starttime; 
+    private Date endtime;   
 }
 

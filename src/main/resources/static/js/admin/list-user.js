@@ -100,8 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 	
 	// 관리자 추가 버튼
-	const token = localStorage.getItem('accessToken');
-	const payload = parseJwt(token);
+	const payload = getPayload();
 	if (payload.role === 'ROLE_SUPER_ADMIN') {
 		renderAddAdminButton();
 	}

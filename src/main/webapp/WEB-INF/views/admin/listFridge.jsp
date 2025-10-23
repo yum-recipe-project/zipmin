@@ -112,5 +112,7 @@
 				</div>
 			</div>
 		</div>
+		
+		<%@include file="../modal/writeFridgeModal.jsp" %>
 	</body>
 </html>

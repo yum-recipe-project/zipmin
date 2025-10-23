@@ -91,6 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 	});
 
+	renderAddFridgeButton();
 	fetchAdminFridgeList();
 });
 
@@ -151,6 +152,31 @@ async function fetchAdminFridgeList(scrollTop = true) {
 		}
 	}
 	
+	
+}
+
+
+
+
+
+/**
+ * 냉장고 추가 버튼을 화면에 렌더링하는 함수
+ */
+function renderAddFridgeButton() {
+	
+	const createBtn = document.createElement('button');
+	createBtn.type = 'button';
+	createBtn.className = 'btn btn-info m-1';
+	createBtn.dataset.bsToggle = 'modal';
+	createBtn.dataset.bsTarget = '#writeFridgeModal';
+
+	const icon = document.createElement('i');
+	icon.className = 'ti ti-plus fs-4';
+
+	const text = document.createTextNode('재료 등록하기');
+
+	createBtn.append(icon, text);
+	document.querySelector('.bar').appendChild(createBtn);
 	
 }
 
@@ -281,7 +307,54 @@ function renderAdminFridgeList(fridgeList) {
 
 
 
-
+/**
+ * 냉장고를 삭제하는 함수
+ */
+async function deleteFridge(id) {
+	
+	// 냉장고 삭제
+	try {
+		const response = await instance.delete(`/fridges/${id}`, {
+			headers: getAuthHeaders()
+		});
+		
+		if (response.data.code === 'FRIDGE_DELETE_SUCCESS') {
+			alertPrimary('냉장고 삭제에 성공했습니다.');
+			fetchAdminFridgeList();
+		}
+	}
+	catch (error) {
+		const code = error?.response?.data?.code;
+						
+		if (code === 'FRIDGE_DELETE_FAIL') {
+			alertDanger('냉장고 삭제에 실패했습니다.');
+		}
+		else if (code === 'FRIDGE_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (code === 'FRIDGE_UNAUTHORIZED_ACCESS') {
+			alertDanger('로그인되지 않은 사용자입니다.');
+		}
+		else if (code === 'FRIDGE_FORDBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (code === 'FRIDGE_NOT_FOUND') {
+			alertDanger('해당 냉장고를 찾을 수 없습니다.');
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			alertDanger('해당 사용자를 찾을 수 없습니다.');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alertDanger('서버 내부에서 오류가 발생했습니다.');
+		}
+		else {
+			console.log(error);
+		}
+	}
+}
 
 
 

@@ -85,37 +85,51 @@ function validateOpenClassForm(form) {
 	}
 	
 	// 커리큘럼
-	if (form.starttime1.value.trim() === "") {
-		alertDanger("커리큘럼 시작 시간을 선택해주세요.");
-		form.starttime1.focus();
-		return false;
+	const scheduleRows = document.querySelectorAll('#classSchedule table tbody');
+	for (const [index, tbody] of scheduleRows.entries()) {
+		const start = tbody.querySelector('input[name^="starttime"]')?.value.trim();
+		const end = tbody.querySelector('input[name^="endtime"]')?.value.trim();
+		const title = tbody.querySelector('input[name^="title"]')?.value.trim();
+
+		if (!start) {
+			alertDanger(`커리큘럼 ${index + 1}의 시작 시간을 선택해주세요.`);
+			tbody.querySelector('input[name^="starttime"]').focus();
+			return false;
+		}
+		if (!end) {
+			alertDanger(`커리큘럼 ${index + 1}의 종료 시간을 선택해주세요.`);
+			tbody.querySelector('input[name^="endtime"]').focus();
+			return false;
+		}
+		if (!title) {
+			alertDanger(`커리큘럼 ${index + 1}의 제목을 입력해주세요.`);
+			tbody.querySelector('input[name^="title"]').focus();
+			return false;
+		}
 	}
-	if (form.endtime1.value.trim() === "") {
-		alertDanger("커리큘럼 종료 시간을 선택해주세요.");
-		form.endtime1.focus();
-		return false;
-	}
-	if (form.title1.value.trim() === "") {
-		alertDanger("커리큘럼 제목을 입력해주세요.");
-		form.title1.focus();
-		return false;
-	}
-	
+
 	// 강사
-	if (form.name.value.trim() === "") {
-		alertDanger("강사 이름을 입력해주세요.");
-		form.name.focus();
-		return false;
-	}
-	if (form.career1.value.trim() === "") {
-		alertDanger("강사 경력을 입력해주세요.");
-		form.career1.focus();
-		return false;
-	}
-	if (form.teacher_img.value.trim() === "") {
-		alertDanger("강사 사진을 선택해주세요.");
-		form.teacher_img.focus();
-		return false;
+	const tutorRows = document.querySelectorAll('#classTutor table tbody.tutor_row');
+	for (const [index, tbody] of tutorRows.entries()) {
+		const name = tbody.querySelector('input[name^="name"]')?.value.trim();
+		const career1 = tbody.querySelector('input[name^="career"]')?.value.trim();
+		const img = tbody.querySelector('input[type="file"]')?.value.trim();
+
+		if (!name) {
+			alertDanger(`강사 ${index + 1}의 이름을 입력해주세요.`);
+			tbody.querySelector('input[name^="name"]').focus();
+			return false;
+		}
+		if (!career1) {
+			alertDanger(`강사 ${index + 1}의 경력을 입력해주세요.`);
+			tbody.querySelector('input[name^="career"]').focus();
+			return false;
+		}
+		if (!img) {
+			alertDanger(`강사 ${index + 1}의 사진을 선택해주세요.`);
+			tbody.querySelector('input[type="file"]').focus();
+			return false;
+		}
 	}
 	
 	return true; 

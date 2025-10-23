@@ -144,7 +144,7 @@
 										<th scope="col">모집 인원<span class="ess"></span></th>
 										<td>
 											<span class="form_text">
-												<input maxlength="50" name="headcount" placeholder="모집 인원을 입력해주세요" type="text" value="">
+												<input maxlength="50" name="headcount" placeholder="모집 인원을 입력해주세요(숫자만 입력)" type="number" value="">
 											</span>
 										</td>
 									</tr>

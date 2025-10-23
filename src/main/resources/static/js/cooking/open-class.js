@@ -457,16 +457,42 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.href = '/mypage/class.do';
             }
 
-        } catch (error) {
-            const code = error?.response?.data?.code;
-            switch (code) {
-                case 'CLASS_CREATE_FAIL': alertDanger('쿠킹클래스 개설에 실패했습니다.'); break;
-                case 'CLASS_INVALID_INPUT': alertDanger('입력값이 유효하지 않습니다.'); break;
-                case 'CLASS_CREATE_DUPLICATE': alertDanger('이미 개설한 클래스입니다.'); break;
-                case 'CLASS_UNAUTHORIZED_ACCESS': alertDanger('로그인되지 않은 사용자입니다.'); break;
-                default: console.log(error); break;
-            }
-        }
+        } 
+		catch (error) {
+		    const code = error?.response?.data?.code;
+
+		    if (code === 'CLASS_INVALID_INPUT') {
+		        alertDanger('입력값이 유효하지 않습니다.');
+		    } 
+		    else if (code === 'CLASS_TARGET_INVALID_INPUT') {
+		        alertDanger('추천 대상 입력값이 유효하지 않습니다.');
+		    } 
+		    else if (code === 'CLASS_SCHEDULE_INVALID_INPUT') {
+		        alertDanger('커리큘럼 입력값이 유효하지 않습니다.');
+		    } 
+		    else if (code === 'CLASS_TUTOR_INVALID_INPUT') {
+		        alertDanger('강사 입력값이 유효하지 않습니다.');
+		    } 
+		    else if (code === 'CLASS_CREATE_DUPLICATE') {
+		        alertDanger('이미 동일한 제목의 클래스가 존재합니다.');
+		    } 
+		    else if (code === 'CLASS_FILE_UPLOAD_FAIL') {
+		        alertDanger('클래스 대표 이미지 업로드에 실패했습니다.');
+		    } 
+		    else if (code === 'CLASS_TUTOR_FILE_UPLOAD_FAIL') {
+		        alertDanger('강사 이미지 업로드에 실패했습니다.');
+		    } 
+		    else if (code === 'CLASS_CREATE_FAIL') {
+		        alertDanger('클래스 개설에 실패했습니다.');
+		    } 
+		    else if (code === 'CLASS_UNAUTHORIZED_ACCESS') {
+		        alertDanger('로그인되지 않은 사용자입니다.');
+		    } 
+		    else {
+		        alertDanger('알 수 없는 오류가 발생했습니다.');
+		    }
+		}
+
     });
 });
 

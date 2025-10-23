@@ -234,7 +234,6 @@ public class CookingController {
 	
 	// TODO : API 문서 작성
 	
-	// 클래스 작성
 	@PostMapping(value = "/classes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<?> writeClass(
 			@RequestPart ClassCreateRequestDto createRequestDto,

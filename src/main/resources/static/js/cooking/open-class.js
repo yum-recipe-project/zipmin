@@ -125,46 +125,6 @@ function validateOpenClassForm(form) {
 
 
 /**
- * 스케쥴 정보 입력창을 추가하는 함수
- */
-//document.addEventListener('DOMContentLoaded', function() {
-//	document.getElementById("addSchedule").addEventListener("click", function(event) {
-//		event.preventDefault();
-//		const rowCount = document.querySelectorAll("#classSchedule table tbody tr").length / 2 + 1;
-//		const newRow = `
-//			<tbody>
-//				<tr>
-//					<th scope="col">시간<span class="ess"></span></th>
-//					<td>
-//						<span class="form_timepicker">
-//							<input type="text" class="form-control" id="starttime_${rowCount}" name="starttime${rowCount}" placeholder="시작 시간을 선택하세요">
-//						</span>
-//						&nbsp;&nbsp;-&nbsp;&nbsp;
-//						<span class="form_timepicker">
-//							<input type="text" class="form-control" id="endtime_${rowCount}" name="endtime${rowCount}" placeholder="종료 시간을 선택하세요">
-//						</span>
-//					</td>
-//				</tr>
-//				<tr>
-//					<th scope="col">제목<span class="ess"></span></th>
-//					<td>
-//						<span class="form_text">
-//							<input maxlength="50" name="title${rowCount}" placeholder="수업 제목을 입력해주세요" type="text" value="">
-//						</span>
-//					</td>
-//				</tr>
-//			</tbody>
-//		`;
-//		
-//		document.querySelector("#classSchedule table").insertAdjacentHTML("beforeend", newRow);
-//		initializeTimepicker(`#starttime_${rowCount}`);
-//		initializeTimepicker(`#endtime_${rowCount}`);
-//	});
-//});
-
-
-
-/**
  * 강사 정보 입력창을 추가하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
@@ -282,11 +242,24 @@ document.addEventListener("DOMContentLoaded", function () {
  * 데이트 피커 및 타임 피커
  */
 $(document).ready(function () {
+	const today = new Date(); 
+	
 	$("#eventdate").datepicker({
-		format: "yyyy-mm-dd",
-		autoclose: true,
-		todayHighlight: true,
-  	});
+	    format: "yyyy-mm-dd",
+	    autoclose: true,
+	    todayHighlight: true,
+	    minDate: today,   
+	    onSelect: function () {
+	        const eventDate = $(this).datepicker('getDate');
+	        if (eventDate) {
+	            const maxNoticeDate = new Date(eventDate);
+	            maxNoticeDate.setDate(eventDate.getDate() - 3);
+
+	            $("#noticedate").datepicker("option", "maxDate", maxNoticeDate);
+	            $("#noticedate").datepicker("option", "minDate", today);
+	        }
+	    }
+	});
     $("#noticedate").datepicker({
       format: "yyyy-mm-dd",
       autoclose: true,

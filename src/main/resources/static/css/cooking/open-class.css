@@ -418,3 +418,31 @@
 	padding: 12px 0;
 }
 
+
+
+
+
+/* datepicker */
+.ui-datepicker .ui-datepicker-prev .ui-icon {
+    background-image: url('/images/common/chevron_left.png') !important;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    text-indent: -9999px; 
+}
+
+.ui-datepicker .ui-datepicker-next .ui-icon {
+    background-image: url('/images/common/chevron_right.png') !important;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    text-indent: -9999px;
+}
+
+.ui-datepicker .ui-datepicker-prev,
+.ui-datepicker .ui-datepicker-next {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+

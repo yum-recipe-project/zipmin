@@ -1,7 +1,23 @@
-# zipmin
-집밥의민족
+<a id="readme-top"></a>
 
 
+<!-- 프로젝트 로고 -->
+<div align="center">
+  <!-- <img src="src/main/resources/static/images/logo.png" alt="Logo" width="160" height="70"> -->
+  <h3 align="center">집밥의민족</h3>
+  <p align="center">
+    집밥 레시피 공유 웹사이트
+    <br />
+    <a href="http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586"><strong>웹사이트 바로가기 »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/othneildrew/Best-README-Template">API 명세</a>
+    &middot;
+    <a href="https://github.com/othneildrew/Best-README-Template/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    &middot;
+    <a href="https://github.com/othneildrew/Best-README-Template/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+  </p>
+</div>
 
 
 ## 1. 프로젝트 정보

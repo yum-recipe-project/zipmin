@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<form id="reportRecipeForm" onsubmit="return validateReportRecipeForm();">
+<form id="reportRecipeForm" onsubmit="">
 	<div class="modal" id="reportRecipeModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -15,37 +15,37 @@
 						<div class="reason">
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportRecipeReason1" name="reason" value="">
+									<input type="radio" id="reportRecipeReason1" name="reason" value="정당/정치인 비하 및 선거운동">
 									<label for="reportRecipeReason1">정당/정치인 비하 및 선거운동</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportRecipeReason2" name="reason" value="">
+									<input type="radio" id="reportRecipeReason2" name="reason" value="유출/사칭/사기">
 									<label for="reportRecipeReason2">유출/사칭/사기</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportRecipeReason3" name="reason" value="">
+									<input type="radio" id="reportRecipeReason3" name="reason" value="욕설/비하">
 									<label for="reportRecipeReason3">욕설/비하</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportRecipeReason4" name="reason" value="">
+									<input type="radio" id="reportRecipeReason4" name="reason" value="낚시/놀람/도배">
 									<label for="reportRecipeReason4">낚시/놀람/도배</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportRecipeReason5" name="reason" value="">
+									<input type="radio" id="reportRecipeReason5" name="reason" value="상업적 광고 및 판매">
 									<label for="reportRecipeReason5">상업적 광고 및 판매</label>
 								</div>
 							</div>
 							<div class="form-radio">
 								<div>
-									<input type="radio" id="reportRecipeReason6" name="reason" value="">
+									<input type="radio" id="reportRecipeReason6" name="reason" value="불법촬영물 등의 유통">
 									<label for="reportRecipeReason6">불법촬영물 등의 유통</label>
 								</div>
 							</div>

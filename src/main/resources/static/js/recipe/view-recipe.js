@@ -441,7 +441,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     tablename: 'recipe',
                     recodenum: recipeId,
                 };
-
+				
                 const response = await instance.post(`/recipes/${recipeId}/likes`, data, {
                     headers: getAuthHeaders(),
                 });
@@ -464,4 +464,93 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+/**
+ * 레시피를 신고하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	const reportForm = document.getElementById('reportRecipeForm');
+	
+	reportForm.addEventListener('submit', async function(event) {
+		event.preventDefault();
+		
+		if (!isLoggedIn()) {
+			redirectToLogin();
+		}
+		
+		const recipeId = new URLSearchParams(window.location.search).get('id');
+		const reason = document.querySelector('input[name="reason"]:checked')?.value;
+		
+		try {
+			const data = {
+				tablename: 'recipe',
+				recodenum: recipeId,
+				reason: reason
+			};
+			
+			const response = await instance.post(`/recipes/${recipeId}/reports`, data, {
+				headers: getAuthHeaders()
+			});
+			
+			if (response.data.code === 'RECIPE_REPORT_SUCCESS') {
+				alertPrimary('신고 처리되었습니다.');
+			}
+			
+		} catch (error) {
+			const code = error?.response?.data?.code;
+			
+			if (code === 'RECIPE_REPORT_FAIL') {
+				alertDanger('레시피 신고에 실패했습니다.');
+			}
+			else if (code === 'REPORT_CREATE_FAIL') {
+				alertDanger('신고 작성에 실패했습니다.');
+			}
+			else if (code === 'RECIPE_INVALID_INPUT' || code === 'USER_INVALID_INPUT' || code === 'REPORT_INVALID_INPUT') {
+				alertDanger('입력값이 유효하지 않습니다.');
+			}
+			else if (code === 'RECIPE_UNAUTHORIZED_ACCESS') {
+				alertDanger('로그인되지 않은 사용자입니다.');
+			}
+			else if (code === 'REPORT_FORBIDDEN') {
+				alertDanger('접근 권한이 없습니다.');
+			}
+			else if (code === 'RECIPE_NOT_FOUND') {
+				alertDanger('해당 레시피를 찾을 수 없습니다.');
+			}
+			else if (code === 'USER_NOT_FOUND') {
+				alertDanger('해당 사용자를 찾을 수 없습니다.');
+			}
+			else if (code === 'REPORT_DUPLICATE') {
+				alertDanger('이미 신고한 레시피입니다.');
+			}
+			else if (code === 'INTERNAL_SERVER_ERROR') {
+				alertDanger('서버 내부에서 오류가 발생했습니다.');
+			}
+			else {
+				console.error(error);
+			}
+		}
+		
+		bootstrap.Modal.getInstance(document.getElementById('reportRecipeModal'))?.hide();
+	});
+});
 
+
+
+
+
+/**
+ * 레시피 신고 폼값 검증 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	
+	// 댓글을 신고하는 모달창의 폼값 검증
+	const reasonRadio = document.querySelectorAll('#reportRecipeForm input[name="reason"]');
+	const submitButton = document.querySelector('#reportRecipeForm button[type="submit"]');
+	reasonRadio.forEach(function(radio) {
+	    radio.addEventListener('change', function() {
+			const isChecked = Array.from(reasonRadio).some(radio => radio.checked);
+			submitButton.classList.toggle('disabled', !isChecked);
+	    });
+	});
+	
+});

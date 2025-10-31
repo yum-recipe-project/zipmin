@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -24,14 +23,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
-import com.project.zipmin.api.CommentErrorCode;
-import com.project.zipmin.api.KitchenErrorCode;
-import com.project.zipmin.api.KitchenSuccessCode;
 import com.project.zipmin.api.RecipeErrorCode;
 import com.project.zipmin.api.RecipeSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
-import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
@@ -40,6 +35,8 @@ import com.project.zipmin.dto.RecipeCreateResponseDto;
 import com.project.zipmin.dto.RecipeReadMyResponseDto;
 import com.project.zipmin.dto.RecipeReadMySavedResponseDto;
 import com.project.zipmin.dto.RecipeReadResponseDto;
+import com.project.zipmin.dto.ReportCreateRequestDto;
+import com.project.zipmin.dto.ReportCreateResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.RecipeService;
 import com.project.zipmin.service.UserService;
@@ -68,7 +65,6 @@ import com.project.zipmin.swagger.RecipeStockReadListFailResponse;
 import com.project.zipmin.swagger.RecipeUnauthorizedAccessResponse;
 import com.project.zipmin.swagger.UserInvalidInputResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
-import com.project.zipmin.swagger.VoteUpdateSuccessResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -542,6 +538,31 @@ public class RecipeController {
 				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, savedRecipePage));
 	}
 	
+	
+	
+	
+	
+	
+	
+	// 레시피 신고
+	@PostMapping("/recipes/{id}/reports")
+	public ResponseEntity<?> reportRecipes(
+			@Parameter(description = "레시피의 일련번호") @PathVariable int id,
+			@Parameter(description = "레시피 신고 작성 요청 정보") @RequestBody ReportCreateRequestDto reportRequestDto) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(RecipeErrorCode.RECIPE_UNAUTHORIZED_ACCESS);
+		}
+		reportRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
+		System.err.println("레시피 신고 요청; " + id + "요청정보: " + reportRequestDto);
+		
+		ReportCreateResponseDto reportResponseDto = recipeService.reportRecipe(reportRequestDto);
+		
+		return ResponseEntity.status(RecipeSuccessCode.RECIPE_REPORT_SUCCESS.getStatus())
+	            .body(ApiResponse.success(RecipeSuccessCode.RECIPE_REPORT_SUCCESS, reportResponseDto));
+	}
 	
 	
 }

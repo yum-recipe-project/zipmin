@@ -17,9 +17,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
-import com.project.zipmin.api.KitchenErrorCode;
 import com.project.zipmin.api.RecipeErrorCode;
-import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
@@ -38,6 +36,8 @@ import com.project.zipmin.dto.RecipeStepReadResponseDto;
 import com.project.zipmin.dto.RecipeStockCreateRequestDto;
 import com.project.zipmin.dto.RecipeStockCreateResponseDto;
 import com.project.zipmin.dto.RecipeStockReadResponseDto;
+import com.project.zipmin.dto.ReportCreateRequestDto;
+import com.project.zipmin.dto.ReportCreateResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.entity.Recipe;
 import com.project.zipmin.entity.RecipeCategory;
@@ -68,6 +68,7 @@ public class RecipeService {
 	private final UserService userService;
 	private final FileService fileService;
 	private final LikeService likeService;
+	private final ReportService reportService;
 	
 	private final RecipeMapper recipeMapper;
 	private final RecipeCategoryMapper categoryMapper;
@@ -685,4 +686,35 @@ public class RecipeService {
 	        throw new ApiException(RecipeErrorCode.RECIPE_UNLIKE_FAIL);
 	    }
 	}
+	
+	
+	// 레시피 신고
+	public ReportCreateResponseDto reportRecipe(ReportCreateRequestDto reportDto) {
+
+	    // 입력값 검증
+	    if (reportDto == null || reportDto.getTablename() == null
+	            || reportDto.getRecodenum() == null || reportDto.getReason() == null
+	            || reportDto.getUserId() == null) {
+	        throw new ApiException(RecipeErrorCode.RECIPE_INVALID_INPUT);
+	    }
+
+	    // 레시피 존재 여부 확인
+	    if (!recipeRepository.existsById(reportDto.getRecodenum())) {
+	        throw new ApiException(RecipeErrorCode.RECIPE_NOT_FOUND);
+	    }
+
+	    // 신고 작성
+	    try {
+	        return reportService.createReport(reportDto);
+	    } 
+	    catch (ApiException e) {
+	        throw e;
+	    } 
+	    catch (Exception e) {
+	        throw new ApiException(RecipeErrorCode.RECIPE_REPORT_FAIL);
+	    }
+	}
+
+	
+	
 }

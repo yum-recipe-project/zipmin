@@ -556,7 +556,6 @@ public class RecipeController {
 		    throw new ApiException(RecipeErrorCode.RECIPE_UNAUTHORIZED_ACCESS);
 		}
 		reportRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
-		System.err.println("레시피 신고 요청; " + id + "요청정보: " + reportRequestDto);
 		
 		ReportCreateResponseDto reportResponseDto = recipeService.reportRecipe(reportRequestDto);
 		

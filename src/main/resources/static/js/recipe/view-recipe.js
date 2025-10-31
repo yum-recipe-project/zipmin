@@ -554,3 +554,135 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 	
 });
+
+
+
+
+
+/**
+ * 사용자 좋아요 및 좋아요를 취소하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	
+	const button = document.querySelector('.recipe_writer .btn_text'); 
+
+	button.addEventListener('click', async function(event) {
+		
+		event.preventDefault();
+		
+		if (!isLoggedIn()) {
+			redirectToLogin();
+			return;
+		}
+		
+		// 사용자 좋아요 취소
+		if (button.dataset.isLiked === 'true') {
+			try {
+				const id = document.getElementById('fundeeIdInput').value;
+				
+				const data = {
+					tablename: 'users',
+					recodenum: id
+				}
+				
+				const response = await instance.delete(`/users/${id}/likes`, {
+					data: data,
+					headers: getAuthHeaders()
+				});
+				
+				if (response.data.code === 'USER_UNLIKE_SUCCESS') {
+					fetchUser();
+				}
+			}
+			
+			catch(error) {
+				const code = error?.response?.data?.code;
+				
+				if (code === 'USER_UNLIKE_FAIL') {
+					alertDanger('사용자 좋아요 취소에 실패했습니다.');
+				}
+				else if (code === 'LIKE_DELETE_FAIL') {
+					alertDanger('좋아요 삭제에 실패했습니다.');
+				}
+				else if (code === 'USER_INVALID_INPUT') {
+					alertDanger('입력값이 유효하지 않습니다.')
+				}
+				else if (code === 'LIKE_INVALID_INPUT') {
+					alertDanger('입력값이 유효하지 않습니다.');
+				}
+				else if (code === 'USER_UNAUTHORIZED') {
+					alertDanger('로그인되지 않은 사용자입니다.')
+				}
+				else if (code === 'LIKE_FORBIDDEN') {
+					alertDanger('접근 권한이 없습니다.');
+				}
+				else if (code === 'LIKE_NOT_FOUND') {
+					alertDanger('해당 좋아요를 찾을 수 없습니다');
+				}
+				else if (code === 'USER_NOT_FOUND') {
+					alertDanger('해당 사용자를 찾을 수 없습니다.');
+				}
+				else if (code === 'INTERNAL_SERVER_ERROR') {
+					alertDanger('서버 내부에서 오류가 발생했습니다.');
+				}
+				else {
+					console.log(error);
+				}
+			}
+		}
+		
+		// 사용자 좋아요
+		else if (button.dataset.isLiked === 'false') {
+			try {
+				const id = document.getElementById('fundeeIdInput').value;
+				
+				const data = {
+					tablename: 'users',
+					recodenum: id
+				}
+				
+				const response = await instance.post(`/users/${id}/likes`, data, {
+					headers: getAuthHeaders()
+				});
+				
+				if (response.data.code === 'USER_LIKE_SUCCESS') {
+					fetchUser();
+				}
+			}
+			catch(error) {
+				const code = error?.response?.data?.code;
+				
+				if (code === 'USER_LIKE_FAIL') {
+					alertDanger('사용자 좋아요에 실패했습니다.');
+				}
+				else if (code === 'LIKE_CREATE_FAIL') {
+					alertDanger('좋아요 작성에 실패했습니다.');
+				}
+				else if (code === 'USER_INVALID_INPUT') {
+					alertDanger('입력값이 유효하지 않습니다.')
+				}
+				else if (code === 'LIKE_INVALID_INPUT') {
+					alertDanger('입력값이 유효하지 않습니다.');
+				}
+				else if (code === 'USER_UNAUTHORIZED') {
+					alertDanger('로그인되지 않은 사용자입니다.')
+				}
+				else if (code === 'LIKE_NOT_FOUND') {
+					alertDanger('해당 좋아요를 찾을 수 없습니다');
+				}
+				else if (code === 'USER_NOT_FOUND') {
+					alertDanger('해당 사용자를 찾을 수 없습니다.');
+				}
+				else if (code === 'LIKE_DUPLICATE') {
+					alertDanger('이미 좋아요한 사용자입니다.');
+				}
+				else if (code === 'INTERNAL_SERVER_ERROR') {
+					alertDanger('서버 내부에서 오류가 발생했습니다.');
+				}
+				else {
+					console.log(error);
+				}
+			}
+		}
+	});
+});

@@ -10,8 +10,9 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ClassCreateRequestDto {
-	private String title;
+public class ClassCreateResponseDto {
+    private Integer id;
+    private String title;
     private String category;
     private String image;
     private String introduce;
@@ -22,10 +23,10 @@ public class ClassCreateRequestDto {
     private Date noticedate;
     private int headcount;
     private String need;
+    private int approval;
     private int userId;
 
-    private List<ClassTargetCreateRequestDto> targetList;
-    private List<ClassScheduleCreateRequestDto> scheduleList;
-    private List<ClassTutorCreateReqeustDto> tutorList;
+    private List<ClassTargetCreateResponseDto> targetList;
+    private List<ClassScheduleCreateResponseDto> scheduleList;
+    private List<ClassTutorCreateResponseDto> tutorList;
 }
-

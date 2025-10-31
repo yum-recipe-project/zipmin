@@ -31,8 +31,8 @@
 						<p class="total"></p>
 						<div class="class_sort">
 							<button class="btn_sort active" data-status="">전체</button>
-							<button class="btn_sort" data-status="open">진행중</button>
-							<button class="btn_sort" data-status="close">마감</button>
+							<button class="btn_sort" data-status="OPEN">진행중</button>
+							<button class="btn_sort" data-status="CLOSE">마감</button>
 						</div>
 					</div>
 					

@@ -14,7 +14,7 @@
 		
 		<main id="container">
 			<div class="content">
-				<form id="openClassForm" name="openClassForm">
+				<form id="openClassForm" name="openClassForm" autocomplete="off">
 					<div class="class_header">
 						<h2>쿠킹클래스 개설 신청</h2>
 					</div>
@@ -144,7 +144,7 @@
 										<th scope="col">모집 인원<span class="ess"></span></th>
 										<td>
 											<span class="form_text">
-												<input maxlength="50" name="headcount" placeholder="모집 인원을 입력해주세요" type="text" value="">
+												<input maxlength="50" name="headcount" placeholder="모집 인원을 입력해주세요(숫자만 입력)" type="number" value="">
 											</span>
 										</td>
 									</tr>

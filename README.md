@@ -26,18 +26,18 @@
 
 ### 1.1&nbsp;&nbsp;프로젝트 개요
 
-집밥의민족은 집밥 레시피 공유 웹사이트입니다.
+**집밥의민족은 집밥 레시피 공유 웹사이트입니다.**
 
 집밥의민족은 요리에 익숙하지 않아도 부담 없이 집밥을 요리하도록 돕기 위한 목적에서 출발하였습니다. 다양한 검색 기능으로 레시피를 쉽게 찾고 장보기 메모와 냉장고 파먹기로 편리하게 요리를 준비합니다. 쩝쩝박사에서는 요리에 대한 다양한 주제로 소통하고, 키친가이드와 쿠킹클래스에서 주방 꿀팁을 배우고 요리 경험을 나눕니다. 집밥의민족은 단순한 레시피 공유를 넘어 일상 속 식습관과 요리 문화를 함께 만들어가는 공간입니다.
 
-집밥의민족은 다음과 같은 주요 기능들을 제공합니다.
+**집밥의민족은 다음과 같은 주요 기능들을 제공합니다.**
 
 1. 다양한 검색 기능으로 레시피를 쉽게 찾아 댓글과 리뷰를 남기고 후원할 수 있습니다.
 2. 쩝쩝박사에서는 재미있는 투표와 매거진을 통해 요리 트렌드와 음식 취향에 대한 이야기를 나누고 유쾌한 설전을 벌입니다.
 3. 키친가이드와 쿠킹클래스로 주방 꿀팁과 조리법을 배울 수 있습니다.
 4. 장보기 메모와 냉장고 파먹기 그리고 지도 기능으로 주변 마트를 찾고 냉장고 속 재료를 관리할 수 있습니다.
 
-이제 <a href="http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586">여기를 클릭하여</a> 집밥의민족을 시작해보세요!
+**이제 <a href="http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586">여기를 클릭하여</a> 집밥의민족을 시작해보세요!**
 
 <br/>
 
@@ -45,57 +45,43 @@
 
 #### 배포 URL
 
-* [:globe_with_meridians: 웹사이트 바로가기](http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586)
-* [:globe_with_meridians: 관리자사이트 바로가기](http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586/admin/login.do)
-
+* **[:globe_with_meridians: 웹사이트 바로가기](http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586)**
+* **[:globe_with_meridians: 관리자사이트 바로가기](http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586/admin/login.do)**
 
 #### Test ID/PW
 
-- 일반사용자 : user1 / 1234
-- 관리자 : admin1 / 1234
+* 일반사용자: user1 / 1234
+* 관리자: admin1 / 1234
   
 <br/>
 
-### 1.3&nbsp;&nbsp;개발 일정 및 인원
+### 1.3&nbsp;&nbsp;개발 정보
 
 * 프로젝트 기간: 2025.02.07 – 04.20 & 2025.07.01 - 10.25
 * 개발 인원: 2명
+* 주요 기술: Java, Spring Boot, Spring Data JPA, Spring Security, REST API, HTML, CSS, Javascript, Oracle, Linux, AWS EC2
 
 <br/>
 
-### 1.3&nbsp;&nbsp;팀원 및 역할 소개
+### 1.4&nbsp;&nbsp;팀원 및 역할 소개
 
 집밥의민족 프로젝트는 개발자 2명으로 구성된 팀이 개발하였습니다.
 
+#### 정하림
+* 깃허브 : 
+* **역할:** 백엔드 · 프론트엔드 전반 설계 및 구현  
+* **담당:** 로그인/회원관리, 레시피, 쩝쩝박사, 쿠킹클래스, 배포(AWS EC2)
 
+&nbsp;&nbsp;<details>
+&nbsp;&nbsp;<summary>세부 내용 펼치기</summary>
 
-<details>
-<summary><a href="https://github.com/jhrchicken">펼쳐서 세부 내용을 확인할 수 있습니다.</a></summary>
+- JWT 인증 및 회원 관리 구현  
+- REST API 공통 응답 구조 및 예외 처리 설계  
+- 레시피/쩝쩝박사/쿠킹클래스 CRUD 구현  
+- Oracle 18c DB 설계 및 서버 배포  
+- 프론트엔드 UI/UX 개선 (JSP, JavaScript)  
 
-- 역할: 백엔드 · 프론트엔드(Full-stack)
-- 개발 기간: 2025.02.07 – 진행중
-- 주요 담당
-  - 인증/권한: 로그인·회원가입, JWT(액세스/리프레시), 소셜로그인, 전역 예외처리, ApiResponse 공통 구조
-  - 레시피: 레시피 작성/조회, 검색, 정렬·페이지네이션, 댓글·리뷰·후원
-  - 쩝쩝박사: 투표·매거진, 참여형 콘텐츠(투표·통계), 관리자용 승인/노출 관리
-  - 키친가이드: 조리법·재료 활용 가이드, 콘텐츠 관리
-  - 쿠킹클래스: 클래스 등록/신청/승인, 출석/결석 집계, 마이페이지 내 이력 조회
-  - 냉장고 파먹기: 재료 관리, 소진·유통기한 기반 추천, 장보기 메모
-  - 공통/홈: 헤더/배너, 홈 피드(레시피·가이드), 지도 기반 마트 찾기
-- 기술 스택
-  - Backend: Java, Spring Boot, Spring Security, JPA, MapStruct
-  - DB: Oracle 18c XE
-  - Frontend: HTML/CSS/JavaScript, Bootstrap, 일부 React
-  - Infra: Linux, AWS EC2, Nginx/Tomcat
-- 깃허브: https://github.com/여기에_깃허브_아이디
-
-</details>
-
-
-
-<br/><br/>
-
-### 2. 기술 스택
+&nbsp;&nbsp;</details>
 
 
 
@@ -110,8 +96,16 @@
 - SMTP로 이메일로 비밀번호 변경 링크 전송을 통한 비밀번호 찾기 기능
 - 스프링 시큐리티 어쩌구
 - AJAX 비동기 방식으로 사용자 닉네임 랜덤 추천
-- 소셜 로그인 네이버 구글
+- 소셜 로그인 네이버 구글 및 자체 로그인
 - 엑세스 리프레시 토큰 어쩌구
+
+  * SMTP로 비밀번호 재설정 링크를 이메일로 전송하는 비밀번호 찾기 기능
+  * Spring Security 기반의 사용자 인증 · 인가 및 세션 관리
+  * AJAX 비동기 요청으로 사용자 닉네임·이메일·전화번호 중복 검사 및 닉네임 랜덤 추천 기능
+  * OAuth2로 소셜 로그인(Naver, Google)과 자체 로그인 기능 구현
+  * JWT 기반 토큰 발급 및 재발급 및
+ 
+  
 
 <br/>
 
@@ -123,32 +117,49 @@
 
 
 
+## 3. 프로젝트 설계
+
+### 3.1 사용 기술
+
+|구분 | 사용 기술 |
+|:--:|--|
+| **Frontend** | HTML5&nbsp;&nbsp;·&nbsp;&nbsp;CSS3&nbsp;&nbsp;·&nbsp;&nbsp;JavaScript&nbsp;&nbsp;·&nbsp;&nbsp;Bootstrap 5.3.3&nbsp;&nbsp;·&nbsp;&nbsp;KakaoMap API |
+| **Backend** | Java 21&nbsp;&nbsp;·&nbsp;&nbsp;Spring Boot 3.0.3&nbsp;&nbsp;·&nbsp;&nbsp;Spring Data JPA&nbsp;&nbsp;·&nbsp;&nbsp;Spring Security&nbsp;&nbsp;·&nbsp;&nbsp;JWT&nbsp;&nbsp;·&nbsp;&nbsp;Mapstruct |
+| **Database** | Oracle 21C |
+| **Infrastructure** | Linux&nbsp;&nbsp;·&nbsp;&nbsp;Apache Tomcat 10.1.46&nbsp;&nbsp;·&nbsp;&nbsp;AWS EC2 |
+| **Tools** | STS 4&nbsp;&nbsp;·&nbsp;&nbsp;GitHub&nbsp;&nbsp;·&nbsp;&nbsp;Figma&nbsp;&nbsp;·&nbsp;&nbsp;Swagger&nbsp;&nbsp;·&nbsp;&nbsp;Postman&nbsp;&nbsp;·&nbsp;&nbsp;SQL Developer&nbsp;&nbsp;·&nbsp;&nbsp;Slack |
+| **Etc.** | PortOne&nbsp;&nbsp;·&nbsp;&nbsp;SMTP |
+
+<br/>
+
+### 3.2 아키텍처
+
+<br/>
+
+### 3.3 프로젝트 구조
 
 
 <br/>
 
-아키텍처
-
-
-<br/>
-
-프로젝트 구조
-
-
-<br/>
-
-기타
-
-
-<br/>
-
+#### 3.4 개발 문서
 개발문서 -> 이거 아니면 위에 아키텍처랑 합쳐서 설계로 만들어도 될듯
 
 
 
 
-### 이슈 및 문제해결
+## 4. 기타
 
+### 4.1 이슈 및 문제 해결
+
+<br/>
+
+### 4.2 개선 사항
+이슈 및 문제해결
+
+### 4.3 프로젝트에서 배운 점
+
+
+### 4.4 결과 및 확장성
 
 
 

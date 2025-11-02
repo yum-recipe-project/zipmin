@@ -45,15 +45,15 @@
 
 #### 배포 URL
 
-- 웹사이트: http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586
-- 관리자사이트: http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586/admin/login.do
+* [:globe_with_meridians: 웹사이트 바로가기](http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586)
+* [:globe_with_meridians: 관리자사이트 바로가기](http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586/admin/login.do)
+
 
 #### Test ID/PW
 
-- 일반사용자: user / 1234
-- 슈퍼관리자: superadmin / 1234
-- 관리자: admin1 / 1234
-
+- 일반사용자 : user1 / 1234
+- 관리자 : admin1 / 1234
+  
 <br/>
 
 ### 1.3&nbsp;&nbsp;개발 일정 및 인원

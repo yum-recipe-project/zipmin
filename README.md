@@ -50,9 +50,9 @@
 
 #### Test ID/PW
 
-* 일반사용자: user1 / 1234
-* 관리자: admin1 / 1234
-  
+* 일반사용자: user1&nbsp;&nbsp;·&nbsp;&nbsp;1234
+* 관리자: admin1&nbsp;&nbsp;·&nbsp;&nbsp;1234
+
 <br/>
 
 ### 1.3&nbsp;&nbsp;개발 정보
@@ -61,33 +61,9 @@
 * 개발 인원: 2명
 * 주요 기술: Java, Spring Boot, Spring Data JPA, Spring Security, REST API, HTML, CSS, Javascript, Oracle, Linux, AWS EC2
 
-<br/>
-
-### 1.4&nbsp;&nbsp;팀원 및 역할 소개
-
-집밥의민족 프로젝트는 개발자 2명으로 구성된 팀이 개발하였습니다.
-
-#### 정하림
-* 깃허브 : 
-* **역할:** 백엔드 · 프론트엔드 전반 설계 및 구현  
-* **담당:** 로그인/회원관리, 레시피, 쩝쩝박사, 쿠킹클래스, 배포(AWS EC2)
-
-&nbsp;&nbsp;<details>
-&nbsp;&nbsp;<summary>세부 내용 펼치기</summary>
-
-- JWT 인증 및 회원 관리 구현  
-- REST API 공통 응답 구조 및 예외 처리 설계  
-- 레시피/쩝쩝박사/쿠킹클래스 CRUD 구현  
-- Oracle 18c DB 설계 및 서버 배포  
-- 프론트엔드 UI/UX 개선 (JSP, JavaScript)  
-
-&nbsp;&nbsp;</details>
-
-
-
 <br/><br/>
 
-### 3. 주요 기능
+### 2. 주요 기능
 
 홈 (메인)
 
@@ -104,15 +80,12 @@
   * AJAX 비동기 요청으로 사용자 닉네임·이메일·전화번호 중복 검사 및 닉네임 랜덤 추천 기능
   * OAuth2로 소셜 로그인(Naver, Google)과 자체 로그인 기능 구현
   * JWT 기반 토큰 발급 및 재발급 및
- 
-  
 
 <br/>
 
 #### 홈
 
 - 룰렛 기능을 통한 
-
 
 
 
@@ -143,6 +116,34 @@
 
 #### 3.4 개발 문서
 개발문서 -> 이거 아니면 위에 아키텍처랑 합쳐서 설계로 만들어도 될듯
+
+ERD 다이어그램
+Swagger 명세 링크
+
+
+<br/>
+
+### 5. 협업
+
+### 1.4&nbsp;&nbsp;팀원 및 역할 소개
+
+집밥의민족 프로젝트는 개발자 2명으로 구성된 팀이 개발하였습니다.
+
+#### 정하림
+* 깃허브 : 
+* **역할:** 백엔드 · 프론트엔드 전반 설계 및 구현  
+* **담당:** 로그인/회원관리, 레시피, 쩝쩝박사, 쿠킹클래스, 배포(AWS EC2)
+
+&nbsp;&nbsp;<details>
+&nbsp;&nbsp;<summary>세부 내용 펼치기</summary>
+
+- JWT 인증 및 회원 관리 구현  
+- REST API 공통 응답 구조 및 예외 처리 설계  
+- 레시피/쩝쩝박사/쿠킹클래스 CRUD 구현  
+- Oracle 18c DB 설계 및 서버 배포  
+- 프론트엔드 UI/UX 개선 (JSP, JavaScript)  
+
+&nbsp;&nbsp;</details>
 
 
 

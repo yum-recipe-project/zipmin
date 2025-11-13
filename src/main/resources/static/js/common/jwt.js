@@ -114,19 +114,12 @@ async function reissueJwt() {
 		}
 		else {
 			console.log(result);
-			alert('토큰 재발급 실패 1 jwt.js')
 			throw new Error(result.code);
 		}
 	}
 	catch (error) {
-		alert('토큰 재발급 실패 2 jwt.js');
 		localStorage.removeItem('accessToken');
-		// TODO : 쿠키는 서버에서 지우도록 HttpOnly는 js에서 수정 못하므로 백엔드수정 (계속 오류가 나타난다면)
-		// document.cookie = 'refresh=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT;';
-		
-		// TODO : 로그인할거임?
-		alert('jwt.js 테스트 - 로그인 만료되었음 로그인할거임?');
-		redirectToLogin();
+		alert('만료됨');
 		throw error;
 	}
 }

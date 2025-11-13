@@ -92,9 +92,6 @@ function isTokenExpired(token) {
 
 /**
  * 토큰을 재발급하는 함수
- * 
- * @returns {Promise<string>} - 새 access token
- * @throws {Error} - 재발급 실패 시 에러 발생
  */
 async function reissueJwt() {
 
@@ -105,21 +102,17 @@ async function reissueJwt() {
 		});
 
 		const result = await response.json();
-		
-		console.log(result);
 
 		if (result.code === 'AUTH_TOKEN_REISSUE_SUCCESS') {
 			localStorage.setItem('accessToken', result.data.accessToken);
 			return result.data.accessToken;
 		}
 		else {
-			console.log(result);
 			throw new Error(result.code);
 		}
 	}
 	catch (error) {
 		localStorage.removeItem('accessToken');
-		alert('만료됨');
 		throw error;
 	}
 }

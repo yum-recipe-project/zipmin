@@ -164,6 +164,8 @@
 
 ### 3.2 아키텍처
 
+<img src="src/main/resources/static/images/etc/architecture.png">
+
 <br/>
 
 ### 3.3 프로젝트 구조

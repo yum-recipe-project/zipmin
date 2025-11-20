@@ -28,9 +28,16 @@ import com.project.zipmin.dto.ClassApplyStatusUpdateRequestDto;
 import com.project.zipmin.dto.ClassApplyUpdateResponseDto;
 import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
 import com.project.zipmin.dto.ClassCreateRequestDto;
+import com.project.zipmin.dto.ClassCreateResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
+import com.project.zipmin.dto.ClassScheduleCreateRequestDto;
+import com.project.zipmin.dto.ClassScheduleCreateResponseDto;
 import com.project.zipmin.dto.ClassScheduleReadResponseDto;
+import com.project.zipmin.dto.ClassTargetCreateRequestDto;
+import com.project.zipmin.dto.ClassTargetCreateResponseDto;
 import com.project.zipmin.dto.ClassTargetReadResponseDto;
+import com.project.zipmin.dto.ClassTutorCreateReqeustDto;
+import com.project.zipmin.dto.ClassTutorCreateResponseDto;
 import com.project.zipmin.dto.ClassTutorReadResponseDto;
 import com.project.zipmin.dto.UserAppliedClassResponseDto;
 import com.project.zipmin.dto.UserClassReadResponseDto;
@@ -380,8 +387,7 @@ public class CookingService {
 	
 	
 	// 클래스 작성
-	// TODO : 반환값 ClassCreateResponseDto로 변경
-	public void createClass(ClassCreateRequestDto createRequestDto, MultipartFile classImage, List<MultipartFile> tutorImages)  {
+	public ClassCreateResponseDto createClass(ClassCreateRequestDto createRequestDto, MultipartFile classImage, List<MultipartFile> tutorImages)  {
 		
 		// 입력값 검증
 		if (createRequestDto == null || createRequestDto.getTitle() == null
@@ -392,11 +398,42 @@ public class CookingService {
 			throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
 		}
 		
-		// RecipeService.java의 createRecipe 함수 참고
-		// TODO : 입력값 검증 (교육대상)
-		// TODO : 입력값 검증 (교육일정)
-		// TODO : 입력값 검증 (강사)
-		
+		// 입력값 검증 (교육대상)
+		if (createRequestDto.getTargetList() == null) {
+		    throw new ApiException(ClassErrorCode.CLASS_TARGET_INVALID_INPUT);
+		}
+		for (ClassTargetCreateRequestDto targetDto : createRequestDto.getTargetList()) {
+		    if (targetDto.getContent() == null) {
+		        throw new ApiException(ClassErrorCode.CLASS_TARGET_INVALID_INPUT);
+		    }
+		}
+
+
+		// 입력값 검증 (교육일정)
+		if (createRequestDto.getScheduleList() == null || createRequestDto.getScheduleList().isEmpty()) {
+		    throw new ApiException(ClassErrorCode.CLASS_SCHEDULE_INVALID_INPUT);
+		}
+		for (ClassScheduleCreateRequestDto scheduleDto : createRequestDto.getScheduleList()) {
+		    if (scheduleDto.getStarttime() == null || scheduleDto.getEndtime() == null ||
+		        scheduleDto.getTitle() == null || scheduleDto.getTitle().trim().isEmpty()) {
+		        throw new ApiException(ClassErrorCode.CLASS_SCHEDULE_INVALID_INPUT);
+		    }
+		    if (scheduleDto.getEndtime().before(scheduleDto.getStarttime())) {
+		        throw new ApiException(ClassErrorCode.CLASS_SCHEDULE_INVALID_INPUT);
+		    }
+		}
+
+		// 입력값 검증 (강사)
+		if (createRequestDto.getTutorList() == null || createRequestDto.getTutorList().isEmpty()) {
+		    throw new ApiException(ClassErrorCode.CLASS_TUTOR_INVALID_INPUT);
+		}
+		for (ClassTutorCreateReqeustDto tutorDto : createRequestDto.getTutorList()) {
+		    if (tutorDto.getName() == null || tutorDto.getName().trim().isEmpty() ||
+		        tutorDto.getCareer() == null || tutorDto.getCareer().trim().isEmpty()) {
+		        throw new ApiException(ClassErrorCode.CLASS_TUTOR_INVALID_INPUT);
+		    }
+		}
+
 		// 중복 개설 검사 
 		if (classRepository.existsByTitleAndUserId(createRequestDto.getTitle(), createRequestDto.getUserId())) {
 			throw new ApiException(ClassErrorCode.CLASS_CREATE_DUPLICATE);
@@ -412,43 +449,72 @@ public class CookingService {
 		}
         
 		// 클래스 저장
-        Class classs = classMapper.toEntity(createRequestDto);
+        Class classEntity = classMapper.toEntity(createRequestDto);
         try {
-            classRepository.save(classs);
-            
-            // 클래스 교육대상 저장
-            try {
-            	List<ClassTarget> targetList = targetMapper.toEntityList(createRequestDto.getTargetList(), classs);
-            	targetRepository.saveAll(targetList);
+            classEntity = classRepository.save(classEntity);
+            ClassCreateResponseDto classResponseDto = classMapper.toCreateResponseDto(classEntity);
+
+            // 교육대상 저장
+            List<ClassTargetCreateResponseDto> targetResponseList = new ArrayList<>();
+
+            for (ClassTargetCreateRequestDto targetDto : createRequestDto.getTargetList()) {
+                targetDto.setClassId(classResponseDto.getId());
+                ClassTarget targetEntity = targetMapper.toEntity(targetDto);
+
+                try {
+                    targetEntity = targetRepository.save(targetEntity);
+                } catch (Exception e) {
+                    throw new ApiException(ClassErrorCode.CLASS_TARGET_CREATE_FAIL);
+                }
+
+                targetResponseList.add(targetMapper.toCreateResponseDto(targetEntity));
             }
-            catch (Exception e) {
-				throw new ApiException(ClassErrorCode.CLASS_TARGET_CREATE_FAIL);
-			}
-            
-            // 클래스 교육일정 저장
-            try {
-            	List<ClassSchedule> scheduleList = scheduleMapper.toEntityList(createRequestDto.getScheduleList(), classs);
-            	scheduleRepository.saveAll(scheduleList);
+
+            classResponseDto.setTargetList(targetResponseList);
+
+            List<ClassScheduleCreateResponseDto> scheduleResponseList = new ArrayList<>();
+            for (ClassScheduleCreateRequestDto scheduleDto : createRequestDto.getScheduleList()) {
+                scheduleDto.setClassId(classResponseDto.getId());
+
+                ClassSchedule scheduleEntity = scheduleMapper.toEntity(scheduleDto);
+                try {
+                    scheduleEntity = scheduleRepository.save(scheduleEntity);
+                } catch (Exception e) {
+                    throw new ApiException(ClassErrorCode.CLASS_SCHEDULE_CREATE_FAIL);
+                }
+                scheduleResponseList.add(scheduleMapper.toCreateResponseDto(scheduleEntity));
             }
-            catch (Exception e) {
-				throw new ApiException(ClassErrorCode.CLASS_SCHEDULE_CREATE_FAIL);
-			}
+            classResponseDto.setScheduleList(scheduleResponseList);
             
             // 클래스 강사 저장
-            try {
-            	List<ClassTutor> tutorList = tutorMapper.toEntityList(createRequestDto.getTutorList(), classs);
-            	for (int i = 0; i < tutorList.size(); i++) {
-            		if (tutorImages != null && tutorImages.size() > i && !tutorImages.get(i).isEmpty()) {
-            			String image = fileService.store(tutorImages.get(i));
-            			tutorList.get(i).setImage(image);
-            		}
-            	}
-            	tutorRepository.saveAll(tutorList);
-            	
+            List<ClassTutorCreateResponseDto> tutorResponseList = new ArrayList<>();
+            for (int i = 0; i < createRequestDto.getTutorList().size(); i++) {
+                ClassTutorCreateReqeustDto tutorDto = createRequestDto.getTutorList().get(i);
+                tutorDto.setClassId(classResponseDto.getId());
+
+                // 강사 이미지 저장
+                try {
+                    if (tutorImages != null && tutorImages.size() > i && !tutorImages.get(i).isEmpty()) {
+                        String image = fileService.store(tutorImages.get(i));
+                        tutorDto.setImage(image);
+                    }
+                } catch (Exception e) {
+                    throw new ApiException(ClassErrorCode.CLASS_TUTOR_FILE_UPLOAD_FAIL);
+                }
+
+                // DB 저장
+                ClassTutor tutorEntity = tutorMapper.toEntity(tutorDto);
+                try {
+                    tutorEntity = tutorRepository.save(tutorEntity);
+                } catch (Exception e) {
+                    throw new ApiException(ClassErrorCode.CLASS_TUTOR_CREATE_FAIL);
+                }
+
+                tutorResponseList.add(tutorMapper.toCreateResponseDto(tutorEntity));
             }
-            catch (Exception e) {
-				throw new ApiException(ClassErrorCode.CLASS_TUTOR_CREATE_FAIL);
-			}
+            classResponseDto.setTutorList(tutorResponseList);
+            
+            return classResponseDto;
         }
         catch (Exception e) {
             throw new ApiException(ClassErrorCode.CLASS_CREATE_FAIL);
@@ -866,6 +932,7 @@ public class CookingService {
 					throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
 				}
 			}
+			System.err.println("hasApproval 변환성공");
 			
 			// 상태
 			Integer statusCode = null;
@@ -877,6 +944,8 @@ public class CookingService {
 					throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
 				}
 			}
+			System.err.println("statusCode 변환성공");
+
 			
 	    	if (!hasStatus) {
 	    		classPage = hasApproval

@@ -47,6 +47,24 @@
 		url(/fonts/Pretendard-Bold.ttf) format('truetype');
 }
 
+@font-face {
+	font-family: 'Pretendard';
+	font-style: normal;
+	font-weight: 800;
+	src: url(/fonts/Pretendard-ExtraBold.eot?#iefix) format('embedded-opentype'),
+		url(/fonts/Pretendard-ExtraBold.woff) format('woff'),
+		url(/fonts/Pretendard-ExtraBold.ttf) format('truetype');
+}
+
+@font-face {
+	font-family: 'Pretendard';
+	font-style: normal;
+	font-weight: 900;
+	src: url(/fonts/Pretendard-Black.eot?#iefix) format('embedded-opentype'),
+		url(/fonts/Pretendard-Black.woff) format('woff'),
+		url(/fonts/Pretendard-Black.ttf) format('truetype');
+}
+
 
 /* 모든 요소와 가상 요소에 box-sizing 적용 */
 *, ::before, ::after {

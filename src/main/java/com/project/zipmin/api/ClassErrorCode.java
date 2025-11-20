@@ -58,6 +58,7 @@ public enum ClassErrorCode implements Code {
     CLASS_APPLY_UNABLE(HttpStatus.FORBIDDEN, "클래스 신청 작성 불가"),
 	
     CLASS_FILE_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "클래스 이미지 업로드 실패"),
+    CLASS_TUTOR_FILE_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "클래스 강사 이미지 업로드 실패"),
 	CLASS_UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "예외 처리되지 않은 내부 오류");
 	
 	private final HttpStatus status;

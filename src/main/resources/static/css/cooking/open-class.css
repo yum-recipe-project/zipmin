@@ -418,3 +418,74 @@
 	padding: 12px 0;
 }
 
+
+
+
+
+/* datepicker */
+.ui-datepicker .ui-datepicker-prev .ui-icon {
+    background-image: url('/images/common/chevron_left.png') !important;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    text-indent: -9999px; 
+}
+
+.ui-datepicker .ui-datepicker-next .ui-icon {
+    background-image: url('/images/common/chevron_right.png') !important;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    text-indent: -9999px;
+}
+
+.ui-datepicker .ui-datepicker-prev,
+.ui-datepicker .ui-datepicker-next {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+
+/* 스케쥴 제거 버튼 */
+#container .class_wrap .minusSchedule {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--point-color2);
+	display: inline-flex;
+	align-items: center;
+	gap: 3px;
+	cursor: pointer;
+	margin-top: 2px;
+	vertical-align: middle;
+}
+
+#container .class_wrap .minusSchedule img {
+	width: 18px;
+	height: 18px;
+}
+
+
+/* 강사 제거 버튼 */
+#container .class_wrap .minusTutor {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--point-color2);
+	display: inline-flex;
+	align-items: center;
+	gap: 3px;
+	cursor: pointer;
+	margin-top: 10px;
+	vertical-align: middle;
+}
+
+#container .class_wrap .minusTutor img {
+	width: 18px;
+	height: 18px;
+}
+
+
+
+
+
+

@@ -10,19 +10,15 @@
 		<link rel="stylesheet" href="/css/fridge/view-fridge.css">
 		<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 		<!-- 카카오맵 -->
-<!-- 		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4ef8517d8339aa6a8dfad64cec477a46"></script> -->
 		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4ef8517d8339aa6a8dfad64cec477a46&libraries=services,clusterer,drawing"></script>
-<!-- 		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d6d54df7108a43be083a8f1b1eb83da8&libraries=services,clusterer,drawing"></script> -->
 		<script src="/js/fridge/view-fridge.js"></script>
 		<script src="/js/fridge/view-fridge-map.js"></script>
 		<script src="/js/modal/write-fridge-modal.js"></script>
 		<script src="/js/modal/write-user-fridge-modal.js"></script>
 		<script src="/js/modal/edit-user-fridge-modal.js"></script>
-		
-
-<!-- 		<script src="/js/modal/add-memo-modal.js"></script> -->
 		<script src="/js/modal/write-memo-modal.js"></script>
 		<script src="/js/modal/edit-memo-modal.js"></script>
+		<script src="/js/modal/memo-to-fridge-modal.js"></script>
 		
 	</head>
 	
@@ -115,6 +111,7 @@
 			<!-- 장보기 메모 모달  -->
 			<%@include file="../modal/writeMemoModal.jsp" %>
 			<%@include file="../modal/editMemoModal.jsp" %>
+			<%@include file="../modal/memoToFridgeModal.jsp" %>
 		
 		</main>
 		

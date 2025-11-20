@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import com.project.zipmin.dto.ClassCreateRequestDto;
+import com.project.zipmin.dto.ClassCreateResponseDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.UserAppliedClassResponseDto;
 import com.project.zipmin.dto.UserClassReadResponseDto;
@@ -42,6 +43,9 @@ public interface ClassMapper {
 	// create
     @Mapping(target = "user.id", source = "userId")
     Class toEntity(ClassCreateRequestDto dto);
+    
+    @Mapping(target = "userId", source = "user.id")
+    ClassCreateResponseDto toCreateResponseDto(Class classs);
 	
 	
 }

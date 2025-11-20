@@ -19,12 +19,12 @@
 			<!-- 메인 베너 -->
 			<div class="main_banner">
 				<div class="banner_inner">
-					<img src="/images/home/main_mascot1.png"/>
+					<img src="/images/home/food1.gif"/>
 					<div class="title">
-						<h3>오늘 <span class="meal"></span> <span class="roulette"></span> 땡겨요</h3>
+						<h3>오늘 <span class="meal"></span>엔<br/><span class="roulette"></span> 어때요?</h3>
 						<a class="roulette_link">모든 레시피 보러가기&nbsp;&nbsp;→</a>
 					</div>
-					<img src="/images/home/main_mascot2.png"/>
+					<img src="/images/home/food1.gif"/>
 				</div>
 			</div>
 				

@@ -2,7 +2,7 @@
 
 <!-- 프로젝트 로고 -->
 <div align="center">
-  <!-- <img src="src/main/resources/static/images/logo.png" alt="Logo" width="160" height="70"> -->
+  <img src="src/main/resources/static/images/etc/title.gif" width="160" height="130">
   <h3 align="center">집밥의민족</h3>
   <p align="center">
     집밥 레시피 공유 웹사이트

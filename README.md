@@ -164,13 +164,20 @@
 
 ### 3.2 아키텍처
 
-집밥의민족 프로젝트는 다믕과 같이 설계했습니다.
+집밥의민족 프로젝트는 다음과 같이 설계했습니다.
 
 <img src="src/main/resources/static/images/etc/architecture.png">
 
 7. 백엔드내의 기술스택은 QueryDSL, redis(refreshToken 저장을 위한 내장 저장소), Spring Data JPA, Spring Security를 사용하였다. 백엔드에서는 DB는 AmazonRDS를 사용하고 있으며, MySQL을 이용하고 있다.
+* Spring Security를 통해 OAuth2(네이버, 구글)을 자동으로 백엔드에서 처리 후 JWT
 * Spring Security를 통해 OAuth 2.0(카카오, 네이버, 구글)을 자동으로 백엔드에서 처리후 프론트로 리다이렉트하게 설정하였다. JWT를 이용하여, accessToken, refreshToken(보안을 위해 쿠키로 전달)로 진행하였음.
 * 현재 어쩌구
+
+Spring Security로 네이버·구글 OAuth2 로그인을 백엔드에서 자동 처리하고, Access Token(로컬 스토리지)과 Refresh Token(HTTP-Only Cookie)을 조합한 JWT 인증 구조를 설계·구현
+
+* Spring Security로 
+
+
 
 <br/>
 

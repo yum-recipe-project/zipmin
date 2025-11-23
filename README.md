@@ -48,8 +48,8 @@
 
 #### 배포 URL
 
-* **[:globe_with_meridians: 웹사이트 바로가기](http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586)**
-* **[:globe_with_meridians: 관리자사이트 바로가기](http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586/admin/login.do)**
+* **[웹사이트 바로가기 →](http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586)**
+* **[관리자사이트 바로가기 →](http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586/admin/login.do)**
 
 #### 톄스트 계정
 
@@ -67,7 +67,7 @@
 * **프로젝트 기간**
   * 1차 개발 기간 : 2025.02.07 – 04.20
   * 2차 개발 기간 : 2025.07.01 - 10.25
-  * 운영 기간 : 2025.11.10 - 진행중 (DevOps 학습 및 유지보수 진행중)
+  * 운영 기간 : 2025.11.10 - 진행중 (현재 Docker와 Jenkins 기반 배포 환경 구축 준비중)
 * **개발 인원**
   * 총 2명 (풀스택)
 * **주요 기술**

@@ -42,9 +42,9 @@
 
 **이제 <a href="http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586">여기를 클릭하여</a> 집밥의민족을 시작해보세요!**
 
-<br/>
+<br/><br/>
 
-### 1.2&nbsp;&nbsp;사용 가이드
+### 1.2&nbsp;&nbsp;배포 정보
 
 #### 배포 URL
 
@@ -60,7 +60,7 @@
 | 일반사용자 | user1 | 1234 |
 | 일반사용자 | user2 | 1234 |
 
-<br/>
+<br/><br/>
 
 ### 1.3&nbsp;&nbsp;개발 정보
 
@@ -76,11 +76,11 @@
   * Database : Oracle
   * DevOps : Linux, Tomcat, Docker, Jenkins, AWS EC2
 
-<br/><br/>
+<br/><br/><br/>
 
 ## 2. 주요 기능
 
-### 2.1&nbsp;&nbsp;세부 주요 기능
+### 2.1&nbsp;&nbsp;주요 기능
 
 #### 홈
 
@@ -147,6 +147,12 @@
 
 <br/><br/>
 
+### 2.2 화면 설계
+
+
+
+<br/><br/><br/>
+
 ## 3. 프로젝트 설계
 
 ### 3.1 사용 기술
@@ -160,7 +166,7 @@
 | **Tools** | STS 4&nbsp;&nbsp;·&nbsp;&nbsp;GitHub&nbsp;&nbsp;·&nbsp;&nbsp;Figma&nbsp;&nbsp;·&nbsp;&nbsp;Swagger&nbsp;&nbsp;·&nbsp;&nbsp;Postman&nbsp;&nbsp;·&nbsp;&nbsp;SQL Developer&nbsp;&nbsp;·&nbsp;&nbsp;Slack |
 | **Etc.** | PortOne&nbsp;&nbsp;·&nbsp;&nbsp;SMTP |
 
-<br/>
+<br/><br/>
 
 ### 3.2 아키텍처
 
@@ -168,16 +174,7 @@
 
 <img src="src/main/resources/static/images/etc/architecture.png">
 
-7. 백엔드내의 기술스택은 QueryDSL, redis(refreshToken 저장을 위한 내장 저장소), Spring Data JPA, Spring Security를 사용하였다. 백엔드에서는 DB는 AmazonRDS를 사용하고 있으며, MySQL을 이용하고 있다.
-* Spring Security를 통해 OAuth2(네이버, 구글)을 자동으로 백엔드에서 처리 후 JWT
-* Spring Security를 통해 OAuth 2.0(카카오, 네이버, 구글)을 자동으로 백엔드에서 처리후 프론트로 리다이렉트하게 설정하였다. JWT를 이용하여, accessToken, refreshToken(보안을 위해 쿠키로 전달)로 진행하였음.
-* 현재 어쩌구
-
-Spring Security로 네이버·구글 OAuth2 로그인을 백엔드에서 자동 처리하고, Access Token(로컬 스토리지)과 Refresh Token(HTTP-Only Cookie)을 조합한 JWT 인증 구조를 설계·구현
-
-* Spring Security로 
-
-
+* 현재 Docker와 Jenkins 기반 배포 환경 구축 준비중
 
 <br/>
 
@@ -241,21 +238,30 @@ Zipmin
 
 <br/>
 
-### 3.4 개발 문서
+### 3.4 프로젝트 문서
 
-* 기획 문서
+#### 기획 문서
 
-* 설계 문서
+* [요구사항 정의서](https://docs.google.com/spreadsheets/d/1i4fixz1ImXhDaZjmS5SP7Q-ORUexCKOBP9Dup4lNG80/edit?gid=2091731534#gid=2091731534)
+* [기능 정의서](https://docs.google.com/spreadsheets/d/15osLaZ4JrcE4XLSzfLZqnu1vSc8KB70O_UQdTB3Blc8/edit?gid=860594176#gid=860594176)
+* [개발 일정](https://docs.google.com/spreadsheets/d/1zC_YDl9BHkNTQ4XoS8nbUvrYFBoN5bXuEljF49YOYT0/edit?gid=1982592288#gid=1982592288)
 
-* 운영 문서
+#### 설계 문서
 
-ERD 다이어그램
-Swagger 명세 링크
+* [데이터베이스 정의서](https://docs.google.com/spreadsheets/d/1xUFNAK-GX4h_Sux6nlGifGED0D8Jhv0q6FGXrJnTVNg/edit?gid=0#gid=0)
+* [Swagger API 문서](http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586/swagger-ui/index.html)
+* [REST API 공통 응답 구조 및 예외 처리 설계](https://github.com/yum-recipe-project/zipmin/wiki/%5Bdesign%5D-REST-API-%EA%B3%B5%ED%86%B5-%EC%9D%91%EB%8B%B5-%EA%B5%AC%EC%A1%B0-%EB%B0%8F-%EC%98%88%EC%99%B8-%EC%B2%98%EB%A6%AC-%EC%84%A4%EA%B3%84-v2)
+* [Figma 디자인 설계](https://www.figma.com/design/rxx4DlAb31pyvvyXA67uOC/%EC%A7%91%EB%B0%A5%EC%9D%98%EB%AF%BC%EC%A1%B1?node-id=0-1&t=JpnaCJfU8T7OqdvX-0)
 
+#### 컨벤션
 
-<br/>
+* [브랜치 전략 (Git Flow Branch)](https://github.com/yum-recipe-project/zipmin/wiki/%5BConvention%5D-Git-Flow-Branch)
+* [커밋 컨벤션](https://github.com/yum-recipe-project/zipmin/wiki/%5BConvention%5D-Commit-Convention)
+* [에러 코드 컨벤션](https://github.com/yum-recipe-project/zipmin/wiki/%5BConvention%5D-Error-Code-Convention)
 
-### 4. 협업
+<br/><br/><br/>
+
+## 4. 협업
 
 ### 4.1&nbsp;&nbsp;팀원 소개
 
@@ -266,7 +272,7 @@ Swagger 명세 링크
 |<img src="src/main/resources/static/images/jhrchicken.jpeg" width="120" height="120">|<img src="src/main/resources/static/images/budayeong.jpeg" width="120" height="120">|
 |풀스택|풀스택|
 
-<br/>
+<br/><br/>
 
 ### 4.2 담당 역할
 
@@ -340,19 +346,40 @@ Swagger 명세 링크
   
 </details>
 
-<br/>
+<br/><br/><br/>
 
 ## 5. 기타
 
 ### 5.1 이슈 및 문제 해결
 
-<br/>
+* [@RequestBody DTO 값이 null로 들어오는 문제](https://github.com/yum-recipe-project/zipmin/wiki/%5BIssue%5D-@RequestBody-DTO-%EA%B0%92%EC%9D%B4-null%EB%A1%9C-%EB%93%A4%EC%96%B4%EC%98%A4%EB%8A%94-%EB%AC%B8%EC%A0%9C)
+* [JPA에서 댓글을 좋아요 순으로 정렬하기 (@Fomula)](https://github.com/yum-recipe-project/zipmin/wiki/%5BIssue%5D-JPA%EC%97%90%EC%84%9C-%EB%8C%93%EA%B8%80%EC%9D%84-%EC%A2%8B%EC%95%84%EC%9A%94-%EC%88%9C%EC%9C%BC%EB%A1%9C-%EC%A0%95%EB%A0%AC%ED%95%98%EA%B8%B0-(@Fomula))
+* [MapStruct Invalid bound statement](https://github.com/yum-recipe-project/zipmin/wiki/%5BIssue%5D-MapStruct-Invalid-bound-statement)
+* [Spring Security localhost에서 리디렉션한 횟수가 너무 많습니다](https://github.com/yum-recipe-project/zipmin/wiki/%5BIssue%5D-Spring-Security-localhost%EC%97%90%EC%84%9C-%EB%A6%AC%EB%94%94%EB%A0%89%EC%85%98%ED%95%9C-%ED%9A%9F%EC%88%98%EA%B0%80-%EB%84%88%EB%AC%B4-%EB%A7%8E%EC%8A%B5%EB%8B%88%EB%8B%A4)
+* [Spring Security 적용 후 정적 리소스가 다운로드되는 문제](https://github.com/yum-recipe-project/zipmin/wiki/%5BIssue%5D-Spring-Security-%EC%A0%81%EC%9A%A9-%ED%9B%84-%EC%A0%95%EC%A0%81-%EB%A6%AC%EC%86%8C%EC%8A%A4%EA%B0%80-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%EB%90%98%EB%8A%94-%EB%AC%B8%EC%A0%9C)
+* [[deploy] Could not resolve placeholder 'JWT_SECRET' - 환경 변수 누락](https://github.com/yum-recipe-project/zipmin/wiki/%5Bdeploy%5D%5Bissue%5D-Could-not-resolve-placeholder-'JWT_SECRET'-%E2%80%90-%ED%99%98%EA%B2%BD-%EB%B3%80%EC%88%98-%EB%88%84%EB%9D%BD)
+* [[deploy] net::ERR_CONNECTION_REFUSED](https://github.com/yum-recipe-project/zipmin/wiki/%5Bdeploy%5D%5Bissue%5D-net::ERR_CONNECTION_REFUSED)
+* [[deploy] ORA-00933: SQL command not properly ended](https://github.com/yum-recipe-project/zipmin/wiki/%5Bdeploy%5D%5Bissue%5D-ORA%E2%80%9000933:-SQL-command-not-properly-ended)
 
-### 5.2 개선 사항
-이슈 및 문제해결
+<br/><br/>
 
-### 5.3 프로젝트에서 배운 점
+### 5.2 회고
 
+<br/><br/>
 
-### 5.4 결과 및 확장성
+### 5.3 목표 및 진행 방향
 
+현재 집밥의민족은 모든 핵심 기능 구현을 완료했으며 안정적인 서비스 제공을 위한 디버깅과 전문적인 배포 환경 구축을 진행 중에 있습니다. 주요 목표와 이를 위한 진행 방향은 다음과 같습니다.
+
+* **배포 자동화 및 무중단 운영 환경 구축**
+  * Docker와 Jenkins를 활용한 CI/CD 자동 배포 환경 구축 예정
+ 
+* **성능 최적화 및 PageSpeed 87점 → 95점 이상 향상**
+  * Redis 기반 캐싱 도입으로 서버 부하 감소 및 응답 속도 개선 예정
+  * 이미지 Lazy Loading 적용으로 페이지 초기 로딩 속도 개선 예정
+  * 정적 리소스 최소화 및 불필요한 리소스 제거 예정
+  * 쿼리 최적화를 통한 서버 응답 지연 개선 예정
+
+* **월간 활성 사용자 100명 및 하루 평균 10건 이상의 사용자 활동 달성**
+  * 신규 사용자 유입 증가를 위한 SEO 최적화 예정
+  * 쩝쩝박사 등 사용자 참여형 콘텐츠 강화로 재방문율 향상 예정

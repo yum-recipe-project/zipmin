@@ -3,27 +3,27 @@ insert into users values (seq_user_id.NEXTVAL, 'admin', '$2a$10$B.Qdm3ECeo/PYL2P
 insert into users values (seq_user_id.NEXTVAL, 'admin1', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '관리자1', '집밥의민족', null, null, null, null, null, 0, 0, 'ROLE_ADMIN', 1, null, null, null, null);
 insert into users values (seq_user_id.NEXTVAL, 'admin2', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '관리자2', '집밥의민족', null, null, null, null, null, 0, 0, 'ROLE_ADMIN', 1, null, null, null, null);
 insert into users values (seq_user_id.NEXTVAL, 'harim', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '정하림', '아잠만', '010-0000-0000', 'jhr.chicken@gmail.com', '/images/user/user6.png', '안녕하세요 아잠만입니다 레시피 열심히 작성할게요 !!', null, 2000, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'dayeong', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '부다영', '김뿌영', '010-0000-0000', 'dyboo1347@gmail.com', '/images/user/user9.png', '안녕하세요~', null, 2000, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user1',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자1',  '사용자1',  '010-0000-0000', 'user1@gmail.com',  '/images/user/user2.png', null, null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user2',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자2',  '사용자2',  '010-0000-0000', 'user2@gmail.com',  '/images/user/user3.png', null, null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user3',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자3',  '사용자3',  '010-0000-0000', 'user3@gmail.com',  '/images/user/user4.png', null, null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user4',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자4',  '사용자4',  '010-0000-0000', 'user4@gmail.com',  '/images/user/user5.png', null, null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user5',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자5',  '사용자5',  '010-0000-0000', 'user5@gmail.com',  '/images/user/user6.png', null, null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user6',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자6',  '사용자6',  '010-0000-0000', 'user6@gmail.com',  '/images/user/user7.png', null, null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user7',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자7',  '사용자7',  '010-0000-0000', 'user7@gmail.com',  '/images/user/user8.png', null, null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user8',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자8',  '사용자8',  '010-0000-0000', 'user8@gmail.com',  '/images/user/user9.png', null, null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user9',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자9',  '사용자9',  '010-0000-0000', 'user9@gmail.com',  '/images/user/user10.png', null, null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user10', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자10', '사용자10', '010-0000-0000', 'user10@gmail.com', '/images/user/user11.png', null, null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user11', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자11', '사용자11', '010-0000-0000', 'user11@gmail.com', '/images/user/user12.png', null, null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user12', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자12', '사용자12', '010-0000-0000', 'user12@gmail.com', '/images/user/user13.png', null, null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user13', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자13', '사용자13', '010-0000-0000', 'user13@gmail.com', '/images/user/user14.png', null, null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user14', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자14', '사용자14', '010-0000-0000', 'user14@gmail.com', '/images/user/user15.png', null, null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user15', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자15', '사용자15', '010-0000-0000', 'user15@gmail.com', '/images/user/user16.png', null, null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user16', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자16', '사용자16', '010-0000-0000', 'user16@gmail.com', '/images/user/user17.png', null, null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user17', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자17', '사용자17', '010-0000-0000', 'user17@gmail.com', '/images/user/user18.png', null, null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user18', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자18', '사용자18', '010-0000-0000', 'user18@gmail.com', '/images/user/user19.png', null, null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user19', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자19', '사용자19', '010-0000-0000', 'user19@gmail.com', '/images/user/user20.png', null, null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
-insert into users values (seq_user_id.NEXTVAL, 'user20', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자20', '사용자20', '010-0000-0000', 'user20@gmail.com', '/images/user/user21.png', null, null, 100, 200, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'dayeong', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '부다영', '김뿌영', '010-0000-0000', 'dyboo1347@gmail.com', '/images/user/user9.png', '안녕하세요~', null, 2000, 0, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user1',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자1',  '사용자1',  '010-0000-0000', 'user1@gmail.com',  '/images/user/user2.png', null, null, 700, 0, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user2',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자2',  '사용자2',  '010-0000-0000', 'user2@gmail.com',  '/images/user/user3.png', null, null, 500, 0, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user3',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자3',  '사용자3',  '010-0000-0000', 'user3@gmail.com',  '/images/user/user4.png', null, null, 500, 0, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user4',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자4',  '사용자4',  '010-0000-0000', 'user4@gmail.com',  '/images/user/user5.png', null, null, 500, 0, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user5',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자5',  '사용자5',  '010-0000-0000', 'user5@gmail.com',  '/images/user/user6.png', null, null, 400, 0, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user6',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자6',  '사용자6',  '010-0000-0000', 'user6@gmail.com',  '/images/user/user7.png', null, null, 1000, 0, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user7',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자7',  '사용자7',  '010-0000-0000', 'user7@gmail.com',  '/images/user/user8.png', null, null, 1000, 0, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user8',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자8',  '사용자8',  '010-0000-0000', 'user8@gmail.com',  '/images/user/user9.png', null, null, 100, 0, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user9',  '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자9',  '사용자9',  '010-0000-0000', 'user9@gmail.com',  '/images/user/user10.png', null, null, 100, 0, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user10', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자10', '사용자10', '010-0000-0000', 'user10@gmail.com', '/images/user/user11.png', null, null, 100, 0, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user11', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자11', '사용자11', '010-0000-0000', 'user11@gmail.com', '/images/user/user12.png', null, null, 100, 0, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user12', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자12', '사용자12', '010-0000-0000', 'user12@gmail.com', '/images/user/user13.png', null, null, 100, 0, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user13', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자13', '사용자13', '010-0000-0000', 'user13@gmail.com', '/images/user/user14.png', null, null, 100, 0, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user14', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자14', '사용자14', '010-0000-0000', 'user14@gmail.com', '/images/user/user15.png', null, null, 100, 0, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user15', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자15', '사용자15', '010-0000-0000', 'user15@gmail.com', '/images/user/user16.png', null, null, 100, 0, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user16', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자16', '사용자16', '010-0000-0000', 'user16@gmail.com', '/images/user/user17.png', null, null, 100, 0, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user17', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자17', '사용자17', '010-0000-0000', 'user17@gmail.com', '/images/user/user18.png', null, null, 100, 0, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user18', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자18', '사용자18', '010-0000-0000', 'user18@gmail.com', '/images/user/user19.png', null, null, 100, 0, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user19', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자19', '사용자19', '010-0000-0000', 'user19@gmail.com', '/images/user/user20.png', null, null, 100, 0, 'ROLE_USER', 1, null, null, null, null);
+insert into users values (seq_user_id.NEXTVAL, 'user20', '$2a$10$B.Qdm3ECeo/PYL2P.0Sx/uuAznM0IkEBrQH6IX9vEn6cXaa4E/NOe', '사용자20', '사용자20', '010-0000-0000', 'user20@gmail.com', '/images/user/user21.png', null, null, 100, 0, 'ROLE_USER', 1, null, null, null, null);
 commit;
 
 
@@ -31,6 +31,20 @@ commit;
 
 
 -- USER_ACCOUNT 테이블 더미데이터
+insert into user_account (id, bank, accountnum, name, user_id) values (seq_user_account_id.nextval, 'woori', '100259320000', '정하림', 4);
+insert into user_account (id, bank, accountnum, name, user_id) values (seq_user_account_id.nextval, 'saemaeul', '9002176462805', '부다영', 5);
+insert into user_account (id, bank, accountnum, name, user_id) values (seq_user_account_id.nextval, 'kakao', '333303290000', '사용자1', 6);
+insert into user_account (id, bank, accountnum, name, user_id) values (seq_user_account_id.nextval, 'kb', '837220940000', '사용자2', 7);
+insert into user_account (id, bank, accountnum, name, user_id) values (seq_user_account_id.nextval, 'shinhan', '110204950000', '사용자3', 8);
+insert into user_account (id, bank, accountnum, name, user_id) values (seq_user_account_id.nextval, 'hana', '351109320000', '사용자4', 9);
+insert into user_account (id, bank, accountnum, name, user_id) values (seq_user_account_id.nextval, 'woori', '100255320000', '사용자5', 10);
+insert into user_account (id, bank, accountnum, name, user_id) values (seq_user_account_id.nextval, 'nh', '302109320000', '사용자6', 11);
+insert into user_account (id, bank, accountnum, name, user_id) values (seq_user_account_id.nextval, 'kakao', '333301200000', '사용자7', 12);
+insert into user_account (id, bank, accountnum, name, user_id) values (seq_user_account_id.nextval, 'kb', '834102940000', '사용자8', 13);
+insert into user_account (id, bank, accountnum, name, user_id) values (seq_user_account_id.nextval, 'shinhan', '110203950000', '사용자9', 14);
+insert into user_account (id, bank, accountnum, name, user_id) values (seq_user_account_id.nextval, 'hana', '351338320000', '사용자10', 15);
+commit;
+
 
 
 
@@ -62,9 +76,32 @@ INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '개', TO_DATE('2
 
 
 -- FRDIDGE_MEMO 테이블 더미데이터
-insert into fridge_memo values (seq_fridge_memo_id.nextval, '마라탕소스', 100, 'g', null, 5);
-insert into fridge_memo values (seq_fridge_memo_id.nextval, '닭다리살', 100, 'kg', null, 5);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '마라탕소스', 100, 'g', null, 4);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '닭다리살', 100, 'kg', '조리된 닭다리살로 구매', 4);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '올리브유', 200, 'ml', null, 4);
 insert into fridge_memo values (seq_fridge_memo_id.nextval, '올리브유', 200, 'ml', null, 5);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '닭가슴살', 1, 'kg', '냉동보관', 5);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '계란', 12, '개', '유통기한 필히 확인', 5);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '두부', 2, '모', null, 6);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '파프리카', 3, '개', null, 6);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '양파', 5, '개', null, 6);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '마늘', 100, 'g', null, 6);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '소금', 500, 'g', null, 7);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '후추', 50, 'g', null, 7);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '참기름', 100, 'ml', null, 7);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '스파게티면', 500, 'g', null, 8);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '토마토소스', 300, 'g', null, 8);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '모짜렐라치즈', 200, 'g', '냉장보관', 8);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '베이컨', 150, 'g', null, 8);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '감자', 5, '개', null, 9);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '당근', 3, '개', null, 9);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '양파', 2, '개', null, 9);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '소고기', 500, 'g', '냉동보관', 9);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '간장', 250, 'ml', null, 9);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '우유', 1, 'L', null, 10);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '버터', 200, 'g', '냉장보관', 10);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '설탕', 500, 'g', null, 10);
+insert into fridge_memo values (seq_fridge_memo_id.nextval, '커피', 100, 'g', null, 10);
 commit;
 
 
@@ -829,12 +866,27 @@ commit;
 
 
 -- FUND 테이블 더미데이터
+insert into fund values (seq_fund_id.nextval, 5, 4, 1, 500, TO_DATE('26/11/25', 'RR/MM/DD'), 0);
+insert into fund values (seq_fund_id.nextval, 6, 4, 2, 200, TO_DATE('26/11/20', 'RR/MM/DD'), 0);
+insert into fund values (seq_fund_id.nextval, 7, 4, 3, 300, TO_DATE('26/11/18', 'RR/MM/DD'), 0);
+insert into fund values (seq_fund_id.nextval, 8, 4, 4, 100, TO_DATE('26/11/15', 'RR/MM/DD'), 0);
+insert into fund values (seq_fund_id.nextval, 9, 4, 5, 100, TO_DATE('26/11/14', 'RR/MM/DD'), 0);
+insert into fund values (seq_fund_id.nextval, 10, 4, 6, 100, TO_DATE('26/11/12', 'RR/MM/DD'), 0);
+insert into fund values (seq_fund_id.nextval, 5, 4, 7, 200, TO_DATE('26/11/10', 'RR/MM/DD'), 0);
+insert into fund values (seq_fund_id.nextval, 6, 4, 8, 300, TO_DATE('26/11/08', 'RR/MM/DD'), 0);
+insert into fund values (seq_fund_id.nextval, 7, 4, 1, 300, TO_DATE('26/11/05', 'RR/MM/DD'), 0);
+insert into fund values (seq_fund_id.nextval, 8, 4, 2, 100, TO_DATE('26/11/03', 'RR/MM/DD'), 0);
+commit;
+
 
 
 
 
 
 -- WITHDRAW 테이블 더미데이터
+insert into withdraw values (seq_withdraw_id.nextval, 4, 1, 1000, TO_DATE('26/11/25', 'RR/MM/DD'), 0, null, null);  
+insert into withdraw values (seq_withdraw_id.nextval, 4, 1, 1000, TO_DATE('26/11/25', 'RR/MM/DD'), 0, null, null);  
+commit;
 
 
 

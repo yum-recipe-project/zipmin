@@ -33,6 +33,7 @@ public class PaymentController {
                 "fAHT2Uhecoy92LTrXa10VVCbNJTSPkkQFiDR83iheJpIay45ahGWX8OhfQ1gDAf1lJkJHNiHq6BMXM7U");
     }
 	
+    // 포트원 실제 결제내역 조회 
     public IamportResponse<Payment> paymentLookup(String impUid) throws IamportResponseException, IOException, java.io.IOException {
         return iamportClientApi.paymentByImpUid(impUid);
     }

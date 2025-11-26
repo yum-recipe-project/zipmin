@@ -12,9 +12,7 @@
     <br />
     <a href="https://github.com/othneildrew/Best-README-Template">API 명세</a>
     &middot;
-    <a href="https://github.com/othneildrew/Best-README-Template/issues/new?labels=bug&template=bug-report---.md">개발문서</a>
-    &middot;
-    <a href="https://github.com/othneildrew/Best-README-Template/issues/new?labels=enhancement&template=feature-request---.md">개발 노트</a>
+    <a href="https://github.com/yum-recipe-project/zipmin/wiki">개발 노트</a>
   </p>
 </div>
 

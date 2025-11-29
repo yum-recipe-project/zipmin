@@ -12,9 +12,7 @@
     <br />
     <a href="https://github.com/othneildrew/Best-README-Template">API 명세</a>
     &middot;
-    <a href="https://github.com/othneildrew/Best-README-Template/issues/new?labels=bug&template=bug-report---.md">개발문서</a>
-    &middot;
-    <a href="https://github.com/othneildrew/Best-README-Template/issues/new?labels=enhancement&template=feature-request---.md">개발 노트</a>
+    <a href="https://github.com/yum-recipe-project/zipmin/wiki">개발 노트</a>
   </p>
 </div>
 
@@ -42,14 +40,14 @@
 
 **이제 <a href="http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586">여기를 클릭하여</a> 집밥의민족을 시작해보세요!**
 
-<br/>
+<br/><br/>
 
-### 1.2&nbsp;&nbsp;사용 가이드
+### 1.2&nbsp;&nbsp;배포 정보
 
 #### 배포 URL
 
-* **[:globe_with_meridians: 웹사이트 바로가기](http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586)**
-* **[:globe_with_meridians: 관리자사이트 바로가기](http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586/admin/login.do)**
+* **[웹사이트 바로가기 →](http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586)**
+* **[관리자사이트 바로가기 →](http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586/admin/login.do)**
 
 #### 톄스트 계정
 
@@ -60,14 +58,14 @@
 | 일반사용자 | user1 | 1234 |
 | 일반사용자 | user2 | 1234 |
 
-<br/>
+<br/><br/>
 
 ### 1.3&nbsp;&nbsp;개발 정보
 
 * **프로젝트 기간**
   * 1차 개발 기간 : 2025.02.07 – 04.20
   * 2차 개발 기간 : 2025.07.01 - 10.25
-  * 운영 기간 : 2025.11.10 - 진행중 (DevOps 학습 및 유지보수 진행중)
+  * 운영 기간 : 2025.11.10 - 진행중 (현재 Docker와 Jenkins 기반 배포 환경 구축 준비중)
 * **개발 인원**
   * 총 2명 (풀스택)
 * **주요 기술**
@@ -76,11 +74,11 @@
   * Database : Oracle
   * DevOps : Linux, Tomcat, Docker, Jenkins, AWS EC2
 
-<br/><br/>
+<br/><br/><br/>
 
 ## 2. 주요 기능
 
-### 2.1&nbsp;&nbsp;세부 주요 기능
+### 2.1&nbsp;&nbsp;주요 기능
 
 #### 홈
 
@@ -147,6 +145,12 @@
 
 <br/><br/>
 
+### 2.2 화면 설계
+
+
+
+<br/><br/><br/>
+
 ## 3. 프로젝트 설계
 
 ### 3.1 사용 기술
@@ -160,9 +164,15 @@
 | **Tools** | STS 4&nbsp;&nbsp;·&nbsp;&nbsp;GitHub&nbsp;&nbsp;·&nbsp;&nbsp;Figma&nbsp;&nbsp;·&nbsp;&nbsp;Swagger&nbsp;&nbsp;·&nbsp;&nbsp;Postman&nbsp;&nbsp;·&nbsp;&nbsp;SQL Developer&nbsp;&nbsp;·&nbsp;&nbsp;Slack |
 | **Etc.** | PortOne&nbsp;&nbsp;·&nbsp;&nbsp;SMTP |
 
-<br/>
+<br/><br/>
 
 ### 3.2 아키텍처
+
+집밥의민족 프로젝트는 다음과 같이 설계했습니다.
+
+<img src="src/main/resources/static/images/etc/architecture.png">
+
+* 현재 Docker와 Jenkins 기반 배포 환경 구축 준비중
 
 <br/>
 
@@ -226,21 +236,30 @@ Zipmin
 
 <br/>
 
-### 3.4 개발 문서
+### 3.4 프로젝트 문서
 
-* 기획 문서
+#### 기획 문서
 
-* 설계 문서
+* [요구사항 정의서](https://docs.google.com/spreadsheets/d/1i4fixz1ImXhDaZjmS5SP7Q-ORUexCKOBP9Dup4lNG80/edit?gid=2091731534#gid=2091731534)
+* [기능 정의서](https://docs.google.com/spreadsheets/d/15osLaZ4JrcE4XLSzfLZqnu1vSc8KB70O_UQdTB3Blc8/edit?gid=860594176#gid=860594176)
+* [개발 일정](https://docs.google.com/spreadsheets/d/1zC_YDl9BHkNTQ4XoS8nbUvrYFBoN5bXuEljF49YOYT0/edit?gid=1982592288#gid=1982592288)
 
-* 운영 문서
+#### 설계 문서
 
-ERD 다이어그램
-Swagger 명세 링크
+* [데이터베이스 정의서](https://docs.google.com/spreadsheets/d/1xUFNAK-GX4h_Sux6nlGifGED0D8Jhv0q6FGXrJnTVNg/edit?gid=0#gid=0)
+* [Swagger API 문서](http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586/swagger-ui/index.html)
+* [REST API 공통 응답 구조 및 예외 처리 설계](https://github.com/yum-recipe-project/zipmin/wiki/%5Bdesign%5D-REST-API-%EA%B3%B5%ED%86%B5-%EC%9D%91%EB%8B%B5-%EA%B5%AC%EC%A1%B0-%EB%B0%8F-%EC%98%88%EC%99%B8-%EC%B2%98%EB%A6%AC-%EC%84%A4%EA%B3%84-v2)
+* [Figma 디자인 설계](https://www.figma.com/design/rxx4DlAb31pyvvyXA67uOC/%EC%A7%91%EB%B0%A5%EC%9D%98%EB%AF%BC%EC%A1%B1?node-id=0-1&t=JpnaCJfU8T7OqdvX-0)
 
+#### 컨벤션
 
-<br/>
+* [브랜치 전략 (Git Flow Branch)](https://github.com/yum-recipe-project/zipmin/wiki/%5BConvention%5D-Git-Flow-Branch)
+* [커밋 컨벤션](https://github.com/yum-recipe-project/zipmin/wiki/%5BConvention%5D-Commit-Convention)
+* [에러 코드 컨벤션](https://github.com/yum-recipe-project/zipmin/wiki/%5BConvention%5D-Error-Code-Convention)
 
-### 4. 협업
+<br/><br/><br/>
+
+## 4. 협업
 
 ### 4.1&nbsp;&nbsp;팀원 소개
 
@@ -251,7 +270,7 @@ Swagger 명세 링크
 |<img src="src/main/resources/static/images/jhrchicken.jpeg" width="120" height="120">|<img src="src/main/resources/static/images/budayeong.jpeg" width="120" height="120">|
 |풀스택|풀스택|
 
-<br/>
+<br/><br/>
 
 ### 4.2 담당 역할
 
@@ -325,19 +344,77 @@ Swagger 명세 링크
   
 </details>
 
-<br/>
+<br/><br/><br/>
 
 ## 5. 기타
 
 ### 5.1 이슈 및 문제 해결
 
+* [@RequestBody DTO 값이 null로 들어오는 문제](https://github.com/yum-recipe-project/zipmin/wiki/%5BIssue%5D-@RequestBody-DTO-%EA%B0%92%EC%9D%B4-null%EB%A1%9C-%EB%93%A4%EC%96%B4%EC%98%A4%EB%8A%94-%EB%AC%B8%EC%A0%9C)
+* [JPA에서 댓글을 좋아요 순으로 정렬하기 (@Fomula)](https://github.com/yum-recipe-project/zipmin/wiki/%5BIssue%5D-JPA%EC%97%90%EC%84%9C-%EB%8C%93%EA%B8%80%EC%9D%84-%EC%A2%8B%EC%95%84%EC%9A%94-%EC%88%9C%EC%9C%BC%EB%A1%9C-%EC%A0%95%EB%A0%AC%ED%95%98%EA%B8%B0-(@Fomula))
+* [MapStruct Invalid bound statement](https://github.com/yum-recipe-project/zipmin/wiki/%5BIssue%5D-MapStruct-Invalid-bound-statement)
+* [Spring Security localhost에서 리디렉션한 횟수가 너무 많습니다](https://github.com/yum-recipe-project/zipmin/wiki/%5BIssue%5D-Spring-Security-localhost%EC%97%90%EC%84%9C-%EB%A6%AC%EB%94%94%EB%A0%89%EC%85%98%ED%95%9C-%ED%9A%9F%EC%88%98%EA%B0%80-%EB%84%88%EB%AC%B4-%EB%A7%8E%EC%8A%B5%EB%8B%88%EB%8B%A4)
+* [Spring Security 적용 후 정적 리소스가 다운로드되는 문제](https://github.com/yum-recipe-project/zipmin/wiki/%5BIssue%5D-Spring-Security-%EC%A0%81%EC%9A%A9-%ED%9B%84-%EC%A0%95%EC%A0%81-%EB%A6%AC%EC%86%8C%EC%8A%A4%EA%B0%80-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%EB%90%98%EB%8A%94-%EB%AC%B8%EC%A0%9C)
+* [[deploy] Could not resolve placeholder 'JWT_SECRET' - 환경 변수 누락](https://github.com/yum-recipe-project/zipmin/wiki/%5Bdeploy%5D%5Bissue%5D-Could-not-resolve-placeholder-'JWT_SECRET'-%E2%80%90-%ED%99%98%EA%B2%BD-%EB%B3%80%EC%88%98-%EB%88%84%EB%9D%BD)
+* [[deploy] net::ERR_CONNECTION_REFUSED](https://github.com/yum-recipe-project/zipmin/wiki/%5Bdeploy%5D%5Bissue%5D-net::ERR_CONNECTION_REFUSED)
+* [[deploy] ORA-00933: SQL command not properly ended](https://github.com/yum-recipe-project/zipmin/wiki/%5Bdeploy%5D%5Bissue%5D-ORA%E2%80%9000933:-SQL-command-not-properly-ended)
+
+<br/><br/>
+
+### 5.2 회고
+
+#### Keep (간직하고 싶은 잘했던 점 혹은 좋았던 점)
+
+* **효율적인 소통과 협업 방식**<br/>
+  프로젝트를 진행하면서 팀의 소통 방식이 자유롭고 효율적이라고 느꼈습니다. 대면 회의와 Slack을 함께 할용하며 회의 직후에 핵심 내용을 공유해 정보 누락을 줄였고, 대면 회의가 어려울 때에도 Slack으로 논의 사항을 체계적으로 공유했습니다. 특히 에러가 발생했을 때에는 문제 상황, 추정 원인, 시도한 방법과 결과, 그리고 결론을 정리해 공유했기 때문에 팀원들이 상황을 빠르게 이해하고 대응할 수 있었습니다.  또한 주석과 커밋 메시지를 명확히 작성하고 GitHub Issue, Pull Request, Wiki를 적극적으로 활용해 협업 효율을 높였습니다.
+
+* **탄탄한 기획과 문서화**<br/>
+  프로젝트를 진행하면서 탄탄한 기획과 문서화를 기반으로 작업한 점이 큰 도움이 되었습니다. 새로운 기술을 많이 적용하다 보니 구현 과정에서 잊어버리는 내용이나 예상치 못한 문제가 자주 발생했지만, 실제 서비스까지 고려해 정리해 둔 기획 자료와 문서 덕분에 흐름을 빠르게 되찾을 수 있었습니다. 물론 일정이 너무 바빠 미뤄둔 부분도 있어 조금 더 충실히 했으면 좋았겠다는 약간의 아쉬움은 남지만, 전체적으로는 프로젝트를 안정적으로 일관된 방향을 유지할 수 있었습니다. 이러한 기획과 문서화 중심의 작업 방식은 앞으로도 유지해야 할 장점이라고 느꼈습니다.
+
+* **새로운 기술을 적용해볼 수 있었다는 점**<br/>
+  다양한 기술을 새롭게 학습하고 실제 프로젝트에 적용해볼 수 있었다는 점이 좋았습니다. REST API를 기반으로 백엔드 구조를 설계하고 Swagger로 API 문서를 정리하며 Postman으로 테스트를 진행했습니다. Spring Data JPA로 데이터를 처리하고 MapStruct로 DTO와 엔티티 변환을 자동화했습니다. 또한 Spring Security와 JWT로 인증과 인가를 구현하고 OAuth2를 통해 소셜 로그인 기능을 연동했습니다. 더불어 PortOne 결제 API와 KakaoMap 지도 API를 연동하며 외부 API 기반 기능도 직접 구현해볼 수 있었습니다. 이러한 과정들이 험난했지만 그만큼 개발 역량을 확장하는 데 큰 도움이 되었습니다.
+
 <br/>
 
-### 5.2 개선 사항
-이슈 및 문제해결
+#### Problem (아쉬운 점 혹은 어려운 점)
 
-### 5.3 프로젝트에서 배운 점
+* **인증 시스템 구현 과정에서의 어려움**<br/>
+  구현 과정에서 수많은 어려움이 있었지만 기술적으로 가장 도전적이었던 부분은 인증과 인가 영역이었습니다. Spring Security 위에 JWT 기반 인증을 적용하면서 일반 로그인과 OAuth2 소셜 로그인 그리고 별도로 분리된 관리자 로그인을 처리해야 했습니다. 이를 위해 로그인 방식별로 인증 필터 체인과 인증 처리 로직을 세밀하게 구성해야 했던 부분이 큰 도전이었습니다. 프론트엔드에서도 토큰 저장 방식에 맞춰 Axios 인터셉터를 구성하고 만료된 토큰을 감지해 재발급 요청을 제어하는 부분이 쉽지 않았습니다. 특히 재발급 과정에서 동일 요청이 반복 호출되는 문제가 발생해 이를 해결하기 위해 요청 흐름을 조정하는 데 많은 시간을 들였습니다.
 
+* **소수의 개발자로만 이루어진 팀이었다는 점**<br/>
+  집밥의민족 프로젝트는 단 두명의 개발자로만 구성된 소규모 팀이었습니다. 기획이나 디자인 인력 없이 전부 직접 결정해야 했기에 다양한 역할을 경험할 수 있다는 장점이 있었지만, 동시에 디자인 방향을 정하고 화면을 구성하는 과정에서 예상보다 많은 시간이 소요되었습니다. 결과적으로 최종 결과물은 만족스러웠지만 이를 완성하기까지 시행착오가 많아 개발 일정이 더 길어졌던 부분은 아쉬움으로 남습니다. 또한 팀 규모가 작다 보니 협업 과정에서 발생하는 다양한 의견 충돌을 충분히 겪지 못했고 특히 기획이나 디자인처럼 개발자가 아닌 분야와의 협업을 경험하지 못했다는 점도 아쉬웠습니다.
 
-### 5.4 결과 및 확장성
+* **지식 부족으로 전체 프로젝트를 보지 못했다는 점**<br/>
+  지식과 경험 부족으로 인해 전체 프로젝트를 한눈에 바라보는 시야가 부족했다는 점이 아쉬움으로 남습니다. 문제를 해결하는 과정에서 기술을 덧붙이거나 구조를 다시 잡아야 하는 일이 반복되었고 그만큼 코드를 여러 번 다시 작성해야 하는 상황도 자주 발생했습니다. 공통 모듈의 경우에도 처음부터 프로젝트 전체 구조를 미리 파악하고 설계했더라면 더 효율적으로 구성할 수 있었겠지만 당시 경험이 부족해 중간에 뒤늦게 공통화를 진행하기도 했습니다. 한편 데이터베이스 선택에서는 가장 익숙한 Oracle을 당연하게 사용했지만 당시 Amazon RDS와 같은 서비스에 대한 이해가 있었더라면 MySQL 등 다른 데이터베이스도 고려해볼 수 있었을 것이라는 아쉬움이 있습니다.
 
+* **리뷰가 미비했던 점**<br/>
+  코드 측면과 프로젝트 진행 측면에서 리뷰가 충분히 이루어지지 못한 점이 아쉽습니다. 바쁜 일정 탓에 꼼꼼한 코드 리뷰까지 이어지지 못해 깊이 있는 피드백을 주고받기 어려웠습니다. 또한 프로젝트 자체의 문제 외에 프로젝트 진행 방식 자체를 주기적으로 점검하는 회고가 진행되지 않았다는 점도 아쉬움으로 남습니다. 정석적인 회고 방법론을 적용해 매주 진행 방식과 작업 흐름을 되돌아보는 시간이 있었다면 이곳에 적힌 아쉬움들은 물론 미처 적지 못한 아쉬움들도 줄일 수 있었을 것이라 생각합니다. 되돌아보는 과정 없이 계속 앞으로 나아가기만 했다는 점이 특히 아쉽게 느껴집니다.
+
+<br/>
+
+#### Try (보완해야 할 점 혹은 시도해볼 만한 점)
+
+* **지속적인 학습**<br/>
+  집밥의민족 프로젝트는 기존의 부족한 지식을 채워나가고 동시에 그 과정 속에서 또 새로운 부족함을 발견하는 과정이었습니다. 새로 접해보고 싶은 기술들은 많았지만 모든 것을 한 번에 프로젝트에 녹여내기에는 현실적으로 어려웠기 때문에 지금까지는 필요한 부분부터 우선적으로 학습하고 적용하는 데 집중했습니다. 앞으로는 프로젝에 적용하지 못한 기술들을 중심으로 학습할 계획입니다. Docker와 Jenkins를 활용한 배포 자동화, Redis를 통한 캐싱과 세션 관리, 그리고 지금까지 제대로 다뤄보지 못했던 테스트 코드 작성을 체계적으로 익히고자 합니다. 이후에도 꾸준히 역량을 확장해 나가고 싶습니다.
+
+* **정량적인 지표 기반의 개선**<br/>
+  개발자라면 기능 구현뿐 아니라 결과를 수치적으로 보여줄 수 있어야 설득력이 높아진다고 생각합니다. 배포 후 실제 서비스 운영 과정에서 다양한 계량적 데이터를 수집하고 분석할 계획입니다. 옐르 들어 사용자 수, 트래픽 변화, API 응답 시간, 페이지 로딩 속도, 기능별 사용 비율 등 여러 지표를 기반으로 프로젝트의 품질을 평가하고 이를 바탕으로 개선 방향을 구체적으로 설정하고 싶습니다. 이러한 수치 중심의 접근 방식은 프로젝트의 성과를 명확하게 파악할 뿐만 아니라 더 나은 결정을 위한 근거 자료로도 활용될 것이라고 생각합니다.
+
+<br/><br/>
+
+### 5.3 목표 및 진행 방향
+
+현재 집밥의민족은 모든 핵심 기능 구현을 완료했으며 안정적인 서비스 제공을 위한 디버깅과 전문적인 배포 환경 구축을 진행 중에 있습니다. 주요 목표와 이를 위한 진행 방향은 다음과 같습니다.
+
+* **배포 자동화 및 무중단 운영 환경 구축**
+  * Docker와 Jenkins를 활용한 CI/CD 자동 배포 환경 구축 예정
+ 
+* **성능 최적화 및 PageSpeed 87점 → 95점 이상 향상**
+  * Redis 기반 캐싱 도입으로 서버 부하 감소 및 응답 속도 개선 예정
+  * 이미지 Lazy Loading 적용으로 페이지 초기 로딩 속도 개선 예정
+  * 정적 리소스 최소화 및 불필요한 리소스 제거 예정
+  * 쿼리 최적화를 통한 서버 응답 지연 개선 예정
+
+* **월간 활성 사용자 100명 및 하루 평균 10건 이상의 사용자 활동 달성**
+  * 신규 사용자 유입 증가를 위한 SEO 최적화 예정
+  * 쩝쩝박사 등 사용자 참여형 콘텐츠 강화로 재방문율 향상 예정

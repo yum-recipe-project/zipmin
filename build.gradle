@@ -54,7 +54,7 @@ dependencies {
 	// 자동 재빌드
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	
-	// swagger
+	// Swagger
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
 	
 	// MapStruct

@@ -54,6 +54,6 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 		
 		// 이름 인코딩 후 리다이렉트
 		String encodeName = URLEncoder.encode(name, "UTF-8");
-		response.sendRedirect("http://localhost:8586/oauth2-jwt-header?name=" + encodeName);
+		response.sendRedirect("http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586/oauth2-jwt-header?name=" + encodeName);
 	}
 }

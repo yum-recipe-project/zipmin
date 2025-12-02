@@ -246,7 +246,7 @@ Zipmin
 
 #### 설계 문서
 
-* [데이터베이스 정의서](https://docs.google.com/spreadsheets/d/1xUFNAK-GX4h_Sux6nlGifGED0D8Jhv0q6FGXrJnTVNg/edit?gid=0#gid=0)
+* [데이터베이스 정의서]([https://github.com/yum-recipe-project/zipmin/wiki/%5Bdesign%5D-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EC%A0%95%EC%9D%98%EC%84%9C)
 * [Swagger API 문서](http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586/swagger-ui/index.html)
 * [REST API 공통 응답 구조 및 예외 처리 설계](https://github.com/yum-recipe-project/zipmin/wiki/%5Bdesign%5D-REST-API-%EA%B3%B5%ED%86%B5-%EC%9D%91%EB%8B%B5-%EA%B5%AC%EC%A1%B0-%EB%B0%8F-%EC%98%88%EC%99%B8-%EC%B2%98%EB%A6%AC-%EC%84%A4%EA%B3%84-v2)
 * [Figma 디자인 설계](https://www.figma.com/design/rxx4DlAb31pyvvyXA67uOC/%EC%A7%91%EB%B0%A5%EC%9D%98%EB%AF%BC%EC%A1%B1?node-id=0-1&t=JpnaCJfU8T7OqdvX-0)

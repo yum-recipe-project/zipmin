@@ -668,7 +668,6 @@ public class UserController {
 		UserUpdateResponseDto userResponseDto = userService.updateUser(userRequestDto);
 		
 		// 토큰 재발급
-		// TODO : 어떤 맥락에서 작성된 코드인지 확인하기
 		String access = jwtUtil.createJwt("access", userResponseDto.getId(), userResponseDto.getUsername(),
 				userResponseDto.getNickname(), userResponseDto.getAvatar(), userResponseDto.getRole(), 60 * 60 * 60L);
 		String refresh = jwtUtil.createJwt("refresh", userResponseDto.getId(), userResponseDto.getUsername(),

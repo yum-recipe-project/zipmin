@@ -431,12 +431,9 @@ public class RecipeController {
 		    throw new ApiException(RecipeErrorCode.RECIPE_UNAUTHORIZED_ACCESS);
 		}
 		
-		
 		likeRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 		LikeCreateResponseDto likeResponseDto = recipeService.likeRecipe(likeRequestDto);
-					
-		
-		System.err.println("레시피 저장 성공");
+
 		return ResponseEntity.status(RecipeSuccessCode.RECIPE_LIKE_SUCCESS.getStatus())
 				.body(ApiResponse.success(RecipeSuccessCode.RECIPE_LIKE_SUCCESS, likeResponseDto));
 	}

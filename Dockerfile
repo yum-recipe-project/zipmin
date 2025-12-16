@@ -1,5 +1,4 @@
-# FROM tomcat:10.1-jdk17-temurin
-FROM tomcat:9.0-jdk17-temurin
+FROM tomcat:10.1-jdk17-temurin
 
 # 기본 ROOT 앱 제거
 RUN rm -rf /usr/local/tomcat/webapps/ROOT

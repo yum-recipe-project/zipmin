@@ -9,6 +9,7 @@ pipeline {
     }
 
     stages {
+		
 		/*
         stage('Clone Repository') {
             steps {
@@ -16,12 +17,30 @@ pipeline {
             }
         }
         */
+        
+        /* 임시 추가 시작 */
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build WAR') {
+            steps {
+                sh '''
+                  chmod +x ./gradlew
+                  ./gradlew clean bootWar -x test
+                  ls -al build/libs
+                '''
+            }
+        }
 
         stage('Build Docker Image') {
             steps {
                 sh "docker build -t ${IMAGE} ."
             }
         }
+        /* 임시 추가 끝 */
 
         stage('Push to Docker Hub') {
             steps {

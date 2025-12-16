@@ -9,11 +9,13 @@ pipeline {
     }
 
     stages {
+		/*
         stage('Clone Repository') {
             steps {
                 git 'https://github.com/yum-recipe-project/zipmin.git'
             }
         }
+        */
 
         stage('Build Docker Image') {
             steps {

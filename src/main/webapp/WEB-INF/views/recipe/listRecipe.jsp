@@ -22,7 +22,7 @@
 					
 					<!-- 레시피 작성 -->
 					<a href="javascript: redirectToLogin('/recipe/writeRecipe.do');" class="btn_block">
-						<span>맛있는 한 끼를 위한 <b>레시피 작성하기 (배포 테스트)</b></span>
+						<span>맛있는 한 끼를 위한 <b>레시피 작성하기 (배포 변경 테스트)</b></span>
 						<img src="/images/mypage/arrow_right.png">
 					</a>
 					

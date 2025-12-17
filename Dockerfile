@@ -1,9 +1,10 @@
 FROM tomcat:10.1-jdk17-temurin
 
-# 기본 ROOT 앱 제거
-RUN rm -rf /usr/local/tomcat/webapps/ROOT
+# 기존 기본 앱 제거
+# RUN rm -rf /usr/local/tomcat/webapps/ROOT
+RUN rm -rf /usr/local/tomcat/webapps/*
 
-# Gradle로 생성된 war를 Tomcat webapps에 배치
+# WAR를 ROOT로 배포
 ARG WAR_FILE=build/libs/*.war
 COPY ${WAR_FILE} /usr/local/tomcat/webapps/ROOT.war
 

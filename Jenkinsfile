@@ -38,6 +38,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 sh "docker build -t ${IMAGE} ."
+                // sh "docker push ${IMAGE}"
             }
         }
         /* 임시 추가 끝 */

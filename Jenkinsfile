@@ -19,7 +19,7 @@ pipeline {
             steps {
                 sh '''
                   chmod +x ./gradlew
-                  ./gradlew clean bootWar -x test
+                  ./gradlew clean war -x test
                   ls -al build/libs
                 '''
             }

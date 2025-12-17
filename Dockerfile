@@ -5,7 +5,8 @@ FROM tomcat:10.1-jdk17-temurin
 RUN rm -rf /usr/local/tomcat/webapps/*
 
 # WAR를 ROOT로 배포
-ARG WAR_FILE=build/libs/*.war
+# ARG WAR_FILE=build/libs/*.war
+ARG WAR_FILE=build/libs/zipmin.war
 COPY ${WAR_FILE} /usr/local/tomcat/webapps/ROOT.war
 
 EXPOSE 8080

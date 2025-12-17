@@ -13,7 +13,7 @@ public class MainController {
 		return "home";
 	}
 	
-	@GetMapping("dummy")
+	@GetMapping("/dummy")
 	public ResponseEntity<?> dummy() {
 		return ResponseEntity.ok("dummy ok");
 	}

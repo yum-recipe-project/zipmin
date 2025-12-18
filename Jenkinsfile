@@ -20,7 +20,12 @@ pipeline {
         // WAR 파일 빌드
         stage('Build WAR') {
             steps {
-                sh './gradlew clean war -x test'
+                sh '''
+                  chmod +x ./gradlew
+                  ./gradlew clean war -x test
+                  ls -al build/libs
+                '''
+
             }
         }
         

@@ -17,24 +17,23 @@ pipeline {
             }
         }
         
-        // WAR 파일 빌드
-        stage('Build WAR') {
-            steps {
-                sh '''
-                  chmod +x ./gradlew
-                  ./gradlew clean war -x test
-                  ls -al build/libs
-                '''
-
-            }
-        }
+		// WAR 파일 빌드
+		stage('Build WAR') {
+			steps {
+				sh '''
+					chmod +x ./gradlew
+					./gradlew clean war -x test
+					ls -al build/libs
+				'''
+			}
+		}
         
-        // Dockerfile을 기반으로 이미지 빌드
-        stage('Build Docker Image') {
-            steps {
-                sh "docker build -t ${IMAGE} ."
-            }
-        }
+		// Dockerfile을 기반으로 이미지 빌드
+		stage('Build Docker Image') {
+			steps {
+				sh "docker build -t ${IMAGE} ."
+			}
+		}
         
         // DockerHub에 이미지 Push
 		stage('Push to Docker Hub') {
@@ -42,12 +41,12 @@ pipeline {
 				// Jenkins Credentials에 저장된 계정과 토큰을 환경 변수로 주입
 				withCredentials([usernamePassword(
 					credentialsId: 'docker-hub',
-					usernameVariable: 'DOCKERHUB_USERNAME',
-					passwordVariable: 'DOCKERHUB_PASS'
+					usernameVariable: 'DH_USER',
+					passwordVariable: 'DH_PASS'
 				)]) {
 					// DockerHub 로그인 후 이미지 push하고 로그아웃
                     sh """
-                    	echo "${DOCKERHUB_PASS}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
+                    	echo "${DH_PASS}" | docker login -u "${DH_USER}" --password-stdin
                     	docker push ${IMAGE}
                     	docker logout
                     """

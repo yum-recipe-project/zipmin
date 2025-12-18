@@ -4,7 +4,7 @@ pipeline {
     // 환경 변수 지정
     environment {
         IMAGE = "yumrecipe/zipmin:latest"
-        DEPLOY_HOST = "43.201.78.227"
+        DEPLOY_HOST = "ec2-43-201-78-227.ap-northeast-2.compute.amazonaws.com"
         DEPLOY_USER = "ec2-user"
         APP_NAME = "zipmin"
     }

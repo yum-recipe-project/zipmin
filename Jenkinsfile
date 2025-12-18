@@ -20,11 +20,7 @@ pipeline {
 		// WAR 파일 빌드
 		stage('Build WAR') {
 			steps {
-				sh '''
-					chmod +x ./gradlew
-					./gradlew clean war -x test
-					ls -al build/libs
-				'''
+				sh './gradlew clean war -x test'
 			}
 		}
         
@@ -41,12 +37,12 @@ pipeline {
 				// Jenkins Credentials에 저장된 계정과 토큰을 환경 변수로 주입
 				withCredentials([usernamePassword(
 					credentialsId: 'docker-hub',
-					usernameVariable: 'DH_USER',
-					passwordVariable: 'DH_PASS'
+					usernameVariable: 'DOCKERHUB_USERNAME',
+					passwordVariable: 'DOCKERHUB_PASS'
 				)]) {
 					// DockerHub 로그인 후 이미지 push하고 로그아웃
                     sh """
-                    	echo "${DH_PASS}" | docker login -u "${DH_USER}" --password-stdin
+                    	echo "${DOCKERHUB_PASS}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
                     	docker push ${IMAGE}
                     	docker logout
                     """
@@ -74,6 +70,7 @@ pipeline {
 						sh """
 							ssh -o StrictHostKeyChecking=no ${DEPLOY_USER}@${DEPLOY_HOST} '
 								set -e
+								
 			                    umask 077
 			                    cat > /home/ec2-user/zipmin.env <<-EOF
 									DATABASE_USERNAME=${DATABASE_USERNAME}

@@ -7,7 +7,6 @@ plugins {
 }
 
 // WAR 빌드
-/*
 bootWar {
     archiveFileName = 'zipmin.war'
 }
@@ -15,7 +14,9 @@ bootWar {
 war {
     enabled = false
 }
-*/
+
+// JAR 빌드
+/*
 bootJar {
     archiveFileName = 'zipmin.jar'
 }
@@ -27,6 +28,7 @@ bootWar {
 war {
     enabled = false
 }
+*/
 
 group = 'com.edu'
 version = '0.0.1-SNAPSHOT'

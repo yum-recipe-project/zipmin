@@ -18,20 +18,20 @@ pipeline {
         }
         
 		// WAR 파일 빌드
-		/*
 		stage('Build WAR') {
 			steps {
 				sh './gradlew clean bootWar -x test'
 			}
 		}
-		*/
 		
 		// JAR 파일 빌드
+		/*
 		stage('Build JAR') {
 			steps {
 				sh './gradlew clean bootJar -x test'
 			}
 		}
+		*/
         
 		// 도커 파일을 기반으로 이미지 빌드
 		stage('Build Docker Image') {

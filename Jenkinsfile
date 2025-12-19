@@ -20,7 +20,7 @@ pipeline {
 		// WAR 파일 빌드
 		stage('Build WAR') {
 			steps {
-				sh './gradlew clean war -x test'
+				sh './gradlew clean bootWar -x test'
 			}
 		}
         

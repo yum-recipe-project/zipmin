@@ -86,23 +86,3 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-/*
-tasks.named('bootWar') {
-    archiveFileName = 'zipmin.war'
-}
-
-tasks.named('war') {
-    enabled = false
-}
-*/
-
-/*
-tasks.named('war') {
-    archiveFileName = 'zipmin.war'
-}
-
-tasks.named('bootWar') {
-    enabled = false
-}
-*/
-

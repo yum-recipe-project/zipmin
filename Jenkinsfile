@@ -18,9 +18,18 @@ pipeline {
         }
         
 		// WAR 파일 빌드
+		/*
 		stage('Build WAR') {
 			steps {
 				sh './gradlew clean bootWar -x test'
+			}
+		}
+		*/
+		
+		// JAR 파일 빌드
+		stage('Build JAR') {
+			steps {
+				sh './gradlew clean bootJar -x test'
 			}
 		}
         

@@ -6,8 +6,22 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.7'
 }
 
+// WAR 빌드
+/*
 bootWar {
     archiveFileName = 'zipmin.war'
+}
+
+war {
+    enabled = false
+}
+*/
+bootJar {
+    archiveFileName = 'zipmin.jar'
+}
+
+bootWar {
+    enabled = false
 }
 
 war {

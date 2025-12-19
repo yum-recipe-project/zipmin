@@ -5,7 +5,7 @@ pipeline {
     environment {
         IMAGE = "yumrecipe/zipmin:latest"
         DEPLOY_HOST = "43.201.77.32"
-        DEPLOY_USER = "ubuntu"
+        DEPLOY_USER = "ec2-user"
         APP_NAME = "zipmin"
     }
 

@@ -26,7 +26,6 @@ repositories {
 	maven { url 'https://jitpack.io' }
 }
 
-// Change the version of the Dynamic Web Module facet
 eclipse.wtp.facet {
     facet name: 'jst.web', version: '5.0'
 }
@@ -79,6 +78,13 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+/*
+tasks.named('bootWar') {
+    archiveFileName = 'zipmin.war'
+}
+*/
+
+/*
 tasks.named('war') {
     archiveFileName = 'zipmin.war'
 }
@@ -86,5 +92,5 @@ tasks.named('war') {
 tasks.named('bootWar') {
     enabled = false
 }
-
+*/
 

@@ -4,8 +4,8 @@ pipeline {
     // 환경 변수 지정
     environment {
         IMAGE = "yumrecipe/zipmin:latest"
-        DEPLOY_HOST = "15.164.104.202"
-        DEPLOY_USER = "ec2-user"
+        DEPLOY_HOST = "43.201.77.32"
+        DEPLOY_USER = "ubuntu"
         APP_NAME = "zipmin"
     }
 
@@ -23,6 +23,7 @@ pipeline {
 				sh './gradlew clean war -x test'
 			}
 		}
+		// ./gradlew clean bootWar -x test
         
 		// Dockerfile을 기반으로 이미지 빌드
 		stage('Build Docker Image') {

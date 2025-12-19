@@ -11,7 +11,7 @@
 
 
 
-FROM eclipse-temurin:21-jdk
+FROM openjdk:21
 
 # JAR 복사
 ARG JAR_FILE=build/libs/zipmin.jar

@@ -40,7 +40,7 @@ pipeline {
 			}
 		}
         
-        // DockerHub에 이미지 Push
+        // 도커 허브에 이미지 푸시
 		stage('Push to Docker Hub') {
 			steps {
 				// Jenkins Credentials에 저장된 계정과 토큰을 환경 변수로 주입

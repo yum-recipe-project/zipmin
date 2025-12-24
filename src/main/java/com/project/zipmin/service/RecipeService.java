@@ -179,7 +179,7 @@ public class RecipeService {
 			RecipeReadResponseDto recipeDto = recipeMapper.toReadResponseDto(recipe);
 			
 			// 작성자
-			UserReadResponseDto userDto = userService.readUserById(recipeDto.getId());
+			UserReadResponseDto userDto = userService.readUserById(recipeDto.getUserId());
 			recipeDto.setUsername(userDto.getUsername());
 			recipeDto.setNickname(userDto.getNickname());
 			

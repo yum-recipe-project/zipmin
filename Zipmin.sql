@@ -97,7 +97,7 @@ create table users (
     nickname varchar2(100) not null,
     tel varchar2(15),
     email varchar2(50),
-    avatar varchar2(200),
+    avatar varchar2(200) default '/images/user/user1.svg',
     introduce varchar2(2000),
     link varchar2(300),
     point number default 0,
@@ -260,9 +260,9 @@ commit;
 -- drop sequence seq_recipe_id;
 create table recipe (
     id number primary key,
-    image varchar2(50) not null,
-    title varchar2(200) not null,
-    introduce varchar2(300) not null,
+    image varchar2(200) not null,
+    title varchar2(500) not null,
+    introduce varchar2(2000) not null,
     postdate date default sysdate not null,
     cooklevel varchar2(30) not null,
     cooktime varchar2(30) not null,
@@ -345,7 +345,7 @@ commit;
 create table recipe_step (
     id number primary key,
     image varchar2(100),
-    content varchar2(500) not null,
+    content varchar2(2000) not null,
     recipe_id number
 );
 alter table recipe_step
@@ -605,7 +605,7 @@ create table classes (
     noticedate date not null,
     headcount number not null,
     need varchar2(200) not null,
-    approval number default 0,
+    approval number default 2 not null,
     user_id number not null
 );
 alter table classes
@@ -708,8 +708,8 @@ create table class_apply (
     applydate date default sysdate,
     reason varchar2(1000) not null,
     question varchar2(1000),
-    selected number(1) default 2,
-    attend number(1) default 2,
+    selected number(1) default 2 not null,
+    attend number(1) default 2 not null,
     user_id number not null,
     class_id number not null
 );
@@ -763,19 +763,21 @@ create sequence seq_fund_id
     nocycle
     nocache;
 commit;
-    
-    
+
+
+
+
 
 -- WITHDRAW 테이블
 create table withdraw (
     id number primary key,       
     user_id number not null,
     account_id number not null,
-    request_point number not null,
-    request_date date default sysdate not null,
+    request_point number not null, -- point
+    request_date date default sysdate not null, -- claimdate
     status number default 0 not null,
-    complete_date date,                         
-    admin_id number                       
+    complete_date date, -- settledate
+    admin_id number       
 );
 alter table withdraw 
     add constraint const_withdraw_user foreign key (user_id)

@@ -71,28 +71,40 @@ commit;
 
 
 -- RECIPE 테이블 더미데이터
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2018/06/26/b423d8a43b45d4f8dd820f82fb37a9461_f.jpg', '두부조림 양념장 만드는 법', '두부조림 양념장을 만들어보아요', SYSDATE, '초급', '1시간', '매움', '2인분', '', 4);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2015/08/05/4cce84e6f70767fb22e8ea35b772dd781_f.jpg', '고소한 두부조림', '짭조름 매콤한 두부조림 만드는 법 알려드립니다.', SYSDATE, '초급', '30분', '매움', '2인분', '', 6);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2017/05/03/bbcf6e9bf53fe86be0e8ec2e5e55e60b1_f.jpg', '두부조림 쉬운 반찬', '자박자박하게 만드는 쉬운 두부조림 반찬 만들기~', SYSDATE, '초급', '10분', '매움', '4인분', '', 13);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2019/02/06/092e31a10afa061930298f9045bfa7a11_f.jpg', '두부조림 황금레시피', '간단하게 만들 수 있는 두부조림이에요^^ 아이들과 함께 먹을 수 있어 매력적이랍니다', SYSDATE, '초급', '30분', '안매움', '4인분', '', 9);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2019/01/31/e8cab950076b23a80f16dd7858dd514e1_f.jpg', '제육볶음 황금레시피', '밥과 함께 먹으면 제일 맛있는 제육볶음 황금레시피를 준비해보았어요. 상추와 함께 싸먹거나 밥에 비벼먹으면 다른 반찬 필요없이 너무 행복한 메뉴랍니다! 만드는 법도 정말 너무 간단해서 손님초대요리나 저녁메뉴로 추천드려요! 매콤달콤한 맛이 입맛을 돋아서 정말 맛있는 제육볶음이랍니다.', SYSDATE, '초급', '30분', '매움', '3인분', '', 12);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2016/03/27/3b2359adaaaff4853eecfa07a04ac3a71_f.jpg', '기사식당 스타일 제육볶음', '기사식당에서먹는 국물없는 제육볶음을 만들어봤어요', SYSDATE, '초급', '30분', '매움', '2인분', '', 12);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2015/08/11/0554430063ac68758e4929e120c655001_f.jpg', '백종원 닭볶음탕', '백종원 닭볶음탕 레시피를 따라 만들어봤어요. 요리에 소질없는 분들도 쉽게 만들수 있으니 따라와보세요 맛있어요!!', SYSDATE, '중급', '30분', '매움', '2인분', '', 9);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2015/06/05/cfe921493395fe89fe0ff2162dde31311_f.jpg', '매운 닭볶음탕', '감자도 푸짐하게 넣고 마지막 국물에는 밥까지 비벼먹을 수 있는 매운 닭볶음탕입니다.', SYSDATE, '중급', '1시간', '아주 매움', '3인분', '', 7);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2018/06/27/c772f1bac547d15340d8bdf23010df2f1_f.jpg', '초간단 순두부찌개', '순두부찌개가 먹고 싶은데 해물이 없을 때.. 어디서나 구할 수 있는 고추참치로 만들수 있는 초간단 순두부찌개 레시피를 소개합니다^^', SYSDATE, '초급', '15분', '매움', '2인분', '', 9);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2016/05/24/5186480150fdb8a6d2ca889d72ff9f321_f.jpg', '초간단 아기 순두부찌개', '처음으로 만들어보는 순두부..찌개...ㅎㅎ 생각 외로 너무 초간단이라 앞으로 자주 끓일듯 싶어요 ㅎ', SYSDATE, '초급', '10분', '아주 안매움', '5인분', '', 12);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2015/11/12/006d3080be97cb3328a20931e7eafddc1_f.jpg', '보들보들 계란말이', '그냥 계란물을 부어 계란말이를 만드는 나와는 다른 백주부님 레시피!! 훨씬 더 촉촉하고 맛있는 계란말이를 만들 수 있어요 ~', SYSDATE, '입문', '15분', '아주 안매움', '2인분', '', 13);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2017/07/26/4e963595d28276cd5171b09ba2e017341_f.jpg', '스팸 계란말이', '반찬이 없을 때 간단하게 만들 수 있는 스팸 계란말이. 햄을 두툼하게 썰어 넣어 보기에도 좋고 맛도 좋아요.  스팸 자체에 간이 되어있기 때문에 계란, 햄 딱 2가지 재료만으로 뚝딱 만들 수 있는 초간단 요리 소개해요.', SYSDATE, '입문', '10분', '아주 안매움', '2인분', '', 14);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2019/02/06/0c852122b2b74b76bf78cc0c1527a0e21_f.jpg', '계란 장조림', '한번 만들어두면 든든한 계란장조림 황금레시피​ 고소한 계란에 짭쪼름한 간장양념을 더해 밥도둑 반찬중 하나이기도 하죠! 만드는 방법도 간단한데 만들어두면 어찌나 맛있게 먹게되는지 특히나 반찬하기 귀찮을때 휘리릭 해두면 참 든든하답니다', SYSDATE, '초급', '30분', '아주 안매움', '4인분', '', 7);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2017/04/14/df1ed98a70161079994bd3420d742f781_f.jpg', '돼지고기 안심 장조림', '장조림 어렵지않아요. 고기를 미리 삶아 스피디하게 만들어요~^^', SYSDATE, '중급', '1시간', '안매움', '6인분', '', 7);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2015/08/25/d1754942db6cebf74146eff6225e620d1_f.jpg', '대박 맛집 김치찌개', '오늘은 얼큰하고~ 감칠맛 나는 정말 맛있는 김치찌개 끓이는 법을 소개해 드리려고 합니다. 대박 맛집 김치찌개의 비법을 알려드려요!', SYSDATE, '중급', '1시간', '매움', '2인분', '', 13);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2021/05/03/9854d8e57cca177b94f339dd2d28a6cb1_f.jpg', '(고기없는) 깔끔한 김치찌개', '두부와 김치만 있어도 맛있는 김치찌개', SYSDATE, '중급', '20분', '매움', '2인분', '', 19);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2018/10/13/c2ecd5964a17c0c26a92e9687231bf241_f.jpg', '실패없는 소고기무국', '깔끔한 국물요리 소고기뭇국 맛내기가 생각보다 어렵지만 레시피만 따라한다면 누구나 쉽게 맛내기를 할 수 있어요.', SYSDATE, '중급', '1시간', '안매움', '4인분', '', 21);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2015/09/02/01fddf4442a09bd35a7e9fe83b1bb4311_f.jpg', '경상도식 빨간 소고기무국', '매운거 좋아하시는 분~^^ 경상도식 소고기무국 이라고 아세요? 저는 올해에 처음 알았어요^^ 제가 만든건 많이 빨갛지만 다른분들이 만든건 덜 빨갛더라구요 제스타일로 좀 더 얼큰하게 만들어봤어요!', SYSDATE, '초급', '30분', '매움', '2인분', '', 13);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2015/08/21/93959c34bb5facdd9ec790a18ffb1cc81_f.jpg', '생생정보통 소고기무국', '시원하고 담백한 소고기무국 황금레시피랍니다. 따라 하기도 쉽고 담백하면서 깔끔한 맛이 좋았답니다.', SYSDATE, '초급', '30분', '안매움', '6인분', '', 15);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2017/01/22/1f1b975df8dcf3fe78c5f8c820ffa8171_f.jpg', '채식을 위한 잡채', '채식 식단에 잡채가 빠질 수 없죠.  고기 뺀 잡채는 2% 아쉬운 맛이지만, 잡채는 어떻게 먹어도 맛있는 것 같습니다. 오늘은 시간이 지나도 불지 않는 잡채 만들기 비법도 함께 알려드릴께요. 시간이 지나도 면이 불지 않아서 도시락용으로도 좋습니다.', SYSDATE, '초급', '1시간', '안매움', '4인분', '', 11);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2017/03/28/61fdd74be6ba26d779a90b2777c66f4a1_f.jpg', '진한 미역국', '뽀얗고 진한 미역국을 단시간에 끓이려면.. 미역국은 오랜 시간을 끓여야 정말 맛있는 미역국이 된다. 물론 오랜시간 푹 끓일 수 있다면 좋겠지만. 시간이 없다면.. 시간을 조금 줄여서 맛있는 미역국을 끓일 수 있다면 정말 좋을 거다.', SYSDATE, '초급', '30분', '아주 안매움', '3인분', '', 24);
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2018/07/07/a14842fdfa1d49010e94b4ac91603d1c1_f.jpg', '미역국', '남녀노소 누구나 좋아하는 미역국 소고기 넣고 끓인 미역국은 다른 반찬 부럽지 않은 정말 밥도둑 음식이죠. 밥한그릇 말아주면 김치만 있어도, 혹은 없어도 넘 맛있게 호로록 먹을수 있답니다', SYSDATE, '초급', '30분', '아주 안매움', '2인분', '', 14);
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2018/06/26/b423d8a43b45d4f8dd820f82fb37a9461_f.jpg', '두부조림 양념장 만드는 법', '두부조림 양념장을 만들어보아요', SYSDATE, '초급', '1시간', '매움', '2인분', '', 4); -- 1
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2015/08/05/4cce84e6f70767fb22e8ea35b772dd781_f.jpg', '고소한 두부조림', '짭조름 매콤한 두부조림 만드는 법 알려드립니다.', SYSDATE, '초급', '30분', '매움', '2인분', '', 6); -- 2
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2017/05/03/bbcf6e9bf53fe86be0e8ec2e5e55e60b1_f.jpg', '두부조림 쉬운 반찬', '자박자박하게 만드는 쉬운 두부조림 반찬 만들기~', SYSDATE, '초급', '10분', '매움', '4인분', '', 13); -- 3
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2019/02/06/092e31a10afa061930298f9045bfa7a11_f.jpg', '두부조림 황금레시피', '간단하게 만들 수 있는 두부조림이에요^^ 아이들과 함께 먹을 수 있어 매력적이랍니다', SYSDATE, '초급', '30분', '안매움', '4인분', '', 9); -- 4
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2019/01/31/e8cab950076b23a80f16dd7858dd514e1_f.jpg', '제육볶음 황금레시피', '밥과 함께 먹으면 제일 맛있는 제육볶음 황금레시피를 준비해보았어요. 상추와 함께 싸먹거나 밥에 비벼먹으면 다른 반찬 필요없이 너무 행복한 메뉴랍니다! 만드는 법도 정말 너무 간단해서 손님초대요리나 저녁메뉴로 추천드려요! 매콤달콤한 맛이 입맛을 돋아서 정말 맛있는 제육볶음이랍니다.', SYSDATE, '초급', '30분', '매움', '3인분', '', 12); -- 5
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2016/03/27/3b2359adaaaff4853eecfa07a04ac3a71_f.jpg', '기사식당 스타일 제육볶음', '기사식당에서먹는 국물없는 제육볶음을 만들어봤어요', SYSDATE, '초급', '30분', '매움', '2인분', '', 12); -- 6
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2015/08/11/0554430063ac68758e4929e120c655001_f.jpg', '백종원 닭볶음탕', '백종원 닭볶음탕 레시피를 따라 만들어봤어요. 요리에 소질없는 분들도 쉽게 만들수 있으니 따라와보세요 맛있어요!!', SYSDATE, '중급', '30분', '매움', '2인분', '', 9); -- 7
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2015/06/05/cfe921493395fe89fe0ff2162dde31311_f.jpg', '매운 닭볶음탕', '감자도 푸짐하게 넣고 마지막 국물에는 밥까지 비벼먹을 수 있는 매운 닭볶음탕입니다.', SYSDATE, '중급', '1시간', '아주 매움', '3인분', '', 7); --8
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2018/06/27/c772f1bac547d15340d8bdf23010df2f1_f.jpg', '초간단 순두부찌개', '순두부찌개가 먹고 싶은데 해물이 없을 때.. 어디서나 구할 수 있는 고추참치로 만들수 있는 초간단 순두부찌개 레시피를 소개합니다^^', SYSDATE, '초급', '15분', '매움', '2인분', '', 9); -- 9
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2016/05/24/5186480150fdb8a6d2ca889d72ff9f321_f.jpg', '초간단 아기 순두부찌개', '처음으로 만들어보는 순두부..찌개...ㅎㅎ 생각 외로 너무 초간단이라 앞으로 자주 끓일듯 싶어요 ㅎ', SYSDATE, '초급', '10분', '아주 안매움', '5인분', '', 12); -- 10
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2015/11/12/006d3080be97cb3328a20931e7eafddc1_f.jpg', '보들보들 계란말이', '그냥 계란물을 부어 계란말이를 만드는 나와는 다른 백주부님 레시피!! 훨씬 더 촉촉하고 맛있는 계란말이를 만들 수 있어요 ~', SYSDATE, '입문', '15분', '아주 안매움', '2인분', '', 13); -- 11
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2017/07/26/4e963595d28276cd5171b09ba2e017341_f.jpg', '스팸 계란말이', '반찬이 없을 때 간단하게 만들 수 있는 스팸 계란말이. 햄을 두툼하게 썰어 넣어 보기에도 좋고 맛도 좋아요.  스팸 자체에 간이 되어있기 때문에 계란, 햄 딱 2가지 재료만으로 뚝딱 만들 수 있는 초간단 요리 소개해요.', SYSDATE, '입문', '10분', '아주 안매움', '2인분', '', 14); -- 12
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2019/02/06/0c852122b2b74b76bf78cc0c1527a0e21_f.jpg', '계란 장조림', '한번 만들어두면 든든한 계란장조림 황금레시피​ 고소한 계란에 짭쪼름한 간장양념을 더해 밥도둑 반찬중 하나이기도 하죠! 만드는 방법도 간단한데 만들어두면 어찌나 맛있게 먹게되는지 특히나 반찬하기 귀찮을때 휘리릭 해두면 참 든든하답니다', SYSDATE, '초급', '30분', '아주 안매움', '4인분', '', 7); -- 13
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2017/04/14/df1ed98a70161079994bd3420d742f781_f.jpg', '돼지고기 안심 장조림', '장조림 어렵지않아요. 고기를 미리 삶아 스피디하게 만들어요~^^', SYSDATE, '중급', '1시간', '안매움', '6인분', '', 7); -- 14
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2015/08/25/d1754942db6cebf74146eff6225e620d1_f.jpg', '대박 맛집 김치찌개', '오늘은 얼큰하고~ 감칠맛 나는 정말 맛있는 김치찌개 끓이는 법을 소개해 드리려고 합니다. 대박 맛집 김치찌개의 비법을 알려드려요!', SYSDATE, '중급', '1시간', '매움', '2인분', '', 13); -- 15
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2021/05/03/9854d8e57cca177b94f339dd2d28a6cb1_f.jpg', '(고기없는) 깔끔한 김치찌개', '두부와 김치만 있어도 맛있는 김치찌개', SYSDATE, '중급', '20분', '매움', '2인분', '', 19); -- 16
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2018/10/13/c2ecd5964a17c0c26a92e9687231bf241_f.jpg', '실패없는 소고기무국', '깔끔한 국물요리 소고기뭇국 맛내기가 생각보다 어렵지만 레시피만 따라한다면 누구나 쉽게 맛내기를 할 수 있어요.', SYSDATE, '중급', '1시간', '안매움', '4인분', '', 21); -- 17
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2015/09/02/01fddf4442a09bd35a7e9fe83b1bb4311_f.jpg', '경상도식 빨간 소고기무국', '매운거 좋아하시는 분~^^ 경상도식 소고기무국 이라고 아세요? 저는 올해에 처음 알았어요^^ 제가 만든건 많이 빨갛지만 다른분들이 만든건 덜 빨갛더라구요 제스타일로 좀 더 얼큰하게 만들어봤어요!', SYSDATE, '초급', '30분', '매움', '2인분', '', 13); -- 18
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2015/08/21/93959c34bb5facdd9ec790a18ffb1cc81_f.jpg', '생생정보통 소고기무국', '시원하고 담백한 소고기무국 황금레시피랍니다. 따라 하기도 쉽고 담백하면서 깔끔한 맛이 좋았답니다.', SYSDATE, '초급', '30분', '안매움', '6인분', '', 15); -- 19
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2017/01/22/1f1b975df8dcf3fe78c5f8c820ffa8171_f.jpg', '채식을 위한 잡채', '채식 식단에 잡채가 빠질 수 없죠.  고기 뺀 잡채는 2% 아쉬운 맛이지만, 잡채는 어떻게 먹어도 맛있는 것 같습니다. 오늘은 시간이 지나도 불지 않는 잡채 만들기 비법도 함께 알려드릴께요. 시간이 지나도 면이 불지 않아서 도시락용으로도 좋습니다.', SYSDATE, '초급', '1시간', '안매움', '4인분', '', 11); -- 20
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2017/03/28/61fdd74be6ba26d779a90b2777c66f4a1_f.jpg', '진한 미역국', '뽀얗고 진한 미역국을 단시간에 끓이려면.. 미역국은 오랜 시간을 끓여야 정말 맛있는 미역국이 된다. 물론 오랜시간 푹 끓일 수 있다면 좋겠지만. 시간이 없다면.. 시간을 조금 줄여서 맛있는 미역국을 끓일 수 있다면 정말 좋을 거다.', SYSDATE, '초급', '30분', '아주 안매움', '3인분', '', 20); -- 21
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2018/07/07/a14842fdfa1d49010e94b4ac91603d1c1_f.jpg', '미역국', '남녀노소 누구나 좋아하는 미역국 소고기 넣고 끓인 미역국은 다른 반찬 부럽지 않은 정말 밥도둑 음식이죠. 밥한그릇 말아주면 김치만 있어도, 혹은 없어도 넘 맛있게 호로록 먹을수 있답니다', SYSDATE, '초급', '30분', '아주 안매움', '2인분', '', 14); -- 22
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2017/07/07/6e86927d8c47d1792dbb5366959c51c61_f.jpg', '참치미역국', '고기가 없으면 참치로! 간단하게 끓여먹는 참치미역국 이예요^^', SYSDATE, '초급', '1시간', '아주 안매움', '2인분', '', 21); -- 23
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2016/12/08/42c85d50c9aade52ccf87bbd99e359261_f.jpg', '초간단 시금치무침', '시금치무침 소개할게요', SYSDATE, '초급', '15분', '아주 안매움', '2인분', '', 9); -- 24
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2015/12/21/4b18778769ccdab54b57d7ddbc753f501_f.jpg', '시금치 나물 무침', '오늘은 시금치 나물 만드는 방법을 소개할게요', SYSDATE, '초급', '15분', '아주 안매움', '2인분', '', 23); -- 25
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2017/06/21/16c08b63ddd8064eb56895f251041b6c1_f.jpg', '맑은 콩나물국', '매콤한 음식 먹을때 맑은국 생각나잖아요! 콩나물국 만한게 없더라구요!', SYSDATE, '초급', '10분', '안매움', '2인분', '', 19); -- 26
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2015/08/29/0da2844c04420d4ed4fdecb7db31e7581_f.jpg', '김치 콩나물국', '아침 저녁으로 쌀쌀한 느낌이 드니 얼큰하고 칼칼한 김치콩나물국이 생각나네요, 엄마가 끓여주시던 그맛을 생각하며 만들었어요^^', SYSDATE, '중급', '30분', '매움', '4인분', '', 23); --27
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2017/05/10/2decfca86fe2d199b862cc1e38349b9e1_f.jpg', '꼬막무침 삶는방법부터 양념장까지 완벽하게!!', '손이 좀 가는 메뉴지만 만들어두면 너무나 맛있는 꼬막무침! 맛있는 양념장까지 볼까요^^', SYSDATE, '중급', '1시간', '매움', '3인분', '', 10); -- 28
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2019/06/07/cd56011174e305838e5ed6b2da514a611_f.png', '에어프라이어 콘치즈 토스트', '콘치즈는 그냥 먹어도 맛있지만 토스트로 만들어 드셔도 정말 맛이 좋은데요. 전자렌지로 해먹어도 맛있었는데 에어프라이어로 해보니 더 맛이 좋네요^^', SYSDATE, '입문', '10분', '아주 안매움', '1인분', '', 20); -- 29
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2020/08/12/8c8087677ac5f71ffb80fa9d4241c6c11_f.jpg', '면두부 새우오일파스타', '코스트코 장보러 갔는데 면두부가 있더라구요. 건강에도 좋고 다이어트에도 좋을거 같아서 파스타 만들때 면두부로 만들어보았답니다.', SYSDATE, '초급', '20분', '아주 안매움', '1인분', '', 20); -- 30
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2018/06/09/c9cff4f20768f0ec00f2f7e8e6d9ab9c1_f.jpg', '새우굴소스파스타', '어렸을때 엄마랑 파스타를 먹으러갔었는데 처음보는비주얼에 처음 느껴보는 맛이라 인상깊게 남아서 맛을 기억했다가 집에와서 대충 만들어봤는데 의외로 비슷한맛에 너무 맛있어서 가끔 엄마랑 만들어먹게된 새우파스타입니다', SYSDATE, '초급', '15분', '보통', '1인분', '', 17); -- 31
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2021/08/06/88e7f8bc8ed7769431c77e61b02016f01_f.jpg', '가지 파스타', '저는 원래 가지를 정말 싫어하는 사람이였어요 그런데 우연히 파스타집에서 차돌가지파스타를 먹은 후 생각이 바뀌었어요. 물론 아직도 물컹한 식감은 좋아하지 않지만, 이 방법으로 해먹으면 너무 맛있어서 일주일에 8번도 더 해먹는답니다. 가지를 싫어하는 친구들, 가족들도 정말 맛있다고 계속 해달라 할 정도이니 꼭 한번 해먹어보세요! 간장을 태우는게 포인트에요!', SYSDATE, '초급', '15분', '안매움', '1인분', '', 23); -- 32
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2025/02/19/289273586ce52c702ff61dd4bdee68fa1_f.jpg', '라이스페이퍼 양배추만두', '만두는 먹고 싶은데 피까지 만들긴 귀찮고.. 그럴 땐 라이스페이퍼를 활용해 보세요! 참치, 달걀로 만두소까지 만들면 간단해요 양배추까지 들어가 속도 편안하구요. 가벼운 저녁 한끼를 고민하고 계시다면 오늘은 라이스페이퍼 양배추 만두로 GO', SYSDATE, '초급', '20분', '아주 안매움', '2인분', '', 23); -- 33
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'https://recipe1.ezmember.co.kr/cache/recipe/2022/02/05/b70f4366848e721bb27d4e140931c30e1_f.jpg', '생크림 없는 감자스프', '싹난 감자 혹은 싹나기 직전의 감자 버리기 참 아깝죠!  감자스프를 만들면 감자를 한번에 많이 소진 할 수 있어요  생크림 없이 집에 있는 우유와 양파로 맛있게 만드는 방법 소개합니다 식빵까지 곁들이면 한끼 대용으로도 아주 든든해요', SYSDATE, '초급', '1시간', '아주 안매움', '1인분', '', 13); -- 34
 commit;
 
 
@@ -210,6 +222,66 @@ INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '종류별',
 INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '상황별', '축하', 22);
 INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '재료별', '해물류', 22);
 INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '방법별', '끓이기', 22);
+
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '종류별', '국/탕', 23);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '상황별', '축하', 23);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '재료별', '해물류', 23);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '방법별', '끓이기', 23);
+
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '종류별', '밑반찬', 24);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '상황별', '일상', 24);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '재료별', '채소류', 24);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '방법별', '데치기', 24);
+
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '종류별', '밑반찬', 25);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '상황별', '일상', 25);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '재료별', '채소류', 25);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '방법별', '데치기', 25);
+
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '종류별', '국/탕', 26);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '상황별', '해장', 26);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '재료별', '채소류', 26);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '방법별', '끓이기', 26);
+
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '종류별', '국/탕', 27);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '상황별', '해장', 27);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '재료별', '채소류', 27);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '방법별', '끓이기', 27);
+
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '종류별', '밑반찬', 28);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '상황별', '술안주', 28);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '재료별', '해물류', 28);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '방법별', '데치기', 28);
+
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '종류별', '빵', 29);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '상황별', '간식', 29);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '재료별', '밀가루', 29);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '방법별', '굽기', 29);
+
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '종류별', '양식', 30);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '상황별', '손님접대', 30);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '재료별', '해물류', 30);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '방법별', '볶음', 30);
+
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '종류별', '면/만두', 31);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '상황별', '손님접대', 31);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '재료별', '밀가루', 31);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '방법별', '볶음', 31);
+
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '종류별', '면/만두', 32);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '상황별', '손님접대', 32);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '재료별', '해물류', 32);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '방법별', '볶음', 32);
+
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '종류별', '면/만두', 33);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '상황별', '간식', 33);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '재료별', '기타', 33);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '방법별', '굽기', 33);
+
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '종류별', '스프', 34);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '상황별', '기타', 34);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '재료별', '채소류', 34);
+INSERT INTO recipe_category VALUES (seq_recipe_category_id.NEXTVAL, '방법별', '끓이기', 34);
 
 commit;
 
@@ -376,7 +448,7 @@ INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '고춧가루', 1,
 INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '다진 마늘', 1, '큰술', NULL, 15);
 INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '멸치육수', 1, '팩', NULL, 15);
 
-INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '김치', 0,2, '포기', NULL, 16);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '김치', 0.2, '포기', NULL, 16);
 INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '두부', 0.5, '모', NULL, 16);
 INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '대파', 1, '개', NULL, 16);
 INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '고추장', 1, '숟가락', NULL, 16);
@@ -385,7 +457,7 @@ INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '설탕', 1, '숟�
 INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '참기름', 3, '숟가락', NULL, 16);
 INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '다진마늘', 0.5, '숟가락', NULL, 16);
 INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '물', 800, 'ml', '혹은 육수', 16);
-INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '청양 고추', 1, 개, NULL, 16);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '청양고추', 1, '개', NULL, 16);
 INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '고춧가루', 0.5, '숟가락', NULL, 16);
 
 INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '무', 2, '컵', NULL, 17);
@@ -441,6 +513,107 @@ INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '소고기', 1, '�
 INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '참기름', 1, '스푼', NULL, 22);
 INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '다진마늘', 1, '스푼', NULL, 22);
 INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '국간장', 2, '스푼', NULL, 22);
+
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '불린미역', 1.5, '줌', NULL, 23);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '참치캔', 1, '개', '작은 캔', 23);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '물', 2, '컵', NULL, 23);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '참치기름', 2, '큰술', NULL, 23);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '다진마늘', 1, '큰술', NULL, 23);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '국간장', 1, '큰술', NULL, 23);
+
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '시금치', 1, '단', NULL, 24);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '소금', 0.5, '스푼', NULL, 24);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '다진마늘', 0.5, '스푼', NULL, 24);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '국간장', 2, '스푼', NULL, 24);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '참기름', 1, '스푼', NULL, 24);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '깨소금', 0.5, '스푼', '혹은 통깨', 24);
+
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '시금치', 1, '단', NULL, 25);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '대파', 0.5, '개', '흰부분', 25);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '다진마늘', 0.5, 'T', NULL, 25);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '국간장', 1, 'T', NULL, 25);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '참기름', 1, 'T', NULL, 25);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '설탕', 0.3, 'T', NULL, 25);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '소금', 0.5, '스푼', NULL, 25);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '통깨', 1, 'T', NULL, 25);
+
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '콩나물', 0.5, '봉지', NULL, 26);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '대파', 0.5, '개', NULL, 26);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '국간장', 0.5, 'T', NULL, 26);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '다진마늘', 0.5, 'T', NULL, 26);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '새우젓', 0.5, 'T', NULL, 26);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '소금', 2, '번', NULL, 26);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '후추', 2, '번', NULL, 26);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '멸치', 20, '개', '육수용', 26);
+
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '콩나물', 2, '공기', NULL, 27);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '신김치', 1, '공기', NULL, 27);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '파', 1, '대', NULL, 27);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '국간장', 1, '숟갈', NULL, 27);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '소금', 1, '꼬집', NULL, 27);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '고추가루', 1, '숟갈', NULL, 27);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '청양고추', 1, '개', NULL, 27);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '마늘', 0.5, '스푼', NULL, 27);
+
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '꼬막', 500, 'g', NULL, 28);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '고춧가루', 2, 'T', NULL, 28);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '설탕', 1, 'T', NULL, 28);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '간장', 4, 'T', NULL, 28);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '맛술', 0.5, 'T', NULL, 28);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '참기름', 0.5, 'T', NULL, 28);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '다진마늘', 0.5, 'T', NULL, 28);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '다진파', 2, 'T', NULL, 28);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '깨', 1, '번', NULL, 28);
+
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '식빵', 1, '장', NULL, 29);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '캔옥수수', 2, 'T', NULL, 29);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '설탕', 0.5, 'T', NULL, 29);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '마요네즈', 3, 'T', NULL, 29);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '파슬리가루', 2, '번', NULL, 29);
+
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '통마늘', 9, '개', '편마늘', 30);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '새우', 8, '마리', NULL, 30);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '올리브오일', 2, 'T', NULL, 30);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '소금', 1, '꼬집', NULL, 30);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '후추', 1, '꼬집', NULL, 30);
+
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '파스타면', 100, 'g', NULL, 31);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '청양고추', 2, '개', NULL, 31);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '마늘', 30, 'g', NULL, 31);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '버터', 30, 'g', NULL, 31);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '새우', 6, '마리', NULL, 31);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '오일', 3, 'T', NULL, 31);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '소금', 1, '꼬집', NULL, 31);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '굴소스', 1.5, 'T', NULL, 31);
+
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '파스타면', 1, '인분', NULL, 32);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '가지', 1, '개', NULL, 32);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '양조간장', 3, 'T', NULL, 32);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '미림', 2, 'T', NULL, 32);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '올리고당', 2, 'T', NULL, 32);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '미원', 1, 'T', NULL, 32);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '페퍼론치노', 1, 'T', NULL, 32);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '후추', 1, '꼬집', NULL, 32);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '소금', 1, '꼬집', NULL, 32);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '식용유', 1, 'T', NULL, 32);
+
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '양배추', 0.2, '개', NULL, 33);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '참치', 1, '캔', NULL, 33);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '달걀', 2, '개', NULL, 33);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '라이스페이퍼', 10, '장', NULL, 33);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '굴소스', 1, 'T', NULL, 33);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '후추', 1, '꼬집', NULL, 33);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '간장', 0.5, 'T', NULL, 33);
+
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '감자', 2, '개', NULL, 34);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '양파', 0.5, '개', NULL, 34);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '버터', 1, '스푼', NULL, 34);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '우유', 1, '컵', NULL, 34);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '다진마늘', 0.5, '스푼', NULL, 34);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '소금', 1, '꼬집', NULL, 34);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '후추', 1, '꼬집', NULL, 34);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '식용유', 1, '스푼', NULL, 34);
+INSERT INTO recipe_stock VALUES (seq_recipe_stock_id.NEXTVAL, '식빵', 1, '장', NULL, 34);
 
 commit;
 
@@ -666,12 +839,132 @@ INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '물이 졸아
 INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '국물이 졸아들면 이제 원하는 물 높이로 물을 넣고 센불에 마지막으로 시간이 되는만큼 끓여준다.', 21);
 INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '뽀얗고 진한 미역국 완성!! 홍합미역국, 새우미역국 등등 본인이 원하는 미역국이 있을거다.. 그건 개인 취향에 따라 추가 하면 됨...', 21);
 
-INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '먼저 미역은 물에 30분정도충분히 불려줍니다. 이때 저처럼 자른 미역을 준비하셨다면 패스큰 미역을 준비하셨다면 다 불린후 먹기좋게 잘라주셔요.', 22);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '먼저 미역은 물에 30분 정도 충분히 불려줍니다. 이때 저처럼 자른 미역을 준비하셨다면 패스큰 미역을 준비하셨다면 다 불린후 먹기좋게 잘라주셔요.', 22);
 INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '미역이 다 불리면 냄비에 참기름 1스푼 두르고 소고기를 맛있게 볶아줍니다.', 22);
 INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '소고기의 겉면이 익으면불린 미역을 넣어 같이 볶아줍니다.', 22);
 INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '그리고 다진마늘 1스푼과 국간장 2스푼 넣어주는데요. 혹시나 아이가 먹거나 다진마늘이 싫으신분은 안넣거나, 반스푼만 넣어주셔도 될듯해요. 그래도 조금은 들어가야 맛있더라구요', 22);
 INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '이제 물을 충분히 넣고뚜껑 닫고 푹- 끓여줍니다. 이때 그냥 끓이는게 아닌한참 20-30분정도 끓이다가 국물이 줄어들면 다시 물을 넣고 더 끓이고또 어느정도 시간이 지나 줄어들면다시 또 넣고 끓이고를 1시간이상 반복해주는데요. 푹 1시간정도 끓였을때비로소 진한 국물맛을 내는 미역국!!!', 22);
 INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '앞에 1시간동안 서있을 필요는 없구요.다른일 보다가 어느정도 시간지났다 싶으면 물 넣고그런식으로 반복하다보면 금방이더라구요. ㅎㅎ 그러면 요렇게 색깔자체가 진하게 바뀐답니다. 부족한 간은 소금으로 넣어주시구요.간장으로 간을 다 맞추면 국물색이 탁해지기 때문에간장은 아까 넣은 2스푼으로 끝내고나머지는 소금으로 맞춰주시는걸 추천드려요!', 22);
+
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '저는 미리 불려둔 미역을 사용했어요 불려둔 미역이 없으시면 미역을 물에 불려서 사용하세요', 23);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '얼려두었던 미역은 미지근한 물에 잠깐 담궈두면 금방 풀어진답니다', 23);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '다 풀어진 미역은 흐르는물에 깨끗이 씻어서 물기를 살짝 빼주세요', 23);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '물기를 어느정도 제거해준 미역을 냄비안에 넣어주세요', 23);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '참치캔을 따고 기름을 살짝 둘러서 미역을 볶아주세요(두큰술 정도) * 기름만 넣어서 미역을 볶아주시고 참치는 아직 넣지마세요', 23);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '어느정도 볶아주다가 다진마늘과 국간장 1큰술씩 넣어서 더 볶아주세요', 23);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '양념이 어느정도 어우러졌다 싶을때 물을 냄비 가득 넣어서 센불로 한번 팔팔 끓여주세요.', 23);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '팔팔 끓어오르기 시작하면 참치를 넣어주세요', 23);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '참치를 넣고 약한불로 오랫동안 끓여주세요', 23);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '부족한 간을 소금을 더 넣으셔서 맞춰주시면 된답니다, 참치도 짭쪼롬 하기 때문에 너무 많이 넣으실 필요는 없어요  저는 1작은술 정도 넣어 맞춰줬어요', 23);
+
+
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '먼저 흙씹힘을 방지하기위해 시금치를 깨끗~하게 씻어주세요 꼭다리부분은 데치고나서 잘라도 되지만, 전 미리 잘라주었어요', 24);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '끓는물에 소금 반스푼을 넣고', 24);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '시금치를 넣어줍니당 30~40초정도 데쳐서 꺼내주라고 하던데 저는 아삭함이 좋아 20초정도만 데쳐주고 바로 건져냈어요 저처럼 아삭함이 좋으시면 30초 밑으로 일찍 건져주시고 조금 말랑하게 드시고 싶으시면 1분 안으로 건져주심 될것 같아요 쨋든 1분을 넘기면 식감이 별루에요ㅠㅠ', 24);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '건진 시금치는 찬물에 잠시 식혀주고 물기를 꽉 짜 먹기좋게 칼로 반을 잘라주었어요', 24);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '이제 볼에 넣고 양념만 하면 되는데요~ 다진마늘 반스푼과 국간장 2스푼 참기름 1스푼과 깨소금 팍팍 넣어 비닐장갑끼고 조물조물~ 해주었어요', 24);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '간이 모자라다면 소금을 조금 넣어주심 될것 같은데요 저는 간이 신기하게도 딱!! 맞더라구요 반찬이라서 밥이랑 먹어야되니 너무 심심해도 별로인것 같아요~', 24);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '요렇게 그릇에 덜어 밑반찬으로 먹어도 좋지만 김밥이나 잡채에도 넣어먹으면 짱이라는거 ~~!! 역시 살짝만 데치니 아삭함이 살아있어 더더 맛있는 시금치무침', 24);
+
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '재료:시금치1단,대파(흰부분만) 양념재료:다진마늘1/2스푼,국간장1스푼,참기름1스푼,설탕1/3스푼,소금(입맛대로),통깨1스푼', 25);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '우선 시금치는 흙하고 가깝게 자라는 채소라서 흙을 깨끗하게 제거해주어야해요. 뿌리부분을 먼저 제거해줍니다.', 25);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '흐르는 물에 깨끗하게 씻어주세요. 전 2-3번정도 헹구어 주었어요.', 25);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '채에 물기를 제거해줍니다.', 25);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '시금치 나물에는 대파의 흰색 부분만 사용할거예요. 저는 대파가 커서 4등분을 한뒤', 25);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '잘게 썰어서 준비했습니다. 대파를 크게 썰어버리면 대파만 빼놓고 시금치만 골라먹게 되는데 이렇게 잘게 썰어넣으면 대파도 같이 먹게 되더라구요^^', 25);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '1단기준으로 밥공기에 물을 준비한뒤 냄비에 넣어서 끓여줍니다. 물이 적다고 느끼실텐데 상관없어요~^^ 사진에는 없는데 물에 소금1/2티스푼을 넣어주세요 그래야 시금치가 더 색이 진해진답니다.', 25);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '물이 끓기 시작하면 시금치를 넣고 뚜껑을 바로 덮고 1분정도 삶아 줍니다. (뚜껑을 덮고 해야 열기로 골고루 익어요~)', 25);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '시금치의 숨이 확 죽으면 찬물에 바로 헹구어준뒤 물기를 꼬옥 짜줍니다.', 25);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '큰볼에 다진파와 마늘1/2스푼,참기름1스푼,설탕1/3스푼,소금은 본인입맛에 따라 넣고 여기서 저는 간장을 1스푼을 넣어주는데 국간장을 사용했어요. 보통은 진간장을 사용하시는데 국간장을 사용하면 진한 감칠맛이 나서 좋더라구요^^ 아 그리고 설탕은 좀 더 감칠맛이 나라고 조금 넣었는데~ 단맛에 예민하신분들은 안넣으셔도 됩니다.', 25);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '통깨를 1스푼넣고 조물조물 해주면 시금치나물 완성', 25);
+
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '먼저 냄비에 물을 끓여주세요~ 멸치를 넣고 육수 우리기!', 26);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '콩나물은 깨끗한 물에 씻고 상한 부분은 제거해주세요', 26);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '육수가 우러나면 멸치를 빼고 콩나물을 넣어주세요', 26);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '국간장을 2/3스푼 넣어요 국물이 색이 진해지는게 싫어서 국간장은 이만큼만!', 26);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '다진 마늘 반스푼', 26);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '새우젓 반 작은술', 26);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '잠시 콩나물을 끓여주세요', 26);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '펄펄 끓으면 대파를 넣고', 26);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '청양고추도 넣어주세요', 26);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '나머지 간은 소금으로 해주세요', 26);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '마지막에 후추 톡톡!!', 26);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '그릇에 먹기 좋게 담아주세요~', 26);
+
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '신김치를 먹기좋은 크기로 한공기 정도 썰어주세요,김치가 너무 시었을때는 씻어서 사용하시구 고추가루를 넣어 얼큰한 맛을 냅니다. ^^', 27);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '김치국물도 같이 넣어줘야 맛나요,', 27);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '콩나물도 깨끗이 씻어주구요,', 27);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '냄비에 물 1리터정도 넣고 국물 멸치를 5분 정도 끓이다가 멸치를 건지고 김치를 먼저 팔팔 끓입니다. 저는 중간멸치라서 김치랑 넣고 같이 끓여요^^', 27);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '김치가 팔팔 끓으면 불순물을 국자로 좀 떠주세요, 고추가루때문에 자꾸만 거품이 생기는데 서너번정도만 떠내 주면 되요^^', 27);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '김치를 5분 이상 팔팔 끓이고 콩나물을 넣고 또 끓입니다 .이때 물이 너무 적으면 더 넣어주시구요!', 27);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '어느정도 끓이다가 국간장도 한숟갈 넣어 끓입니다. 모자란 간은 소금으로 맞추세요^^', 27);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '고추가루도 한스푼 넣어주구요 마늘도 반숟갈, 파도 송송 썰어 넣어 우르르 끓입니다.', 27);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '사실 김치국이 얼큰하긴 한데 더 칼칼한 맛을 원하실땐 청양고추를 넣어주시면 되요^^', 27);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '얼큰하게 끓인 김치콩나물국 한그릇이 아침을 개운하게 만들어 주네요^^', 27);
+
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '꼬막은 깨지거나 흠이 없고 색과 골이 선명한 것이 좋아요!', 28);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '장갑을 끼고 소금물에 조개를 넣고 바락바락 씻어주세요', 28);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '처음에는 모래나 껍질등이 나오다가 3~4번 씻다보면 깨끗한 물이 나옵니다', 28);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '바닷물과 비슷하게 만든 소금물에  조개를 넣고 까만봉지나 호일을 덮어  어둡게 만들어주면 안에 있던 뻘을  뱉아내요', 28);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '꼬막을 데칠때는 물이 끓으려고 할때 꼬막을 넣고 15바퀴정도 젓가락을 이용해 같은 방향으로 저어주세요 그래야 꼬막살이 한쪽으로 붙어있어요', 28);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '꼬막 세개쯤 입을 열면 조개만 잘 건져주세요 찬물에 헹구면 안되요^^', 28);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '분량대로 양념장을 만들어주세요', 28);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '한김식은 꼬막은 뒤쪽으로 숟가락을 넣고 비틀어서 껍질을 까주세요', 28);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '그런다음 꼬막에 양념장을 올려주면  완성!!', 28);
+
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '물기를 제거한 캔옥수수와 설탕,마요네즈를 넣고 잘 섞어주세요', 29);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '식빵 한장에 방금 만든 콘마요를 골고루 잘 올려 주세요', 29);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '이제 치즈를 넉넉하게 뿌려주신뒤 파슬리 가루도 솔솔 뿌려주셔요', 29);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '170도에 4분 돌려주심 끝!집에 가지고 계신 에어프라이어마다 화력이 약간씩 다르니 기호에 맞게 1-2분 더 추가해주시면 되겠습니다', 29);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '에어프라이어로 뚝딱 만든 콘치즈 토스트 완성됬어요. 한입 먹어보면 손을 멈출수 없게 맛있답니다, 강추해요!', 29);
+
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '팬에 올리브오일 넉넉히 두르고 편마늘 넣어서 노릇하게 볶아질때쯤', 30);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '새우를 넣고 함께 볶아줍니다. 이때 소금과 후추를 촥촥 뿌려줍니다.', 30);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '새우가 어느정도 익었을때쯤 마지막에 면두부를 넣고 살짝 볶아주기만하면', 30);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '면두부 새우오일파스타 완성입니다.', 30);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '꼬독꼬독한 식감에 고소함이 더해진 면두부 새우오일파스타 다이어트에도 좋은거같아요 ^^', 30);
+
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '냄비에 물을 2/3정도 채우고 소금을 약간 넣고 끓여준다 물이 끓으면 파스타면을 넣고8~10분간 익혀준다', 31);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '면이 다 익으면 면을 채반에 받친뒤 면수는 버리지말고 따로 받아둔다', 31);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '마늘과 고추는 작게 편썰어서 준비해둔다', 31);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '새우는 날카로운 머리부분을 반 잘라 손질해놓는다', 31);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '썰어둔 마늘과 고추를 기름두른팬에 볶아준다', 31);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '마늘이 어느정도 익으면 손질해놓은 새우와 버터를넣고 약한불에서 타지않게 볶아준다', 31);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '새우가 익어갈쯤 삶은파스타면을넣고 면수 한국자와 굴소스를넣고 섞어준다', 31);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '그릇에 예쁘게담아준다', 31);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '완성된파스타에 파마산치즈가루를 솔솔뿌려 마무리해준다', 31);
+
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '가지와 파스타면을 준비해주세요', 32);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '가지는 씻은 후 얇게 썰어주세요', 32);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '끓는물에 소금, 식용유를 약간 넣고 면을 8분간 삶아주세요', 32);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '식용유를 둘러 달군 팬에 가지를 넣고 구워주세요', 32);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '가지가 흐물해진 후 노릇해질때까지 충분히 구워주세요. *충분히 바삭하게 굽는게 중요해요', 32);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '삶은 면을 넣고 가지와 함께 살짝 볶아요', 32);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '팬을 한쪽으로 기울여 간장을 넣고 30초정도 태워주세요', 32);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '나머지 조미료도 다 넣어주세요', 32);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '잘 볶아줍니다', 32);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '그릇에 담으면 완성이에요 :D', 32);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '정말 간단하게 만들 수 있고, 재료도 간단해서 저렴하게 만들어 먹을 수 있어요. 면 없이 가지만 볶아 덮밥을 해먹어도 맛있고, 반찬으로 먹어도 맛있어요:D 차돌, 대패삼겹 등 고기를 구워 함께 먹어도 정말 맛있어요!', 32);
+
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '양배추는 잘게 채 썰어요.', 33);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '참치는 기름을 빼서 준비해요.', 33);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '팬에 기름을 두르고 양배추를 볶아요.', 33);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '양배추 숨이 죽으면 옆쪽으로 밀어두고 달걀을 볶아요.', 33);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '달걀이 익으면 양배추와 함께 섞어 볶아요.', 33);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '참치와 굴소스, 간장을 넣어 볶아요.', 33);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '미지근한 물에 적신 라이스페이퍼 위에 볶아둔 양배추를 한스푼씩 넣어 말아요.', 33);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '기름을 두른 팬에 노릇하게 구워요.', 33);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '초간장과 곁들여 완성해요.', 33);
+
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '전자레인지 가능용기에  감자 두 개를 깍뚝 썰어 넣고  물 3스푼과 소금 1티스푼을 넣고 섞어  감자삶기 모드로 삶아주세요', 34);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '익은 감자는 매셔나 국자를 이용해  부숴주세요', 34);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '양파 반 개를 얇게 슬라이스 해주고', 34);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '식용유 살짝 두른 팬에 볶다가  버터도 한 스푼 추가해주고', 34);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '노릇한 색이 나올 때까지 카라멜라이징해주세요', 34);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '핸드블렌더나 믹서기에  으깬감자와 볶은 양파, 다진마늘 1/3스푼, 우유 1컵을 넣고 곱게 갈아줍니다', 34);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '냄비에 옮겨 우유를 추가해 농도를 조절하고 소금, 후추로 입맛에 맞게 간을 맞춰줍니다', 34);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '(선택재료) 식빵을 한입크기로 썰어준 후  기름 없는 마른팬에 볶아 크루통을 만들어주세요', 34);
+INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, null, '볼에 스프를 담아주고 크루통과 파슬리를 곁들여 완성해요!', 34);
 
 commit;
 

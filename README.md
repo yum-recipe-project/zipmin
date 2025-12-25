@@ -1,7 +1,5 @@
 <a id="readme-top"></a>
 
-리드미 수정 2번째
-
 <!-- 프로젝트 로고 -->
 <div align="center">
   <img src="src/main/resources/static/images/etc/title.gif" width="160" height="130">

@@ -221,7 +221,7 @@ public class KitchenController {
 	                    schema = @Schema(implementation = GuideForbiddenResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "500",
-	            description = "가이드 등록 실패 (서버 내부 오류)",
+	            description = "서버 내부 오류",
 	            content = @Content(
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = GuideCreateFailResponse.class)))
@@ -379,6 +379,8 @@ public class KitchenController {
 	}
 
 
+	
+	
 	@Operation(
 	    summary = "가이드 좋아요 (저장)"
 	)

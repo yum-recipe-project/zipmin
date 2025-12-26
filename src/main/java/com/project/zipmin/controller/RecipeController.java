@@ -171,12 +171,6 @@ public class RecipeController {
 				description = "입력값이 유효하지 않음",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = RecipeInvalidInputResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "400",
-				description = "입력값이 유효하지 않음",
-				content = @Content(
-						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",

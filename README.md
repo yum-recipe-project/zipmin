@@ -218,7 +218,7 @@
 <br/><br/>
 
 ### 2.2 화면 설계
-
+<img src="https://github.com/user-attachments/assets/fd49adf3-d935-4cde-835e-fb4f9b0e38ef" />
 
 
 <br/><br/><br/>

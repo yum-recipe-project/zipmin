@@ -236,7 +236,7 @@ public class RecipeController {
 						schema = @Schema(implementation = RecipeStockCreateFailResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
-				description = "레시피 작성 실패",
+				description = "레시피 조리 순서 작성 실패",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = RecipeStepCreateFailResponse.class))),

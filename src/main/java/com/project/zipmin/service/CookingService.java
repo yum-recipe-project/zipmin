@@ -407,8 +407,7 @@ public class CookingService {
 		        throw new ApiException(ClassErrorCode.CLASS_TARGET_INVALID_INPUT);
 		    }
 		}
-
-
+		
 		// 입력값 검증 (교육일정)
 		if (createRequestDto.getScheduleList() == null || createRequestDto.getScheduleList().isEmpty()) {
 		    throw new ApiException(ClassErrorCode.CLASS_SCHEDULE_INVALID_INPUT);

@@ -628,7 +628,6 @@ public class CookingController {
 	
 	
 	
-	
 	// 클래스 신청 삭제
 	@Operation(
 	    summary = "클래스 신청 삭제"

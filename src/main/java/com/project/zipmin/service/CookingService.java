@@ -497,7 +497,8 @@ public class CookingService {
                         String image = fileService.store(tutorImages.get(i));
                         tutorDto.setImage(image);
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     throw new ApiException(ClassErrorCode.CLASS_TUTOR_FILE_UPLOAD_FAIL);
                 }
 
@@ -505,7 +506,8 @@ public class CookingService {
                 ClassTutor tutorEntity = tutorMapper.toEntity(tutorDto);
                 try {
                     tutorEntity = tutorRepository.save(tutorEntity);
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     throw new ApiException(ClassErrorCode.CLASS_TUTOR_CREATE_FAIL);
                 }
 

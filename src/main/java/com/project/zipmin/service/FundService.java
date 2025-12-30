@@ -54,7 +54,7 @@ public class FundService {
 	            .funddate(new Date())
 	            .build();
 	    
-	    try {
+	    try { 
 	        fund = fundRepository.save(fund);
 	    } catch (Exception e) {
 	        throw new ApiException(FundErrorCode.FUND_RECORD_FAIL);

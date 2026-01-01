@@ -10,6 +10,11 @@ COPY ${WAR_FILE} /usr/local/tomcat/webapps/ROOT.war
 EXPOSE 8080
 
 
+
+
+
+
+
 # FROM eclipse-temurin:21-jdk
 
 # JAR 복사

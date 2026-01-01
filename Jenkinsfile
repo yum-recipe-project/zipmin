@@ -45,7 +45,7 @@ pipeline {
 			steps {
 				// Jenkins Credentials에 저장된 계정과 토큰을 환경 변수로 주입
 				withCredentials([usernamePassword(
-					credentialsId: 'docker-hub',
+					credentialsId: 'DOCKERHUB',
 					usernameVariable: 'DOCKERHUB_USERNAME',
 					passwordVariable: 'DOCKERHUB_PASS'
 				)]) {
@@ -75,7 +75,7 @@ pipeline {
 					string(credentialsId: 'MAIL_PASSWORD', variable: 'MAIL_PASSWORD')
 				]) {
 					// 배포 서버 접속 권한을 부여 후 컨테이너 실행
-					sshagent(credentials: ['zipmin-ssh']) {
+					sshagent(credentials: ['ZIPMIN_SSH']) {
 						sh """
 							ssh -o StrictHostKeyChecking=no ${DEPLOY_USER}@${DEPLOY_HOST} '
 								set -e

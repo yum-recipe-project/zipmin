@@ -124,7 +124,7 @@ async function reissueJwt() {
  */
 const baseURL = location.hostname === 'localhost'
   ? 'http://localhost:8586'
-  : 'http://ec2-43-201-77-32.ap-northeast-2.compute.amazonaws.com:8586';
+  : 'http://ec2-15-134-222-209.ap-southeast-2.compute.amazonaws.com:8586';
 const instance = axios.create({
 	baseURL: baseURL,
 	withCredentials: true

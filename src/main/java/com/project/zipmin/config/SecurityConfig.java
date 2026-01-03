@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,6 +42,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 	
+	@Value("${app.base.url}")
+	private String baseURL;
+	
 	private final JwtUtil jwtUtil;
 	private final CustomOAuthSuccessHandler customOAuthSuccessHandler;
 	private final CustomOAuth2UserService customOAuth2UserService;
@@ -62,18 +66,14 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		
-		// cors 설정
+		// CORS 설정
 		http.cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
 			@Override
 			public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
 				CorsConfiguration configuration = new CorsConfiguration();
 				
-				// 모든 출처에서 요청 허용 (http://localhost:3000와 같이 주소로 허용 가능)
-				configuration.setAllowedOrigins(List.of(
-					    "http://localhost:8586",
-					    "http://ec2-15-134-222-209.ap-southeast-2.compute.amazonaws.com:8586"
-					)
-				);
+				// 모든 출처에서 요청 허용
+				configuration.setAllowedOrigins(List.of(baseURL));
 				// HTTP 메소드 (GET, POST 등 모든 요청)의 요청을 허용
 				// configuration.setAllowedMethods(Collections.singletonList("*"));
 				configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));

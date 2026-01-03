@@ -1,13 +1,5 @@
 pipeline {
     agent any
-    
-    // 환경 변수 지정
-    environment {
-        IMAGE = "yumrecipe/zipmin:latest"
-        DEPLOY_HOST = "15.134.222.209"
-        DEPLOY_USER = "ec2-user"
-        APP_NAME = "zipmin"
-    }
 
     stages {
 		// Git 저장소에서 소스 코드 체크아웃
@@ -23,20 +15,11 @@ pipeline {
 				sh './gradlew clean bootWar -x test'
 			}
 		}
-		
-		// JAR 파일 빌드
-		/*
-		stage('Build JAR') {
-			steps {
-				sh './gradlew clean bootJar -x test'
-			}
-		}
-		*/
         
 		// 도커 파일을 기반으로 이미지 빌드
 		stage('Build Docker Image') {
 			steps {
-				sh "docker build -t ${IMAGE} ."
+				sh "docker build -t ${DOCKER_IMAGE} ."
 			}
 		}
         
@@ -52,7 +35,7 @@ pipeline {
 					// DockerHub 로그인 후 이미지 push하고 로그아웃
                     sh """
                     	echo "${DOCKERHUB_PASS}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
-                    	docker push ${IMAGE}
+                    	docker push ${DOCKER_IMAGE}
                     	docker logout
                     """
 				}
@@ -64,8 +47,8 @@ pipeline {
 		    steps {
 				// 배포에 필요한 민감 정보를 환경 변수로 주입
 				withCredentials([
-					string(credentialsId: 'DATABASE_USERNAME', variable: 'DATABASE_USERNAME'),
-					string(credentialsId: 'DATABASE_PASSWORD', variable: 'DATABASE_PASSWORD'),
+					string(credentialsId: 'DB_USERNAME', variable: 'DB_USERNAME'),
+					string(credentialsId: 'DB_PASSWORD', variable: 'DB_PASSWORD'),
 					string(credentialsId: 'JWT_SECRET', variable: 'JWT_SECRET'),
 					string(credentialsId: 'GOOGLE_CLIENT_ID', variable: 'GOOGLE_CLIENT_ID'),
 					string(credentialsId: 'GOOGLE_CLIENT_SECRET', variable: 'GOOGLE_CLIENT_SECRET'),
@@ -82,8 +65,8 @@ pipeline {
 								
 			                    umask 077
 			                    cat > /home/ec2-user/zipmin.env <<-EOF
-									DATABASE_USERNAME=${DATABASE_USERNAME}
-									DATABASE_PASSWORD=${DATABASE_PASSWORD}
+									DB_USERNAME=${DB_USERNAME}
+									DB_PASSWORD=${DB_PASSWORD}
 									JWT_SECRET=${JWT_SECRET}
 									GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
 									GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
@@ -93,9 +76,9 @@ pipeline {
 									MAIL_PASSWORD=${MAIL_PASSWORD}
 								EOF
 								
-								docker pull ${IMAGE}
+								docker pull ${DOCKER_IMAGE}
 								docker rm -f ${APP_NAME} || true
-								docker run -d --name ${APP_NAME} -p 8586:8080 --env-file /home/ec2-user/zipmin.env ${IMAGE}
+								docker run -d --name ${APP_NAME} -p 8586:8080 --env-file /home/ec2-user/zipmin.env ${DOCKER_IMAGE}
 							'
 		                """
 		            }

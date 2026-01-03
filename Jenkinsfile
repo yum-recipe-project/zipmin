@@ -16,7 +16,7 @@ pipeline {
 			}
 		}
         
-		// 도커 파일을 기반으로 이미지 빌드
+		// 이미지 빌드
 		stage('Build Docker Image') {
 			steps {
 				sh "docker build -t ${DOCKER_IMAGE} ."

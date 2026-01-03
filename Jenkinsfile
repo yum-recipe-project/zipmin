@@ -1,5 +1,12 @@
 pipeline {
     agent any
+    
+	environment {
+		APP_NAME = "${APP_NAME}"
+		DOCKER_IMAGE = "${DOCKER_IMAGE}"
+		DEPLOY_USER = "${DEPLOY_USER}"
+		DEPLOY_HOST = "${DEPLOY_HOST}"
+    }
 
     stages {
 		// Git 저장소에서 소스 코드 체크아웃
@@ -47,6 +54,9 @@ pipeline {
 		    steps {
 				// 배포에 필요한 민감 정보를 환경 변수로 주입
 				withCredentials([
+					string(credentialsId: 'DB_HOST', variable: 'DB_HOST'),
+					string(credentialsId: 'DB_PORT', variable: 'DB_PORT'),
+					string(credentialsId: 'DB_NAME', variable: 'DB_NAME'),
 					string(credentialsId: 'DB_USERNAME', variable: 'DB_USERNAME'),
 					string(credentialsId: 'DB_PASSWORD', variable: 'DB_PASSWORD'),
 					string(credentialsId: 'JWT_SECRET', variable: 'JWT_SECRET'),
@@ -65,6 +75,9 @@ pipeline {
 								
 			                    umask 077
 			                    cat > /home/ec2-user/zipmin.env <<-EOF
+									DB_HOST=${DB_HOST}
+									DB_PORT=${DB_PORT}
+									DB_NAME=${DB_NAME}
 									DB_USERNAME=${DB_USERNAME}
 									DB_PASSWORD=${DB_PASSWORD}
 									JWT_SECRET=${JWT_SECRET}

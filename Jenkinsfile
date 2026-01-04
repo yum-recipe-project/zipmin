@@ -72,7 +72,8 @@ pipeline {
 								set -e
 								
 			                    umask 077
-			                    cat > /home/ec2-user/zipmin.env <<-EOF
+								cat > /home/ec2-user/zipmin.env <<-EOF
+									APP_BASE_URL=${APP_BASE_URL}
 									DB_HOST=${DB_HOST}
 									DB_PORT=${DB_PORT}
 									DB_NAME=${DB_NAME}
@@ -85,7 +86,6 @@ pipeline {
 									NAVER_CLIENT_SECRET=${NAVER_CLIENT_SECRET}
 									MAIL_USERNAME=${MAIL_USERNAME}
 									MAIL_PASSWORD=${MAIL_PASSWORD}
-									
 								EOF
 								
 								docker pull ${DOCKER_IMAGE}

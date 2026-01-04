@@ -2,14 +2,14 @@ pipeline {
     agent any
     
 	environment {
-		APP_NAME = "${APP_NAME}"
-		DOCKER_IMAGE = "${DOCKER_IMAGE}"
-		DEPLOY_USER = "${DEPLOY_USER}"
-		DEPLOY_HOST = "${DEPLOY_HOST}"
+		APP_NAME = "zipmin"
+		DOCKER_IMAGE = "yumrecipe/zipmin:latest"
+		DEPLOY_HOST = "13.209.50.3"
+		DEPLOY_USER = "ec2-user"
     }
 
     stages {
-		// Git 저장소에서 소스 코드 체크아웃
+		// 소스 코드 체크아웃
         stage('Checkout') {
             steps {
                 checkout scm
@@ -33,15 +33,13 @@ pipeline {
         // 도커 허브에 이미지 푸시
 		stage('Push to Docker Hub') {
 			steps {
-				// Jenkins Credentials에 저장된 계정과 토큰을 환경 변수로 주입
 				withCredentials([usernamePassword(
 					credentialsId: 'DOCKERHUB',
-					usernameVariable: 'DOCKERHUB_USERNAME',
-					passwordVariable: 'DOCKERHUB_PASS'
+					usernameVariable: 'DH_USERNAME',
+					passwordVariable: 'DH_PASSWORD'
 				)]) {
-					// DockerHub 로그인 후 이미지 push하고 로그아웃
                     sh """
-                    	echo "${DOCKERHUB_PASS}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
+                    	echo "${DH_PASSWORD}" | docker login -u "${DH_USERNAME}" --password-stdin
                     	docker push ${DOCKER_IMAGE}
                     	docker logout
                     """
@@ -87,6 +85,7 @@ pipeline {
 									NAVER_CLIENT_SECRET=${NAVER_CLIENT_SECRET}
 									MAIL_USERNAME=${MAIL_USERNAME}
 									MAIL_PASSWORD=${MAIL_PASSWORD}
+									
 								EOF
 								
 								docker pull ${DOCKER_IMAGE}

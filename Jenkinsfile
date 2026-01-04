@@ -52,6 +52,7 @@ pipeline {
 		    steps {
 				// 배포에 필요한 민감 정보를 환경 변수로 주입
 				withCredentials([
+					string(credentialsId: 'APP_BASE_URL', variable: 'APP_BASE_URL'),
 					string(credentialsId: 'DB_HOST', variable: 'DB_HOST'),
 					string(credentialsId: 'DB_PORT', variable: 'DB_PORT'),
 					string(credentialsId: 'DB_NAME', variable: 'DB_NAME'),

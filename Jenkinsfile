@@ -91,7 +91,12 @@ pipeline {
 								
 								docker pull ${DOCKER_IMAGE}
 								docker rm -f ${APP_NAME} || true
-								docker run -d --name ${APP_NAME} -p 8586:8080 --env-file /home/ec2-user/zipmin.env ${DOCKER_IMAGE}
+								docker run -d \
+									--name ${APP_NAME} \
+									-p 8586:8080 \
+									-v /home/ec2-user/uploads:/uploads \
+									--env-file /home/ec2-user/zipmin.env \
+									${DOCKER_IMAGE}
 							'
 		                """
 		            }

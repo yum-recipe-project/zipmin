@@ -399,6 +399,7 @@ public class RecipeService {
 			recipeDto.setStockList(stockDtoList);
 		}
 		catch (Exception e) {
+			System.err.println(e);
 			throw new ApiException(RecipeErrorCode.RECIPE_STOCK_READ_LIST_FAIL);
 		}
 		

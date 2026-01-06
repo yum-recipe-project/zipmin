@@ -318,8 +318,8 @@ commit;
 create table recipe_stock (
     id number primary key,
     name varchar2(50) not null,
-    amount number not null,
-    unit varchar2(30) not null,
+    amount number,
+    unit varchar2(30),
     note varchar2(300),
     recipe_id number not null
 );

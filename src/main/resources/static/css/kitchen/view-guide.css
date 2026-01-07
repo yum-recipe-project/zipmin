@@ -65,6 +65,7 @@
 
 /* 내용 */
 #container .content .guide_wrap .guide_content {
+	white-space: pre-line;
 	line-height: 28px;
 	word-break: break-word;
 	font-weight: 300;

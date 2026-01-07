@@ -192,33 +192,31 @@ commit;
 
 
 -- GUIDE 테이블 더미데이터
-insert into guide values (seq_guide_id.nextval, '뿔 소라 손질법', '제주 바다향을 담은', 'preparation', sysdate, '뿔소라는 양식이 불가능해 오직 자연산으로만 채취 가능합니다. 제주 해녀들이 직접 잡은 자연산 뿔소라! 귀한 만큼 손질법을 제대로 알고 먹어야 더 맛있게 즐길 수 있습니다.', 1);
-insert into guide values (seq_guide_id.nextval, '해산물 신선하게 보관하는 법', '싱싱함을 오래 유지하는 비법', 'storage', sysdate, '구입한 해산물은 가능한 빨리 냉장 보관하며, 랩으로 밀폐하거나 진공포장 후 얼음과 함께 보관하는 것이 신선도를 오래 유지하는 비법입니다.', 1);
-insert into guide values (seq_guide_id.nextval, '해물탕 맛있게 끓이는 비법', '시원한 국물의 비결', 'cooking', sysdate, '해물탕을 끓일 때는 신선한 해산물과 함께 멸치 육수를 사용하고, 조개와 새우를 먼저 넣어 시원한 맛을 내는 것이 중요합니다.', 1);
-insert into guide values (seq_guide_id.nextval, '해산물 요리 시 주의사항', '안전하고 맛있게 즐기는 방법', 'etc', sysdate, '해산물은 알레르기 유발 가능성이 있으므로 주의가 필요하며, 조리 전 깨끗이 세척하고 신선도를 꼭 확인하는 것이 중요합니다.', 1);
-insert into guide values (seq_guide_id.nextval, '소고기 요리 시 주의사항', '안전하고 맛있게 즐기는 방법', 'etc', sysdate, '소고기는 알레르기 유발 가능성이 있으므로 주의가 필요하며, 조리 전 깨끗이 세척하고 신선도를 꼭 확인하는 것이 중요합니다.', 1);
-insert into guide values (seq_guide_id.nextval, '복어 요리 시 주의사항', '안전하고 맛있게 즐기는 방법', 'etc', sysdate, '복어는 알레르기 유발 가능성이 있으므로 주의가 필요하며, 조리 전 깨끗이 세척하고 신선도를 꼭 확인하는 것이 중요합니다.', 2);
-insert into guide values (seq_guide_id.nextval, '전복 손질법', '깨끗하게 다듬는 법', 'preparation', sysdate, '전복은 껍데기에서 살을 조심히 분리하고, 솔로 깨끗이 문질러 이물질을 제거한 뒤 내장을 제거하고 조리합니다.', 2);
-insert into guide values (seq_guide_id.nextval, '굴 손질과 세척법', '비린내 없이 준비하기', 'preparation', sysdate, '굴은 소금물에 2~3번 흔들어 씻고, 식초를 살짝 넣어 헹구면 비린내를 줄이고 깔끔하게 손질할 수 있습니다.', 3);
-insert into guide values (seq_guide_id.nextval, '생선 냉동 보관법', '신선도 유지하는 팁', 'storage', sysdate, '생선은 흐르는 물에 씻은 후 물기를 제거하고, 한 마리씩 랩으로 싸서 냉동하면 선도를 오래 유지할 수 있습니다.', 1);
-insert into guide values (seq_guide_id.nextval, '조개류 보관법', '살아있는 조개 오래 보관하기', 'storage', sysdate, '조개는 신문지에 싸서 냉장고에 보관하거나, 소금물에 담가 놓으면 하루 정도 더 살아있게 할 수 있습니다.', 2);
-insert into guide values (seq_guide_id.nextval, '문어 삶는 법', '부드럽게 익히는 노하우', 'cooking', sysdate, '문어는 끓는 물에 식초와 소금을 약간 넣고 삶으며, 3분마다 꺼내어 식히기를 반복하면 부드러운 식감이 살아납니다.', 3);
-insert into guide values (seq_guide_id.nextval, '홍합탕 맛있게 끓이기', '국물 맛을 살리는 비법', 'cooking', sysdate, '홍합은 깨끗이 손질한 뒤, 마늘과 파를 넣고 끓이면 시원한 국물 맛이 살아나며, 끓이기 전에 해감이 필수입니다.', 1);
-insert into guide values (seq_guide_id.nextval, '생선 조림 실패하지 않는 법', '양념이 잘 배게 만드는 비법', 'cooking', sysdate, '생선 조림은 물을 적게 넣고, 중불에서 졸이며 양념을 끼얹는 방식으로 조리해야 간이 골고루 배입니다.', 2);
-insert into guide values (seq_guide_id.nextval, '알레르기 유발 해산물 리스트', '민감한 사람은 꼭 확인하세요', 'etc', sysdate, '조개류, 새우, 오징어, 문어 등은 알레르기를 유발할 수 있으므로 주의가 필요하며, 섭취 전 반드시 식품 성분 확인이 필요합니다.', 2);
-insert into guide values (seq_guide_id.nextval, '냉동 해산물 해동법', '맛과 식감 살리는 해동 팁', 'storage', sysdate, '냉동 해산물은 냉장 해동이 가장 좋으며, 찬물에 담가 천천히 해동하는 것도 효과적입니다. 전자레인지 해동은 권장하지 않습니다.', 2);
-insert into guide values (seq_guide_id.nextval, '갑각류 손질 시 주의사항', '손 다치지 않는 꿀팁', 'preparation', sysdate, '꽃게나 새우 손질 시에는 등껍질을 제거할 때 칼 대신 주방가위를 사용하면 안전하게 작업할 수 있습니다.', 3);
-insert into guide values (seq_guide_id.nextval, '생선 손질법', '비린내 없이 손질하기', 'preparation', sysdate, '생선을 손질할 때 소금으로 문지른 후 식초물에 헹구면 비린내를 줄일 수 있습니다.', 1);
-insert into guide values (seq_guide_id.nextval, '채소 보관 꿀팁', '오래 신선하게!', 'storage', sysdate, '잎채소는 키친타월로 감싸 밀폐용기에 보관하면 수분 조절이 되어 신선함을 오래 유지할 수 있습니다.', 1);
-insert into guide values (seq_guide_id.nextval, '계란 보관법', '냉장고 온도에 주의', 'storage', sysdate, '계란은 뾰족한 쪽이 아래로 가도록 보관해야 노른자가 중심을 유지하고 신선하게 보관할 수 있습니다.', 2);
-insert into guide values (seq_guide_id.nextval, '고기 해동 요령', '전자레인지보다는 냉장해동!', 'preparation', sysdate, '고기는 냉장실에서 천천히 해동하는 것이 육즙 손실을 줄이고 식감도 유지할 수 있습니다.', 2);
-insert into guide values (seq_guide_id.nextval, '오일 종류별 특성', '조리용 오일 고르기', 'info', sysdate, '올리브유는 중불 이하 요리에 적합하고, 해바라기유나 카놀라유는 고온 조리에 더 알맞습니다.', 2);
-insert into guide values (seq_guide_id.nextval, '스테인리스 팬 사용법', '달궈야 눌어붙지 않아요!', 'cooking', sysdate, '스테인리스 팬은 충분히 예열한 후 기름을 둘러야 음식이 눌어붙지 않습니다.', 1);
-insert into guide values (seq_guide_id.nextval, '신선한 해산물 고르는 법', '눈으로 판단하세요', 'info', sysdate, '해산물은 투명하고 윤기 있는 외관, 선명한 눈동자를 가진 것이 신선한 상태입니다.', 3);
-insert into guide values (seq_guide_id.nextval, '된장 보관법', '곰팡이 걱정 없이!', 'storage', sysdate, '된장은 표면에 키친타월을 덮고 냉장 보관하면 곰팡이 발생을 줄일 수 있습니다.', 3);
-insert into guide values (seq_guide_id.nextval, '튀김 기름 온도 맞추기', '젓가락으로 확인!', 'cooking', sysdate, '기름에 나무젓가락을 넣었을 때 기포가 빠르게 올라오면 적정 온도(약 170~180도)입니다.', 2);
-insert into guide values (seq_guide_id.nextval, '양파 눈물 안 나는 법', '냉장고에 잠깐 넣기', 'preparation', TO_DATE('25/07/31','RR/MM/DD'), '양파를 자르기 전에 냉장고에 30분 정도 넣어두면 휘발성 물질이 줄어 눈물이 덜 납니다.', 2);
-commit;
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '깻잎 보관법', '고기 다먹었으면 이것부터!', 'storage', SYSDATE, '1. 세척한 깻잎은 종이타올로 물기를 닦습니다.' || CHR(10) || '2. 랩으로 수분이 날아가지 않게 밀봉합니다.' || CHR(10) || '3. 냉장고에 보관 후 1주일 내에 드세요.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6894337', 1); -- 1
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '물에 씻으면 오히려 안좋은 재료들', '씻으면 안되는 재료가 있다는 것을 알고 계셨나요?', 'cooking', SYSDATE, '요리 재료를 구입했다면 깨끗하게 세척하는 것이 필수 과정입니다. 하지만 물에 씻으면 오히려 좋지 않은 재료들이 있다는 사실 알고 계셨나요?' || CHR(10) || CHR(10) || '버섯이 물을 잘 흡수하기 때문에 특유의 식감과 향을 잃어버릴 수 있어요.' || CHR(10) || '이물질이 묻어있는 부분만 젖은 천으로 살살 닦아주는 것이 가장 좋아요.' || CHR(10) || CHR(10) || '달걀을 물에 씻으면 보호막 역할을 해주는 큐티클이 제거될 수 있어 세균 물질이 내부로 흡수될 수 있어요.' || CHR(10) || '마른행주나 키친타월로 가볍게 닦아주는 것이 좋고 이물질이 눈에 띄게 묻어있는 경우에는 먹기 바로 직전 씻어주는 것이 좋아요.' || CHR(10) || CHR(10) || '생닭을 흐르는 물에 세척시 생닭에 존재하는 균이 주변 조리도구나 음식물에 들어가 식중독을 유발할 수 있습니다.' || CHR(10) || '붉은 육류 역시 마찬가지 입니다.' || CHR(10) || '세척을 꼭 해야한다면 사용한 조리도구, 사용한 싱크대, 사용한 나의 손까지 깨끗하게 소독해 세균 오염을 방지하는 것이 좋아요.' || CHR(10) || CHR(10) || '파스타에 있는 녹말 성분이 소스가 잘 흡수될 수 있도록 도와주는데 물로 씻게되면 맛과 질감이 떨어져 맛있는 파스타를 먹을 수 없게 됩니다.' || CHR(10) || '삶은 직후 오일을 한 숟가락 정도 버무려 두시는걸 추천합니다.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6996207', 1); -- 2
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '맛술과 미림의 차이점', '맛술과 미림의점에서 사용법까지', 'cooking', SYSDATE, '미림과 맛술은 고기 잡내, 생선 비린내를 없애기 위해 사용하는 경우가 많아요.' || CHR(10) || '둘 다 쌀을 기본으로 만들어서 단맛이 난다는 특징이 있지만 알코올 도수와 사용법에서는 차이가 있어요.' || CHR(10) || CHR(10) || '맛술의 주성분은 식초라서 신맛이 강하고 대체로 도수가 낮아요.' || CHR(10) || '식초의 산성이 고기 잡내, 생선 비린내를 제거하는데 효과적이에요.' || CHR(10) || '잡내를 제거하고 단맛이 필요하지 않는 요리에는 맛술을 사용해요.' || CHR(10) || CHR(10) || '미림은 쌀누룩에 주정을 혼합하여 만든 술이라 14%의 알코올을 가지고 있어요.' || CHR(10) || '해외에서 향을 위해 와인을 사용하는것과 비슷한 용도로 미림을 사용할수 있어요.' || CHR(10) || '음식의 풍미를 높이고 감칠맛을 더해주는 요리에는 미림을 사용하는게 좋아요.' || CHR(10) || '미림을 사용하면 당도가 높아지기 때문에 추가로 들어가는 설탕의 양을 줄여서 사용하시는 것이 좋아요.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6995650', 1); -- 3
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '밤 껍질 쉽게 까는 손질법', '쉽게 까기 힘든 밤, 전자레인지로 알맹이만 쏙!', 'preparation', SYSDATE, '1. 깨끗이 씻은 밤을 1시간 정도 불립니다.' || CHR(10) || '2. 뾰족한 부분에 열십자(+)으로 칼집을 냅니다.' || CHR(10) || '3. 내열그릇에 칼집 낸 밤을 담고 마른 키친타올로 덮어 랩을 씌웁니다.' || CHR(10) || '4. 밤 10~12개 기준 1분 30초 정도 전자레인지에 돌려 수분을 말립니다.' || CHR(10) || '5. 껍질을 손으로 벗겨냅니다.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6966989', 1); -- 4
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '여러가지 액젓 활용법', '여러가지 액젓, 이렇게 사용하시면 굳!', 'cooking', SYSDATE, '액젓은 소금과 섞어 발효해 숙성 후 내린 것으로 젓갈과 달리 액젓은 맛과 향이 뛰어나 요리에 다양하게 쓰입니다.' || CHR(10) || CHR(10) || '까나리 액젓은 1년 미만의 어린 까나리(양미리)를 소금과 섞어 발효한 것, 멸치에 비해 끝 맛이달며 조리 시 간장의 양을 줄이고 액젓을 사용해도 좋습니다.' || CHR(10) || '멸치 액젓에 비해 비린내도 적어서 나물이나 볶음 요리 등에도 잘 어울립니다.' || CHR(10) || CHR(10) || '멸치액젓은 구수하고 깊은 맛이 나며 단맛이 적고 특유의 큼큼한 냄새가 있습니다.' || CHR(10) || '끓이는 국물이나, 김치, 장아찌 등 발효 음식에 많이 쓰입니다.' || CHR(10) || CHR(10) || '참치액은 가스오부시를 우려서 만들어 훈제향이 나는 액젓입니다. 참치의 감칠맛과 단맛이 많이 가미 되어있어 일식요리에 잘 어울립니다.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6909408', 1); -- 5
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '튀김 온도 확인하는 법', '온도계 없이 튀김이 두려우셨다면?', 'cooking', SYSDATE, '예열된 기름에 젓가락으로 찔러 젓가락 주변에 작은 기포들이 생기면 170~180도로 튀김하기 적당한 온도입니다.' || CHR(10) || CHR(10) || '예열된 기름에 튀겨낼 반죽옷을 소량 넣어 확인할 수도 있습니다.' || CHR(10) || '반죽옷이 가라앉으면 160도 이하, 반죽옷이 바닥에 닿았다가 올라오면 170~180도, 반죽옷이 바로 올라오게 되면 180도 이상입니다.' || CHR(10) || CHR(10) || '또는 예열된 기름에 소금을 한꼬집 넣어 확인할 수 있습니다.' || CHR(10) || '소금이 가라앉으면 160도 이하, 소금이 중간쯤 내려앉았다가 올라오면 170~180도, 그 이상의 온도는 넣는 순간 요란한 소리와 함께 타버립니다.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6910305', 1); -- 6
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '염장 다시마 보관법', '염장다시마 오래 보관하기', 'storage', SYSDATE, '데친 염장다시마는 밀폐용기에 담아 냉장 보관합니다.' || CHR(10) || '소금기가 빠지면서 보관기간이 줄어드므로 약 1주일 내에 요리해드세요.' || CHR(10) || CHR(10) || '데치지 않은 염장다시마는 밀폐용기에 담아서 냉장 보관하세요. 염장되어 있어 장기저장이 가능해요.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6897169', 1); -- 7
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '오렌지 보관법', '따라하기 쉬운 오렌지 보관법', 'storage', SYSDATE, '1. 오렌지는 하나씩 랩에 감쌉니다. 수분과 당분이 빠지지 않아 오렌지가 더욱 신선해져요.' || CHR(10) || '2. 밀폐용기에 담아 냉장보관합니다.' || CHR(10) || '3. 약 2주 내에 드세요.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6897401', 1); -- 8
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '달달한 포도 고르는 방법', '포도 손질법과 달달한 포도 고르는 꿀팁까지!', 'etc', SYSDATE, '포도는 꼭지가 녹색을 띄는게 신선해요.' || CHR(10) || '포도껍질이 검은빛일수록 당도가 높고 자주빛일수록 신맛이 많이 나요.' || CHR(10) || CHR(10) || '1. 포도는 가위로 가지를 자릅니다.' || CHR(10) || '2. 볼에 포도를 담고 밀가루를 뿌려 약 5분간 둡니다.' || CHR(10) || '3. 포도가 잠길만큼 물을 채웁니다.' || CHR(10) || '4. 포도를 잡고 살살 흔들어 사이사이 이물질을 세척합니다.' || CHR(10) || '5. 흐르는 물에 다시 한번 세척합니다.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6897897', 1); -- 9
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '당근 보관법', '이렇게하면 2개월까지 OK!', 'storage', SYSDATE, '방법 1' || CHR(10) || '1. 당근은 필러로 껍질을 벗기고 종이타올로 감쌉니다.' || CHR(10) || '2. 하나씩 랩으로 밀봉합니다.' || CHR(10) || CHR(10) || '냉장보관한다.' || CHR(10) || CHR(10) || '방법 2' || CHR(10) || '1. 당근은 먹기 좋은 크기로 자릅니다.' || CHR(10) || CHR(10) || '2. 지퍼팩에 소분해 담습니다.' || CHR(10) || CHR(10) || '3. 냉동보관합니다.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6897891', 1); -- 10
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '한치 손질법', '쫄깃쫄깃 야들야들 부드러운 한치', 'preparation', SYSDATE, '1. 한치는 가위로 배를 가릅니다.' || CHR(10) || '2. 다리를 잡아 내장, 몸통을 분리합니다.' || CHR(10) || '3. 몸통은 껍질을 벗깁니다.' || CHR(10) || '4. 다리는 내장을 자르고 눈, 입을 제거합니다.' || CHR(10) || '5. 다리는 소금으로 빨판을 제거합니다.' || CHR(10) || '6. 다리, 몸통은 연한 소금물에 헹굽니다.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6895773', 1); -- 11
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '한치 보관법', '요리할 때 편하게 보관하기', 'storage', SYSDATE, '1. 한치는 내장이 가장 먼저 상하고, 색이 변하므로 손질해서 보관해야 합니다.' || CHR(10) || '2. 한치를 먹기 좋은 크기로 자릅니다.' || CHR(10) || '3. 부위별로 소분해 지퍼팩에 담습니다.' || CHR(10) || CHR(10) || '4. 냉동보관합니다.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6895774', 1); -- 12
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '단호박 손질법', '단단해서 단호박인가요?', 'preparation', SYSDATE, '1. 딱딱한 단호박은 전자레인지에 돌려 부드럽게 만듭니다.' || CHR(10) || '2. 단호박을 이등분 해줍니다.' || CHR(10) || '3. 숟가락을 이용해 씨를 빼줍니다.' || CHR(10) || '4. 자른 면을 아래로 향하게 하고 꼭지 부분을 썰어줍니다.' || CHR(10) || '5. 한 번 더 이등분해줍니다.' || CHR(10) || '6. 먹기 좋은 크기로 썹니다.' || CHR(10) || '7. 칼로 껍질을 도려냅니다.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6858426', 1); -- 13
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '꼬막 해감법 및 손질법', '꼬막 먹다가 모래 씹을까 걱정이라구?', 'preparation', SYSDATE, '[기본 손질]' || CHR(10) || '1. 꼬막이 담긴 볼에 물을 넉넉히 붓고 소금 약간을 넣어 여러 번 씻습니다.' || CHR(10) || '2. 호일을 덮어 1시간 정도 해감합니다.' || CHR(10) || '3. 해감된 꼬막은 물에 헹굽니다.' || CHR(10) || CHR(10) || '[꼬막 삶기]' || CHR(10) || '1. 냄비에 물을 넉넉히 붓고 끓이다가 꼬막을 담고 청주를 약간 넣어줍니다.' || CHR(10) || '2. 꼬막을 넣어 3분 정도 삶습니다.' || CHR(10) || '3. 꼬막 입이 벌어지면 바로 꺼냅니다.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6862336', 1); -- 14
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '만능 양념장', '이것만 알아도 할 수 있는 요리가 무궁무진!', 'cooking', SYSDATE, '[간장양념]' || CHR(10) || '1. 간장 3T, 설탕 2T, 물 2T, 다진 마늘 1T, 청주 2T, 다진 생강 1/4T, 참기름 약간, 다진 파 1T를 넣고 섞습니다.' || CHR(10) || '2. 불고기나 갈비찜에 활용합니다.' || CHR(10) || CHR(10) || '[된장 양념]' || CHR(10) || '1. 된장 3T, 깨 1T , 설탕 1T, 다진 마늘 1T, 참기름 1/2T를 넣고 섞습니다.' || CHR(10) || '2. 된장 삼겹살과 수육에 활용 가능합니다.' || CHR(10) || CHR(10) || '[고추장 양념]' || CHR(10) || '1. 고추장 양념 재료를 넣고 섞습니다.' || CHR(10) || '2. 고추장 삼겹살이나 닭볶음탕이나 오징어볶음에 활용합니다.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6863118', 1); -- 15
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '파인애플 손질법', '파인애플 간편하고 쉽게 손질해봐요!', 'preparation', SYSDATE, '1. 꼭지 부분과 밑동 부분을 칼로 잘라냅니다.' || CHR(10) || '2. 세로로 세운 뒤 위에서 아래로 껍질을 칼로 벗깁니다.' || CHR(10) || '3. 껍질을 벗긴 파인애플을 4등분으로 자릅니다.' || CHR(10) || '4. 파인애플 안쪽의 딱딱한 심지를 제거합니다.' || CHR(10) || '5. 먹기 좋은 크기로 자릅니다.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6867609', 1); -- 16
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '김 굽는 법', '김도 맛깔나게 구워먹어야 더 맛있는 법', 'cooking', SYSDATE, '1. 생김 위에 들기름을 바릅니다.' || CHR(10) || '2. 맛소금을 솔솔 뿌립니다.' || CHR(10) || '3. 달궈진 팬에 생김을 올리고 약불에서 앞뒤로 굽습니다.' || CHR(10) || '4. 푸른색이 돌면 뺍니다.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6867924', 1); -- 17
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '낙지 손질법', '미끌미끌 낙지! 빠르게 손질해봐요', 'preparation', SYSDATE, '1. 가위로 머리와 내장이 이어진 부분을 자른 후' || CHR(10) || '2. 머리를 뒤집어 내장을 제거합니다.' || CHR(10) || '3. 가위로 눈을 제거합니다.' || CHR(10) || '4. 다리를 뒤집은 후 꾹 눌러 이빨을 제거합니다.' || CHR(10) || '5. 밀가루와 소금을 넣고 빡빡 주무릅니다.' || CHR(10) || '6. 깨끗한 물에 씻어줍니다.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6866529', 1); -- 18
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '베이컨 굽는 법', '베이컨 이렇게 굽는거였어?', 'cooking', SYSDATE, '1. 달궈진 팬에 베이컨을 올립니다.' || CHR(10) || '2. 베이컨이 잠길 정도로 물을 붓습니다.' || CHR(10) || '3. 물이 끓이면 중불로 낮춥니다.' || CHR(10) || '4. 물이 거의 없어지면 약불로 낮춥니다.' || CHR(10) || '5. 납작한 접시에 키친타월을 깝니다.' || CHR(10) || '6. 베이컨을 겹치지 않게 올립니다.' || CHR(10) || '7. 키친타월로 다시 덮습니다.' || CHR(10) || '8. 전자레인지에 1분 정도 돌립니다. 바삭한 식감을 원하신다면 30초 정도 더 돌려주세요.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6867102', 1); -- 19
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '홍삼 만드는 법', '홍삼을 집에서도 만들 수 있다!?', 'cooking', SYSDATE, '1. 물이 담긴 볼에 수삼을 넣고 솔로 깨끗이 닦습니다.' || CHR(10) || '2. 찜통에 물을 넣고 면보를 깔아 수삼을 올려 놓습니다.' || CHR(10) || '3. 센 불에서 10분 정도 찌다가 약불에서 50분 더 찝니다.' || CHR(10) || '4. 찐 수삼은 꺼내 건조합니다. 찌고 말리고를 4~5번 색이 진해질 때까지 반복해 주세요.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6869540', 1); -- 20
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '감자 삶는 법', '포실포실 감자 진짜 맛나게 삶는 방법!', 'cooking', SYSDATE, '1. 물이 담긴 볼에 감자를 넣어 깨끗이 씻습니다.' || CHR(10) || '2. 감자 중앙의 칼집을 한 바퀴 냅니다. 감자의 칼집을 내면 삶은 후 껍질을 벗기기 쉬워요.' || CHR(10) || '3. 물이 담긴 냄비에 소금과 설탕을 넣습니다. 소금과 설탕을 넣어주면 간이 배 더 맛있어요.' || CHR(10) || CHR(10) || '4. 감자를 냄비에 넣은 후 뚜껑을 닫습니다.' || CHR(10) || '5. 센 불에서 10분 삶은 후 중불로 줄여 20분 더 삶습니다. 감자를 꼬치로 찔렀을 때 잘 들어가면 다 익은 상태예요.' || CHR(10) ||  '6. 삶은 감자를 꺼내 껍질을 벗깁니다.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6870315', 1); -- 21
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '호박잎 찌는 법', '호박잎 야무지게 쪄볼까요?', 'cooking', SYSDATE, '1. 호박잎 줄기를 뒤로 살짝 꺾어 벗깁니다.' || CHR(10) || '2. 물이 든 볼에 호박잎을 넣고 2~3번 헹굽니다.' || CHR(10) || '3. 김이 오른 찜통에 호박잎을 넣고 뚜껑을 덮어 8분 쪄냅니다.' || CHR(10) || '4. 쪄낸 호박잎은 꺼내 한 김 식힙니다.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6870251', 1); -- 22
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '상추 보관법', '상추 남으면 어쩌지?', 'storage', SYSDATE, '1. 상추를 씻습니다.' || CHR(10) || '2. 체에 밭쳐 물기를 제거합니다.' || CHR(10) || '3. 키친타월에 상추를 넣어 감쌉니다.' || CHR(10) || '3. 지퍼백에 넣은 후 냉장 보관합니다.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6871766', 1); -- 23
+INSERT INTO guide VALUES (seq_guide_id.NEXTVAL, '깐마늘 보관법', '깐마늘 이렇게 보관하면 오래오래~', 'storage', SYSDATE, '[깐 통마늘]' || CHR(10) || '1. 밀폐용기에 설탕을 얇게 깔고 그 위에 키친타월을 덮습니다. 설탕이 수분을 흡수해 마늘을 오래 보관할 수 있어요.' || CHR(10) || '2. 그 위에 마늘을 넣고 뚜껑을 닫아 냉장보관합니다.' || CHR(10) || CHR(10) || '[다진 마늘]'|| CHR(10) ||'1. 지퍼백에 다진 마늘을 넣습니다.' || CHR(10) || '2. 칼등으로 모양을 내준 후 냉동 보관합니다.' || CHR(10) || CHR(10) || '3. 얼음틀에 다진 마늘을 넣습니다.' || CHR(10) || '4. 냉동 보관합니다.' || CHR(10) || CHR(10) || CHR(10) || '출처 : https://www.10000recipe.com/recipe/6871186', 1); -- 24
+COMMIT;
 
 
 
@@ -319,297 +317,6 @@ commit;
 
 
 
-
-
--- COMMENTS 테이블 더미데이터
--- 레시피 댓글
-
-
--- 가이드 댓글
--- guide 1
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '뿔소라 손질 포인트 정리 감사합니다.', 'guide', 1, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 1, sysdate, '바로 따라 해볼게요.', 'guide', 1, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 1, sysdate, '내장 분리 팁도 부탁드립니다.', 'guide', 1, 12);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '사진 예시도 있으면 좋겠어요.', 'guide', 1, 6);
-insert into comments values (seq_comments_id.NEXTVAL, 4, sysdate, '솔질 각도 설명이 좋아요.', 'guide', 1, 7);
--- guide 2
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '보관 온도표가 한눈에 들어오네요.', 'guide', 2, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 6, sysdate, '라벨링 날짜도 함께 적어둘게요.', 'guide', 2, 4);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '문 여닫음이 많으면 칸을 바꾸는 게 좋군요.', 'guide', 2, 13);
-insert into comments values (seq_comments_id.NEXTVAL, 8, sysdate, '서늘한 칸 배치 팁 유용했어요.', 'guide', 2, 9);
--- guide 3
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '멸치 육수 비율 메모했습니다.', 'guide', 3, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 10, sysdate, '새우 먼저, 조개 나중 순서가 포인트네요.', 'guide', 3, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 10, sysdate, '비린내도 확 줄었어요.', 'guide', 3, 16);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '후추 한 꼬집 팁도 좋았습니다.', 'guide', 3, 18);
--- guide 4
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '주의사항 체크리스트가 실전적이에요.', 'guide', 4, 15);
-insert into comments values (seq_comments_id.NEXTVAL, 14, sysdate, '교차 오염 방지 메모했습니다.', 'guide', 4, 4);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '알레르기 안내 덕분에 안전했어요.', 'guide', 4, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 16, sysdate, '장갑 교체 타이밍도 알려주셔서 감사!', 'guide', 4, 21);
-insert into comments values (seq_comments_id.NEXTVAL, 16, sysdate, '도마 분리 운영이 답이네요.', 'guide', 4, 11);
--- guide 5
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '고기 위생 포인트 정리 굿.', 'guide', 5, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 19, sysdate, '보관 전 물기 제거가 관건이네요.', 'guide', 5, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 19, sysdate, '가정에서는 가위 사용이 더 안전하더군요.', 'guide', 5, 14);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '냉장 0~4도 유지 꼭 지켜볼게요.', 'guide', 5, 18);
-insert into comments values (seq_comments_id.NEXTVAL, 22, sysdate, '온도계 하나 장만해야겠습니다.', 'guide', 5, 9);
--- guide 6
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '복어는 전문가에게! 경고가 확실해서 좋아요.', 'guide', 6, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 24, sysdate, '조리 금지 명확히 알았습니다.', 'guide', 6, 4);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '관련 교육 링크도 있으면 좋겠어요.', 'guide', 6, 14);
--- guide 7
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '전복 솔질법 이해됐습니다.', 'guide', 7, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 27, sysdate, '내장 분리 사진도 궁금합니다.', 'guide', 7, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 27, sysdate, '스푼으로 분리하니 편했어요.', 'guide', 7, 22);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '껍데기 활용법도 유용했어요.', 'guide', 7, 19);
-insert into comments values (seq_comments_id.NEXTVAL, 30, sysdate, '인테리어 데코로 쓰니 예쁘네요.', 'guide', 7, 8);
--- guide 8
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '굴 세척은 소금물 3회가 핵심!', 'guide', 8, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 32, sysdate, '식초 헹굼으로 잡내 컷!', 'guide', 8, 4);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '해감 시간 표도 도움됐습니다.', 'guide', 8, 12);
-insert into comments values (seq_comments_id.NEXTVAL, 34, sysdate, '껍질 파편 제거 체크!', 'guide', 8, 23);
-insert into comments values (seq_comments_id.NEXTVAL, 34, sysdate, '체에 밭쳐 헹구니 편하더라고요.', 'guide', 8, 11);
--- guide 9
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '냉동 전 랩 2중 포장 꿀팁.', 'guide', 9, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 37, sysdate, '소분 포장해두니 편리해요.', 'guide', 9, 5);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '해동은 냉장에서 천천히가 정답.', 'guide', 9, 8);
--- guide 10
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '신문지 보관 아이디어 좋네요.', 'guide', 10, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 40, sysdate, '숨 쉬는 포장이 효과 있었습니다.', 'guide', 10, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 40, sysdate, '해감 농도도 함께 표기되면 굿.', 'guide', 10, 7);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '소금물 담가두기 팁 메모.', 'guide', 10, 6);
-insert into comments values (seq_comments_id.NEXTVAL, 43, sysdate, '모래 제거가 빨라졌어요.', 'guide', 10, 15);
--- guide 11
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '3분 삶고 식히기 반복이 신의 한 수.', 'guide', 11, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 45, sysdate, '식초와 소금 비율도 알려주세요.', 'guide', 11, 5);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '촉촉함이 유지되네요.', 'guide', 11, 9);
-insert into comments values (seq_comments_id.NEXTVAL, 47, sysdate, '표면 터짐이 줄었어요.', 'guide', 11, 18);
-insert into comments values (seq_comments_id.NEXTVAL, 47, sysdate, '레몬 한 조각 넣어도 좋더군요.', 'guide', 11, 10);
--- guide 12
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '해감 후 끓이면 국물 맛이 깔끔합니다.', 'guide', 12, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 50, sysdate, '파와 마늘 타이밍이 포인트.', 'guide', 12, 4);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '모래 제거가 핵심이군요.', 'guide', 12, 17);
-insert into comments values (seq_comments_id.NEXTVAL, 52, sysdate, '염도 체크까지 완벽했어요.', 'guide', 12, 11);
--- guide 13
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '조림은 물 적게, 양념 끼얹기가 핵심.', 'guide', 13, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 54, sysdate, '중불 유지가 관건이네요.', 'guide', 13, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 54, sysdate, '팬 넓을수록 균일하더군요.', 'guide', 13, 12);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '생강 넣으니 향이 좋아요.', 'guide', 13, 20);
--- guide 14
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '알레르기 리스트 도움됩니다.', 'guide', 14, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 58, sysdate, '가족과 공유했어요.', 'guide', 14, 4);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '성분표 읽는 법도 추가되면 좋겠어요.', 'guide', 14, 14);
-insert into comments values (seq_comments_id.NEXTVAL, 60, sysdate, '패치 테스트도 고려해볼게요.', 'guide', 14, 7);
--- guide 15
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '냉장 해동이 식감 최고네요.', 'guide', 15, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 62, sysdate, '전자레인지 해동은 이제 안 할래요.', 'guide', 15, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 62, sysdate, '해동 후 키친타월로 물기 제거!', 'guide', 15, 19);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '찬물 해동도 상황에 따라 괜찮더군요.', 'guide', 15, 16);
-insert into comments values (seq_comments_id.NEXTVAL, 65, sysdate, '시간표가 있으면 더욱 좋겠습니다.', 'guide', 15, 8);
--- guide 16
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '가위 사용이 확실히 안전하네요.', 'guide', 16, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 67, sysdate, '손베임 걱정이 줄었어요.', 'guide', 16, 5);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '등껍질 제거 순서가 유용합니다.', 'guide', 16, 18);
--- guide 17
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '식초물 헹굼으로 비린내 컷!', 'guide', 17, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 70, sysdate, '소금 문지르기 먼저가 좋더군요.', 'guide', 17, 5);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '손질 순서 이해됐습니다.', 'guide', 17, 21);
-insert into comments values (seq_comments_id.NEXTVAL, 72, sysdate, '식초 농도 표도 있으면 좋겠어요.', 'guide', 17, 6);
-insert into comments values (seq_comments_id.NEXTVAL, 72, sysdate, '헹굼은 충분히 하는 걸로!', 'guide', 17, 20);
--- guide 18
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '키친타월 보관법 효과 봤어요.', 'guide', 18, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 75, sysdate, '밀폐용기 선택이 중요하네요.', 'guide', 18, 4);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '수분 조절이 핵심입니다.', 'guide', 18, 22);
-insert into comments values (seq_comments_id.NEXTVAL, 77, sysdate, '에어홀 약간 열어두는 팁 좋아요.', 'guide', 18, 23);
--- guide 19
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '계란 보관 방향 팁 굿.', 'guide', 19, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 79, sysdate, '냉장고 0~4도 유지 체크할게요.', 'guide', 19, 6);
-insert into comments values (seq_comments_id.NEXTVAL, 79, sysdate, '문쪽 선반은 피하겠습니다.', 'guide', 19, 12);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '유통기한 관리법도 도움됐어요.', 'guide', 19, 21);
-insert into comments values (seq_comments_id.NEXTVAL, 82, sysdate, '상단 선반에 두니 안정적이네요.', 'guide', 19, 10);
--- guide 20
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '냉장 해동으로 육즙이 살아있네요.', 'guide', 20, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 84, sysdate, '재냉동 금지도 꼭 지키겠습니다.', 'guide', 20, 4);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '상온 해동은 비추라는 점 동의합니다.', 'guide', 20, 11);
-insert into comments values (seq_comments_id.NEXTVAL, 86, sysdate, '표면 산패가 빨라지더라고요.', 'guide', 20, 7);
--- guide 21
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '오일 스모크포인트 표 감사합니다.', 'guide', 21, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 88, sysdate, '올리브유는 중불 기억!', 'guide', 21, 5);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '해바라기유는 고온 튀김에 좋더군요.', 'guide', 21, 12);
-insert into comments values (seq_comments_id.NEXTVAL, 90, sysdate, '카놀라유 대체 팁도 유용했어요.', 'guide', 21, 13);
-insert into comments values (seq_comments_id.NEXTVAL, 90, sysdate, '가열 후 보관은 주의하겠습니다.', 'guide', 21, 9);
--- guide 22
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '스테인리스 팬은 예열이 답이네요.', 'guide', 22, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 93, sysdate, '연무 나오기 직전 투입이 좋았습니다.', 'guide', 22, 4);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '눌어붙음 없이 성공했습니다.', 'guide', 22, 15);
--- guide 23
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '신선한 해산물 고르는 법 유익합니다.', 'guide', 23, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 96, sysdate, '눈동자 선명도 체크가 핵심이네요.', 'guide', 23, 10);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '비린내 적은 것부터 고르는 게 좋더군요.', 'guide', 23, 8);
-insert into comments values (seq_comments_id.NEXTVAL, 98, sysdate, '윤기와 탄력이 보이면 합격!', 'guide', 23, 19);
--- guide 24
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '된장 표면 키친타월 팁 유용.', 'guide', 24, 11);
-insert into comments values (seq_comments_id.NEXTVAL, 100, sysdate, '곰팡이 확 줄었습니다.', 'guide', 24, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 100, sysdate, '밀봉 상태도 함께 체크할게요.', 'guide', 24, 20);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '냉장 보관 칸도 중요하네요.', 'guide', 24, 7);
-insert into comments values (seq_comments_id.NEXTVAL, 103, sysdate, '김치칸은 피하는 게 낫겠어요.', 'guide', 24, 18);
--- guide 25
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '젓가락 기포로 온도 확인 꿀팁.', 'guide', 25, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 105, sysdate, '170~180도 구간 기억하겠습니다.', 'guide', 25, 5);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '온도계 병행하니 더 정확하네요.', 'guide', 25, 13);
-insert into comments values (seq_comments_id.NEXTVAL, 107, sysdate, '튀김 색도 균일해졌습니다.', 'guide', 25, 6);
--- guide 26
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '양파 미리 냉장 팁 최고.', 'guide', 26, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 109, sysdate, '눈물 덜 나서 요리가 편했어요.', 'guide', 26, 13);
-insert into comments values (seq_comments_id.NEXTVAL, 109, sysdate, '칼질도 훨씬 수월했습니다.', 'guide', 26, 17);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '향이 날아가지 않도록 보관도 신경쓸게요.', 'guide', 26, 9);
-insert into comments values (seq_comments_id.NEXTVAL, 112, sysdate, '타이밍이 포인트네요. 자세히 알게 됐어요.', 'guide', 26, 18);
--- 113
-
--- 매거진 댓글
--- megazine 1
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '요약 박스가 특히 좋았어요.', 'megazine', 2, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 114, sysdate, '실제로 해보니 효과 있었어요.', 'megazine', 2, 9);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '자료 출처까지 정리돼 있어 신뢰가 갑니다.', 'megazine', 2, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 116, sysdate, '가격대별 추천표도 부탁드립니다.', 'megazine', 2, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 116, sysdate, '보완 설명 감사합니다.', 'megazine', 2, 15);
-
--- megazine 2
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '요약 박스가 특히 좋았어요.', 'megazine', 5, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 119, sysdate, '다음 글도 기대할게요.', 'megazine', 5, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 119, sysdate, '실제로 해보니 효과 있었어요.', 'megazine', 5, 23);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '현장감 있는 팁 덕분에 바로 적용했습니다.', 'megazine', 5, 6);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '디테일한 비교가 정말 도움 됐어요.', 'megazine', 5, 6);
-insert into comments values (seq_comments_id.NEXTVAL, 123, sysdate, '실제로 해보니 효과 있었어요.', 'megazine', 5, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 123, sysdate, '가격대별 추천표도 부탁드립니다.', 'megazine', 5, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 123, sysdate, '보완 설명 감사합니다.', 'megazine', 5, 12);
-
--- megazine 3
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(홈메이드) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 6, 9);
-insert into comments values (seq_comments_id.NEXTVAL, 127, sysdate, '표나 그림 추가되면 더 좋을 듯!', 'megazine', 6, 5);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '현장감 있는 팁 덕분에 바로 적용했습니다.', 'megazine', 6, 21);
-insert into comments values (seq_comments_id.NEXTVAL, 129, sysdate, '비교 기준이 명확해서 이해가 쉬웠습니다.', 'megazine', 6, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 129, sysdate, '다음 글도 기대할게요.', 'megazine', 6, 6);
-insert into comments values (seq_comments_id.NEXTVAL, 129, sysdate, '보완 설명 감사합니다.', 'megazine', 6, 18);
-
--- megazine 4
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(프리미엄) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 7, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 133, sysdate, '가격대별 추천표도 부탁드립니다.', 'megazine', 7, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 133, sysdate, '실제로 해보니 효과 있었어요.', 'megazine', 7, 9);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '자료 출처까지 정리돼 있어 신뢰가 갑니다.', 'megazine', 7, 7);
-insert into comments values (seq_comments_id.NEXTVAL, 136, sysdate, '표나 그림 추가되면 더 좋을 듯!', 'megazine', 7, 14);
-insert into comments values (seq_comments_id.NEXTVAL, 136, sysdate, '보완 설명 감사합니다.', 'megazine', 7, 11);
-
--- megazine 5
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(비건) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 8, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 139, sysdate, '비교 기준이 명확해서 이해가 쉬웠습니다.', 'megazine', 8, 4);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '현장감 있는 팁 덕분에 바로 적용했습니다.', 'megazine', 8, 8);
-insert into comments values (seq_comments_id.NEXTVAL, 141, sysdate, '가격대별 추천표도 부탁드립니다.', 'megazine', 8, 6);
-
--- megazine 6
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(핫플) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 9, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 143, sysdate, '오픈 시간대 방문 팁 유용했어요.', 'megazine', 9, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 143, sysdate, '보완 설명 감사합니다.', 'megazine', 9, 13);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '자료 출처까지 정리돼 있어 신뢰가 갑니다.', 'megazine', 9, 22);
-insert into comments values (seq_comments_id.NEXTVAL, 146, sysdate, '테이크아웃 팁도 실전적이네요.', 'megazine', 9, 9);
-
--- megazine 7
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(편의점) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 10, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 148, sysdate, '한정판은 첫 주가 핵심이라는 점 메모!', 'megazine', 10, 5);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '현장감 있는 팁 덕분에 바로 적용했습니다.', 'megazine', 10, 17);
-insert into comments values (seq_comments_id.NEXTVAL, 150, sysdate, '우유 함량 체크 포인트 좋았습니다.', 'megazine', 10, 16);
-
--- megazine 8
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(믹스) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 11, 7);
-insert into comments values (seq_comments_id.NEXTVAL, 152, sysdate, '7:3 비율이 제 입맛에 딱이네요.', 'megazine', 11, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 152, sysdate, '코코아 닙스 토핑도 시도해볼게요.', 'megazine', 11, 5);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '자료 출처까지 정리돼 있어 신뢰가 갑니다.', 'megazine', 11, 10);
-insert into comments values (seq_comments_id.NEXTVAL, 155, sysdate, '웨이퍼 조합이 바삭함을 살려주네요.', 'megazine', 11, 12);
-insert into comments values (seq_comments_id.NEXTVAL, 155, sysdate, '보완 설명 감사합니다.', 'megazine', 11, 18);
-
--- megazine 9
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(제철 과일) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 12, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 158, sysdate, '온도 대비로 향이 확 살아나네요.', 'megazine', 12, 8);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '현장감 있는 팁 덕분에 바로 적용했습니다.', 'megazine', 12, 11);
-insert into comments values (seq_comments_id.NEXTVAL, 160, sysdate, '복숭아와 조합이 특히 좋았습니다.', 'megazine', 12, 5);
-
--- megazine 10
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(플로트) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 14, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 162, sysdate, '거품 조절 팁 덕에 비율 잡기 쉬웠어요.', 'megazine', 14, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 162, sysdate, '레몬 제스트 마무리가 신의 한 수.', 'megazine', 14, 9);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '자료 출처까지 정리돼 있어 신뢰가 갑니다.', 'megazine', 14, 13);
-insert into comments values (seq_comments_id.NEXTVAL, 165, sysdate, '탄산수는 충분히 차갑게가 포인트.', 'megazine', 14, 7);
-insert into comments values (seq_comments_id.NEXTVAL, 165, sysdate, '보완 설명 감사합니다.', 'megazine', 14, 18);
-
--- megazine 11
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(예비) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 11, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 168, sysdate, '표나 그림 추가되면 더 좋을 듯!', 'megazine', 11, 6);
-insert into comments values (seq_comments_id.NEXTVAL, 168, sysdate, '비교 기준이 명확해서 이해가 쉬웠습니다.', 'megazine', 11, 12);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '현장감 있는 팁 덕분에 바로 적용했습니다.', 'megazine', 11, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 171, sysdate, '다음 글도 기대할게요.', 'megazine', 11, 10);
-insert into comments values (seq_comments_id.NEXTVAL, 171, sysdate, '보완 설명 감사합니다.', 'megazine', 11, 19);
-
--- megazine 12
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(페어링(제철)) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 12, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 174, sysdate, '산미 있는 과일과의 조합이 좋네요.', 'megazine', 12, 8);
-insert into comments values (seq_comments_id.NEXTVAL, 174, sysdate, '멜론 조합은 고소함이 살아납니다.', 'megazine', 12, 5);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '자료 출처까지 정리돼 있어 신뢰가 갑니다.', 'megazine', 12, 21);
-insert into comments values (seq_comments_id.NEXTVAL, 177, sysdate, '서빙 5분 전 냉장 숙성 팁이 핵심.', 'megazine', 12, 6);
-
--- megazine 14
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(캘린더) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 14, 13);
-insert into comments values (seq_comments_id.NEXTVAL, 179, sysdate, '화요일 입고 비중 메모했습니다.', 'megazine', 14, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 179, sysdate, '개점 직후 방문이 확실하네요.', 'megazine', 14, 9);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '현장감 있는 팁 덕분에 바로 적용했습니다.', 'megazine', 14, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 182, sysdate, '보냉 파우치+아이스팩 조합이 좋네요.', 'megazine', 14, 7);
-
--- megazine 17
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '자료 출처까지 정리돼 있어 신뢰가 갑니다.', 'megazine', 17, 13);
-insert into comments values (seq_comments_id.NEXTVAL, 184, sysdate, '다음 글도 기대할게요.', 'megazine', 17, 5);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(건강) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 17, 8);
-insert into comments values (seq_comments_id.NEXTVAL, 186, sysdate, '실제로 해보니 효과 있었어요.', 'megazine', 17, 8);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '현장감 있는 팁 덕분에 바로 적용했습니다.', 'megazine', 17, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 188, sysdate, '표나 그림 추가되면 더 좋을 듯!', 'megazine', 17, 12);
-insert into comments values (seq_comments_id.NEXTVAL, 188, sysdate, '다음 글도 기대할게요.', 'megazine', 17, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 188, sysdate, '보완 설명 감사합니다.', 'megazine', 17, 17);
-
--- megazine 19
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '현장감 있는 팁 덕분에 바로 적용했습니다.', 'megazine', 19, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 192, sysdate, '가격대별 추천표도 부탁드립니다.', 'megazine', 19, 5);
-insert into comments values (seq_comments_id.NEXTVAL, 192, sysdate, '다음 글도 기대할게요.', 'megazine', 19, 21);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '글(건강 체크) 잘 읽었습니다. 핵심만 쏙쏙 정리됐네요.', 'megazine', 19, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 195, sysdate, '가격대별 추천표도 부탁드립니다.', 'megazine', 19, 8);
-insert into comments values (seq_comments_id.NEXTVAL, 195, sysdate, '보완 설명 감사합니다.', 'megazine', 19, 5);
-
--- 투표 댓글
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '녹차 아이스크림 투표 참여 완료!', 'vote', 1, 22);
-insert into comments values (seq_comments_id.NEXTVAL, 198, sysdate, '배라 녹차 한 표요!', 'vote', 1, 23);
-insert into comments values (seq_comments_id.NEXTVAL, 198, sysdate, '하겐다즈도 진하긴 하죠 ㅎㅎ', 'vote', 1, 3);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '여름 과일 투표 기대됩니다.', 'vote', 4, 4);
-insert into comments values (seq_comments_id.NEXTVAL, 201, sysdate, '복숭아가 짱이죠!', 'vote', 4, 5);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '가을 아이스크림 주제 흥미롭네요.', 'vote', 13, 6);
-insert into comments values (seq_comments_id.NEXTVAL, 203, sysdate, '밤맛이 생각보다 괜찮더라고요.', 'vote', 13, 7);
-insert into comments values (seq_comments_id.NEXTVAL, 203, sysdate, '고구마맛은 호불호가 갈리네요.', 'vote', 13, 8);
-
--- 이벤트 댓글
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '페스티벌 일정 확인했습니다. 가볼게요!', 'event', 3, 9);
-insert into comments values (seq_comments_id.NEXTVAL, 206, sysdate, '스탬프 투어 굿즈 기대됩니다.', 'event', 3, 10);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '초코 위크 타임세일 정보 감사!', 'event', 15, 11);
-insert into comments values (seq_comments_id.NEXTVAL, 208, sysdate, '17시에 오면 혜택이 많네요.', 'event', 15, 12);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '여름 시식회 참여 후기 남깁니다. 만족!', 'event', 16, 13);
-insert into comments values (seq_comments_id.NEXTVAL, 210, sysdate, '보냉팩 제공이 아주 유용했어요.', 'event', 16, 14);
-
--- 레시피 댓글
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '레시피 1번 따라해봤어요. 성공!', 'recipe', 1, 15);
-insert into comments values (seq_comments_id.NEXTVAL, 212, sysdate, '재료 대체 팁도 부탁드립니다.', 'recipe', 1, 16);
-insert into comments values (seq_comments_id.NEXTVAL, 212, sysdate, '우유 대신 오트밀크로 해도 괜찮았어요.', 'recipe', 1, 17);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '레시피 2번 소스 맛이 좋네요.', 'recipe', 2, 18);
-insert into comments values (seq_comments_id.NEXTVAL, null, sysdate, '레시피 3번은 준비가 간단해서 좋아요.', 'recipe', 3, 19);
-insert into comments values (seq_comments_id.NEXTVAL, 216, sysdate, '조리 시간만 조금 더 알려주세요.', 'recipe', 3, 20);
-insert into comments values (seq_comments_id.NEXTVAL, 216, sysdate, '온도도 표기되면 완벽할 듯!', 'recipe', 3, 21);
-
-commit;
 
 
 

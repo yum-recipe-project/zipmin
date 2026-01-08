@@ -92,10 +92,12 @@ async function fetchAdminChompList() {
 			size : size
 		}).toString();
 		
-		const result = await fetch(`/chomp?${params}`, {
+		const response = await fetch(`/chomp?${params}`, {
 			method: 'GET',
 			headers: getAuthHeaders()
 		});
+		
+		const result = await response.json();
 		
 		if (result.code === 'CHOMP_READ_LIST_SUCCESS') {
 			// 전역변수 설정
@@ -106,6 +108,18 @@ async function fetchAdminChompList() {
 			// 렌더링
 			renderAdminChompList(chompList);
 			renderPagination(fetchAdminChompList);
+			
+			// 결과 없음 표시
+			if (result.data.totalPages === 0) {
+				document.querySelector('.chomp_list').style.display = 'none';
+				document.querySelector('.search_empty')?.remove();
+				const content = document.querySelector('.chomp_content');
+				content.insertAdjacentElement('afterend', renderSearchEmpty());
+			}
+			else {
+				document.querySelector('.search_empty')?.remove();
+				document.querySelector('.chomp_list').style.display = '';
+			}
 			
 			// 스크롤 최상단 이동
 			if (scrollTop) {
@@ -128,15 +142,11 @@ async function fetchAdminChompList() {
 			redirectToAdminLogin();
 		}
 		else if (result.code === 'INTERNAL_SERVER_ERROR') {
-			console.log(error);
-		}
-		else {
-			console.log(error);
+			alertDanger('서버에서 알 수 없는 오류가 발생했습니다.');
 		}
 	}
 	catch (error) {
 		console.log(error);
-		
 	}
 }
 

@@ -4,7 +4,7 @@
 let totalPages = 0;
 let totalElements = 0;
 let page = 0;
-const size = 15;
+const size = 16;
 let keyword = '';
 let category = '';
 let sortKey = 'id';
@@ -92,15 +92,16 @@ async function fetchAdminChompList() {
 			size : size
 		}).toString();
 		
-		const response = await instance.get(`/chomp?${params}`, {
+		const result = await fetch(`/chomp?${params}`, {
+			method: 'GET',
 			headers: getAuthHeaders()
 		});
 		
-		if (response.data.code === 'CHOMP_READ_LIST_SUCCESS') {
+		if (result.code === 'CHOMP_READ_LIST_SUCCESS') {
 			// 전역변수 설정
-			page = response.data.data.number;
-			totalPages = response.data.data.totalPages;
-			chompList = response.data.data.content;
+			page = result.data.number;
+			totalPages = result.data.totalPages;
+			chompList = result.data.content;
 			
 			// 렌더링
 			renderAdminChompList(chompList);
@@ -111,31 +112,31 @@ async function fetchAdminChompList() {
 				window.scrollTo({ top: 0, behavior: 'smooth' });
 			}
 		}
-	}
-	catch (error) {
-		const code = error?.response?.data?.code;
-		
-		if (code === 'CHOMP_READ_LIST_FAIL') {
+		if (result.code === 'CHOMP_READ_LIST_FAIL') {
 			alertDanger('쩝쩝박사 목록 조회에 실패했습니다.');
 		}
-		else if (code === 'USER_INVALID_INPUT') {
+		else if (result.code === 'USER_INVALID_INPUT') {
 			alertDanger('입력값이 유효하지 않습니다.');
 		}
-		else if (code === 'AUTH_TOKEN_INVALID') {
+		else if (result.code === 'AUTH_TOKEN_INVALID') {
 			redirectToAdminLogin();
 		}
-		else if (code === 'CHOMP_FORBIDDEN') {
+		else if (result.code === 'CHOMP_FORBIDDEN') {
 			redirectToAdminLogin();
 		}
-		else if (code === 'USER_NOT_FOUND') {
+		else if (result.code === 'USER_NOT_FOUND') {
 			redirectToAdminLogin();
 		}
-		else if (code === 'INTERNAL_SERVER_ERROR') {
+		else if (result.code === 'INTERNAL_SERVER_ERROR') {
 			console.log(error);
 		}
 		else {
 			console.log(error);
 		}
+	}
+	catch (error) {
+		console.log(error);
+		
 	}
 }
 

@@ -1,726 +1,230 @@
 -- ====================
 -- FRIDGE 테이블 더미데이터
 -- ====================
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭가슴살', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭다리', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '삼겹살', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '목살', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '소불고기용', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '차돌박이', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭봉', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '돼지고기 앞다리살', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '소등심', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '갈비', '육류', '냉동', 1);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭가슴살', '육류', '냉장', 1); -- 1
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭다리', '육류', '냉동', 1); -- 2
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭날개', '육류', '냉동', 1); -- 3
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭다짐육', '육류', '냉동', 1); -- 4
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭안심', '육류', '냉장', 1); -- 5
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭봉', '육류', '냉동', 1); -- 6
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭정육', '육류', '냉장', 1); -- 7
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '삼겹살', '육류', '냉장', 1); -- 8
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '목살', '육류', '냉장', 1); -- 9
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '앞다리살', '육류', '냉장', 1); -- 10
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '뒷다리살', '육류', '냉동', 1); -- 11
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '돼지고기다짐육', '육류', '냉동', 1); -- 12
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '돼지불고기용', '육류', '냉장', 1); -- 13
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '돼지갈비', '육류', '냉동', 1); -- 14
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '항정살', '육류', '냉동', 1); -- 15
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '소불고기용', '육류', '냉장', 1); -- 16
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '차돌박이', '육류', '냉동', 1); -- 17
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '등심', '육류', '냉장', 1); -- 18
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '사태', '육류', '냉동', 1); -- 19
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '양지', '육류', '냉동', 1); -- 20
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '갈비', '육류', '냉동', 1); -- 21
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '우삼겹', '육류', '냉동', 1); -- 22
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '소다짐육', '육류', '냉동', 1); -- 23
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '국거리용소고기', '육류', '냉장', 1); -- 24
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '샤브샤브용', '육류', '냉장', 1); -- 25
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '찜갈비', '육류', '냉동', 1); -- 26
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '토시살', '육류', '냉장', 1); -- 27
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '부채살', '육류', '냉장', 1); -- 28
 
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭안심', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '훈제닭가슴살', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '항정살', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '돼지갈비', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '우삼겹', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '불고기감', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭날개', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭껍질', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '돼지불백용', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '수육용 돼지고기', '육류', '냉장', 1);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '고등어', '어패류', '냉동', 1); -- 29
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '갈치', '어패류', '냉동', 1); -- 30
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '삼치', '어패류', '냉동', 1); -- 31
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '조기', '어패류', '냉동', 1); -- 32
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '꽁치', '어패류', '냉동', 1); -- 33
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '가자미', '어패류', '냉동', 1); -- 34
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '명태', '어패류', '냉동', 1); -- 35
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '임연수어', '어패류', '냉동', 1); -- 36
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '연어', '어패류', '냉장', 1); -- 37
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '광어', '어패류', '냉장', 1); -- 38
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '우럭', '어패류', '냉장', 1); -- 39
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '오징어', '어패류', '냉동', 1); -- 40
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '갑오징어', '어패류', '냉동', 1); -- 41
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '낙지', '어패류', '냉동', 1); -- 42
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '문어', '어패류', '냉동', 1); -- 43
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '쭈꾸미', '어패류', '냉동', 1); -- 44
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '새우', '어패류', '냉동', 1); -- 45
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '대하', '어패류', '냉동', 1); -- 46
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '꽃게', '어패류', '냉동', 1); -- 47
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '홍합', '어패류', '냉장', 1); -- 48
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '바지락', '어패류', '냉장', 1); -- 49
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '모시조개', '어패류', '냉장', 1); -- 50
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '가리비', '어패류', '냉동', 1); -- 51
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '전복', '어패류', '냉장', 1); -- 52
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '멸치', '어패류', '실온', 1); -- 53
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '다시마', '어패류', '실온', 1); --54
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '황태', '어패류', '실온', 1); -- 55
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '북어채', '어패류', '실온', 1); -- 56
 
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '소안심', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '양지머리', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭목살', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭모래집', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '돼지등심', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '돼지안심', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '토시살', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '사태', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭근위', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭연골', '육류', '냉동', 1);
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '양파', '채소류', '실온', 1); -- 57
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '대파', '채소류', '냉장', 1); -- 58
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '마늘', '채소류', '실온', 1); -- 59
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '청양고추', '채소류', '냉장', 1); -- 60
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '홍고추', '채소류', '냉장', 1); -- 61
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '무', '채소류', '냉장', 1); -- 62
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '감자', '채소류', '실온', 1); -- 63
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '애호박', '채소류', '냉장', 1); -- 64
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '배추', '채소류', '냉장', 1); -- 65
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '콩나물', '채소류', '냉장', 1); -- 66
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '숙주나물', '채소류', '냉장', 1); -- 67
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '가지', '채소류', '냉장', 1); -- 68
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '양배추', '채소류', '냉장', 1); -- 69
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '브로콜리', '채소류', '냉장', 1); -- 70
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '파프리카', '채소류', '냉장', 1); -- 71
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '피망', '채소류', '냉장', 1); -- 72
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '버섯', '채소류', '냉장', 1); -- 73
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '상추', '채소류', '냉장', 1); -- 74
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '깻잎', '채소류', '냉장', 1); -- 75
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '치커리', '채소류', '냉장', 1); -- 76
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '로메인', '채소류', '냉장', 1); -- 77
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '양상추', '채소류', '냉장', 1); -- 78
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '미나리', '채소류', '냉장', 1); -- 79
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '쑥갓', '채소류', '냉장', 1); -- 80
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '부추', '채소류', '냉장', 1); -- 81
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '샐러리', '채소류', '냉장', 1); -- 83
 
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '돼지껍데기', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '돼지불고기용', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '살치살', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '부채살', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭가슴살큐브', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭안창살', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭목뼈', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭다짐육', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭발', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭꼬치용', '육류', '냉장', 1);
+-- 과일류
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '사과', '과일류', '냉장', 1); -- 84
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '배', '과일류', '냉장', 1); -- 85
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '바나나', '과일류', '실온', 1); -- 86
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '귤', '과일류', '냉장', 1); -- 87
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '오렌지', '과일류', '냉장', 1); -- 88
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '포도', '과일류', '냉장', 1); -- 89
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '토마토', '과일류', '냉장', 1); -- 90
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '방울토마토', '과일류', '냉장', 1); -- 91
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '아보카도', '과일류', '실온', 1); -- 92
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '레몬', '과일류', '냉장', 1); -- 93
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '라임', '과일류', '냉장', 1); -- 94
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '딸기', '과일류', '냉장', 1); -- 95
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '블루베리', '과일류', '냉장', 1); -- 96
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '망고', '과일류', '냉장', 1); -- 97
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '파인애플', '과일류', '냉장', 1); -- 98
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '키위', '과일류', '냉장', 1); -- 99
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '냉동블루베리', '과일류', '냉동', 1); -- 100
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '냉동딸기', '과일류', '냉동', 1); -- 101
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '냉동망고', '과일류', '냉동', 1); -- 102
 
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '훈제닭다리', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '닭껍질튀김용', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '베이컨슬라이스', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '베이컨큐브', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '햄스테이크', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '소시지믹스', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '치킨너겟원육', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chicken.png', '양념치킨용닭', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '미트볼원육', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '스팸캔햄', '육류', '실온', 1);
+-- 견과류
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '아몬드', '견과류', '실온', 1); -- 103
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '호두', '견과류', '실온', 1); -- 104
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '캐슈넛', '견과류', '실온', 1); -- 105
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '땅콩', '견과류', '실온', 1); -- 106
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '피스타치오', '견과류', '실온', 1); -- 107
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '마카다미아', '견과류', '실온', 1); -- 108
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '헤이즐넛', '견과류', '실온', 1); -- 109
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '잣', '견과류', '실온', 1); -- 110
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '해바라기씨', '견과류', '실온', 1); -- 111
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '호박씨', '견과류', '실온', 1); -- 112
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '참깨', '견과류', '실온', 1); -- 113
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '검은깨', '견과류', '실온', 1); -- 114
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '치아씨드', '견과류', '실온', 1); -- 115
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '아마씨', '견과류', '실온', 1); -- 116
 
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '런천미트', '육류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '비엔나소시지', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '소다짐육', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '소장조림용', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '소샤브샤브용', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '소스튜용', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '소꼬리', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '소국거리슬라이스', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '소큐브스테이크', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '소불고기양념육', '육류', '냉장', 1);
+-- 유제품
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '우유', '유제품', '냉장', 1); -- 117
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '저지방우유', '유제품', '냉장', 1); -- 118
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '무지방우유', '유제품', '냉장', 1); -- 119
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '락토프리우유', '유제품', '냉장', 1); -- 120
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '두유', '유제품', '실온', 1); -- 121
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '아몬드밀크', '유제품', '실온', 1); -- 122
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '오트밀크', '유제품', '실온', 1); -- 123
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '플레인요거트', '유제품', '냉장', 1); -- 124
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '그릭요거트', '유제품', '냉장', 1); -- 125
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '딸기요거트', '유제품', '냉장', 1); -- 126
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '마시는요거트', '유제품', '냉장', 1); -- 127
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '요거트드링크', '유제품', '냉장', 1); -- 128
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '슬라이스치즈', '유제품', '냉장', 1); -- 129
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '모짜렐라치즈', '유제품', '냉장', 1); -- 130
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '체다치즈', '유제품', '냉장', 1); -- 131
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '파마산치즈', '유제품', '냉장', 1); -- 132
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '크림치즈', '유제품', '냉장', 1); -- 133
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '리코타치즈', '유제품', '냉장', 1); -- 134
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '부라타치즈', '유제품', '냉장', 1); -- 135
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '스트링치즈', '유제품', '냉장', 1); -- 136
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '버터', '유제품', '냉장', 1); -- 137
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '무염버터', '유제품', '냉장', 1); -- 138
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '생크림', '유제품', '냉장', 1); -- 139
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '휘핑크림', '유제품', '냉장', 1); -- 140
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '사워크림', '유제품', '냉장', 1); -- 141
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '연유', '유제품', '실온', 1); -- 142
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '커스터드크림', '유제품', '냉장', 1); -- 143
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '치즈소스', '유제품', '냉장', 1); -- 144
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '아이스크림', '유제품', '냉동', 1); --145
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '젤라또', '유제품', '냉동', 1); -- 146
 
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '소찜갈비', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cow.png', '소차돌슬라이스', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '돼지고기다짐육', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '돼지국거리', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '돼지볶음용', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '돼지찜용', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '돼지잡채용', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '돼지탕수육용', '육류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '돼지스테이크용', '육류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/pig.png', '돼지수육슬라이스', '육류', '냉장', 1);
+-- 소스류
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '간장', '소스류', '실온', 1); -- 147
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '국간장', '소스류', '실온', 1); -- 148
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '진간장', '소스류', '실온', 1); -- 149
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/salt.png', '소금', '소스류', '실온', 1); -- 150
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/sugar.png', '설탕', '소스류', '실온', 1); -- 151
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/vinegar.png', '식초', '소스류', '실온', 1); -- 152
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/oil.png', '식용유', '소스류', '실온', 1); -- 153
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/oil.png', '참기름', '소스류', '실온', 1); -- 154
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/oil.png', '올리브유', '소스류', '실온', 1); -- 155
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '고추장', '소스류', '실온', 1); -- 156
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '된장', '소스류', '실온', 1); -- 167
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '고춧가루', '소스류', '실온', 1); -- 158
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '쌈장', '소스류', '실온', 1); -- 159
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/syrup.png', '물엿', '소스류', '실온', 1); -- 160
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/syrup.png', '매실액', '소스류', '실온', 1); -- 161
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '굴소스', '소스류', '냉장', 1); -- 162
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '피쉬소스', '소스류', '냉장', 1); -- 163
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '두반장', '소스류', '냉장', 1); -- 164
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '마라소스', '소스류', '냉장', 1); -- 165
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '스리라차소스', '소스류', '냉장', 1); -- 166
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/ketchup.png', '케첩', '소스류', '냉장', 1); -- 167
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/ketchup.png', '토마토소스', '소스류', '냉장', 1); -- 168
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/ketchup.png', '볼로네제소스', '소스류', '냉장', 1); -- 169
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/ketchup.png', '바비큐소스', '소스류', '냉장', 1); -- 170
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/ketchup.png', '스테이크소스', '소스류', '냉장', 1); -- 171
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/mayonnaise.png', '마요네즈', '소스류', '냉장', 1); -- 172
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/mayonnaise.png', '허니머스터드', '소스류', '냉장', 1); -- 173
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/mayonnaise.png', '타르타르소스', '소스류', '냉장', 1); -- 174
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/mayonnaise.png', '시저드레싱', '소스류', '냉장', 1); -- 175
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/mayonnaise.png', '참깨드레싱', '소스류', '냉장', 1); -- 176
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '쯔유', '소스류', '냉장', 1); -- 177
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '샤브샤브소스', '소스류', '냉장', 1); -- 178
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '라면스프팩', '소스류', '실온', 1); -- 179
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '육수팩', '소스류', '실온', 1); -- 180
 
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '고등어', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '연어', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '오징어', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '새우', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '조기', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '꽁치', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '홍합', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '문어', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '낙지', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '가자미', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '멸치', '어패류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '황태채', '어패류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '조개살', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '꽃게', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '대합', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '바지락살', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '장어', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '쭈꾸미', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '가리비', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '전복', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '꼬막', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '참치회용', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '방어', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '오만둥이', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '도다리', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '민어', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '광어', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '우럭', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '쥐포', '어패류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '건오징어', '어패류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '날치알', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '참소라', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '피조개', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '키조개관자', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '백합조개', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '동죽', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '명태포', '어패류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '황태포', '어패류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '북어채', '어패류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '쥐치포', '어패류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '먹태', '어패류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '갈치토막', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '삼치살', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '임연수어', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '열기', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '도루묵', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '홍게다리', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '킹크랩다리', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '랍스터테일', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '랍스터살', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '크랩스틱', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '연어스테이크', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '연어뱃살', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '연어훈제슬라이스', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '참치통조림', '어패류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '고등어통조림', '어패류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '오징어링', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '갑오징어슬라이스', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '쭈꾸미볶음용', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '낙지다리', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '문어슬라이스', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '조개관자', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '굴젓', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '멍게젓', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '명란젓', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '창란젓', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '병어', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '전갱이', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '쥐노래미', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '숭어', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '방어머리', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '아귀꼬리', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '아귀살', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '아귀간', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '대구곤이', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '대구살', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '대구머리', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '코다리', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '코다리채', '어패류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '코다리포', '어패류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '황석어', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '청어', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '빙어', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '게살팩', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '꽃게살', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '대게살', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '민물새우', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '건새우', '어패류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '새우젓', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '조기알', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '날치알팩', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '연어알', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '미역줄기', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '다시마채', '어패류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '톳', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '해삼내장젓', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '전복내장', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '성게알', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '갈치포', '어패류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '쥐포채', '어패류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '오징어채', '어패류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '문어다리슬라이스', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '문어통족', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '바닷장어', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '붕장어', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '아나고슬라이스', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '연어꼬리', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '연어머리', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '연어껍질', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '참치뱃살', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '참치등살', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '참치꼬리', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '대하', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '흰다리새우', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '블랙타이거새우', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '꽃게탕용팩', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '간장게장용꽃게', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '양념게장팩', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '조개탕모둠', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '모시조개', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '백합조개살', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '해물믹스', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '볶음용해물팩', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '파전용해물팩', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '젓새우', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '창난젓', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '오징어젓', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '멸치육수팩', '어패류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '다시마육수팩', '어패류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '해물육수팩', '어패류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '훈제연어조각', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '연어롤슬라이스', '어패류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '광어필렛', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '참돔필렛', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '농어필렛', '어패류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '우럭필렛', '어패류', '냉동', 1);
+-- 완제품
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '치킨너겟', '완제품', '냉동', 1); -- 181
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '감자튀김', '완제품', '냉동', 1); -- 182
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '군만두', '완제품', '냉동', 1); -- 183
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동피자', '완제품', '냉동', 1); -- 184
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '볶음밥', '완제품', '냉동', 1); -- 185
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '김치볶음밥', '완제품', '냉동', 1); -- 186
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동파스타', '완제품', '냉동', 1); -- 187
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '즉석떡볶이', '완제품', '냉장', 1); -- 188
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '편의점도시락', '완제품', '냉장', 1); -- 189
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '컵라면', '완제품', '실온', 1); -- 190
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '통조림참치', '완제품', '실온', 1); -- 191
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '아이스크림', '완제품', '냉동', 1); -- 192
 
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '당근', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '양파', '채소류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '상추', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '가지', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '시금치', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '부추', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '무', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '대파', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '애호박', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '청경채', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '깻잎', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '비트', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '쪽파', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '오이', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '브로콜리', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '양배추', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '셀러리', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '콜라비', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '적양파', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '단호박', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '미나리', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '케일', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '아스파라거스', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '파프리카', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '샬롯', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '주키니호박', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '루꼴라', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '근대', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '토마토', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '연근', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '마늘종', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '청양고추', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '숙주', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '콩나물', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '청경채잎', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '적근대', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '비타민채소', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '치커리', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '겨자잎', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '콜리플라워', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '로마브로콜리', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '방울양배추', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '노랑파프리카', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '주황파프리카', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '홍고추', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '마늘쫑', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '쪽마늘', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '실파', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '노랑양파', '채소류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '미니단호박', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '애플호박', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '쥬키니슬라이스', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '노각', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '가지큐브', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '우엉채', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '연근슬라이스', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '알감자', '채소류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '밤고구마', '채소류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '자색고구마', '채소류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '돌나물', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '세발나물', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '참나물', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '유채잎', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '쑥갓줄기', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '다진마늘팩', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '다진생강팩', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '절임마늘', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '장아찌마늘', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '락교', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '채썬무', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '무말랭이', '채소류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '절임무', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '피클무', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '쌈무', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '쌈채소믹스', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '베이비루꼴라', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '아이스트림', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '프릴레터스', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '버터헤드레터스', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '미니당근', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '컬러당근', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '레디쉬', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '비트슬라이스', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '순무', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '흰대파', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '적대파', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '샬롯슬라이스', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '건양파', '채소류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '양파후레이크', '채소류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '미니오이', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '샐러드오이', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '노랑호박', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '청호박', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/eggplant.png', '단호박큐브', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '쑥부쟁이', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '곰취', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '방풍나물', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '머위잎', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/grass.png', '취나물', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '옥수수알', '채소류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '그린빈', '채소류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '완두콩', '채소류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '브로콜리플로렛', '채소류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '믹스베지터블', '채소류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '장아찌오이', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '피클오이', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '단무지슬라이스', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '초생강', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/onion.png', '락교절임', '채소류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '건고추', '채소류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '고추가루팩', '채소류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '말린표고버섯', '채소류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '말린무채', '채소류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/carrot.png', '말린가지', '채소류', '실온', 1);
-
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '사과', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '배', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '귤', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '바나나', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '포도', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '키위', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '파인애플', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '복숭아', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '망고', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '체리', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '자몽', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '블루베리', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '라임', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '레몬', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '석류', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '무화과', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '용과', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '파파야', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '한라봉', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '청포도', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '멜론', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '수박', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '청사과', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '홍옥사과', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '골드키위', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '그린키위', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '천도복숭아', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '황도복숭아', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '레드자몽', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '스위티자몽', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '라임조각', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '레몬슬라이스', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '블랙베리', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '라즈베리', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '크랜베리', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '혼합베리팩', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '냉동블루베리', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '샤인머스켓', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '레드글로브포도', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '머루포도', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '건포도팩', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '청포도건과', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '두리안조각', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '람부탄', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '리치', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '패션후르츠', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '구아바', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '코코넛조각', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '코코넛칩', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '건파인애플', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '건망고', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '건바나나칩', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '귤과즙팩', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '오렌지슬라이스', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '레몬과즙큐브', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '망고큐브', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '딸기슬라이스', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '감말랭이', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '곶감', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '대추말림', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '무화과말림', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '사과칩', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '배즙팩', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '석류즙팩', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '블루베리잼', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '딸기잼', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '오렌지마멀레이드', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '아로니아', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '아로니아분말', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '아사이베리팩', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '아사이분말', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '노니슬라이스', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '노니분말', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '카카오닙스', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '카카오펄프', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '카카오과육', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '드래곤후르츠슬라이스', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '스타프루트', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '카람볼라', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '잭프루트조각', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '잭프루트칩', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '살라크', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '망고스틴', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '롱간', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '포멜로', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '유자청', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '레몬청', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '오미자청', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '자몽청', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '청포도청', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '복분자청', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '매실청', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '복분자냉동팩', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '오디냉동팩', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '산딸기냉동팩', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '살구냉동팩', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '체리냉동팩', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '홍시냉동팩', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '감귤냉동팩', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '파인애플냉동링', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '바나나냉동슬라이스', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '수박냉동큐브', '과일류', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '감귤말랭이', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '사과말랭이', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '배말랭이', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '자두말랭이', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '복숭아말랭이', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '석류농축액', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '블루베리농축액', '과일류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '망고퓨레', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '패션후르츠퓨레', '과일류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/apple.png', '라즈베리퓨레', '과일류', '냉장', 1);
-
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '아몬드', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '호두', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '캐슈넛', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '피스타치오', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '마카다미아', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '헤이즐넛', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '브라질너트', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '피칸', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '잣', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '해바라기씨', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '호박씨', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '아마씨', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '볶은아몬드', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '생아몬드', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '슬라이스아몬드', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '아몬드가루', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '아몬드버터', '견과류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '호두분태', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '호두가루', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '피칸', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '마카다미아', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '캐슈넛', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '로스티드캐슈', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '캐슈버터', '견과류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '캐슈파우더', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '브라질너트', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '피스타치오분태', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '피스타치오페이스트', '견과류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '헤이즐넛가루', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '잣가루', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '은행', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '군밤', '견과류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '피넛스', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '땅콩분태', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '땅콩버터', '견과류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '허니버터아몬드', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '와사비아몬드', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '초코코팅아몬드', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '요거트코팅견과', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '그래놀라견과믹스', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '샐러드토핑견과', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '베이킹용견과믹스', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '해바라기씨', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '호박씨', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '치아씨드', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '아마씨', '견과류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/almond.png', '퀴노아씨앗', '견과류', '실온', 1);
-
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '우유', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '치즈', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '버터', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '요거트', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '생크림', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '슬라이스치즈', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '연유', '유제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '크림치즈', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '저지방우유', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '휘핑크림', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '모짜렐라치즈', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '그릭요거트', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '연질치즈', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '파마산치즈', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '마스카르포네', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '리코타치즈', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '우유팩', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '무지방우유', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '초코우유', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '딸기우유', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '바나나우유', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '락토프리우유', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '산양유', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '버터밀크', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '사워크림', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '클로티드크림', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '크림프레시', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '체다치즈블럭', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '고다치즈', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '에멘탈치즈', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '브리치즈', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '까망베르치즈', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '블루치즈', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '페타치즈', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '할루미치즈', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '부라타치즈', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '스트링치즈', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '플레인요거트컵', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '딸기요거트컵', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '블루베리요거트컵', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '마시는요거트', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '프로바이오틱요거트', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '연유튜브', '유제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '분유', '유제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '분유스틱', '유제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '치즈소스', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '체다치즈소스', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '아이스크림믹스', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '바닐라커스터드', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '푸딩믹스', '유제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '연유크림', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '밀크파우더', '유제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '오트밀크', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '아몬드밀크', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '코코넛밀크', '유제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '두유플레인', '유제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '두유검은콩', '유제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '우유거품크림', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '카푸치노크림', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '티라미수크림', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '슈크림필링', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '커스터드필링', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '스모크치즈', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '와인치즈', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '트러플치즈', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '허브치즈', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '갈릭크림치즈', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '치즈큐브믹스', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '치즈스틱튀김용', '유제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '치즈볼반죽', '유제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '치즈핫도그용', '유제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '모짜렐라슈레드', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '아이스크림바닐라', '유제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '아이스크림초코', '유제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '아이스크림딸기', '유제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '젤라또피스타치오', '유제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '젤라또망고', '유제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '버터시트', '유제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '크루아상버터반죽', '유제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '퍼프페이스트리시트', '유제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '파이반죽버터시트', '유제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '베이킹용버터큐브', '유제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '연유스프레드', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '카라멜크림', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '초코크림스프레드', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '헤이즐넛크림', '유제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/milk.png', '밀크잼', '유제품', '냉장', 1);
-
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/ketchup.png', '케첩', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '간장', '소스류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/mayonnaise.png', '마요네즈', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '고추장', '소스류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '된장', '소스류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/ketchup.png', '바비큐소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/mayonnaise.png', '타르타르소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '쌈장', '소스류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '핫소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/ketchup.png', '스테이크소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '스리라차소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '참치액', '소스류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/ketchup.png', '칠리소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '액젓', '소스류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '마라소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/ketchup.png', '데리야끼소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '국간장', '소스류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '페리페리소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/ketchup.png', '머스터드소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '국간장', '소스류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '진간장', '소스류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '양조간장', '소스류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '조림간장', '소스류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '간장소스팩', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '고추장', '소스류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '초고추장', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '쌈장', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '불닭소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '매운칠리소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/ketchup.png', '토마토케첩', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/ketchup.png', '스파게티토마토소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/ketchup.png', '볼로네제소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/ketchup.png', '로제파스타소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/ketchup.png', '피자소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/mayonnaise.png', '마요네즈', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/mayonnaise.png', '와사비마요', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/mayonnaise.png', '갈릭마요', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/mayonnaise.png', '타르타르소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/mayonnaise.png', '허니머스터드마요', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '데리야끼소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '스테이크소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '바베큐소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '머스터드소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '허니머스터드소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '굴소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '피쉬소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '폰즈소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '쯔유', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/soysauce.png', '샤브샤브소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/mayonnaise.png', '참깨드레싱', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/mayonnaise.png', '시저드레싱', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/mayonnaise.png', '발사믹드레싱', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/mayonnaise.png', '오리엔탈드레싱', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/mayonnaise.png', '요거트드레싱', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '스리라차소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '핫소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '칠리오일', '소스류', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '마라소스', '소스류', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/chili.png', '마파두부소스', '소스류', '냉장', 1);
-
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동피자', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '치즈돈까스', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '등심돈까스', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '치킨너겟', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '감자튀김', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '군만두', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '물만두', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '김치만두', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '고기만두', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '새우만두', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '핫도그', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '치즈핫도그', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '소시지구이팩', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '닭강정', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '탕수육', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '볶음밥도시락', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '김치볶음밥팩', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '불고기덮밥팩', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '치킨마요덮밥팩', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '카레덮밥팩', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '즉석떡볶이', '완제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '즉석라볶이', '완제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '즉석우동', '완제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '즉석짜장면', '완제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '즉석짬뽕', '완제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '레토르트미트볼', '완제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '레토르트카레', '완제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '레토르트짜장', '완제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '레토르트파스타소스', '완제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '레토르트삼계탕', '완제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '컵밥비빔밥', '완제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '컵밥불닭', '완제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '컵밥제육', '완제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '컵국밥', '완제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '즉석미역국', '완제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동파스타', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동우동볶음', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동쌀국수', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동볶음면', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동오므라이스', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동치킨윙', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동치킨봉', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동탕수육볼', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동새우튀김', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동고로케', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동치즈볼', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동김말이튀김', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동핫도그꼬치', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동야채튀김', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동오징어튀김', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉장샌드위치', '완제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉장랩샌드위치', '완제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉장파스타샐러드', '완제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉장치킨샐러드', '완제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉장시저샐러드', '완제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '편의점도시락', '완제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '김밥한줄', '완제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '초밥팩', '완제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '유부초밥팩', '완제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '주먹밥세트', '완제품', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '컵라면큰컵', '완제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '컵라면미니컵', '완제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '즉석쌀국수컵', '완제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '즉석우동컵', '완제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '즉석파스타컵', '완제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '통조림스팸', '완제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '통조림참치샐러드', '완제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '통조림닭가슴살', '완제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '통조림미트볼', '완제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '통조림파스타볼', '완제품', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동팬케이크', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동와플', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동붕어빵', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동호떡', '완제품', '냉동', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '냉동치즈케이크', '완제품', '냉동', 1);
-
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '표고버섯가루', '기타', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '느타리버섯슬라이스', '기타', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '새송이버섯채', '기타', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '팽이버섯건조', '기타', '실온', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '목이버섯불림팩', '기타', '냉장', 1);
-INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cutlery.png', '라이스페이퍼', '기타', '실온', 1);
+-- 기타
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '표고버섯', '기타', '냉장', 1); -- 193
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '새송이버섯', '기타', '냉장', 1); -- 194
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '팽이버섯', '기타', '냉장', 1); -- 195
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '느타리버섯', '기타', '냉장', 1); -- 196
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '말린표고버섯', '기타', '실온', 1); -- 197
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '미역', '기타', '실온', 1); -- 198
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '다시마', '기타', '실온', 1); -- 199
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/fish.png', '김', '기타', '실온', 1); -- 200
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '두부', '기타', '냉장', 1); -- 201
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '어묵', '기타', '냉장', 1); -- 202
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '햄', '기타', '냉장', 1); -- 203
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/dinner.png', '베이컨', '기타', '냉장', 1); -- 204
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cutlery.png', '떡볶이떡', '기타', '냉장', 1); -- 205
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cutlery.png', '우동면', '기타', '냉장', 1); -- 206
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cutlery.png', '라면사리', '기타', '실온', 1); --207
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cutlery.png', '만두피', '기타', '냉장', 1); -- 208
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cutlery.png', '밀가루', '기타', '실온', 1); -- 209
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cutlery.png', '전분', '기타', '실온', 1); -- 210
+INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cutlery.png', '빵가루', '기타', '실온', 1); -- 211
 
 
 
@@ -729,20 +233,41 @@ INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cutlery.png', 
 -- =========================
 -- USER_FRIDGE 테이블 더미데이터
 -- =========================
-INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 3, '조각', TO_DATE('26/08/10', 'RR/MM/DD'), 1, 4);
-INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 4, '근', TO_DATE('25/08/10', 'RR/MM/DD'), 3, 4);
-INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 20, '마리', TO_DATE('25/08/10', 'RR/MM/DD'), 84, 4);
-INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 7, '개', TO_DATE('25/08/10', 'RR/MM/DD'), 230, 4);
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '팩', SYSDATE + 3, 1, 4); -- 닭가슴살
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 200, 'g', SYSDATE + 2, 8, 4); -- 삼겹살
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 200, 'g', SYSDATE + 5, 16, 4); -- 소불고기용
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 2, '마리', SYSDATE + 1, 29, 4); -- 고등어
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '마리', SYSDATE + 4, 37, 4); -- 연어
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 7, '개', SYSDATE + 10, 57, 4); -- 양파
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 3, '대', SYSDATE + 6, 58, 4); -- 대파
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 10, '개', SYSDATE + 7, 63, 4); -- 감자
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 2, '봉', SYSDATE + 3, 66, 4); -- 콩나물
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '봉', SYSDATE + 5, 74, 4); -- 상추
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 6, '개', SYSDATE + 7, 124, 4); -- 플레인요거트
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 10, '장', SYSDATE + 20, 129, 4); -- 슬라이스치즈
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '병', SYSDATE + 180, 147, 4); -- 간장
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '통', SYSDATE + 90, 156, 4); -- 고추장
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 2, '봉', SYSDATE + 30, 183, 4); -- 군만두
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 2, '개', SYSDATE + 5, 188, 4); -- 즉석떡볶이
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '모', SYSDATE + 2, 201, 4); -- 두부
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '봉', SYSDATE + 3, 205, 4); -- 떡볶이떡
+
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '팩', SYSDATE + 3, 2, 5); -- 닭다리
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '근', SYSDATE + 3, 10, 5); -- 앞다리살
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 10, '개', SYSDATE + 3, 88, 5); -- 오렌지
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 2, '개', SYSDATE + 3, 62, 5); -- 무
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '병', SYSDATE + 3, 1472, 5); -- 간
 
 
 
 
 
+-- ==========================
 -- FRDIDGE_MEMO 테이블 더미데이터
--- insert into fridge_memo values (seq_fridge_memo_id.nextval, '마라탕소스', 100, 'g', null, 4);
--- insert into fridge_memo values (seq_fridge_memo_id.nextval, '닭다리살', 100, 'kg', null, 4);
--- insert into fridge_memo values (seq_fridge_memo_id.nextval, '올리브유', 200, 'ml', null, 4);
-
+-- ==========================
+INSERT INTO fridge_memo VALUES (seq_fridge_memo_id.NEXTVAL, '마늘', 1, '팩', null, 4);
+INSERT INTO fridge_memo VALUES (seq_fridge_memo_id.NEXTVAL, '닭다리살', 100, 'kg', null, 4);
+INSERT INTO fridge_memo VALUES (seq_fridge_memo_id.NEXTVAL, '올리브유', 1, '병', null, 4);
 
 
 

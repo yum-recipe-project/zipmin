@@ -259,7 +259,7 @@ INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'ef9831afd7984152b7c55401e83f0
 INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '6d96268e15974c5daf7682775092968c.jpg', '해초비빔밥', '자극적인 메뉴말고 건강한 한끼를 찾고 계신다면 해초비빔밥 어떠세요? 꼬시래기와 날치알이 들어가서 오독오독 톡톡 씹히는 맛이 일품이에요! 비빔장도 직접 만들어 비벼 드세요~ 일반 초고추장보다 훨씬 감칠맛이 돌아요.', SYSDATE, '초급', '20분', '매움', '1인분', '출처 : https://www.10000recipe.com/recipe/7049344', 13); -- 255
 INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '9bea764f8f184742accdf93c2773f011.jpg', '삼겹살비빔밥', '빠르고 간단하게 집밥 만드는 법! 지난번 만들었던 무생채을 넣어 더욱 맛있는 삼겹살 비빔밥! 갖은 야채에 삼겹살까지 슥슥 비벼서 맛있게 드세요!', SYSDATE, '초급', '20분', '매움', '2인분', '출처 : https://www.10000recipe.com/recipe/6978477', 8); -- 256
 INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, '7fb50762bea54c8b989d0dfbabd158fa.jpg', '고구마줄기갈치조림', '무를 넣었던 갈치조림 보단 고구마줄기를 넣은 갈치조림도 별미 ★ 비린내의 끝판~! 갈치를 비린내 없이 요리하는 법~!', SYSDATE, '중급', '20분', '매움', '3인분', '출처 : https://www.10000recipe.com/recipe/6922642', 6); -- 257
-INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'd97339b66e7f445e820fedafb4a43eda.png', '청양고추멸치볶음', '달달한 멸치볶음 속에 청양고추의 짜릿한 매운맛이 팍팍!! 쉽게 따라할 수 있는 전자레인지 간편요리~', SYSDATE, '초급', '10분', '매움', '4인분', '출처 : https://www.10000recipe.com/recipe/6894270', 14); -- 258
+INSERT INTO recipe VALUES (seq_recipe_id.NEXTVAL, 'a758c079da594b30959eaa056f7a9fb6.png', '청양고추멸치볶음', '달달한 멸치볶음 속에 청양고추의 짜릿한 매운맛이 팍팍!! 쉽게 따라할 수 있는 전자레인지 간편요리~', SYSDATE, '초급', '10분', '매움', '4인분', '출처 : https://www.10000recipe.com/recipe/6894270', 14); -- 258
 
 
 

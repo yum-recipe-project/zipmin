@@ -39,7 +39,7 @@ async function fetchUserFridgeList() {
 		const token = localStorage.getItem('accessToken');
 		const id = parseJwt(token).id;
 		
-		const response = await instance.get(`users/${id}/fridges`, {
+		const response = await instance.get(`/users/${id}/fridges`, {
 			headers: getAuthHeaders()
 		});
 		
@@ -406,16 +406,16 @@ document.addEventListener('DOMContentLoaded', async function() {
 		const code = error?.response?.data?.code;
 
 		if (code === 'FRIDGE_PICK_LIST_SUCCESS') {
-			alertDanger('냉장고 파먹기 목록 조회에 실패했습니다.')
+			alertDanger('나의 냉장고 조회에 실패했습니다.');
 		}
 		else if (code === 'USER_FRIDGE_READ_LIST_FAIL') {
-			alertDanger('나의 냉장고 목록 조회에 실패했습니다.')
+			alertDanger('나의 냉장고 조회에 실패했습니다.');
 		}
 		else if (code === 'RECIPE_READ_LIST_FAIL') {
-			alertDanger('레시피 목록 조회에 실패했습니다.')
+			alertDanger('나의 냉장고 조회에 실패했습니다.');
 		}
 		else if (code === 'RECIPE_STOCK_READ_LIST_FAIL') {
-			alertDanger('레시피 재로 목록 조회에 실패했습니다.')
+			alertDanger('나의 냉장고 조회에 실패했습니다.');
 		}
 		else if (code === 'USER_FRIDGE_INVALID_INPUT') {
 			alertDanger('입력값이 유효하지 않습니다.');
@@ -519,7 +519,7 @@ async function fetchUserMemoList() {
 		const token = localStorage.getItem('accessToken');
 		const id = parseJwt(token).id;
 		
-		const response = await instance.get(`users/${id}/memos`, {
+		const response = await instance.get(`/users/${id}/memos`, {
 			headers: getAuthHeaders(),
 		});
 		

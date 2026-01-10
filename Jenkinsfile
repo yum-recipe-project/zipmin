@@ -53,6 +53,7 @@ pipeline {
 				// 배포에 필요한 민감 정보를 환경 변수로 주입
 				withCredentials([
 					string(credentialsId: 'APP_BASE_URL', variable: 'APP_BASE_URL'),
+					string(credentialsId: 'APP_UPLOAD_DIR', variable: 'APP_UPLOAD_DIR'),
 					string(credentialsId: 'DB_HOST', variable: 'DB_HOST'),
 					string(credentialsId: 'DB_PORT', variable: 'DB_PORT'),
 					string(credentialsId: 'DB_NAME', variable: 'DB_NAME'),
@@ -75,6 +76,7 @@ pipeline {
 			                    umask 077
 								cat > /home/ec2-user/zipmin.env <<-EOF
 									APP_BASE_URL=${APP_BASE_URL}
+									APP_UPLOAD_DIR=${APP_UPLOAD_DIR}
 									DB_HOST=${DB_HOST}
 									DB_PORT=${DB_PORT}
 									DB_NAME=${DB_NAME}

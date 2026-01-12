@@ -138,27 +138,14 @@ function renderGuideList(guideList) {
 	const container = document.querySelector('.guide_list');
     container.innerHTML = '';
 	
-	// 목록이 없는 경우
-	if (!guideList || guideList.length === 0) {
-		const wrap = document.querySelector('.guide_content');
-	    wrap.querySelector('.list_empty')?.remove(); 
-
-	    const emptyDiv = document.createElement('div');
-	    emptyDiv.className = 'list_empty';
-	    const span = document.createElement('span');
-	    span.textContent = '가이드가 없습니다';
-	    emptyDiv.appendChild(span);
-
-	    const guideUtil = wrap.querySelector('.guide_util');
-	    if (guideUtil) {
-	        guideUtil.insertAdjacentElement('afterend', emptyDiv);
-	    } else {
-	        wrap.appendChild(emptyDiv);
-	    }
-
-	    return;
+	// 키친가이드 목록이 존재하지 않는 경우
+	if (guideList == null || guideList.length === 0) {
+		document.querySelector('.guide_list').style.display = 'none';
+		document.querySelector('.search_empty')?.remove();
+		document.querySelector('.guide_content').insertAdjacentElement('afterend', renderSearchEmpty());
 	}
 	
+	// 키친가이드 목록이 존재하는 경우
     guideList.forEach(guide => {
         const li = document.createElement('li');
 

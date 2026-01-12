@@ -139,8 +139,24 @@ function renderGuideList(guideList) {
     container.innerHTML = '';
 	
 	// 목록이 없는 경우
-	if (guideList == null || guideList.length === 0) {
-		renderSearchEmpty();
+	if (!guideList || guideList.length === 0) {
+		const wrap = document.querySelector('.guide_content');
+	    wrap.querySelector('.list_empty')?.remove(); 
+
+	    const emptyDiv = document.createElement('div');
+	    emptyDiv.className = 'list_empty';
+	    const span = document.createElement('span');
+	    span.textContent = '가이드가 없습니다';
+	    emptyDiv.appendChild(span);
+
+	    const guideUtil = wrap.querySelector('.guide_util');
+	    if (guideUtil) {
+	        guideUtil.insertAdjacentElement('afterend', emptyDiv);
+	    } else {
+	        wrap.appendChild(emptyDiv);
+	    }
+
+	    return;
 	}
 	
     guideList.forEach(guide => {

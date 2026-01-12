@@ -144,7 +144,9 @@ function renderClassList(classList) {
 	
 	// 쿠킹클래스 목록이 존재하지 않는 경우
 	if (classList == null || classList.length === 0) {
-		renderSearchEmpty();
+		document.querySelector('.class_list').style.display = 'none';
+		document.querySelector('.search_empty')?.remove();
+		document.querySelector('.class_content').insertAdjacentElement('afterend', renderSearchEmpty());
 	}
 	
 	// 쿠킹클래스의 목록이 존재하는 경우

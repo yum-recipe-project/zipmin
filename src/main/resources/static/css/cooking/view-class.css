@@ -421,6 +421,9 @@
 	font-weight: 700;
 	width: 100%;
 	margin-bottom: 16px;
+	word-break: keep-all;
+	overflow-wrap: break-word;
+	white-space: normal; 
 }
 
 #container .class_content .class_apply .apply_info {

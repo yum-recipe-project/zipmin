@@ -169,7 +169,7 @@ function renderChompList(chompList) {
 	}
 	
 	// 쩝쩝박사의 목록이 존재하는 경우
-	container.style.display = 'block';
+	container.style.display = 'flex';
 	document.querySelector('.search_empty')?.remove();
 	
 	chompList.forEach(chomp => {

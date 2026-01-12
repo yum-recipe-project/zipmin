@@ -122,9 +122,7 @@ async function fetchAdminChompList() {
 			}
 			
 			// 스크롤 최상단 이동
-			if (scrollTop) {
-				window.scrollTo({ top: 0, behavior: 'smooth' });
-			}
+			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
 		if (result.code === 'CHOMP_READ_LIST_FAIL') {
 			alertDanger('쩝쩝박사 목록 조회에 실패했습니다.');

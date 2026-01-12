@@ -138,6 +138,8 @@ function capitalizeFirst(str) {
  * 검색 결과 없음 화면을 화면에 렌더링하는 함수
  */
 function renderSearchEmpty() {
+	document.querySelector('.search_empty')?.remove();
+	
     const wrapper = document.createElement('div');
     wrapper.className = 'search_empty';
 

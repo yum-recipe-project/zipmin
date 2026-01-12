@@ -18,6 +18,24 @@ let guideList = [];
  */
 document.addEventListener('DOMContentLoaded', function() {
 	
+	// 검색
+	const searchForm = document.querySelector('.search_form[data-type="kitchen"]');
+	searchForm.addEventListener('submit', function(event) {
+	    event.preventDefault();
+	    keyword = this.querySelector('.search_word').value.trim();
+	    page = 0;        
+	    guideList = [];
+	    fetchGuideList();
+	});
+	
+	// 검색창 빈 경우 초기화
+	searchForm.querySelector('.search_word')?.addEventListener('input', function () {
+		if (this.value.trim() === '') {
+			keyword = '';
+			fetchGuideList();
+		}
+	});
+	
 	// 카테고리 버튼
 	document.querySelectorAll('.btn_tab').forEach(btn => {
         btn.addEventListener('click', function (event) {
@@ -48,25 +66,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 	});
 	
-
-	// 검색
-	const searchForm = document.querySelector('.search_form[data-type="kitchen"]');
-	searchForm.addEventListener('submit', function(event) {
-	    event.preventDefault();
-	    keyword = this.querySelector('.search_word').value.trim();
-	    page = 0;        
-	    guideList = [];
-	    fetchGuideList();
-	});
-	
-	// 검색창 빈 경우 초기화
-	searchForm.querySelector('.search_word')?.addEventListener('input', function () {
-		if (this.value.trim() === '') {
-			keyword = '';
-			fetchGuideList();
-		}
-	});
-	
 	fetchGuideList();
 });
 
@@ -85,7 +84,7 @@ async function fetchGuideList() {
 			sort: sort,
 			page: page,
 			size: size
-		});
+		}).toString();
 		
 		const response = await fetch(`/guides?${params}`, {
 			method: 'GET',
@@ -104,7 +103,7 @@ async function fetchGuideList() {
             renderGuideList(result.data.content);
             renderPagination(fetchGuideList);
 			document.querySelector('.guide_util .total').innerText = `총 ${result.data.totalElements}개`;
-		
+			
 			// 스크롤 최상단 이동
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
@@ -120,9 +119,6 @@ async function fetchGuideList() {
 		else if (result.code === 'INTERVAL_SERVER_ERROR') {
 		    alertDanger('서버 내부에서 오류가 발생했습니다.');
 		}
-		else {
-		    console.log('알 수 없는 에러:', result);
-		}
 	}
 	catch (error) {
 		console.log(error);
@@ -136,36 +132,17 @@ async function fetchGuideList() {
 
 /**
  * 키친가이드 목록을 화면에 렌더링하는 함수
- * 
- * @param {Array} guideList - 키친가이드 목록 배열
  */
 function renderGuideList(guideList) {
+	
 	const container = document.querySelector('.guide_list');
     container.innerHTML = '';
 	
-	const wrap = document.querySelector('.guide_content');
-	
 	// 목록이 없는 경우
-	if (!guideList || guideList.length === 0) {
-	    wrap.querySelector('.list_empty')?.remove(); 
-
-	    const emptyDiv = document.createElement('div');
-	    emptyDiv.className = 'list_empty';
-	    const span = document.createElement('span');
-	    span.textContent = '가이드가 없습니다';
-	    emptyDiv.appendChild(span);
-
-	    const guideUtil = wrap.querySelector('.guide_util');
-	    if (guideUtil) {
-	        guideUtil.insertAdjacentElement('afterend', emptyDiv);
-	    } else {
-	        wrap.appendChild(emptyDiv);
-	    }
-
-	    return;
+	if (guideList == null || guideList.length === 0) {
+		renderSearchEmpty();
 	}
 	
-
     guideList.forEach(guide => {
         const li = document.createElement('li');
 

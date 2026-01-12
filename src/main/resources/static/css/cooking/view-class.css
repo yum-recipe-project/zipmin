@@ -490,11 +490,10 @@
 	line-height: 24px;
 	letter-spacing: -0.4px;
 	font-weight: 500;
-	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	white-space: normal;         /* 줄바꿈 허용 */
-	word-break: keep-all;        /* 단어 단위 줄바꿈 (한국어 적합) */
+	white-space: normal;
+	word-break: keep-all;
 	display: inline-block;
 }
 

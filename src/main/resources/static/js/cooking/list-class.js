@@ -123,9 +123,6 @@ async function fetchClassList() {
 		else if (result.code === 'INTERNAL_SERVER_ERROR') {
 			console.log(error);
 		}
-		else {
-			console.log(error);
-		}
 	}
 	catch (error) {
 		console.log(error);
@@ -147,25 +144,7 @@ function renderClassList(classList) {
 	
 	// 쿠킹클래스 목록이 존재하지 않는 경우
 	if (classList == null || classList.length === 0) {
-		document.querySelector('.search_empty')?.remove();
-		
-		const wrapper = document.createElement('div');
-		wrapper.className = 'search_empty';
-
-	    const img = document.createElement('img');
-	    img.src = '/images/common/search_empty.png';
-	    wrapper.appendChild(img);
-
-	    const h2 = document.createElement('h2');
-	    h2.innerHTML = keyword ? `'${keyword}' 에 대한<br/>검색 결과가 없습니다` : '결과가 없습니다';
-	    wrapper.appendChild(h2);
-
-	    const span = document.createElement('span');
-	    span.textContent = keyword ? '단어의 철자가 정확한지 확인해보세요' : '조건을 변경하거나 초기화해 보세요';
-	    wrapper.appendChild(span);
-		container.insertAdjacentElement('afterend', wrapper);
-
-	    return;
+		renderSearchEmpty();
 	}
 	
 	// 쿠킹클래스의 목록이 존재하는 경우

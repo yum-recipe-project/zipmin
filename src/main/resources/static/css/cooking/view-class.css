@@ -493,6 +493,9 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	white-space: normal;         /* 줄바꿈 허용 */
+	word-break: keep-all;        /* 단어 단위 줄바꿈 (한국어 적합) */
+	display: inline-block;
 }
 
 #container .class_content .class_apply .apply_address .date span {

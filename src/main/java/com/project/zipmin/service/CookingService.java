@@ -1068,6 +1068,11 @@ public class CookingService {
 				classDto.setOpened(true);
 			}
 			
+			// 이미지
+			if (classs.getImage() != null) {
+				classDto.setImage(publicPath + "/" + classDto.getImage());
+			}
+			
 			// 클래스 진행 예정 여부 조회
 			if (classs.getApproval() == 1 && today.after(classs.getNoticedate()) && today.before(classs.getEventdate())) {
 				classDto.setPlanned(true);

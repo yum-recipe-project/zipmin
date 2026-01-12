@@ -106,7 +106,7 @@ async function fetchAdminChompList() {
 			chompList = result.data.content;
 			
 			// 렌더링
-			renderAdminChompList(chompList);
+			renderChompList(chompList);
 			renderPagination(fetchAdminChompList);
 			
 			// 결과 없음 표시
@@ -155,22 +155,22 @@ async function fetchAdminChompList() {
 /**
  * 카테고리에 일치하는 목록을 렌더링 하는 함수
  */
-function renderAdminChompList(chompList) {
+function renderChompList(chompList) {
 	
-	const container = document.getElementById('chomp');
+	const container = document.querySelector('.forum_list');
 	container.innerHTML = '';
 	
 	// 쩝쩝박사 목록이 존재하지 않는 경우
 	if (chompList == null || chompList.length === 0) {
-		document.querySelector('.table_th').style.display = 'none';
+		document.querySelector('.forum_list').style.display = 'none';
 		document.querySelector('.search_empty')?.remove();
-		document.querySelector('.fixed-table').insertAdjacentElement('afterend', renderSearchEmpty());
+		document.querySelector('.forum_content').insertAdjacentElement('afterend', renderSearchEmpty());
 		return;
 	}
 	
 	// 쩝쩝박사의 목록이 존재하는 경우
+	container.style.display = 'block';
 	document.querySelector('.search_empty')?.remove();
-	container.style.display = 'flex';
 	
 	chompList.forEach(chomp => {
 		const li = document.createElement('li');

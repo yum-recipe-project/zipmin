@@ -143,9 +143,13 @@ function renderGuideList(guideList) {
 		document.querySelector('.guide_list').style.display = 'none';
 		document.querySelector('.search_empty')?.remove();
 		document.querySelector('.guide_content').insertAdjacentElement('afterend', renderSearchEmpty());
+		return;
 	}
 	
 	// 키친가이드 목록이 존재하는 경우
+	container.style.display = 'block';
+	document.querySelector('.search_empty')?.remove();
+	
     guideList.forEach(guide => {
         const li = document.createElement('li');
 

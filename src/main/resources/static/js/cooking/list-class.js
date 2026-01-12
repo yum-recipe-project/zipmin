@@ -147,13 +147,13 @@ function renderClassList(classList) {
 		document.querySelector('.class_list').style.display = 'none';
 		document.querySelector('.search_empty')?.remove();
 		document.querySelector('.class_content').insertAdjacentElement('afterend', renderSearchEmpty());
+		return;
 	}
 	
 	// 쿠킹클래스의 목록이 존재하는 경우
+	container.style.display = 'block';
+	document.querySelector('.search_empty')?.remove();
 	classList.forEach(classs => {
-		container.style.display = 'block';
-		document.querySelector('.search_empty')?.remove();
-		
 		const li = document.createElement('li');
 		li.className = 'class';
 		

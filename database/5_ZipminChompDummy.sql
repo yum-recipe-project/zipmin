@@ -1,11 +1,11 @@
 INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '맛집은 한 문장으로 말합니다', sysdate, sysdate,
-  TO_CLOB('맛집을 어떤 기준으로 정할 것인가?우리나라는 유독 맛집에 진심이다. 소비되는 채널이 시대에 따라 변화할 뿐 어쩌면 가장 많이 소비되는 콘텐츠의 영역이다. 가장 원초적인 맛집 콘텐츠는 ‘입소문’이다. 맛집의 기준을 정하는 가장 대중적인 콘텐츠다. 하지만 개인의 취향이 많이 반영되고, 그렇기에 사람들의 평가가 일일이 반영되어야 하기에 오랜 시간이 걸린다. 그다음 맛집을 소개하는 역할은 라디오와 텔레비전 같은 ‘대중매체’가 차지한다. ‘VJ특공대’, ‘생활의 달인’, ‘생생 정보통’과 같은 정보 프로그램부터 아예 골목 맛집을 소개하는 ‘테이스티 로드’,’맛있는 녀석들’, ‘식신로드’와 같은 예능 프로그램들이 등장했다. 하지만 비슷한 포맷의 프로그램들이 즐비하게 방영되며 맛집이라는 키워드가 흔해졌고 조금은 피로도가 높아졌다. 그렇게 맛집 콘텐츠의 전성시대는 끝났다고 생각할 때쯤 SNS를 통해 ‘맛집 블로거’, ‘먹스타 계정’들이 또다시 맛집을 앞세워 인기 콘텐츠를 생산하고 있다. 맛집은 시대에 따라 소비되는 채널이 다를 뿐 언제나 우리에게 인기 있는 콘텐츠다.')
+  TO_CLOB('맛집을 어떤 기준으로 정할 것인가? 우리나라는 유독 맛집에 진심이다. 소비되는 채널이 시대에 따라 변화할 뿐 어쩌면 가장 많이 소비되는 콘텐츠의 영역이다. 가장 원초적인 맛집 콘텐츠는 ‘입소문’이다. 맛집의 기준을 정하는 가장 대중적인 콘텐츠다. 하지만 개인의 취향이 많이 반영되고, 그렇기에 사람들의 평가가 일일이 반영되어야 하기에 오랜 시간이 걸린다. 그다음 맛집을 소개하는 역할은 라디오와 텔레비전 같은 ‘대중매체’가 차지한다. ‘VJ특공대’, ‘생활의 달인’, ‘생생 정보통’과 같은 정보 프로그램부터 아예 골목 맛집을 소개하는 ‘테이스티 로드’,’맛있는 녀석들’, ‘식신로드’와 같은 예능 프로그램들이 등장했다. 하지만 비슷한 포맷의 프로그램들이 즐비하게 방영되며 맛집이라는 키워드가 흔해졌고 조금은 피로도가 높아졌다. 그렇게 맛집 콘텐츠의 전성시대는 끝났다고 생각할 때쯤 SNS를 통해 ‘맛집 블로거’, ‘먹스타 계정’들이 또다시 맛집을 앞세워 인기 콘텐츠를 생산하고 있다. 맛집은 시대에 따라 소비되는 채널이 다를 뿐 언제나 우리에게 인기 있는 콘텐츠다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('그렇다면 이쯤에서 더욱 궁금해진다. 맛집의 기준은 무엇일까? 검색엔진에 맛집은 ‘맛있는 음식점’이라 말한다. 이보다 더 애매한 표현이 있을까? 맛이라는 주관적인 부분을 어떤 기준으로 평가하고 맛집이라는 타이틀을 붙이고 있을까? ‘맛집’이라는 키워드가 가게를 홍보하는 마케팅 키워드가 되면서 맛집이 아님에도 자극적인 요소와 아이템을 통해 줄을 세우는, 혹은 인기를 몰고 있는 지금의 맛집 전쟁에서 우리는 어떻게 진짜 맛집을 찾을 수 있을까?')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('맛집의 공통점우리가 흔히 맛집이라 부르는 식당들의 공통점을 보면 알 수 있지 않을까? 즉 맛집의 공통점이 기준이 될 수 있지 않을까? 내가 맛집과 관련한 다양한 경험을 통해 알아낸 것은 모든 맛집에는 딱 한 문장이 있다는 사실이었다. 그것이 오픈한 지 1달이 되었든, 노포든, 줄을 서든, 서지 않든, 가격이 싸든, 비싸든 환경적인 요인은 배제하고라도 딱 한 가지 공통점은 ‘한 문장’의 유무였다. ‘미슐랭’, ‘블루리본’ 등 맛집을 인증하는 기관들 역시 가장 중요하게 생각하는 것은 결국 방문의 의사. 즉 행동을 기본으로 인증한다. 행동에는 이유가 있어야 하기에 결국 가야 할 이유가 있는 식당이냐가 맛집을 정한다고 보는 것이다. 그렇기에 식당은 고객들이 와야 하는 이유를 만들어야 하고 혹은 만들어져야 한다. 그렇기에 가야 하는 이유가 없는 곳은 맛집이 아닌, 멋, 집이다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('부산_신발원, ‘만두로 지켜온 70년의 맛’ / 서울_금돼지식당, ‘가장 맛있는 고기를 먹을 수 있는 고깃집’/ 서울_비야게레로, ‘멕시코에 가지 않아도 되는 이유’ 등 진짜 맛집이라 인정받는 곳들은 고객들이 이곳을 와야 하는 이유를 딱 한 문장으로 말하고 있다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('결국, 팬을 모으는 한 문장식당이 가지고 있는 한 문장에 끌리고 그것을 응원하는 고객을 ‘팬’이라고 말한다. 그리고 그러한 팬을 모으는 것이 진정 맛집의 공통점이자 기준이다. 책[Start With Why]의 저자 ‘사이먼시넥’은 충성도 있는 고객의 행동은 결국 그들의 why(왜)에 의해 생긴다고 말한다. 책의 말을 빌려 맛집에 비유한다면 음식점의 한 문장은 결국 식당 방문의 ‘why’가 될 것이다. 그리고 그 ‘why’에 끌린 고객들은 그곳을 반복적으로 방문할 것이다. 이것이 우리 맛집 생태계를 이끌어 온 핵심이자 우리가 맛집이라는 콘텐츠를 매력적으로 보는 가장 큰 이유가 아닐지 생각한다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('출처 : https://mashija.com/맛집은-한-문장으로-말합니다'),
-  '8394235dc0c148168aa069a97b83a8d8.png', 'megazine', 1);
+  '8394235dc0c148168aa069a97b83a8d8.png', 'megazine', 1); -- 1
 
 INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '파스타나 국수나 똑같은 밀가루 음식 아닌가요?', sysdate, sysdate,
   TO_CLOB('역류성 식도염으로 한참 고생하고 있을 때 병원에 가니 처방전과 함께 피해야 할 음식을 알려주셨는데 밀가루, 튀긴 음식, 커피 등은 최대한 멀리하라고 했다. (의사 선생님 단골 멘트?!) 소화 안 되는 밀가루는 밤에 먹지 말라는 둥 다이어트 최대의 적은 밀가루라는 둥. 정말 밀가루는 피하고 또 피해야 하는 것일까? 얼마 전 방송을 보니 밀가루라고 다 같은 게 아니라고 하더라. 국수보다는 파스타가 낫다고요?')
@@ -18,9 +18,10 @@ INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '파스타나 국수나 똑같�
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('동일한 식재료라도 조리 방법에 따라 GI 지수가 달라질 수 있다. 가끔 고구마나 감자를 찌거나 구워서 먹는데 튀기면 GI 지수가 낮아진다는 희소식(?)을 들었다. 차근차근 따져보면 일단 감자가 고구마보다는 칼로리가 훨씬 낮지만, GI 지수가 90 정도라 높다. 그러니 칼로리만 따져 체중을 줄이려고 감자를 선택한다면 실제로 도움이 안 된다는 것. 그리고 감자를 찌거나 구우면 GI 지수가 높아지는데 (찌면 90~, 구우면 70~) 기름으로 튀거나 부치면 낮아진다. (튀기면 40~, 부치면 25~) 기름 성분이 감자가 소화되고 우리 몸에 흡수되는 것을 늦추기에 혈당이 빠르게 오르지 않는다. 여기까지 듣고 맥도날드에 감자튀김 사러 달려갈 뻔했다. 그렇지만 이제는 전 국민이 아는 튀긴 음식은 칼로리가 높고 혈관 질환에도 안 좋고 기타 등등.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('이렇게 따지기 시작하니 채소만 먹어야 하나 싶다가 그러면 또 영양 불균형으로 몸이 망가질 수 있다는 생각도 들고 급기야 다 따져서 뭐 하나 싶은 마음이 들었다. 오늘 뭐 먹지?')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('출처 : https://mashija.com/파스타나-국수나-똑같은-밀가루-음식-아닌가요'),
-  'bc5f514d4a364730b1bc191819bbe88c.png', 'megazine', 1);
+  'bc5f514d4a364730b1bc191819bbe88c.png', 'megazine', 1); -- 2
   
-INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '올 여름엔 어떤 과일이 가장 맛있을까?', sysdate - 10, sysdate + 80, null, '2d74a269b54748dabeaa58d9961923e4.png', 'vote', 1);
+INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '짜장 VS 짬뽕',
+  sysdate - 10, sysdate + 80, null, '2d74a269b54748dabeaa58d9961923e4.png', 'vote', 1); -- 3
 
 INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '타이타닉호의 마지막 밤의 메뉴', sysdate, sysdate,
   TO_CLOB('The Last Night on the Titanic몇 년 전 타이타닉호가 침몰하기 하루 전날인 4월 14일 승객들에게 제공된 식사의 메뉴판이 1억 원 경매에 낙찰된 적이 있었다. 그 당시 승객과 승무원이 메뉴를 저장한 덕분에 그날 굴, 필레미뇽, 오리 스테이크, 푸딩이나 복숭아 젤리 등의 메뉴가 객실의 등급마다 다르게 제공되었음을 알 수 있었다. 이를 근거로 베로니카 힌케(Veronica Hinke)는 “The Last Night on the Titanic”이라는 제목으로 요리책을 출간하였다.')
@@ -29,9 +30,10 @@ INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '타이타닉호의 마지막 �
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('그러면 타이타닉호의 손님들은 무엇을 먹고 마셨을까? 1912년 4월 타이타닉 호가 출항하기 몇 년 전에 뉴욕에 선보인 피자와 스카치 부넷(디저트), 칠리와 마리나라 소스를 곁들인 오징어 튀김은 삼등석의 손님들 즉 미국으로 집단 이주한 많은 유럽인들을 위해 제공되었다. 민트 소스와 완두콩을 곁들인 양갈비, 신선한 레몬과 타임 소스를 곁들인 청어, 맥주를 넣어 만든 웨일즈 스타일 고기 요리는 일등석에서 즐기는 일부 호화스러운 메뉴로 현대적인 스타일이 가미되었다. 이등석에는 옥수수 죽, 치킨 카레 등 중산층 식사의 모습을 엿볼 수 있다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('이 책의 레시피에는 사계절의 재료가 포함되어 있어 일 년 중 언제든지 타이타닉을 테마로 집에서 파티를 가능하게 해주고 있으며, 제임스 카메론 감독의 타이타닉호에 대한 퀴즈와 보드게임도 포함되어 있다. 또한 에드워드 시대의 음식, 칵테일 및 관습에 대한 간단한 정보까지 들어있어 그 시대의 문화 스타일까지 엿볼 수 있다. “타이타닉호의 마지막 밤”으로 다가오는 연말 홈파티의 준비 또는 선물 아이템으로 선택하여도 독특한 재미를 전달할 수 있을 것 같다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('출처 : https://mashija.com/타이타닉호의-마지막-밤의-메뉴'),
-  '3f772bc1b5da4c2c91228bd9a83b69b9.png', 'megazine', 1);
+  '3f772bc1b5da4c2c91228bd9a83b69b9.png', 'megazine', 1); -- 4
 
-INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '올 가을에 가장 맛있는 수확물은?', sysdate - 15, sysdate + 60, null, '0078aef87c4b4fc9b2130191c74449d6.png', 'vote', 1);
+INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '팥붕어빵 VS 슈크림붕어빵',
+  sysdate - 15, sysdate + 60, null, '3e8f2ba923e248178b123d51ced3a73f.png', 'vote', 1); -- 5
 
 INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '마라탕, 왜 열풍일까?', sysdate, sysdate,
   TO_CLOB('‘마라탕후루’라는 말을 아는가? 식사로 마라탕, 후식으로 탕후루를 먹는 10대들의 외식 루틴을 뜻하는 신조어다. 최근 뉴스와 매체에서 자주 다뤄지는 마라탕은 어떻게 인기를 얻게 되었을까? 어쩌면 가장 이국적인 음식 ‘마라’는 어떻게 가장 까다로운 10대들의 입맛을 사로잡았을까? 오늘은 마라탕에 대해 한번 알아보려 한다.')
@@ -42,9 +44,7 @@ INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '마라탕, 왜 열풍일까?', 
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('마라의 대중화 어디까지?외식 아이템은 유행을 따라 급속도로 다른 음식들에 묻어난다. 최근 유행하는 마라로제, 마라 떡볶이, 마라 찜닭이 그 예이다. 최근 ‘마라’는 우리나라 학생들이 좋아하는 메뉴에 접목되어 그 인기를 증폭시키고 있다. 그리고 마라탕에 이어 최근엔 ‘마라샹궈’라는 음식도 같이 유행하고 있다. ‘샹궈’는 향, 냄비라는 뜻으로 각종 재료를 냄비에 향 나게 볶았다는 뜻이다. 마라탕집에 가면 무조건 있는 메뉴다. 하지만 마라탕에 비해 가격이 비싸다. 그렇다면 같은 식재료를 이용하는 마라탕과 마라샹궈의 가격은 왜 차이가 날까? 정확하진 않지만, 마라탕과 마라샹궈에 들어가는 인건비가 조금 다르다. 탕은 넣고 끓이면 되지만 샹궈는 센 불에 볶는 사람이 필요하다. 또, 샹궈에 넣는 양념장의 종류가 다르다는 곳도 있다. 그리고 탕보다는 볶음에 더 많은 양념장이 필요하다고 한다. 마지막으로는 추측이지만 마라탕이 결국 마라샹궈보다는 운영 효율이 높기 때문일 것이다. 즉 운영 효율이 높지 않은 메뉴를 많이 파는 것도 리스크에 해당하기에 마라탕과 같이 운영 효율이 좋은 메뉴를 더 고를 수 있도록 가격을 비싸게 설정했다는 이야기도 할 수 있다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('마라탕 이대로 괜찮을까?최근 10대에게 더욱 인기가 많은 마라탕의 인기는 이대로 괜찮을까? 이러한 불안함과 동시에 여러 매체에서는 마라탕의 위험성을 강조하고 있다. 기름지고 자극적인 향신료에 위염, 속쓰림을 유발한다는 내용이다. 하지만 내가 생각하기에 더욱 위험한 것은 미각의 둔감화다. 어릴 때부터 자극적이고 기름진 음식을 자주 접하면 미각이 점점 둔감하게 될 것이다. 그리고 이것은 다양성 있는 외식업 발전에 치명적으로 다가올 수 있다. 때 이른 걱정이라고 생각할 수 있지만 입맛은 생각보다 보수적이라 어릴 때 잡힌 습관이 생각보다 바뀌지 않는다. 마라탕이 나쁘다는 것을 말하는 것은 아니지만 하나의 카테고리가 유난히 많은 사람에게 사랑받는 것은 언제나 주의가 필요하다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('출처 : https://mashija.com/마라탕-왜-열풍일까'),
-  '9e4dc563ec9946b5a5837bf71ad089c9.png', 'megazine', 1);
-
-INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '어떤 열대과일이 가장 맛있을까?', sysdate - 15, sysdate + 60, null, '3e8f2ba923e248178b123d51ced3a73f.png', 'vote', 1);
+  '9e4dc563ec9946b5a5837bf71ad089c9.png', 'megazine', 1); -- 6
 
 INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '채소에게 맛있을 기회를', sysdate, sysdate,
   TO_CLOB('채식에 대한 오해최근 채식을 기반으로 한 레스토랑에 초대되어 다녀왔다. 솔직히 그다지 채식에 대해 호의적이지 않았던 나는 “맛이 심심할 거야”, “먹어도 배고플 것 같은데”와 같이 부정적인 생각만 가득했던 것 같다. 고기를 워낙 좋아했던 나에게 채소는 메뉴의 주인공이 될 수 없었다. 하지만 최근 채식 기반 레스토랑에 다녀오고 채식에 대한 선입견이 완전히 뒤집어졌다.')
@@ -55,7 +55,7 @@ INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '채소에게 맛있을 기회�
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('하지만 다행히도 채식하는 사람을 위한 ‘대체식품’이 점점 주목받고 있다. 먼저 식물성 고기 ‘대체육’은 식물성 단백질을 활용해 진짜 고기의 맛을 구현하는 식품이다. 물론 현재 기술로는 진짜 고기처럼 먹기는 어렵지만 이 기술도 현재 급속도로 성장하고 있고, 많은 레스토랑에서 대체육을 활용하고 있다. 심지어 해산물도 식물성으로 제조하고 있는데, 토마토, 밀 등의 식물성 원료로 연어, 참치 등 해산물의 질감을 표현한 식재료도 나오고 있다. 유제품도 식물성으로 대체할 수 있는데, 소의 젖이 아닌 귀리, 코코넛, 아몬드 등을 활용한 ‘대체우유’와 식물성 오일을 활용한 치즈도 나오고 있다. 심지어 계란도 식물성으로 살 수 있다. 식물성 단백질을 사용해 계란의 맛과 향을 구현한 식품이다. 우리가 모르는 사이에 채식 시장은 이토록 활발하게 육식을 대체하고 있다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('채식은 건강식이라는 프레임이 생각보다 강한 것 같다. 또 건강한 음식은 맛없는 음식이라는 생각도 지배적이다. 물론 나도 그렇다. 건강을 챙기려면 맛은 포기해야 한다고 오해하고 있었다. 하지만 건강이라는 키워드를 다시 한번 생각해 보게 된다. 영양학적으로 요즘 시대의 건강은 ‘균형’이다. 좋은 것을 많이 먹고 건강을 위해 특별한 것을 먹는 것이 아닌, 영양학적인 균형이 중요하다는 것이다. 즉 건강식은 맛없는 음식이라는 프레임을 우리 스스로가 조금 걷어내고 채식을 봐야 할 필요가 있을 것 같다. 어쩌면 채소가 맛이 없던 것이 아니라, 우리가 맛있을 기회를 주지 않았던 것은 아닐까?')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('출처 : https://mashija.com/채소에게-맛있을-기회를'),
-  '95897e8c96be483ca33925a9269fd008.png', 'megazine', 1);
+  '95897e8c96be483ca33925a9269fd008.png', 'megazine', 1); -- 7
   
 INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '오마카세, 이대로 괜찮을까?', sysdate, sysdate,
   TO_CLOB('스시, 소고기, 파스타, 커피, 차 등 다양한 종목에서 오마카세가 인기를 얻고 있다. 특히 이러한 트렌드는 젊은 층을 시작으로 인기를 얻고 있는데, 일명 파인다이닝과 같이 높은 가격대의 고급 코스요리를 접하기 어려웠던 것과 비교해 보면 지금의 오마카세 시장의 급성장세는 더욱 두드러진다. 심지어 이러한 트렌드를 증명하듯 스강신청, 우마카세, 이모카세 등과 같은 재밌는 합성어도 나오면서 오마카세 트렌드는 코로나 이후 외식업의 큰 부분을 차지하고 있다.')
@@ -64,9 +64,10 @@ INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '오마카세, 이대로 괜찮�
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('오마카세 이대로 괜찮을까?하지만 오마카세라는 단어에서 오는 오해가 조금은 걱정된다. 사실 우리나라에서 통용되고 있는 ‘오마카세’라는 단어는 원래 의미와는 조금 다르게 사용되고 있다. 실력 좋은 요리사가 당일에 좋은 재료를 활용해 메뉴를 제공하는 형태보단, 고급스러운 공간과 메뉴를 코스로 제공하는 형태로 그치는 곳들이 많이 보인다. 사실 이러한 형태는 ‘오마카세’보단 ‘고급 코스요리’로 불리는 것이 더욱 알맞을 것이다. 이러한 현상은 유행에 유독 민감한 국내 외식 시장과 SNS의 키워드 때문이라 생각한다. 즉 어쩌면 지금 유행하고 있는 ‘오마카세’는 단어만 유행하고 있을지도 모른다. 그렇다고 오마카세를 취급하는 모든 식당이 전부 잘못된 서비스를 하는 것만은 아니다. 훌륭한 요리사, 신선한 식재료, 그리고 알맞은 조리 기술을 통해 외식업의 가치를 더욱 높이는 좋은 식당도 분명 많다. 국내 외식 시장은 다양화 되어야 한다. 오마카세를 부정하는 것이 아니라 찬성하는 입장이다. 하지만 그저 유행에 그치는 단어만 ‘오마카세’ 트렌드 때문에 진짜 참 의미의 오마카세 문화가 제대로 정착되지 않고 시장에서 잠깐 반짝이게 될까 봐 걱정된다. 특히 오마카세라는 단어를 붙이면 프리미엄의 이미지가 된다고 생각하는 일부 식당에서는 합리적이지 않은 가격까지 받는 것을 주의해야 한다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('최근 ‘경험 소비’라는 이름으로 외식업에서도 단순히 음식뿐 아닌 새로운 가치를 전달하려는 곳들이 많아지고 있다. 오마카세도 새로운 ‘식’경험의 하나로 분류되어 최근에 부쩍 두각을 나타내고 있다. 하지만 이쯤에서 우리가 한 번 곰곰이 생각해야 하는 부분이 있다. 바로 ‘경험’의 의미이다. 경험 소비라는 트렌드로 행해지는 무분별한 소비들이 과연 우리에게 얼마나 좋은 경험이 될지는 한 번쯤 생각해 봐야 할 것이다. 그리고 그러한 무분별한 소비를 기다리며 단순히 상업적 용어로만 사용되는 ‘오마카세’의 열풍이 조금은 씁쓸하게 느껴지는 이유다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('출처 : https://mashija.com/오마카세-이대로-괜찮을까'),
-  '944e42920a0b447e8c401802568ff223.png', 'megazine', 1);
+  '944e42920a0b447e8c401802568ff223.png', 'megazine', 1); -- 8
 
-INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '가장 맛있는 아이스크림은?', sysdate - 10, sysdate + 30, null, '135ad68efc884c4bb0bc0bee10d99a76.png', 'vote', 1);
+INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '바닐라맛 VS 딸기맛 VS 초코맛 아이스크림',
+  sysdate - 10, sysdate + 30, null, '135ad68efc884c4bb0bc0bee10d99a76.png', 'vote', 1); -- 9
 
 INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '간헐적 단식, 할까 말까', sysdate, sysdate,
   TO_CLOB('간헐적 단식(Intermittent Fasting)은 일정 시간 혹은 기간 인위적으로 공복을 유지하는 식이요법으로 건강한 생활 방식 혹은 다이어트에 어느 정도 효과적이라는 이유로 많은 사람이 시도해 보거나 계속 이어가고 있다. 공복 유지 시간과 기간은 자율적으로 정할 수 있는데 흔히 16시간 공복 그리고 8시간은 식사를 허용하는 형태(16/8)가 일반적이다. 편하게 하루에 한 끼 먹거나 5:2 방식을 적용해 일주일 중 5일은 평상시처럼 세 끼를 다 챙겨 먹고 나머지 2일은 한 끼 또는 열량 제한 식사(500~600kcal)를 한다.')
@@ -77,7 +78,7 @@ INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '간헐적 단식, 할까 말까
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('간헐적 단식이 유행하기 시작한 게 벌써 2010년대 초반이니 그때부터 이를 고수하고 있다면 10년은 거뜬히 지켜온 셈이다. 나도 간헐적 단식을 하지만 꾸준하게 유지하기가 제일 어려운 부분이다. 자기 몸 상태에 맞는 간헐적 단식 방법을 선택하는 것도 중요한데 업무 강도가 있는 편이고 에너지 소비가 많다면 1일 1식은 적합하지 않다. 또, 처음부터 무리해서 금식하면 몸과 마음이 힘들어지니 꾸준히 지켜 나갈 수 있는 방법을 찾아야 한다. 최소 12시간은 금식을 해야 간헐적 단식의 효과를 볼 수 있으니 12시간으로 시작해 조금씩 늘려가는 것도 좋은 방법이다. 너무 당연하지만, 운동을 병행한다면 더 좋고! 간헐적 단식은 다양한 식이요법 중 하나일 뿐이고 개개인에 따라 그 효과는 다를 수 있다. 그리고 간헐적 단식의 효과에 관한 연구는 여전히 진행 중이다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('나는 당일 저녁 6시까지 먹고 다음 날 오전 10시까지 금식을 한다. 못 지키는 날도 있었지만, 간헐적 단식을 해보니 체중이 조금 줄었고 속은 편하고 피로감이 덜하다. 앱을 사용하니 단식 스케줄에 맞게 알람을 보내준다. 금식 시작/종료 시각을 알려주고 독려도 해준다. 적응이 되어서 그런지 배고픔에 몸부림치지는 않는다. 아침에 일어나 배고픈 느낌이 들면 미지근한 물 한 잔에 녹차 티 백을 띄운다. 혹시 배에서 꼬르륵 소리가 난다면 장은 깨끗하게 청소되는 중이니 아주 잘하고 있다는 증거다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('출처 : https://mashija.com/간헐적-단식-할까-말까'),
-  '194f6fd3a85348a2b3a88770215e9bfd.jpg', 'megazine', 1);
+  '194f6fd3a85348a2b3a88770215e9bfd.jpg', 'megazine', 1); -- 10
   
 INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '잡내 잡지 못하는 술, 여러분은 그동안 속았습니다.', sysdate, sysdate,
   TO_CLOB('완성된 음식에 적절한 술을 곁들이는 방식 외에도 음식과 술이 만나는 경우가 있다. 바로 음식을 만들 때 술을 하나의 재료로 사용하는 경우인데, 우리는 왜 요리를 만들 때 술을 사용하는 것일까?')
@@ -91,7 +92,7 @@ INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '잡내 잡지 못하는 술, �
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('술은 직접적으로 맛과 향을 더해주는 역할도 하지만, 때에 따라 여러 풍미들이 자기 자신을 어필할 수 있도록 판을 깔아주는 역할도 한다. 이게 무슨 이유냐 하면은 우리가 맛이라고 인지하는 건 사실 향에 가깝다. 그리고 향 분자들은 대부분 기름에 잘 녹는 지용성이다. 우리는 향을 내는 분자들이 음식 곳곳에 녹아내려져 있어야만 맛으로 느낄 수 있게 된다. 다시 말해 지용성인 향 분자를 녹일만한 용매가 없다면 우리는 그 맛들을 다 놓치고 간다는 말인데, 이때 활용하면 좋은 게 바로 술이다. 우리가 마시는 술에 있는 알코올인 에탄올에는 물과 친한 분자와 기름과 친한 분자 모두 갖고 있기 때문에, 수용성과 지용성 모두 녹일 수 있다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('대부분 술 대신 미림이나 맛술을 사용하지만, 서양처럼 와인을 활용하거나 우리 전통 증류주를 활용하여 요리한다면 또 다른 재미로 음식을 만들 수 있게 될 것이다. 이때 풍미 하나 없는 희석식 소주는 되도록 피하자. 하나 더 주의할 점이 있다면 뭐든지 과유불급. 적절한 양과 시간을 투자하여 요리하기를 권장한다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('출처 : https://mashija.com/잡내-잡지-못하는-술-여러분은-그동안-속았습니다'),
-  'dd1c165322df486a871d72ade2bbc36a.png', 'megazine', 1);
+  'dd1c165322df486a871d72ade2bbc36a.png', 'megazine', 1); -- 11
   
 INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '초록병 소주 시장, 누가 ‘초’를 친 걸까?', sysdate, sysdate,
   TO_CLOB('초록병 소주가 사라지고 있다. 아니, 좀 더 정확하게 말하자면 무색·투명한 소주의 열풍이 매섭게 불고 있다. 이쯤 되면 ‘초록병 소주’로 총칭하기도 무색할 정도다. 이들은 왜 소주병을 가만 놔두지 않는 것일까?')
@@ -106,7 +107,7 @@ INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '초록병 소주 시장, 누가
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('병 색깔만큼이나 알게 모르게 바뀌어온 것이 바로 소주병의 뚜껑이다. 1980년대 이전까지만 하더라도 소주병에는 코르크 마개와 크라운 캡(왕관 모양의 병뚜껑)을 사용했다. 사람들이 소주의 첫 잔을 버린 이유도 뚜껑과 연관이 깊다. 코르크 마개를 사용한 시절에는 코르크 마개의 찌꺼기가 둥둥 떠다녔는데 이를 제거하기 위해 첫 잔을 버리게 된 것이다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('하지만 1982년 대선주조가 소주 업계 최초로 스크류 캡을 도입하면서 코르크 마개와 크라운 캡의 소주는 점차 사라지게 됐다.') || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('스크류 캡은 녹슬지 않아 위생적이고, 맥주와 달리 도수가 높은 소주는 개봉 후에 재밀봉의 가능성이 높은 상품이라는 이유로 여전히 많은 소주 제조사에서 사용하고 있다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('출처 : https://mashija.com/초록병-소주-시장-누가-초를-친-걸까/'),
-  'c0f4ccb640304f6bb0fdedf9a5e7d3a9.png', 'megazine', 1);
+  'c0f4ccb640304f6bb0fdedf9a5e7d3a9.png', 'megazine', 1); -- 12
   
 INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '추운 겨울 늘어지는 몸, 면역력 증진에 좋은 먹을거리', sysdate, sysdate,
   TO_CLOB('겨울만 되면 코를 훌쩍거리고 피부는 건조함을 견디지 못해 쫙쫙 갈라지며 무엇보다도 추위에 유독 약한 나는 늘어지는 몸에 속수무책 당한다. 이불 밖은 위험해! 온몸이 나에게 절실한 메시지를 보내지만, 이불속에만 있을 수가 없으니. 추위에 어깨를 움츠리고 다니면 근육통에 시달리고 양말을 두 켤레 신어도 발끝은 차디찬 게 현실. 그러다가 조금만 몸 관리를 못 하면 감기에 걸리기 쉽다. 이럴 때는 잘 자고 잘 먹으라고 하던데. 잘 먹고 싶은데 무엇을 먹어야 할지. 기왕이면 면역에 좋으면서도 쉽게 구할 수 있는 것으로 골라 먹고 싶다.')
@@ -119,11 +120,15 @@ INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '추운 겨울 늘어지는 몸,
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('항산화 기능과 더불어 베타카로틴이 풍부한 고구마는 면역력 증진과 뇌 기능 향상에 도움을 준다. 환경오염이나 자외선 등으로도 발생할 수 있는 활성 산소는 건강한 세포를 공격해 면역력을 떨어뜨릴 수 있다. 그런데 고구마에는 항산화 물질이 다량 있기에 면역력 유지에 어느 정도 도움을 준다. 매일 조금씩 먹으면 일부 암 예방도 가능하다고 하니 쪄서 먹든 구워 먹든 달콤한 고구마로 겨울나기!')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('마누카(manuka) 꿀을 꾸준히 섭취해 속 쓰림을 해결한 경험이 있는데 그래서인지 꿀이 가진 효능은 어느 정도 믿는 편이다. 폴리페놀(polyphenol)이 풍성한 꿀은 항염 효과가 있고 기침을 그치게 하고 인후통 완화에도 도움이 된다. 또한 상처 치유 효과까지 있다고 하니 달콤한 꿀을 마다할 이유는 없다. 피로 해소에도 도움이 되지만 꿀도 당이니 너무 많이 섭취하는 것은 피해야 한다. 앞서 언급한 요거트에 꿀을 조금 넣어서 먹거나 꿀을 한 스푼 그냥 먹어도 좋다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('출처 : https://mashija.com/추운-겨울-늘어지는-몸-면역력-증진에-좋은-먹을거리'),
-  'a0ad2744bc6c4b4bbc85e10065797e36.jpg', 'megazine', 1);
+  'a0ad2744bc6c4b4bbc85e10065797e36.jpg', 'megazine', 1); -- 13
   
-INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '찜질방에서 가장 맛있는 음료는?', sysdate - 10, sysdate + 30, null, '9bfbeb22ced74f7ab31499300026c9fb.png', 'vote', 1);
+INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '바닐라맛 VS 딸기맛 VS 초코맛 우유',
+  sysdate - 10, sysdate + 30, null, '9bfbeb22ced74f7ab31499300026c9fb.png', 'vote', 1); -- 14
 
-INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '설날맞이 한우 이벤트!', sysdate - 50, sysdate - 5, '댓글을 남기면 추첨을 통해 한우 선물세트를 보내드립니다!', '2d8a1a23f3774e4ba5e24702880d65dc.png', 'event', 1);
+INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '크리스마스 맞이 댓글 이벤트!', DATE '2025-11-15', DATE '2025-12-31',
+  '댓글을 남기면 아이스 아메리카노를 보내드립니다!'
+  || CHR(10) || '우수한 댓글을 남겨주신 10분께는 홀리데이 디저트 세트를 드립니다 :)',
+  '2d8a1a23f3774e4ba5e24702880d65dc.png', 'event', 1); -- 15
 
 INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '김장의 추억', sysdate, sysdate,
   TO_CLOB('김장은 추운 겨울 동안 먹을 김치, 깍두기, 동치미 등을 한 번에 많이 담가두는 일을 의미한다. 대부분 입동 전후에 마을 사람 내지는 온 가족이 모여 김치를 담근다. 꼭 내 것, 우리 것이 아니더라도 김장을 하는 곳이 있다면 찾아가 일손을 보태는 한국인의 정, 다시 말해 품앗이 문화도 엿볼 수 있는 게 김장이다.')
@@ -137,7 +142,7 @@ INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '김장의 추억', sysdate, sys
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('그렇다고 고려시대, 조선시대 김치의 모습과 현재 우리가 먹고 있는 김치의 모습이 같은 것은 아니다. 그 차이는 대표적으로 고춧가루와 배추로 볼 수 있다. 김치하면 떠오르는 빨간색의 이미지는 고춧가루로부터 온다. 고춧가루의 전신인 고추는 임진왜란 때 일본을 통해 유입됐다는 설이 유력한데, 당시에는 고추를 독초로 인식해 사용하지 않았다고 한다. 그러던 중 17세기에 소빙하기가 찾아오면서 바닷물을 끓여 소금을 만드는 데에 사용해야 할 땔감을 난방용으로 사용하다 보니 자연스레 소금의 공급이 어려워지게 됐다. 김치에서 소금은 간을 맞추기 위해서도 필요하지만, 저장성을 높이기 위해서도 꼭 필요한 존재다. 하지만 소금이 귀해지면서 김치의 저장력을 유지할만한 대체재가 필요해졌는데 그때 사용한 것이 바로 고춧가루다. 그렇게 붉은색의 김치가 시작된 것이다. 김치에서 주연 역할을 하는 배추도 들여온 지 얼마 안 된 작물 중 하나다. 배추는 18세기 후반에 중국으로부터 들여왔으며 현재에는 우리 환경에 맞는 배추로 품종 개량하여 사용하고 있다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('글을 쓰기 전까지만 하더라도 우리의 김장 문화가 사라지면 어쩌지 싶은 마음이 있었다. 하지만 자료를 찾고, 글을 쓸수록 되려 김장의 단단한 뿌리를 알게 되어 괜한 걱정을 한 거였구나 싶었다. 그 형태는 바뀔지언정 김장의 추억은 앞으로도 계속 쌓아져만 갈 것이다. 아이러니하게도 개인화된 입맛을 맞추기 위해서라도 말이다. 우리는 김치를 너무나 사랑하는 마음에 김치전용 냉장고까지 만든 민족임을 잊지 않았으면 한다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('출처 : https://mashija.com/김장의-추억'),
-  '6ad34c1dcec94843b1764cefe3791323.png', 'megazine', 1);
+  '6ad34c1dcec94843b1764cefe3791323.png', 'megazine', 1); -- 16
   
 INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '우유는 어쩌다 건강하게 되었을까?', sysdate, sysdate,
   TO_CLOB('“우유를 많이 먹으면 키가 큰다.”라는 말을 믿는가? 나는 믿을 수 없다. 우유가 키를 크게 하는 것에 도움을 준다면 적어도 나는 대한민국 평균을 훨씬 웃도는 키를 가져야 한다. 하지만, 현실을 그렇지 않기에 우유와 키의 연관성은 없다. 우유와 키에 대한 생각을 하다보니 문득 그런 의문이 생긴다. “우유는 어쩌다 건강함의 상징이 되었을까?”')
@@ -153,9 +158,10 @@ INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '우유는 어쩌다 건강하�
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('앞서 우리가 먹고 있는 지금 우유의 다양한 이야기를 살펴봤다. 정리하자면 우유는 모유의 대체품이었으며, 모유를 대체하기 위한 방향으로 우유 산업은 발전되었다. 여러 시행착오 끝에 우유는 조금 더 안전하게 인간이 소비할 수 있는 식품이 되었다. 특히 지방과 단백질 함량이 높은 우유는 산업혁명 당시 영양이 부족했던 이들에게 가장 간편하고 효과가 좋은 대안이었을지도 모르겠다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('하지만 시간이 지나 과영양 시대에 사는 우리에게 우유의 역할은 조금 달라진 것 같다. 더 이상 영양의 측면으로 우유를 먹기보단, 조리적 기능성과 기호성으로 소비된다. 물론 여전히 모유 수유를 할 수 없는 아기들에게는 최고의 대안이지만, 우리가 우유에 그 이상의 무엇인가를 바라고 있는가? 우리가 우유에 바라고 있는 것은 무엇일까? 다시 한번 지구상에서 유일하게 유아기가 지나서도 젖을 먹는 유일한 동물인 인간과 우유에 대해 생각해볼 시점이다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('출처 : https://mashija.com/우유는-어쩌다-건강하게-되었을까'),
-  '30755267237341ec8f78318a9bcc4ec5.png', 'megazine', 1);
+  '30755267237341ec8f78318a9bcc4ec5.png', 'megazine', 1); -- 17
   
-INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '최고의 감자칩은?', sysdate - 10, sysdate + 30, null, 'b43b776bc92a400a8130384f9e53a5c4.png', 'vote', 1);
+INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '포카칩 VS 초카칩',
+  sysdate - 10, sysdate + 30, null, 'b43b776bc92a400a8130384f9e53a5c4.png', 'vote', 1); -- 18
 
 
 
@@ -164,42 +170,59 @@ INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '최고의 감자칩은?', sysda
 -- =========================
 -- VOTE_CHOICE 테이블 더미데이터
 -- =========================
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '딸기', 3);
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '수박', 3);
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '참외', 3);
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '복숭아', 3);
+INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '짜장', 3);
+INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '짬뽕', 3);
 
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '밤', 5);
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '고구마', 5);
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '배', 5);
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '벼', 5);
+INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '팥 붕어빵', 5);
+INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '슈크림 붕어빵', 5);
 
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '망고', 7);
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '리치', 7);
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '두리안', 7);
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '용과', 7);
+INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '바닐라맛 아이스크림', 9);
+INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '딸기맛 아이스크림', 9);
+INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '초코맛 아이스크', 9);
 
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '바닐라맛', 10);
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '딸기맛', 10);
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '초코맛', 10);
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '커피맛', 10);
+INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '바나나맛 우유', 14);
+INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '딸기맛 우유', 14);
+INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '초코맛 우유', 14);
 
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '딸기', 3);
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '수박', 3);
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '참외', 3);
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '복숭아', 3);
-
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '식혜', 15);
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '얼박사', 15);
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '커피우유', 15);
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '뚱바', 15);
-
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '포카칩 오리지널', 19);
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '포카칩 어니언', 19);
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '포카칩 스윗치즈', 19);
-INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '스윙칩 고추장', 19);
+INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '포카칩 (오리지널맛)', 18);
+INSERT INTO vote_choice VALUES (seq_vote_choice_id.NEXTVAL, '초카칩 (어니언맛)', 18);
 
 
 
+
+-- =========================
+-- VOTE_RECORD 테이블 더미데이터
+-- =========================
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 3, 4, 1);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 3, 8, 1);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 3, 7, 2);
+
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 5, 6, 1);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 5, 7, 1);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 5, 8, 1);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 5, 10, 2);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 5, 12, 2);
+
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 9, 7, 2);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 9, 8, 3);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 9, 9, 1);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 9, 11, 2);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 9, 12, 3);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 9, 14, 3);
+
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 14, 4, 1);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 14, 7, 2);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 14, 8, 3);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 14, 11, 3);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 14, 12, 3);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 14, 14, 3);
+
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 18, 5, 1);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 18, 6, 1);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 18, 7, 1);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 18, 4, 2);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 18, 8, 2);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 18, 9, 2);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 18, 13, 2);
 
 COMMIT;

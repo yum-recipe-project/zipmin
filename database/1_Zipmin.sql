@@ -7,193 +7,193 @@
 
 
 -- 테이블과 시퀀스 일괄 삭제
-drop table withdraw;
-drop sequence seq_withdraw_id;
+DROP TABLE withdraw;
+DROP SEQUENCE seq_withdraw_id;
 
-drop table fund;
-drop sequence seq_fund_id;
+DROP TABLE fund;
+DROP SEQUENCE seq_fund_id;
 
-drop table vote_record;
-drop sequence seq_vote_record_id;
+DROP TABLE vote_record;
+DROP SEQUENCE seq_vote_record_id;
 
-drop table vote_choice;
-drop sequence seq_vote_choice_id;
+DROP TABLE vote_choice;
+DROP SEQUENCE seq_vote_choice_id;
 
-drop table chomp;
-drop sequence seq_chomp_id;
+DROP TABLE chomp;
+DROP SEQUENCE seq_chomp_id;
 
-drop table class_apply;
-drop sequence seq_class_apply_id;
+DROP TABLE class_apply;
+DROP SEQUENCE seq_class_apply_id;
 
-drop table class_target;
-drop sequence seq_class_target_id;
+DROP TABLE class_target;
+DROP SEQUENCE seq_class_target_id;
 
-drop table class_schedule;
-drop sequence seq_class_schedule_id;
+DROP TABLE class_schedule;
+DROP SEQUENCE seq_class_schedule_id;
 
-drop table class_tutor;
-drop sequence seq_class_tutor_id;
+DROP TABLE class_tutor;
+DROP SEQUENCE seq_class_tutor_id;
 
-drop table classes;
-drop sequence seq_classes_id;
+DROP TABLE classes;
+DROP SEQUENCE seq_classes_id;
 
-drop table report;
-drop sequence seq_report_id;
+DROP TABLE report;
+DROP SEQUENCE seq_report_id;
 
-drop table likes;
-drop sequence seq_likes_id;
+DROP TABLE likes;
+DROP SEQUENCE seq_likes_id;
 
-drop table fridge_memo;
-drop sequence seq_fridge_memo_id;
+DROP TABLE fridge_memo;
+DROP SEQUENCE seq_fridge_memo_id;
 
-drop table user_fridge;
-drop sequence seq_user_fridge_id;
+DROP TABLE user_fridge;
+DROP SEQUENCE seq_user_fridge_id;
 
-drop table fridge;
-drop sequence seq_fridge_id;
+DROP TABLE fridge;
+DROP SEQUENCE seq_fridge_id;
 
-drop table review;
-drop sequence seq_review_id;
+DROP TABLE review;
+DROP SEQUENCE seq_review_id;
 
-drop table comments;
-drop sequence seq_comments_id;
+DROP TABLE comments;
+DROP SEQUENCE seq_comments_id;
 
-drop table guide;
-drop sequence seq_guide_id;
+DROP TABLE guide;
+DROP SEQUENCE seq_guide_id;
 
-drop table recipe_step;
-drop sequence seq_recipe_step_id;
+DROP TABLE recipe_step;
+DROP SEQUENCE seq_recipe_step_id;
 
-drop table recipe_stock;
-drop sequence seq_recipe_stock_id;
+DROP TABLE recipe_stock;
+DROP SEQUENCE seq_recipe_stock_id;
 
-drop table recipe_category;
-drop sequence seq_recipe_category_id;
+DROP TABLE recipe_category;
+DROP SEQUENCE seq_recipe_category_id;
 
-drop table recipe;
-drop sequence seq_recipe_id;
+DROP TABLE recipe;
+DROP SEQUENCE seq_recipe_id;
 
-drop table password_token;
-drop sequence seq_password_token_id;
+DROP TABLE password_token;
+DROP SEQUENCE seq_password_token_id;
 
-drop table user_account;
-drop sequence seq_user_account_id;
+DROP TABLE user_account;
+DROP SEQUENCE seq_user_account_id;
 
-drop table users;
-drop sequence seq_user_id;
+DROP TABLE users;
+DROP SEQUENCE seq_user_id;
 
 
 
 
 
 -- USERS 테이블
--- drop table users;
--- drop sequence seq_user_id;
-create table users (
-    id number primary key,
-    username varchar2(50) unique not null,
-    password varchar2(200),
-    name varchar2(30) not null,
-    nickname varchar2(100) not null,
-    tel varchar2(15),
-    email varchar2(50),
-    avatar varchar2(200) default '/images/user/user1.svg',
-    introduce varchar2(2000),
-    link varchar2(300),
-    point number default 0,
-    revenue number default 9,
-    role varchar2(20) not null,
-    enable number(1) default 1,
-    provider varchar2(100),
-    provider_id varchar2(100),
-    refresh varchar2(1000),
-    expiration varchar2(100)
+-- DROP TABLE users;
+-- DROP SEQUENCE seq_user_id;
+CREATE TABLE users (
+    id NUMBER primary key,
+    username VARCHAR2(50) unique NOT NULL,
+    password VARCHAR2(200),
+    name VARCHAR2(30) NOT NULL,
+    nickname VARCHAR2(100) NOT NULL,
+    tel VARCHAR2(15),
+    email VARCHAR2(50),
+    avatar VARCHAR2(200) default '/images/user/user1.svg',
+    introduce VARCHAR2(2000),
+    link VARCHAR2(300),
+    point NUMBER default 0,
+    revenue NUMBER default 9,
+    role VARCHAR2(20) NOT NULL,
+    enable NUMBER(1) default 1,
+    provider VARCHAR2(100),
+    provider_id VARCHAR2(100),
+    refresh VARCHAR2(1000),
+    expiration VARCHAR2(100)
 );
-create sequence seq_user_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
+CREATE SEQUENCE seq_user_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOMAXVALUE
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
 
 
 -- USER_ACCOUNT 테이블
--- drop table user_account;
--- drop sequence seq_user_account_id;
-create table user_account (
-    id number primary key,
-    bank varchar2(100) not null,
-    accountnum varchar2(30) not null,
-    name varchar2(30) not null,
-    user_id number not null
+-- DROP TABLE user_account;
+-- DROP SEQUENCE seq_user_account_id;
+CREATE TABLE user_account (
+    id NUMBER primary key,
+    bank VARCHAR2(100) NOT NULL,
+    accountnum VARCHAR2(30) NOT NULL,
+    name VARCHAR2(30) NOT NULL,
+    user_id NUMBER NOT NULL
 );
-alter table user_account
-    add constraint const_user_account_user foreign key(user_id)
-    references users(id) on delete cascade;
-create sequence seq_user_account_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
+ALTER TABLE user_account
+    ADD CONSTRAINT const_user_account_user FOREIGN KEY(user_id)
+    REFERENCES users(id) ON DELETE CASCADE;
+CREATE SEQUENCE seq_user_account_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOMAXVALUE
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
 
 
 -- PASSWORD_TOKEN 테이블
--- drop table password_token;
--- drop sequence seq_password_token_id;
+-- DROP TABLE password_token;
+-- DROP SEQUENCE seq_password_token_id;
 CREATE TABLE password_token (
-    id number primary key,
-    token varchar2(64) not null,
-    expires_at date not null,
-    user_id number not null
+    id NUMBER primary key,
+    token VARCHAR2(64) NOT NULL,
+    expires_at date NOT NULL,
+    user_id NUMBER NOT NULL
 );
-alter table password_token
-    add constraint const_password_token_user foreign key(user_id)
-    references users(id) on delete cascade;
-create sequence seq_password_token_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
+ALTER TABLE password_token
+    ADD CONSTRAINT const_password_token_user FOREIGN KEY(user_id)
+    REFERENCES users(id) ON DELETE CASCADE;
+CREATE SEQUENCE seq_password_token_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOMAXVALUE
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
 
 -- FRIDGE 테이블
--- drop table fridge;
--- drop sequence seq_fridge_id;
-create table fridge (
-    id number primary key,
-    image varchar2(300),
-    name varchar2(300) not null,
-    category varchar2(50),
-    zone varchar2(300) not null,
-    user_id number not null
+-- DROP TABLE fridge;
+-- DROP SEQUENCE seq_fridge_id;
+CREATE TABLE fridge (
+    id NUMBER primary key,
+    image VARCHAR2(300),
+    name VARCHAR2(300) NOT NULL,
+    category VARCHAR2(50),
+    zone VARCHAR2(300) NOT NULL,
+    user_id NUMBER NOT NULL
 );
-alter table fridge
-    add constraint const_fridge_user foreign key(user_id)
-    references users(id) on delete cascade;
-create sequence seq_fridge_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
+ALTER TABLE fridge
+    ADD CONSTRAINT const_fridge_user FOREIGN KEY(user_id)
+    REFERENCES users(id) ON DELETE CASCADE;
+CREATE SEQUENCE seq_fridge_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOMAXVALUE
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
@@ -201,361 +201,361 @@ commit;
 
 
 -- USER_FRIDGE 테이블
--- drop table user_fridge;
--- drop sequence seq_user_fridge_id;
-create table user_fridge (
-    id number primary key,
-    amount number,
-    unit varchar2(30),
+-- DROP TABLE user_fridge;
+-- DROP SEQUENCE seq_user_fridge_id;
+CREATE TABLE user_fridge (
+    id NUMBER primary key,
+    amount NUMBER,
+    unit VARCHAR2(30),
     expdate date,
-    fridge_id number not null,
-    user_id number not null
+    fridge_id NUMBER NOT NULL,
+    user_id NUMBER NOT NULL
 );
-alter table user_fridge
-    add constraint const_user_fridge_fridge foreign key(fridge_id)
-    references fridge(id) on delete cascade;
-alter table user_fridge
-    add constraint const_user_fridge_users foreign key(user_id)
-    references users(id) on delete cascade;
-create sequence seq_user_fridge_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
+ALTER TABLE user_fridge
+    ADD CONSTRAINT const_user_fridge_fridge FOREIGN KEY(fridge_id)
+    REFERENCES fridge(id) ON DELETE CASCADE;
+ALTER TABLE user_fridge
+    ADD CONSTRAINT const_user_fridge_users FOREIGN KEY(user_id)
+    REFERENCES users(id) ON DELETE CASCADE;
+CREATE SEQUENCE seq_user_fridge_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOMAXVALUE
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
 
 -- FRIDGE_MEMO 테이블
--- drop table fridge_memo;
--- drop sequence seq_fridge_memo_id;
-create table fridge_memo (
-    id number primary key,
-    name varchar2(50) not null, 
-    amount number,              
-    unit varchar2(30),          
-    note varchar2(300),         
-    user_id number not null     
+-- DROP TABLE fridge_memo;
+-- DROP SEQUENCE seq_fridge_memo_id;
+CREATE TABLE fridge_memo (
+    id NUMBER primary key,
+    name VARCHAR2(50) NOT NULL, 
+    amount NUMBER,              
+    unit VARCHAR2(30),          
+    note VARCHAR2(300),         
+    user_id NUMBER NOT NULL     
 );
-alter table fridge_memo
-    add constraint const_fridge_memo_user foreign key(user_id)
-    references users(id) on delete cascade;
-create sequence seq_fridge_memo_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nocycle
-    nocache;
-commit;
+ALTER TABLE fridge_memo
+    ADD CONSTRAINT const_fridge_memo_user FOREIGN KEY(user_id)
+    REFERENCES users(id) ON DELETE CASCADE;
+CREATE SEQUENCE seq_fridge_memo_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
 
 
 -- RECIPE 테이블
--- drop table recipe;
--- drop sequence seq_recipe_id;
-create table recipe (
-    id number primary key,
-    image varchar2(200) not null,
-    title varchar2(500) not null,
-    introduce varchar2(2000) not null,
-    postdate date default sysdate not null,
-    cooklevel varchar2(30) not null,
-    cooktime varchar2(30) not null,
-    spicy varchar2(30) not null,
-    portion varchar2(30) not null,
-    tip varchar2(300),
-    user_id number not null
+-- DROP TABLE recipe;
+-- DROP SEQUENCE seq_recipe_id;
+CREATE TABLE recipe (
+    id NUMBER primary key,
+    image VARCHAR2(200) NOT NULL,
+    title VARCHAR2(500) NOT NULL,
+    introduce VARCHAR2(2000) NOT NULL,
+    postdate date default sysdate NOT NULL,
+    cooklevel VARCHAR2(30) NOT NULL,
+    cooktime VARCHAR2(30) NOT NULL,
+    spicy VARCHAR2(30) NOT NULL,
+    portion VARCHAR2(30) NOT NULL,
+    tip VARCHAR2(300),
+    user_id NUMBER NOT NULL
 );
-alter table recipe
-    add constraint const_recipe_users foreign key(user_id)
-    references users(id) on delete cascade;
-create sequence seq_recipe_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
+ALTER TABLE recipe
+    ADD CONSTRAINT const_recipe_users FOREIGN KEY(user_id)
+    REFERENCES users(id) ON DELETE CASCADE;
+CREATE SEQUENCE seq_recipe_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOMAXVALUE
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
 
 
 -- RECIPE_CATEGORY 테이블
--- drop table recipe_category;
--- drop sequence seq_recipe_category_id;
-create table recipe_category (
-    id number primary key,
-    type varchar2(15) not null,
-    tag varchar2(50) not null,
-    recipe_id number not null
+-- DROP TABLE recipe_category;
+-- DROP SEQUENCE seq_recipe_category_id;
+CREATE TABLE recipe_category (
+    id NUMBER primary key,
+    type VARCHAR2(15) NOT NULL,
+    tag VARCHAR2(50) NOT NULL,
+    recipe_id NUMBER NOT NULL
 );
-alter table recipe_category
-    add constraint const_category_recipe foreign key(recipe_id)
-    references recipe(id) on delete cascade;
-create sequence seq_recipe_category_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
+ALTER TABLE recipe_category
+    ADD CONSTRAINT const_category_recipe FOREIGN KEY(recipe_id)
+    REFERENCES recipe(id) ON DELETE CASCADE;
+CREATE SEQUENCE seq_recipe_category_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOMAXVALUE
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
 
 
 -- RECIPE_STOCK 테이블
--- drop table recipe_stock;
--- drop sequence seq_irecipe_stock_id;
-create table recipe_stock (
-    id number primary key,
-    name varchar2(50) not null,
-    amount number,
-    unit varchar2(30),
-    note varchar2(300),
-    recipe_id number not null
+-- DROP TABLE recipe_stock;
+-- DROP SEQUENCE seq_irecipe_stock_id;
+CREATE TABLE recipe_stock (
+    id NUMBER primary key,
+    name VARCHAR2(50) NOT NULL,
+    amount NUMBER NOT NULL,
+    unit VARCHAR2(30) NOT NULL,
+    note VARCHAR2(300),
+    recipe_id NUMBER NOT NULL
 );
-alter table recipe_stock
-    add constraint const_stock_reicpe foreign key(recipe_id)
-    references recipe(id) on delete cascade;
-create sequence seq_recipe_stock_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
+ALTER TABLE recipe_stock
+    ADD CONSTRAINT const_stock_reicpe FOREIGN KEY(recipe_id)
+    REFERENCES recipe(id) ON DELETE CASCADE;
+CREATE SEQUENCE seq_recipe_stock_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOMAXVALUE
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
 
 
 -- RECIPE_STEP 테이블
--- drop table recipe_step;
--- drop sequence seq_recipe_step_id;
-create table recipe_step (
-    id number primary key,
-    image varchar2(100),
-    content varchar2(2000) not null,
-    recipe_id number
+-- DROP TABLE recipe_step;
+-- DROP SEQUENCE seq_recipe_step_id;
+CREATE TABLE recipe_step (
+    id NUMBER primary key,
+    image VARCHAR2(100),
+    content VARCHAR2(2000) NOT NULL,
+    recipe_id NUMBER
 );
-alter table recipe_step
-    add constraint const_step_recipe foreign key(recipe_id)
-    references recipe(id) on delete cascade;
-create sequence seq_recipe_step_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
+ALTER TABLE recipe_step
+    ADD CONSTRAINT const_step_recipe FOREIGN KEY(recipe_id)
+    REFERENCES recipe(id) ON DELETE CASCADE;
+CREATE SEQUENCE seq_recipe_step_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOMAXVALUE
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
 
 
 -- GUIDE 테이블
--- drop table guide;
--- drop sequence seq_guide_id;
-create table guide (
-    id number primary key,
-    title varchar2(300) not null,
-    subtitle varchar2(300) not null,
-    category varchar2(100) not null,
-    postdate date default sysdate not null,
-    content varchar2(1000) not null,
-    user_id number not null
+-- DROP TABLE guide;
+-- DROP SEQUENCE seq_guide_id;
+CREATE TABLE guide (
+    id NUMBER primary key,
+    title VARCHAR2(300) NOT NULL,
+    subtitle VARCHAR2(300) NOT NULL,
+    category VARCHAR2(100) NOT NULL, -- preparation, storage, cooking, etc
+    postdate date default sysdate NOT NULL,
+    content VARCHAR2(3000) NOT NULL,
+    user_id NUMBER NOT NULL
 );
-alter table guide
-    add constraint const_guide_users foreign key(user_id)
-    references users(id) on delete cascade;
-create sequence seq_guide_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
+ALTER TABLE guide
+    ADD CONSTRAINT const_guide_users FOREIGN KEY(user_id)
+    REFERENCES users(id) ON DELETE CASCADE;
+CREATE SEQUENCE seq_guide_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOMAXVALUE
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
 
 
 -- CHOMP 테이블
--- drop table chomp;
--- drop sequence seq_chomp_id;
-create table chomp (
-    id number primary key,
-    title varchar2(100) not null,
+-- DROP TABLE chomp;
+-- DROP SEQUENCE seq_chomp_id;
+CREATE TABLE chomp (
+    id NUMBER primary key,
+    title VARCHAR2(100) NOT NULL,
     opendate date,
-    closedate date not null,
-    content varchar2(1000),
-    image varchar2(500),
-    category varchar2(30) not null,
-    user_id number not null
+    closedate date NOT NULL,
+    content CLOB,
+    image VARCHAR2(500),
+    category VARCHAR2(30) NOT NULL,
+    user_id NUMBER NOT NULL
 );
-alter table chomp
-    add constraint const_chomp_user foreign key(user_id)
-    references users(id) on delete cascade;
-create sequence seq_chomp_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
+ALTER TABLE chomp
+    ADD CONSTRAINT const_chomp_user FOREIGN KEY(user_id)
+    REFERENCES users(id) ON DELETE CASCADE;
+CREATE SEQUENCE seq_chomp_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOMAXVALUE
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
 
 
 -- VOTE_CHOICE 테이블
--- drop table vote_choice;
--- drop sequence seq_vote_choice_id;
-create table vote_choice (
-    id number primary key,
-    choice varchar2(100) not null,
-    chomp_id number not null
+-- DROP TABLE vote_choice;
+-- DROP SEQUENCE seq_vote_choice_id;
+CREATE TABLE vote_choice (
+    id NUMBER primary key,
+    choice VARCHAR2(100) NOT NULL,
+    chomp_id NUMBER NOT NULL
 );
-alter table vote_choice
-    add constraint const_vote_choice_chomp foreign key(chomp_id)
-    references chomp(id) on delete cascade;
-create sequence seq_vote_choice_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
+ALTER TABLE vote_choice
+    ADD CONSTRAINT const_vote_choice_chomp FOREIGN KEY(chomp_id)
+    REFERENCES chomp(id) ON DELETE CASCADE;
+CREATE SEQUENCE seq_vote_choice_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOMAXVALUE
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
 
 
 -- VOTE_RECORD 테이블
--- drop table vote_record;
--- drop sequence seq_vote_record_id;
-create table vote_record (
-    id number primary key,
-    chomp_id number not null,
-    user_id number,
-    choice_id number not null
+-- DROP TABLE vote_record;
+-- DROP SEQUENCE seq_vote_record_id;
+CREATE TABLE vote_record (
+    id NUMBER primary key,
+    chomp_id NUMBER NOT NULL,
+    user_id NUMBER,
+    choice_id NUMBER NOT NULL
 );
-alter table vote_record
-    add constraint const_vote_record_chomp foreign key(chomp_id)
-    references chomp(id) on delete cascade;
-alter table vote_record
-    add constraint cosnt_vote_record_users foreign key(user_id)
-    references users(id) on delete set null;
-alter table vote_record
-    add constraint const_vote_record_choice foreign key(choice_id)
-    references vote_choice(id) on delete cascade;
-create sequence seq_vote_record_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
+ALTER TABLE vote_record
+    ADD CONSTRAINT const_vote_record_chomp FOREIGN KEY(chomp_id)
+    REFERENCES chomp(id) ON DELETE CASCADE;
+ALTER TABLE vote_record
+    ADD CONSTRAINT cosnt_vote_record_users FOREIGN KEY(user_id)
+    REFERENCES users(id) on delete set null;
+ALTER TABLE vote_record
+    ADD CONSTRAINT const_vote_record_choice FOREIGN KEY(choice_id)
+    REFERENCES vote_choice(id) ON DELETE CASCADE;
+CREATE SEQUENCE seq_vote_record_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOMAXVALUE
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
 
 
 -- COMMENT 테이블
--- drop table comments;
--- drop sequence seq_comments_id;
-create table comments (
-    id number primary key,
-    comm_id number,
-    postdate date default sysdate not null,
-    content varchar2(2000) not null,
-    tablename varchar2(100) not null,
-    recodenum number not null,
-    user_id number not null
+-- DROP TABLE comments;
+-- DROP SEQUENCE seq_comments_id;
+CREATE TABLE comments (
+    id NUMBER primary key,
+    comm_id NUMBER,
+    postdate date default sysdate NOT NULL,
+    content VARCHAR2(2000) NOT NULL,
+    tablename VARCHAR2(100) NOT NULL,
+    recodenum NUMBER NOT NULL,
+    user_id NUMBER NOT NULL
 );
-alter table comments
-    add constraint const_comments_comments foreign key(comm_id)
-    references comments(id) on delete cascade;
-alter table comments
-    add constraint const_comments_user foreign key(user_id)
-    references users(id) on delete cascade;
-create sequence seq_comments_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
+ALTER TABLE comments
+    ADD CONSTRAINT const_comments_comments FOREIGN KEY(comm_id)
+    REFERENCES comments(id) ON DELETE CASCADE;
+ALTER TABLE comments
+    ADD CONSTRAINT const_comments_user FOREIGN KEY(user_id)
+    REFERENCES users(id) ON DELETE CASCADE;
+CREATE SEQUENCE seq_comments_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOMAXVALUE
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
 
 
 -- REVIEW 테이블
--- drop table review;
--- drop sequence seq_review_id;
-create table review (
-    id number primary key,
-    postdate date default sysdate not null,
-    score number not null,
-    content varchar2(2000) not null,
-    recipe_id number not null,
-    user_id number not null
+-- DROP TABLE review;
+-- DROP SEQUENCE seq_review_id;
+CREATE TABLE review (
+    id NUMBER primary key,
+    postdate date default sysdate NOT NULL,
+    score NUMBER NOT NULL,
+    content VARCHAR2(2000) NOT NULL,
+    recipe_id NUMBER NOT NULL,
+    user_id NUMBER NOT NULL
 );
-alter table review
-    add constraint const_review_recipe foreign key(recipe_id)
-    references recipe(id) on delete cascade;
-alter table review
-    add constraint const_review_users foreign key(user_id)
-    references users(id) on delete cascade;
-create sequence seq_review_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
+ALTER TABLE review
+    ADD CONSTRAINT const_review_recipe FOREIGN KEY(recipe_id)
+    REFERENCES recipe(id) ON DELETE CASCADE;
+ALTER TABLE review
+    ADD CONSTRAINT const_review_users FOREIGN KEY(user_id)
+    REFERENCES users(id) ON DELETE CASCADE;
+CREATE SEQUENCE seq_review_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOMAXVALUE
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
 
 
 -- LIKES 테이블
--- drop table likes;
--- drop sequence seq_likes_id;
-create table likes (
-    id number primary key,
-    user_id number,
-    tablename varchar2(15) not null,
-    recodenum number not null
+-- DROP TABLE likes;
+-- DROP SEQUENCE seq_likes_id;
+CREATE TABLE likes (
+    id NUMBER primary key,
+    user_id NUMBER,
+    tablename VARCHAR2(15) NOT NULL,
+    recodenum NUMBER NOT NULL
 );
-alter table likes
-    add constraint const_likes_users foreign key(user_id)
-    references users(id) on delete set null;
-create sequence seq_likes_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
+ALTER TABLE likes
+    ADD CONSTRAINT const_likes_users FOREIGN KEY(user_id)
+    REFERENCES users(id) on delete set null;
+CREATE SEQUENCE seq_likes_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOMAXVALUE
+    NOCYCLE
+    NOCACHE;
 COMMIT;
 
 
@@ -563,235 +563,230 @@ COMMIT;
 
 
 -- REPORT 테이블
--- drop table report;
--- drop sequence seq_report_id;
-create table report (
-    id number primary key,
-    user_id number,
-    tablename varchar2(15) not null,
-    recodenum number not null,
-    reason varchar2(50) not null
+-- DROP TABLE report;
+-- DROP SEQUENCE seq_report_id;
+CREATE TABLE report (
+    id NUMBER primary key,
+    user_id NUMBER,
+    tablename VARCHAR2(15) NOT NULL,
+    recodenum NUMBER NOT NULL,
+    reason VARCHAR2(50) NOT NULL
 );
-alter table report
-    add constraint const_report_users foreign key(user_id)
-    references users(id) on delete set null;
-create sequence seq_report_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
+ALTER TABLE report
+    ADD CONSTRAINT const_report_users FOREIGN KEY(user_id)
+    REFERENCES users(id) on delete set null;
+CREATE SEQUENCE seq_report_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOMAXVALUE
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
 
 
 -- CLASSES 테이블
--- drop table classes;
--- drop sequence seq_classes_id;
-create table classes (
-    id number primary key,
-    title varchar2(200) not null,
-    category varchar2(50) not null,
-    image varchar2(200) not null,
-    introduce varchar2(1000) not null,
-    place varchar2(100) not null,
-    postdate date default sysdate not null,
-    eventdate date not null,
-    starttime date not null,
-    endtime date not null,
-    noticedate date not null,
-    headcount number not null,
-    need varchar2(200) not null,
-    approval number default 2 not null,
-    user_id number not null
+-- DROP TABLE classes;
+-- DROP SEQUENCE seq_classes_id;
+CREATE TABLE classes (
+    id NUMBER primary key,
+    title VARCHAR2(200) NOT NULL,
+    category VARCHAR2(50) NOT NULL,
+    image VARCHAR2(200) NOT NULL,
+    introduce VARCHAR2(1000) NOT NULL,
+    place VARCHAR2(100) NOT NULL,
+    postdate date default sysdate NOT NULL,
+    eventdate date NOT NULL,
+    starttime date NOT NULL,
+    endtime date NOT NULL,
+    noticedate date NOT NULL,
+    headcount NUMBER NOT NULL,
+    need VARCHAR2(200) NOT NULL,
+    approval NUMBER default 2 NOT NULL,
+    user_id NUMBER NOT NULL
 );
-alter table classes
-    add constraint const_classes_users foreign key(user_id)
-    references users(id) on delete cascade;
-create sequence seq_classes_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
+ALTER TABLE classes
+    ADD CONSTRAINT const_classes_users FOREIGN KEY(user_id)
+    REFERENCES users(id) ON DELETE CASCADE;
+CREATE SEQUENCE seq_classes_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOMAXVALUE
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
 
 
 -- CLASS_TARGET 테이블
--- drop table class_target;
--- drop sequence seq_class_target_id;
-create table class_target (
-    id number primary key,
-    content varchar2(100) not null,
-    class_id number not null
+-- DROP TABLE class_target;
+-- DROP SEQUENCE seq_class_target_id;
+CREATE TABLE class_target (
+    id NUMBER primary key,
+    content VARCHAR2(100) NOT NULL,
+    class_id NUMBER NOT NULL
 );
-alter table class_target
-    add constraint const_target_classes foreign key(class_id)
-    references classes(id) on delete cascade;
-create sequence seq_class_target_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
+ALTER TABLE class_target
+    ADD CONSTRAINT const_target_classes FOREIGN KEY(class_id)
+    REFERENCES classes(id) ON DELETE CASCADE;
+CREATE SEQUENCE seq_class_target_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOMAXVALUE
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
 
 
 -- CLASS_TUTOR 테이블
--- drop table class_tutor;
--- drop sequence seq_class_tutor_id;
-create table class_tutor (
-    id number primary key,
-    image varchar2(300) not null,
-    name varchar2(30) not null,
-    career varchar2(100) not null,
-    class_id number not null
+-- DROP TABLE class_tutor;
+-- DROP SEQUENCE seq_class_tutor_id;
+CREATE TABLE class_tutor (
+    id NUMBER primary key,
+    image VARCHAR2(300) NOT NULL,
+    name VARCHAR2(30) NOT NULL,
+    career VARCHAR2(1000) NOT NULL,
+    class_id NUMBER NOT NULL
 );
-alter table class_tutor
-    add constraint const_tutor_classes foreign key(class_id)
-    references classes(id) on delete cascade;
-create sequence seq_class_tutor_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
+ALTER TABLE class_tutor
+    ADD CONSTRAINT const_tutor_classes FOREIGN KEY(class_id)
+    REFERENCES classes(id) ON DELETE CASCADE;
+CREATE SEQUENCE seq_class_tutor_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOMAXVALUE
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
 
 
 -- CLASS_SCHEDULE 테이블
--- drop table class_schedule;
--- drop sequence seq_class_schedule_id;
-create table class_schedule (
-    id number primary key,
-    starttime date not null,
-    endtime date not null,
-    title varchar2(100),
-    class_id number not null
+-- DROP TABLE class_schedule;
+-- DROP SEQUENCE seq_class_schedule_id;
+CREATE TABLE class_schedule (
+    id NUMBER primary key,
+    starttime date NOT NULL,
+    endtime date NOT NULL,
+    title VARCHAR2(100),
+    class_id NUMBER NOT NULL
 );
-alter table class_schedule
-    add constraint const_schedule_classes foreign key(class_id)
-    references classes(id) on delete cascade;
-create sequence seq_class_schedule_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
+ALTER TABLE class_schedule
+    ADD CONSTRAINT const_schedule_classes FOREIGN KEY(class_id)
+    REFERENCES classes(id) ON DELETE CASCADE;
+CREATE SEQUENCE seq_class_schedule_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOMAXVALUE
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
 
 
 -- CLASS_APPLY 테이블
--- drop table class_apply;
--- drop sequence seq_class_apply_id;
-create table class_apply (
-    id number primary key,
+-- DROP TABLE class_apply;
+-- DROP SEQUENCE seq_class_apply_id;
+CREATE TABLE class_apply (
+    id NUMBER primary key,
     applydate date default sysdate,
-    reason varchar2(1000) not null,
-    question varchar2(1000),
-    selected number(1) default 2 not null,
-    attend number(1) default 2 not null,
-    user_id number not null,
-    class_id number not null
+    reason VARCHAR2(1000) NOT NULL,
+    question VARCHAR2(1000),
+    selected NUMBER(1) default 2 NOT NULL,
+    attend NUMBER(1) default 2 NOT NULL,
+    user_id NUMBER NOT NULL,
+    class_id NUMBER NOT NULL
 );
-alter table class_apply
-    add constraint const_apply_classes foreign key(class_id)
-    references classes(id) on delete cascade;
-alter table class_apply
-    add constraint const_apply_users foreign key(user_id)
-    references users(id) on delete cascade;
-create sequence seq_class_apply_id
-    increment by 1
-    start with 1
-    minvalue 1
-    nomaxvalue
-    nocycle
-    nocache;
-commit;
+ALTER TABLE class_apply
+    ADD CONSTRAINT const_apply_classes FOREIGN KEY(class_id)
+    REFERENCES classes(id) ON DELETE CASCADE;
+ALTER TABLE class_apply
+    ADD CONSTRAINT const_apply_users FOREIGN KEY(user_id)
+    REFERENCES users(id) ON DELETE CASCADE;
+CREATE SEQUENCE seq_class_apply_id
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOMAXVALUE
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
 
 
 -- FUND 테이블
---alter table fund drop constraint fk_fund_funder;
---alter table fund drop constraint fk_fund_fundee;
---alter table fund drop constraint fk_fund_recipe;
---drop table fund cascade constraints;
---drop sequence seq_fund_id;
-create table fund (
-    id number primary key,
-    funder_id number,
-    fundee_id number,
-    recipe_id number,
-    point number not null,
-    funddate date default sysdate not null,
-    status number default 0 not null
+CREATE TABLE fund (
+    id NUMBER primary key,
+    funder_id NUMBER,
+    fundee_id NUMBER,
+    recipe_id NUMBER,
+    point NUMBER NOT NULL,
+    funddate date default sysdate NOT NULL,
+    status NUMBER default 0 NOT NULL
 );
-alter table fund
-    add constraint const_fund_funder foreign key(funder_id)
-    references users(id) on delete set null;
-alter table fund
-    add constraint const_fund_fundee foreign key(fundee_id)
-    references users(id) on delete set null;
-alter table fund
-    add constraint const_fund_recipe foreign key(recipe_id)
-    references recipe(id) on delete set null;
-create sequence seq_fund_id
-	increment by 1
-    start with 1
-    minvalue 1
-    nocycle
-    nocache;
-commit;
+ALTER TABLE fund
+    ADD CONSTRAINT const_fund_funder FOREIGN KEY(funder_id)
+    REFERENCES users(id) on delete set null;
+ALTER TABLE fund
+    ADD CONSTRAINT const_fund_fundee FOREIGN KEY(fundee_id)
+    REFERENCES users(id) on delete set null;
+ALTER TABLE fund
+    ADD CONSTRAINT const_fund_recipe FOREIGN KEY(recipe_id)
+    REFERENCES recipe(id) on delete set null;
+CREATE SEQUENCE seq_fund_id
+	INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOCYCLE
+    NOCACHE;
+COMMIT;
 
 
 
 
 
 -- WITHDRAW 테이블
-create table withdraw (
-    id number primary key,       
-    user_id number not null,
-    account_id number not null,
-    request_point number not null, -- point
-    request_date date default sysdate not null, -- claimdate
-    status number default 0 not null,
+CREATE TABLE withdraw (
+    id NUMBER primary key,       
+    user_id NUMBER NOT NULL,
+    account_id NUMBER NOT NULL,
+    request_point NUMBER NOT NULL, -- point
+    request_date date default sysdate NOT NULL, -- claimdate
+    status NUMBER default 0 NOT NULL,
     complete_date date, -- settledate
-    admin_id number       
+    admin_id NUMBER       
 );
-alter table withdraw 
-    add constraint const_withdraw_user foreign key (user_id)
-    references users(id) on delete cascade;
-alter table withdraw 
-    add constraint const_withdraw_account foreign key (account_id)
-    references user_account(id) on delete cascade;
-alter table withdraw
-    add constraint const_withdraw_admin foreign key (admin_id)
-    references users(id) on delete set null;
-create sequence seq_withdraw_id
-	increment by 1
-    start with 1
-    minvalue 1
-    nocycle
-    nocache;
-commit;
+ALTER TABLE withdraw 
+    ADD CONSTRAINT const_withdraw_user FOREIGN KEY (user_id)
+    REFERENCES users(id) ON DELETE CASCADE;
+ALTER TABLE withdraw 
+    ADD CONSTRAINT const_withdraw_account FOREIGN KEY (account_id)
+    REFERENCES user_account(id) ON DELETE CASCADE;
+ALTER TABLE withdraw
+    ADD CONSTRAINT const_withdraw_admin FOREIGN KEY (admin_id)
+    REFERENCES users(id) on delete set null;
+CREATE SEQUENCE seq_withdraw_id
+	INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    NOCYCLE
+    NOCACHE;
+COMMIT;

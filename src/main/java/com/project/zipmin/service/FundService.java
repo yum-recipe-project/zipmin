@@ -386,7 +386,7 @@ public class FundService {
 		// 출금 목록 조회
 		Page<Withdraw> withdrawPage;
 		try {
-			withdrawPage = withdrawRepository.findByUserId(userId, pageable);
+			withdrawPage = withdrawRepository.findAllByUserId(userId, pageable);
 		}
 		catch (Exception e) {
 			throw new ApiException(WithdrawErrorCode.WITHDRAW_READ_LIST_FAIL);

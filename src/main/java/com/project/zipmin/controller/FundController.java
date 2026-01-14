@@ -182,7 +182,7 @@ public class FundController {
 	
 	
 	// 사용자 출금 목록 조회
-	@GetMapping("/users/{id}/withdraw")
+	@GetMapping("/users/{id}/withdraws")
 	public ResponseEntity<?> readUserWithdrawList(
 			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
 			@Parameter(description = "페이지 번호") @RequestParam int page,

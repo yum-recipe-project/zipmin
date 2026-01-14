@@ -23,7 +23,7 @@ async function fetchWithdrawList() {
             size: size
         }).toString();
 
-        const response = await instance.get(`/users/${id}/withdraw?${params}`);
+        const response = await instance.get(`/users/${id}/withdraws?${params}`);
 
         page = response.data.data.number;
         totalPages = response.data.data.totalPages;
@@ -33,7 +33,7 @@ async function fetchWithdrawList() {
         renderWithdrawList(withdrawList);
         renderPagination();
 
-        document.querySelector('.withdraw_util  .total').innerText = `총 ${response.data.data.totalElements}건`;
+        document.querySelector('.withdraw_util .total').innerText = `총 ${response.data.data.totalElements}건`;
 
     } catch (error) {
         console.log(error);
@@ -60,7 +60,7 @@ function renderWithdrawList(withdrawList) {
         dateDiv.className = 'withdraw_info';
         dateDiv.innerHTML = `
             <div class="request_date">
-                <p>${formatDate(withdraw.request_date)}</p>
+                <p>${formatDate(withdraw.claimdate)}</p>
             </div>
         `;
 
@@ -69,7 +69,7 @@ function renderWithdrawList(withdrawList) {
         pointDiv.innerHTML = `
             <div class="request_point">
                 <p>신청 금액</p>
-                <p>${withdraw.request_point ? withdraw.request_point.toLocaleString() : 0}원</p>
+                <p>${withdraw.point ? withdraw.point.toLocaleString() : 0}원</p>
             </div>
         `;
 
@@ -81,7 +81,7 @@ function renderWithdrawList(withdrawList) {
             statusDivHtml = `
                 <div class="withdraw_status">
                     <p class="complete">출금 완료</p>
-                    <p>${withdraw.complete_date ? `입금일 ${formatDate(withdraw.complete_date)}` : '입금일 정보 없음'}</p>
+                    <p>${withdraw.settledate ? `입금일 ${formatDate(withdraw.settledate)}` : '입금일 정보 없음'}</p>
                 </div>
             `;
         } else { // 출금 대기

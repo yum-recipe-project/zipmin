@@ -1,6 +1,6 @@
 package com.project.zipmin.swagger;
 
-import com.project.zipmin.dto.FundSupportResponseDto;
+import com.project.zipmin.dto.FundCreateResponseDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -13,7 +13,7 @@ public class FundSupportSuccessResponse {
     @Schema(example = "후원 성공.", description = "성공 메시지")
     public String message;
 
-    @Schema(implementation = FundSupportResponseDto.class, description = "응답 데이터")
+    @Schema(implementation = FundCreateResponseDto.class, description = "응답 데이터")
     public Object data;
 
 }

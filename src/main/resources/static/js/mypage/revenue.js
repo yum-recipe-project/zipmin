@@ -1,9 +1,3 @@
-document.addEventListener("DOMContentLoaded", function() {
-	fetchRevenueList();
-	fetchRevenueTotal();
-});
-
-
 /**
  * 전역 변수
  */
@@ -14,6 +8,10 @@ let revenueList = [];
 let totalElements = 0;
 let totalRevenue = 0;  
 
+document.addEventListener("DOMContentLoaded", function() {
+	fetchRevenueList();
+	fetchRevenueTotal();
+});
 
 /**
  * 서버에서 후원 목록 데이터를 가져오는 함수

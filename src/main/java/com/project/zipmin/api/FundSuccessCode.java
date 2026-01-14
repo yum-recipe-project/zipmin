@@ -8,6 +8,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum FundSuccessCode implements Code {
 	
+	// 데이터 처리
+	FUND_CREATE_SUCCESS(HttpStatus.CREATED, "후원 작성 성공"),
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	WITHDRAW_READ_LIST_SUCCESS(HttpStatus.OK, "출금 목록 조회 성공"),
 
     // 후원 처리

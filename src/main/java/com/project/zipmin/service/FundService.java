@@ -1,19 +1,26 @@
 package com.project.zipmin.service;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.util.Date;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.FundErrorCode;
-import com.project.zipmin.dto.FundSupportRequestDto;
-import com.project.zipmin.dto.FundSupportResponseDto;
+import com.project.zipmin.dto.FundCreateRequestDto;
+import com.project.zipmin.dto.FundCreateResponseDto;
+import com.project.zipmin.dto.FundReadResponseDto;
 import com.project.zipmin.dto.RecipeReadResponseDto;
+import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.entity.Fund;
 import com.project.zipmin.entity.Recipe;
 import com.project.zipmin.entity.User;
+import com.project.zipmin.mapper.FundMapper;
 import com.project.zipmin.mapper.RecipeMapper;
+import com.project.zipmin.mapper.UserMapper;
 import com.project.zipmin.repository.FundRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -27,50 +34,47 @@ public class FundService {
 	private final UserService userService;
 	
 	private final RecipeMapper recipeMapper;
+	private final UserMapper userMapper;
+	private final FundMapper fundMapper;
 	
 	private final FundRepository fundRepository;
 	
 	
-	 // 후원하기
-	 public FundSupportResponseDto support(int funderId, int fundeeId, FundSupportRequestDto requestDto) {
-		User funder = userService.getUserEntityById(funderId);
-		User fundee = userService.getUserEntityById(fundeeId);
+	// 후원 작성
+	public FundCreateResponseDto createFund(FundCreateRequestDto fundRequestDto) {
 
-		// 후원자의 보유 포인트와 후원하려는 포인트 검증
-        if (funder.getPoint() < requestDto.getPoint()) {
-            throw new ApiException(FundErrorCode.FUND_POINT_EXCEED);
-        }
-        
-        // 후원할 레시피 조회
-        RecipeReadResponseDto recipeDto = recipeService.readRecipdById(requestDto.getRecipeId());
-        Recipe recipe = recipeMapper.toEntity(recipeDto);
-        
-	    Fund fund = Fund.builder()
-	            .funder(funder)
-	            .fundee(fundee)
-	            .recipe(recipe)
-	            .point(requestDto.getPoint())
-	            .status(0) // 기본 미출금
-	            .funddate(new Date())
-	            .build();
-	    
-	    try { 
-	        fund = fundRepository.save(fund);
-	    } catch (Exception e) {
-	        throw new ApiException(FundErrorCode.FUND_RECORD_FAIL);
-	    }
-	    
-	    // 포인트 및 수익 업데이트
-	    try {
-	        funder.setPoint(funder.getPoint() - requestDto.getPoint());
-	        fundee.setRevenue(fundee.getRevenue() + requestDto.getPoint());
-	        userService.saveUser(funder);
-	        userService.saveUser(fundee);
-	    } catch (Exception e) {
-	        throw new ApiException(FundErrorCode.FUND_POINT_UPDATE_FAIL);
-	    }
-	    
-	    return new FundSupportResponseDto(fund.getId(), funder.getPoint(), fundee.getRevenue());
+		// 입력값 검증
+		if (fundRequestDto == null
+				|| fundRequestDto.getFundeeId() == null || fundRequestDto.getFundeeId() == null
+				|| fundRequestDto.getRecipeId() == null || fundRequestDto.getPoint() == null) {
+			throw new ApiException(FundErrorCode.FUND_INVALID_INPUT);
+		}
+		
+		// 사용자 조회
+		UserReadResponseDto funderDto = userService.readUserById(fundRequestDto.getFunderId());
+		UserReadResponseDto fundeeDto = userService.readUserById(fundRequestDto.getFundeeId());
+		
+		// 입력값 검증
+		if (funderDto.getPoint() < fundRequestDto.getPoint()) {
+			throw new ApiException(FundErrorCode.FUND_INVALID_POINT);
+		}
+		
+		// 후원 저장
+		Fund fund = fundMapper.toEntity(fundRequestDto);
+		try {
+			fund = fundRepository.save(fund);
+			
+			// 사용자 갱신
+			funderDto.setPoint(funderDto.getPoint() - fundRequestDto.getPoint());
+			fundeeDto.setRevenue(fundeeDto.getRevenue() + fundRequestDto.getPoint());
+			userService.updateUser(userMapper.toUpdateRequestDto(userMapper.toEntity(funderDto)));
+			userService.updateUser(userMapper.toUpdateRequestDto(userMapper.toEntity(fundeeDto)));
+			
+			return fundMapper.toFundCreateResponseDto(fund);
+		}
+		catch (Exception e) {
+			throw new ApiException(FundErrorCode.FUND_CREATE_FAIL);
+		}
 	}
 	 
 	

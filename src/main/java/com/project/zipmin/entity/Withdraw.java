@@ -33,30 +33,27 @@ public class Withdraw {
     @SequenceGenerator(name = "seq_withdraw_id", sequenceName = "SEQ_WITHDRAW_ID", allocationSize = 1)
     private int id; 
 
-    // 출금 신청자 (users.id)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
-    // 출금 계좌 (user_account.id)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ACCOUNT_ID", nullable = false)
     private UserAccount account;
 
-    // 출금 처리 관리자 (users.id, role='ADMIN')
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ADMIN_ID")
     private User admin;
 
-    private int requestPoint; // 출금 신청 포인트
+    private int point;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    private Date requestDate; // 출금 신청일
+    private Date claimdate;
 
-    private int status; // 출금 상태 (0: 대기, 1: 완료)
+    private int status;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date completeDate; // 출금 완료일
+    private Date settledate;
 
 }

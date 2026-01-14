@@ -18,9 +18,8 @@ public class FundReadResponseDto {
 	private int fundeeId;
 	private int recipeId;       
 	private int point;           
-	private Date funddate;          
-	private int status;  
-    
-    private String nickname;  
-    private String title;
+	private Date funddate;
+	
+	private String nickname;  
+	private String title;
 }

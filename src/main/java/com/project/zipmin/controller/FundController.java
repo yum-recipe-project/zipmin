@@ -15,9 +15,15 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.FundErrorCode;
 import com.project.zipmin.api.FundSuccessCode;
-import com.project.zipmin.dto.FundSupportRequestDto;
-import com.project.zipmin.dto.FundSupportResponseDto;
+import com.project.zipmin.api.UserAccountErrorCode;
+import com.project.zipmin.api.UserErrorCode;
+import com.project.zipmin.dto.FundCreateRequestDto;
+import com.project.zipmin.dto.FundCreateResponseDto;
+import com.project.zipmin.dto.UserAccountReadResponseDto;
+import com.project.zipmin.entity.User;
+import com.project.zipmin.entity.UserAccount;
 import com.project.zipmin.service.FundService;
+import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.FundInvalidInputFailResponse;
 import com.project.zipmin.swagger.FundPointExceedFailResponse;
 import com.project.zipmin.swagger.FundSupportSuccessResponse;
@@ -27,109 +33,96 @@ import com.project.zipmin.swagger.RecipeNotFoundResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-
+	
 @RestController
-@RequestMapping("/funds")
 @RequiredArgsConstructor
-@Tag(name = "FUND API", description = "후원 관련 API")
+@Tag(name = "Fund API", description = "후원 관련 API")
 public class FundController {
 	
+	// R
+	
+	// M
+	
+	// S
 	private final FundService fundService;
+	private final UserService userService;
 	
 	
-	// 특정 후원 조회 (관리자)
-	@GetMapping("/{fundId}")
-	public int viewSupport(
-			@PathVariable("fundId") String fundId) {
-		// 안쓸거같기도?
-		return 0;
+	// 사용자 계좌 상세 조회
+	public UserAccountReadResponseDto readUserAccountById(Integer id) {
+
+		// 입력값 검증
+		if (id == null) {
+			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_INVALID_INPUT);
+		}
+		
+		UserAccount
+		
+		
+		
+		
+		UserAccount account = userAccountRepository.findByUser(user).orElse(null);
+
+		// 계좌가 없으면 null 반환
+		if (account == null) {
+			return null;
+		}
+
+		return userMapper.toReadAccountResponseDto(account);
 	}
 	
 	
 	
-	// 특정 후원 취소 (관리자)
-	@DeleteMapping("/{fundId}")
-	public int deleteSupport(
-			@PathVariable("fundId") String fundId) {
-		return 0;
-	}
 	
 	
 	
+
 	
 	
-	@Operation(
-	    summary = "레시피 후원"
-	)
-	@ApiResponses(value = {
-	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-	        responseCode = "200",
-	        description = "후원 성공",
-	        content = @Content(
-	            mediaType = "application/json",
-	            schema = @Schema(implementation = FundSupportSuccessResponse.class))),
-	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-	        responseCode = "400",
-	        description = "후원 실패 - 입력값이 유효하지 않음",
-	        content = @Content(
-	            mediaType = "application/json",
-	            schema = @Schema(implementation = FundInvalidInputFailResponse.class))),
-	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-	        responseCode = "401",
-	        description = "후원 실패 - 로그인되지 않은 사용자",
-	        content = @Content(
-	            mediaType = "application/json",
-	            schema = @Schema(implementation = FundUnauthorizedFailResponse.class))),
-	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-	        responseCode = "402",
-	        description = "후원 실패 - 보유 포인트를 초과한 후원",
-	        content = @Content(
-	            mediaType = "application/json",
-	            schema = @Schema(implementation = FundPointExceedFailResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "404",
-				description = "해당 사용자를 찾을 수 없음",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = UserNotFoundResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "404",
-				description = "해당 레시피를 찾을 수 없음",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = RecipeNotFoundResponse.class))),
-	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-	        responseCode = "500",
-	        description = "서버 내부 오류",
-	        content = @Content(
-	            mediaType = "application/json",
-	            schema = @Schema(implementation = InternalServerErrorResponse.class)
-	        )
-	    )
-	})
-	@PostMapping("/{funderId}/supports/{fundeeId}")
-    public ResponseEntity<?> supportRecipe(
-            @PathVariable int funderId,
-            @PathVariable int fundeeId,
-            @RequestBody FundSupportRequestDto fundSupportRequestDto) {
+	
+	@PostMapping("recipes/{id}/funds")
+	public ResponseEntity<?> supportRecipe(
+			@Parameter(description = "레시피의 일련번호") @PathVariable int id,
+			@Parameter(description = "후원 요청 정보") @RequestBody FundCreateRequestDto fundRequestDto) {
 
 		// 로그인 여부 확인
-	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-	        throw new ApiException(FundErrorCode.FUND_UNAUTHORIZED);
-	    }
-	    
-	    FundSupportResponseDto response = fundService.support(funderId, fundeeId, fundSupportRequestDto);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(FundErrorCode.FUND_UNAUTHORIZED);
+		}
+		fundRequestDto.setFunderId(userService.readUserByUsername(authentication.getName()).getId());
+		
+		FundCreateResponseDto fundResponseDto = fundService.createFund(fundRequestDto);
 
-	    return ResponseEntity.status(FundSuccessCode.FUND_COMPLETE_SUCCESS.getStatus())
-	            .body(ApiResponse.success(FundSuccessCode.FUND_COMPLETE_SUCCESS, response));
-    }
+		return ResponseEntity.status(FundSuccessCode.FUND_CREATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(FundSuccessCode.FUND_CREATE_SUCCESS, fundResponseDto));
+	}
 
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

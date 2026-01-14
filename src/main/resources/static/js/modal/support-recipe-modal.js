@@ -1,3 +1,16 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
 document.addEventListener("DOMContentLoaded", function() {
     const ownedPoint = document.getElementById("ownedPoint");
     const remainPoint = document.getElementById("remainPoint");
@@ -81,20 +94,20 @@ document.addEventListener("DOMContentLoaded", function() {
         event.preventDefault(); 
 
         const point = parseInt(pointInput.value);
-		const funderId = parseJwt(localStorage.getItem('accessToken')).id;
+		// const funderId = parseJwt(localStorage.getItem('accessToken')).id;
 		const recipeId = parseInt(new URLSearchParams(window.location.search).get('id'));
 		const fundeeId = parseInt(document.getElementById('fundeeIdInput').value);
 		
 		// 후원하기 
 		try {
             const data = {
+				fundee_id: fundeeId,
                 recipe_id: recipeId,
                 point: point,
             };
 
-            const response = await instance.post(`/funds/${funderId}/supports/${fundeeId}`, data, {
-                headers: getAuthHeaders(),
-				'Content-Type': 'application/json'
+            const response = await instance.post(`/recipes/${recipeId}/funds`, data, {
+				headers: getAuthHeaders(),
             });
 
             if (response.data.code === 'FUND_COMPLETE_SUCCESS') {

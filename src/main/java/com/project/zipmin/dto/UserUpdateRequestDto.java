@@ -21,5 +21,6 @@ public class UserUpdateRequestDto {
 	private String introduce;
 	private String link;
 	private int point;
+	private Integer revenue;
 	
 }

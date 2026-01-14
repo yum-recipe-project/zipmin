@@ -12,12 +12,11 @@ import lombok.Data;
 public class WithdrawReadResponseDto {
 
 	private int id;
-    private int requestPoint;
-    private Date requestDate;
+    private int point;
+    private Date claimdate;
     private int status;
-    private Date completeDate;
+    private Date settledate;
 	
-    // 관리자 필요
-    private Integer userId;           // 출금 요청한 사용자 ID
-    private String username;          // 사용자 계정명
+    private Integer userId;
+    private String username;
 }

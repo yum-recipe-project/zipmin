@@ -580,6 +580,9 @@ public class UserService {
 		if (userDto.getLink() != null) {
 			user.setLink(userDto.getLink());
 		}
+		if (userDto.getRevenue() != null) {
+			user.setRevenue(userDto.getRevenue());
+		}
 		
 		// 사용자 수정
 		try {
@@ -787,11 +790,6 @@ public class UserService {
         }
         return userRepository.save(user);
     }
-		
-	public User getUserEntityById(Integer id) {
-	    return userRepository.findById(id)
-	            .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
-	}
 
 
 

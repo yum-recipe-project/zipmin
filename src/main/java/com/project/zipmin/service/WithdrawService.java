@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.UserErrorCode;
+import com.project.zipmin.dto.UserDto;
+import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.WithdrawCreateRequestDto;
 import com.project.zipmin.dto.WithdrawReadResponseDto;
 import com.project.zipmin.entity.User;
@@ -49,6 +51,7 @@ public class WithdrawService {
         // 사용자 조회
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+        UserReadResponseDto userDto = userService.readUserById(userId);
 
         // 사용자 계좌 조회
         UserAccount account = userAccountRepository.findByUserId(userId)
@@ -59,7 +62,7 @@ public class WithdrawService {
         Withdraw withdraw = Withdraw.builder()
                 .user(user)
                 .account(account)
-                .requestPoint(withdrawRequestDto.getPoint())
+                .point(withdrawRequestDto.getPoint())
                 .status(0) 
                 .build();
         
@@ -67,7 +70,7 @@ public class WithdrawService {
             withdraw = withdrawRepository.saveAndFlush(withdraw);
 
             // 수익차감
-            user.setRevenue(user.getRevenue() - withdrawRequestDto.getPoint());
+            userDto.setRevenue(userDto.getRevenue() - withdrawRequestDto.getPoint());
             userRepository.save(user);
 
             return withdrawMapper.toReadResponseDto(withdraw);

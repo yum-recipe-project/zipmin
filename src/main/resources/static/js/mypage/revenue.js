@@ -25,7 +25,7 @@ async function fetchRevenueList() {
             size: size
         }).toString();
 		
-		const response = await instance.get(`/users/${id}/revenue?${params}`);
+		const response = await instance.get(`/users/${id}/funds?${params}`);
 		
 		page = response.data.data.number; 
 		totalPages = response.data.data.totalPages;
@@ -124,26 +124,27 @@ async function fetchRevenueTotal() {
     try {
         const id = parseJwt(localStorage.getItem('accessToken')).id;
 
-        const response = await fetch(`/users/${id}/revenue/total`, {
+        const response = await fetch(`/users/${id}/funds/sum`, {
             method: 'GET',
             headers: getAuthHeaders()
         });
 
         const result = await response.json();
-
-        if (response.ok) {
-			totalRevenue = result || 0;
-
+		
+        if (result.code === 'FUND_READ_SUM_SUCCESS') {
             const pointDisplay = document.querySelector('.support_point .point span:last-child');
             if (pointDisplay) {
-                pointDisplay.textContent = `${totalRevenue.toLocaleString()}원`;
+                pointDisplay.textContent = `${result.data.toLocaleString()}원`;
             }
 
-        } else if (result.code === 'USER_INVALID_INPUT') {
+        }
+		else if (result.code === 'FUND_INVALID_INPUT') {
             alertDanger('입력값이 유효하지 않습니다.');
-        } else if (result.code === 'USER_NOT_FOUND') {
+        }
+		else if (result.code === 'USER_NOT_FOUND') {
             alertDanger('해당 사용자를 찾을 수 없습니다.');
-        } else {
+        }
+		else {
             alertDanger('서버 내부에서 오류가 발생했습니다.');
         }
 

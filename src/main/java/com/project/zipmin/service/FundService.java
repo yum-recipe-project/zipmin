@@ -139,12 +139,13 @@ public class FundService {
 		}
 		
 		// 계좌 조회
-		UserAccount account = accountRepository.findById(accountRequestDto.getUserId())
+		UserAccount account = accountRepository.findByUserId(accountRequestDto.getUserId())
 				.orElseThrow(() -> new ApiException(UserAccountErrorCode.USER_ACCOUNT_NOT_FOUND));
 
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		UserReadResponseDto userDto = userService.readUserByUsername(username);
+
 		if (!userDto.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 			if (userDto.getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (account.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {

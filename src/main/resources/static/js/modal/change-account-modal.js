@@ -14,7 +14,7 @@ async function openChangeAccountModal() {
 
         const result = await response.json();
 
-        if (result.code === 'USER_READ_ACCOUNT_SUCCESS') {
+        if (result.code === 'USER_ACCOUNT_READ_SUCCESS') {
 			renderChangeAccount(result.data);
 
         } else if (result.code === 'USER_INVALID_INPUT') {
@@ -236,22 +236,17 @@ async function postAccount() {
     const bankSelect = document.querySelector("#changeAccountModal .form-select");
     const bankValue = bankSelect?.value || '';
 
-    // 로그인 여부 확인
-    if (!isLoggedIn()) {
-        redirectToLogin();
-        return;
-    }
-
     try {
-        const accountRequestDto = {
+		const id = new URLSearchParams(window.location.search).get('id');
+		
+        const data = {
             bank: bankValue,
             accountnum: accountNumber,
             name: accountName,
             user_id: parseJwt(localStorage.getItem('accessToken')).id
         };
 
-        // API 요청
-        const response = await instance.post(`/users/${accountRequestDto.userId}/account`, accountRequestDto, {
+        const response = await instance.post(`/users/${id}/account`, data, {
             headers: getAuthHeaders()
         });
 
@@ -287,24 +282,21 @@ async function updateAccount() {
     const bankSelect = document.querySelector("#changeAccountModal .form-select");
     const bankValue = bankSelect?.value || '';
 
-    if (!isLoggedIn()) {
-        redirectToLogin();
-        return;
-    }
-
     try {
-        const accountRequestDto = {
+		const id = new URLSearchParams(window.location.search).get('id');
+		
+        const data = {
             bank: bankValue,
             accountnum: accountNumber,
             name: accountName,
             user_id: parseJwt(localStorage.getItem('accessToken')).id
         };
 
-        const response = await instance.patch(`/users/${accountRequestDto.user_id}/account`, accountRequestDto, {
+        const response = await instance.patch(`/users/${id}/account`, data, {
             headers: getAuthHeaders()
         });
 
-        if (response.data.code === 'USER_UPDATE_ACCOUNT_SUCCESS') {
+        if (response.data.code === 'USER_ACCOUNT_UPDATE_SUCCESS') {
             alertPrimary('출금 계좌 정보가 변경되었습니다.');
             const modal = bootstrap.Modal.getInstance(document.getElementById('changeAccountModal'));
             modal.hide();

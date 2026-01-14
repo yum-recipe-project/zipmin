@@ -50,6 +50,26 @@ public class FundController {
 	
 	
 	
+	// 계좌 조회
+	@GetMapping("/users/{id}/account")
+	public ResponseEntity<?> readUserAccount(
+			@Parameter(description = "사용자의 일련번호") @PathVariable int id) {
+
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(FundErrorCode.FUND_UNAUTHORIZED);
+		}
+		
+		UserAccountReadResponseDto accountDto = fundService.readAccountByUserId(id);
+
+		return ResponseEntity.status(UserAccountSuccessCode.USER_ACCOUNT_READ_SUCCESS.getStatus())
+				.body(ApiResponse.success(UserAccountSuccessCode.USER_ACCOUNT_READ_SUCCESS, accountDto));
+	}
+	
+	
+	
+	
 	// 계좌 작성
 	@PostMapping("/users/{id}/account")
 	public ResponseEntity<?> createUserAccount(
@@ -76,6 +96,7 @@ public class FundController {
 	@PatchMapping("/users/{id}/account")
 	public ResponseEntity<?> updateUserAccount(
 			@Parameter(description = "계좌 수정 요청 정보") @RequestBody UserAccountUpdateRequestDto accountRequestDto) {
+		
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -157,28 +178,7 @@ public class FundController {
 	}
 	
 
-	
-	
-	
-	// 사용자 계좌 조회
-	@GetMapping("/users/{id}/account")
-	public ResponseEntity<?> readUserAccount(
-			@Parameter(description = "사용자의 일련번호") @PathVariable int id) {
 
-		// 로그인 여부 확인
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(FundErrorCode.FUND_UNAUTHORIZED);
-		}
-		
-		UserAccountReadResponseDto accountDto = fundService.readAccountByUserId(id);
-
-		return ResponseEntity.status(UserAccountSuccessCode.USER_ACCOUNT_READ_SUCCESS.getStatus())
-				.body(ApiResponse.success(UserAccountSuccessCode.USER_ACCOUNT_READ_SUCCESS, accountDto));
-	}
-	
-	
-	
 	
 	
 	// 사용자 출금 목록 조회

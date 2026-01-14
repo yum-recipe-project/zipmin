@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 public enum WithdrawErrorCode implements Code {
 
 	// 인증
-	WITHDRAW_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "로그인되지 않은 사용자"),			  
+	WITHDRAW_UNAUTHORIZED_ACCESS(HttpStatus.UNAUTHORIZED, "로그인되지 않은 사용자"),			  
 	WITHDRAW_FORBIDDEN(HttpStatus.FORBIDDEN, "권한 없는 사용자의 접근"),
 	
 	// 입력값 오류

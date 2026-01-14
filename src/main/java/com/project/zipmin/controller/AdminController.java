@@ -24,7 +24,6 @@ import com.project.zipmin.api.ClassSuccessCode;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.CommentSuccessCode;
 import com.project.zipmin.api.FundErrorCode;
-import com.project.zipmin.api.FundSuccessCode;
 import com.project.zipmin.api.KitchenSuccessCode;
 import com.project.zipmin.api.RecipeErrorCode;
 import com.project.zipmin.api.RecipeSuccessCode;
@@ -32,6 +31,8 @@ import com.project.zipmin.api.ReviewErrorCode;
 import com.project.zipmin.api.ReviewSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
+import com.project.zipmin.api.WithdrawErrorCode;
+import com.project.zipmin.api.WithdrawSuccessCode;
 import com.project.zipmin.dto.ChompReadResponseDto;
 import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
@@ -45,11 +46,11 @@ import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.CookingService;
+import com.project.zipmin.service.FundService;
 import com.project.zipmin.service.KitchenService;
 import com.project.zipmin.service.RecipeService;
 import com.project.zipmin.service.ReviewService;
 import com.project.zipmin.service.UserService;
-import com.project.zipmin.service.WithdrawService;
 import com.project.zipmin.swagger.ChompReadListFailResponse;
 import com.project.zipmin.swagger.ChompReadListSuccessResponse;
 import com.project.zipmin.swagger.ClassAlreadyEndedResponse;
@@ -102,8 +103,7 @@ public class AdminController {
 	private final CommentService commentService;
 	private final ReviewService reviewService;
 	private final CookingService cookingService;
-	private final WithdrawService withdrawService;
-	
+	private final FundService fundService;
 	
 	
 	
@@ -192,26 +192,33 @@ public class AdminController {
 	
 	
 	// 출금 목록 조회
-	@GetMapping("/admin/withdraw")
+	@GetMapping("/admin/withdraws")
 	public ResponseEntity<?> readWithdrawList(
-	        @RequestParam int page,
-	        @RequestParam int size) {
+			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) List<String> categoryList,
+			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
+			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
+			@Parameter(description = "페이지 번호") @RequestParam int page,
+			@Parameter(description = "페이지 크기") @RequestParam int size) {
 		
-		// TODO : 로그인 여부 확인
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(WithdrawErrorCode.WITHDRAW_UNAUTHORIZED_ACCESS);
+		}
 		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				throw new ApiException(FundErrorCode.FUND_FORBIDDEN);
+				throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
 			}
 		}
 
 	    Pageable pageable = PageRequest.of(page, size);
-	    Page<WithdrawReadResponseDto> withdrawPage = withdrawService.readWithdrawPage(pageable);
+	    Page<WithdrawReadResponseDto> withdrawPage = fundService.readAdminWithdrawPage(pageable);
 
-	    return ResponseEntity.status(FundSuccessCode.WITHDRAW_READ_LIST_SUCCESS.getStatus())
-	            .body(ApiResponse.success(FundSuccessCode.WITHDRAW_READ_LIST_SUCCESS, withdrawPage));
+	    return ResponseEntity.status(WithdrawSuccessCode.WITHDRAW_READ_LIST_SUCCESS.getStatus())
+	            .body(ApiResponse.success(WithdrawSuccessCode.WITHDRAW_READ_LIST_SUCCESS, withdrawPage));
 	}
 	
 	

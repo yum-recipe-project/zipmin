@@ -22,6 +22,8 @@ import com.project.zipmin.dto.FundCreateResponseDto;
 import com.project.zipmin.dto.UserAccountReadResponseDto;
 import com.project.zipmin.entity.User;
 import com.project.zipmin.entity.UserAccount;
+import com.project.zipmin.mapper.UserAccountMapper;
+import com.project.zipmin.repository.UserAccountRepository;
 import com.project.zipmin.service.FundService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.FundInvalidInputFailResponse;
@@ -44,17 +46,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Tag(name = "Fund API", description = "후원 관련 API")
 public class FundController {
-	
-	// R
-	
-	// M
-	
-	// S
+
+	UserAccountRepository accountRepository;
+
+	UserAccountMapper accountMapper;
+
 	private final FundService fundService;
 	private final UserService userService;
 	
 	
-	// 사용자 계좌 상세 조회
+	
+	
+	
+	// 계좌 상세 조회
 	public UserAccountReadResponseDto readUserAccountById(Integer id) {
 
 		// 입력값 검증
@@ -62,19 +66,11 @@ public class FundController {
 			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_INVALID_INPUT);
 		}
 		
-		UserAccount
-		
-		
-		
-		
-		UserAccount account = userAccountRepository.findByUser(user).orElse(null);
+		// 계좌 조회
+		UserAccount userAccount = accountRepository.findById(id)
+				.orElseThrow(() -> new ApiException(UserAccountErrorCode.USER_ACCOUNT_NOT_FOUND));
 
-		// 계좌가 없으면 null 반환
-		if (account == null) {
-			return null;
-		}
-
-		return userMapper.toReadAccountResponseDto(account);
+		return accountMapper.toReadResponseDto(userAccount);
 	}
 	
 	

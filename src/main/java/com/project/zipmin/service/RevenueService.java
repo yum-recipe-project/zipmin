@@ -49,36 +49,6 @@ public class RevenueService {
 	private final FundRepository fundRepository;
 	
 	
-
-	// 사용자 출금 계좌 등록
-	@Transactional
-	public UserAccountReadResponseDto createUserAccount(UserAccountCreateRequestDto accountRequestDto) {
-		// 입력값 검증
-		if (accountRequestDto == null 
-				|| accountRequestDto.getBank() == null 
-				|| accountRequestDto.getAccountnum() == null
-				|| accountRequestDto.getName() == null
-				|| accountRequestDto.getUserId() == 0) {
-			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-		}
-
-		// 사용자 조회
-		User user = userRepository.findById(accountRequestDto.getUserId())
-				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
-		
-		UserAccount userAccount = userAccountMapper.toEntity(accountRequestDto);
-		userAccount.setUser(user);
-		
-		try {
-			userAccount = userAccountRepository.save(userAccount);
-			return userMapper.toReadAccountResponseDto(userAccount);
-		} catch (Exception e) {
-			throw new ApiException(UserErrorCode.USER_CREATE_ACCOUNT_FAIL);
-		}
-	}
-	
-	
-	
 	
 	
 	

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
+import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.FundErrorCode;
 import com.project.zipmin.api.FundSuccessCode;
 import com.project.zipmin.api.UserAccountErrorCode;
@@ -22,6 +23,9 @@ import com.project.zipmin.dto.FundCreateResponseDto;
 import com.project.zipmin.dto.UserAccountCreateRequestDto;
 import com.project.zipmin.dto.UserAccountCreateResponseDto;
 import com.project.zipmin.dto.UserAccountReadResponseDto;
+import com.project.zipmin.dto.UserAccountUpdateRequestDto;
+import com.project.zipmin.dto.UserReadResponseDto;
+import com.project.zipmin.entity.Role;
 import com.project.zipmin.entity.User;
 import com.project.zipmin.entity.UserAccount;
 import com.project.zipmin.mapper.UserAccountMapper;
@@ -61,7 +65,7 @@ public class FundController {
 	
 	
 	// 계좌 상세 조회
-	public UserAccountReadResponseDto readUserAccountById(Integer id) {
+	public UserAccountReadResponseDto readAccountById(Integer id) {
 
 		// 입력값 검증
 		if (id == null) {
@@ -80,7 +84,7 @@ public class FundController {
 	
 	
 	// 계좌 작성
-	public UserAccountCreateResponseDto createUserAccount(UserAccountCreateRequestDto accountRequestDto) {
+	public UserAccountCreateResponseDto createAccount(UserAccountCreateRequestDto accountRequestDto) {
 		
 		// 입력값 검증
 		if (accountRequestDto == null 
@@ -102,6 +106,59 @@ public class FundController {
 		}
 	}
 	
+	
+	
+	
+	// 계좌 수정
+	public UserAccountCreateResponseDto updateAccount(UserAccountUpdateRequestDto accountRequestDto) {
+
+		// 입력값 검증
+		if (accountRequestDto == null 
+				|| accountRequestDto.getUserId() == 0
+				|| accountRequestDto.getBank() == null
+				|| accountRequestDto.getAccountnum() == null
+				|| accountRequestDto.getName() == null) {
+			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_INVALID_INPUT);
+		}
+		
+		// 계좌 조회
+		UserAccount account = accountRepository.findById(accountRequestDto.getUserId())
+				.orElseThrow(() -> new ApiException(UserAccountErrorCode.USER_ACCOUNT_NOT_FOUND));
+
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto userDto = userService.readUserByUsername(username);
+		if (!userDto.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (userDto.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (account.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_FORBIDDEN);
+				}
+				else if (account.getUser().getRole().equals(Role.ROLE_ADMIN)) {
+					if (userDto.getId() != account.getUser().getId()) {
+						throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_FORBIDDEN);
+					}
+				}
+			}
+			else {
+				if (userDto.getId() != account.getUser().getId()) {
+					throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_FORBIDDEN);
+				}
+			}
+		}
+		
+		// 변경 값 설정
+		account.setBank(accountRequestDto.getBank());
+		account.setAccountnum(accountRequestDto.getAccountnum());
+		account.setName(accountRequestDto.getName());
+
+		try {
+			account = accountRepository.save(account);
+			return accountMapper.toCreateResponseDto(account);
+		}
+		catch (Exception e) {
+			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_UPDATE_FAIL);
+		}
+	}
 	
 	
 	

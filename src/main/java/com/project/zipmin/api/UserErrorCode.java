@@ -29,10 +29,6 @@ public enum UserErrorCode implements Code {
 	USER_RESET_PASSWORD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "임시 비밀번호 발급 실패"),
 	USER_INCORRECT_PASSWORD(HttpStatus.UNAUTHORIZED, "비밀번호 불일치"),
 	
-	USER_ACCOUNT_NOT_FOUND(HttpStatus.BAD_REQUEST, "사용자 출금 계좌 조회 실패"),
-	USER_CREATE_ACCOUNT_FAIL(HttpStatus.BAD_REQUEST, "사용자 출금 계좌 등록 실패"),
-	USER_UPDATE_ACCOUNT_FAIL(HttpStatus.BAD_REQUEST, "사용자 출금 계좌 수정 실패"),
-
 	USER_WITHDRAW_HISTORY_READ_FAIL(HttpStatus.BAD_REQUEST, "사용자 출금내역 조회 실패"),
 	USER_WITHDRAW_REQUEST_FAIL(HttpStatus.BAD_REQUEST, "사용자 출금 신청 실패"),
 

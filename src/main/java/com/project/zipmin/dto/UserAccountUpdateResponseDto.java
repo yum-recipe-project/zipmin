@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserAccountReadResponseDto {
+public class UserAccountUpdateResponseDto {
 	
 	private int userId;
     private String bank;

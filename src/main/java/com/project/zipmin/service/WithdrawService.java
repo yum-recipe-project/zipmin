@@ -47,6 +47,7 @@ public class WithdrawService {
 	
 	
 	
+	
 	// 출금 목록 조회 (관리자)
 	public Page<WithdrawReadResponseDto> readAdminWithdrawPage(Pageable pageable) {
 		
@@ -137,7 +138,6 @@ public class WithdrawService {
 
 		// 입력값 검증
 		if (withdrawRequestDto == null
-				|| withdrawRequestDto.getAccountId() == 0
 				|| withdrawRequestDto.getUserId() == 0
 				|| withdrawRequestDto.getPoint() == 0) {
 			throw new ApiException(WithdrawErrorCode.WITHDRAW_INVALID_INPUT);
@@ -145,6 +145,11 @@ public class WithdrawService {
 		
 		// 사용자 조회
 		UserReadResponseDto userDto = userService.readUserById(withdrawRequestDto.getUserId());
+		
+		// TODO : 권한 확인
+		
+		// TODO : AccountId 설정
+		
 		
 		// 출금 저장
 		Withdraw withdraw = withdrawMapper.toEntity(withdrawRequestDto);
@@ -161,12 +166,5 @@ public class WithdrawService {
 			throw new ApiException(WithdrawErrorCode.WITHDRAW_CREATE_FAIL);
 		}
 	}
-	
-	
-	
-	
 
-
-	
-	
 }

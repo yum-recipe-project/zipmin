@@ -20,6 +20,7 @@ import com.project.zipmin.dto.UserAccountCreateRequestDto;
 import com.project.zipmin.dto.UserAccountCreateResponseDto;
 import com.project.zipmin.dto.UserAccountReadResponseDto;
 import com.project.zipmin.dto.UserAccountUpdateRequestDto;
+import com.project.zipmin.dto.UserAccountUpdateResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.entity.Fund;
 import com.project.zipmin.entity.Role;
@@ -88,16 +89,39 @@ public class FundService {
 	}
 	
 	
+	
+	
 	// 계좌 상세 조회
-	public UserAccountReadResponseDto readAccountById(Integer id) {
+	public UserAccountReadResponseDto readAccountByUserId(int userId) {
 
 		// 입력값 검증
-		if (id == null) {
+		if (userId == 0) {
 			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_INVALID_INPUT);
 		}
 		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto userDto = userService.readUserByUsername(username);
+		if (!userDto.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (userDto.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserById(userId).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+					throw new ApiException(FundErrorCode.FUND_FORBIDDEN);
+				}
+				if (userService.readUserById(userId).getRole().equals(Role.ROLE_ADMIN.name())) {
+					if (userDto.getId() != userId) {
+						throw new ApiException(FundErrorCode.FUND_FORBIDDEN);
+					}
+				}
+			}
+			else {
+				if (userDto.getId() != userId) {
+					throw new ApiException(FundErrorCode.FUND_FORBIDDEN);
+				}
+			}
+		}
+		
 		// 계좌 조회
-		UserAccount userAccount = accountRepository.findById(id)
+		UserAccount userAccount = accountRepository.findByUserId(userId)
 				.orElseThrow(() -> new ApiException(UserAccountErrorCode.USER_ACCOUNT_NOT_FOUND));
 
 		return accountMapper.toReadResponseDto(userAccount);
@@ -134,7 +158,7 @@ public class FundService {
 	
 	
 	// 계좌 수정
-	public UserAccountCreateResponseDto updateAccount(UserAccountUpdateRequestDto accountRequestDto) {
+	public UserAccountUpdateResponseDto updateAccount(UserAccountUpdateRequestDto accountRequestDto) {
 
 		// 입력값 검증
 		if (accountRequestDto == null 
@@ -177,7 +201,7 @@ public class FundService {
 
 		try {
 			account = accountRepository.save(account);
-			return accountMapper.toCreateResponseDto(account);
+			return accountMapper.toUpdateResponseDto(account);
 		}
 		catch (Exception e) {
 			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_UPDATE_FAIL);

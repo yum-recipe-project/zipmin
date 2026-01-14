@@ -761,6 +761,8 @@ public class CookingController {
 			@Parameter(description = "조회할 페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지의 항목 수") @RequestParam int size) {
 		
+		// 로그인 여부 확인
+		
 		Pageable pageable = PageRequest.of(page, size);
 		Page<UserClassReadResponseDto> classPage = cookingService.readClassPageByUserId(id, approval, status, pageable);
 		

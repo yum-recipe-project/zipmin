@@ -12,7 +12,7 @@ public interface VoteRecordRepository extends JpaRepository<VoteRecord, Integer>
 	
 	Optional<VoteRecord> findByUserIdAndChompId(int userId, int chompId);
 	
-	int countByChoiceId(int choiceId);
+	int countByChompIdAndChoiceId(int chompId, int choiceId);
 	int countByChompId(int chompId);
 	
 	boolean existsByUserIdAndChompId(int userId, int chompId);

@@ -25,7 +25,7 @@ INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '짜장 VS 짬뽕',
 
 INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '타이타닉호의 마지막 밤의 메뉴', sysdate, sysdate,
   TO_CLOB('The Last Night on the Titanic몇 년 전 타이타닉호가 침몰하기 하루 전날인 4월 14일 승객들에게 제공된 식사의 메뉴판이 1억 원 경매에 낙찰된 적이 있었다. 그 당시 승객과 승무원이 메뉴를 저장한 덕분에 그날 굴, 필레미뇽, 오리 스테이크, 푸딩이나 복숭아 젤리 등의 메뉴가 객실의 등급마다 다르게 제공되었음을 알 수 있었다. 이를 근거로 베로니카 힌케(Veronica Hinke)는 “The Last Night on the Titanic”이라는 제목으로 요리책을 출간하였다.')
-  || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('배에서 즐기는 역사상 가장 유명한 메뉴와 스타일, 타이타닉호의 마지막 밤의 메뉴1912년 대서양에 침몰한 전설적인 해저 정기선 타이타닉호에서는 에드워드 시대의 스타일을 담은 호화롭고 우아한 저녁 식사 메뉴가 제공되었다. 베로니카 힌케의 공식 요리책 ‘The Last Night on the Titanic”은 타이타닉의 3단계의 서비스 클래스(일등석, 이등석, 삼등석)뿐만 아니라 타이타닉호로 대표되는 다양한 문화에 기초한 요리법과 역사적 정보를 담고 있다. 이 책은 역사에 관심이 있는 사람들은 물론 제임스 카메론이 레오나르도 디카프리오와 케이트 윈슬렛을 주인공으로 만든 영화를 좋아하는 영화 애호가들, 또는 새롭고 독창적인 요리법을 찾는 사람들에게도 완벽한 책으로 인정받는다.')
+  || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('배에서 즐기는 역사상 가장 유명한 메뉴와 스타일, 타이타닉호의 마지막 밤의 메뉴 1912년 대서양에 침몰한 전설적인 해저 정기선 타이타닉호에서는 에드워드 시대의 스타일을 담은 호화롭고 우아한 저녁 식사 메뉴가 제공되었다. 베로니카 힌케의 공식 요리책 ‘The Last Night on the Titanic”은 타이타닉의 3단계의 서비스 클래스(일등석, 이등석, 삼등석)뿐만 아니라 타이타닉호로 대표되는 다양한 문화에 기초한 요리법과 역사적 정보를 담고 있다. 이 책은 역사에 관심이 있는 사람들은 물론 제임스 카메론이 레오나르도 디카프리오와 케이트 윈슬렛을 주인공으로 만든 영화를 좋아하는 영화 애호가들, 또는 새롭고 독창적인 요리법을 찾는 사람들에게도 완벽한 책으로 인정받는다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('타이타닉호의 마지막 밤의 메뉴는 그곳에서 일하던 승객과 승무원들이 코트와 유니폼 주머니에 넣어 보관했던 덕분에 자료가 남아 있을 수 있었다. 그래서 비극적으로 끝난 향해 중 배에서 제공되었던 식사를 알게 되었고 일부 승객은 집으로 보낸 편지에서 식사와 음료에 대해 설명하기도 했다고 한다. 이 책은 선박에서 제공되는 각 메뉴와 음식에 대한 설명, 선상에서의 요리 경험에 대한 정보를 제공하고 그 시대의 매혹적인 라이프스타일의 요소까지 담고 있다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('그러면 타이타닉호의 손님들은 무엇을 먹고 마셨을까? 1912년 4월 타이타닉 호가 출항하기 몇 년 전에 뉴욕에 선보인 피자와 스카치 부넷(디저트), 칠리와 마리나라 소스를 곁들인 오징어 튀김은 삼등석의 손님들 즉 미국으로 집단 이주한 많은 유럽인들을 위해 제공되었다. 민트 소스와 완두콩을 곁들인 양갈비, 신선한 레몬과 타임 소스를 곁들인 청어, 맥주를 넣어 만든 웨일즈 스타일 고기 요리는 일등석에서 즐기는 일부 호화스러운 메뉴로 현대적인 스타일이 가미되었다. 이등석에는 옥수수 죽, 치킨 카레 등 중산층 식사의 모습을 엿볼 수 있다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('이 책의 레시피에는 사계절의 재료가 포함되어 있어 일 년 중 언제든지 타이타닉을 테마로 집에서 파티를 가능하게 해주고 있으며, 제임스 카메론 감독의 타이타닉호에 대한 퀴즈와 보드게임도 포함되어 있다. 또한 에드워드 시대의 음식, 칵테일 및 관습에 대한 간단한 정보까지 들어있어 그 시대의 문화 스타일까지 엿볼 수 있다. “타이타닉호의 마지막 밤”으로 다가오는 연말 홈파티의 준비 또는 선물 아이템으로 선택하여도 독특한 재미를 전달할 수 있을 것 같다.')
@@ -41,8 +41,8 @@ INSERT INTO chomp VALUES (seq_chomp_id.NEXTVAL, '마라탕, 왜 열풍일까?', 
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('마라탕은 얼얼하고 매운 중독성 있는 맛으로도 먹지만 그 안에 들어가는 이색적인 토핑이 매력인 음식이다. 특히 다양한 형태의 두부를 사용한다. 그중에서도 두부를 완전히 으깨어 얇게 종잇장처럼 만든 ‘포두부’와 ‘대나무 모양의 두부’라는 뜻의 ‘푸주’는 마라탕에 빼놓을 수 없는 인기 토핑이다. 감자 전분으로 만든 분모자 역시 상당히 인기다. 분모자는 희고 도톰한 모양으로 ‘흰쥐 모양의 전분 덩어리’라는 뜻을 가지고 있다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('마라탕, 언제부터 먹었을까?마라탕이 우리나라에 본격적으로 들어온 때는 2010년으로 보고 있다. 한국에 거주하고 있는 중국인 유학생들이 많은 곳들을 위주로 음식점이 생기면서 유행이 시작된 것으로 파악하고 있는데 당시에 중국인들이 많이 모여 살고 있는, 혹은 유학생들이 다니는 대학교 인근부터 생기고, 그 음식을 우리나라 대학생들이 접하게 되면서 젊은 층으로부터의 유입이 자연스럽게 진행되었다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('마라탕이 이토록 인기를 끌고 있는 이유는 ‘있는데 없는 맛’이라는 부분이다. 매운맛을 선호하는 우리나라에서 얼얼한 매운맛은 상당히 이색적이다. 하지만 워낙 매운 것을 좋아하기에 거부감 없이 잘 스며들었다고 생각한다. 또 코로나19 이후 마라탕의 인기가 급속도로 퍼지기 시작했는데, 그 이유는 배달 음식이 가지고 있는 특성 때문이다. 우리가 일반적으로 시켜 먹는 배달 음식의 공통점은 자극적이라는 것이다. 배달 음식은 오로지 나에게 ‘솔직한 시간’이라 표현할 정도로 본능에 가까운 음식들을 시켜 먹는다. 결국 자극적이고 기름진 본능에 가까운 음식들이 인기가 많을 수밖에 없다. 그리고 그사이를 틈타 ‘마라’를 다루는 많은 음식점이 생기면서 마라탕은 대중적인 음식이 되었다.')
-  || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('마라의 대중화 어디까지?외식 아이템은 유행을 따라 급속도로 다른 음식들에 묻어난다. 최근 유행하는 마라로제, 마라 떡볶이, 마라 찜닭이 그 예이다. 최근 ‘마라’는 우리나라 학생들이 좋아하는 메뉴에 접목되어 그 인기를 증폭시키고 있다. 그리고 마라탕에 이어 최근엔 ‘마라샹궈’라는 음식도 같이 유행하고 있다. ‘샹궈’는 향, 냄비라는 뜻으로 각종 재료를 냄비에 향 나게 볶았다는 뜻이다. 마라탕집에 가면 무조건 있는 메뉴다. 하지만 마라탕에 비해 가격이 비싸다. 그렇다면 같은 식재료를 이용하는 마라탕과 마라샹궈의 가격은 왜 차이가 날까? 정확하진 않지만, 마라탕과 마라샹궈에 들어가는 인건비가 조금 다르다. 탕은 넣고 끓이면 되지만 샹궈는 센 불에 볶는 사람이 필요하다. 또, 샹궈에 넣는 양념장의 종류가 다르다는 곳도 있다. 그리고 탕보다는 볶음에 더 많은 양념장이 필요하다고 한다. 마지막으로는 추측이지만 마라탕이 결국 마라샹궈보다는 운영 효율이 높기 때문일 것이다. 즉 운영 효율이 높지 않은 메뉴를 많이 파는 것도 리스크에 해당하기에 마라탕과 같이 운영 효율이 좋은 메뉴를 더 고를 수 있도록 가격을 비싸게 설정했다는 이야기도 할 수 있다.')
-  || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('마라탕 이대로 괜찮을까?최근 10대에게 더욱 인기가 많은 마라탕의 인기는 이대로 괜찮을까? 이러한 불안함과 동시에 여러 매체에서는 마라탕의 위험성을 강조하고 있다. 기름지고 자극적인 향신료에 위염, 속쓰림을 유발한다는 내용이다. 하지만 내가 생각하기에 더욱 위험한 것은 미각의 둔감화다. 어릴 때부터 자극적이고 기름진 음식을 자주 접하면 미각이 점점 둔감하게 될 것이다. 그리고 이것은 다양성 있는 외식업 발전에 치명적으로 다가올 수 있다. 때 이른 걱정이라고 생각할 수 있지만 입맛은 생각보다 보수적이라 어릴 때 잡힌 습관이 생각보다 바뀌지 않는다. 마라탕이 나쁘다는 것을 말하는 것은 아니지만 하나의 카테고리가 유난히 많은 사람에게 사랑받는 것은 언제나 주의가 필요하다.')
+  || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('마라의 대중화 어디까지? 외식 아이템은 유행을 따라 급속도로 다른 음식들에 묻어난다. 최근 유행하는 마라로제, 마라 떡볶이, 마라 찜닭이 그 예이다. 최근 ‘마라’는 우리나라 학생들이 좋아하는 메뉴에 접목되어 그 인기를 증폭시키고 있다. 그리고 마라탕에 이어 최근엔 ‘마라샹궈’라는 음식도 같이 유행하고 있다. ‘샹궈’는 향, 냄비라는 뜻으로 각종 재료를 냄비에 향 나게 볶았다는 뜻이다. 마라탕집에 가면 무조건 있는 메뉴다. 하지만 마라탕에 비해 가격이 비싸다. 그렇다면 같은 식재료를 이용하는 마라탕과 마라샹궈의 가격은 왜 차이가 날까? 정확하진 않지만, 마라탕과 마라샹궈에 들어가는 인건비가 조금 다르다. 탕은 넣고 끓이면 되지만 샹궈는 센 불에 볶는 사람이 필요하다. 또, 샹궈에 넣는 양념장의 종류가 다르다는 곳도 있다. 그리고 탕보다는 볶음에 더 많은 양념장이 필요하다고 한다. 마지막으로는 추측이지만 마라탕이 결국 마라샹궈보다는 운영 효율이 높기 때문일 것이다. 즉 운영 효율이 높지 않은 메뉴를 많이 파는 것도 리스크에 해당하기에 마라탕과 같이 운영 효율이 좋은 메뉴를 더 고를 수 있도록 가격을 비싸게 설정했다는 이야기도 할 수 있다.')
+  || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('마라탕 이대로 괜찮을까? 최근 10대에게 더욱 인기가 많은 마라탕의 인기는 이대로 괜찮을까? 이러한 불안함과 동시에 여러 매체에서는 마라탕의 위험성을 강조하고 있다. 기름지고 자극적인 향신료에 위염, 속쓰림을 유발한다는 내용이다. 하지만 내가 생각하기에 더욱 위험한 것은 미각의 둔감화다. 어릴 때부터 자극적이고 기름진 음식을 자주 접하면 미각이 점점 둔감하게 될 것이다. 그리고 이것은 다양성 있는 외식업 발전에 치명적으로 다가올 수 있다. 때 이른 걱정이라고 생각할 수 있지만 입맛은 생각보다 보수적이라 어릴 때 잡힌 습관이 생각보다 바뀌지 않는다. 마라탕이 나쁘다는 것을 말하는 것은 아니지만 하나의 카테고리가 유난히 많은 사람에게 사랑받는 것은 언제나 주의가 필요하다.')
   || TO_CLOB(CHR(10)) || TO_CLOB(CHR(10)) || TO_CLOB('출처 : https://mashija.com/마라탕-왜-열풍일까'),
   '9e4dc563ec9946b5a5837bf71ad089c9.png', 'megazine', 1); -- 6
 
@@ -197,32 +197,32 @@ INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 3, 4, 1);
 INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 3, 8, 1);
 INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 3, 7, 2);
 
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 5, 6, 1);
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 5, 7, 1);
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 5, 8, 1);
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 5, 10, 2);
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 5, 12, 2);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 5, 6, 3);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 5, 7, 3);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 5, 8, 3);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 5, 10, 4);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 5, 12, 4);
 
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 9, 7, 2);
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 9, 8, 3);
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 9, 9, 1);
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 9, 11, 2);
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 9, 12, 3);
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 9, 14, 3);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 9, 7, 6);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 9, 8, 7);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 9, 9, 5);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 9, 11, 7);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 9, 12, 7);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 9, 14, 7);
 
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 14, 4, 1);
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 14, 7, 2);
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 14, 8, 3);
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 14, 11, 3);
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 14, 12, 3);
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 14, 14, 3);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 14, 4, 8);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 14, 7, 9);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 14, 8, 10);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 14, 11, 10);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 14, 12, 10);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 14, 14, 10);
 
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 18, 5, 1);
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 18, 6, 1);
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 18, 7, 1);
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 18, 4, 2);
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 18, 8, 2);
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 18, 9, 2);
-INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 18, 13, 2);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 18, 5, 11);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 18, 6, 11);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 18, 7, 11);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 18, 4, 12);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 18, 8, 12);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 18, 9, 12);
+INSERT INTO vote_record VALUES (seq_vote_record_id.NEXTVAL, 18, 13, 12);
 
 COMMIT;

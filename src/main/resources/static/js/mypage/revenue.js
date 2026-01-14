@@ -69,7 +69,7 @@ function renderRevenueList(revenueList) {
         sponsorDiv.className = 'sponsor';
 
         const sponsorP1 = document.createElement('p');
-        sponsorP1.innerHTML = `<b>${revenue.funder_nickname}</b> 님에게 후원받았습니다`;
+        sponsorP1.innerHTML = `<b>${revenue.nickname}</b> 님에게 후원받았습니다`;
 
         const sponsorP2 = document.createElement('p');
         sponsorP2.textContent = formatDate(revenue.fund_date);
@@ -101,10 +101,10 @@ function renderRevenueList(revenueList) {
 
         const titleA = document.createElement('a');
         titleA.href = `/recipe/viewRecipe.do?id=${revenue.recipe_id}`;
-        titleA.textContent = revenue.recipe_title || '제목 없음';
+        titleA.textContent = revenue.title || '제목 없음';
 
 //        const nicknameP = document.createElement('p');
-//        nicknameP.textContent = revenue.funder_nickname;
+//        nicknameP.textContent = revenue.nickname;
 
 //        infoDiv.append(labelP, titleA, nicknameP);
         infoDiv.append(labelP, titleA);

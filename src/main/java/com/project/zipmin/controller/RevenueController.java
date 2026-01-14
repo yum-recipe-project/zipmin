@@ -22,7 +22,7 @@ import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.dto.UserAccountCreateRequestDto;
 import com.project.zipmin.dto.UserAccountReadResponseDto;
 import com.project.zipmin.dto.UserAccountUpdateRequestDto;
-import com.project.zipmin.dto.UserRevenueReadResponseDto;
+import com.project.zipmin.dto.FundReadResponseDto;
 import com.project.zipmin.dto.WithdrawCreateRequestDto;
 import com.project.zipmin.dto.WithdrawReadResponseDto;
 import com.project.zipmin.service.RevenueService;
@@ -41,7 +41,6 @@ public class RevenueController {
 	// 사용자 수익 조회
 	@GetMapping("/users/{id}/revenue/total")
 	public ResponseEntity<Integer> readUserRevenue(@PathVariable Integer id) {
-		System.err.println("수익 조회 컨트롤러");
 	    // 입력값 검증
 	    if (id == null || id <= 0) {
 	        throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
@@ -64,7 +63,7 @@ public class RevenueController {
 		}
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<UserRevenueReadResponseDto> revenuePage = revenueService.readUserRevenuePageById(id, pageable);
+		Page<FundReadResponseDto> revenuePage = revenueService.readUserRevenuePageById(id, pageable);
 		
 	    return ResponseEntity.status(FundSuccessCode.FUND_HISTORY_READ_SUCCESS.getStatus())
 	            .body(ApiResponse.success(FundSuccessCode.FUND_HISTORY_READ_SUCCESS, revenuePage));
@@ -127,9 +126,8 @@ public class RevenueController {
             @PathVariable Integer id,
             @RequestParam int page,
             @RequestParam int size) {
-    	System.err.println("입력값: " + id + " page: " + page + "size: " + size);
 
-        // 입력값 검증
+    	// 입력값 검증
         if (id == null || id <= 0) {
             throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
         }
@@ -138,7 +136,6 @@ public class RevenueController {
 
         // 서비스 호출
         Page<WithdrawReadResponseDto> withdrawPage = withdrawService.readUserWithdrawPageById(id, pageable);
-        System.err.println("서비스 호출 완료: " + withdrawPage);
         
         return ResponseEntity.status(UserSuccessCode.USER_WITHDRAW_HISTORY_READ_SUCCESS.getStatus())
                 .body(ApiResponse.success(UserSuccessCode.USER_WITHDRAW_HISTORY_READ_SUCCESS, withdrawPage));

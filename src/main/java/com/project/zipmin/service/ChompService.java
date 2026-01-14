@@ -219,7 +219,7 @@ public class ChompService {
 				VoteChoiceReadResponseDto choiceDto = choiceMapper.toReadResponseDto(choice);
 				
 				// 득표수
-				int recordcount = recordRepository.countByChoiceId(choice.getId());
+				int recordcount = recordRepository.countByChompIdAndChoiceId(id, choiceDto.getId());
 				choiceDto.setRecordcount(recordcount);
 				
 				// 비율

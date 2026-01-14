@@ -6,133 +6,167 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.FundErrorCode;
+import com.project.zipmin.api.UserAccountErrorCode;
 import com.project.zipmin.api.UserErrorCode;
+import com.project.zipmin.api.WithdrawErrorCode;
+import com.project.zipmin.dto.UserAccountReadResponseDto;
 import com.project.zipmin.dto.UserDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.WithdrawCreateRequestDto;
 import com.project.zipmin.dto.WithdrawReadResponseDto;
+import com.project.zipmin.entity.Role;
 import com.project.zipmin.entity.User;
 import com.project.zipmin.entity.UserAccount;
 import com.project.zipmin.entity.Withdraw;
+import com.project.zipmin.mapper.UserMapper;
 import com.project.zipmin.mapper.WithdrawMapper;
 import com.project.zipmin.repository.UserAccountRepository;
 import com.project.zipmin.repository.UserRepository;
 import com.project.zipmin.repository.WithdrawRepository;
 
 import lombok.RequiredArgsConstructor;
-
+	
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class WithdrawService {
 	
 	private final WithdrawRepository withdrawRepository;
-	private final UserRepository userRepository;
-	private final UserAccountRepository userAccountRepository;
+	
+	private final UserMapper userMapper;
+	private final WithdrawMapper withdrawMapper;
 	
 	private final UserService userService;
 	
-	private final WithdrawMapper withdrawMapper;
-
-	// 사용자 포인트 출금 신청
-	@Transactional
-    public WithdrawReadResponseDto createWithdrawRequest(Integer userId, WithdrawCreateRequestDto withdrawRequestDto) {
-
-    	// 입력값 검증
-        if (userId == null || userId <= 0 || withdrawRequestDto == null || withdrawRequestDto.getPoint() <= 0) {
-            throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-        }
-
-        // TODO : 사용자 service사용
-        // 사용자 조회
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
-        UserReadResponseDto userDto = userService.readUserById(userId);
-
-        // 사용자 계좌 조회
-        UserAccount account = userAccountRepository.findByUserId(userId)
-                .orElseThrow(() -> new ApiException(UserErrorCode.USER_ACCOUNT_NOT_FOUND));
-
-        
-        // 출금 신청 엔티티 
-        Withdraw withdraw = Withdraw.builder()
-                .user(user)
-                .account(account)
-                .point(withdrawRequestDto.getPoint())
-                .status(0) 
-                .build();
-        
-        try {
-            withdraw = withdrawRepository.saveAndFlush(withdraw);
-
-            // 수익차감
-            userDto.setRevenue(userDto.getRevenue() - withdrawRequestDto.getPoint());
-            userRepository.save(user);
-
-            return withdrawMapper.toReadResponseDto(withdraw);
-        } catch (Exception e) {
-            throw new ApiException(UserErrorCode.USER_WITHDRAW_REQUEST_FAIL);
-        }
-    }
 	
-    // 특정 사용자의 출금 내역 목록 조회
-    public Page<WithdrawReadResponseDto> readUserWithdrawPageById(Integer userId, Pageable pageable) {
+	
+	
+	// 출금 목록 조회 (관리자)
+	public Page<WithdrawReadResponseDto> readAdminWithdrawPage(Pageable pageable) {
+		
+		// 입력값 검증
+		if (pageable == null) {
+			throw new ApiException(WithdrawErrorCode.WITHDRAW_INVALID_INPUT);
+		}
+		
+		// TODO : 정렬 문자열을 객체로 변환
 
-        if (userId == null || pageable == null) {
-            throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-        }
+		// 출금 목록 조회
+		Page<Withdraw> withdrawPage = null;
+		try {
+			withdrawPage = withdrawRepository.findAll(pageable);
+		}
+		catch (Exception e) {
+			throw new ApiException(WithdrawErrorCode.WITHDRAW_READ_LIST_FAIL);
+		}
 
-        Page<Withdraw> withdrawPage;
-        try {
-            withdrawPage = withdrawRepository.findByUserId(userId, pageable);
-        } catch (Exception e) {
-            throw new ApiException(UserErrorCode.USER_WITHDRAW_HISTORY_READ_FAIL);
-        }
+		// 출금 목록 응답 구성
+		List<WithdrawReadResponseDto> withdrawDtoList = new ArrayList<>();
+		for (Withdraw withdraw : withdrawPage) {
+			WithdrawReadResponseDto dto = withdrawMapper.toReadResponseDto(withdraw);
+			withdrawDtoList.add(dto);
+		}
 
-        List<WithdrawReadResponseDto> withdrawDtoList = new ArrayList<>();
+		return new PageImpl<>(withdrawDtoList, pageable, withdrawPage.getTotalElements());
+	}
+	
+	
+	
+	
+	
+	// 사용자의 출금 목록 조회
+	public Page<WithdrawReadResponseDto> readWithdrawPageByUserId(int userId, Pageable pageable) {
 
-        for (Withdraw withdraw : withdrawPage) {
-            WithdrawReadResponseDto dto = withdrawMapper.toReadResponseDto(withdraw);
-            withdrawDtoList.add(dto);
-        }
+		// 입력값 검증
+		if (userId == 0 || pageable == null) {
+			throw new ApiException(WithdrawErrorCode.WITHDRAW_INVALID_INPUT);
+		}
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto userDto = userService.readUserByUsername(username);
+		if (!userDto.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (userDto.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserById(userId).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+					throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
+				}
+				if (userService.readUserById(userId).getRole().equals(Role.ROLE_ADMIN.name())) {
+					if (userDto.getId() != userId) {
+						throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
+					}
+				}
+			}
+			else {
+				if (userDto.getId() != userId) {
+					throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
+				}
+			}
+		}
+		
+		// 출금 목록 조회
+		Page<Withdraw> withdrawPage;
+		try {
+			withdrawPage = withdrawRepository.findByUserId(userId, pageable);
+		}
+		catch (Exception e) {
+			throw new ApiException(WithdrawErrorCode.WITHDRAW_READ_LIST_FAIL);
+		}
 
-        return new PageImpl<>(withdrawDtoList, pageable, withdrawPage.getTotalElements());
-    }
+		// 출금 목록 응답 구성
+		List<WithdrawReadResponseDto> withdrawDtoList = new ArrayList<>();
+		for (Withdraw withdraw : withdrawPage) {
+			WithdrawReadResponseDto withdrawDto = withdrawMapper.toReadResponseDto(withdraw);
+			withdrawDtoList.add(withdrawDto);
+		}
 
-    
-    
-    
-    // 모든 사용자의 출금 내역 목록 조회 (관리자용)
-    public Page<WithdrawReadResponseDto> readWithdrawPage(Pageable pageable) {
+		return new PageImpl<>(withdrawDtoList, pageable, withdrawPage.getTotalElements());
+	}
 
-        if (pageable == null) {
-            throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-        }
+	
+	
+	
+	
+	// 포인트 출금 신청
+	public WithdrawReadResponseDto createWithdraw(WithdrawCreateRequestDto withdrawRequestDto) {
 
-        Page<Withdraw> withdrawPage;
-        try {
-            withdrawPage = withdrawRepository.findAll(pageable);
-        }
-        catch (Exception e) {
-            throw new ApiException(UserErrorCode.USER_WITHDRAW_HISTORY_READ_FAIL);
-        }
+		// 입력값 검증
+		if (withdrawRequestDto == null
+				|| withdrawRequestDto.getAccountId() == 0
+				|| withdrawRequestDto.getUserId() == 0
+				|| withdrawRequestDto.getPoint() == 0) {
+			throw new ApiException(WithdrawErrorCode.WITHDRAW_INVALID_INPUT);
+		}
+		
+		// 사용자 조회
+		UserReadResponseDto userDto = userService.readUserById(withdrawRequestDto.getUserId());
+		
+		// 출금 저장
+		Withdraw withdraw = withdrawMapper.toEntity(withdrawRequestDto);
+		try {
+			withdraw = withdrawRepository.save(withdraw);
+			
+			// 사용자 갱신
+			userDto.setRevenue(userDto.getRevenue() - withdrawRequestDto.getPoint());
+			userService.updateUser(userMapper.toUpdateRequestDto(userMapper.toEntity(userDto)));
 
-        List<WithdrawReadResponseDto> withdrawDtoList = new ArrayList<>();
+			return withdrawMapper.toReadResponseDto(withdraw);
+		}
+		catch (Exception e) {
+			throw new ApiException(WithdrawErrorCode.WITHDRAW_CREATE_FAIL);
+		}
+	}
+	
+	
+	
+	
 
-        for (Withdraw withdraw : withdrawPage) {
-            // 엔티티 → DTO 변환
-            WithdrawReadResponseDto dto = withdrawMapper.toReadResponseDto(withdraw);
-            withdrawDtoList.add(dto);
-        }
 
-        return new PageImpl<>(withdrawDtoList, pageable, withdrawPage.getTotalElements());
-    }
-
-
-    
+	
 	
 }

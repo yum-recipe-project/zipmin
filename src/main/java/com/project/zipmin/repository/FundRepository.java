@@ -11,9 +11,10 @@ import com.project.zipmin.entity.Fund;
 public interface FundRepository extends JpaRepository<Fund, Integer> {
 	
 	Page<Fund> findAllByFundeeId(int userId, Pageable pageable);
-	
-    @Query("SELECT SUM(f.point) FROM Fund f WHERE f.fundee.id = :userId")
-    Integer sumPointByFundeeId(@Param("userId") Integer userId);
+
+    @Query("select coalesce(sum(f.point), 0) FROM fund f WHERE f.fundee.id = :userId")
+    Integer sumPointByFundeeId(Integer userId);
+
 	
 
 }

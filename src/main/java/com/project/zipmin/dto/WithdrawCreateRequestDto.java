@@ -8,5 +8,9 @@ import lombok.Data;
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class WithdrawCreateRequestDto {
+	
 	private int point;
+	private int userId;
+	private int accountId;
+	
 }

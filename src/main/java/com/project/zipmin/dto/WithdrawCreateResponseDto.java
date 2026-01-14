@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class WithdrawReadResponseDto {
+public class WithdrawCreateResponseDto {
 
 	private int id;
     private int point;
@@ -19,5 +19,4 @@ public class WithdrawReadResponseDto {
     private Integer userId;
     private Integer accoundId;
     
-    private String username;
 }

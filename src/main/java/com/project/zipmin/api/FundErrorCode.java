@@ -16,12 +16,11 @@ public enum FundErrorCode implements Code {
 	FUND_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
 	FUND_INVALID_POINT(HttpStatus.BAD_REQUEST, "포인트 입력값이 유효하지 않음"),
 	
-	
-
 	// 데이터 처리
 	FUND_NOT_FOUND(HttpStatus.NOT_FOUND, "후원 정보를 찾을 수 없음"),
 	FUND_CREATE_FAIL(HttpStatus.BAD_REQUEST, "후원 작성 실패"),
-	FUND_READ_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "후원 조회 실패"),
+	FUND_READ_LIST_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "후원 조회 실패"),
+	FUND_READ_SUM_FAIL(HttpStatus.BAD_REQUEST, "후원 합계 조회 실패"),
 	
 	FUND_DUPLICATE(HttpStatus.CONFLICT, "중복 후원 시도"),   
 	

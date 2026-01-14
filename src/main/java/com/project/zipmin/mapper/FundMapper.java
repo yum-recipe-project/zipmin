@@ -16,21 +16,23 @@ public interface FundMapper {
 	@Mapping(target = "recipe.id", source = "recipeId")
 	Fund toEntity(FundReadResponseDto fundDto);
 	
-    @Mapping(target = "funderId", source = "funder.id")
-    @Mapping(target = "fundeeId", source = "fundee.id")
-    @Mapping(target = "recipeId", source = "recipe.id")
-    FundReadResponseDto toFundReadResponseDto(Fund fund);
-    
+	@Mapping(target = "funderId", source = "funder.id")
+	@Mapping(target = "fundeeId", source = "fundee.id")
+	@Mapping(target = "recipeId", source = "recipe.id")
+	FundReadResponseDto toFundReadResponseDto(Fund fund);
+	
+	
+
 	@Mapping(target = "funder.id", source = "funderId")
 	@Mapping(target = "fundee.id", source = "fundeeId")
 	@Mapping(target = "recipe.id", source = "recipeId")
 	Fund toEntity(FundCreateRequestDto fundDto);
 	
-    @Mapping(target = "funderId", source = "funder.id")
-    @Mapping(target = "fundeeId", source = "fundee.id")
-    @Mapping(target = "recipeId", source = "recipe.id")
-    FundCreateResponseDto toFundCreateResponseDto(Fund fund);
-    
+	@Mapping(target = "funderId", source = "funder.id")
+	@Mapping(target = "fundeeId", source = "fundee.id")
+	@Mapping(target = "recipeId", source = "recipe.id")
+	FundCreateResponseDto toFundCreateResponseDto(Fund fund);
+	
 	@Mapping(target = "funder.id", source = "funderId")
 	@Mapping(target = "fundee.id", source = "fundeeId")
 	@Mapping(target = "recipe.id", source = "recipeId")

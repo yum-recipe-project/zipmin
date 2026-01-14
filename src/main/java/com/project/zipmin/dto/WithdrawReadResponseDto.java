@@ -17,7 +17,7 @@ public class WithdrawReadResponseDto {
     private Date settledate;
     private int status;
     private Integer userId;
-    private Integer accoundId;
+    private Integer accountId;
     
     private String username;
 }

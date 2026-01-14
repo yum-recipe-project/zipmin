@@ -11,17 +11,21 @@ import com.project.zipmin.entity.Withdraw;
 public interface WithdrawMapper {
 	
 	@Mapping(target = "user.id", source = "userId")
+	@Mapping(target = "account.id", source = "accountId")
 	Withdraw toEntity(WithdrawReadResponseDto withdrawDto);
 	
 	@Mapping(target = "userId", source = "user.id")
+	@Mapping(target = "accountId", source = "account.id")
 	WithdrawReadResponseDto toReadResponseDto(Withdraw withdraw);
 	
 	
 	
 	@Mapping(target = "user.id", source = "userId")
+	@Mapping(target = "account.id", source = "accountId")
 	Withdraw toEntity(WithdrawCreateRequestDto withdrawDto);
 	
 	@Mapping(target = "userId", source = "user.id")
+	@Mapping(target = "accountId", source = "account.id")
 	WithdrawCreateRequestDto toCreateRequestDto(Withdraw withdraw);
 	
 	

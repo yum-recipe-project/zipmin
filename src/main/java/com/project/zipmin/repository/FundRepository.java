@@ -12,7 +12,7 @@ public interface FundRepository extends JpaRepository<Fund, Integer> {
 	
 	Page<Fund> findAllByFundeeId(int userId, Pageable pageable);
 
-    @Query("select coalesce(sum(f.point), 0) FROM fund f WHERE f.fundee.id = :userId")
+    @Query("select coalesce(sum(f.point), 0) FROM Fund f WHERE f.fundee.id = :userId")
     Integer sumPointByFundeeId(Integer userId);
 
 	

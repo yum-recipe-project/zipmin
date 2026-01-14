@@ -106,11 +106,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 point: point,
             };
 
-            const response = await instance.post(`/recipes/${recipeId}/funds`, data, {
+            const response = await instance.post(`/funds`, data, {
 				headers: getAuthHeaders(),
             });
 
-            if (response.data.code === 'FUND_COMPLETE_SUCCESS') {
+            if (response.data.code === 'FUND_CREATE_SUCCESS') {
 				alertPrimary('후원이 완료되었습니다');
                 const modalInstance = bootstrap.Modal.getInstance(supportRecipeModal);
                 if (modalInstance) {

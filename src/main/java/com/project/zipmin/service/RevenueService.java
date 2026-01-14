@@ -49,35 +49,6 @@ public class RevenueService {
 	private final FundRepository fundRepository;
 	
 	
-	
-
-	// 아이디로 사용자 출금 계좌 조회
-	public UserAccountReadResponseDto readUserAccountById(Integer id) {
-
-		// 입력값 검증
-		if (id == null) {
-			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-		}
-
-		// 사용자 조회
-		User user = userRepository.findById(id)
-				.orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
-
-		UserAccount account = userAccountRepository.findByUser(user).orElse(null);
-
-		// 계좌가 없으면 null 반환
-		if (account == null) {
-			return null;
-		}
-
-		return userMapper.toReadAccountResponseDto(account);
-	}
-	
-	
-	
-	
-	
-	
 
 	// 사용자 출금 계좌 등록
 	@Transactional

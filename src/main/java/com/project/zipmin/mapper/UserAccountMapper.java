@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import com.project.zipmin.dto.UserAccountCreateRequestDto;
+import com.project.zipmin.dto.UserAccountCreateResponseDto;
 import com.project.zipmin.dto.UserAccountReadResponseDto;
 import com.project.zipmin.entity.UserAccount;
 
@@ -16,8 +17,18 @@ public interface UserAccountMapper {
 	@Mapping(target = "userId", source = "user.id")
 	UserAccountReadResponseDto toReadResponseDto(UserAccount account);
 	
+	
+	
 	@Mapping(target = "user.id", source = "userId")
 	UserAccount toEntity(UserAccountCreateRequestDto accountDto);
 	
+	@Mapping(target = "userId", source = "user.id")
+	UserAccountCreateRequestDto toCreateRequestDto(UserAccount account);
+	
+	@Mapping(target = "user.id", source = "userId")
+	UserAccount toEntity(UserAccountCreateResponseDto accountDto);
+	
+	@Mapping(target = "userId", source = "user.id")
+	UserAccountCreateResponseDto toCreateResponseDto(UserAccount account);
 	
 }

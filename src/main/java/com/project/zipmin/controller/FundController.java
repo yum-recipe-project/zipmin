@@ -19,6 +19,8 @@ import com.project.zipmin.api.UserAccountErrorCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.dto.FundCreateRequestDto;
 import com.project.zipmin.dto.FundCreateResponseDto;
+import com.project.zipmin.dto.UserAccountCreateRequestDto;
+import com.project.zipmin.dto.UserAccountCreateResponseDto;
 import com.project.zipmin.dto.UserAccountReadResponseDto;
 import com.project.zipmin.entity.User;
 import com.project.zipmin.entity.UserAccount;
@@ -71,6 +73,33 @@ public class FundController {
 				.orElseThrow(() -> new ApiException(UserAccountErrorCode.USER_ACCOUNT_NOT_FOUND));
 
 		return accountMapper.toReadResponseDto(userAccount);
+	}
+	
+	
+	
+	
+	
+	// 계좌 작성
+	public UserAccountCreateResponseDto createUserAccount(UserAccountCreateRequestDto accountRequestDto) {
+		
+		// 입력값 검증
+		if (accountRequestDto == null 
+				|| accountRequestDto.getBank() == null 
+				|| accountRequestDto.getAccountnum() == null
+				|| accountRequestDto.getName() == null
+				|| accountRequestDto.getUserId() == 0) {
+			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_INVALID_INPUT);
+		}
+		
+		// 계좌 저장
+		UserAccount userAccount = accountMapper.toEntity(accountRequestDto);
+		try {
+			userAccount = accountRepository.save(userAccount);
+			return accountMapper.toCreateResponseDto(userAccount);
+		}
+		catch (Exception e) {
+			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_CREATE_FAIL);
+		}
 	}
 	
 	

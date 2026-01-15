@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 public enum FundErrorCode implements Code {
 
 	// 인증
-	FUND_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "로그인되지 않은 사용자"),			  
+	FUND_UNAUTHORIZED_ACCESS(HttpStatus.UNAUTHORIZED, "로그인되지 않은 사용자"),			  
 	FUND_FORBIDDEN(HttpStatus.FORBIDDEN, "권한 없는 사용자의 접근"),
 	
 	// 입력값 오류

@@ -220,7 +220,7 @@ function renderFundList(fundList) {
         recipeLink.className = 'thumbnail';
 
         const recipeImg = document.createElement('img');
-        recipeImg.src = revenue.recipe_thumbnail || '/images/common/test.png';
+        recipeImg.src = revenue.image || '/images/common/test.png';
         recipeLink.appendChild(recipeImg);
 
         const infoDiv = document.createElement('div');

@@ -3,6 +3,7 @@ package com.project.zipmin.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -55,6 +56,9 @@ public class FundService {
 	private final UserMapper userMapper;
 	
 	private final UserService userService;
+	
+	@Value("${app.upload.public-path:/files}")
+	private String publicPath;
 	
 	
 	
@@ -224,6 +228,7 @@ public class FundService {
  			
  			fundDto.setNickname(fund.getFunder().getNickname());
 			fundDto.setTitle(fund.getRecipe().getTitle());
+			fundDto.setImage(fund.getRecipe().getImage());
 
 			fundDtoList.add(fundDto);
 		}

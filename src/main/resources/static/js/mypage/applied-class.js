@@ -1,5 +1,5 @@
 /**
- * 전역 변수 선언
+ * 전역 변수
  */
 let status = '';
 let totalPages = 0;
@@ -79,25 +79,25 @@ async function fetchClassAttend() {
 		const code = error?.response?.data?.code;
 								
 		if (code === 'CLASS_READ_LIST_FAIL') {
-			alertDanger('사용자의 쿠킹클래스 결석 횟수 조회에 실패했습니다.');
+			console.log(error);
 		}
 		else if (code === 'CLASS_APPLY_READ_LIST_FAIL') {
-			alertDanger('사용자의 쿠킹클래스 결석 횟수 조회에 실패했습니다.');
+			console.log(error);
 		}
 		else if (code === 'CLASS_INVALID_INPUT') {
-			alertDanger('입력값이 유효하지 않습니다.');
+			console.log(error);
 		}
 		else if (code === 'USER_INVALID_INPUT') {
-			alertDanger('입력값이 유효하지 않습니다.');
+			console.log(error);
 		}
 		else if (code === 'CLASS_UNAUTHORIZED_ACCESS') {
-			alertDanger('로그인되지 않은 사용자입니다.');
+			console.log(error);
 		}
 		else if (code === 'CLASS_FORBIDDEN') {
 			alertDanger('접근 권한이 없습니다.');
 		}
 		else if (code === 'USER_NOT_FOUND') {
-			alertDanger('해당 사용자를 찾을 수 없습니다.');
+			console.log(error);
 		}
 		else if (code === 'INTERNAL_SERVER_ERROR') {
 			console.log(error);

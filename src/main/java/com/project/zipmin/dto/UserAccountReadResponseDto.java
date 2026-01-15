@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 public class UserAccountReadResponseDto {
 	
 	private int id;
-	private int userId;
     private String bank;
     private String accountnum;
     private String name;
+    private int userId;
     
 }

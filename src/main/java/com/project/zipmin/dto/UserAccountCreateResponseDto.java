@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserAccountCreateResponseDto {
 	
-	private int userId;
+	private int id;
     private String bank;
     private String accountnum;
     private String name;
+    private int userId;
     
 }

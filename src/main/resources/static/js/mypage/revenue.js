@@ -94,7 +94,7 @@ async function fetchFundSum() {
 
 
 /**
- * 서버에서 사용자 후원 목록 데이터를 가져오는 함수
+ * 서버에서 사용자의 후원 목록 데이터를 가져오는 함수
  */
 async function fetchFundList(scroll = true) {
 	

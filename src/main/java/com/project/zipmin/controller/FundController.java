@@ -196,6 +196,7 @@ public class FundController {
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_UNAUTHORIZED_ACCESS);
 		}
+		accountRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 
 		UserAccountUpdateResponseDto accountResponseDto = fundService.updateAccount(accountRequestDto);
 

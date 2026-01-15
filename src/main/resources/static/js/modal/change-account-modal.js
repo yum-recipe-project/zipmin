@@ -7,6 +7,7 @@ async function openChangeAccountModal() {
 	try {
         const id = parseJwt(localStorage.getItem('accessToken')).id;
 
+		// TODO : instance로 변경
         const response = await fetch(`/users/${id}/account`, {
             method: 'GET',
             headers: getAuthHeaders()
@@ -250,7 +251,7 @@ async function postAccount() {
             headers: getAuthHeaders()
         });
 
-        if (response.data.code === 'USER_CREATE_ACCOUNT_SUCCESS') {
+        if (response.data.code === 'USER_ACCOUNT_CREATE_SUCCESS') {
             alertPrimary('출금 계좌 등록이 완료되었습니다.');
             const modal = bootstrap.Modal.getInstance(document.getElementById('changeAccountModal'));
             modal.hide();

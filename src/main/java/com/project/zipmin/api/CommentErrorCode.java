@@ -13,12 +13,13 @@ public enum CommentErrorCode implements Code {
 	COMMENT_FORBIDDEN(HttpStatus.FORBIDDEN, "권한 없는 사용자의 접근"),
 	
 	COMMENT_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
+	
+	COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 댓글을 찾을 수 없음"),
 	COMMENT_CREATE_FAIL(HttpStatus.BAD_REQUEST, "댓글 작성 실패"),
     COMMENT_READ_LIST_FAIL(HttpStatus.BAD_REQUEST, "댓글 목록 조회 실패"),
     COMMENT_READ_COUNT_FAIL(HttpStatus.BAD_REQUEST, "댓글 개수 조회 실패"),
     COMMENT_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "댓글 수정 실패"),
     COMMENT_DELETE_FAIL(HttpStatus.BAD_REQUEST, "댓글 삭제 실패"),
-    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 댓글을 찾을 수 없음"),
     
     COMMENT_LIKE_FAIL(HttpStatus.BAD_REQUEST, "댓글 좋아요 실패"),
     COMMENT_UNLIKE_FAIL(HttpStatus.BAD_REQUEST, "댓글 좋아요 삭제 실패"),

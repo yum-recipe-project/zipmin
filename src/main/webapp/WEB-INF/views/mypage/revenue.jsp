@@ -39,12 +39,10 @@
 							<span></span>
 						</div>
 						<div class="btn_wrap">
-							<button class="btn_outline" data-bs-toggle="modal" data-bs-target="#changeAccountModal"
-								onclick="openChangeAccountModal()">
+							<button class="btn_outline" data-bs-toggle="modal" data-bs-target="#changeAccountModal">
 								출금 계좌 관리
 							</button>
-							<button class="btn_dark" data-bs-toggle="modal" data-bs-target="#withdrawPointModal"
-								onclick="openWithdrawPointModal()">
+							<button class="btn_dark" data-bs-toggle="modal" data-bs-target="#withdrawPointModal">
 								출금하기
 							</button>
 						</div>

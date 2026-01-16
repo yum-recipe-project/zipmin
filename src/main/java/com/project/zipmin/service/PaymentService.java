@@ -20,8 +20,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class PaymentService {
-	private final UserMapper userMapper;
-	private final UserRepository userRepository;
 	
 	@Autowired
 	private UserService userService; 

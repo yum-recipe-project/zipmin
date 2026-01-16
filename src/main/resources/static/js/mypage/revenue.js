@@ -4,9 +4,9 @@
 let page = 0;
 let size = 10;
 let totalPages = 0;
-let revenueList = [];
 let totalElements = 0;
-let totalRevenue = 0;  
+let fundList = [];
+
 
 
 
@@ -16,12 +16,12 @@ let totalRevenue = 0;
  * 접근 권한을 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', async function() {
-	
+
 	try {
 		await instance.get('/dummy');
 	}
 	catch (error) {
-		redirectToLogin('/', true);
+		redirectToLogin('/');
 	}
 	
 });
@@ -33,9 +33,11 @@ document.addEventListener('DOMContentLoaded', async function() {
 /**
  * 초기 실행하는 함수
  */
-document.addEventListener("DOMContentLoaded", function() {
-	fetchRevenueList();
-	fetchRevenueTotal();
+document.addEventListener('DOMContentLoaded', function() {
+	
+	fetchFundSum();
+	fetchFundList();
+	
 });
 
 
@@ -43,33 +45,49 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 /**
- * 서버에서 후원 목록 데이터를 가져오는 함수
+ * 사용자의 수익 합계를 조회하는 함수
  */
-async function fetchRevenueList() {
+async function fetchFundSum() {
 	
-	try {
-		const id = parseJwt(localStorage.getItem('accessToken')).id;
-		const params = new URLSearchParams({
-            page: page,
-            size: size
-        }).toString();
+    try {
+        const payload = parseJwt(localStorage.getItem('accessToken'));
+
+        const response = await instance.get(`/users/${payload.id}/funds/sum`, {
+            headers: getAuthHeaders()
+        });
 		
-		const response = await instance.get(`/users/${id}/funds?${params}`);
-		
-		page = response.data.data.number; 
-		totalPages = response.data.data.totalPages;
-		totalElements = response.data.data.totalElements;
-		
-		revenueList = response.data.data.content;
-		renderRevenueList(revenueList);
-		renderPagination(fetchRevenueList);
-		
-		document.querySelector('.support_util .total').innerText = `총 ${response.data.data.totalElements}개`;
-	}
+        if (response.data.code === 'FUND_READ_SUM_SUCCESS') {
+            document.querySelector('.support_point .point span:last-child').textContent = `${response.data.data}원`;
+        }
+    }
 	catch (error) {
-		console.log(error);
-	}
-	
+		const code = error?.response?.data?.code;
+		
+		if (code === 'FUND_READ_SUM_FAIL') {
+	        console.log(error);
+		}
+		else if (code === 'FUND_INVALID_INPUT') {
+			console.log(error);
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			console.log(error);
+		}
+		else if (code === 'FUND_UNAUTHORIZED_ACCESS') {
+			console.log(error);
+		}
+		else if (code === 'FUND_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			console.log(error);
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			console.log(error);
+		}
+		else {
+			console.log(error);
+		}
+    }
 }
 
 
@@ -77,19 +95,102 @@ async function fetchRevenueList() {
 
 
 /**
- * 후원 내역 목록을 화면에 렌더링하는 함수
+ * 서버에서 사용자의 후원 목록 데이터를 가져오는 함수
  */
-function renderRevenueList(revenueList) {
+async function fetchFundList(scroll = true) {
+	
+	try {
+		const payload = parseJwt(localStorage.getItem('accessToken'));
+		
+		const params = new URLSearchParams({
+            page: page,
+            size: size
+        }).toString();
+		
+		const response = await instance.get(`/users/${payload.id}/funds?${params}`, {
+			headers: getAuthHeaders()
+		});
+		
+		if (response.data.code === 'FUND_READ_LIST_SUCCESS') {
+			
+			page = response.data.data.number; 
+			totalPages = response.data.data.totalPages;
+			totalElements = response.data.data.totalElements;
+			fundList = response.data.data.content;
+			
+			renderFundList(fundList);
+			renderPagination(fetchFundList);
+			document.querySelector('.total').innerText = `총 ${totalElements}개`;
+			
+			if (scroll) {
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			}
+		}
+	}
+	catch (error) {
+		const code = error?.response?.data?.code;
+		
+		if (code === 'FUND_READ_LIST_FAIL') {
+			console.log(error);
+		}
+		else if (code === 'FUND_INVALID_INPUT') {
+			console.log(error);
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			console.log(error);
+		}
+		else if (code === 'FUND_UNAUTHORIZED_ACCESS') {
+			console.log(error);
+		}
+		else if (code === 'FUND_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			console.log(error);
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			console.log(error);
+		}
+		else {
+			console.log(error);
+		}
+	}
+}
+
+
+
+
+
+/**
+ * 사용자 후원 목록을 화면에 렌더링하는 함수
+ */
+function renderFundList(fundList) {
+	
     const container = document.querySelector('.support_list');
     container.innerHTML = ''; 
+	
+	// 후원 목록이 존재하지 않는 경우
+    if (fundList == null || fundList.length === 0) {
+		container.style.display = 'none';
+		document.querySelector('.list_empty')?.remove();
 
-    if (!revenueList || revenueList.length === 0) {
-        container.innerHTML = '<p class="empty">아직 후원받은 내역이 없습니다.</p>';
-        return;
+		const wrapper = document.createElement('div');
+		wrapper.className = 'list_empty';
+
+		const span = document.createElement('span');
+		span.textContent = '후원받은 내역이 없습니다';
+		wrapper.appendChild(span);
+		container.insertAdjacentElement('afterend', wrapper);
+
+		return;
     }
 
-    revenueList.forEach(revenue => {
-        // li
+	// 후원 목록이 존재하는 경우
+	container.style.display = 'block';
+	document.querySelector('.list_empty')?.remove();
+	
+    fundList.forEach(revenue => {
+		
         const li = document.createElement('li');
 
         const supportInfoDiv = document.createElement('div');
@@ -120,7 +221,7 @@ function renderRevenueList(revenueList) {
         recipeLink.className = 'thumbnail';
 
         const recipeImg = document.createElement('img');
-        recipeImg.src = revenue.recipe_thumbnail || '/images/common/test.png';
+        recipeImg.src = revenue.image || '/images/common/test.png';
         recipeLink.appendChild(recipeImg);
 
         const infoDiv = document.createElement('div');
@@ -133,10 +234,6 @@ function renderRevenueList(revenueList) {
         titleA.href = `/recipe/viewRecipe.do?id=${revenue.recipe_id}`;
         titleA.textContent = revenue.title || '제목 없음';
 
-//        const nicknameP = document.createElement('p');
-//        nicknameP.textContent = revenue.nickname;
-
-//        infoDiv.append(labelP, titleA, nicknameP);
         infoDiv.append(labelP, titleA);
         supportDiv.append(recipeLink, infoDiv);
 
@@ -144,45 +241,3 @@ function renderRevenueList(revenueList) {
         container.appendChild(li);
     });
 }
-
-
-
-
-
-/**
- * 사용자 총 수익 금액을 가져오는 함수
- */
-async function fetchRevenueTotal() {
-    try {
-        const id = parseJwt(localStorage.getItem('accessToken')).id;
-
-        const response = await fetch(`/users/${id}/funds/sum`, {
-            method: 'GET',
-            headers: getAuthHeaders()
-        });
-
-        const result = await response.json();
-		
-        if (result.code === 'FUND_READ_SUM_SUCCESS') {
-            const pointDisplay = document.querySelector('.support_point .point span:last-child');
-            if (pointDisplay) {
-                pointDisplay.textContent = `${result.data.toLocaleString()}원`;
-            }
-
-        }
-		else if (result.code === 'FUND_INVALID_INPUT') {
-            alertDanger('입력값이 유효하지 않습니다.');
-        }
-		else if (result.code === 'USER_NOT_FOUND') {
-            alertDanger('해당 사용자를 찾을 수 없습니다.');
-        }
-		else {
-            alertDanger('서버 내부에서 오류가 발생했습니다.');
-        }
-
-    } catch (error) {
-        console.log(error);
-        alertDanger('알 수 없는 오류가 발생했습니다.');
-    }
-}
-

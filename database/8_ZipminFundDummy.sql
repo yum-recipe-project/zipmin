@@ -1,21 +1,19 @@
--- ======================================================================
+-- ==================
 -- FUND 테이블 더미데이터
--- VALUES (id, funder_id, fundee_id, recipe_id, point, funddate, status);
--- ======================================================================
-INSERT INTO fund VALUES (seq_fund_id.NEXTVAL, 5, 4, 26, 1000, SYSDATE, 1);
-INSERT INTO fund VALUES (seq_fund_id.NEXTVAL, 8, 4, 32, 500, SYSDATE, 1);
-INSERT INTO fund VALUES (seq_fund_id.NEXTVAL, 14, 4, 32, 700, SYSDATE, 1);
-INSERT INTO fund VALUES (seq_fund_id.NEXTVAL, 14, 4, 101, 1500, SYSDATE, 1);
+-- ==================
+INSERT INTO fund VALUES (seq_fund_id.NEXTVAL, 5, 4, 26, 1000, SYSDATE);
+INSERT INTO fund VALUES (seq_fund_id.NEXTVAL, 8, 4, 32, 500, SYSDATE);
+INSERT INTO fund VALUES (seq_fund_id.NEXTVAL, 14, 4, 32, 700, SYSDATE);
+INSERT INTO fund VALUES (seq_fund_id.NEXTVAL, 14, 4, 101, 1500, SYSDATE);
 COMMIT;
 
 
 
 
 
--- =================================================================================
+-- ==============
 -- WITHDRAW 테이블
--- VALUES (id, user_id, account_id, point, claimdate, status, settledate, admin_id);
--- =================================================================================
+-- ==============
 INSERT INTO withdraw VALUES (seq_withdraw_id.NEXTVAL, 4, 1, 1000, SYSDATE - 50, 1, SYSDATE - 30, 1);
 INSERT INTO withdraw VALUES (seq_withdraw_id.NEXTVAL, 5, 2, 5000, SYSDATE - 44, 1, SYSDATE - 42, 1);
 INSERT INTO withdraw VALUES (seq_withdraw_id.NEXTVAL, 8, 5, 2500, SYSDATE - 43, 1, SYSDATE - 42, 1);

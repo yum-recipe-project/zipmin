@@ -8,10 +8,39 @@ let revenueList = [];
 let totalElements = 0;
 let totalRevenue = 0;  
 
+
+
+
+
+/**
+ * 접근 권한을 설정하는 함수
+ */
+document.addEventListener('DOMContentLoaded', async function() {
+	
+	try {
+		await instance.get('/dummy');
+	}
+	catch (error) {
+		redirectToLogin('/', true);
+	}
+	
+});
+
+
+
+
+
+/**
+ * 초기 실행하는 함수
+ */
 document.addEventListener("DOMContentLoaded", function() {
 	fetchRevenueList();
 	fetchRevenueTotal();
 });
+
+
+
+
 
 /**
  * 서버에서 후원 목록 데이터를 가져오는 함수
@@ -42,6 +71,9 @@ async function fetchRevenueList() {
 	}
 	
 }
+
+
+
 
 
 /**

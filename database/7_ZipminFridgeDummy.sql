@@ -226,6 +226,8 @@ INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cutlery.png', 
 INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cutlery.png', '전분', '기타', '실온', 1); -- 210
 INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cutlery.png', '빵가루', '기타', '실온', 1); -- 211
 
+COMMIT;
+
 
 
 
@@ -234,29 +236,19 @@ INSERT INTO fridge VALUES (seq_fridge_id.NEXTVAL, '/images/fridge/cutlery.png', 
 -- USER_FRIDGE 테이블 더미데이터
 -- =========================
 INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '팩', SYSDATE + 3, 1, 4); -- 닭가슴살
-INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 200, 'g', SYSDATE + 2, 8, 4); -- 삼겹살
-INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 200, 'g', SYSDATE + 5, 16, 4); -- 소불고기용
-INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 2, '마리', SYSDATE + 1, 29, 4); -- 고등어
-INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '마리', SYSDATE + 4, 37, 4); -- 연어
-INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 7, '개', SYSDATE + 10, 57, 4); -- 양파
-INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 3, '대', SYSDATE + 6, 58, 4); -- 대파
-INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 10, '개', SYSDATE + 7, 63, 4); -- 감자
-INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 2, '봉', SYSDATE + 3, 66, 4); -- 콩나물
-INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '봉', SYSDATE + 5, 74, 4); -- 상추
-INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 6, '개', SYSDATE + 7, 124, 4); -- 플레인요거트
-INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 10, '장', SYSDATE + 20, 129, 4); -- 슬라이스치즈
-INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '병', SYSDATE + 180, 147, 4); -- 간장
-INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '통', SYSDATE + 90, 156, 4); -- 고추장
-INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 2, '봉', SYSDATE + 30, 183, 4); -- 군만두
-INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 2, '개', SYSDATE + 5, 188, 4); -- 즉석떡볶이
-INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '모', SYSDATE + 2, 201, 4); -- 두부
-INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '봉', SYSDATE + 3, 205, 4); -- 떡볶이떡
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 5, '개', SYSDATE + 6, 59, 4); -- 마늘
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 5, '개', SYSDATE + 6, 69, 4); -- 홍고추
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 50, '장', SYSDATE + 5, 75, 4); -- 깻잎
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '병', SYSDATE + 180, 150, 4); -- 소금
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '병', SYSDATE + 180, 151, 4); -- 설탕
+INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '병', SYSDATE + 180, 152, 4); -- 식초
 
 INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '팩', SYSDATE + 3, 2, 5); -- 닭다리
 INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '근', SYSDATE + 3, 10, 5); -- 앞다리살
 INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 10, '개', SYSDATE + 3, 88, 5); -- 오렌지
 INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 2, '개', SYSDATE + 3, 62, 5); -- 무
-INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '병', SYSDATE + 3, 1472, 5); -- 간
+
+COMMIT;
 
 
 
@@ -265,11 +257,8 @@ INSERT INTO user_fridge VALUES (seq_user_fridge_id.NEXTVAL, 1, '병', SYSDATE + 
 -- ==========================
 -- FRDIDGE_MEMO 테이블 더미데이터
 -- ==========================
-INSERT INTO fridge_memo VALUES (seq_fridge_memo_id.NEXTVAL, '마늘', 1, '팩', null, 4);
-INSERT INTO fridge_memo VALUES (seq_fridge_memo_id.NEXTVAL, '닭다리살', 100, 'kg', null, 4);
-INSERT INTO fridge_memo VALUES (seq_fridge_memo_id.NEXTVAL, '올리브유', 1, '병', null, 4);
-
-
-
+INSERT INTO fridge_memo VALUES (seq_fridge_memo_id.NEXTVAL, '마늘', 1, '팩', NULL, 4);
+INSERT INTO fridge_memo VALUES (seq_fridge_memo_id.NEXTVAL, '닭다리살', 100, 'kg', NULL, 4);
+INSERT INTO fridge_memo VALUES (seq_fridge_memo_id.NEXTVAL, '올리브유', 1, '병', NULL, 4);
 
 COMMIT;

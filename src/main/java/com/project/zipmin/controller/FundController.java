@@ -445,7 +445,7 @@ public class FundController {
 		
 	})
 	// 출금 작성
-	@PostMapping("/users/{id}/withdraw")
+	@PostMapping("/users/{id}/withdraws")
 	public ResponseEntity<?> createUserWithdrawRequest(
 			@Parameter(description = "사용자의 일련번호") @PathVariable int id,
 			@Parameter(description = "출금 작성 요청 정보") @RequestBody WithdrawCreateRequestDto withdrawRequestDto) {

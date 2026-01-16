@@ -180,9 +180,10 @@ function renderUserCommentList(commentList) {
 	}
 	
 	// 사용자 댓글 목록이 존재하는 경우
+	container.style.display = 'block';
+	document.querySelector('.list_empty')?.remove();
+	
 	commentList.forEach(comment => {
-		container.style.display = 'block';
-		document.querySelector('.list_empty')?.remove();
 		
 		const li = document.createElement('li');
 		li.className = 'mycomment_item';

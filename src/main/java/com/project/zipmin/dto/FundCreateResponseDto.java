@@ -20,7 +20,4 @@ public class FundCreateResponseDto {
 	private int point;
 	private Date funddate;
 
-    private int funderPoint;
-    private int fundeePoint;
-	
 }

@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
 /**
  * 서버에서 댓글 목록 데이터를 가져오는 함수
  */
-async function fetchCommentList(scrollTop = true) {
+async function fetchCommentList(scroll = true) {
 	
 	try {
 		const params = new URLSearchParams({
@@ -119,9 +119,9 @@ async function fetchCommentList(scrollTop = true) {
 		
 		if (response.data.code === 'COMMENT_READ_LIST_SUCCESS') {
 			// 전역 변수 설정
+			page = response.data.data.number;
 			totalPages = response.data.data.totalPages;
 			totalElements = response.data.data.totalElements;
-			page = response.data.data.number;
 			commentList = response.data.data.content;
 			
 			// 렌더링
@@ -130,7 +130,7 @@ async function fetchCommentList(scrollTop = true) {
 			document.querySelector('.total').innerText = `총 ${totalElements}개`;
 			
 			// 스크롤 최상단 이동
-			if (scrollTop) {
+			if (scroll) {
 				window.scrollTo({ top: 0, behavior: 'smooth' });
 			}
 		}

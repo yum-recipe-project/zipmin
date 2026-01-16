@@ -858,22 +858,22 @@ public class CookingService {
 		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		UserReadResponseDto loginUser = userService.readUserByUsername(username);
-		if (!loginUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (loginUser.getRole().equals(Role.ROLE_ADMIN.name())) {
-				if (apply.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
-					throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
-				}
-				if (apply.getUser().getRole().equals(Role.ROLE_ADMIN)) {
-					if (loginUser.getId() != apply.getUser().getId()) {
-						throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
-					}
-				}
+		UserReadResponseDto currentUser = userService.readUserByUsername(username);
+		
+		if (currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
+		}
+		if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
+			if (apply.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+				throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
 			}
-			else {
-				if (loginUser.getId() != apply.getUser().getId()) {
-					throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
-				}
+			else if (apply.getUser().getRole().equals(Role.ROLE_ADMIN) && currentUser.getId() != apply.getUser().getId()) {
+				throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
+			}
+		}
+		if (currentUser.getRole().equals(Role.ROLE_USER.name())) {
+			if (currentUser.getId() != apply.getUser().getId()) {
+				throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
 			}
 		}
 		

@@ -1,40 +1,68 @@
 /**
- * 계좌를 변경하는 모달창을 여는 함수
+ * 접근 권한을 설정하는 함수
  */
-async function openChangeAccountModal() {
-	
-	// 사용자의 계좌정보 조회
+document.addEventListener('DOMContentLoaded', async function() {
+
 	try {
-        const id = parseJwt(localStorage.getItem('accessToken')).id;
+		await instance.get('/dummy');
+	}
+	catch (error) {
+		redirectToLogin('/');
+	}
+	
+	fetchAccount();
+});
 
-		// TODO : instance로 변경
-        const response = await fetch(`/users/${id}/account`, {
-            method: 'GET',
-            headers: getAuthHeaders()
-        });
 
-        const result = await response.json();
 
-        if (result.code === 'USER_ACCOUNT_READ_SUCCESS') {
-			renderChangeAccount(result.data);
 
-        } else if (result.code === 'USER_INVALID_INPUT') {
-            alertDanger('입력값이 유효하지 않습니다.');
-        } else if (result.code === 'USER_NOT_FOUND') {
-            alertDanger('해당 사용자를 찾을 수 없습니다.');
-        } else if (result.code === 'INTERNAL_SERVER_ERROR') {
-            alertDanger('서버 내부에서 오류가 발생했습니다.');
-        } else {
-            console.log('알 수 없는 에러:', result);
-        }
-    } catch (error) {
-        console.log(error);
-        alertDanger('알 수 없는 오류가 발생했습니다.');
-    }
+
+/**
+ * 계좌 정보를 조회하는 함수
+ */
+async function fetchAccount() {
+	
+	try {
+		const payload = parseJwt(localStorage.getItem('accessToken'));
+
+		const response = await instance.get(`/users/${payload.id}/account`, {
+			headers: getAuthHeaders()
+		});
+		
+		if (response.data.code === 'USER_ACCOUNT_READ_SUCCESS') {
+			renderEditAccount(response.data.data);
+		}
+	}
+	catch (error) {
+		const code = error?.response?.data?.code;
+				
+		if (code === 'USER_ACCOUNT_INVALID_INPUT') {
+			console.log(error);
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			console.log(error);
+		}
+		else if (code === 'USER_ACCOUNT_UNAUTHORIZED_ACCESS') {
+			console.log(error);
+		}
+		else if (code === 'USER_ACCOUNT_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (code === 'USER_ACCOUNT_NOT_FOUND') {
+			renderEditAccount(null);
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			console.log(error);
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			console.log(error);
+		}
+		else {
+			console.log(error);
+		}
+	}
 	
 }
-
-
 
 
 
@@ -44,7 +72,7 @@ async function openChangeAccountModal() {
  * 계좌 정보를 바탕으로 모달을 렌더링하는 함수
  * @param {Object|null} account - 계좌 정보. 없으면 null
  */
-function renderChangeAccount(account) {
+function renderEditAccount(account) {
     const modalBody = document.querySelector('#changeAccountModal .modal-body');
     modalBody.innerHTML = '';
 
@@ -175,11 +203,6 @@ function renderChangeAccount(account) {
 
 
 
-
-
-
-
-
 /**
  * 모달 footer 버튼 렌더링 및 이벤트 처리
  * @param {boolean} hasAccount - 기존 계좌 정보가 있는지 여부
@@ -216,9 +239,10 @@ function renderFooterButton(hasAccount) {
 	    e.preventDefault();
 
 	    if (submitButton.textContent === '등록하기') {
-	        postAccount();
-	    } else if (submitButton.textContent === '변경하기') {
-	        updateAccount();
+	        writeAccount();
+	    }
+		else if (submitButton.textContent === '변경하기') {
+	        editAccount();
 	    }
 	});
 
@@ -229,92 +253,116 @@ function renderFooterButton(hasAccount) {
 
 
 /**
- * 사용자 출금 계좌 등록
+ * 계좌를 작성하는 함수
  */
-async function postAccount() {
-    const accountNumber = document.getElementById("accountNumberInput")?.value || '';
-    const accountName = document.getElementById("accountNameInput")?.value || '';
-    const bankSelect = document.querySelector("#changeAccountModal .form-select");
-    const bankValue = bankSelect?.value || '';
+async function writeAccount() {
 
-    try {
-		const id = new URLSearchParams(window.location.search).get('id');
+	try {
+		const payload = parseJwt(localStorage.getItem('accessToken'));
 		
-        const data = {
-            bank: bankValue,
-            accountnum: accountNumber,
-            name: accountName,
-            user_id: parseJwt(localStorage.getItem('accessToken')).id
-        };
+		const data = {
+			bank: document.querySelector('#changeAccountModal .form-select').value,
+			accountnum: document.getElementById('accountNumberInput').value,
+			name: document.getElementById('accountNameInput').value,
+		};
 
-        const response = await instance.post(`/users/${id}/account`, data, {
-            headers: getAuthHeaders()
-        });
+		const response = await instance.post(`/users/${payload.id}/account`, data, {
+			headers: getAuthHeaders()
+		});
+		
+		console.log(response);
 
-        if (response.data.code === 'USER_ACCOUNT_CREATE_SUCCESS') {
-            alertPrimary('출금 계좌 등록이 완료되었습니다.');
-            const modal = bootstrap.Modal.getInstance(document.getElementById('changeAccountModal'));
-            modal.hide();
-            renderChangeAccount(response.data.data);
-        }
-    } catch (error) {
-        const code = error?.response?.data?.code;
+		if (response.data.code === 'USER_ACCOUNT_CREATE_SUCCESS') {
+			alertPrimary('출금 계좌가 등록되었습니다.');
+			bootstrap.Modal.getInstance(document.getElementById('changeAccountModal')).hide();
+			// renderEditAccount(response.data.data);
+			fetchAccount();
+		}
+	} catch (error) {
+		const code = error?.response?.data?.code;
 
-        if (code === 'USER_INVALID_INPUT') {
-            alertDanger('입력값이 유효하지 않습니다.');
-        } else if (code === 'USER_UNAUTHORIZED_ACCESS') {
-            alertDanger('로그인되지 않은 사용자입니다.');
-        } else if (code === 'INTERNAL_SERVER_ERROR') {
-            alertDanger('서버 내부 오류가 발생했습니다.');
-        } else {
-            console.log(error);
-        }
-    }
+		if (code === 'USER_ACCOUNT_CREATE_FAIL') {
+			console.log(error);
+		}
+		else if (code === 'USER_ACCOUNT_INVALID_INPUT') {
+			console.log(error);
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			console.log(error);
+		}
+		else if (code === 'USER_ACCOUNT_UNAUTHORIZED_ACCESS') {
+			console.log(error);
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			console.log(error);
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			console.log(error);
+		}
+		else {
+			console.log(error);
+		}
+	}
 }
 
 
 
+
+
 /**
- * 사용자 출금 계좌 변경
+ * 계좌를 수정하는 함수
  */
-async function updateAccount() {
-    const accountNumber = document.getElementById("accountNumberInput")?.value || '';
-    const accountName = document.getElementById("accountNameInput")?.value || '';
-    const bankSelect = document.querySelector("#changeAccountModal .form-select");
-    const bankValue = bankSelect?.value || '';
-
-    try {
-		const id = new URLSearchParams(window.location.search).get('id');
+async function editAccount() {
+	
+	try {
+		const payload = parseJwt(localStorage.getItem('accessToken'));
 		
-        const data = {
-            bank: bankValue,
-            accountnum: accountNumber,
-            name: accountName,
-            user_id: parseJwt(localStorage.getItem('accessToken')).id
-        };
+		const data = {
+			bank: document.querySelector('#changeAccountModal .form-select').value,
+			accountnum: document.getElementById('accountNumberInput').value,
+			name: document.getElementById('accountNameInput').value
+		};
+		
+		const response = await instance.patch(`/users/${payload.id}/account`, data, {
+			headers: getAuthHeaders()
+		});
 
-        const response = await instance.patch(`/users/${id}/account`, data, {
-            headers: getAuthHeaders()
-        });
-
-        if (response.data.code === 'USER_ACCOUNT_UPDATE_SUCCESS') {
-            alertPrimary('출금 계좌 정보가 변경되었습니다.');
-            const modal = bootstrap.Modal.getInstance(document.getElementById('changeAccountModal'));
-            modal.hide();
-            renderChangeAccount(response.data.data);
-        }
-    } catch (error) {
-        const code = error?.response?.data?.code;
-
-        if (code === 'USER_INVALID_INPUT') {
-            alertDanger('입력값이 유효하지 않습니다.');
-        } else if (code === 'USER_UNAUTHORIZED_ACCESS') {
-            alertDanger('로그인되지 않은 사용자입니다.');
-        } else if (code === 'INTERNAL_SERVER_ERROR') {
-            alertDanger('서버 내부 오류가 발생했습니다.');
-        } else {
-            console.log(error);
-        }
-    }
+		if (response.data.code === 'USER_ACCOUNT_UPDATE_SUCCESS') {
+			alertPrimary('출금 계좌가 변경되었습니다.');
+			bootstrap.Modal.getInstance(document.getElementById('changeAccountModal')).hide();
+			//renderEditAccount(response.data.data);
+			fetchAccount();
+		}
+	} catch (error) {
+		const code = error?.response?.data?.code;
+		
+		if (code === 'USER_ACCOUNT_UPDATE_FAIL') {
+			console.log(error);
+		}
+		else if (code === 'USER_ACCOUNT_INVALID_INPUT') {
+			console.log(error);
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			console.log(error);
+		}
+		else if (code === 'USER_ACCOUNT_UNAUTHORIZED_ACCESS') {
+			console.log(error);
+		}
+		else if (code === 'USER_ACCOUNT_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다.');
+		}
+		else if (code === 'USER_ACCOUNT_NOT_FOUND') {
+			console.log(error);
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			console.log(error);
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			console.log(error);
+		}
+		else {
+			console.log(error);
+		}
+	}
 }
 

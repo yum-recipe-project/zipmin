@@ -10,21 +10,21 @@ document.addEventListener('DOMContentLoaded', function () {
 	
 	const userPoint = Number(document.querySelector('.support_point .point span:last-child').textContent.replace(/[^0-9]/g, ''));
 
-	ownedPoint.innerText = userOwned.toLocaleString();
+	ownedPoint.innerText = userPoint.toLocaleString();
 
 	pointInput.value = 1000;
 
 	function validatePoint() {
-		const inputPoint = parseInt(pointInput.value);
+		const point = parseInt(pointInput.value);
 		
-		if (isNaN(inputPoint) || inputPoint < 1000 || inputPoint > userPoint) {
+		if (isNaN(point) || point < 1000 || point > userPoint) {
 			remainPoint.innerText = '-';
 			submitButton.classList.add('disabled');
 			submitButton.disabled = true;
 			return;
 		}
 		
-		remainPoint.innerText = (userPoint - inputPoint).toLocaleString();
+		remainPoint.innerText = (userPoint - point).toLocaleString();
 		submitButton.classList.remove('disabled');
 		submitButton.disabled = false;
 	}

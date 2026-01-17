@@ -150,19 +150,19 @@ public class RecipeController {
 						schema = @Schema(implementation = RecipeReadSuccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
-				description = "레시피 카테고리 조회 실패",
+				description = "레시피 카테고리 목록 조회 실패",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = RecipeCategoryReadListFailResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
-				description = "레시피 재료 조회 실패",
+				description = "레시피 재료 목록 조회 실패",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = RecipeStockReadListFailResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
-				description = "레시피 조리 순서 조회 실패",
+				description = "레시피 조리 순서 목록 조회 실패",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = RecipeStepReadListFailResponse.class))),

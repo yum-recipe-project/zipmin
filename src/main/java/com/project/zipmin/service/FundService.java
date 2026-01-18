@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -325,7 +327,9 @@ public class FundService {
 	
 	
 	// 출금 목록 조회 (관리자)
-	public Page<WithdrawReadResponseDto> readAdminWithdrawPage(Pageable pageable) {
+	public Page<WithdrawReadResponseDto> readAdminWithdrawPage(String category, String keyword, String sort, Pageable pageable) {
+		
+		// 카테고리 검색어 정렬
 		
 		// 입력값 검증
 		if (pageable == null) {
@@ -333,11 +337,27 @@ public class FundService {
 		}
 		
 		// TODO : 정렬 문자열을 객체로 변환
-
+		Sort sortSpec = Sort.by(Sort.Order.desc("id"));
+		if (sort != null && !sort.isBlank()) {
+			switch (sort) {
+				case "id-desc":
+					sortSpec = Sort.by(Sort.Order.desc("id"));
+					break;
+				case "id-asc":
+					sortSpec = Sort.by(Sort.Order.asc("id"));
+					break;
+				default:
+					break;
+			}
+		}
+		
+		// 기존 페이지 객체에 정렬 주입
+		Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
+		
 		// 출금 목록 조회
 		Page<Withdraw> withdrawPage = null;
 		try {
-			withdrawPage = withdrawRepository.findAll(pageable);
+			withdrawPage = withdrawRepository.findAll(sortedPageable);
 		}
 		catch (Exception e) {
 			throw new ApiException(WithdrawErrorCode.WITHDRAW_READ_LIST_FAIL);

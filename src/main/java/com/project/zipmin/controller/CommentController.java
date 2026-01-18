@@ -303,7 +303,7 @@ public class CommentController {
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "로그인 되지 않은 사용자",
+				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = CommentUnauthorizedAccessResponse.class))),

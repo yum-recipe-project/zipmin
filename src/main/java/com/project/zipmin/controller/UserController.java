@@ -753,7 +753,7 @@ public class UserController {
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "로그인 되지 않은 사용자",
+				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserUnauthorizedAccessResponse.class))),
@@ -982,18 +982,18 @@ public class UserController {
 	
 	
 	// 사용자 포인트 조회
-	@GetMapping("/users/{id}/point")
-	public ResponseEntity<?> readUserPoint(
-	        @PathVariable int id) {
-
-	    UserPointReadResponseDto pointDto = userService.readUserPointById(id);
-
-	    return ResponseEntity.status(UserSuccessCode.USER_READ_SUCCESS.getStatus())
-	            .body(ApiResponse.success(UserSuccessCode.USER_READ_SUCCESS, pointDto));
-	}
-
-
-	
+//	@GetMapping("/users/{id}/point")
+//	public ResponseEntity<?> readUserPoint(
+//	        @PathVariable int id) {
+//
+//	    UserPointReadResponseDto pointDto = userService.readUserPointById(id);
+//
+//	    return ResponseEntity.status(UserSuccessCode.USER_READ_SUCCESS.getStatus())
+//	            .body(ApiResponse.success(UserSuccessCode.USER_READ_SUCCESS, pointDto));
+//	}
+//
+//
+//	
 	
 	
 	

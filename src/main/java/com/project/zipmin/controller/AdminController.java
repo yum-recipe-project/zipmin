@@ -23,7 +23,7 @@ import com.project.zipmin.api.ClassErrorCode;
 import com.project.zipmin.api.ClassSuccessCode;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.CommentSuccessCode;
-import com.project.zipmin.api.FundErrorCode;
+import com.project.zipmin.api.KitchenErrorCode;
 import com.project.zipmin.api.KitchenSuccessCode;
 import com.project.zipmin.api.RecipeErrorCode;
 import com.project.zipmin.api.RecipeSuccessCode;
@@ -322,9 +322,19 @@ public class AdminController {
 		    @RequestParam int page,
 		    @RequestParam int size) {
 		
-		// TODO : 로그인 여부 확인
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(KitchenErrorCode.KITCHEN_UNAUTHORIZED_ACCESS);
+		}
 		
-		// TODO : 권한 확인
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(KitchenErrorCode.KITCHEN_FORBIDDEN);
+			}
+		}
 		
 		Pageable pageable = PageRequest.of(page, size);
 		Page<GuideReadResponseDto> guidePage = null;
@@ -571,7 +581,7 @@ public class AdminController {
 						schema = @Schema(implementation = ClassReadListSuccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
-				description = "쿠킹클래스 목록 조회 성공",
+				description = "쿠킹클래스 목록 조회 실패",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = ClassReadListFailResponse.class))),

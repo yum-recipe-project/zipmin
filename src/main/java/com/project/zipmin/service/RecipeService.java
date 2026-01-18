@@ -276,24 +276,8 @@ public class RecipeService {
 	    for (Recipe recipe : recipePage) {
 	        RecipeReadMyResponseDto recipeDto = recipeMapper.toReadMyResponseDto(recipe);
 	        
-	        // 이미지
 	     	recipeDto.setImage(publicPath + "/" + recipeDto.getImage());	
-	        // 좋아요수
-	        recipeDto.setLikecount(likeService.countLike("recipe", recipe.getId()));
-	        
-	        // 레시피 카테고리 목록
-			try {
-				List<RecipeCategory> categoryList = categoryRepository.findAllByRecipeId(recipe.getId());
-				List<RecipeCategoryReadResponseDto> categoryDtoList = new ArrayList<>();
-				for (RecipeCategory category : categoryList) {
-					RecipeCategoryReadResponseDto categoryDto = categoryMapper.toReadResponseDto(category);
-					categoryDtoList.add(categoryDto);
-				}
-				recipeDto.setCategoryList(categoryDtoList);
-			}
-			catch (Exception e) {
-				throw new ApiException(RecipeErrorCode.RECIPE_CATEGORY_READ_LIST_FAIL);
-			}
+	        // recipeDto.setLikecount(likeService.countLike("recipe", recipe.getId()));
 
 	        recipeDtoList.add(recipeDto);
 	    }

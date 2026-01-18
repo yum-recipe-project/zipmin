@@ -262,7 +262,7 @@ public class FundController {
 	
 	
 	@Operation(
-	    summary = "사용자의 후원 총합 조회"
+	    summary = "사용자의 후원 조회"
 	)
 	@ApiResponses(value = {
 		// 200 FUND_READ_SUM_SUCCESS 후원 합계 조회 실패

@@ -355,7 +355,7 @@ public class RecipeController {
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "로그인 되지 않은 사용자",
+				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = RecipeUnauthorizedAccessResponse.class))),
@@ -384,7 +384,7 @@ public class RecipeController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
-	// 레시피 삭제 (관리자)
+	// 레시피 삭제
 	@DeleteMapping("/recipes/{id}")
 	public ResponseEntity<?> deleteRecipe(
 			@Parameter(description = "레시피의 일련번호") @PathVariable int id) {
@@ -465,7 +465,6 @@ public class RecipeController {
 	// 사용자의 레시피 목록 조회
 	// RECIPE_READ_LIST_SUCCESS
 	// RECIPE_READ_LIST_FAIL
-	// RECIPE_CATEGORY_READ_LIST_FAIL
 	// LIKE_COUNT_FAIL
 	// USER_INVALID_INPUT
 	// RECIPE_INVALID_INPUT

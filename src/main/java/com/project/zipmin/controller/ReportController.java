@@ -24,11 +24,12 @@ public class ReportController {
 	
 	
 	
+	// REPORT_READ_LIST_SUCCESS
 	
 	@GetMapping("/reports")
 	public ResponseEntity<?> readReport(
-			@Parameter(description = "테이블 이름", required = false, example = "recipe") @RequestParam(required = false) String tablename,
-			@Parameter(description = "레코드 번호", required = false, example = "1") @RequestParam(required = false) Integer recodenum) {
+			@Parameter(description = "테이블 이름") @RequestParam(required = false) String tablename,
+			@Parameter(description = "레코드 번호") @RequestParam(required = false) Integer recodenum) {
 		
 		// 여기서 관리자 인지도 해야될듯 *********************
 		

@@ -258,7 +258,7 @@ public class ReviewController {
 	                    schema = @Schema(implementation = ReviewUpdateSuccessResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "400",
-	            description = "리뷰 수정 실패 또는 입력값이 유효하지 않음",
+	            description = "리뷰 수정 실패",
 	            content = @Content(
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = ReviewUpdateFailResponse.class))),
@@ -270,7 +270,7 @@ public class ReviewController {
 	                    schema = @Schema(implementation = ReviewInvalidInputResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "401",
-	            description = "로그인 되지 않은 사용자",
+	            description = "로그인되지 않은 사용자",
 	            content = @Content(
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = ReviewUnauthorizedAccessResponse.class))),
@@ -351,13 +351,13 @@ public class ReviewController {
 	                    schema = @Schema(implementation = ReviewInvalidInputResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "401",
-	            description = "로그인 되지 않은 사용자",
+	            description = "로그인되지 않은 사용자",
 	            content = @Content(
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = ReviewUnauthorizedAccessResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "403",
-	            description = "권한이 없는 사용자의 접근",
+	            description = "권한 없는 사용자의 접근",
 	            content = @Content(
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = ReviewForbiddenResponse.class))),
@@ -651,13 +651,13 @@ public class ReviewController {
 	            description = "로그인 되지 않은 사용자",
 	            content = @Content(
 	                    mediaType = "application/json",
-	                    schema = @Schema(implementation = UserUnauthorizedAccessResponse.class))),
+	                    schema = @Schema(implementation = ReviewUnauthorizedAccessResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "403",
-	            description = "권한이 없어 다른 사용자의 리뷰를 조회할 수 없음",
+	            description = "권한 없는 사용자의 접근",
 	            content = @Content(
 	                    mediaType = "application/json",
-	                    schema = @Schema(implementation = UserForbiddenResponse.class))),
+	                    schema = @Schema(implementation = ReviewForbiddenResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
 				description = "해당 레시피를 찾을 수 없음",

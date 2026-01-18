@@ -493,7 +493,11 @@ public class UserService {
 	public UserCreateResponseDto createUser(UserCreateRequestDto userRequestDto) {
 		
 		// 입력값 검증
-		if (userRequestDto == null || userRequestDto.getUsername() == null || userRequestDto.getPassword() == null || userRequestDto.getNickname() == null || userRequestDto.getName() == null) {
+		if (userRequestDto == null
+				|| userRequestDto.getUsername() == null
+				|| userRequestDto.getPassword() == null
+				|| userRequestDto.getNickname() == null
+				|| userRequestDto.getName() == null) {
 			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
 		}
 		

@@ -770,7 +770,6 @@ public class CookingService {
 		ClassApply apply = applyRepository.findById(applyDto.getId())
 				.orElseThrow(() -> new ApiException(ClassErrorCode.CLASS_APPLY_NOT_FOUND));
 		
-		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		UserReadResponseDto loginUser = userService.readUserByUsername(username);

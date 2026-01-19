@@ -33,6 +33,8 @@ import com.project.zipmin.dto.UserAccountUpdateRequestDto;
 import com.project.zipmin.dto.UserAccountUpdateResponseDto;
 import com.project.zipmin.dto.WithdrawCreateRequestDto;
 import com.project.zipmin.dto.WithdrawReadResponseDto;
+import com.project.zipmin.dto.WithdrawUpdateRequestDto;
+import com.project.zipmin.dto.WithdrawUpdateResponseDto;
 import com.project.zipmin.service.FundService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
@@ -445,9 +447,8 @@ public class FundController {
 		
 	})
 	// 출금 작성
-	@PostMapping("/users/{id}/withdraws")
-	public ResponseEntity<?> createUserWithdrawRequest(
-			@Parameter(description = "사용자의 일련번호") @PathVariable int id,
+	@PostMapping("/withdraws")
+	public ResponseEntity<?> createWithdraw(
 			@Parameter(description = "출금 작성 요청 정보") @RequestBody WithdrawCreateRequestDto withdrawRequestDto) {
 		
 		// 로그인 여부 확인
@@ -462,5 +463,49 @@ public class FundController {
 		return ResponseEntity.status(WithdrawSuccessCode.WITHDRAW_CREATE_SUCCESS.getStatus())
 				.body(ApiResponse.success(WithdrawSuccessCode.WITHDRAW_CREATE_SUCCESS, withdrawResponseDto));
 	}
+	
+	
+	
+	
+	
+	// WITHDRAW_UPDATE_SUCCESS
+	// WITHDRAW_UPDATE_FAIL
+	// WITHDRAW_INVALID_INPUT
+	// USER_INVALID_INPUT
+	// WITHDRAW_UNAUTHORIZED_ACCESS
+	// WITHDRAW_FORBIDDEN
+	// WITHDRAW_NOT_FOUND
+	// USER_NOT_FOUND
+	
+	// 출금 수정
+	@PatchMapping("/withdraws/{id}")
+	public ResponseEntity<?> updateWithdraw(
+			@Parameter(description = "출금의 일련번호") @PathVariable int id,
+			@Parameter(description = "출금 수정 요청 정보") @RequestBody WithdrawUpdateRequestDto withdrawRequestDto) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(WithdrawErrorCode.WITHDRAW_UNAUTHORIZED_ACCESS);
+		}
+		
+		WithdrawUpdateResponseDto withdrawResponseDto = fundService.updateWithdraw(withdrawRequestDto);
+		
+		return ResponseEntity.status(WithdrawSuccessCode.WITHDRAW_UPDATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(WithdrawSuccessCode.WITHDRAW_UPDATE_SUCCESS, withdrawResponseDto));
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

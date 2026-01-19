@@ -29,6 +29,8 @@ import com.project.zipmin.dto.UserAccountUpdateResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.WithdrawCreateRequestDto;
 import com.project.zipmin.dto.WithdrawReadResponseDto;
+import com.project.zipmin.dto.WithdrawUpdateRequestDto;
+import com.project.zipmin.dto.WithdrawUpdateResponseDto;
 import com.project.zipmin.entity.Fund;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.entity.UserAccount;
@@ -65,8 +67,18 @@ public class FundService {
 	
 	
 	
-	
 	// 계좌 상세 조회
+	public UserAccountReadResponseDto readAccountById(int id) {
+		
+		return null;
+	}
+	
+	
+	
+	
+	
+	
+	// 사용자 계좌 상세 조회
 	public UserAccountReadResponseDto readAccountByUserId(int userId) {
 
 		// 입력값 검증
@@ -471,5 +483,126 @@ public class FundService {
 		}
 		
 	}
+	
+	
+	
+	
+	
+	// 출금 수정
+	public WithdrawUpdateResponseDto updateWithdraw(WithdrawUpdateRequestDto withdrawDto) {
+		
+		// 입력값 검증
+		if (withdrawDto == null || withdrawDto.getId() == 0) {
+			throw new ApiException(WithdrawErrorCode.WITHDRAW_INVALID_INPUT);
+		}
+		
+		// 출금 존재 여부 확인
+		Withdraw withdraw = withdrawRepository.findById(withdrawDto.getId())
+				.orElseThrow(() -> new ApiException(WithdrawErrorCode.WITHDRAW_NOT_FOUND));
+
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto currentUser = userService.readUserByUsername(username);
+		
+		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (withdraw.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
+				}
+				if (withdraw.getUser().getRole().equals(Role.ROLE_ADMIN) && currentUser.getId() != withdraw.getUser().getId()) {
+					throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
+				}
+			}
+			// 일반회원
+			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != withdraw.getUser().getId()) {
+				throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
+			}
+		}
+		
+		// 변경 값 설정
+		if (withdrawDto.getPoint() != 0) {
+			withdraw.setPoint(withdrawDto.getPoint());
+		}
+		if (withdrawDto.getStatus() != 0) {
+			withdraw.setStatus(withdrawDto.getStatus());
+		}
+		if (withdrawDto.getClaimdate() != null) {
+			withdraw.setClaimdate(withdrawDto.getClaimdate());
+		}
+		if (withdrawDto.getSettledate() != null) {
+			withdraw.setSettledate(withdrawDto.getSettledate());
+		}
+		if (withdrawDto.getUserId() != 0) {
+			UserReadResponseDto userDto = userService.readUserById(withdrawDto.getId());
+			withdraw.setUser(userMapper.toEntity(userDto));
+		}
+		if (withdrawDto.getAccountId() != 0) {
+			UserAccountReadResponseDto accountDto = readAccountById(withdrawDto.getId());
+			withdraw.setAccount(accountMapper.toEntity(accountDto));
+		}
+		if (withdrawDto.getAdminId() != 0) {
+			UserReadResponseDto userDto = userService.readUserById(withdrawDto.getId());
+			withdraw.setAdmin(userMapper.toEntity(userDto));
+		}
+		
+		// 출금 수정
+		try {
+			withdraw = withdrawRepository.save(withdraw);
+			return withdrawMapper.toUpdateResponseDto(withdraw);
+		}
+		catch (Exception e) {
+			throw new ApiException(WithdrawErrorCode.WITHDRAW_UPDATE_FAIL);
+		}
+		
+	}
+	
+	
+	
+	
+	
+	// 출금 삭제
+	public void deleteWithdraw(int id) {
+		
+		// 입력값 검증
+		if (id < 0) {
+			throw new ApiException(WithdrawErrorCode.WITHDRAW_INVALID_INPUT);
+		}
+		
+		// 출금 존재 여부 확인
+		Withdraw withdraw = withdrawRepository.findById(id)
+				.orElseThrow(() -> new ApiException(WithdrawErrorCode.WITHDRAW_NOT_FOUND));
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto currentUser = userService.readUserByUsername(username);
+		
+		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			// 관리자
+			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (withdraw.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
+				}
+				if (withdraw.getUser().getRole().equals(Role.ROLE_ADMIN) && currentUser.getId() != withdraw.getUser().getId()) {
+					throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
+				}
+			}
+			// 일반회원
+			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != withdraw.getUser().getId()) {
+				throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
+			}
+		}
+		
+		// 출금 삭제
+		try {
+			withdrawRepository.deleteById(id);
+		}
+		catch (Exception e) {
+			throw new ApiException(WithdrawErrorCode.WITHDRAW_DELETE_FAIL);
+		}
+		
+	}
+	
+	
 
 }

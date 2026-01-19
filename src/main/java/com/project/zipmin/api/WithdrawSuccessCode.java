@@ -10,7 +10,8 @@ public enum WithdrawSuccessCode implements Code {
 	
 	// 데이터 처리
 	WITHDRAW_CREATE_SUCCESS(HttpStatus.CREATED, "출금 작성 성공"),
-	WITHDRAW_READ_LIST_SUCCESS(HttpStatus.OK, "출금 목록 조회 성공");
+	WITHDRAW_READ_LIST_SUCCESS(HttpStatus.OK, "출금 목록 조회 성공"),
+	WITHDRAW_UPDATE_SUCCESS(HttpStatus.OK, "출금 수정 성공");
 
     private final HttpStatus status;
     private final String message;

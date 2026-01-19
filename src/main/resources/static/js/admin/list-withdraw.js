@@ -229,7 +229,6 @@ function renderAdminWithdrawList(withdrawList) {
 		claimdateTd.appendChild(claimdateH6);
 		
 		// 출금일
-		// TODO : 출금 여부에 따라 설정
 		const settledateTd = document.createElement('td');
 		const settledateH6 = document.createElement('h6');
 		settledateH6.className = 'fw-semibold mb-0';
@@ -290,7 +289,41 @@ function renderWithdrawState(withdraw) {
 		stateTd.appendChild(span);
 	}
 	else if (withdraw.status === 2) {
+		const div = document.createElement('div');
+		div.className = 'dropdown d-inline-block';
 		
+		// 버튼
+		const btn = document.createElement('button');
+		btn.type = 'button';
+		btn.className = 'btn btn-sm dropdown-toggle bg-warning-subtle text-warning';
+		btn.textContent = '대기';
+		btn.setAttribute('data-bs-toggle', 'dropdown');
+		btn.setAttribute('aria-expanded', 'false');
+		
+		// 메뉴
+		const menu = document.createElement('ul');
+		menu.className = 'dropdown-menu shadow-sm';
+		
+		const approveLi = document.createElement('li');
+		const approveBtn = document.createElement('button');
+		approveBtn.type = 'button';
+		approveBtn.className = 'dropdown-item';
+		approveBtn.textContent = '승인';
+		approveBtn.addEventListener('click', () => editWithdrawState(withdraw.id, 1));
+		approveLi.appendChild(approveBtn);
+		menu.appendChild(approveLi);
+
+		const rejectLi = document.createElement('li');
+		const rejectBtn = document.createElement('button');
+		rejectBtn.type = 'button';
+		rejectBtn.className = 'dropdown-item';
+		rejectBtn.textContent = '미승인';
+		rejectBtn.addEventListener('click', () => editWithdrawState(withdraw.id, 0));
+		rejectLi.appendChild(rejectBtn);
+		menu.appendChild(rejectLi);
+		
+		div.append(btn, menu);
+		stateTd.appendChild(div);
 	}
 	
 	return stateTd;
@@ -300,7 +333,62 @@ function renderWithdrawState(withdraw) {
 
 
 
-
+/**
+ * 출금의 승인 여부를 수정하는 함수
+ */
+async function editWithdrawState(id, state) {
+	
+	if (!confirm('이 동작은 되돌릴 수 없습니다. 정말로 수정하시겠습니까?')) {
+		return;
+	}
+	
+	try {
+		const data = {
+			id: id,
+			status: state
+		}
+		
+		const response = await instance.patch(`/withdraws/${id}`, data, {
+			headers: getAuthHeaders()
+		});
+		
+		if (response.data.code === 'WITHDRAW_UPDATE_SUCCESS') {
+			alertPrimary('출금 상태 변경에 성공했습니다');
+			fetchAdminWithdrawList(false);
+		}
+	}
+	catch (error) {
+		const code = error?.response?.data?.code;
+		
+		if (code === 'WITHDRAW_UPDATE_FAIL') {
+			alertDanger('출금 상태 변경에 실패했습니다');
+		}
+		else if (code === 'WITHDRAW_INVALID_INPUT') {
+			alertDanger('출금 상태 변경에 실패했습니다');
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alertDanger('출금 상태 변경에 실패했습니다');
+		}
+		else if (code === 'WITHDRAW_UNAUTHORIZED_ACCESS') {
+			alertDanger('접근 권한이 없습니다');
+		}
+		else if (code === 'WITHDRAW_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다');
+		}
+		else if (code === 'WITHDRAW_NOT_FOUND') {
+			alertDanger('출금 상태 변경에 실패했습니다');
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			alertDanger('출금 상태 변경에 실패했습니다');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alertDanger('서버 내부에서 오류가 발생했습니다');
+		}
+		else {
+			alertDanger('서버 내부에서 오류가 발생했습니다');
+		}
+	}
+}
 
 
 

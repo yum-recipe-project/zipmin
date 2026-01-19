@@ -42,6 +42,7 @@ import com.project.zipmin.dto.RecipeReadResponseDto;
 import com.project.zipmin.dto.ReviewReadResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.WithdrawReadResponseDto;
+import com.project.zipmin.dto.WithdrawUpdateRequestDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
@@ -219,6 +220,36 @@ public class AdminController {
 
 	    return ResponseEntity.status(WithdrawSuccessCode.WITHDRAW_READ_LIST_SUCCESS.getStatus())
 	            .body(ApiResponse.success(WithdrawSuccessCode.WITHDRAW_READ_LIST_SUCCESS, withdrawPage));
+	}
+	
+	
+	
+	
+	
+	// 출금 승인 수정
+	@PatchMapping("/admin/withdraws/{id}/status")
+	public ResponseEntity<?>  updateWithdrawStatus(
+			@Parameter(description = "출금의 일련번호") @PathVariable int id,
+			@Parameter(description = "승인 상태") @RequestBody WithdrawUpdateRequestDto withdrawDto) {
+	
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(WithdrawErrorCode.WITHDRAW_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
+			}
+		}
+		
+		fundService.updateWithdraw(withdrawDto);
+		
+		return ResponseEntity.status(ClassSuccessCode.CLASS_UPDATE_APPROVAL_SUCCESS.getStatus())
+				.body(ApiResponse.success(ClassSuccessCode.CLASS_UPDATE_APPROVAL_SUCCESS, null));
 	}
 	
 	

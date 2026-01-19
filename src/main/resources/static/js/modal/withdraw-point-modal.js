@@ -57,13 +57,11 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 		if (isValid) {
 			try {
-				const userId = parseJwt(localStorage.getItem('accessToken')).id;
-				
 				const data = {
 					point: parseInt(point.value)
 				}
 				
-				const response = await instance.post(`/users/${userId}/withdraws`, data, {
+				const response = await instance.post(`/withdraws`, data, {
 					headers: getAuthHeaders()
 				});
 				

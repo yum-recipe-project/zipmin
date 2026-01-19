@@ -1,6 +1,7 @@
 package com.project.zipmin.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -524,8 +525,9 @@ public class FundService {
 		if (withdrawDto.getPoint() != 0) {
 			withdraw.setPoint(withdrawDto.getPoint());
 		}
-		if (withdrawDto.getStatus() == 0 || withdrawDto.getStatus() == 1 || withdrawDto.getStatus() == 2) {
+		if (withdrawDto.getStatus() == 0 || withdrawDto.getStatus() == 1) {
 			withdraw.setStatus(withdrawDto.getStatus());
+			withdraw.setSettledate(new Date());
 		}
 		if (withdrawDto.getClaimdate() != null) {
 			withdraw.setClaimdate(withdrawDto.getClaimdate());

@@ -53,10 +53,10 @@
 						<thead class="text-dark fs-4">
 							<colgroup>
 								<col style="width:8%">
-								<col style="width:14%">
+								<col style="width:12%">
 								<col style="width:11%">
-								<col style="width:9%">
-								<col style="width:18%">
+								<col style="width:13%">
+								<col style="width:16%">
 								<col style="width:12%">
 								<col style="width:12%">
 								<col style="width:9%">
@@ -82,7 +82,7 @@
 								</th>
 							</tr>
 							<tr class="table_th">
-								<th class="sort_btn" data-key="id">
+								<th class="sort_btn desc" data-key="id">
 									<h6 class="fs-4 fw-semibold mb-0">No</h6>
 								</th>
 								<th class="sort_btn" data-key="username">
@@ -91,16 +91,16 @@
 								<th class="sort_btn" data-key="name">
 									<h6 class="fs-4 fw-semibold mb-0">이름</h6>
 								</th>
-								<th>
+								<th class="sort_btn" data-key="point">
 									<h6 class="fs-4 fw-semibold mb-0">출금 금액</h6>
 								</th>
 								<th>
 									<h6 class="fs-4 fw-semibold mb-0">계좌번호</h6>
 								</th>
-								<th>
+								<th class="sort_btn" data-key="claimdate">
 									<h6 class="fs-4 fw-semibold mb-0">요청일</h6>
 								</th>
-								<th>
+								<th class="sort_btn" data-key="settledate">
 									<h6 class="fs-4 fw-semibold mb-0">출금일</h6>
 								</th>
 								<th>

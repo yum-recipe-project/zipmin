@@ -155,7 +155,7 @@
 /* 목록 테이블 */
 .body-wrapper .container-fluid .search {
 	width: 250px;
-	margin-left: auto;
+	margin-left: 0;
 } 
 
 .body-wrapper .container-fluid table {

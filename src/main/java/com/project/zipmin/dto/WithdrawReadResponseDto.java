@@ -19,5 +19,7 @@ public class WithdrawReadResponseDto {
     private Integer userId;
     private Integer accountId;
     
+    private String name;
     private String username;
+    private String accountnum;
 }

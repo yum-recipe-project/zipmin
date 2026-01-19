@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <!doctype html>
@@ -56,78 +56,77 @@
 		
 					<!-- 목록 -->
 					<table class="table text-nowrap mb-0 align-middle fixed-table">
-					    <thead class="text-dark fs-4">
-					    	<colgroup>
-					    		<col style="width:8%">
-					    		<col style="width:9%">
-					    		<col style="width:22%">
-					    		<col style="width:10%">
-					    		<col style="width:12%">
-					    		<col style="width:13%">
-					    		<col style="width:9%">
-					    		<col style="width:10%">
-					    		<col style="width:7%">
-					    	</colgroup>
-					        <tr>
-					            <th class="total"></th>
-					            <th></th>
-					            <th></th>
-					            <th></th>
-					            <th colspan="5" class="text-end">
-						            <div class="d-flex flex-wrap justify-content-end align-items-center gap-4">
-						            	<div class="form-check form-switch align-items-center mb-0 ms-10">
-						            		<input class="form-check-input" type="checkbox" id="listClassApproval">
-						            		<label class="form-check-label" for="listClassApproval">승인 대기중</label>
-						            	</div>
-						            	<div class="form-check form-switch align-items-center mb-0">
-						            		<input class="form-check-input" type="checkbox" id="listClassStatus">
-						            		<label class="form-check-label" for="listClassStatus">모집 진행중</label>
-						            	</div>
-						            	<form class="search position-relative text-end">
-						            		<input type="text" class="form-control search-chat py-2 ps-5" id="text-srh" placeholder="검색어를 입력하세요">
-						            		<i class="ti ti-search position-absolute top-50 start-0 translate-middle-y fs-6 text-dark ms-3"></i>
-						            	</form>
-						            </div>
-					            </th>
-					        </tr>
-					        <tr class="table_th">
-					            <th class="sort_btn desc" data-key="id">
-					                <h6 class="fs-4 fw-semibold mb-0">No</h6>
-					            </th>
-					            <th>
-					                <h6 class="fs-4 fw-semibold mb-0">카테고리</h6>
-					            </th>
-					            <th class="sort_btn" data-key="title">
-					                <h6 class="fs-4 fw-semibold mb-0">제목</h6>
-					            </th>
-					            <th>
-					                <h6 class="fs-4 fw-semibold mb-0">신청자</h6>
-					            </th>
-					            <th class="sort_btn" data-key="postdate">
-					                <h6 class="fs-4 fw-semibold mb-0">신청일</h6>
-					            </th>
-					            <th class="sort_btn" data-key="eventdate">
-					                <h6 class="fs-4 fw-semibold mb-0">기간</h6>
-					            </th>
-					            <th>
-					                <h6 class="fs-4 fw-semibold mb-0">상태</h6>
-					            </th>
-					            <th class="sort_btn" data-key="applycount">
-					                <h6 class="fs-4 fw-semibold mb-0">지원자수</h6>
-					            </th>
-					            <th></th>
-					        </tr>
-					    </thead>
-					    <tbody class="class_list"></tbody>
+						<thead class="text-dark fs-4">
+							<colgroup>
+								<col style="width:8%">
+								<col style="width:9%">
+								<col style="width:22%">
+								<col style="width:10%">
+								<col style="width:12%">
+								<col style="width:13%">
+								<col style="width:9%">
+								<col style="width:10%">
+								<col style="width:7%">
+							</colgroup>
+							<tr>
+								<th class="total"></th>
+								<th></th>
+								<th></th>
+								<th></th>
+								<th colspan="5" class="text-end">
+									<div class="d-flex flex-wrap justify-content-end align-items-center gap-4">
+										<div class="form-check form-switch align-items-center mb-0 ms-10">
+											<input class="form-check-input" type="checkbox" id="listClassApproval">
+											<label class="form-check-label" for="listClassApproval">승인 대기중</label>
+										</div>
+										<div class="form-check form-switch align-items-center mb-0">
+											<input class="form-check-input" type="checkbox" id="listClassStatus">
+											<label class="form-check-label" for="listClassStatus">모집 진행중</label>
+										</div>
+										<form class="search position-relative text-end">
+											<input type="text" class="form-control search-chat py-2 ps-5" id="text-srh" placeholder="검색어를 입력하세요">
+											<i class="ti ti-search position-absolute top-50 start-0 translate-middle-y fs-6 text-dark ms-3"></i>
+										</form>
+									</div>
+								</th>
+							</tr>
+							<tr class="table_th">
+								<th class="sort_btn desc" data-key="id">
+									<h6 class="fs-4 fw-semibold mb-0">No</h6>
+								</th>
+								<th>
+									<h6 class="fs-4 fw-semibold mb-0">카테고리</h6>
+								</th>
+								<th class="sort_btn" data-key="title">
+									<h6 class="fs-4 fw-semibold mb-0">제목</h6>
+								</th>
+								<th>
+									<h6 class="fs-4 fw-semibold mb-0">신청자</h6>
+								</th>
+								<th class="sort_btn" data-key="postdate">
+									<h6 class="fs-4 fw-semibold mb-0">신청일</h6>
+								</th>
+								<th class="sort_btn" data-key="eventdate">
+									<h6 class="fs-4 fw-semibold mb-0">기간</h6>
+								</th>
+								<th>
+									<h6 class="fs-4 fw-semibold mb-0">상태</h6>
+								</th>
+								<th class="sort_btn" data-key="applycount">
+									<h6 class="fs-4 fw-semibold mb-0">지원자수</h6>
+								</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody class="class_list"></tbody>
 					</table>
 
 					<!-- 페이지네이션 -->
 					<div class="pagination_wrap">
 						<div class="pagination">
-						    <ul></ul>
+							<ul></ul>
 						</div>
 					</div>
-				
 				</div>
 			</div>
 		</div>

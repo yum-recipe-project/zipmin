@@ -327,9 +327,9 @@ public class FundService {
 	
 	
 	// 출금 목록 조회 (관리자)
-	public Page<WithdrawReadResponseDto> readAdminWithdrawPage(String category, String keyword, String sort, Pageable pageable) {
+	public Page<WithdrawReadResponseDto> readAdminWithdrawPage(String keyword, String state, String sort, Pageable pageable) {
 		
-		// 카테고리 검색어 정렬
+		// TODO : 카테고리 검색어 정렬
 		
 		// 입력값 검증
 		if (pageable == null) {
@@ -355,7 +355,7 @@ public class FundService {
 		Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
 		
 		// 출금 목록 조회
-		Page<Withdraw> withdrawPage = null;
+		Page<Withdraw> withdrawPage;
 		try {
 			withdrawPage = withdrawRepository.findAll(sortedPageable);
 		}
@@ -366,8 +366,13 @@ public class FundService {
 		// 출금 목록 응답 구성
 		List<WithdrawReadResponseDto> withdrawDtoList = new ArrayList<>();
 		for (Withdraw withdraw : withdrawPage) {
-			WithdrawReadResponseDto dto = withdrawMapper.toReadResponseDto(withdraw);
-			withdrawDtoList.add(dto);
+			WithdrawReadResponseDto withdrawDto = withdrawMapper.toReadResponseDto(withdraw);
+			
+			withdrawDto.setName(withdraw.getUser().getName());
+			withdrawDto.setUsername(withdraw.getUser().getUsername());
+			withdrawDto.setAccountnum(withdraw.getAccount().getAccountnum());
+			
+			withdrawDtoList.add(withdrawDto);
 		}
 
 		return new PageImpl<>(withdrawDtoList, pageable, withdrawPage.getTotalElements());

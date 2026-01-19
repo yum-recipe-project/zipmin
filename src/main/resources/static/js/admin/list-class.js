@@ -1,10 +1,10 @@
 /**
  * 전역변수
  */
-let totalPages = 0;
-let totalElements = 0;
 let page = 0;
 const size = 20;
+let totalPages = 0;
+let totalElements = 0;
 let keyword = '';
 let category = '';
 let approval = '';
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 	
 	// 승인 대기 스위치
-	document.getElementById('listClassApproval').addEventListener('change', function () {
+	document.getElementById('listClassApproval').addEventListener('change', function() {
 		if (this.checked) {
 			document.getElementById('listClassStatus').checked = false;
 		}
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 	
 	// 모집중 스위치
-	document.getElementById('listClassStatus').addEventListener('change', function () {
+	document.getElementById('listClassStatus').addEventListener('change', function() {
 		if (this.checked) {
 			document.getElementById('listClassApproval').checked = false;
 		}
@@ -130,11 +130,11 @@ async function fetchClassList(scrollTop = true) {
 	
 	try {
 		const params = new URLSearchParams({
+			keyword : keyword,
 			category: category,
 			approval: approval,
 			status: status,
 			sort: sortKey + '-' + sortOrder,
-			keyword : keyword,
 			page : page,
 			size : size
 		}).toString();
@@ -294,8 +294,8 @@ function renderClassList(classList) {
 		
 		// 기능
 		const actionTd = document.createElement('td');
-		const btnWrap = document.createElement('div');
-		btnWrap.className = 'd-flex justify-content-end gap-2';
+		const btnDiv = document.createElement('div');
+		btnDiv.className = 'd-flex justify-content-end gap-2';
 
 		// 기능 권한
 		const token = localStorage.getItem('accessToken');
@@ -313,10 +313,10 @@ function renderClassList(classList) {
 			deleteBtn.innerHTML = '삭제';
 			deleteBtn.onclick = () => deleteClass(classs.id);
 			
-			btnWrap.appendChild(deleteBtn);
+			btnDiv.appendChild(deleteBtn);
 		}
 		
-		actionTd.appendChild(btnWrap);
+		actionTd.appendChild(btnDiv);
 		
 		tr.append(noTd, categoryTd, titleTd, writerTd, dateTd, periodTd, statusTd, totalTd, actionTd);
 		container.appendChild(tr);

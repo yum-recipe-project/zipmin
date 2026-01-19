@@ -1,12 +1,13 @@
 /**
- * 전역 변수
+ * 전역변수
  */
+let page = 0;
+const size = 15;
 let totalPages = 0;
 let totalElements = 0;
-let page = 0;
-const size = 10;
 let keyword = '';
 let category = '';
+let state = '';
 let sortKey = 'id';
 let sortOrder = 'desc';
 let withdrawList = [];
@@ -34,12 +35,72 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
 /**
- * 출금 목록을 검색하는 함수
+ * 출금 목록 검색 필터를 설정하는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
 	
-	fetchAdminWithdrawList();
+	// 검색
+	document.querySelector('form.search').addEventListener('submit', function(event) {
+		event.preventDefault();
+		keyword = document.getElementById('text-srh').value.trim();
+		page = 0;
+		fetchAdminWithdrawList();
+	});
+	document.getElementById('text-srh')?.addEventListener('input', function () {
+		if (this.value.trim() === '') {
+			keyword = '';
+			fetchAdminWithdrawList();
+		}
+	});
 	
+	// 카테고리
+	document.querySelectorAll('.btn_tab a').forEach(tab => {
+		tab.addEventListener('click', function (event) {
+			event.preventDefault();
+			document.querySelector('.btn_tab a.active')?.classList.remove('active');
+			this.classList.add('active');
+			
+			category = this.getAttribute('data-tab');
+			page = 0;
+			keyword = '';
+			document.getElementById('text-srh').value = '';
+			sortKey = 'id';
+			sortOrder = 'desc';
+			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
+			document.querySelector(`.sort_btn[data-key="${sortKey}"]`).classList.add(sortOrder);
+			
+			withdrawList = [];
+			fetchAdminWithdrawList();
+		});
+	});
+	
+	// 정렬 버튼
+	document.querySelectorAll('.sort_btn').forEach(btn => {
+		btn.addEventListener('click', function(event) {
+			event.preventDefault();
+			const key = btn.dataset.key;
+		    if (sortKey === key) {
+		      sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+		    }
+			else {
+		      sortKey = key;
+		      sortOrder = 'desc';
+		    }
+			document.querySelectorAll('.sort_btn').forEach(el => el.classList.remove('asc', 'desc'));
+			this.classList.add(sortOrder);
+			page = 0;
+			fetchAdminWithdrawList();
+		});
+	});
+	
+	// 승인 상태 스위치
+	document.getElementById('listWithdrawState').addEventListener('change', function() {
+		state = this.checked ? 'open' : '';
+		page = 0;
+		fetchAdminWithdrawList();
+	});
+	
+	fetchAdminWithdrawList();
 });
 
 
@@ -47,31 +108,37 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /**
- * 서버에서 모든 사용자의 출금 내역 데이터를 가져오는 함수 (관리자용)
+ * 서버에서 모든 사용자의 출금 내역 데이터를 가져오는 함수
  */
-async function fetchAdminWithdrawList(scrollTop = true) {
+async function fetchAdminWithdrawList(scroll = true) {
+	
     try {
         const params = new URLSearchParams({
+			keyword: keyword,
+			state: state,
+			sort: sortKey + '-' + sortOrder,
             page: page,
             size: size
         }).toString();
 
-        const response = await instance.get(`/admin/withdraw?${params}`);
-
+        const response = await instance.get(`/admin/withdraws?${params}`, {
+			headers: getAuthHeaders()
+		});
+		
+		console.log(response);
+		
 		if (response.data.code === 'WITHDRAW_READ_LIST_SUCCESS') {
-	        // 전역변수 설정
+			
 	        totalPages = response.data.data.totalPages;
 			page = response.data.data.number;
 	        withdrawList = response.data.data.content;
 	        totalElements = response.data.data.totalElements;
 	
-			// 렌더링
 			renderAdminWithdrawList(withdrawList);
 			renderAdminPagination(fetchAdminWithdrawList);
 			document.querySelector('.total').innerText = `총 ${totalElements}개`;
 			
-			// 스크롤 최상단 이동
-			if (scrollTop) {
+			if (scroll) {
 				window.scrollTo({ top: 0, behavior: 'smooth' });
 			}
 		}
@@ -79,8 +146,10 @@ async function fetchAdminWithdrawList(scrollTop = true) {
 	catch (error) {
 		const code = error?.response?.data?.code;
 		
-        console.error(error);
+		// TODO : 에러코드
+		
     }
+	
 }
 
 
@@ -92,7 +161,7 @@ async function fetchAdminWithdrawList(scrollTop = true) {
  */
 function renderAdminWithdrawList(withdrawList) {
 	
-    const container = document.querySelector('.guide_list');
+    const container = document.querySelector('.withdraw_list');
     container.innerHTML = '';
 
 	// 출금 목록이 존재하지 않는 경우
@@ -109,46 +178,151 @@ function renderAdminWithdrawList(withdrawList) {
 
     withdrawList.forEach((withdraw, index) => {
         const tr = document.createElement('tr');
+		tr.dataset.id = withdraw.id;
 
-        // No
-        const tdNo = document.createElement('td');
-        tdNo.textContent = index + 1 + page * size; // 페이징 적용
-        tr.appendChild(tdNo);
+        // 번호
+		const noTd = document.createElement('td');
+		const noH6 = document.createElement('h6');
+		noH6.className = 'fw-semibold mb-0';
+		const offset = page * size + index;
+		if (sortKey === 'id' && sortOrder === 'asc') {
+			noH6.textContent = offset + 1;
+		}
+		else {
+			noH6.textContent = totalElements - offset;
+		}
+		noTd.appendChild(noH6);
 
-        // 출금 요청자 (username / userId)
-        const tdUser = document.createElement('td');
-        tdUser.textContent = `${withdraw.username} (id: ${withdraw.user_id})`;
-        tr.appendChild(tdUser);
+        // 아이디
+		const usernameTd = document.createElement('td');
+		const usernameH6 = document.createElement('h6');
+		usernameH6.className = 'fw-semibold mb-0';
+		usernameH6.textContent = withdraw.username;
+		usernameTd.appendChild(usernameH6);
+		
+		// 이름
+		const nameTd = document.createElement('td');
+		const nameH6 = document.createElement('h6');
+		nameH6.className = 'fw-semibold mb-0';
+		nameH6.textContent = withdraw.name;
+		nameTd.appendChild(nameH6);
+		
+		// 출금 금액
+		const pointTd = document.createElement('td');
+		const pointH6 = document.createElement('h6');
+		pointH6.className = 'fw-semibold mb-0';
+		pointH6.textContent = `${withdraw.point}원`;
+		pointTd.appendChild(pointH6);
 
-        // 출금 요청일
-        const tdRequestDate = document.createElement('td');
-        tdRequestDate.textContent = formatDate(withdraw.request_date);
-        tr.appendChild(tdRequestDate);
-
-        // 요청 금액
-        const tdRequestPoint = document.createElement('td');
-        tdRequestPoint.textContent = `${withdraw.request_point?.toLocaleString() || 0}원`;
-        tr.appendChild(tdRequestPoint);
-
+		// 계좌번호
+		const accountnumTd = document.createElement('td');
+		const accountnumH6 = document.createElement('h6');
+		accountnumH6.className = 'fw-semibold mb-0';
+		accountnumH6.textContent = withdraw.accountnum;
+		accountnumTd.appendChild(accountnumH6);
+		
+        // 요청일
+		const claimdateTd = document.createElement('td');
+		const claimdateH6 = document.createElement('h6');
+		claimdateH6.className = 'fw-semibold mb-0';
+		claimdateH6.textContent = formatDateDot(withdraw.claimdate);
+		claimdateTd.appendChild(claimdateH6);
+		
+		// 출금일
+		// TODO : 출금 여부에 따라 설정
+		const settledateTd = document.createElement('td');
+		const settledateH6 = document.createElement('h6');
+		settledateH6.className = 'fw-semibold mb-0';
+		settledateH6.textContent = (withdraw.status === 1) ? formatDateDot(withdraw.settledate) : '-';
+		settledateTd.appendChild(settledateH6);		
+		
         // 승인 여부
-        const tdStatus = document.createElement('td');
-        if (withdraw.status === 1) {
-            tdStatus.innerHTML = `<span class="badge bg-success">출금 완료</span>`;
-        } else {
-            tdStatus.innerHTML = `<span class="badge bg-warning text-dark">출금 대기</span>`;
-        }
-        tr.appendChild(tdStatus);
+		const stateTd = renderWithdrawState(withdraw);
 
-        // 기타 (비워두거나 필요 시 버튼 등 추가)
-        const tdEtc = document.createElement('td');
-        tdEtc.textContent = '-';
-        tr.appendChild(tdEtc);
-
-        // 관리 (예: 승인/취소 버튼 등)
-//        const tdManage = document.createElement('td');
-//        tdManage.innerHTML = `<button class="btn btn-sm btn-primary">상세</button>`;
-//        tr.appendChild(tdManage);
-
+		// 기능
+		const payload = parseJwt(localStorage.getItem('accessToken'));
+		const isAction = payload.role === 'ROLE_SUPER_ADMIN' || (payload.role === 'ROLE_ADMIN' && withdraw.role === 'ROLE_USER') || payload.id === withdraw.user_id;
+		
+		const actionTd = document.createElement('td');
+		const btnDiv = document.createElement('div');
+		btnDiv.className = 'd-flex justify-content-end gap-2';
+		
+		if (isAction) {
+			const deleteBtn = document.createElement('button');
+			deleteBtn.type = 'button';
+			deleteBtn.className = 'btn btn-sm btn-outline-danger';
+			deleteBtn.innerHTML = '삭제';
+			deleteBtn.onclick = () => deleteWithdraw(withdraw.id);
+			btnDiv.appendChild(deleteBtn);
+		}
+		actionTd.appendChild(btnDiv);
+		
+		tr.append(noTd, usernameTd, nameTd, pointTd, accountnumTd, claimdateTd, settledateTd, stateTd, actionTd);
         container.appendChild(tr);
     });
 }
+
+
+
+
+
+/**
+ * 출금 상태를 화면에 렌더링하는 함수
+ */
+function renderWithdrawState(withdraw) {
+	const stateTd = document.createElement('td');
+	stateTd.className = 'text-center';
+	
+	if (withdraw.status === 0) {
+		const span = document.createElement('span');
+		span.type = 'button';
+		span.className = 'badge text-bg-gray';
+		span.textContent = '미승인';
+		span.disabled = true;
+		stateTd.appendChild(span);
+	}
+	else if (withdraw.status === 1) {
+		const span = document.createElement('span');
+		span.type = 'button';
+		span.className = 'badge text-bg-gray';
+		span.textContent = '승인';
+		span.disabled = true;
+		stateTd.appendChild(span);
+	}
+	else if (withdraw.status === 2) {
+		
+	}
+	
+	return stateTd;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * 출금을 삭제하는 함수
+ */
+async function deleteWithdraw(id) {
+	
+	
+	
+	
+}
+
+
+
+
+
+
+

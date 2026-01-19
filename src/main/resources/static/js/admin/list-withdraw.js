@@ -394,10 +394,6 @@ async function editWithdrawState(id, state) {
 
 
 
-
-
-
-
 /**
  * 출금을 삭제하는 함수
  */

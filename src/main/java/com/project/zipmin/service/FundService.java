@@ -524,7 +524,7 @@ public class FundService {
 		if (withdrawDto.getPoint() != 0) {
 			withdraw.setPoint(withdrawDto.getPoint());
 		}
-		if (withdrawDto.getStatus() != 0) {
+		if (withdrawDto.getStatus() == 0 || withdrawDto.getStatus() == 1 || withdrawDto.getStatus() == 2) {
 			withdraw.setStatus(withdrawDto.getStatus());
 		}
 		if (withdrawDto.getClaimdate() != null) {

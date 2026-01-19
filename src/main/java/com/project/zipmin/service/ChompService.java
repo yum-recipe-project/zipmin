@@ -91,46 +91,44 @@ public class ChompService {
 		}
 		
 		// 정렬 문자열을 객체로 변환
-		Sort sortSpec = Sort.by(Sort.Order.desc("id"));
+		Sort orderBy = Sort.by(Sort.Order.desc("id"));
 		if (sort != null && !sort.isBlank()) {
 			switch (sort) {
 				case "id-desc":
-					sortSpec = Sort.by(Sort.Order.desc("id"));
+					orderBy = Sort.by(Sort.Order.desc("id"));
 					break;
 				case "id-asc":
-					sortSpec = Sort.by(Sort.Order.asc("id"));
+					orderBy = Sort.by(Sort.Order.asc("id"));
 					break;
 				case "closedate-desc":
-					sortSpec = Sort.by(Sort.Order.desc("closedate"), Sort.Order.desc("id"));
+					orderBy = Sort.by(Sort.Order.desc("closedate"), Sort.Order.desc("id"));
 					break;
 				case "closedate-asc":
-					sortSpec = Sort.by(Sort.Order.asc("closedate"), Sort.Order.desc("id"));
+					orderBy = Sort.by(Sort.Order.asc("closedate"), Sort.Order.desc("id"));
 					break;
 				case "title-desc":
-					sortSpec = Sort.by(Sort.Order.desc("title"), Sort.Order.desc("id"));
+					orderBy = Sort.by(Sort.Order.desc("title"), Sort.Order.desc("id"));
 					break;
 				case "title-asc":
-					sortSpec = Sort.by(Sort.Order.asc("title"), Sort.Order.desc("id"));
+					orderBy = Sort.by(Sort.Order.asc("title"), Sort.Order.desc("id"));
 					break;
 				case "commentcount-desc":
-					sortSpec = Sort.by(Sort.Order.desc("commentcount"), Sort.Order.desc("id"));
+					orderBy = Sort.by(Sort.Order.desc("commentcount"), Sort.Order.desc("id"));
 					break;
 				case "commentcount-asc":
-					sortSpec = Sort.by(Sort.Order.asc("commentcount"), Sort.Order.desc("id"));
+					orderBy = Sort.by(Sort.Order.asc("commentcount"), Sort.Order.desc("id"));
 					break;
 				case "recordcount-desc":
-					sortSpec = Sort.by(Sort.Order.desc("recordcount"), Sort.Order.desc("id"));
+					orderBy = Sort.by(Sort.Order.desc("recordcount"), Sort.Order.desc("id"));
 					break;
 				case "recordcountcount-asc":
-					sortSpec = Sort.by(Sort.Order.asc("recordcount"), Sort.Order.desc("id"));
+					orderBy = Sort.by(Sort.Order.asc("recordcount"), Sort.Order.desc("id"));
 					break;
 				default:
 					break;
 		    }
 		}
-		
-		// 기존 페이지 객체에 정렬 주입
-		Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
+		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), orderBy);
 		
 		// 쩝쩝박사 목록 조회
 		Page<Chomp> chompPage;
@@ -141,14 +139,14 @@ public class ChompService {
 			if (!hasCategory) {
 				// 전체
 				chompPage = hasKeyword
-	                    ? chompRepository.findAllByTitleContainingIgnoreCase(keyword, sortedPageable)
-	                    : chompRepository.findAll(sortedPageable);
+	                    ? chompRepository.findAllByTitleContainingIgnoreCase(keyword, pageable)
+	                    : chompRepository.findAll(pageable);
 	        }
 			else {
 				// 카테고리
 				chompPage = hasKeyword
-	                    ? chompRepository.findAllByCategoryAndTitleContainingIgnoreCase(category, keyword, sortedPageable)
-	                    : chompRepository.findAllByCategory(category, sortedPageable);
+	                    ? chompRepository.findAllByCategoryAndTitleContainingIgnoreCase(category, keyword, pageable)
+	                    : chompRepository.findAllByCategory(category, pageable);
 	        }
 		}
 		catch (Exception e) {

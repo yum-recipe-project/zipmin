@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
-import com.project.zipmin.api.ClassErrorCode;
 import com.project.zipmin.api.FundErrorCode;
 import com.project.zipmin.api.UserAccountErrorCode;
 import com.project.zipmin.api.WithdrawErrorCode;
@@ -68,12 +67,21 @@ public class FundService {
 	
 	
 	
+	
 	// 계좌 상세 조회
 	public UserAccountReadResponseDto readAccountById(int id) {
 		
-		return null;
+		// 입력값 검증
+		if (id == 0) {
+			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_INVALID_INPUT);
+		}
+		
+		// 계좌 상세 조회
+		UserAccount account = accountRepository.findById(id)
+				.orElseThrow(() -> new ApiException(UserAccountErrorCode.USER_ACCOUNT_NOT_FOUND));
+		
+		return accountMapper.toReadResponseDto(account);
 	}
-	
 	
 	
 	
@@ -194,6 +202,13 @@ public class FundService {
 			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_UPDATE_FAIL);
 		}
 	}
+	
+	
+	
+	
+	
+	// TODO : 후원 목록 조회
+	
 	
 	
 	
@@ -340,37 +355,63 @@ public class FundService {
 	
 	
 	// 출금 목록 조회 (관리자)
-	public Page<WithdrawReadResponseDto> readAdminWithdrawPage(String keyword, String state, String sort, Pageable pageable) {
-		
-		// TODO : 카테고리 검색어 정렬
+	public Page<WithdrawReadResponseDto> readAdminWithdrawPage(String keyword, Integer status, String sort, Pageable pageable) {
 		
 		// 입력값 검증
 		if (pageable == null) {
 			throw new ApiException(WithdrawErrorCode.WITHDRAW_INVALID_INPUT);
 		}
 		
-		// TODO : 정렬 문자열을 객체로 변환
-		Sort sortSpec = Sort.by(Sort.Order.desc("id"));
+		// 정렬
+		Sort orderBy = Sort.by(Sort.Order.desc("id"));
 		if (sort != null && !sort.isBlank()) {
 			switch (sort) {
 				case "id-desc":
-					sortSpec = Sort.by(Sort.Order.desc("id"));
+					orderBy = Sort.by(Sort.Order.desc("id"));
 					break;
 				case "id-asc":
-					sortSpec = Sort.by(Sort.Order.asc("id"));
+					orderBy = Sort.by(Sort.Order.asc("id"));
+					break;
+				case "point-desc":
+					orderBy = Sort.by(Sort.Order.desc("point"));
+					break;
+				case "point-asc":
+					orderBy = Sort.by(Sort.Order.asc("point"));
+					break;
+				case "claimdate-desc":
+					orderBy = Sort.by(Sort.Order.desc("claimdate"));
+					break;
+				case "claimdate-asc":
+					orderBy = Sort.by(Sort.Order.asc("claimdate"));
+					break;
+				case "settledate-desc":
+					orderBy = Sort.by(Sort.Order.desc("settledate"));
+					break;
+				case "settledate-asc":
+					orderBy = Sort.by(Sort.Order.asc("settledate"));
 					break;
 				default:
 					break;
 			}
 		}
-		
-		// 기존 페이지 객체에 정렬 주입
-		Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
+		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), orderBy);
 		
 		// 출금 목록 조회
 		Page<Withdraw> withdrawPage;
 		try {
-			withdrawPage = withdrawRepository.findAll(sortedPageable);
+			boolean hasKeyword = keyword != null && !keyword.isBlank();
+			boolean hasStatus = status != null;
+			
+			if (hasStatus) {
+				withdrawPage = hasKeyword
+						? withdrawRepository.findAllByStatus(status, pageable)
+						: withdrawRepository.findAllByStatus(status, pageable);
+			}
+			else {
+				withdrawPage = hasKeyword
+						? withdrawRepository.findAll(pageable)
+						: withdrawRepository.findAll(pageable);
+			}
 		}
 		catch (Exception e) {
 			throw new ApiException(WithdrawErrorCode.WITHDRAW_READ_LIST_FAIL);

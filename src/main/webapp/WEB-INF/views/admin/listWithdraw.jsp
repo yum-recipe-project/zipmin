@@ -85,10 +85,10 @@
 								<th class="sort_btn desc" data-key="id">
 									<h6 class="fs-4 fw-semibold mb-0">No</h6>
 								</th>
-								<th class="sort_btn" data-key="username">
+								<th>
 									<h6 class="fs-4 fw-semibold mb-0">아이디</h6>
 								</th>
-								<th class="sort_btn" data-key="name">
+								<th>
 									<h6 class="fs-4 fw-semibold mb-0">이름</h6>
 								</th>
 								<th class="sort_btn" data-key="point">

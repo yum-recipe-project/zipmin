@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 	// 승인 상태 스위치
 	document.getElementById('listWithdrawState').addEventListener('change', function() {
-		state = this.checked ? 'open' : '';
+		state = this.checked ? 2 : '';
 		page = 0;
 		fetchAdminWithdrawList();
 	});
@@ -115,7 +115,7 @@ async function fetchAdminWithdrawList(scroll = true) {
     try {
         const params = new URLSearchParams({
 			keyword: keyword,
-			state: state,
+			status: state,
 			sort: sortKey + '-' + sortOrder,
             page: page,
             size: size
@@ -124,8 +124,6 @@ async function fetchAdminWithdrawList(scroll = true) {
         const response = await instance.get(`/admin/withdraws?${params}`, {
 			headers: getAuthHeaders()
 		});
-		
-		console.log(response);
 		
 		if (response.data.code === 'WITHDRAW_READ_LIST_SUCCESS') {
 			

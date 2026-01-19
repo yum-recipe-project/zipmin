@@ -21,7 +21,6 @@ import com.project.zipmin.api.FundErrorCode;
 import com.project.zipmin.api.FundSuccessCode;
 import com.project.zipmin.api.UserAccountErrorCode;
 import com.project.zipmin.api.UserAccountSuccessCode;
-import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.WithdrawErrorCode;
 import com.project.zipmin.api.WithdrawSuccessCode;
 import com.project.zipmin.dto.FundCreateRequestDto;
@@ -60,8 +59,14 @@ public class FundController {
 	
 	
 	
+	
+	
+	
+	
+	
+	
 	@Operation(
-	    summary = "계좌 상세 조회"
+	    summary = "사용자 계좌 상세 조회"
 	)
 	@ApiResponses(value = {
 		// 200 USER_ACCOUNT_READ_SUCCESS 계좌 조회 성공
@@ -89,7 +94,7 @@ public class FundController {
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 		
 	})
-	// 계좌 상세 조회
+	// 사용자 계좌 상세 조회
 	@GetMapping("/users/{id}/account")
 	public ResponseEntity<?> readUserAccount(
 			@Parameter(description = "사용자의 일련번호") @PathVariable int id) {
@@ -155,6 +160,7 @@ public class FundController {
 		return ResponseEntity.status(UserAccountSuccessCode.USER_ACCOUNT_CREATE_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserAccountSuccessCode.USER_ACCOUNT_CREATE_SUCCESS, accountResponseDto));
 	}
+	
 	
 	
 	

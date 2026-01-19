@@ -110,7 +110,7 @@ import com.project.zipmin.swagger.VoteUpdateSuccessResponse;
 
 @RestController
 @Tag(name = "Chompessor API", description = "쩝쩝박사 관련 API")
-public class ChompessorController {
+public class ChompController {
 	
 	@Autowired
 	ChompService chompService;

@@ -192,15 +192,10 @@ public class ReviewService {
     	for (Review review : reviewPage) {
     		ReviewReadResponseDto reviewDto = reviewMapper.toReadResponseDto(review);
     		
-    		// 사용자명
     		reviewDto.setUsername(review.getUser().getUsername());
-    		// 닉네임
     		reviewDto.setNickname(review.getUser().getNickname());
-    		// 좋아요수
     		reviewDto.setLikecount(likeService.countLike("review", review.getId()));
-    		// 신고수
     		reviewDto.setReportcount(reportService.countReport("review", review.getId()));
-    		// 레시피 제목
     		reviewDto.setTitle(review.getRecipe().getTitle());
     		
     		reviewDtoList.add(reviewDto);
@@ -225,26 +220,23 @@ public class ReviewService {
             throw new ApiException(ReviewErrorCode.REVIEW_INVALID_INPUT);
         }
 
-        // DTO → 엔티티 변환
+        // 리뷰 저장
         Review review = reviewMapper.toEntity(reviewRequestDto);
-
         try {
-            // 리뷰 저장
             review = reviewRepository.saveAndFlush(review);
-
-            // 응답 DTO 생성
-            ReviewCreateResponseDto reviewResponseDto = reviewMapper.toCreateResponseDto(review);
-            reviewResponseDto.setNickname(userService.readUserById(reviewRequestDto.getUserId()).getNickname());
-            
-            reviewResponseDto.setLikecount(likeService.countLike("review", review.getId()));
-            reviewResponseDto.setLikestatus(false);
-
-            return reviewResponseDto;
         }
         catch (Exception e) {
             throw new ApiException(ReviewErrorCode.REVIEW_CREATE_FAIL);
         }
         
+        // 리뷰 응답 구성
+        ReviewCreateResponseDto reviewResponseDto = reviewMapper.toCreateResponseDto(review);
+        reviewResponseDto.setNickname(userService.readUserById(reviewRequestDto.getUserId()).getNickname());
+        
+        reviewResponseDto.setLikecount(likeService.countLike("review", review.getId()));
+        reviewResponseDto.setLikestatus(false);
+        
+        return reviewResponseDto;
     }
 
 	

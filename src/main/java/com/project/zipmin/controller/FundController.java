@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -499,7 +500,31 @@ public class FundController {
 	
 	
 	
-	
+	// WITHDRAW_DELETE_SUCCESS
+	// WITHDRAW_DELETE_FAIL
+	// WITHDRAW_INVALID_INPUT
+	// USER_INVALID_INPUT
+	// WITHDRAW_UNAUTHORIZED_ACCESS
+	// WITHDRAW_FORBIDDEN
+	// WITHDRAW_NOT_FOUND
+	// USER_NOT_FOUND
+
+	// 출금 삭제
+	@DeleteMapping("/withdraws/{id}")
+	public ResponseEntity<?> deleteWithdraw(
+			@Parameter(description = "출금의 일련번호") @PathVariable int id) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(WithdrawErrorCode.WITHDRAW_UNAUTHORIZED_ACCESS);
+		}
+		
+		fundService.deleteWithdraw(id);
+		
+		return ResponseEntity.status(WithdrawSuccessCode.WITHDRAW_DELETE_SUCCESS.getStatus())
+				.body(ApiResponse.success(WithdrawSuccessCode.WITHDRAW_DELETE_SUCCESS, null));
+	}
 	
 	
 	

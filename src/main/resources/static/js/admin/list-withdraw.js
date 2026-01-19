@@ -399,7 +399,52 @@ async function editWithdrawState(id, state) {
  */
 async function deleteWithdraw(id) {
 	
+	if (!confirm('정말로 삭제하시겠습니까?')) {
+		return;
+	}
 	
+	try {
+		const response = await instance.delete(`/withdraws/${id}`, {
+			headers: getAuthHeaders()
+		});
+		
+		if (response.data.code === 'WITHDRAW_DELETE_SUCCESS') {
+			alertPrimary('성공적으로 삭제되었습니다');
+			fetchAdminWithdrawList(false);
+		}
+	}
+	catch (error) {
+		const code = error?.response?.data?.code;
+		
+		if (code === 'WITHDRAW_DELETE_FAIL') {
+			alertDanger('삭제에 실패했습니다');
+		}
+		else if (code === 'WITHDRAW_INVALID_INPUT') {
+			alertDanger('삭제에 실패했습니다');
+		}
+		else if (code === 'USER_INVALID_INPUT') {
+			alertDanger('삭제에 실패했습니다');;
+		}
+		else if (code === 'WITHDRAW_UNAUTHORIZED_ACCESS') {
+			alertDanger('접근 권한이 없습니다');
+		}
+		else if (code === 'WITHDRAW_FORBIDDEN') {
+			alertDanger('접근 권한이 없습니다');
+		}
+		else if (code === 'WITHDRAW_NOT_FOUND') {
+			alertDanger('삭제에 실패했습니다');
+		}
+		else if (code === 'USER_NOT_FOUND') {
+			alertDanger('삭제에 실패했습니다');
+		}
+		else if (code === 'INTERNAL_SERVER_ERROR') {
+			alertDanger('서버 내부에서 오류가 발생했습니다');
+		}
+		else {
+			alertDanger('서버 내부에서 오류가 발생했습니다');
+		}
+		
+	}
 	
 	
 }

@@ -67,14 +67,17 @@
 								<th></th>
 								<th></th>
 								<th></th>
-								<th></th>
-								<th colspan="4" class="text-end">
-									<div class="d-flex flex-wrap justify-content-end align-items-center gap-4">
+								<th colspan="5" class="text-end">
+									<div class="d-flex flex-wrap justify-content-end align-items-center">
 										<div class="form-check form-switch align-items-center mb-0 ms-10">
 											<input class="form-check-input" type="checkbox" id="listWithdrawState">
 											<label class="form-check-label" for="listWithdrawState">승인 대기중</label>
 										</div>
-										<form class="search position-relative text-end">
+										<select class="form-select w-auto mr-sm-2 ms-4" id="field-srh">
+						            		<option value="username">아이디</option>
+						            		<option value="name">이름</option>
+						            	</select>
+										<form class="search position-relative text-end ms-1">
 											<input type="text" class="form-control search-chat py-2 ps-5" id="text-srh" placeholder="검색어를 입력하세요">
 											<i class="ti ti-search position-absolute top-50 start-0 translate-middle-y fs-6 text-dark ms-3"></i>
 										</form>

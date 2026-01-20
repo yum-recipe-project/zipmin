@@ -78,47 +78,45 @@ public class UserService {
 			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
 		}
 		
-		// 정렬 문자열을 객체로 변환
-		Sort sortSpec = Sort.by(Sort.Order.desc("id"));
+		// 정렬
+		Sort orderBy = Sort.by(Sort.Order.desc("id"));
 		if (sort != null && !sort.isBlank()) {
 			switch (sort) {
 				case "id-desc":
-					sortSpec = Sort.by(Sort.Order.desc("id"));
+					orderBy = Sort.by(Sort.Order.desc("id"));
 					break;
 				case "id-asc":
-					sortSpec = Sort.by(Sort.Order.asc("id"));
+					orderBy = Sort.by(Sort.Order.asc("id"));
 					break;
 				case "username-desc":
-					sortSpec = Sort.by(Sort.Order.desc("username"));
+					orderBy = Sort.by(Sort.Order.desc("username"));
 					break;
 				case "username-asc":
-					sortSpec = Sort.by(Sort.Order.asc("username"));
+					orderBy = Sort.by(Sort.Order.asc("username"));
 					break;
 				case "name-desc":
-					sortSpec = Sort.by(Sort.Order.desc("name"));
+					orderBy = Sort.by(Sort.Order.desc("name"));
 					break;
 				case "name-asc":
-					sortSpec = Sort.by(Sort.Order.asc("name"));
+					orderBy = Sort.by(Sort.Order.asc("name"));
 					break;
 				case "nickname-desc":
-					sortSpec = Sort.by(Sort.Order.desc("nickname"));
+					orderBy = Sort.by(Sort.Order.desc("nickname"));
 					break;
 				case "nickname-asc":
-					sortSpec = Sort.by(Sort.Order.asc("nickname"));
+					orderBy = Sort.by(Sort.Order.asc("nickname"));
 					break;
 				case "role-desc":
-					sortSpec = Sort.by(Sort.Order.desc("role"));
+					orderBy = Sort.by(Sort.Order.desc("role"));
 					break;
 				case "role-asc":
-					sortSpec = Sort.by(Sort.Order.asc("role"));
+					orderBy = Sort.by(Sort.Order.asc("role"));
 					break;
 				default:
 					break;
 			}
 		}
-		
-		// 기존 페이지 객체에 정렬 주입
-		Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
+		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), orderBy);
 		
 		// 사용자 목록 조회
 		Page<User> userPage = null;
@@ -129,17 +127,17 @@ public class UserService {
 			if (!hasCategory) {
 				// 전체
 				if (!hasKeyword) {
-					userPage = userRepository.findAll(sortedPageable);
+					userPage = userRepository.findAll(pageable);
 				}
 				else {
 					if (field.equalsIgnoreCase("username")) {
-						userPage = userRepository.findAllByUsernameContainingIgnoreCase(keyword, sortedPageable);
+						userPage = userRepository.findAllByUsernameContainingIgnoreCase(keyword, pageable);
 					}
 					else if (field.equalsIgnoreCase("name")) {
-						userPage = userRepository.findAllByNameContainingIgnoreCase(keyword, sortedPageable);
+						userPage = userRepository.findAllByNameContainingIgnoreCase(keyword, pageable);
 		            }
 					else if (field.equalsIgnoreCase("nickname")) {
-		                userPage = userRepository.findAllByNicknameContainingIgnoreCase(keyword, sortedPageable);
+		                userPage = userRepository.findAllByNicknameContainingIgnoreCase(keyword, pageable);
 		            }
 				}
 			}
@@ -154,18 +152,17 @@ public class UserService {
 				}
 				
 				if (!hasKeyword) {
-					userPage = userRepository.findAllByRoleIn(roles, sortedPageable);
+					userPage = userRepository.findAllByRoleIn(roles, pageable);
 				}
 				else {
-					System.err.println("출력 = "  + field + " " + keyword);
 					if (field.equalsIgnoreCase("username")) {
-						userPage = userRepository.findAllByRoleInAndUsernameContainingIgnoreCase(roles, keyword, sortedPageable);
+						userPage = userRepository.findAllByRoleInAndUsernameContainingIgnoreCase(roles, keyword, pageable);
 					}
 					else if (field.equalsIgnoreCase("name")) {
-						userPage = userRepository.findAllByRoleInAndNameContainingIgnoreCase(roles, keyword, sortedPageable);
+						userPage = userRepository.findAllByRoleInAndNameContainingIgnoreCase(roles, keyword, pageable);
 		            }
 					else if (field.equalsIgnoreCase("nickname")) {
-		                userPage = userRepository.findAllByRoleInAndNicknameContainingIgnoreCase(roles, keyword, sortedPageable);
+		                userPage = userRepository.findAllByRoleInAndNicknameContainingIgnoreCase(roles, keyword, pageable);
 		            }
 				}
 			}

@@ -13,9 +13,11 @@ public interface WithdrawRepository extends JpaRepository<Withdraw, Integer> {
 	
 	Page<Withdraw> findAll(Pageable pageable);
 	Page<Withdraw> findAllByUserUsernameContainingIgnoreCase(String keyword, Pageable pageable);
+	Page<Withdraw> findAllByUserNameContainingIgnoreCase(String keyword, Pageable pageable);
 	
 	Page<Withdraw> findAllByStatus(int status, Pageable pageable);
 	Page<Withdraw> findAllByStatusAndUserUsernameContainingIgnoreCase(int status, String keyword, Pageable pageable);
+	Page<Withdraw> findAllByStatusAndUserNameContainingIgnoreCase(int status, String keyword, Pageable pageable);
 	
 	Page<Withdraw> findAllByUserId(int userId, Pageable pageable);
 	

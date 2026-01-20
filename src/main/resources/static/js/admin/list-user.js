@@ -1,10 +1,10 @@
 /**
  * 전역변수
  */
-let totalPages = 0;
-let totalElements = 0;
 let page = 0;
 const size = 15;
+let totalPages = 0;
+let totalElements = 0;
 let field = 'username';
 let keyword = '';
 let category = '';
@@ -117,14 +117,14 @@ document.addEventListener('DOMContentLoaded', function() {
 /**
  * 서버에서 회원 목록 데이터를 가져오는 함수
  */
-async function fetchUserList() {
+async function fetchUserList(scroll = true) {
 	
 	try {
 		const params = new URLSearchParams({
-			category: category,
-			sort: sortKey + '-' + sortOrder,
 			field: field,
 			keyword: keyword,
+			category: category,
+			sort: sortKey + '-' + sortOrder,
 			page: page,
 			size: size,
 		}).toString();
@@ -134,16 +134,19 @@ async function fetchUserList() {
 		});
 		
 		if (response.data.code === 'USER_READ_LIST_SUCCESS') {
-			// 전역변수 설정
+
 			totalPages = response.data.data.totalPages;
 			totalElements = response.data.data.totalElements;
 			page = response.data.data.number;
 			userList = response.data.data.content;
 			
-			// 렌더링
 			renderUserList(userList);
 			renderAdminPagination(fetchUserList);
 			document.querySelector('.total').innerText = `총 ${totalElements}개`;
+			
+			if (scroll) {
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			}
 		}
 	}
 	catch (error) {

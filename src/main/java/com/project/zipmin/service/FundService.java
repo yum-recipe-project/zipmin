@@ -400,7 +400,7 @@ public class FundService {
 	
 	
 	// 출금 목록 조회 (관리자)
-	public Page<WithdrawReadResponseDto> readAdminWithdrawPage(String keyword, Integer status, String sort, Pageable pageable) {
+	public Page<WithdrawReadResponseDto> readAdminWithdrawPage(String field, String keyword, Integer status, String sort, Pageable pageable) {
 		
 		// 입력값 검증
 		if (pageable == null) {
@@ -442,20 +442,36 @@ public class FundService {
 		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), orderBy);
 		
 		// 출금 목록 조회
-		Page<Withdraw> withdrawPage;
+		Page<Withdraw> withdrawPage = null;
 		try {
-			boolean hasStatus = status != null && status != 0;
 			boolean hasKeyword = keyword != null && !keyword.isBlank();
+			boolean hasStatus = status != null && status != 0;
 			
 			if (hasStatus) {
-				withdrawPage = hasKeyword
-						? withdrawRepository.findAllByStatusAndUserUsernameContainingIgnoreCase(status, keyword, pageable)
-						: withdrawRepository.findAllByStatus(status, pageable);
+				if (hasKeyword) {
+					if (field.equalsIgnoreCase("username")) {
+						withdrawPage = withdrawRepository.findAllByStatusAndUserUsernameContainingIgnoreCase(status, keyword, pageable);
+					}
+					else if (field.equalsIgnoreCase("name")) {
+						withdrawPage = withdrawRepository.findAllByStatusAndUserNameContainingIgnoreCase(status, keyword, pageable);
+					}
+				}
+				else {
+					withdrawPage = withdrawRepository.findAllByStatus(status, pageable);
+				}
 			}
 			else {
-				withdrawPage = hasKeyword
-						? withdrawRepository.findAllByUserUsernameContainingIgnoreCase(keyword, pageable)
-						: withdrawRepository.findAll(pageable);
+				if (hasKeyword) {
+					if (field.equalsIgnoreCase("username")) {
+						withdrawPage = withdrawRepository.findAllByUserUsernameContainingIgnoreCase(keyword, pageable);
+					}
+					else if (field.equalsIgnoreCase("name")) {
+						withdrawPage = withdrawRepository.findAllByUserNameContainingIgnoreCase(keyword, pageable);
+					}
+				}
+				else {
+					withdrawPage = withdrawRepository.findAll(pageable);
+				}
 			}
 		}
 		catch (Exception e) {

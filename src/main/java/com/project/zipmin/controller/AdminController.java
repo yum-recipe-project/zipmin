@@ -197,6 +197,7 @@ public class AdminController {
 	@GetMapping("/admin/withdraws")
 	public ResponseEntity<?> readWithdrawList(
 			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
+			@Parameter(description = "검색 필드", required = false) @RequestParam(required = false) String field,
 			@Parameter(description = "상태", required = false) @RequestParam(required = false) Integer status,
 			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
 			@Parameter(description = "페이지 번호") @RequestParam int page,
@@ -217,7 +218,7 @@ public class AdminController {
 		}
 
 	    Pageable pageable = PageRequest.of(page, size);
-	    Page<WithdrawReadResponseDto> withdrawPage = fundService.readAdminWithdrawPage(keyword, status, sort, pageable);
+	    Page<WithdrawReadResponseDto> withdrawPage = fundService.readAdminWithdrawPage(field, keyword, status, sort, pageable);
 
 	    return ResponseEntity.status(WithdrawSuccessCode.WITHDRAW_READ_LIST_SUCCESS.getStatus())
 	            .body(ApiResponse.success(WithdrawSuccessCode.WITHDRAW_READ_LIST_SUCCESS, withdrawPage));

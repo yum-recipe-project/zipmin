@@ -19,7 +19,7 @@ public interface FundMapper {
 	@Mapping(target = "funderId", source = "funder.id")
 	@Mapping(target = "fundeeId", source = "fundee.id")
 	@Mapping(target = "recipeId", source = "recipe.id")
-	FundReadResponseDto toFundReadResponseDto(Fund fund);
+	FundReadResponseDto toReadResponseDto(Fund fund);
 	
 	
 
@@ -31,7 +31,7 @@ public interface FundMapper {
 	@Mapping(target = "funderId", source = "funder.id")
 	@Mapping(target = "fundeeId", source = "fundee.id")
 	@Mapping(target = "recipeId", source = "recipe.id")
-	FundCreateResponseDto toFundCreateResponseDto(Fund fund);
+	FundCreateResponseDto toCreateResponseDto(Fund fund);
 	
 	@Mapping(target = "funder.id", source = "funderId")
 	@Mapping(target = "fundee.id", source = "fundeeId")

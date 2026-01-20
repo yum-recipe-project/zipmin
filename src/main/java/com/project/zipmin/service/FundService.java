@@ -207,8 +207,53 @@ public class FundService {
 	
 	
 	
-	// TODO : 후원 목록 조회
+	// 후원 목록 조회
+	public Page<FundReadResponseDto> readFundPage(String keyword, String sort, Pageable pageable) {
+		
+		// 입력값 검증
+		if (pageable == null) {
+			throw new ApiException(FundErrorCode.FUND_INVALID_INPUT);
+		}
+		
+		// 정렬
+		Sort orderBy = Sort.by(Sort.Order.desc("id"));
+		if (sort != null && !sort.isBlank()) {
+			switch (sort) {
+				case "id-desc":
+					orderBy = Sort.by(Sort.Order.desc("id"));
+					break;
+				case "id-asc":
+					orderBy = Sort.by(Sort.Order.asc("id"));
+					break;
+				default:
+					break;
+		    }
+		}
+		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), orderBy);
+		
+		// 후원 목록 조회
+		Page<Fund> fundPage;
+		try {
+			boolean hasKeyword = keyword != null && !keyword.isBlank();
+			
+			fundPage = hasKeyword
+					? fundRepository.findAllByFunderUsernameContainingIgnoreCase(keyword, pageable)
+					: fundRepository.findAll(pageable);
+		}
+		catch (Exception e) {
+			throw new ApiException(FundErrorCode.FUND_READ_LIST_FAIL);
+		}
+		
+		// 후원 목록 응답 구성
+		List<FundReadResponseDto> fundDtoList = new ArrayList<>();
+		for (Fund fund : fundPage) {
+			FundReadResponseDto fundDto = fundMapper.toReadResponseDto(fund);
+			
+			fundDtoList.add(fundDto);
+		}
 	
+		return new PageImpl<>(fundDtoList, pageable, fundPage.getTotalElements());
+	}
 	
 	
 	
@@ -254,7 +299,7 @@ public class FundService {
  		// 후원 목록 응답 구성
  		List<FundReadResponseDto> fundDtoList = new ArrayList<FundReadResponseDto>();
  		for (Fund fund : fundPage) {
- 			FundReadResponseDto fundDto = fundMapper.toFundReadResponseDto(fund);
+ 			FundReadResponseDto fundDto = fundMapper.toReadResponseDto(fund);
  			
  			fundDto.setNickname(fund.getFunder().getNickname());
 			fundDto.setTitle(fund.getRecipe().getTitle());
@@ -343,7 +388,7 @@ public class FundService {
 			userService.updateUser(userMapper.toUpdateRequestDto(userMapper.toEntity(funderDto)));
 			userService.updateUser(userMapper.toUpdateRequestDto(userMapper.toEntity(fundeeDto)));
 			
-			return fundMapper.toFundCreateResponseDto(fund);
+			return fundMapper.toCreateResponseDto(fund);
 		}
 		catch (Exception e) {
 			throw new ApiException(FundErrorCode.FUND_CREATE_FAIL);
@@ -399,17 +444,17 @@ public class FundService {
 		// 출금 목록 조회
 		Page<Withdraw> withdrawPage;
 		try {
+			boolean hasStatus = status != null && status != 0;
 			boolean hasKeyword = keyword != null && !keyword.isBlank();
-			boolean hasStatus = status != null;
 			
 			if (hasStatus) {
 				withdrawPage = hasKeyword
-						? withdrawRepository.findAllByStatus(status, pageable)
+						? withdrawRepository.findAllByStatusAndUserUsernameContainingIgnoreCase(status, keyword, pageable)
 						: withdrawRepository.findAllByStatus(status, pageable);
 			}
 			else {
 				withdrawPage = hasKeyword
-						? withdrawRepository.findAll(pageable)
+						? withdrawRepository.findAllByUserUsernameContainingIgnoreCase(keyword, pageable)
 						: withdrawRepository.findAll(pageable);
 			}
 		}
@@ -449,7 +494,6 @@ public class FundService {
 		UserReadResponseDto currentUser = userService.readUserByUsername(username);
 		
 		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			// 관리자
 			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (userService.readUserById(userId).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 					throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
@@ -458,7 +502,6 @@ public class FundService {
 					throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
 				}
 			}
-			// 일반회원
 			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != userId) {
 				throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
 			}

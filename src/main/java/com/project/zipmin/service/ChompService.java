@@ -136,17 +136,15 @@ public class ChompService {
 			boolean hasCategory = category != null && !category.isBlank();
 			boolean hasKeyword = keyword != null && !keyword.isBlank();
 			
-			if (!hasCategory) {
-				// 전체
+			if (hasCategory) {
 				chompPage = hasKeyword
-	                    ? chompRepository.findAllByTitleContainingIgnoreCase(keyword, pageable)
-	                    : chompRepository.findAll(pageable);
+						? chompRepository.findAllByCategoryAndTitleContainingIgnoreCase(category, keyword, pageable)
+						: chompRepository.findAllByCategory(category, pageable);
 	        }
 			else {
-				// 카테고리
 				chompPage = hasKeyword
-	                    ? chompRepository.findAllByCategoryAndTitleContainingIgnoreCase(category, keyword, pageable)
-	                    : chompRepository.findAllByCategory(category, pageable);
+						? chompRepository.findAllByTitleContainingIgnoreCase(keyword, pageable)
+						: chompRepository.findAll(pageable);
 	        }
 		}
 		catch (Exception e) {

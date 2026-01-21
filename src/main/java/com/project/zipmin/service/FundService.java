@@ -72,7 +72,7 @@ public class FundService {
 	public UserAccountReadResponseDto readAccountById(int id) {
 		
 		// 입력값 검증
-		if (id == 0) {
+		if (id < 0) {
 			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_INVALID_INPUT);
 		}
 		
@@ -91,7 +91,7 @@ public class FundService {
 	public UserAccountReadResponseDto readAccountByUserId(int userId) {
 
 		// 입력값 검증
-		if (userId == 0) {
+		if (userId < 0) {
 			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_INVALID_INPUT);
 		}
 		
@@ -704,7 +704,4 @@ public class FundService {
 		}
 		
 	}
-	
-	
-
 }

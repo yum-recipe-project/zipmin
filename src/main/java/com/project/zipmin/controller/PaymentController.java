@@ -46,6 +46,8 @@ public class PaymentController {
     		@PathVariable int id,
     		@RequestBody PointCreateRequestDto pointCreateRequestDto) throws IamportResponseException, IOException, java.io.IOException{
     	
+    	// TODO : 로그인 여부 확인
+    	
     	// 포트원 실제 결제내역 조회
         IamportResponse<Payment> iamportResponse = paymentLookup(pointCreateRequestDto.getImpUid());
         

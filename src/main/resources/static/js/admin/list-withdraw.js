@@ -67,7 +67,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			
 			category = this.getAttribute('data-tab');
 			page = 0;
+			field = 'username';
 			keyword = '';
+			document.getElementById('field-srh').value = 'username';
 			document.getElementById('text-srh').value = '';
 			sortKey = 'id';
 			sortOrder = 'desc';

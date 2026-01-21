@@ -36,6 +36,10 @@ public class ReissueService {
 	 */
 	public TokenDto reissue(HttpServletRequest request, HttpServletResponse response) {
 		
+		
+		// TODO : 리팩토링 + 에러코드 다듬기 + 재발급 실패 + 아마 로그인 여부도 잘 확인해야 할
+		
+		
 		String refresh = null;
 		Cookie[] cookies = request.getCookies();
 		

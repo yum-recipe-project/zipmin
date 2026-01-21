@@ -394,7 +394,7 @@ public class UserController {
 	@ApiResponses(value = {
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "200",
-				description = "비밀번호 일치",
+				description = "사용자 아이디 조회 성공",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserReadUsernameSuccessResponse.class))),
@@ -440,6 +440,7 @@ public class UserController {
 	@ApiResponses(value = {
 			
 		// 200 USER_READ_PASSWORD_SUCCESS
+		// 400 USER_SEND_EMAIL_FAIL
 			
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
@@ -447,9 +448,6 @@ public class UserController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
-		
-		// 400 USER_SEND_EMAIL_FAIL
-		
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
 				description = "입력값이 유효하지 않음",

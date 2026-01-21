@@ -98,13 +98,13 @@ import lombok.RequiredArgsConstructor;
 public class AdminController {
 
 	private final UserService userService;
+	private final FundService fundService;
 	private final RecipeService recipeService;
 	private final KitchenService kitchenService;
 	private final ChompService chompService;
+	private final CookingService cookingService;
 	private final CommentService commentService;
 	private final ReviewService reviewService;
-	private final CookingService cookingService;
-	private final FundService fundService;
 	
 	
 	
@@ -194,6 +194,35 @@ public class AdminController {
 	
 	
 	// 출금 목록 조회
+	@Operation(
+	    summary = "출금 목록 조회"
+	)
+	@ApiResponses(value = {
+		// 200 WITHDRAW_READ_LIST_SUCCESS 출금 목록 조회 성공
+		// 400 WITHDRAW_READ_LIST_FAIL 출금 목록 조회 실패
+		// 400 WITHDRAW_INVALID_INPUT 유효하지 않은 입력값
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "유효하지 않은 입력값",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		// 401 WITHDRAW_UNAUTHORIZED_ACCESS 로그인되지 않은 사용자
+		// 403 WITHDRAW_FORBIDDEN 권한 없는 사용자
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
+	// 출금 목록 조회
 	@GetMapping("/admin/withdraws")
 	public ResponseEntity<?> readWithdrawList(
 			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
@@ -228,6 +257,7 @@ public class AdminController {
 	
 	
 	
+	// 레시피 목록 조회
 	@Operation(
 	    summary = "레시피 목록 조회"
 	)
@@ -316,15 +346,35 @@ public class AdminController {
 	
 	
 	
-	// 200 KITCHEN_READ_LIST_SUCCESS 키친가이드 목록 조회 성공
-	// 400 KITCHEN_READ_LIST_FAIL 키친가이드 목록 조회 실패
-	// 400 KITCHEN_INVALID_INPUT 입력값이 유효하지 않음
-	// 400 USER_INVALID_INPUT 입력값이 유효하지 않음
-	// 401 KITCHEN_UNAUTHORIZED_ACCESS 로그인되지 않은 사용자
-	// 403 KITCHEN_FORBIDDEN 권한 없는 사용자
-	// 404 USER_NOT_FOUND 해당 사용자를 찾을 수 없음
-	// 500 INTERNAL_SERVER_ERROR 서버 내부 오류
-	
+	// 키친가이드 목록 조회
+	@Operation(
+	    summary = "키친가이드 목록 조회"
+	)
+	@ApiResponses(value = {
+		// 200 KITCHEN_READ_LIST_SUCCESS 키친가이드 목록 조회 성공
+		// 400 KITCHEN_READ_LIST_FAIL 키친가이드 목록 조회 실패
+		// 400 KITCHEN_INVALID_INPUT 입력값이 유효하지 않음
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		// 401 KITCHEN_UNAUTHORIZED_ACCESS 로그인되지 않은 사용자
+		// 403 KITCHEN_FORBIDDEN 권한 없는 사용자
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
 	// 키친가이드 목록 조회
 	@GetMapping("/admin/guides")
 	public ResponseEntity<?> listGuide(
@@ -359,6 +409,7 @@ public class AdminController {
 	
 	
 	
+	// 쩝쩝박사 목록 조회
 	@Operation(
 	    summary = "쩝쩝박사 목록 조회"
 	)
@@ -607,6 +658,7 @@ public class AdminController {
 	
 	
 	
+	// 댓글 목록 조회
 	@Operation(
 	    summary = "댓글 목록 조회"
 	)
@@ -718,15 +770,35 @@ public class AdminController {
 	
 	
 	
-	// 200 REVIEW_READ_LIST_SUCCESS 리뷰 목록 조회 성공
-	// 400 REVIEW_READ_LIST_FAIL 리뷰 목록 조회 실패
-	// 400 REVIEW_INVALID_INPUT 유효하지 않은 사용자
-	// 400 USER_INVALID_INPUT 유효하지 않은 사용자
-	// 401 REVIEW_UNAUTHORIZED_ACCESS 로그인되지 않은 사용자
-	// 403 RECIPE_FORBIDDEN 권한 없는 사용자
-	// 404 USER_NOT_FOUND 해당 사용자를 찾을 수 없음
-	// 500 INTERNAL_SERVER_ERROR 서버 내부 오류
-	
+	// 리뷰 목록 조회
+	@Operation(
+	    summary = "리뷰 목록 조회"
+	)
+	@ApiResponses(value = {
+		// 200 REVIEW_READ_LIST_SUCCESS 리뷰 목록 조회 성공
+		// 400 REVIEW_READ_LIST_FAIL 리뷰 목록 조회 실패
+		// 400 REVIEW_INVALID_INPUT 유효하지 않은 입력값
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "유효하지 않은 입력값",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		// 401 REVIEW_UNAUTHORIZED_ACCESS 로그인되지 않은 사용자
+		// 403 RECIPE_FORBIDDEN 권한 없는 사용자
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})	
 	// 리뷰 목록 조회
 	@GetMapping("/admin/reviews")
 	public ResponseEntity<?> readAdminReview(

@@ -94,7 +94,6 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 document.addEventListener('DOMContentLoaded', async function () {
 
-	// 서버에서 레시피 조회
 	try {
 		const params = new URLSearchParams({
 			sort: 'reviewscore-desc',
@@ -116,7 +115,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 		
 		/***** TODO: 에러코드 추가하기 *****/
 		
-	} catch (error) {
+	}
+	catch (error) {
 		console.error(error);
 	}
 

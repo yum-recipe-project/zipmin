@@ -57,6 +57,9 @@ public class MemoController {
 	private final UserService userService;
 	private final MemoService memoService;	
 	
+	
+	
+	
 	@Operation(summary = "장보기 메모 목록 조회")
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -77,6 +80,7 @@ public class MemoController {
                 content = @Content(
                         mediaType = "application/json",
                         schema = @Schema(implementation = MemoUnauthorizedAccessResponse.class))),
+        // FORBIDDEN
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
 				description = "해당 사용자를 찾을 수 없음",
@@ -347,6 +351,13 @@ public class MemoController {
 	                    schema = @Schema(implementation = MemoCreateSuccessResponse.class))
 	    ),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+	    		responseCode = "400",
+	    		description = "메모 작성 실패",
+	    		content = @Content(
+	    				mediaType = "application/json",
+	    				schema = @Schema(implementation = MemoCreateFailResponse.class))
+	    		),
+	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "400",
 	            description = "입력값이 유효하지 않음",
 	            content = @Content(
@@ -359,13 +370,6 @@ public class MemoController {
 	            content = @Content(
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = MemoUnauthorizedAccessResponse.class))
-	    ),
-	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-	            responseCode = "400",
-	            description = "메모 작성 실패",
-	            content = @Content(
-	                    mediaType = "application/json",
-	                    schema = @Schema(implementation = MemoCreateFailResponse.class))
 	    ),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "500",
@@ -381,9 +385,6 @@ public class MemoController {
 			@Parameter(description = "사용자의 일련번호")  @PathVariable int userId,
 			@Parameter(description = "레시피 재료 장보기 메모에 추가 요청 정보") @RequestBody RecipeStockMemoCreateRequestDto requestDTO) {
 		
-		System.err.println("레시피-> 메모 컨트롤러");
-		System.err.println(requestDTO);
-
 	    // 로그인 여부 확인
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {

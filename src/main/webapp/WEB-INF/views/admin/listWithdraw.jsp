@@ -29,7 +29,7 @@
 				<!-- 헤더 -->
 				<%@include file="./common/header.jsp" %>
 				
-					<div class="container-fluid">
+				<div class="container-fluid">
 					<!-- 네비게이션 바 -->
 					<div class="nav_wrap">
 						<a href="/admin/home.do"><span>메인</span></a>
@@ -47,7 +47,7 @@
 							</ul>
 						</div>
 					</div>
-		
+			
 					<!-- 목록 -->
 					<table class="table text-nowrap mb-0 align-middle fixed-table">
 						<thead class="text-dark fs-4">
@@ -114,7 +114,7 @@
 						</thead>
 						<tbody class="withdraw_list"></tbody>
 					</table>
-
+	
 					<!-- 페이지네이션 -->
 					<div class="pagination_wrap">
 						<div class="pagination">
@@ -131,5 +131,4 @@
 		<script src="../assets/js/app.min.js"></script>
 		<script src="../assets/libs/simplebar/dist/simplebar.js"></script>
 	</body>
-
 </html>

@@ -223,7 +223,7 @@ public class CommentController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
-		// API Swagger) 400 LIKE_COUNT_FAIL
+		// 400 LIKE_COUNT_FAIL
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
 				description = "로그인 되지 않은 사용자",

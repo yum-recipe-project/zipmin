@@ -61,15 +61,12 @@ public class FundController {
 	
 	
 	
-	
-	
-	
-	
 	@Operation(
 	    summary = "사용자 계좌 상세 조회"
 	)
 	@ApiResponses(value = {
 		// 200 USER_ACCOUNT_READ_SUCCESS 계좌 조회 성공
+		// 400 USER_ACCOUNT_READ_FAIL 계좌 조회 실패
 		// 400 USER_ACCOUNT_INVALID_INPUT 입력값이 유효하지 않음
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",

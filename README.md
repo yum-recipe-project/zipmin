@@ -46,35 +46,31 @@
 
 ### 1.2&nbsp;&nbsp;배포 정보
 
-#### 배포 URL
+**[🌐 웹사이트 바로가기](http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586)**
+* 일반사용자 : harim / 1234
+* 일반사용자 : dayeong / 1234
 
-* **[웹사이트 바로가기 →](http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586)**
-* **[관리자사이트 바로가기 →](http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586/admin/login.do)**
-
-#### 톄스트 계정
-
-| 구분 | ID | PW |
-|:--:|:--:|:--:|
-| 총관리자 | admin | 1234 |
-| 관리자 | admin1 | 1234 |
-| 일반사용자 | user1 | 1234 |
-| 일반사용자 | user2 | 1234 |
+**[🌐 관리자사이트 바로가기](http://ec2-15-164-104-202.ap-northeast-2.compute.amazonaws.com:8586/admin/login.do)**
+* 총관리자 : admin / 1234
+* 관리자 : admin1 / 1234
 
 <br/><br/>
 
 ### 1.3&nbsp;&nbsp;개발 정보
 
-* **프로젝트 기간**
-  * 1차 개발 기간 : 2025.02.07 – 04.20
-  * 2차 개발 기간 : 2025.07.01 - 10.25
-  * 운영 기간 : 2025.11.10 - 진행중 (현재 Docker와 Jenkins 기반 배포 환경 구축 준비중)
-* **개발 인원**
-  * 총 2명 (풀스택)
-* **주요 기술**
-  * Backend : Java, Spring Boot, Spring Data JPA, Spring Security
-  * Frontend : HTML, CSS, Javascript
-  * Database : Oracle
-  * DevOps : Linux, Tomcat, Docker, Jenkins, AWS EC2
+**프로젝트 기간**
+* 1차 개발 기간 : 2025.02.07 – 04.20
+* 2차 개발 기간 : 2025.07.01 - 10.25
+* 운영 기간 : 2025.11.10 - 진행중 (현재 Docker와 Jenkins 기반 배포 환경 구축 준비중)
+
+**개발 인원**
+* 총 2명 (풀스택)
+
+**주요 기술**
+* Backend : Java, Spring Boot, Spring Data JPA, Spring Security
+* Frontend : HTML, CSS, Javascript
+* Database : Oracle
+* DevOps : Linux, Tomcat, Docker, Jenkins, AWS EC2
 
 <br/><br/><br/>
 
@@ -448,7 +444,7 @@ Zipmin
 
 <br/><br/>
 
-### 5.1 이슈
+### 5.2 이슈
 
 * [@RequestBody DTO NULL 매핑 문제](https://github.com/yum-recipe-project/zipmin/wiki/%5BIssue%5D-@RequestBody-DTO-%EA%B0%92%EC%9D%B4-null%EB%A1%9C-%EB%93%A4%EC%96%B4%EC%98%A4%EB%8A%94-%EB%AC%B8%EC%A0%9C)
 * [(MapStruct) Invalid bound 오류](https://github.com/yum-recipe-project/zipmin/wiki/%5Berror%5D-MapStruct-Invalid-bound-statement-%EC%97%90%EB%9F%AC)
@@ -464,7 +460,7 @@ Zipmin
 
 ## 6. 기타
 
-### 5.2 회고
+### 6.1 회고
 
 #### Keep (간직하고 싶은 잘했던 점 혹은 좋았던 점)
 
@@ -517,7 +513,7 @@ Zipmin
 
 <br/><br/>
 
-### 5.3 목표 및 진행 방향
+### 6.2 목표 및 진행 방향
 
 현재 집밥의민족은 모든 핵심 기능 구현을 완료했으며 안정적인 서비스 제공을 위한 디버깅과 전문적인 배포 환경 구축을 진행 중에 있습니다. 주요 목표와 이를 위한 진행 방향은 다음과 같습니다.
 

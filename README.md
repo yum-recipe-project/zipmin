@@ -258,8 +258,6 @@
 
 <img src="src/main/resources/static/images/etc/architecture.png">
 
-* 현재 Docker와 Jenkins 기반 배포 환경 구축 준비중
-
 <br/>
 
 ### 3.3 프로젝트 구조
@@ -326,7 +324,7 @@ Zipmin
 
 <img src="https://github.com/user-attachments/assets/fd49adf3-d935-4cde-835e-fb4f9b0e38ef">
 
-<br/>
+<br/><br/>
 
 ### 3.5 프로젝트 문서
 
@@ -438,20 +436,33 @@ Zipmin
 
 <br/><br/><br/>
 
-## 5. 기타
+## 5. 개발 노트
 
-### 5.1 이슈 및 문제 해결
+### 5.1 기능 구현
 
-* [@RequestBody DTO 값이 null로 들어오는 문제](https://github.com/yum-recipe-project/zipmin/wiki/%5BIssue%5D-@RequestBody-DTO-%EA%B0%92%EC%9D%B4-null%EB%A1%9C-%EB%93%A4%EC%96%B4%EC%98%A4%EB%8A%94-%EB%AC%B8%EC%A0%9C)
-* [JPA에서 댓글을 좋아요 순으로 정렬하기 (@Fomula)](https://github.com/yum-recipe-project/zipmin/wiki/%5BIssue%5D-JPA%EC%97%90%EC%84%9C-%EB%8C%93%EA%B8%80%EC%9D%84-%EC%A2%8B%EC%95%84%EC%9A%94-%EC%88%9C%EC%9C%BC%EB%A1%9C-%EC%A0%95%EB%A0%AC%ED%95%98%EA%B8%B0-(@Fomula))
-* [MapStruct Invalid bound statement](https://github.com/yum-recipe-project/zipmin/wiki/%5BIssue%5D-MapStruct-Invalid-bound-statement)
-* [Spring Security localhost에서 리디렉션한 횟수가 너무 많습니다](https://github.com/yum-recipe-project/zipmin/wiki/%5BIssue%5D-Spring-Security-localhost%EC%97%90%EC%84%9C-%EB%A6%AC%EB%94%94%EB%A0%89%EC%85%98%ED%95%9C-%ED%9A%9F%EC%88%98%EA%B0%80-%EB%84%88%EB%AC%B4-%EB%A7%8E%EC%8A%B5%EB%8B%88%EB%8B%A4)
-* [Spring Security 적용 후 정적 리소스가 다운로드되는 문제](https://github.com/yum-recipe-project/zipmin/wiki/%5BIssue%5D-Spring-Security-%EC%A0%81%EC%9A%A9-%ED%9B%84-%EC%A0%95%EC%A0%81-%EB%A6%AC%EC%86%8C%EC%8A%A4%EA%B0%80-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%EB%90%98%EB%8A%94-%EB%AC%B8%EC%A0%9C)
-* [[deploy] Could not resolve placeholder 'JWT_SECRET' - 환경 변수 누락](https://github.com/yum-recipe-project/zipmin/wiki/%5Bdeploy%5D%5Bissue%5D-Could-not-resolve-placeholder-'JWT_SECRET'-%E2%80%90-%ED%99%98%EA%B2%BD-%EB%B3%80%EC%88%98-%EB%88%84%EB%9D%BD)
-* [[deploy] net::ERR_CONNECTION_REFUSED](https://github.com/yum-recipe-project/zipmin/wiki/%5Bdeploy%5D%5Bissue%5D-net::ERR_CONNECTION_REFUSED)
-* [[deploy] ORA-00933: SQL command not properly ended](https://github.com/yum-recipe-project/zipmin/wiki/%5Bdeploy%5D%5Bissue%5D-ORA%E2%80%9000933:-SQL-command-not-properly-ended)
+* [Spring Security와 JWT 기반 인증 구현](https://github.com/yum-recipe-project/zipmin/wiki/%5Bfeature%5D-Spring-Security%EC%99%80-OAuth2%EC%99%80-JPA%EB%A1%9C-%EC%9D%BC%EB%B0%98-%EB%A1%9C%EA%B7%B8%EC%9D%B8%EA%B3%BC-%EC%86%8C%EC%85%9C-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0-(1)-%ED%99%98%EA%B2%BD%EA%B5%AC%EC%84%B1)
+* [SMTP로 비밀번호 재설정 링크 이메일 전송 구현](https://github.com/yum-recipe-project/zipmin/wiki/%5Bfeature%5D-SMTP%EB%A1%9C-%EB%B9%84%EB%B0%80%EB%B2%88%ED%98%B8-%EC%9E%AC%EC%84%A4%EC%A0%95-%EB%A7%81%ED%81%AC-%EC%9D%B4%EB%A9%94%EC%9D%BC-%EC%A0%84%EC%86%A1-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0)
+* [PortOne으로 결제 기능 구현](https://github.com/yum-recipe-project/zipmin/wiki/%5Bfeature%5D-PortOne%EC%9C%BC%EB%A1%9C-%EA%B2%B0%EC%A0%9C-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0-(1)-%ED%99%98%EA%B2%BD%EA%B5%AC%EC%84%B1)
+* [KakaoMap API로 주변 마트 지도 구현](https://github.com/yum-recipe-project/zipmin/wiki/%5Bfeature%5D-KakaoMap-API%EB%A1%9C-%ED%98%84%EC%9E%AC-%EC%9C%84%EC%B9%98-%EA%B8%B0%EB%B0%98-%EC%A3%BC%EB%B3%80-%EB%A7%88%ED%8A%B8-%EC%A7%80%EB%8F%84-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0)
+* [JPA로 좋아요 순으로 댓글 정렬 구현](https://github.com/yum-recipe-project/zipmin/wiki/%5Bfeature%5D-JPA%EC%97%90%EC%84%9C-%EB%8C%93%EA%B8%80%EC%9D%84-%EC%A2%8B%EC%95%84%EC%9A%94-%EC%88%9C%EC%9C%BC%EB%A1%9C-%EC%A0%95%EB%A0%AC%ED%95%98%EA%B8%B0)
 
 <br/><br/>
+
+### 5.1 이슈
+
+* [@RequestBody DTO NULL 매핑 문제](https://github.com/yum-recipe-project/zipmin/wiki/%5BIssue%5D-@RequestBody-DTO-%EA%B0%92%EC%9D%B4-null%EB%A1%9C-%EB%93%A4%EC%96%B4%EC%98%A4%EB%8A%94-%EB%AC%B8%EC%A0%9C)
+* [(MapStruct) Invalid bound 오류](https://github.com/yum-recipe-project/zipmin/wiki/%5Berror%5D-MapStruct-Invalid-bound-statement-%EC%97%90%EB%9F%AC)
+* [(MapStruct) MapperImpl 주입 실패 문제](https://github.com/yum-recipe-project/zipmin/wiki/%5Berror%5D-Mapstruct-UnsatisfiedDependencyException-caused-by-MapperImpl-%EC%97%90%EB%9F%AC)
+* [(Security) 정적 리소스 접근 문제](https://github.com/yum-recipe-project/zipmin/wiki/%5Berror%5D-Spring-Security-%EC%A0%81%EC%9A%A9-%ED%9B%84-%EC%A0%95%EC%A0%81-%EB%A6%AC%EC%86%8C%EC%8A%A4%EA%B0%80-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%EB%90%98%EB%8A%94-%EB%AC%B8%EC%A0%9C)
+* [(Security) 무한 리디렉션 문제](https://github.com/yum-recipe-project/zipmin/wiki/%5Berror%5D-Spring-Security-localhost%EC%97%90%EC%84%9C-%EB%AC%B4%ED%95%9C-%EB%A6%AC%EB%94%94%EB%A0%89%EC%85%98-%EB%B0%9C%EC%83%9D-%EB%AC%B8%EC%A0%9C)
+* [(배포) ORA-00933 오류](https://github.com/yum-recipe-project/zipmin/wiki/%5Berror%5D-ORA%E2%80%9000933-%EC%98%A4%EB%A5%98-%E2%80%90-Oracle-%EB%B2%84%EC%A0%84)
+* [(배포) ERR_CONNECTION_REFUSED 오류](https://github.com/yum-recipe-project/zipmin/wiki/%5Berror%5D-ERR_CONNECTION_REFUSED-%EC%98%A4%EB%A5%98-%E2%80%90-CORS-%EC%84%A4%EC%A0%95)
+* [(배포) Could not resolve placeholder 오류](https://github.com/yum-recipe-project/zipmin/wiki/%5Berror%5D-Could-not-resolve-placeholder-%EC%98%A4%EB%A5%98-%E2%80%90-%ED%99%98%EA%B2%BD-%EB%B3%80%EC%88%98-%EB%88%84%EB%9D%BD)
+* [(배포) 404 Not Found 오류](https://github.com/yum-recipe-project/zipmin/wiki/%5Berror%5D-Docker-%EB%B0%B0%ED%8F%AC-%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C-404-Not-Found-%EC%98%A4%EB%A5%98-%E2%80%90-Java-%EB%B2%84%EC%A0%84-%EB%B6%88%EC%9D%BC%EC%B9%98)
+
+<br/><br/><br/>
+
+## 6. 기타
 
 ### 5.2 회고
 

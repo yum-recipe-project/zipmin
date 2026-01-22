@@ -87,10 +87,6 @@
 * 시간대에 따라 룰렛으로 랜덤 메뉴 추천
 * 상단 배너에서 추천 키친가이드 게시글 자동 순환
 * 최신·인기 레시피 등 카테고리별 랭킹 조회
-    <details>
-   <summary>&nbsp;<b>홈 화면</b></summary>
-         <img src="https://github.com/user-attachments/assets/e20a204e-4d23-42db-a990-37404d7717b0" />
-  </details>
 
 #### 인증 및 회원 관리
 
@@ -99,14 +95,6 @@
 * 회원가입 및 로그인과 회원정보 수정을 포함한 계정 관리
 * SMTP로 이메일 인증 및 링크 전송을 통한 비밀번호 재설정
 * AJAX 비동기 방식으로 사용자 중복 검사와 닉네임 랜덤 추천
-  <details>
-   <summary>&nbsp;<b>인증 및 회원 관리 화면</b></summary>
-    <p align="center"> 
-      <img src="https://github.com/user-attachments/assets/0b18efa3-2932-4e72-bf68-32398f18c06f" align="top" width="32%">  
-      <img src="https://github.com/user-attachments/assets/899bd419-10a0-4cd9-a77f-a4b014fa6e61" align="top" width="32%">
-      <img src="https://github.com/user-attachments/assets/994a689f-bdf2-46b0-bed6-a14ceb91d2b7" align="top" width="32%">  
-    </p>
-  </details>
 
 #### 레시피
 
@@ -115,41 +103,18 @@
 * 제목·소개·난이도·조리시간·맵기 등 레시피 상세 정보 표시
 * 인분 수에 따른 재료량 자동 조정 및 장보기 메모 담기 기능 지원
 * 리뷰·댓글·스크랩·신고·인쇄·후원·팔로우 등 다양한 사용자 상호작용
-    <details>
-   <summary>&nbsp;<b>레시피 화면</b></summary>
-    <p align="center"> 
-      <img src="https://github.com/user-attachments/assets/4c1a4f8c-67ab-49ac-95f7-398d25411c29" align="top" width="32%">  
-      <img src="https://github.com/user-attachments/assets/b7eaf7a3-1812-4c75-8f73-04e8f788c0fc" align="top" width="32%">  
-      <img src="https://github.com/user-attachments/assets/d10ff85b-0099-4f74-aed2-8fac8e044ee9" align="top" width="32%">  
-    </p>
-  </details>
 
 #### 키친가이드
 
 * 손질법과 보관법 등 주방 정보를 제공하는 게시판
 * 검색창·카테고리·정렬을 포함한 키친가이드 목록 검색과 스크랩 기능 지원
 * 관리자의 게시글 작성 및 사용자의 댓글 기능 지원
-    <details>
-   <summary>&nbsp;<b>키친가이드 화면</b></summary>
-    <p align="center"> 
-      <img src="https://github.com/user-attachments/assets/e277907f-1f6a-4eb7-8434-0568f3157910" align="top" width="47%">  
-      <img src="https://github.com/user-attachments/assets/6fabe71c-8c46-4d32-9bc9-6e043760295a" align="top" width="47%">  
-    </p>
-  </details>
 
 #### 쩝쩝박사
 
 * 음식 관련 투표·매거진·이벤트 등 참여형 콘텐츠를 제공하는 게시판
 * 검색창·카테고리·정렬을 포함한 쩝쩝박사 목록 검색
 * 관리자의 게시글 작성 및 사용자의 댓글 기능 지원
-    <details>
-   <summary>&nbsp;<b>쩝쩝박사 화면</b></summary>
-    <p align="center"> 
-      <img src="https://github.com/user-attachments/assets/b0823ab1-9f43-4813-a3cc-06c85e18e6d8" align="top" width="32%">  
-      <img src="https://github.com/user-attachments/assets/7a7c9493-e638-4337-99f4-0d2df44e6ddd" align="top" width="32%">  
-      <img src="https://github.com/user-attachments/assets/4fdfb8e5-3483-40ba-8d0c-d8b11c39d9a8" align="top" width="32%">  
-    </p>
-  </details>
 
 #### 쿠킹클래스
 
@@ -159,33 +124,12 @@
 * 검색창·카테고리·정렬·상태 필터를 포함한 클래스 목록 조회
 * 준비물·일정·장소·커리큘럼·강사 정보 등 클래스 상세 정보 표시
 * 마이페이지에서 개설·신청 클래스 관리
-    <details>
-   <summary>&nbsp;<b>쿠킹클래스 화면</b></summary>
-    <p align="center"> 
-      <img src="https://github.com/user-attachments/assets/26dc496b-afa3-4237-94ac-cb487d4730e7" align="top" width="32%">  
-      <img src="https://github.com/user-attachments/assets/d8e440cf-2688-40c0-9a75-ca09183f6e2e" align="top" width="32%">  
-     <img src="https://github.com/user-attachments/assets/5f1b489c-0845-4686-803b-e524fbadc58d" align="top" width="32%">  
-    </p>
-    <p align="center"> 
-      <img src="https://github.com/user-attachments/assets/f78728bb-e33a-465a-a0d2-4237acc5ee9e" align="top" width="32%">
-      <img src="https://github.com/user-attachments/assets/ec5954c1-58f0-4904-ab45-d5747e22a30e" align="top" width="32%">  
-      <img src="https://github.com/user-attachments/assets/53a500a9-511b-4fe6-a094-4e318bb81e8b" align="top" width="32%">    
-    </p>
-  </details>
 
 #### 후원
 
 * PortOne 결제 연동으로 포인트 충전 후 레시피 후원
 * 출금 계좌를 등록하고 관리
 * 출금 신청 후 관리자 출금 처리 및 내역 조회
-    <details>
-   <summary>&nbsp;<b>후원 화면</b></summary>
-    <p align="center"> 
-      <img src="https://github.com/user-attachments/assets/da7dd5d8-2f06-4982-ba8e-5da59aa3f3bb" align="top" width="32%">  
-      <img src="https://github.com/user-attachments/assets/a52a0cfe-5bbf-4dd9-83ba-2cd98ee5d756" align="top" width="32%">  
-      <img src="https://github.com/user-attachments/assets/aa8864e9-fa52-40fc-b43b-6fd51414ba91" align="top" width="32%">  
-    </p>
-  </details>
 
 #### 나의 냉장고
 
@@ -193,14 +137,6 @@
 * 냉장고 속 재료 기반 요리 추천 및 일치율 표시
 * 장보기 메모 작성 후 장보기 완료 시 재료를 냉장고에 자동 등록
 * KakaoMap을 활용한 주변 마트 위치 안내
-    <details>
-   <summary>&nbsp;<b>나의 냉장고 화면</b></summary>
-    <p align="center"> 
-      <img src="https://github.com/user-attachments/assets/af956bb1-0c8d-4ea7-8b66-8d618345a413" align="top" width="32%">  
-      <img src="https://github.com/user-attachments/assets/b77d45d6-f5da-4e61-b831-195e85c4fe0b" align="top" width="32%">  
-     <img src="https://github.com/user-attachments/assets/bbda2c42-251c-4522-85b3-bce51b676f78" align="top" width="32%">  
-    </p>
-  </details>
 
 #### 관리자
 
@@ -208,20 +144,96 @@
 * 출금 신청 승인 및 정산 내역 관리
 * 레시피·클래스·키친가이드·쩝쩝박사 등 게시판 관리
 * 쿠킹클래스 승인 및 관리
-    <details>
-   <summary>&nbsp;<b>관리자 화면</b></summary>
-    <p align="center"> 
-     <img src="https://github.com/user-attachments/assets/c36f04c6-c457-4c48-b58a-77ba55f7b075" align="top" width="32%">  
-     <img src="https://github.com/user-attachments/assets/7d2ab473-6af3-45b4-b51c-634875575192" align="top" width="32%">  
-     <img src="https://github.com/user-attachments/assets/0244da5d-fa77-4cd5-8ec2-16953c32abbf" align="top" width="32%">  
-    </p>
-  </details>
 
 <br/><br/>
 
 ### 2.2 화면 설계
-<img src="https://github.com/user-attachments/assets/fd49adf3-d935-4cde-835e-fb4f9b0e38ef" />
 
+<details>
+  <summary>&nbsp;공통 컴포넌트</summary>
+  <p align="center">
+    <img src="https://github.com/user-attachments/assets/9eb04038-8d9b-46db-ade8-ede8815a798f" align="top" width="32%"/>
+    <img src="https://github.com/user-attachments/assets/c3606f07-2731-4514-8442-5a3917929f59" align="top" width="32%"/>
+    <img src="https://github.com/user-attachments/assets/836aeb14-b773-40b2-841f-3a4950ea9906" align="top" width="32%"/>
+  </p>
+  <p align="center">
+    <img src="https://github.com/user-attachments/assets/885b6865-515b-4639-9bc8-ad70fb1650e9" align="top" width="32%"/>
+    <img src="https://github.com/user-attachments/assets/d0909f79-97ee-4a6e-8731-12ba8ee8c8e2" align="top" width="32%"/>
+    <img src="https://github.com/user-attachments/assets/bca54cc6-bbe6-4d3f-935e-00b755fca275" align="top" width="32%"/>
+  </p>
+  <p align="center">
+    <img src="https://github.com/user-attachments/assets/de5057a6-08b5-4c6a-a822-31fe1945af49" align="top" width="32%"/>
+    <img src="https://github.com/user-attachments/assets/8eb3d226-8ef6-43ac-a02b-bf14ecb16dd5" align="top" width="32%"/>
+  </p>
+</details>
+  <details>
+<summary>&nbsp;회원 화면</summary>
+    <p align="center"> 
+      <img src="https://github.com/user-attachments/assets/0b18efa3-2932-4e72-bf68-32398f18c06f" align="top" width="32%">  
+      <img src="https://github.com/user-attachments/assets/899bd419-10a0-4cd9-a77f-a4b014fa6e61" align="top" width="32%">
+      <img src="https://github.com/user-attachments/assets/994a689f-bdf2-46b0-bed6-a14ceb91d2b7" align="top" width="32%">  
+    </p>
+</details>
+<details>
+<summary>&nbsp;레시피 화면</summary>
+  <p align="center"> 
+    <img src="https://github.com/user-attachments/assets/4c1a4f8c-67ab-49ac-95f7-398d25411c29" align="top" width="32%">  
+    <img src="https://github.com/user-attachments/assets/b7eaf7a3-1812-4c75-8f73-04e8f788c0fc" align="top" width="32%">  
+    <img src="https://github.com/user-attachments/assets/d10ff85b-0099-4f74-aed2-8fac8e044ee9" align="top" width="32%">  
+  </p>
+</details>
+<details>
+  <summary>&nbsp;키친가이드 화면</summary>
+  <p align="center"> 
+    <img src="https://github.com/user-attachments/assets/e277907f-1f6a-4eb7-8434-0568f3157910" align="top" width="47%">  
+    <img src="https://github.com/user-attachments/assets/6fabe71c-8c46-4d32-9bc9-6e043760295a" align="top" width="47%">  
+  </p>
+</details>
+<details>
+  <summary>&nbsp;쩝쩝박사 화면</summary>
+  <p align="center"> 
+    <img src="https://github.com/user-attachments/assets/b0823ab1-9f43-4813-a3cc-06c85e18e6d8" align="top" width="32%">  
+    <img src="https://github.com/user-attachments/assets/7a7c9493-e638-4337-99f4-0d2df44e6ddd" align="top" width="32%">  
+    <img src="https://github.com/user-attachments/assets/4fdfb8e5-3483-40ba-8d0c-d8b11c39d9a8" align="top" width="32%">  
+  </p>
+</details>
+<details>
+  <summary>&nbsp;쿠킹클래스 화면</summary>
+  <p align="center"> 
+    <img src="https://github.com/user-attachments/assets/26dc496b-afa3-4237-94ac-cb487d4730e7" align="top" width="32%">  
+    <img src="https://github.com/user-attachments/assets/d8e440cf-2688-40c0-9a75-ca09183f6e2e" align="top" width="32%">  
+    <img src="https://github.com/user-attachments/assets/5f1b489c-0845-4686-803b-e524fbadc58d" align="top" width="32%">  
+  </p>
+  <p align="center"> 
+    <img src="https://github.com/user-attachments/assets/f78728bb-e33a-465a-a0d2-4237acc5ee9e" align="top" width="32%">
+    <img src="https://github.com/user-attachments/assets/ec5954c1-58f0-4904-ab45-d5747e22a30e" align="top" width="32%">  
+    <img src="https://github.com/user-attachments/assets/53a500a9-511b-4fe6-a094-4e318bb81e8b" align="top" width="32%">    
+  </p>
+</details>
+<details>
+  <summary>&nbsp;후원 화면</summary>
+  <p align="center"> 
+    <img src="https://github.com/user-attachments/assets/da7dd5d8-2f06-4982-ba8e-5da59aa3f3bb" align="top" width="32%">  
+    <img src="https://github.com/user-attachments/assets/a52a0cfe-5bbf-4dd9-83ba-2cd98ee5d756" align="top" width="32%">  
+    <img src="https://github.com/user-attachments/assets/aa8864e9-fa52-40fc-b43b-6fd51414ba91" align="top" width="32%">  
+  </p>
+</details>
+<details>
+  <summary>&nbsp;나의 냉장고 화면</summary>
+  <p align="center"> 
+    <img src="https://github.com/user-attachments/assets/af956bb1-0c8d-4ea7-8b66-8d618345a413" align="top" width="32%">  
+    <img src="https://github.com/user-attachments/assets/b77d45d6-f5da-4e61-b831-195e85c4fe0b" align="top" width="32%">  
+    <img src="https://github.com/user-attachments/assets/bbda2c42-251c-4522-85b3-bce51b676f78" align="top" width="32%">  
+  </p>
+</details>
+<details>
+  <summary>&nbsp;관리자 화면</summary>
+  <p align="center"> 
+    <img src="https://github.com/user-attachments/assets/c36f04c6-c457-4c48-b58a-77ba55f7b075" align="top" width="32%">  
+    <img src="https://github.com/user-attachments/assets/7d2ab473-6af3-45b4-b51c-634875575192" align="top" width="32%">  
+    <img src="https://github.com/user-attachments/assets/0244da5d-fa77-4cd5-8ec2-16953c32abbf" align="top" width="32%">  
+  </p>
+</details>
 
 <br/><br/><br/>
 
@@ -310,7 +322,13 @@ Zipmin
 
 <br/>
 
-### 3.4 프로젝트 문서
+### 3.4 유스케이스
+
+<img src="https://github.com/user-attachments/assets/fd49adf3-d935-4cde-835e-fb4f9b0e38ef">
+
+<br/>
+
+### 3.5 프로젝트 문서
 
 #### 기획 문서
 

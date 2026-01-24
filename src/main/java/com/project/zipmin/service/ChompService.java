@@ -38,16 +38,16 @@ import com.project.zipmin.dto.MegazineUpdateRequestDto;
 import com.project.zipmin.dto.MegazineUpdateResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.VoteChoiceCreateRequestDto;
-import com.project.zipmin.dto.VoteChoiceReadResponseDto;
 import com.project.zipmin.dto.VoteChoiceUpdateRequestDto;
 import com.project.zipmin.dto.VoteCreateRequestDto;
 import com.project.zipmin.dto.VoteCreateResponseDto;
-import com.project.zipmin.dto.VoteReadResponseDto;
 import com.project.zipmin.dto.VoteRecordCreateRequestDto;
 import com.project.zipmin.dto.VoteRecordCreateResponseDto;
 import com.project.zipmin.dto.VoteUpdateRequestDto;
 import com.project.zipmin.dto.VoteUpdateResponseDto;
 import com.project.zipmin.dto.chomp.ChompReadResponseDto;
+import com.project.zipmin.dto.chomp.VoteChoiceReadResponseDto;
+import com.project.zipmin.dto.chomp.VoteReadResponseDto;
 import com.project.zipmin.entity.Chomp;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.entity.VoteChoice;
@@ -142,38 +142,37 @@ public class ChompService {
 	
 	
 	// 투표 상세 조회
-	public VoteReadResponseDto readVoteById(Integer id) {
+	public VoteReadResponseDto readVoteById(int id) {
 		
 		// 입력값 검증
-		if (id == null) {
+		if (id == 0) {
 			throw new ApiException(VoteErrorCode.VOTE_INVALID_INPUT);
 		}
 		
 		// 투표 조회
-		Chomp vote = chompRepository.findById(id)
-				.orElseThrow(() -> new ApiException(VoteErrorCode.VOTE_NOT_FOUND));
-		
-		VoteReadResponseDto voteDto = chompMapper.toVoteReadResponseDto(vote);
-		voteDto.setImage(publicPath + "/" + voteDto.getImage());
-		voteDto.setRecordcount(recordRepository.countByChompId(id));
+		Chomp vote;
+		VoteReadResponseDto voteDto;
+		try {
+			vote = chompRepository.findById(id);
+			voteDto = chompMapper.toVoteReadResponseDto(vote);
+			voteDto.setImage(publicPath + "/" + voteDto.getImage());
+			voteDto.setRecordcount(recordRepository.countByChompId(id));
+		}
+		catch (Exception e) {
+			throw new ApiException(VoteErrorCode.VOTE_NOT_FOUND);
+		}
 		
 		// 투표 옵션 목록 조회
+		List<VoteChoice> choiceList;
 		try {
-			List<VoteChoice> choiceList = choiceRepository.findAllByChompId(id);
-			
-			// 투표 옵션 목록 응답 구성
+			choiceList = choiceRepository.findAllByChompId(id);
 			List<VoteChoiceReadResponseDto> choiceDtoList = new ArrayList<>();
 			for (VoteChoice choice : choiceList) {
 				VoteChoiceReadResponseDto choiceDto = choiceMapper.toReadResponseDto(choice);
-				
-				// 득표수
 				int recordcount = recordRepository.countByChompIdAndChoiceId(id, choiceDto.getId());
 				choiceDto.setRecordcount(recordcount);
-				
-				// 비율
-				double recordrate = (voteDto.getRecordcount() == 0) ? 0.0 : Math.round(((double) recordcount / voteDto.getRecordcount()) * 100) / 1.0;
+				double recordrate = (vote.getRecordcount() == 0) ? 0.0 : Math.round(((double) recordcount / voteDto.getRecordcount()) * 100) / 1.0;
 				choiceDto.setRecordrate(recordrate);
-				
 				choiceDtoList.add(choiceDto);
 			}
 			voteDto.setChoiceList(choiceDtoList);
@@ -186,18 +185,11 @@ public class ChompService {
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			if (authentication != null && authentication.isAuthenticated() && !authentication.getPrincipal().equals("anonymousUser")) {
-				String username = authentication.getName();
-				UserReadResponseDto userDto = userService.readUserByUsername(username);
-				
-				// 투표 기록
-				Optional<VoteRecord> record = recordRepository.findByUserIdAndChompId(userDto.getId(), voteDto.getId());
-				
-				if (record.isPresent()) {
+				UserReadResponseDto userDto = userService.readUserByUsername(authentication.getName());
+				VoteRecord record = recordRepository.findByUserIdAndChompId(userDto.getId(), voteDto.getId());
+				if (record != null) {
 					voteDto.setVoted(true);
-					voteDto.setChoiceId(record.get().getChoice().getId());
-				}
-				else {
-					voteDto.setVoted(false);
+					voteDto.setChoiceId(record.getChoice().getId());
 				}
 			}
 		}
@@ -212,7 +204,7 @@ public class ChompService {
 	
 	
 	
-	// 투표를 작성하는 함수
+	// 투표 작성
 	public VoteCreateResponseDto createVote(VoteCreateRequestDto voteRequestDto, MultipartFile file) {
 		
 		// 권한 확인
@@ -226,8 +218,10 @@ public class ChompService {
 		
 		// 입력값 검증
 	    if (voteRequestDto == null || voteRequestDto.getTitle() == null
-	    		|| voteRequestDto.getOpendate() == null || voteRequestDto.getClosedate() == null
-	    		|| voteRequestDto.getCategory() == null || voteRequestDto.getChoiceList() == null) {
+	    		|| voteRequestDto.getOpendate() == null
+	    		|| voteRequestDto.getClosedate() == null
+	    		|| voteRequestDto.getCategory() == null
+	    		|| voteRequestDto.getChoiceList() == null) {
 	    	throw new ApiException(VoteErrorCode.VOTE_INVALID_INPUT);
 	    }
 	    if (voteRequestDto.getOpendate().after(voteRequestDto.getClosedate())) {
@@ -438,8 +432,13 @@ public class ChompService {
 	    }
 	    
 	    // 투표 기간 검사
-	    Chomp vote = chompRepository.findById(recordDto.getChompId())
-	    	    .orElseThrow(() -> new ApiException(VoteErrorCode.VOTE_NOT_FOUND));
+	    Chomp vote;
+	    try {
+	    	vote = chompRepository.findById(recordDto.getChompId());
+	    }
+	    catch (Exception e) {
+			throw new ApiException(VoteErrorCode.VOTE_NOT_FOUND);
+		}
 	    Date now = new Date();
 	    if (now.before(vote.getOpendate()) || now.after(vote.getClosedate())) {
 	        throw new ApiException(VoteErrorCode.VOTE_NOT_OPENED);
@@ -471,8 +470,14 @@ public class ChompService {
 	    // 투표 기록 존재 여부 판단
 	    String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		UserReadResponseDto user = userService.readUserByUsername(username);
-		VoteRecord record = recordRepository.findByUserIdAndChompId(user.getId(), id)
-				.orElseThrow(() -> new ApiException(VoteErrorCode.VOTE_RECORD_NOT_FOUND));
+		
+		VoteRecord record;
+		try {
+			record = recordRepository.findByUserIdAndChompId(user.getId(), id);
+		}
+		catch (Exception e) {
+			throw new ApiException(VoteErrorCode.VOTE_RECORD_NOT_FOUND);
+		}
 		
 	    // 투표 기간 검사
 	    Chomp vote = chompRepository.findById(id)
@@ -759,8 +764,13 @@ public class ChompService {
 	    }
 		
 		// 이벤트 존재 여부 확인
-		Chomp event = chompRepository.findById(eventRequestDto.getId())
-				.orElseThrow(() -> new ApiException(EventErrorCode.EVENT_NOT_FOUND));
+		Chomp event;
+	    try {
+	    	event = chompRepository.findById(eventRequestDto.getId());
+	    }
+	    catch (Exception e) {
+			throw new ApiException(EventErrorCode.EVENT_NOT_FOUND);
+		}
 		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();

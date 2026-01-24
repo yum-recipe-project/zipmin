@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import com.project.zipmin.dto.chomp.ChompReadResponseDto;
+import com.project.zipmin.dto.chomp.VoteReadResponseDto;
 import com.project.zipmin.dto.EventCreateRequestDto;
 import com.project.zipmin.dto.EventCreateResponseDto;
 import com.project.zipmin.dto.EventReadResponseDto;
@@ -15,7 +16,6 @@ import com.project.zipmin.dto.MegazineReadResponseDto;
 import com.project.zipmin.dto.MegazineUpdateResponseDto;
 import com.project.zipmin.dto.VoteCreateRequestDto;
 import com.project.zipmin.dto.VoteCreateResponseDto;
-import com.project.zipmin.dto.VoteReadResponseDto;
 import com.project.zipmin.dto.VoteUpdateRequestDto;
 import com.project.zipmin.dto.VoteUpdateResponseDto;
 import com.project.zipmin.entity.Chomp;
@@ -29,7 +29,11 @@ public interface ChompMapper {
 	@Mapping(target = "userId", source = "user.id")
 	ChompReadResponseDto toReadResponseDto(Chomp chomp);
 	
+	@Mapping(target = "user.id", source = "userId")
+	Chomp toEntity(VoteReadResponseDto voteDto);
 	
+	@Mapping(target = "userId", source = "user.id")
+	VoteReadResponseDto toVoteReadResponseDto(Chomp chomp);
 	
 	
 	
@@ -46,7 +50,6 @@ public interface ChompMapper {
 	@Mapping(target = "userId", source = "user.id")
 	EventReadResponseDto toEventReadResponseDto(Chomp chomp);
 	
-	VoteReadResponseDto toVoteReadResponseDto(Chomp chomp);
 	
 	// Create
 //	@Mapping(target = "id", ignore = true)

@@ -10,6 +10,8 @@ import com.project.zipmin.entity.Chomp;
 @Repository
 public interface ChompRepository extends JpaRepository<Chomp, Integer> {
 	
+	Chomp findById(int id);
+	
 	Page<Chomp> findAll(Pageable pageable);
 	Page<Chomp> findAllByTitleContainingIgnoreCase(String keyword, Pageable pageable);
 	

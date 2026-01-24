@@ -1,7 +1,6 @@
 package com.project.zipmin.repository;
 
 import com.project.zipmin.entity.Class;
-import com.project.zipmin.entity.Guide;
 
 import java.util.Calendar;
 import java.util.Date;

@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -47,12 +46,12 @@ import com.project.zipmin.dto.MegazineUpdateRequestDto;
 import com.project.zipmin.dto.MegazineUpdateResponseDto;
 import com.project.zipmin.dto.VoteCreateRequestDto;
 import com.project.zipmin.dto.VoteCreateResponseDto;
-import com.project.zipmin.dto.VoteReadResponseDto;
 import com.project.zipmin.dto.VoteRecordCreateRequestDto;
 import com.project.zipmin.dto.VoteRecordCreateResponseDto;
 import com.project.zipmin.dto.VoteUpdateRequestDto;
 import com.project.zipmin.dto.VoteUpdateResponseDto;
 import com.project.zipmin.dto.chomp.ChompReadResponseDto;
+import com.project.zipmin.dto.chomp.VoteReadResponseDto;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.UserService;
@@ -96,7 +95,6 @@ import com.project.zipmin.swagger.VoteInvalidInputResponse;
 import com.project.zipmin.swagger.VoteInvalidPeriodResponse;
 import com.project.zipmin.swagger.VoteNotFoundResponse;
 import com.project.zipmin.swagger.VoteNotOpenedResponse;
-import com.project.zipmin.swagger.VoteReadFailResponse;
 import com.project.zipmin.swagger.VoteReadSuccessResponse;
 import com.project.zipmin.swagger.VoteRecordCreateFailResponse;
 import com.project.zipmin.swagger.VoteRecordCreateSuccessResponse;
@@ -117,7 +115,6 @@ public class ChompController {
 	
 	private final ChompService chompService;
 	private final UserService userService;
-	private final CommentService commentService;
 	
 	
 	
@@ -173,6 +170,7 @@ public class ChompController {
 	
 	
 	
+	// 투표 상세 조회
 	@Operation(
 	    summary = "투표 상세 조회"
 	)
@@ -183,18 +181,14 @@ public class ChompController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = VoteReadSuccessResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "400",
-				description = "투표 조회 실패",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = VoteReadFailResponse.class))),
+		// 400 VOTE_CHOICE_READ_LIST_FAIL 투표 옵션 목록 조회 실패
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
 				description = "투표 기록 조회 실패",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = VoteRecordReadFailResponse.class))),
+		// 400 VOTE INVALID INPUT 입력값이 유효하지 않음
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
 				description = "해당 투표를 찾을 수 없음",
@@ -210,7 +204,10 @@ public class ChompController {
 	})
 	// 투표 상세 조회
 	@GetMapping("/votes/{id}")
-	public ResponseEntity<?> readVote(@Parameter(description = "투표의 일련번호") @PathVariable int id) {
+	public ResponseEntity<?> readVote(
+			@Parameter(description = "투표의 일련번호") @PathVariable int id) {
+		
+		System.err.println("진입");
 		
 		VoteReadResponseDto voteDto = chompService.readVoteById(id);
 		
@@ -258,13 +255,13 @@ public class ChompController {
 						schema = @Schema(implementation = VoteChoiceInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "로그인 되지 않은 사용자",
+				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = VoteUnauthorizedAccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
-				description = "권한 없는 사용자의 접근",
+				description = "권한 없는 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = VoteForbiddenResponse.class))),
@@ -290,7 +287,7 @@ public class ChompController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED);
 		}
 		
 		// 권한 확인
@@ -341,13 +338,13 @@ public class ChompController {
 						schema = @Schema(implementation = VoteChoiceInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "로그인 되지 않은 사용자",
+				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = VoteUnauthorizedAccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
-				description = "권한 없는 사용자의 접근",
+				description = "권한 없는 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = VoteForbiddenResponse.class))),
@@ -380,7 +377,7 @@ public class ChompController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED);
 		}
 		
 		VoteUpdateResponseDto voteResponseDto = chompService.updateVote(voteRequestDto, file);
@@ -423,7 +420,7 @@ public class ChompController {
 						schema = @Schema(implementation = VoteUnauthorizedAccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
-				description = "권한 없는 사용자의 접근",
+				description = "권한 없는 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = VoteForbiddenResponse.class))),
@@ -453,7 +450,7 @@ public class ChompController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED);
 		}
 		
 		chompService.deleteVote(id);
@@ -490,7 +487,7 @@ public class ChompController {
 						schema = @Schema(implementation = VoteRecordInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "로그인 되지 않은 사용자",
+				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = VoteUnauthorizedAccessResponse.class))),
@@ -534,7 +531,7 @@ public class ChompController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED);
 		}
 		recordRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 		
@@ -572,13 +569,13 @@ public class ChompController {
 						schema = @Schema(implementation = VoteRecordInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "로그인 되지 않은 사용자",
+				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = VoteUnauthorizedAccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
-				description = "권한 없는 사용자의 접근",
+				description = "권한 없는 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = VoteForbiddenResponse.class))),
@@ -614,7 +611,7 @@ public class ChompController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED);
 		}
 		
 		chompService.deleteVoteRecord(id);
@@ -688,13 +685,13 @@ public class ChompController {
 						schema = @Schema(implementation = MegazineInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "로그인 되지 않은 사용자",
+				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = MegazineUnauthorizedAccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
-				description = "권한 없는 사용자의 접근",
+				description = "권한 없는 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = MegazineForbiddenResponse.class))),
@@ -757,13 +754,13 @@ public class ChompController {
 						schema = @Schema(implementation = MegazineInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "로그인 되지 않은 사용자",
+				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = MegazineUnauthorizedAccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
-				description = "권한 없는 사용자의 접근",
+				description = "권한 없는 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = MegazineForbiddenResponse.class))),
@@ -833,13 +830,13 @@ public class ChompController {
 						schema = @Schema(implementation = MegazineInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "로그인 되지 않은 사용자",
+				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = MegazineUnauthorizedAccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
-				description = "권한 없는 사용자의 접근",
+				description = "권한 없는 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = MegazineForbiddenResponse.class))),
@@ -955,13 +952,13 @@ public class ChompController {
 						schema = @Schema(implementation = EventInvalidFileResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "로그인 되지 않은 사용자",
+				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = EventUnauthorizedAccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
-				description = "권한 없는 사용자의 접근",
+				description = "권한 없는 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = EventForbiddenResponse.class))),
@@ -1036,13 +1033,13 @@ public class ChompController {
 						schema = @Schema(implementation = EventInvalidPeriodResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "로그인 되지 않은 사용자",
+				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = EventUnauthorizedAccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
-				description = "권한 없는 사용자의 접근",
+				description = "권한 없는 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = EventForbiddenResponse.class))),
@@ -1118,13 +1115,13 @@ public class ChompController {
 						schema = @Schema(implementation = EventInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "로그인 되지 않은 사용자",
+				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = EventUnauthorizedAccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
-				description = "권한 없는 사용자의 접근",
+				description = "권한 없는 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = EventForbiddenResponse.class))),

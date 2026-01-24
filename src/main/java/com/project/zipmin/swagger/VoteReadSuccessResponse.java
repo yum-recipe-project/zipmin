@@ -1,6 +1,6 @@
 package com.project.zipmin.swagger;
 
-import com.project.zipmin.dto.VoteReadResponseDto;
+import com.project.zipmin.dto.chomp.VoteReadResponseDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

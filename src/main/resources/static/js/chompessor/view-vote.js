@@ -36,19 +36,19 @@ document.addEventListener('DOMContentLoaded', async function() {
 		}
 		else if (result.code === 'VOTE_READ_FAIL') {
 			alert('투표 조회에 실패했습니다.');
-			location.href = '/chompessor/listChomp.do';
+			// location.href = '/chompessor/listChomp.do';
 		}
 		else if (result.code === 'VOTE_RECORD_READ_FAIL') {
 			alert('투표 조회에 실패했습니다.');
-			location.href = '/chompessor/listChomp.do';
+			// location.href = '/chompessor/listChomp.do';
 		}
 		else if (result.code === 'VOTE_NOT_FOUND') {
 			alert('해당 투표를 찾을 수 없습니다.');
-			location.href = '/chompessor/listChomp.do';
+			// location.href = '/chompessor/listChomp.do';
 		}
 		else if (result.code === 'INTERNAL_SERVER_ERROR') {
 			alert('서버 내부 오류가 발생했습니다.');
-			location.href = '/chompessor/listChomp.do';
+			// location.href = '/chompessor/listChomp.do';
 		}
 		else {
 			console.log(error);

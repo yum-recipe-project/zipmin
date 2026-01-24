@@ -33,7 +33,6 @@ import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.api.WithdrawErrorCode;
 import com.project.zipmin.api.WithdrawSuccessCode;
-import com.project.zipmin.dto.ChompReadResponseDto;
 import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
@@ -42,7 +41,7 @@ import com.project.zipmin.dto.RecipeReadResponseDto;
 import com.project.zipmin.dto.ReviewReadResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.WithdrawReadResponseDto;
-import com.project.zipmin.dto.WithdrawUpdateRequestDto;
+import com.project.zipmin.dto.chomp.ChompReadResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
@@ -459,7 +458,7 @@ public class AdminController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(ChompErrorCode.CHOMP_UNAUTHORIZED_ACCESS);
+			throw new ApiException(ChompErrorCode.CHOMP_UNAUTHORIZED);
 		}
 		
 		// 권한 확인

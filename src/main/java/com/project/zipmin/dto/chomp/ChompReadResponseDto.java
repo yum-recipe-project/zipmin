@@ -1,11 +1,9 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.chomp;
 
 import java.util.Date;
-import java.util.List;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.project.zipmin.entity.Chomp;
 
 import lombok.Data;
 
@@ -20,12 +18,10 @@ public class ChompReadResponseDto {
 	private String content;
 	private String category;
 	private String image;
-	private Integer userId;
-	
-	private List<VoteChoiceReadResponseDto> choiceList;
+	private int userId;
 	
 	private boolean isOpened;
-	
 	private int commentcount;
 	private int recordcount;
+	
 }

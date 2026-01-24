@@ -3,9 +3,7 @@ package com.project.zipmin.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.project.zipmin.dto.ChompCreateRequestDto;
-import com.project.zipmin.dto.ChompCreateResponseDto;
-import com.project.zipmin.dto.ChompReadResponseDto;
+import com.project.zipmin.dto.chomp.ChompReadResponseDto;
 import com.project.zipmin.dto.EventCreateRequestDto;
 import com.project.zipmin.dto.EventCreateResponseDto;
 import com.project.zipmin.dto.EventReadResponseDto;
@@ -25,6 +23,31 @@ import com.project.zipmin.entity.Chomp;
 @Mapper(componentModel = "spring")
 public interface ChompMapper {
 	
+	@Mapping(target = "user.id", source = "userId")
+	Chomp toEntity(ChompReadResponseDto chompDto);
+	
+	@Mapping(target = "userId", source = "user.id")
+	ChompReadResponseDto toReadResponseDto(Chomp chomp);
+	
+	
+	
+	
+	
+	
+	@Mapping(target = "user.id", source = "userId")
+	Chomp toEntity(MegazineReadResponseDto megazineDto);
+	
+	@Mapping(target = "userId", source = "user.id")
+	MegazineReadResponseDto toMegazineReadResponseDto(Chomp chomp);
+	
+	@Mapping(target = "user.id", source = "userId")
+	Chomp toEntity(EventReadResponseDto eventDto);
+	
+	@Mapping(target = "userId", source = "user.id")
+	EventReadResponseDto toEventReadResponseDto(Chomp chomp);
+	
+	VoteReadResponseDto toVoteReadResponseDto(Chomp chomp);
+	
 	// Create
 //	@Mapping(target = "id", ignore = true)
 //	Chomp toEntity(ChompCreateRequestDto chompDto);
@@ -37,7 +60,7 @@ public interface ChompMapper {
 	
 	@Mapping(target = "user.id", source = "userId")
 	Chomp toEntity(MegazineCreateRequestDto megazineDto);
-	
+
 	@Mapping(target = "userId", source = "user.id")
 	MegazineCreateRequestDto toMegazineCreateRequestDto(Chomp chomp);
 	
@@ -71,29 +94,6 @@ public interface ChompMapper {
 	@Mapping(target = "userId", source = "user.id")
 	EventCreateResponseDto toEventCreateResponseDto(Chomp chomp);
 	
-	
-	
-	
-	// Read
-	@Mapping(target = "user.id", source = "userId")
-	Chomp toEntity(ChompReadResponseDto chompDto);
-	
-	@Mapping(target = "userId", source = "user.id")
-	ChompReadResponseDto toReadResponseDto(Chomp chomp);
-	
-	@Mapping(target = "user.id", source = "userId")
-	Chomp toEntity(MegazineReadResponseDto megazineDto);
-	
-	@Mapping(target = "userId", source = "user.id")
-	MegazineReadResponseDto toMegazineReadResponseDto(Chomp chomp);
-	
-	@Mapping(target = "user.id", source = "userId")
-	Chomp toEntity(EventReadResponseDto eventDto);
-	
-	@Mapping(target = "userId", source = "user.id")
-	EventReadResponseDto toEventReadResponseDto(Chomp chomp);
-	
-	VoteReadResponseDto toVoteReadResponseDto(Chomp chomp);
 	
 	
 	

@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.project.zipmin.dto.ChompReadResponseDto;
 import com.project.zipmin.dto.EventCreateRequestDto;
 import com.project.zipmin.dto.EventCreateResponseDto;
 import com.project.zipmin.dto.EventReadResponseDto;
@@ -52,9 +52,11 @@ import com.project.zipmin.dto.VoteRecordCreateRequestDto;
 import com.project.zipmin.dto.VoteRecordCreateResponseDto;
 import com.project.zipmin.dto.VoteUpdateRequestDto;
 import com.project.zipmin.dto.VoteUpdateResponseDto;
+import com.project.zipmin.dto.chomp.ChompReadResponseDto;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.UserService;
+import com.project.zipmin.swagger.ChompInvalidInputResponse;
 import com.project.zipmin.swagger.ChompReadListFailResponse;
 import com.project.zipmin.swagger.ChompReadListSuccessResponse;
 import com.project.zipmin.swagger.EventCreateFailResponse;
@@ -109,22 +111,19 @@ import com.project.zipmin.swagger.VoteUpdateFailResponse;
 import com.project.zipmin.swagger.VoteUpdateSuccessResponse;
 
 @RestController
+@RequiredArgsConstructor
 @Tag(name = "Chompessor API", description = "쩝쩝박사 관련 API")
 public class ChompController {
 	
-	@Autowired
-	ChompService chompService;
-	
-	@Autowired
-	UserService userService;
-	
-	@Autowired
-	CommentService commentService;
+	private final ChompService chompService;
+	private final UserService userService;
+	private final CommentService commentService;
 	
 	
 	
 	
 	
+	// 쩝쩝박사 목록 조회
 	@Operation(
 	    summary = "쩝쩝박사 목록 조회"
 	)
@@ -141,7 +140,12 @@ public class ChompController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = ChompReadListFailResponse.class))),
-		// TODO : 유효하지 않은 입력값
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "유효하지 않은 입력값",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ChompInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "500",
 				description = "서버 내부 오류",
@@ -152,14 +156,14 @@ public class ChompController {
 	// 쩝쩝박사 목록 조회
 	@GetMapping("/chomp")
 	public ResponseEntity<?> listChomp(
-			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
 			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
+			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
 			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
 		    @Parameter(description = "페이지 번호") @RequestParam int page,
 		    @Parameter(description = "페이지 크기") @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<ChompReadResponseDto> chompPage = chompService.readChompPage(category, keyword, sort, pageable);
+		Page<ChompReadResponseDto> chompPage = chompService.readChompPage(keyword, category, sort, pageable);
 
 		return ResponseEntity.status(ChompSuccessCode.CHOMP_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(ChompSuccessCode.CHOMP_READ_LIST_SUCCESS, chompPage));
@@ -288,6 +292,8 @@ public class ChompController {
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED_ACCESS);
 		}
+		
+		// 권한 확인
 		
 		VoteCreateResponseDto voteResponseDto = chompService.createVote(voteRequestDto, file);
 		

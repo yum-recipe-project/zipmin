@@ -13,6 +13,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,6 @@ import com.project.zipmin.api.ChompErrorCode;
 import com.project.zipmin.api.EventErrorCode;
 import com.project.zipmin.api.MegazineErrorCode;
 import com.project.zipmin.api.VoteErrorCode;
-import com.project.zipmin.dto.ChompReadResponseDto;
 import com.project.zipmin.dto.EventCreateRequestDto;
 import com.project.zipmin.dto.EventCreateResponseDto;
 import com.project.zipmin.dto.EventReadResponseDto;
@@ -46,6 +47,7 @@ import com.project.zipmin.dto.VoteRecordCreateRequestDto;
 import com.project.zipmin.dto.VoteRecordCreateResponseDto;
 import com.project.zipmin.dto.VoteUpdateRequestDto;
 import com.project.zipmin.dto.VoteUpdateResponseDto;
+import com.project.zipmin.dto.chomp.ChompReadResponseDto;
 import com.project.zipmin.entity.Chomp;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.entity.VoteChoice;
@@ -83,58 +85,27 @@ public class ChompService {
 	
 	
 	// 쩝쩝박사 목록 조회
-	public Page<ChompReadResponseDto> readChompPage(String category, String keyword, String sort, Pageable pageable) {
+	public Page<ChompReadResponseDto> readChompPage(String keyword, String category, String sort, Pageable pageable) {
 		
 		// 입력값 검증
 		if (pageable == null) {
 			throw new ApiException(ChompErrorCode.CHOMP_INVALID_INPUT);
 		}
 		
-		// 정렬 문자열을 객체로 변환
-		Sort orderBy = Sort.by(Sort.Order.desc("id"));
+		// 정렬
+		Sort order = Sort.by(Sort.Order.desc("id"));
 		if (sort != null && !sort.isBlank()) {
-			switch (sort) {
-				case "id-desc":
-					orderBy = Sort.by(Sort.Order.desc("id"));
-					break;
-				case "id-asc":
-					orderBy = Sort.by(Sort.Order.asc("id"));
-					break;
-				case "closedate-desc":
-					orderBy = Sort.by(Sort.Order.desc("closedate"), Sort.Order.desc("id"));
-					break;
-				case "closedate-asc":
-					orderBy = Sort.by(Sort.Order.asc("closedate"), Sort.Order.desc("id"));
-					break;
-				case "title-desc":
-					orderBy = Sort.by(Sort.Order.desc("title"), Sort.Order.desc("id"));
-					break;
-				case "title-asc":
-					orderBy = Sort.by(Sort.Order.asc("title"), Sort.Order.desc("id"));
-					break;
-				case "commentcount-desc":
-					orderBy = Sort.by(Sort.Order.desc("commentcount"), Sort.Order.desc("id"));
-					break;
-				case "commentcount-asc":
-					orderBy = Sort.by(Sort.Order.asc("commentcount"), Sort.Order.desc("id"));
-					break;
-				case "recordcount-desc":
-					orderBy = Sort.by(Sort.Order.desc("recordcount"), Sort.Order.desc("id"));
-					break;
-				case "recordcountcount-asc":
-					orderBy = Sort.by(Sort.Order.asc("recordcount"), Sort.Order.desc("id"));
-					break;
-				default:
-					break;
-		    }
+			String field = sort.split("-")[0];
+			Direction direction = "asc".equals(sort.split("-")[1]) ? Direction.ASC : Direction.DESC;
+			order = Sort.by(new Order(direction, field), Order.desc("id"));
 		}
-		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), orderBy);
+		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), order);
 		
 		// 쩝쩝박사 목록 조회
 		Page<Chomp> chompPage;
 		try {
-			boolean hasCategory = category != null && !category.isBlank();
-			boolean hasKeyword = keyword != null && !keyword.isBlank();
+			boolean hasCategory = (category != null) && (!category.isBlank());
+			boolean hasKeyword = (keyword != null) && (!keyword.isBlank());
 			
 			if (hasCategory) {
 				chompPage = hasKeyword
@@ -157,27 +128,8 @@ public class ChompService {
 		for (Chomp chomp : chompPage) {
 			ChompReadResponseDto chompDto = chompMapper.toReadResponseDto(chomp);
 			
-			// 이미지
-			if (chompDto.getImage() != null) {
-				chompDto.setImage(publicPath + "/" + chompDto.getImage());
-			}
-			
-			// 상태
-			if (!"megazine".equals(chompDto.getCategory())) {
-				Boolean isOpened = today.after(chompDto.getOpendate()) && today.before(chompDto.getClosedate());
-				chompDto.setOpened(isOpened);
-			}
-			
-			// 옵션 목록
-			if ("vote".equals(chompDto.getCategory())) {
-				List<VoteChoice> choiceList = choiceRepository.findAllByChompId(chompDto.getId());
-				List<VoteChoiceReadResponseDto> choiceDtoList = new ArrayList<>();
-				for (VoteChoice choice : choiceList) {
-					VoteChoiceReadResponseDto choiceDto = choiceMapper.toReadResponseDto(choice);
-					choiceDtoList.add(choiceDto);
-				}
-				chompDto.setChoiceList(choiceDtoList);
-			}
+			chompDto.setImage(publicPath + "/" + chompDto.getImage());
+			chompDto.setOpened(today.after(chompDto.getOpendate()) && today.before(chompDto.getClosedate()));
 			
 			chompDtoList.add(chompDto);
 		}

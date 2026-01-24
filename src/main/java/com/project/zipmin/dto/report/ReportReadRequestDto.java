@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.report;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -11,15 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ReportReadResponseDto {
-	
-	private Integer id;
+public class ReportReadRequestDto {
+
 	private String tablename;
-	private Integer recodenum;
-	private Integer userId;
-	private String reason;
-	
-	private String username;
-	private String nickname;
+	private int recodenum;
 	
 }

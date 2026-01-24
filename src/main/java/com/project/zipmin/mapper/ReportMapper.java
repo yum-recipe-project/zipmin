@@ -3,10 +3,10 @@ package com.project.zipmin.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.project.zipmin.dto.ReportCreateRequestDto;
-import com.project.zipmin.dto.ReportCreateResponseDto;
-import com.project.zipmin.dto.ReportDeleteRequestDto;
-import com.project.zipmin.dto.ReportReadResponseDto;
+import com.project.zipmin.dto.report.ReportCreateRequestDto;
+import com.project.zipmin.dto.report.ReportCreateResponseDto;
+import com.project.zipmin.dto.report.ReportDeleteRequestDto;
+import com.project.zipmin.dto.report.ReportReadResponseDto;
 import com.project.zipmin.entity.Report;
 
 @Mapper(componentModel = "spring")
@@ -18,7 +18,6 @@ public interface ReportMapper {
 	
 	@Mapping(target = "userId", source = "user.id")
 	ReportReadResponseDto toReadResponseDto(Report report);
-	
 	
 	
 	

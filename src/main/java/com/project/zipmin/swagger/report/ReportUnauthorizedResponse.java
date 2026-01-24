@@ -1,11 +1,11 @@
-package com.project.zipmin.swagger;
+package com.project.zipmin.swagger.report;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(name = "ReportUnauthorizedAccessResponse")
-public class ReportUnauthorizedAccessResponse {
+@Schema(name = "ReportUnauthorizedResponse")
+public class ReportUnauthorizedResponse {
 	
-    @Schema(example = "REPORT_UNAUTHORIZED_ACCESS", description = "에러 코드")
+    @Schema(example = "REPORT_UNAUTHORIZED", description = "에러 코드")
     public String code;
 
     @Schema(example = "로그인되지 않은 사용자", description = "에러 메시지")

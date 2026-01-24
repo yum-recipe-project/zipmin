@@ -1,6 +1,6 @@
-package com.project.zipmin.swagger;
+package com.project.zipmin.swagger.report;
 
-import com.project.zipmin.dto.ReportCreateResponseDto;
+import com.project.zipmin.dto.report.ReportCreateResponseDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

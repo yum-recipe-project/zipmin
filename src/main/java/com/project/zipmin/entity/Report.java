@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "REPORT")
 public class Report {
+	
 	@Id
 	@GeneratedValue(generator = "seq_report_id")
 	@SequenceGenerator(name = "seq_report_id", sequenceName = "SEQ_REPORT_ID", allocationSize = 1)
@@ -29,8 +30,8 @@ public class Report {
 	private int recodenum;
 	private String reason;
 	
-	// private String user_id;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")
 	private User user;
+	
 }

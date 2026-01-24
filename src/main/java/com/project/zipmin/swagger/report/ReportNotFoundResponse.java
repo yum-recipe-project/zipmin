@@ -1,4 +1,4 @@
-package com.project.zipmin.swagger;
+package com.project.zipmin.swagger.report;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

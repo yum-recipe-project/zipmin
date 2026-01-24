@@ -24,10 +24,10 @@ import com.project.zipmin.dto.CommentUpdateResponseDto;
 import com.project.zipmin.dto.LikeCreateRequestDto;
 import com.project.zipmin.dto.LikeCreateResponseDto;
 import com.project.zipmin.dto.LikeDeleteRequestDto;
-import com.project.zipmin.dto.ReportCreateRequestDto;
-import com.project.zipmin.dto.ReportCreateResponseDto;
-import com.project.zipmin.dto.ReportDeleteRequestDto;
 import com.project.zipmin.dto.UserReadResponseDto;
+import com.project.zipmin.dto.report.ReportCreateRequestDto;
+import com.project.zipmin.dto.report.ReportCreateResponseDto;
+import com.project.zipmin.dto.report.ReportDeleteRequestDto;
 import com.project.zipmin.entity.Comment;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.mapper.CommentMapper;
@@ -538,8 +538,8 @@ public class CommentService {
 		
 		// 입력값 검증
 		if (reportDto == null || reportDto.getTablename() == null
-				|| reportDto.getRecodenum() == null || reportDto.getReason() == null
-				|| reportDto.getUserId() == null) {
+				|| reportDto.getRecodenum() == 0 || reportDto.getReason() == null
+				|| reportDto.getUserId() == 0) {
 			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
 		}
 		

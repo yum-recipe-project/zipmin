@@ -51,7 +51,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "FUND API", description = "후원 관련 API")
+@Tag(name = "Fund API", description = "후원 관련 API")
 public class FundController {
 
 	private final FundService fundService;

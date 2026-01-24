@@ -27,6 +27,8 @@ import com.project.zipmin.api.KitchenErrorCode;
 import com.project.zipmin.api.KitchenSuccessCode;
 import com.project.zipmin.api.RecipeErrorCode;
 import com.project.zipmin.api.RecipeSuccessCode;
+import com.project.zipmin.api.ReportErrorCode;
+import com.project.zipmin.api.ReportSuccessCode;
 import com.project.zipmin.api.ReviewErrorCode;
 import com.project.zipmin.api.ReviewSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
@@ -39,9 +41,12 @@ import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.GuideReadResponseDto;
 import com.project.zipmin.dto.RecipeReadResponseDto;
 import com.project.zipmin.dto.ReviewReadResponseDto;
+import com.project.zipmin.dto.UserAccountCreateRequestDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.WithdrawReadResponseDto;
 import com.project.zipmin.dto.chomp.ChompReadResponseDto;
+import com.project.zipmin.dto.report.ReportReadRequestDto;
+import com.project.zipmin.dto.report.ReportReadResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
@@ -49,6 +54,7 @@ import com.project.zipmin.service.CookingService;
 import com.project.zipmin.service.FundService;
 import com.project.zipmin.service.KitchenService;
 import com.project.zipmin.service.RecipeService;
+import com.project.zipmin.service.ReportService;
 import com.project.zipmin.service.ReviewService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.ChompReadListFailResponse;
@@ -74,14 +80,18 @@ import com.project.zipmin.swagger.RecipeForbiddenResponse;
 import com.project.zipmin.swagger.RecipeInvalidInputResponse;
 import com.project.zipmin.swagger.RecipeReadListFailResponse;
 import com.project.zipmin.swagger.RecipeReadListSuccessResponse;
-import com.project.zipmin.swagger.ReportCountFailResponse;
-import com.project.zipmin.swagger.ReportInvalidInputResponse;
 import com.project.zipmin.swagger.UserForbiddenResponse;
 import com.project.zipmin.swagger.UserInvalidInputResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
 import com.project.zipmin.swagger.UserReadListFailResponse;
 import com.project.zipmin.swagger.UserReadListSuccessResponse;
 import com.project.zipmin.swagger.UserUnauthorizedAccessResponse;
+import com.project.zipmin.swagger.report.ReportCountFailResponse;
+import com.project.zipmin.swagger.report.ReportForbiddenResponse;
+import com.project.zipmin.swagger.report.ReportInvalidInputResponse;
+import com.project.zipmin.swagger.report.ReportReadListFailResponse;
+import com.project.zipmin.swagger.report.ReportReadListSuccessResponse;
+import com.project.zipmin.swagger.report.ReportUnauthorizedResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -104,6 +114,7 @@ public class AdminController {
 	private final CookingService cookingService;
 	private final CommentService commentService;
 	private final ReviewService reviewService;
+	private final ReportService reportService;
 	
 	
 	
@@ -778,7 +789,7 @@ public class AdminController {
 		// 400 REVIEW_READ_LIST_FAIL 리뷰 목록 조회 실패
 		// 400 REVIEW_INVALID_INPUT 유효하지 않은 입력값
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "404",
+				responseCode = "400",
 				description = "유효하지 않은 입력값",
 				content = @Content(
 						mediaType = "application/json",
@@ -825,5 +836,88 @@ public class AdminController {
 		
 		return ResponseEntity.status(ReviewSuccessCode.REVIEW_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(ReviewSuccessCode.REVIEW_READ_LIST_SUCCESS, reviewPage));
+	}
+	
+	
+	
+	
+	
+	// 신고 목록 조회
+	@Operation(
+	    summary = "신고 목록 조회"
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "신고 목록 조회 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ReportReadListSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "신고 목록 조회 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ReportReadListFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "유효하지 않은 입력값",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ReportInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "유효하지 않은 입력값",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ReportUnauthorizedResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "권한 없는 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = ReportForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
+	// 신고 목록 조회
+	@GetMapping("/reports")
+	public ResponseEntity<?> readReport(
+			@Parameter(description = "신고 목록 조 요청 정보") @RequestBody ReportReadRequestDto reportRequestDto) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(ReportErrorCode.REPORT_UNAUTHORIZED);
+		}
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(ReportErrorCode.REPORT_FORBIDDEN);
+			}
+		}
+		
+		List<ReportReadResponseDto> reportList = reportService.readReportList(reportRequestDto);
+		
+		return ResponseEntity.status(ReportSuccessCode.REPORT_READ_LIST_SUCCESS.getStatus())
+        		.body(ApiResponse.success(ReportSuccessCode.REPORT_READ_LIST_SUCCESS, reportList));
 	}
 }

@@ -1,20 +1,20 @@
 package com.project.zipmin.service;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
-import com.project.zipmin.api.LikeErrorCode;
 import com.project.zipmin.api.ReportErrorCode;
-import com.project.zipmin.dto.ReportCreateRequestDto;
-import com.project.zipmin.dto.ReportCreateResponseDto;
-import com.project.zipmin.dto.ReportDeleteRequestDto;
-import com.project.zipmin.dto.ReportReadResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
+import com.project.zipmin.dto.report.ReportCreateRequestDto;
+import com.project.zipmin.dto.report.ReportCreateResponseDto;
+import com.project.zipmin.dto.report.ReportReadRequestDto;
+import com.project.zipmin.dto.report.ReportReadResponseDto;
 import com.project.zipmin.entity.Report;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.mapper.ReportMapper;
@@ -28,26 +28,28 @@ public class ReportService {
 
 	private final ReportRepository reportRepository;
 	
-	private final UserService userService;
-	
 	private final ReportMapper reportMapper;
 	
+	private final UserService userService;
 	
 	
 	
+
 	
-	// 신고 목록
-	public List<ReportReadResponseDto> readReportListByTablenameAndRecodenum(String tablename, Integer recodenum) {
+	// 신고 목록 조회
+	public List<ReportReadResponseDto> readReportList(ReportReadRequestDto reportRequestDto) {
 		
 		// 입력값 검증
-		if (tablename == null || recodenum == null) {
+		if (reportRequestDto == null
+				|| reportRequestDto.getTablename() == null
+				|| reportRequestDto.getRecodenum() == 0) {
 			throw new ApiException(ReportErrorCode.REPORT_INVALID_INPUT);
 		}
 		
 		// 신고 목록 조회
-		List<Report> reportList = null;
+		List<Report> reportList;
 		try {
-			reportList = reportRepository.findAllByTablenameAndRecodenum(tablename, recodenum);
+			reportList = reportRepository.findAllByTablenameAndRecodenum(reportRequestDto.getTablename(), reportRequestDto.getRecodenum());
 		}
 		catch (Exception e) {
 			throw new ApiException(ReportErrorCode.REPORT_READ_LIST_FAIL);
@@ -56,11 +58,10 @@ public class ReportService {
 		// 신고 목록 응답 구성
 		List<ReportReadResponseDto> reportDtoList = new ArrayList<>();
 		for (Report report : reportList) {
-			ReportReadResponseDto reportDto = reportMapper.toReadResponseDto(report);
-			reportDto.setUsername(userService.readUserById(reportDto.getUserId()).getUsername());
-			reportDto.setNickname(userService.readUserById(reportDto.getUserId()).getNickname());
-			
-			reportDtoList.add(reportDto);
+			ReportReadResponseDto reportResponseDto = reportMapper.toReadResponseDto(report);
+			reportResponseDto.setUsername(report.getUser().getUsername());
+			reportResponseDto.setNickname(report.getUser().getNickname());
+			reportDtoList.add(reportResponseDto);
 		}
 		
 		return reportDtoList;
@@ -68,24 +69,28 @@ public class ReportService {
 	
 	
 	
+	
+	
 	// 신고 작성
 	public ReportCreateResponseDto createReport(ReportCreateRequestDto reportDto) {
 		
 		// 입력값 검증
-		if (reportDto == null || reportDto.getTablename() == null
-				|| reportDto.getRecodenum() == null || reportDto.getReason() == null
-				|| reportDto.getUserId() == null) {
+		if (reportDto == null
+				|| reportDto.getTablename() == null
+				|| reportDto.getRecodenum() == 0
+				|| reportDto.getReason() == null
+				|| reportDto.getUserId() == 0) {
 			throw new ApiException(ReportErrorCode.REPORT_INVALID_INPUT);
 		}
 		
-		// 중복 신고 검사
+		// 중복 검사
 		if (reportRepository.existsByTablenameAndRecodenumAndUserId(reportDto.getTablename(), reportDto.getRecodenum(), reportDto.getUserId())) {
 			throw new ApiException(ReportErrorCode.REPORT_DUPLICATE);
 		}
 		
 		// 신고 저장
-		Report report = reportMapper.toEntity(reportDto);
 		try {
+			Report report = reportMapper.toEntity(reportDto);
 			report = reportRepository.save(report);
 			return reportMapper.toCreateResponseDto(report);
 		}
@@ -99,38 +104,37 @@ public class ReportService {
 	
 	
 	// 신고 삭제
-	public void deleteReport(ReportDeleteRequestDto reportDto) {
+	public void deleteReport(int id) {
 		
 		// 입력값 검증
-		if (reportDto == null || reportDto.getTablename() == null
-				|| reportDto.getRecodenum() == null || reportDto.getUserId() == null) {
+		if (id == 0) {
 			throw new ApiException(ReportErrorCode.REPORT_INVALID_INPUT);
 		}
 		
-		// 신고 존재 여부 판단
-		Report report = reportRepository.findByTablenameAndRecodenumAndUserId(reportDto.getTablename(), reportDto.getRecodenum(), reportDto.getUserId())
-			.orElseThrow(() -> new ApiException(ReportErrorCode.REPORT_NOT_FOUND));
-
+		// 신고 조회
+		Report report;
+		try {
+			report = reportRepository.findById(id);
+		}
+		catch (Exception e) {
+			throw new ApiException(ReportErrorCode.REPORT_NOT_FOUND);
+		}
+		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		UserReadResponseDto user = userService.readUserByUsername(username);
-		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			// 관리자
-			if (user.getRole().equals(Role.ROLE_ADMIN.name())) {
+		UserReadResponseDto currentUser = userService.readUserByUsername(username);
+		
+		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (report.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
 					throw new ApiException(ReportErrorCode.REPORT_FORBIDDEN);
 				}
-				if (report.getUser().getRole().equals(Role.ROLE_ADMIN)) {
-					if (user.getId() != report.getUser().getId()) {
-						throw new ApiException(ReportErrorCode.REPORT_FORBIDDEN);
-					}
-				}
-			}
-			// 일반 회원
-			else {
-				if (user.getId() != report.getUser().getId()) {
+				if (report.getUser().getRole().equals(Role.ROLE_ADMIN) && currentUser.getId() != report.getUser().getId()) {
 					throw new ApiException(ReportErrorCode.REPORT_FORBIDDEN);
 				}
+			}
+			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != report.getUser().getId()) {
+				throw new ApiException(ReportErrorCode.REPORT_FORBIDDEN);
 			}
 		}
 		
@@ -148,10 +152,10 @@ public class ReportService {
 	
 	
 	// 신고수 조회
-	public int countReport(String tablename, Integer recodenum) {
+	public int countReport(String tablename, int recodenum) {
 		
 		// 입력값 검증
-		if (tablename == null || recodenum == null) {
+		if (tablename == null || recodenum == 0) {
 			throw new ApiException(ReportErrorCode.REPORT_INVALID_INPUT);
 		}
 		
@@ -163,16 +167,5 @@ public class ReportService {
 			throw new ApiException(ReportErrorCode.REPORT_COUNT_FAIL);
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

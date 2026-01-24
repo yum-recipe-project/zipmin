@@ -9,11 +9,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ReportSuccessCode implements Code {
 
-	// 데이터 처리
 	REPORT_READ_LIST_SUCCESS(HttpStatus.OK, "신고 목록 조회 성공"),
 	REPORT_CREATE_SUCCESS(HttpStatus.CREATED, "신고 작성 성공"),
 	REPORT_DELETE_SUCCESS(HttpStatus.OK, "신고 삭제 성공"),
-	REPORT_COUNT_READ_SUCCESS(HttpStatus.OK, "신고 개수 조회 성공");
+	REPORT_COUNT_SUCCESS(HttpStatus.OK, "신고 집계 성공");
 	
 	private final HttpStatus status;
 	private final String message;

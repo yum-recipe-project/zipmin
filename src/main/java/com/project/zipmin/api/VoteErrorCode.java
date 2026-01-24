@@ -13,7 +13,8 @@ public enum VoteErrorCode implements Code {
 	VOTE_FORBIDDEN(HttpStatus.FORBIDDEN, "권한 없는 사용자"),
 	
 	VOTE_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
-	VOTE_INVALID_PERIOD(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
+	VOTE_INVALID_FILE(HttpStatus.BAD_REQUEST, "파일이 유효하지 않음"),
+	VOTE_INVALID_PERIOD(HttpStatus.BAD_REQUEST, "기간이 유효하지 않음"),
 	VOTE_RECORD_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
 	VOTE_CHOICE_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
 	
@@ -22,6 +23,7 @@ public enum VoteErrorCode implements Code {
 	VOTE_CREATE_FAIL(HttpStatus.BAD_REQUEST, "투표 작성 실패"),
 	VOTE_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "투표 수정 실패"),
 	VOTE_DELETE_FAIL(HttpStatus.BAD_REQUEST, "투표 삭제 실패"),
+	VOTE_FILE_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "투표 파일 업로드 실패"),
 	
 	VOTE_RECORD_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 투표 기록을 찾을 수 없음"),
 	VOTE_RECORD_READ_FAIL(HttpStatus.BAD_REQUEST, "투표 기록 조회 실패"),

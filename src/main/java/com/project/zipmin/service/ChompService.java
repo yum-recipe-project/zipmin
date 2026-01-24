@@ -37,16 +37,16 @@ import com.project.zipmin.dto.MegazineReadResponseDto;
 import com.project.zipmin.dto.MegazineUpdateRequestDto;
 import com.project.zipmin.dto.MegazineUpdateResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
-import com.project.zipmin.dto.VoteChoiceCreateRequestDto;
 import com.project.zipmin.dto.VoteChoiceUpdateRequestDto;
-import com.project.zipmin.dto.VoteCreateRequestDto;
-import com.project.zipmin.dto.VoteCreateResponseDto;
 import com.project.zipmin.dto.VoteRecordCreateRequestDto;
 import com.project.zipmin.dto.VoteRecordCreateResponseDto;
 import com.project.zipmin.dto.VoteUpdateRequestDto;
 import com.project.zipmin.dto.VoteUpdateResponseDto;
 import com.project.zipmin.dto.chomp.ChompReadResponseDto;
+import com.project.zipmin.dto.chomp.VoteChoiceCreateRequestDto;
 import com.project.zipmin.dto.chomp.VoteChoiceReadResponseDto;
+import com.project.zipmin.dto.chomp.VoteCreateRequestDto;
+import com.project.zipmin.dto.chomp.VoteCreateResponseDto;
 import com.project.zipmin.dto.chomp.VoteReadResponseDto;
 import com.project.zipmin.entity.Chomp;
 import com.project.zipmin.entity.Role;
@@ -127,10 +127,8 @@ public class ChompService {
 		List<ChompReadResponseDto> chompDtoList = new ArrayList<>();
 		for (Chomp chomp : chompPage) {
 			ChompReadResponseDto chompDto = chompMapper.toReadResponseDto(chomp);
-			
 			chompDto.setImage(publicPath + "/" + chompDto.getImage());
 			chompDto.setOpened(today.after(chompDto.getOpendate()) && today.before(chompDto.getClosedate()));
-			
 			chompDtoList.add(chompDto);
 		}
 		
@@ -207,17 +205,9 @@ public class ChompService {
 	// 투표 작성
 	public VoteCreateResponseDto createVote(VoteCreateRequestDto voteRequestDto, MultipartFile file) {
 		
-		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
-			}
-		}
-		voteRequestDto.setUserId(userService.readUserByUsername(username).getId());
-		
 		// 입력값 검증
-	    if (voteRequestDto == null || voteRequestDto.getTitle() == null
+	    if (voteRequestDto == null
+	    		|| voteRequestDto.getTitle() == null
 	    		|| voteRequestDto.getOpendate() == null
 	    		|| voteRequestDto.getClosedate() == null
 	    		|| voteRequestDto.getCategory() == null
@@ -227,12 +217,13 @@ public class ChompService {
 	    if (voteRequestDto.getOpendate().after(voteRequestDto.getClosedate())) {
 	    	throw new ApiException(VoteErrorCode.VOTE_INVALID_PERIOD);
 	    }
+	    if (file == null) {
+	    	throw new ApiException(VoteErrorCode.VOTE_INVALID_FILE);
+	    }
 	    for (VoteChoiceCreateRequestDto choiceDto : voteRequestDto.getChoiceList()) {
 	    	if (choiceDto.getChoice() == null) {
 	    		throw new ApiException(VoteErrorCode.VOTE_CHOICE_INVALID_INPUT);
 	    	}
-	    }if (file == null) {
-	    	throw new ApiException(EventErrorCode.EVENT_INVALID_FILE);
 	    }
 	    
         // 파일 저장
@@ -241,26 +232,24 @@ public class ChompService {
         	voteRequestDto.setImage(image);
         }
         catch (Exception e) {
-            throw new ApiException(EventErrorCode.EVENT_FILE_UPLOAD_FAIL);
+            throw new ApiException(VoteErrorCode.VOTE_FILE_UPLOAD_FAIL);
         }
 		
-	    // 투표 생성
+	    // 투표 작성
 	    Chomp vote = chompMapper.toEntity(voteRequestDto);
 	    try {
 	    	vote = chompRepository.save(vote);
-	    	
-	    	// 투표 선택지 생성
-    		for (VoteChoiceCreateRequestDto choiceDto : voteRequestDto.getChoiceList()) {
-    			choiceDto.setChompId(vote.getId());
-    			VoteChoice choice = choiceMapper.toEntity(choiceDto);
-    			try {
-    				choiceRepository.save(choice);
-		    	}
-		    	catch (Exception e) {
-					throw new ApiException(VoteErrorCode.VOTE_CHOICE_CREATE_FAIL);
-		    	}
-    		}
-    		
+	    	// 투표 옵션 작성
+			try {
+				for (VoteChoiceCreateRequestDto choiceDto : voteRequestDto.getChoiceList()) {
+					choiceDto.setChompId(vote.getId());
+					VoteChoice choice = choiceMapper.toEntity(choiceDto);
+					choiceRepository.save(choice);
+				}
+	    	}
+	    	catch (Exception e) {
+				throw new ApiException(VoteErrorCode.VOTE_CHOICE_CREATE_FAIL);
+	    	}
 	    	return chompMapper.toVoteCreateResponseDto(vote);
 	    }
 	    catch (Exception e) {

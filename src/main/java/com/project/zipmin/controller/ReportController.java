@@ -16,6 +16,7 @@ import com.project.zipmin.service.ReportService;
 import io.swagger.v3.oas.annotations.Parameter;
 
 @RestController
+
 public class ReportController {
 	
 	@Autowired

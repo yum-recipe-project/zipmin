@@ -16,7 +16,6 @@ public class VoteReadResponseDto {
 	private String title;
 	private Date opendate;
 	private Date closedate;
-	private String content;
 	private String category;
 	private String image;
 	private int userId;

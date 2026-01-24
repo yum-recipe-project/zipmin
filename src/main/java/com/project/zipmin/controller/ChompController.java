@@ -34,6 +34,7 @@ import com.project.zipmin.dto.MegazineCreateRequestDto;
 import com.project.zipmin.dto.MegazineCreateResponseDto;
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
+import com.project.zipmin.api.ChompErrorCode;
 import com.project.zipmin.api.ChompSuccessCode;
 import com.project.zipmin.api.EventErrorCode;
 import com.project.zipmin.api.EventSuccessCode;
@@ -44,14 +45,15 @@ import com.project.zipmin.api.VoteSuccessCode;
 import com.project.zipmin.dto.MegazineReadResponseDto;
 import com.project.zipmin.dto.MegazineUpdateRequestDto;
 import com.project.zipmin.dto.MegazineUpdateResponseDto;
-import com.project.zipmin.dto.VoteCreateRequestDto;
-import com.project.zipmin.dto.VoteCreateResponseDto;
 import com.project.zipmin.dto.VoteRecordCreateRequestDto;
 import com.project.zipmin.dto.VoteRecordCreateResponseDto;
 import com.project.zipmin.dto.VoteUpdateRequestDto;
 import com.project.zipmin.dto.VoteUpdateResponseDto;
 import com.project.zipmin.dto.chomp.ChompReadResponseDto;
+import com.project.zipmin.dto.chomp.VoteCreateRequestDto;
+import com.project.zipmin.dto.chomp.VoteCreateResponseDto;
 import com.project.zipmin.dto.chomp.VoteReadResponseDto;
+import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.UserService;
@@ -207,8 +209,6 @@ public class ChompController {
 	public ResponseEntity<?> readVote(
 			@Parameter(description = "투표의 일련번호") @PathVariable int id) {
 		
-		System.err.println("진입");
-		
 		VoteReadResponseDto voteDto = chompService.readVoteById(id);
 		
 		return ResponseEntity.status(VoteSuccessCode.VOTE_READ_SUCCESS.getStatus())
@@ -219,6 +219,7 @@ public class ChompController {
 
 	
 	
+	// 투표 작성 (관리자)
 	@Operation(
 	    summary = "투표 작성"
 	)
@@ -243,10 +244,11 @@ public class ChompController {
 						schema = @Schema(implementation = VoteInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
-				description = "투표 기간 설정이 유효하지 않음",
+				description = "기간이 유효하지 않음",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = VoteInvalidPeriodResponse.class))),
+		// 400 VOTE_FILE_UPLOAD_FAIL 파일이 유효하지 않음
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
 				description = "입력값이 유효하지 않음",
@@ -271,6 +273,7 @@ public class ChompController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		// 500 VOTE_FILE_UPLOAD_FAIL 투표 파일 업로드 실패
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "500",
 				description = "서버 내부 오류",
@@ -291,6 +294,13 @@ public class ChompController {
 		}
 		
 		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+			}
+		}
+		voteRequestDto.setUserId(userService.readUserByUsername(username).getId());
 		
 		VoteCreateResponseDto voteResponseDto = chompService.createVote(voteRequestDto, file);
 		

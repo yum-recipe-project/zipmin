@@ -1,7 +1,6 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.chomp;
 
 import java.util.Date;
-import java.util.List;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -10,15 +9,14 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class VoteCreateRequestDto {
-
+public class VoteCreateResponseDto {
+	
+	private int id;
 	private String title;
 	private Date opendate;
 	private Date closedate;
 	private String category;
 	private String image;
 	private int userId;
-	
-	private List<VoteChoiceCreateRequestDto> choiceList;
 	
 }

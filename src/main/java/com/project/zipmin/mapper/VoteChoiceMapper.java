@@ -3,9 +3,9 @@ package com.project.zipmin.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.project.zipmin.dto.VoteChoiceCreateRequestDto;
 import com.project.zipmin.dto.VoteChoiceUpdateRequestDto;
 import com.project.zipmin.dto.VoteChoiceUpdateResponseDto;
+import com.project.zipmin.dto.chomp.VoteChoiceCreateRequestDto;
 import com.project.zipmin.dto.chomp.VoteChoiceReadResponseDto;
 import com.project.zipmin.entity.VoteChoice;
 

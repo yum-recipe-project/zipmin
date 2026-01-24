@@ -4,6 +4,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import com.project.zipmin.dto.chomp.ChompReadResponseDto;
+import com.project.zipmin.dto.chomp.VoteCreateRequestDto;
+import com.project.zipmin.dto.chomp.VoteCreateResponseDto;
 import com.project.zipmin.dto.chomp.VoteReadResponseDto;
 import com.project.zipmin.dto.EventCreateRequestDto;
 import com.project.zipmin.dto.EventCreateResponseDto;
@@ -14,8 +16,6 @@ import com.project.zipmin.dto.MegazineCreateRequestDto;
 import com.project.zipmin.dto.MegazineCreateResponseDto;
 import com.project.zipmin.dto.MegazineReadResponseDto;
 import com.project.zipmin.dto.MegazineUpdateResponseDto;
-import com.project.zipmin.dto.VoteCreateRequestDto;
-import com.project.zipmin.dto.VoteCreateResponseDto;
 import com.project.zipmin.dto.VoteUpdateRequestDto;
 import com.project.zipmin.dto.VoteUpdateResponseDto;
 import com.project.zipmin.entity.Chomp;
@@ -23,6 +23,7 @@ import com.project.zipmin.entity.Chomp;
 @Mapper(componentModel = "spring")
 public interface ChompMapper {
 	
+	// Read
 	@Mapping(target = "user.id", source = "userId")
 	Chomp toEntity(ChompReadResponseDto chompDto);
 	
@@ -52,14 +53,15 @@ public interface ChompMapper {
 	
 	
 	// Create
-//	@Mapping(target = "id", ignore = true)
-//	Chomp toEntity(ChompCreateRequestDto chompDto);
-//	
-//	ChompCreateRequestDto toCreateRequestDto(Chomp chomp);
-//	
-//	Chomp toEntity(ChompCreateResponseDto chompDto);
-//	
-//	ChompCreateResponseDto toCreateResponseDto(Chomp chomp);
+	@Mapping(target = "user.id", source = "userId")
+	Chomp toEntity(VoteCreateRequestDto voteDto);
+	
+	@Mapping(target = "userId", source = "user.id")
+	VoteCreateRequestDto toVoteCreateRequestDto(Chomp chomp);
+
+	
+	
+	
 	
 	@Mapping(target = "user.id", source = "userId")
 	Chomp toEntity(MegazineCreateRequestDto megazineDto);
@@ -73,11 +75,6 @@ public interface ChompMapper {
 	@Mapping(target = "userId", source = "user.id")
 	MegazineCreateResponseDto toMegazineCreateResponseDto(Chomp chomp);
 	
-	@Mapping(target = "user.id", source = "userId")
-	Chomp toEntity(VoteCreateRequestDto voteDto);
-	
-	@Mapping(target = "userId", source = "user.id")
-	VoteCreateRequestDto toVoteCreateRequestDto(Chomp chomp);
 	
 	@Mapping(target = "user.id", source = "userId")
 	Chomp toEntity(VoteCreateResponseDto voteDto);

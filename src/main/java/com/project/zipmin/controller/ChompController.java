@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -54,6 +55,7 @@ import com.project.zipmin.dto.VoteUpdateRequestDto;
 import com.project.zipmin.dto.VoteUpdateResponseDto;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
+import com.project.zipmin.service.FundService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.ChompReadListFailResponse;
 import com.project.zipmin.swagger.ChompReadListSuccessResponse;
@@ -109,17 +111,12 @@ import com.project.zipmin.swagger.VoteUpdateFailResponse;
 import com.project.zipmin.swagger.VoteUpdateSuccessResponse;
 
 @RestController
+@RequiredArgsConstructor
 @Tag(name = "Chompessor API", description = "쩝쩝박사 관련 API")
 public class ChompController {
 	
-	@Autowired
-	ChompService chompService;
-	
-	@Autowired
-	UserService userService;
-	
-	@Autowired
-	CommentService commentService;
+	private final ChompService chompService;
+	private final UserService userService;
 	
 	
 	

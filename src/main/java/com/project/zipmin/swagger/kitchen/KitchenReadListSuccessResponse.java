@@ -1,11 +1,11 @@
-package com.project.zipmin.swagger;
+package com.project.zipmin.swagger.kitchen;
 
 import com.project.zipmin.dto.kitchen.GuideReadResponseDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(name = "GuideReadListSuccessResponse")
-public class GuideReadListSuccessResponse {
+@Schema(name = "KitchenReadListSuccessResponse")
+public class KitchenReadListSuccessResponse {
 	
     @Schema(example = "KITCHEN_READ_LIST_SUCCESS", description = "성공 코드")
     public String code;

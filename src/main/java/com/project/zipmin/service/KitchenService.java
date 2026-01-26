@@ -1,7 +1,6 @@
 package com.project.zipmin.service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -11,15 +10,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
-import org.springframework.security.access.method.P;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.KitchenErrorCode;
-import com.project.zipmin.api.ReportErrorCode;
-import com.project.zipmin.controller.KitchenController;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.kitchen.GuideCreateRequestDto;
 import com.project.zipmin.dto.kitchen.GuideCreateResponseDto;
@@ -28,7 +24,6 @@ import com.project.zipmin.dto.kitchen.GuideUpdateRequestDto;
 import com.project.zipmin.dto.kitchen.GuideUpdateResponseDto;
 import com.project.zipmin.dto.like.LikeCreateRequestDto;
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
-import com.project.zipmin.dto.like.LikeDeleteRequestDto;
 import com.project.zipmin.dto.like.LikeReadResponseDto;
 import com.project.zipmin.entity.Guide;
 import com.project.zipmin.entity.Role;
@@ -129,11 +124,11 @@ public class KitchenService {
 		if (guideIdList.isEmpty()) {
 			return Page.empty(pageable); 
 		}
-
+		
 		// 키친가이드 목록 조회
 		Page<Guide> guidePage;
 		try {
-			guidePage = kitchenRepository.findByIdIn(guideIdList, pageable);
+			guidePage = kitchenRepository.findAllByIdIn(guideIdList, pageable);
 		}
 		catch (Exception e) {
 			throw new ApiException(KitchenErrorCode.KITCHEN_READ_LIST_FAIL);

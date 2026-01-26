@@ -1,9 +1,9 @@
-package com.project.zipmin.swagger;
+package com.project.zipmin.swagger.kitchen;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(name = "GuideUnlikeSuccessResponse")
-public class GuideUnlikeSuccessResponse {
+@Schema(name = "KitchenUnlikeSuccessResponse")
+public class KitchenUnlikeSuccessResponse {
 	
     @Schema(example = "KITCHEN_UNLIKE_SUCCESS", description = "성공 코드")
     public String code;

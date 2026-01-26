@@ -1,9 +1,9 @@
-package com.project.zipmin.swagger;
+package com.project.zipmin.swagger.kitchen;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(name = "GuideUpdateFailResponse")
-public class GuideUpdateFailResponse {
+@Schema(name = "KitchenUpdateFailResponse")
+public class KitchenUpdateFailResponse {
 	
     @Schema(example = "KITCHEN_UPDATE_FAIL", description = "에러 코드")
     public String code;

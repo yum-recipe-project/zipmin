@@ -1,9 +1,9 @@
-package com.project.zipmin.swagger;
+package com.project.zipmin.swagger.kitchen;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(name = "GuideReadListFailResponse")
-public class GuideReadListFailResponse {
+@Schema(name = "KitchenReadListFailResponse")
+public class KitchenReadListFailResponse {
 	
     @Schema(example = "KITCHEN_READ_LIST_FAIL", description = "에러 코드")
     public String code;

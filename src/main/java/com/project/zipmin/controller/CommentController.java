@@ -53,8 +53,6 @@ import com.project.zipmin.swagger.CommentUpdateFailResponse;
 import com.project.zipmin.swagger.CommentUpdateSuccessResponse;
 import com.project.zipmin.swagger.EventInvalidInputResponse;
 import com.project.zipmin.swagger.EventNotFoundResponse;
-import com.project.zipmin.swagger.GuideInvalidInputResponse;
-import com.project.zipmin.swagger.GuideNotFoundResponse;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.MegazineInvalidInputResponse;
 import com.project.zipmin.swagger.MegazineNotFoundResponse;
@@ -64,6 +62,8 @@ import com.project.zipmin.swagger.UserInvalidInputResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
 import com.project.zipmin.swagger.VoteInvalidInputResponse;
 import com.project.zipmin.swagger.VoteNotFoundResponse;
+import com.project.zipmin.swagger.kitchen.KitchenInvalidInputResponse;
+import com.project.zipmin.swagger.kitchen.KitchenNotFoundResponse;
 import com.project.zipmin.swagger.like.LikeCountFailResponse;
 import com.project.zipmin.swagger.like.LikeCreateFailResponse;
 import com.project.zipmin.swagger.like.LikeDeleteFailResponse;
@@ -800,7 +800,7 @@ public class CommentController {
 				description = "입력값이 유효하지 않음",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = GuideInvalidInputResponse.class))),
+						schema = @Schema(implementation = KitchenInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
 				description = "로그인 되지 않은 사용자",
@@ -848,7 +848,7 @@ public class CommentController {
 				description = "해당 가이드를 찾을 수 없음",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = GuideNotFoundResponse.class))),
+						schema = @Schema(implementation = KitchenNotFoundResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "500",
 				description = "서버 내부 오류",

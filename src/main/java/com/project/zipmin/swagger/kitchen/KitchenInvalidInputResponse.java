@@ -1,11 +1,11 @@
-package com.project.zipmin.swagger;
+package com.project.zipmin.swagger.kitchen;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(name = "GuideInvalidInputResponse")
-public class GuideInvalidInputResponse {
+@Schema(name = "KitchenInvalidInputResponse")
+public class KitchenInvalidInputResponse {
 	
-    @Schema(example = "GUIDE_INVALID_INPUT", description = "에러 코드")
+    @Schema(example = "KITCHEN_INVALID_INPUT", description = "에러 코드")
     public String code;
 
     @Schema(example = "입력값이 유효하지 않음", description = "에러 메시지")

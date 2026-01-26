@@ -31,7 +31,7 @@ async function fetchSavedGuideList() {
             size: size
         }).toString();
 
-        const response = await instance.get(`/users/${payload.id}/likes/guides?${params}`);
+        const response = await instance.get(`/users/${payload.id}/guides/likes?${params}`);
         const result = response.data;
 
         if (result.code === 'USER_READ_LIST_SUCCESS') {

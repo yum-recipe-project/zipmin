@@ -1,11 +1,11 @@
-package com.project.zipmin.swagger;
+package com.project.zipmin.swagger.kitchen;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(name = "GuideUnauthorizedAccessResponse")
-public class GuideUnauthorizedAccessResponse {
+@Schema(name = "KitchenUnauthorizedResponse")
+public class KitchenUnauthorizedResponse {
 	
-    @Schema(example = "KITCHEN_UNAUTHORIZED_ACCESS", description = "에러 코드")
+    @Schema(example = "KITCHEN_UNAUTHORIZED", description = "에러 코드")
     public String code;
 
     @Schema(example = "로그인되지 않은 사용자", description = "에러 메시지")

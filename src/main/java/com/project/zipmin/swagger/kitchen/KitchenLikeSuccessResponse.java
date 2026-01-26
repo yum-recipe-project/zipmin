@@ -1,11 +1,11 @@
-package com.project.zipmin.swagger;
+package com.project.zipmin.swagger.kitchen;
 
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(name = "GuideLikeSuccessResponse")
-public class GuideLikeSuccessResponse {
+@Schema(name = "KitchenLikeSuccessResponse")
+public class KitchenLikeSuccessResponse {
 	
     @Schema(example = "KITCHEN_LIKE_SUCCESS", description = "성공 코드")
     public String code;

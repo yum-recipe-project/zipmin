@@ -1,9 +1,9 @@
-package com.project.zipmin.swagger;
+package com.project.zipmin.swagger.kitchen;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(name = "GuideDeleteFailResponse")
-public class GuideDeleteFailResponse {
+@Schema(name = "KitchenDeleteFailResponse")
+public class KitchenDeleteFailResponse {
 	
     @Schema(example = "KITCHEN_DELETE_FAIL", description = "에러 코드")
     public String code;

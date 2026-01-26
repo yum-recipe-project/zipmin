@@ -355,7 +355,6 @@ public class KitchenService {
 	
 	
 	
-	// Delete로 변경 !!!!
 	// 키친가이드 좋아요 취소
 	public void unlikeGuide(LikeDeleteRequestDto likeDto) {
 		

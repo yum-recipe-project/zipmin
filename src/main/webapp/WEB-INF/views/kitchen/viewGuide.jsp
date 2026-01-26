@@ -24,7 +24,18 @@
 	                <div class="guide_header">
 	                    <span class="subtitle"></span>
 	                    <h2 class="title"></h2>
-	                    <div class="guide_writer"></div>
+	                    <div class="guide_writer">
+	                    		<!-- 프로필 -->
+								<img class="writer_avatar"/>
+								<span class="profile_img"></span>
+						
+								<!-- 텍스트 정보 -->
+								<span class="writer_name"></span>
+								<span class="dot">・</span>
+								<span class="scrap_count"></span>
+								<span class="dot">・</span>
+								<span class="post_date"></span>
+	                    </div>
 	                    <div class="btn_wrap"></div>
 	                </div>
 					

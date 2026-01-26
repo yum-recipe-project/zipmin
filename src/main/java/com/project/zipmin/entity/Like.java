@@ -30,7 +30,6 @@ public class Like {
 	private String tablename;
 	private int recodenum;
 	
-	// private String userId;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")
 	private User user;

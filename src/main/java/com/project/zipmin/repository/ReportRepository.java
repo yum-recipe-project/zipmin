@@ -10,10 +10,12 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
 
 	// Read
 	Report findById(int id);
-	List<Report> findAllByTablenameAndRecodenum(String tablename, int recodenum);
 	Report findByTablenameAndRecodenumAndUserId(String tablename, int recodenum, int userId);
+	
+	// Read List
+	List<Report> findAllByTablenameAndRecodenum(String tablename, int recodenum);
 
-	// etc
+	// Etc
 	int countByTablenameAndRecodenum(String tablename, int recodenum);
 	boolean existsByTablenameAndRecodenumAndUserId(String tablename, int recodenum, int userId);
 	

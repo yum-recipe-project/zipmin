@@ -15,9 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ReviewErrorCode;
-import com.project.zipmin.dto.LikeCreateRequestDto;
-import com.project.zipmin.dto.LikeCreateResponseDto;
-import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.ReviewCreateRequestDto;
 import com.project.zipmin.dto.ReviewCreateResponseDto;
 import com.project.zipmin.dto.ReviewReadMyResponseDto;
@@ -25,6 +22,9 @@ import com.project.zipmin.dto.ReviewReadResponseDto;
 import com.project.zipmin.dto.ReviewUpdateRequestDto;
 import com.project.zipmin.dto.ReviewUpdateResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
+import com.project.zipmin.dto.like.LikeCreateRequestDto;
+import com.project.zipmin.dto.like.LikeCreateResponseDto;
+import com.project.zipmin.dto.like.LikeDeleteRequestDto;
 import com.project.zipmin.dto.report.ReportCreateRequestDto;
 import com.project.zipmin.dto.report.ReportCreateResponseDto;
 import com.project.zipmin.entity.Review;
@@ -110,7 +110,7 @@ public class ReviewService {
 			if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
 				String username = authentication.getName();
 				int userId = userService.readUserByUsername(username).getId();
-				reviewDto.setLiked(likeService.existsUserLike("review", review.getId(), userId));
+				reviewDto.setLiked(likeService.existLike("review", review.getId(), userId));
 			}
 
             reviewDtoList.add(reviewDto);
@@ -344,8 +344,10 @@ public class ReviewService {
     public LikeCreateResponseDto likeReview(LikeCreateRequestDto likeDto) {
 
         // 입력값 검증
-        if (likeDto == null || likeDto.getTablename() == null
-                || likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+        if (likeDto == null
+        		|| likeDto.getTablename() == null
+                || likeDto.getRecodenum() == 0
+                || likeDto.getUserId() == 0) {
             throw new ApiException(ReviewErrorCode.REVIEW_INVALID_INPUT);
         }
 
@@ -369,8 +371,10 @@ public class ReviewService {
     public void unlikeReview(LikeDeleteRequestDto likeDto) {
 
         // 입력값 검증
-        if (likeDto == null || likeDto.getTablename() == null
-                || likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+        if (likeDto == null
+        		|| likeDto.getTablename() == null
+                || likeDto.getRecodenum() == 0
+                || likeDto.getUserId() == 0) {
             throw new ApiException(ReviewErrorCode.REVIEW_INVALID_INPUT);
         }
 

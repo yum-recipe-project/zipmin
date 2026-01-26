@@ -1,6 +1,6 @@
-package com.project.zipmin.swagger;
+package com.project.zipmin.swagger.like;
 
-import com.project.zipmin.dto.LikeCreateResponseDto;
+import com.project.zipmin.dto.like.LikeCreateResponseDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

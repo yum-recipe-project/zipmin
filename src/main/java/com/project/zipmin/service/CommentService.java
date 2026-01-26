@@ -21,13 +21,12 @@ import com.project.zipmin.dto.UserCommentReadesponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.CommentUpdateRequestDto;
 import com.project.zipmin.dto.CommentUpdateResponseDto;
-import com.project.zipmin.dto.LikeCreateRequestDto;
-import com.project.zipmin.dto.LikeCreateResponseDto;
-import com.project.zipmin.dto.LikeDeleteRequestDto;
 import com.project.zipmin.dto.UserReadResponseDto;
+import com.project.zipmin.dto.like.LikeCreateRequestDto;
+import com.project.zipmin.dto.like.LikeCreateResponseDto;
+import com.project.zipmin.dto.like.LikeDeleteRequestDto;
 import com.project.zipmin.dto.report.ReportCreateRequestDto;
 import com.project.zipmin.dto.report.ReportCreateResponseDto;
-import com.project.zipmin.dto.report.ReportDeleteRequestDto;
 import com.project.zipmin.entity.Comment;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.mapper.CommentMapper;
@@ -112,7 +111,7 @@ public class CommentService {
 			if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
 				String username = authentication.getName();
 				int userId = userService.readUserByUsername(username).getId();
-				commentDto.setLiked(likeService.existsUserLike("comments", comment.getId(), userId));
+				commentDto.setLiked(likeService.existLike("comments", comment.getId(), userId));
 			}
 			
 			// 대댓글
@@ -135,7 +134,7 @@ public class CommentService {
 				if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
 					String username = authentication.getName();
 					int userId = userService.readUserByUsername(username).getId();
-					subcommentDto.setLiked(likeService.existsUserLike("comments", subcomment.getId(), userId));
+					subcommentDto.setLiked(likeService.existLike("comments", subcomment.getId(), userId));
 				}
 				
 				subcommentDtoList.add(subcommentDto);
@@ -475,8 +474,10 @@ public class CommentService {
 	public LikeCreateResponseDto likeComment(LikeCreateRequestDto likeDto) {
 		
 		// 입력값 검증
-		if (likeDto == null || likeDto.getTablename() == null
-				|| likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+		if (likeDto == null
+				|| likeDto.getTablename() == null
+				|| likeDto.getRecodenum() == 0
+				|| likeDto.getUserId() == 0) {
 			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
 		}
 		
@@ -506,8 +507,10 @@ public class CommentService {
 	public void unlikeComment(LikeDeleteRequestDto likeDto) {
 		
 		// 입력값 검증
-		if (likeDto == null || likeDto.getTablename() == null
-				|| likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+		if (likeDto == null
+				|| likeDto.getTablename() == null
+				|| likeDto.getRecodenum() == 0
+				|| likeDto.getUserId() == 0) {
 			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
 		}
 		

@@ -1,7 +1,5 @@
 package com.project.zipmin.service;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -140,7 +138,7 @@ public class ReportService {
 		
 		// 신고 삭제
 		try {
-			reportRepository.deleteById(report.getId());
+			reportRepository.deleteById(id);
 		}
 		catch (Exception e) {
 			throw new ApiException(ReportErrorCode.REPORT_DELETE_FAIL);

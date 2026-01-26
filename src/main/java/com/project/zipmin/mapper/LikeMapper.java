@@ -3,10 +3,10 @@ package com.project.zipmin.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.project.zipmin.dto.LikeCreateRequestDto;
-import com.project.zipmin.dto.LikeCreateResponseDto;
-import com.project.zipmin.dto.LikeDeleteRequestDto;
-import com.project.zipmin.dto.LikeReadResponseDto;
+import com.project.zipmin.dto.like.LikeCreateRequestDto;
+import com.project.zipmin.dto.like.LikeCreateResponseDto;
+import com.project.zipmin.dto.like.LikeDeleteRequestDto;
+import com.project.zipmin.dto.like.LikeReadResponseDto;
 import com.project.zipmin.entity.Like;
 
 @Mapper(componentModel = "spring")
@@ -18,6 +18,8 @@ public interface LikeMapper {
 	
 	@Mapping(target = "userId", source = "user.id")
 	LikeReadResponseDto toReadResponseDto(Like like);
+	
+	
 	
 	// Create
 	@Mapping(target = "user.id", source = "userId")

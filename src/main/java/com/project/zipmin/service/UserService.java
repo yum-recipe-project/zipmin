@@ -20,10 +20,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.UserErrorCode;
-import com.project.zipmin.dto.LikeCreateRequestDto;
-import com.project.zipmin.dto.LikeCreateResponseDto;
-import com.project.zipmin.dto.LikeDeleteRequestDto;
-import com.project.zipmin.dto.LikeReadResponseDto;
 import com.project.zipmin.dto.MailDto;
 import com.project.zipmin.dto.PasswordTokenDto;
 import com.project.zipmin.dto.UserCreateRequestDto;
@@ -37,6 +33,10 @@ import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.UserReadUsernameRequestDto;
 import com.project.zipmin.dto.UserUpdateRequestDto;
 import com.project.zipmin.dto.UserUpdateResponseDto;
+import com.project.zipmin.dto.like.LikeCreateRequestDto;
+import com.project.zipmin.dto.like.LikeCreateResponseDto;
+import com.project.zipmin.dto.like.LikeDeleteRequestDto;
+import com.project.zipmin.dto.like.LikeReadResponseDto;
 import com.project.zipmin.entity.PasswordToken;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.entity.User;
@@ -219,7 +219,7 @@ public class UserService {
 			UserProfileReadResponseDto userDto = userMapper.toReadProfileResponseDto(user);
 			
 			// 좋아요 여부
-			userDto.setLiked(likeService.existsUserLike("users", userDto.getId(), userId));
+			userDto.setLiked(likeService.existLike("users", userDto.getId(), userId));
 			
 			userDtoList.add(userDto);
 		}
@@ -263,7 +263,7 @@ public class UserService {
 			UserProfileReadResponseDto userDto = userMapper.toReadProfileResponseDto(user);
 			
 			// 좋아요 여부
-			userDto.setLiked(likeService.existsUserLike("users", userDto.getId(), userId));
+			userDto.setLiked(likeService.existLike("users", userDto.getId(), userId));
 			
 			userDtoList.add(userDto);
 		}
@@ -310,7 +310,7 @@ public class UserService {
 		if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
 			String username = authentication.getName();
 			int userId = readUserByUsername(username).getId();
-			userDto.setLiked(likeService.existsUserLike("users", user.getId(), userId));
+			userDto.setLiked(likeService.existLike("users", user.getId(), userId));
 		}
 		
 		return userDto;
@@ -683,8 +683,10 @@ public class UserService {
 	public LikeCreateResponseDto likeUser(LikeCreateRequestDto likeDto) {
 		
 		// 입력값 검증
-		if (likeDto == null || likeDto.getTablename() == null
-				|| likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+		if (likeDto == null
+				|| likeDto.getTablename() == null
+				|| likeDto.getRecodenum() == 0
+				|| likeDto.getUserId() == 0) {
 			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
 		}
 		
@@ -714,8 +716,10 @@ public class UserService {
 	public void unlikeUser(LikeDeleteRequestDto likeDto) {
 		
 		// 입력값 검증
-		if (likeDto == null || likeDto.getTablename() == null
-				|| likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+		if (likeDto == null
+				|| likeDto.getTablename() == null
+				|| likeDto.getRecodenum() == 0
+				|| likeDto.getUserId() == 0) {
 			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
 		}
 		

@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.like;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class LikeReadResponseDto {
+public class LikeCreateResponseDto {
 	
-	private Integer id;
+	private int id;
 	private String tablename;
-	private Integer recodenum;
-	private Integer userId;
+	private int recodenum;
+	private int userId;
 	
 }

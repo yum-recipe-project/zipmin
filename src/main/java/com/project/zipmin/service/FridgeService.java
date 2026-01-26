@@ -27,10 +27,6 @@ import com.project.zipmin.dto.FridgeCreateResponseDto;
 import com.project.zipmin.dto.FridgeReadResponseDto;
 import com.project.zipmin.dto.FridgeUpdateRequestDto;
 import com.project.zipmin.dto.FridgeUpdateResponseDto;
-import com.project.zipmin.dto.LikeCreateRequestDto;
-import com.project.zipmin.dto.LikeCreateResponseDto;
-import com.project.zipmin.dto.LikeDeleteRequestDto;
-import com.project.zipmin.dto.LikeReadResponseDto;
 import com.project.zipmin.dto.RecipeReadResponseDto;
 import com.project.zipmin.dto.RecipeStockReadResponseDto;
 import com.project.zipmin.dto.UserFridgeCreateRequestDto;
@@ -39,6 +35,10 @@ import com.project.zipmin.dto.UserFridgeReadResponseDto;
 import com.project.zipmin.dto.UserFridgeUpdateRequestDto;
 import com.project.zipmin.dto.UserFridgeUpdateResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
+import com.project.zipmin.dto.like.LikeCreateRequestDto;
+import com.project.zipmin.dto.like.LikeCreateResponseDto;
+import com.project.zipmin.dto.like.LikeDeleteRequestDto;
+import com.project.zipmin.dto.like.LikeReadResponseDto;
 import com.project.zipmin.entity.Fridge;
 import com.project.zipmin.entity.Like;
 import com.project.zipmin.entity.Role;
@@ -137,7 +137,7 @@ public class FridgeService {
 			if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
 				String username = authentication.getName();
 				int userId = userService.readUserByUsername(username).getId();
-				fridgeDto.setLiked(likeService.existsUserLike("fridge", fridgeDto.getId(), userId));
+				fridgeDto.setLiked(likeService.existLike("fridge", fridgeDto.getId(), userId));
 			}
 			
 			fridgeDtoList.add(fridgeDto);
@@ -233,7 +233,7 @@ public class FridgeService {
 			FridgeReadResponseDto fridgeDto = fridgeMapper.toReadResponseDto(fridge);
 			
 			// 좋아요 여부
-			fridgeDto.setLiked(likeService.existsUserLike("fridge", fridgeDto.getId(), userId));
+			fridgeDto.setLiked(likeService.existLike("fridge", fridgeDto.getId(), userId));
 			
 			fridgeDtoList.add(fridgeDto);
 		}
@@ -279,7 +279,7 @@ public class FridgeService {
 			FridgeReadResponseDto fridgeDto = fridgeMapper.toReadResponseDto(fridge);
 			
 			// 좋아요 여부
-			fridgeDto.setLiked(likeService.existsUserLike("fridge", fridgeDto.getId(), userId));
+			fridgeDto.setLiked(likeService.existLike("fridge", fridgeDto.getId(), userId));
 			
 			fridgeDtoList.add(fridgeDto);
 		}
@@ -586,8 +586,10 @@ public class FridgeService {
 	public LikeCreateResponseDto likeFridge(LikeCreateRequestDto likeDto) {
 		
 		// 입력값 검증
-		if (likeDto == null || likeDto.getTablename() == null
-				|| likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+		if (likeDto == null
+				|| likeDto.getTablename() == null
+				|| likeDto.getRecodenum() == 0
+				|| likeDto.getUserId() == 0) {
 			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
 		}
 		
@@ -617,8 +619,10 @@ public class FridgeService {
 	public void unlikeFridge(LikeDeleteRequestDto likeDto) {
 		
 		// 입력값 검증
-		if (likeDto == null || likeDto.getTablename() == null
-				|| likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+		if (likeDto == null
+				|| likeDto.getTablename() == null
+				|| likeDto.getRecodenum() == 0
+				|| likeDto.getUserId() == 0) {
 			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
 		}
 		

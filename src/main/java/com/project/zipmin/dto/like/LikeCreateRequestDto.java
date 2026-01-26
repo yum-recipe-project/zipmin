@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.like;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class LikeCreateRequestDto {
 	
 	private String tablename;
-	private Integer recodenum;
-	private Integer userId;
+	private int recodenum;
+	private int userId;
 	
 }

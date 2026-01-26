@@ -24,11 +24,11 @@ import com.project.zipmin.dto.GuideReadMySavedResponseDto;
 import com.project.zipmin.dto.GuideReadResponseDto;
 import com.project.zipmin.dto.GuideUpdateRequestDto;
 import com.project.zipmin.dto.GuideUpdateResponseDto;
-import com.project.zipmin.dto.LikeCreateRequestDto;
-import com.project.zipmin.dto.LikeCreateResponseDto;
-import com.project.zipmin.dto.LikeDeleteRequestDto;
-import com.project.zipmin.dto.LikeReadResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
+import com.project.zipmin.dto.like.LikeCreateRequestDto;
+import com.project.zipmin.dto.like.LikeCreateResponseDto;
+import com.project.zipmin.dto.like.LikeDeleteRequestDto;
+import com.project.zipmin.dto.like.LikeReadResponseDto;
 import com.project.zipmin.entity.Comment;
 import com.project.zipmin.entity.Guide;
 import com.project.zipmin.entity.Like;
@@ -146,7 +146,7 @@ public class KitchenService {
 			    String username = authentication.getName();
 			    int userId = userService.readUserByUsername(username).getId();
 			    
-			    guideDto.setLikestatus(likeService.existsUserLike("guide", guideDto.getId(), userId));
+			    guideDto.setLikestatus(likeService.existLike("guide", guideDto.getId(), userId));
 			}
 			
 			UserReadResponseDto userInfo = userService.readUserById(guideDto.getUserId());
@@ -178,7 +178,7 @@ public class KitchenService {
 	            && !"anonymousUser".equals(authentication.getPrincipal())) {
 	        String username = authentication.getName();
 	        int userId = userService.readUserByUsername(username).getId();
-	        likestatus = likeService.existsUserLike("guide", guideDto.getId(), userId);
+	        likestatus = likeService.existLike("guide", guideDto.getId(), userId);
 	    }
 	    UserReadResponseDto userInfo = userService.readUserById(guideDto.getUserId());
 	    guideDto.setAvatar(userInfo.getAvatar());
@@ -192,8 +192,10 @@ public class KitchenService {
 	public LikeCreateResponseDto likeGuide(LikeCreateRequestDto likeDto) {
 		
 		// 입력값 검증
-		if (likeDto == null || likeDto.getTablename() == null
-				|| likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+		if (likeDto == null
+				|| likeDto.getTablename() == null
+				|| likeDto.getRecodenum() == 0
+				|| likeDto.getUserId() == 0) {
 			throw new ApiException(KitchenErrorCode.KITCHEN_INVALID_INPUT);
 		}
 		
@@ -219,8 +221,10 @@ public class KitchenService {
 	// 가이드 좋아요 취소
 	public void unlikeGuide(LikeDeleteRequestDto likeDto) {
 	    // 입력값 검증
-	    if (likeDto == null || likeDto.getTablename() == null
-	            || likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+	    if (likeDto == null
+	    		|| likeDto.getTablename() == null
+	            || likeDto.getRecodenum() == 0
+	            || likeDto.getUserId() == 0) {
 	        throw new ApiException(KitchenErrorCode.KITCHEN_INVALID_INPUT);
 	    }
 

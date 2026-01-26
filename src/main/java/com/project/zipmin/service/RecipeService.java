@@ -20,10 +20,6 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.KitchenErrorCode;
 import com.project.zipmin.api.RecipeErrorCode;
 import com.project.zipmin.api.UserErrorCode;
-import com.project.zipmin.dto.LikeCreateRequestDto;
-import com.project.zipmin.dto.LikeCreateResponseDto;
-import com.project.zipmin.dto.LikeDeleteRequestDto;
-import com.project.zipmin.dto.LikeReadResponseDto;
 import com.project.zipmin.dto.RecipeCategoryCreateRequestDto;
 import com.project.zipmin.dto.RecipeCategoryCreateResponseDto;
 import com.project.zipmin.dto.RecipeCategoryReadResponseDto;
@@ -39,6 +35,10 @@ import com.project.zipmin.dto.RecipeStockCreateRequestDto;
 import com.project.zipmin.dto.RecipeStockCreateResponseDto;
 import com.project.zipmin.dto.RecipeStockReadResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
+import com.project.zipmin.dto.like.LikeCreateRequestDto;
+import com.project.zipmin.dto.like.LikeCreateResponseDto;
+import com.project.zipmin.dto.like.LikeDeleteRequestDto;
+import com.project.zipmin.dto.like.LikeReadResponseDto;
 import com.project.zipmin.entity.Recipe;
 import com.project.zipmin.entity.RecipeCategory;
 import com.project.zipmin.entity.RecipeStep;
@@ -349,7 +349,7 @@ public class RecipeService {
 		if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
 			String username = authentication.getName();
 			int userId = userService.readUserByUsername(username).getId();
-			recipeDto.setLiked(likeService.existsUserLike("recipe", recipeDto.getId(), userId));
+			recipeDto.setLiked(likeService.existLike("recipe", recipeDto.getId(), userId));
 		}
 		
 		// 레시피 카테고리 조회
@@ -621,11 +621,11 @@ public class RecipeService {
 	// 레시피를 저장하는 함수
 	public LikeCreateResponseDto likeRecipe(LikeCreateRequestDto likeDto) {
 		
-		System.err.println(likeDto);
-		
 		// 입력값 검증
-		if (likeDto == null || likeDto.getTablename() == null
-				|| likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+		if (likeDto == null
+				|| likeDto.getTablename() == null
+				|| likeDto.getRecodenum() == 0
+				|| likeDto.getUserId() == 0) {
 			throw new ApiException(RecipeErrorCode.RECIPE_INVALID_INPUT);
 		}
 		
@@ -651,8 +651,10 @@ public class RecipeService {
 	// 레시피 저장 취소
 	public void unlikeRecipe(LikeDeleteRequestDto likeDto) {
 	    // 입력값 검증
-	    if (likeDto == null || likeDto.getTablename() == null
-	            || likeDto.getRecodenum() == null || likeDto.getUserId() == null) {
+	    if (likeDto == null
+	    		|| likeDto.getTablename() == null
+	            || likeDto.getRecodenum() == 0
+	            || likeDto.getUserId() == 0) {
 	        throw new ApiException(RecipeErrorCode.RECIPE_INVALID_INPUT);
 	    }
 

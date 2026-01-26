@@ -5,7 +5,7 @@ import org.mapstruct.Mapping;
 
 import com.project.zipmin.dto.report.ReportCreateRequestDto;
 import com.project.zipmin.dto.report.ReportCreateResponseDto;
-import com.project.zipmin.dto.report.ReportDeleteRequestDto;
+import com.project.zipmin.dto.report.ReportReadRequestDto;
 import com.project.zipmin.dto.report.ReportReadResponseDto;
 import com.project.zipmin.entity.Report;
 
@@ -13,6 +13,10 @@ import com.project.zipmin.entity.Report;
 public interface ReportMapper {
 	
 	// Read
+	Report toEntity(ReportReadRequestDto reportDto);
+	
+	ReportReadRequestDto toReadRequestDto(Report report);
+	
 	@Mapping(target = "user.id", source = "userId")
 	Report toEntity(ReportReadResponseDto reportDto);
 	
@@ -33,14 +37,5 @@ public interface ReportMapper {
 	
 	@Mapping(target = "userId", source = "user.id")
 	ReportCreateResponseDto toCreateResponseDto(Report report);
-	
-	
-	
-	// Delete
-	@Mapping(target = "user.id", source = "userId")
-	Report toEntity(ReportDeleteRequestDto reportDto);
-	
-	@Mapping(target = "userId", source = "user.id")
-	ReportDeleteRequestDto toDeleteRequestDto(Report report);
 	
 }

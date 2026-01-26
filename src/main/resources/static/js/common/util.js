@@ -244,3 +244,115 @@ function alertDanger(message) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+/**
+ * p 엘리먼트를 생성한다
+ */
+function createP(text, className) {
+	const p = document.createElement('p');
+	p.textContent = text;
+
+	if (className) {
+		p.className = className;
+	}
+
+	return p;
+}
+
+
+
+
+/**
+ * span 엘리먼트를 생성한다
+ */
+function createSpan(text, className) {
+	const span = document.createElement('span');
+	span.textContent = text;
+
+	if (className) {
+		span.className = className;
+	}
+
+	return span;
+}
+
+
+
+
+
+
+/**
+ * Div 생성
+ */
+function createDiv(className) {
+	const div = document.createElement('div');
+
+	if (className) {
+		div.className = className;
+	}
+	
+	return div;
+}
+
+
+
+
+
+/**
+ * img 엘리먼트를 생성한다
+ */
+function createImg(src, className) {
+	const img = document.createElement('img');
+	img.src = src;
+
+	if (className) {
+		img.className = className;
+	}
+
+	return img;
+}
+
+
+
+
+
+/**
+ * a 엘리먼트를 생성한다
+ */
+function createLink(href, className) {
+	const a = document.createElement('a');
+	a.href = href;
+
+	if (className) {
+		a.className = className;
+	}
+
+	return a;
+}
+
+
+
+
+
+/**
+ * button 엘리먼트를 생성한다
+ */
+function createButton(className) {
+	const button = document.createElement('button');
+
+	if (className) {
+		button.className = className;
+	}
+
+	return button;
+}
+

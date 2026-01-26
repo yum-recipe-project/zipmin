@@ -28,10 +28,10 @@ public class LikeService {
 	
 	private final LikeMapper likeMapper;
 	
-	private final UserService userService;
+	// private final UserService userService;
 	
 	
-	
+	 
 	
 	
 	// 좋아요 조회
@@ -172,22 +172,22 @@ public class LikeService {
 		}
 
 		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		UserReadResponseDto currentUser = userService.readUserByUsername(username);
-		
-		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
-				if (like.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
-					throw new ApiException(LikeErrorCode.LIKE_FORBIDDEN);
-				}
-				if (like.getUser().getRole().equals(Role.ROLE_ADMIN) && currentUser.getId() != like.getUser().getId()) {
-					throw new ApiException(LikeErrorCode.LIKE_FORBIDDEN);
-				}
-			}
-			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != like.getUser().getId()) {
-				throw new ApiException(LikeErrorCode.LIKE_FORBIDDEN);
-			}
-		}
+//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//		UserReadResponseDto currentUser = userService.readUserByUsername(username);
+//		
+//		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+//			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
+//				if (like.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+//					throw new ApiException(LikeErrorCode.LIKE_FORBIDDEN);
+//				}
+//				if (like.getUser().getRole().equals(Role.ROLE_ADMIN) && currentUser.getId() != like.getUser().getId()) {
+//					throw new ApiException(LikeErrorCode.LIKE_FORBIDDEN);
+//				}
+//			}
+//			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != like.getUser().getId()) {
+//				throw new ApiException(LikeErrorCode.LIKE_FORBIDDEN);
+//			}
+//		}
 
 		// 좋아요 삭제
 		try {
@@ -220,22 +220,22 @@ public class LikeService {
 		}
 		
 		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		UserReadResponseDto currentUser = userService.readUserByUsername(username);
-		
-		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
-				if (like.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
-					throw new ApiException(LikeErrorCode.LIKE_FORBIDDEN);
-				}
-				if (like.getUser().getRole().equals(Role.ROLE_ADMIN) && currentUser.getId() != like.getUser().getId()) {
-					throw new ApiException(LikeErrorCode.LIKE_FORBIDDEN);
-				}
-			}
-			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != like.getUser().getId()) {
-				throw new ApiException(LikeErrorCode.LIKE_FORBIDDEN);
-			}
-		}
+//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//		UserReadResponseDto currentUser = userService.readUserByUsername(username);
+//		
+//		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+//			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
+//				if (like.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+//					throw new ApiException(LikeErrorCode.LIKE_FORBIDDEN);
+//				}
+//				if (like.getUser().getRole().equals(Role.ROLE_ADMIN) && currentUser.getId() != like.getUser().getId()) {
+//					throw new ApiException(LikeErrorCode.LIKE_FORBIDDEN);
+//				}
+//			}
+//			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != like.getUser().getId()) {
+//				throw new ApiException(LikeErrorCode.LIKE_FORBIDDEN);
+//			}
+//		}
 		
 		// 좋아요 삭제
 		try {

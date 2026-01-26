@@ -9,6 +9,20 @@ let guideList = [];
 
 
 /**
+ * 초기 함수를 실행하는 함수
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	
+	fetchRecipeList();
+	fetchGuideList();
+	
+});
+
+
+
+
+
+/**
  * 룰렛을 돌리는 함수
  */
 document.addEventListener('DOMContentLoaded', function() {
@@ -89,11 +103,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-/**
- * 서버에서 레시피와 키친가이드 목록 데이터를 가져오는 함수
- */
-document.addEventListener('DOMContentLoaded', async function () {
 
+/**
+ * 서버에서 레시피 목록 데이터를 가져오는 함수
+ */
+async function fetchRecipeList() {
+	
 	try {
 		const params = new URLSearchParams({
 			sort: 'reviewscore-desc',
@@ -119,7 +134,18 @@ document.addEventListener('DOMContentLoaded', async function () {
 	catch (error) {
 		console.error(error);
 	}
+	
+}
 
+
+
+
+
+/**
+ * 서버에서 키친가이드 목록 데이터를 가져오는 함수
+ */
+async function fetchGuideList() {
+	
 	// 서버에서 키친가이드 조회
 	try {
 		const params = new URLSearchParams({
@@ -135,6 +161,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 		
 		const result = await response.json();
 		
+		console.log(result);
+		
 		if (result.code === 'KITCHEN_READ_LIST_SUCCESS') {
 			guideList = result.data.content;			
 			renderGuideList(guideList);
@@ -146,7 +174,11 @@ document.addEventListener('DOMContentLoaded', async function () {
 		console.error(error);
 	}
 	
-});
+}
+
+
+
+
 
 
 

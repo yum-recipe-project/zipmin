@@ -28,6 +28,7 @@ import com.project.zipmin.dto.kitchen.GuideUpdateRequestDto;
 import com.project.zipmin.dto.kitchen.GuideUpdateResponseDto;
 import com.project.zipmin.dto.like.LikeCreateRequestDto;
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
+import com.project.zipmin.dto.like.LikeDeleteRequestDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.KitchenService;
 import com.project.zipmin.service.UserService;
@@ -51,7 +52,6 @@ import com.project.zipmin.swagger.kitchen.KitchenUnlikeFailResponse;
 import com.project.zipmin.swagger.kitchen.KitchenUnlikeSuccessResponse;
 import com.project.zipmin.swagger.kitchen.KitchenUpdateFailResponse;
 import com.project.zipmin.swagger.kitchen.KitchenUpdateSuccessResponse;
-import com.project.zipmin.swagger.like.LikeCountFailResponse;
 import com.project.zipmin.swagger.like.LikeDeleteFailResponse;
 import com.project.zipmin.swagger.like.LikeExistFailResponse;
 import com.project.zipmin.swagger.like.LikeForbiddenResponse;
@@ -133,7 +133,6 @@ public class KitchenController {
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 		
 	})
-	
 	// 키친가이드 목록 조회
 	@GetMapping("/guides")
 	public ResponseEntity<?> listGuide(
@@ -551,8 +550,8 @@ public class KitchenController {
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 			throw new ApiException(KitchenErrorCode.KITCHEN_UNAUTHORIZED);
 		}
-		
 		likeRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
+		
 		LikeCreateResponseDto likeResponseDto = kitchenService.likeGuide(likeRequestDto);
 					
 		return ResponseEntity.status(KitchenSuccessCode.KITCHEN_LIKE_SUCCESS.getStatus())
@@ -615,7 +614,7 @@ public class KitchenController {
 				description = "권한 없는 사용자의 접근",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = KitchenForbiddenResponse.class))),
+						schema = @Schema(implementation = LikeForbiddenResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
 				description = "해당 좋아요를 찾을 수 없음",
@@ -636,18 +635,19 @@ public class KitchenController {
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
 	// 키친가이드 좋아요 취소
-	@DeleteMapping("/guides/{guideId}/likes/{likeId}")
+	@DeleteMapping("/guides/{guideId}/likes")
 	public ResponseEntity<?> unlikeGuide(
 			@Parameter(description = "키친가이드의 일련번호") @PathVariable int guideId,
-			@Parameter(description = "좋아요의 일련번호") @PathVariable int likeId) {
+			@Parameter(description = "좋아요 삭제 요청 정보") @RequestBody LikeDeleteRequestDto likeDto) {
 
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 			throw new ApiException(KitchenErrorCode.KITCHEN_UNAUTHORIZED);
 		}
+		likeDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 
-		kitchenService.unlikeGuide(likeId);
+		kitchenService.unlikeGuide(likeDto);
 
 		return ResponseEntity.status(KitchenSuccessCode.KITCHEN_UNLIKE_SUCCESS.getStatus())
 				.body(ApiResponse.success(KitchenSuccessCode.KITCHEN_UNLIKE_SUCCESS, null));

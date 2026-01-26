@@ -1,5 +1,7 @@
 package com.project.zipmin.service;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.KitchenErrorCode;
@@ -24,6 +27,7 @@ import com.project.zipmin.dto.kitchen.GuideUpdateRequestDto;
 import com.project.zipmin.dto.kitchen.GuideUpdateResponseDto;
 import com.project.zipmin.dto.like.LikeCreateRequestDto;
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
+import com.project.zipmin.dto.like.LikeDeleteRequestDto;
 import com.project.zipmin.dto.like.LikeReadResponseDto;
 import com.project.zipmin.entity.Guide;
 import com.project.zipmin.entity.Role;
@@ -33,6 +37,7 @@ import com.project.zipmin.repository.KitchenRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class KitchenService {
 	
@@ -94,7 +99,7 @@ public class KitchenService {
 				UserReadResponseDto userDto = userService.readUserByUsername(authentication.getName());
 				guideDto.setLikestatus(likeService.existLike("guide", guideDto.getId(), userDto.getId()));
 			}
-			guideDto.setLikecount(likeService.countLike("guide", guide.getId()));
+			guideDto.setLikecount(guide.getLikecount());
 			guideDto.setUsername(guide.getUser().getUsername());
 			guideDto.setAvatar(guide.getUser().getAvatar());
 			guideDtoList.add(guideDto);
@@ -350,43 +355,21 @@ public class KitchenService {
 	
 	
 	
+	// Delete로 변경 !!!!
 	// 키친가이드 좋아요 취소
-//	public void unlikeGuide(LikeDeleteRequestDto likeDto) {
-//		
-//		// 입력값 검증
-//		if (likeDto == null
-//				|| likeDto.getTablename() == null
-//				|| likeDto.getRecodenum() == 0
-//				|| likeDto.getUserId() == 0) {
-//			throw new ApiException(KitchenErrorCode.KITCHEN_INVALID_INPUT);
-//		}
-//
-//		// 키친가이드 존재 여부 확인
-//		if (!kitchenRepository.existsById(likeDto.getRecodenum())) {
-//			throw new ApiException(KitchenErrorCode.KITCHEN_NOT_FOUND);
-//		}
-//
-//		// 좋아요 삭제
-//		try {
-//			likeService.deleteLike(likeDto);
-//		} catch (ApiException e) {
-//			throw e;
-//		} catch (Exception e) {
-//			throw new ApiException(KitchenErrorCode.KITCHEN_UNLIKE_FAIL);
-//		}
-//	}
-	
-	// 키친가이드 좋아요 취소
-	public void unlikeGuide(int id) {
+	public void unlikeGuide(LikeDeleteRequestDto likeDto) {
 		
 		// 입력값 검증
-		if (id == 0) {
+		if (likeDto == null
+				|| likeDto.getTablename() == null
+				|| likeDto.getRecodenum() == 0
+				|| likeDto.getUserId() == 0) {
 			throw new ApiException(KitchenErrorCode.KITCHEN_INVALID_INPUT);
 		}
 		
 		// 좋아요 삭제
 		try {
-			likeService.deleteLike2(id);
+			likeService.deleteLike(likeDto);
 		}
 		catch (Exception e) {
 			throw new ApiException(KitchenErrorCode.KITCHEN_UNLIKE_FAIL);

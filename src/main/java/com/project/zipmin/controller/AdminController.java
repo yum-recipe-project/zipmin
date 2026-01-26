@@ -83,7 +83,11 @@ import com.project.zipmin.swagger.UserNotFoundResponse;
 import com.project.zipmin.swagger.UserReadListFailResponse;
 import com.project.zipmin.swagger.UserReadListSuccessResponse;
 import com.project.zipmin.swagger.UserUnauthorizedAccessResponse;
+import com.project.zipmin.swagger.kitchen.KitchenInvalidInputResponse;
+import com.project.zipmin.swagger.kitchen.KitchenReadListFailResponse;
+import com.project.zipmin.swagger.kitchen.KitchenReadListSuccessResponse;
 import com.project.zipmin.swagger.like.LikeCountFailResponse;
+import com.project.zipmin.swagger.like.LikeExistFailResponse;
 import com.project.zipmin.swagger.like.LikeInvalidInputResponse;
 import com.project.zipmin.swagger.report.ReportCountFailResponse;
 import com.project.zipmin.swagger.report.ReportForbiddenResponse;
@@ -360,17 +364,42 @@ public class AdminController {
 	    summary = "키친가이드 목록 조회"
 	)
 	@ApiResponses(value = {
-		// 200 KITCHEN_READ_LIST_SUCCESS 키친가이드 목록 조회 성공
-		// 400 KITCHEN_READ_LIST_FAIL 키친가이드 목록 조회 실패
-		// 400 KITCHEN_INVALID_INPUT 입력값이 유효하지 않음
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "키친가이드 목록 조회 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = KitchenReadListSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "키친가이드 목록 조회 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = KitchenReadListFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "좋아요 여부 확인 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = LikeExistFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = KitchenInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = LikeInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
 				description = "입력값이 유효하지 않음",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
-		// 401 KITCHEN_UNAUTHORIZED_ACCESS 로그인되지 않은 사용자
-		// 403 KITCHEN_FORBIDDEN 권한 없는 사용자
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
 				description = "해당 사용자를 찾을 수 없음",
@@ -383,6 +412,7 @@ public class AdminController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+		
 	})
 	// 키친가이드 목록 조회
 	@GetMapping("/admin/guides")

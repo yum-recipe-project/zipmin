@@ -1,36 +1,36 @@
 pipeline {
-    agent any
-    
+	agent any
+	
 	environment {
 		APP_NAME = "zipmin"
 		DOCKER_IMAGE = "yumrecipe/zipmin:latest"
 		DEPLOY_HOST = "13.209.50.3"
 		DEPLOY_USER = "ec2-user"
-    }
+	}
 
-    stages {
+	stages {
 		// 소스 코드 체크아웃
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-        
+		stage('Checkout') {
+			steps {
+				checkout scm
+			}
+		}
+		
 		// WAR 파일 빌드
 		stage('Build WAR') {
 			steps {
 				sh './gradlew clean bootWar -x test'
 			}
 		}
-        
+		
 		// 이미지 빌드
 		stage('Build Docker Image') {
 			steps {
 				sh "docker build -t ${DOCKER_IMAGE} ."
 			}
 		}
-        
-        // 도커 허브에 이미지 푸시
+		
+		// 도커 허브에 이미지 푸시
 		stage('Push to Docker Hub') {
 			steps {
 				withCredentials([usernamePassword(
@@ -38,18 +38,18 @@ pipeline {
 					usernameVariable: 'DH_USERNAME',
 					passwordVariable: 'DH_PASSWORD'
 				)]) {
-                    sh """
-                    	echo "${DH_PASSWORD}" | docker login -u "${DH_USERNAME}" --password-stdin
-                    	docker push ${DOCKER_IMAGE}
-                    	docker logout
-                    """
+					sh """
+						echo "${DH_PASSWORD}" | docker login -u "${DH_USERNAME}" --password-stdin
+						docker push ${DOCKER_IMAGE}
+						docker logout
+					"""
 				}
 			}
 		}
-        
-        // 배포 서버에서 최신 이미지로 컨테이너 재배포
-        stage('Deploy on Project Server') {
-		    steps {
+		
+		// 배포 서버에서 최신 이미지로 컨테이너 재배포
+		stage('Deploy on Project Server') {
+			steps {
 				// 배포에 필요한 민감 정보를 환경 변수로 주입
 				withCredentials([
 					string(credentialsId: 'APP_BASE_URL', variable: 'APP_BASE_URL'),
@@ -73,7 +73,7 @@ pipeline {
 							ssh -o StrictHostKeyChecking=no ${DEPLOY_USER}@${DEPLOY_HOST} '
 								set -e
 								
-			                    umask 077
+								umask 077
 								cat > /home/ec2-user/zipmin.env <<-EOF
 									APP_BASE_URL=${APP_BASE_URL}
 									APP_UPLOAD_DIR=${APP_UPLOAD_DIR}
@@ -100,10 +100,10 @@ pipeline {
 									--env-file /home/ec2-user/zipmin.env \
 									${DOCKER_IMAGE}
 							'
-		                """
-		            }
-		        }
-		    }
+						"""
+					}
+				}
+			}
 		}
-    }
+	}
 }

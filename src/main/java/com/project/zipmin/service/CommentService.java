@@ -560,34 +560,4 @@ public class CommentService {
 		}
 	}
 	
-	
-
-	
-	
-	// 댓글 신고 취소
-	public void unreportComment(ReportDeleteRequestDto reportDto) {
-		
-		// 입력값 검증
-		if (reportDto == null || reportDto.getTablename() == null
-				|| reportDto.getRecodenum() == null || reportDto.getUserId() == null) {
-			throw new ApiException(CommentErrorCode.COMMENT_INVALID_INPUT);
-		}
-		
-		// 댓글 존재 여부 확인
-		if (commentRepository.existsById(reportDto.getRecodenum())) {
-			new ApiException(CommentErrorCode.COMMENT_NOT_FOUND);
-		}
-		
-		// 신고 취소
-		try {
-			reportService.deleteReport(reportDto);
-		}
-		catch (ApiException e) {
-		    throw e;
-		}
-		catch (Exception e) {
-		    throw new ApiException(CommentErrorCode.COMMENT_UNREPORT_FAIL);
-		}
-		
-	}
 }

@@ -23,8 +23,8 @@ import lombok.NoArgsConstructor;
 public class Like {
 	
 	@Id
-	@GeneratedValue(generator = "seq_likes_id")
-	@SequenceGenerator(name = "seq_likes_id", sequenceName = "SEQ_LIKES_ID", allocationSize = 1)
+	@GeneratedValue(generator = "SEQ_LIKES_ID")
+	@SequenceGenerator(name = "SEQ_LIKES_ID", sequenceName = "SEQ_LIKES_ID", allocationSize = 1)
 	private int id;
 	
 	private String tablename;

@@ -1,6 +1,5 @@
 package com.project.zipmin.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,18 +21,16 @@ import com.project.zipmin.api.KitchenErrorCode;
 import com.project.zipmin.api.KitchenSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
-import com.project.zipmin.dto.GuideCreateRequestDto;
-import com.project.zipmin.dto.GuideCreateResponseDto;
-import com.project.zipmin.dto.GuideReadMySavedResponseDto;
-import com.project.zipmin.dto.GuideReadResponseDto;
-import com.project.zipmin.dto.GuideUpdateRequestDto;
-import com.project.zipmin.dto.GuideUpdateResponseDto;
+import com.project.zipmin.dto.kitchen.GuideCreateRequestDto;
+import com.project.zipmin.dto.kitchen.GuideCreateResponseDto;
+import com.project.zipmin.dto.kitchen.GuideReadResponseDto;
+import com.project.zipmin.dto.kitchen.GuideUpdateRequestDto;
+import com.project.zipmin.dto.kitchen.GuideUpdateResponseDto;
 import com.project.zipmin.dto.like.LikeCreateRequestDto;
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
 import com.project.zipmin.dto.like.LikeDeleteRequestDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.KitchenService;
-import com.project.zipmin.service.LikeService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.GuideCreateFailResponse;
 import com.project.zipmin.swagger.GuideCreateSuccessResponse;
@@ -70,20 +67,20 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 
 @RestController
-@Tag(name = "KITCHEN API", description = "키친가이드 관련 API")
+@RequiredArgsConstructor
+@Tag(name = "Kitchen API", description = "키친가이드 관련 API")
 public class KitchenController {
 	
-	@Autowired
-	KitchenService kitchenService;
-	
-	@Autowired
-	LikeService likeService;
-	
-	@Autowired
-	UserService userService;
+	private final KitchenService kitchenService;
+	private final UserService userService;
 
+	
+	
+	
+	
 	@Operation(
 	    summary = "키친가이드 목록 조회"
 	)
@@ -117,17 +114,16 @@ public class KitchenController {
 	// 가이드 목록 조회
 	@GetMapping("/guides")
 	public ResponseEntity<?> listGuide(
-			@Parameter(description = "카테고리") @RequestParam(required = false) String category,
-			@Parameter(description = "검색어") @RequestParam(required = false) String keyword, 
-			@Parameter(description = "정렬") @RequestParam(required = false) String sort,
+			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword, 
+			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
+			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
 			@Parameter(description = "페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지 크기") @RequestParam int size) {
-		System.err.println("컨트롤러 진입");
 		
 		Pageable pageable = PageRequest.of(page, size);
 		Page<GuideReadResponseDto> guidePage = null;
 		
-		guidePage = kitchenService.readGuidePage(category, keyword, sort, pageable);
+		guidePage = kitchenService.readGuidePage(keyword, category, sort, pageable);
 		
         return ResponseEntity.status(KitchenSuccessCode.KITCHEN_READ_LIST_SUCCESS.getStatus())
                 .body(ApiResponse.success(KitchenSuccessCode.KITCHEN_READ_LIST_SUCCESS, guidePage));
@@ -233,7 +229,7 @@ public class KitchenController {
 	    // 로그인 여부 확인
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-	        throw new ApiException(KitchenErrorCode.KITCHEN_UNAUTHORIZED_ACCESS);
+	        throw new ApiException(KitchenErrorCode.KITCHEN_UNAUTHORIZED);
 	    }
 
 	    GuideCreateResponseDto guideResponseDto = kitchenService.createGuide(guideRequestDto);
@@ -300,7 +296,7 @@ public class KitchenController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(KitchenErrorCode.KITCHEN_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(KitchenErrorCode.KITCHEN_UNAUTHORIZED);
 		}
 		
 		GuideUpdateResponseDto guideResponseDto = kitchenService.updateGuide(guideRequestDto);
@@ -367,7 +363,7 @@ public class KitchenController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(KitchenErrorCode.KITCHEN_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(KitchenErrorCode.KITCHEN_UNAUTHORIZED);
 		}
 		
 		kitchenService.deleteGuide(id);
@@ -449,7 +445,7 @@ public class KitchenController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(KitchenErrorCode.KITCHEN_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(KitchenErrorCode.KITCHEN_UNAUTHORIZED);
 		}
 		
 		likeRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
@@ -542,7 +538,7 @@ public class KitchenController {
 	    // 로그인 여부 확인
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-	        throw new ApiException(KitchenErrorCode.KITCHEN_UNAUTHORIZED_ACCESS);
+	        throw new ApiException(KitchenErrorCode.KITCHEN_UNAUTHORIZED);
 	    }
 
 	    likeDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
@@ -633,10 +629,10 @@ public class KitchenController {
 		}
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<GuideReadMySavedResponseDto> savedGuidePage = kitchenService.readSavedGuidePageByUserId(id, pageable);
+		Page<GuideReadResponseDto> guidePage = kitchenService.readSavedGuidePageByUserId(id, pageable);
 		
 		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, savedGuidePage));
+				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, guidePage));
 	}
 		
 	

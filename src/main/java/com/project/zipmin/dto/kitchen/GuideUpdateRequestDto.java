@@ -1,4 +1,6 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.kitchen;
+
+import java.util.Date;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -14,6 +16,7 @@ public class GuideUpdateRequestDto {
     private String subtitle;
     private String category;
     private String content;
+    private Date postdate;
     private int userId;
     
 }

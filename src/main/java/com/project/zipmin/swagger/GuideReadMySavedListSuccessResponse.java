@@ -1,6 +1,6 @@
 package com.project.zipmin.swagger;
 
-import com.project.zipmin.dto.GuideReadMySavedResponseDto;
+import com.project.zipmin.dto.kitchen.GuideReadMySavedResponseDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

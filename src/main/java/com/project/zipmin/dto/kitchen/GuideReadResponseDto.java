@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.kitchen;
 
 import java.util.Date;
 
@@ -21,9 +21,9 @@ public class GuideReadResponseDto {
 	private int userId;
 	
 	private String avatar;
+	private String username;
 	private long likecount;
 	private boolean likestatus;
-	private String username;
 	
 }
 

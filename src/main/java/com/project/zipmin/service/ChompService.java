@@ -69,13 +69,13 @@ public class ChompService {
 	private final ChompRepository chompRepository;
 	private final VoteChoiceRepository choiceRepository;
 	private final VoteRecordRepository recordRepository;
-	
-	private final UserService userService;
-	private final FileService fileService;
     
 	private final ChompMapper chompMapper;
 	private final VoteChoiceMapper choiceMapper;
 	private final VoteRecordMapper recordMapper;
+	
+	private final UserService userService;
+	private final FileService fileService;
 	
 	@Value("${app.upload.public-path:/files}")
 	private String publicPath;

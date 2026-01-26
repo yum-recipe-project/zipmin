@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -25,9 +26,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "GUIDE")
 public class Guide {
+	
 	@Id
-	@GeneratedValue(generator = "seq_guide_id")
-	@SequenceGenerator(name = "seq_guide_id", sequenceName = "SEQ_GUIDE_ID", allocationSize = 1)
+	@GeneratedValue(generator = "SEQ_GUIDE_ID")
+	@SequenceGenerator(name = "SEQ_GUIDE_ID", sequenceName = "SEQ_GUIDE_ID", allocationSize = 1)
 	private int id;
 	private String title;
 	private String subtitle;
@@ -35,13 +37,19 @@ public class Guide {
 	private Date postdate;
 	private String content;
 	
-	// private int user_id;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")
 	private User user;
 	
 	@Formula("(SELECT COUNT(*) FROM likes l WHERE l.recodenum = id AND l.tablename = 'guide')")
 	private int likecount;
+	
+	@PrePersist
+    public void prePersist() {
+        if (this.postdate == null) {
+            this.postdate = new Date();
+        }
+	}
 	
 }
 

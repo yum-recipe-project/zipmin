@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.kitchen;
 
 import java.util.Date;
 
@@ -14,10 +14,8 @@ public class GuideCreateRequestDto {
 	private String title;
 	private String subtitle;
 	private String category;
+	private Date postdate;
 	private String content;
 	private int userId;
 	
-	
 }
-
-

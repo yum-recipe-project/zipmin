@@ -38,12 +38,12 @@ import com.project.zipmin.api.WithdrawSuccessCode;
 import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
-import com.project.zipmin.dto.GuideReadResponseDto;
 import com.project.zipmin.dto.RecipeReadResponseDto;
 import com.project.zipmin.dto.ReviewReadResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.WithdrawReadResponseDto;
 import com.project.zipmin.dto.chomp.ChompReadResponseDto;
+import com.project.zipmin.dto.kitchen.GuideReadResponseDto;
 import com.project.zipmin.dto.report.ReportReadRequestDto;
 import com.project.zipmin.dto.report.ReportReadResponseDto;
 import com.project.zipmin.entity.Role;
@@ -396,7 +396,7 @@ public class AdminController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(KitchenErrorCode.KITCHEN_UNAUTHORIZED_ACCESS);
+			throw new ApiException(KitchenErrorCode.KITCHEN_UNAUTHORIZED);
 		}
 		
 		// 권한 확인

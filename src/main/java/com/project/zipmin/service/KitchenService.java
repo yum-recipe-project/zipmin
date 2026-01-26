@@ -4,36 +4,32 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
-import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.KitchenErrorCode;
-import com.project.zipmin.dto.UserCommentReadesponseDto;
-import com.project.zipmin.dto.GuideCreateRequestDto;
-import com.project.zipmin.dto.GuideCreateResponseDto;
-import com.project.zipmin.dto.GuideReadMySavedResponseDto;
-import com.project.zipmin.dto.GuideReadResponseDto;
-import com.project.zipmin.dto.GuideUpdateRequestDto;
-import com.project.zipmin.dto.GuideUpdateResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
+import com.project.zipmin.dto.kitchen.GuideCreateRequestDto;
+import com.project.zipmin.dto.kitchen.GuideCreateResponseDto;
+import com.project.zipmin.dto.kitchen.GuideReadResponseDto;
+import com.project.zipmin.dto.kitchen.GuideUpdateRequestDto;
+import com.project.zipmin.dto.kitchen.GuideUpdateResponseDto;
 import com.project.zipmin.dto.like.LikeCreateRequestDto;
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
 import com.project.zipmin.dto.like.LikeDeleteRequestDto;
 import com.project.zipmin.dto.like.LikeReadResponseDto;
-import com.project.zipmin.entity.Comment;
 import com.project.zipmin.entity.Guide;
-import com.project.zipmin.entity.Like;
 import com.project.zipmin.entity.Role;
-import com.project.zipmin.mapper.GuideMapper;
+import com.project.zipmin.mapper.KitchenMapper;
 import com.project.zipmin.repository.KitchenRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -42,120 +38,71 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class KitchenService {
 	
-	@Autowired
 	private final KitchenRepository kitchenRepository;
 	
-	@Autowired
-	private UserService userService;
-	@Autowired
-	private LikeService likeService;
+	private final KitchenMapper kitchenMapper;
 	
-	@Autowired
-	private final GuideMapper guideMapper;
+	private final UserService userService;
+	private final LikeService likeService;
 	
-	// 가이드 목록 조회
-	public Page<GuideReadResponseDto> readGuidePage(String category, String keyword, String sort, Pageable pageable) {
+	
+	
+	
+	
+	// 키친가이드 목록 조회
+	public Page<GuideReadResponseDto> readGuidePage(String keyword, String category, String sort, Pageable pageable) {
 		
 		// 입력값 검증
 		if (pageable == null) {
 			throw new ApiException(KitchenErrorCode.KITCHEN_INVALID_INPUT);
 		}
 		
-		// 정렬기준 문자열 객체로 변환
-		Sort sortSpec = Sort.by(Sort.Order.desc("id"));
-		
-		if(sort != null && !sort.isBlank()) {
-			switch (sort) {
-		    case "id-asc": {
-		        sortSpec = Sort.by(Sort.Order.asc("id"));
-		        break;
-		    }
-			case "id-desc": {
-				sortSpec = Sort.by(Sort.Order.desc("id"));
-				break;
-			}
-			case "title-desc": {
-				sortSpec = Sort.by(Sort.Order.desc("title"), Sort.Order.desc("id"));
-				break;
-			}
-			case "title-asc": {
-				sortSpec = Sort.by(Sort.Order.asc("title"), Sort.Order.desc("id"));
-				break;
-			}
-			case "likecount-desc": {
-				sortSpec = Sort.by(Sort.Order.desc("likecount"), Sort.Order.desc("id"));
-				break;
-			}
-			case "likecount-asc": {
-		        sortSpec = Sort.by(Sort.Order.asc("likecount"), Sort.Order.desc("id"));
-		        break;
-			}
-			case "postdate-desc": {  
-	            sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id"));
-	            break;
-	        }
-	        case "postdate-asc": {  
-	            sortSpec = Sort.by(Sort.Order.asc("postdate"), Sort.Order.desc("id"));
-	            break;
-	        }
-			default:
-				sortSpec = Sort.by(Sort.Order.desc("id"));
-			}
+		// 정렬
+		Sort order = Sort.by(Sort.Order.desc("id"));
+		if (sort != null && !sort.isBlank()) {
+			String field = sort.split("-")[0];
+			Direction direction = "asc".equals(sort.split("-")[1]) ? Direction.ASC : Direction.DESC;
+			order = Sort.by(new Order(direction, field), Order.desc("id"));
 		}
-		
-		// 기존 페이지 객체에 정렬 주입
-		Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
+		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), order);
 		
 		// 가이드 목록 조회
 		Page<Guide> guidePage;
 		try {
-			guidePage = (keyword == null || keyword.isBlank())
-					? kitchenRepository.findAll(sortedPageable)
-					: kitchenRepository.findAllByCategory(keyword, sortedPageable);
-			
 			boolean hasCategory = category != null && !category.isBlank();
 			boolean hasKeyword = keyword != null && !keyword.isBlank();
 			
-			if (!hasCategory) {
-				// 전체
+			if (hasCategory) {
 				guidePage = hasKeyword
-	                    ? kitchenRepository.findAllByTitleContainingIgnoreCase(keyword, sortedPageable)
-	                    : kitchenRepository.findAll(sortedPageable);
+						? kitchenRepository.findAllByCategoryAndTitleContainingIgnoreCase(category, keyword, pageable)
+						: kitchenRepository.findAllByCategory(category, pageable);
 	        }
 			else {
-				// 카테고리만
 				guidePage = hasKeyword
-	                    ? kitchenRepository.findAllByCategoryAndTitleContainingIgnoreCase(category, keyword, sortedPageable)
-	                    : kitchenRepository.findAllByCategory(category, sortedPageable);
+						? kitchenRepository.findAllByTitleContainingIgnoreCase(keyword, pageable)
+						: kitchenRepository.findAll(pageable);
 	        }
 		}
 		catch (Exception e) {
 			throw new ApiException(KitchenErrorCode.KITCHEN_READ_LIST_FAIL);
 		}
 		
-		// dto 변경
-		List<GuideReadResponseDto> guideDtoList = new ArrayList<GuideReadResponseDto>();
+		// 키친가이드 목록 응답 구성
+		List<GuideReadResponseDto> guideDtoList = new ArrayList<>();
 		for (Guide guide : guidePage) {
-			GuideReadResponseDto guideDto = guideMapper.toReadResponseDto(guide);
-			guideDto.setLikecount(likeService.countLike("guide", guide.getId()));
-			
-			// 좋아요 여부 조회
+			GuideReadResponseDto guideDto = kitchenMapper.toReadResponseDto(guide);
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			
 			if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
-			    String username = authentication.getName();
-			    int userId = userService.readUserByUsername(username).getId();
-			    
+			    int userId = userService.readUserByUsername(authentication.getName()).getId();
 			    guideDto.setLikestatus(likeService.existLike("guide", guideDto.getId(), userId));
 			}
-			
-			UserReadResponseDto userInfo = userService.readUserById(guideDto.getUserId());
-			guideDto.setUsername(userInfo.getUsername());
-			guideDto.setAvatar(userInfo.getAvatar());
+			guideDto.setLikecount(likeService.countLike("guide", guide.getId()));
+			guideDto.setUsername(guide.getUser().getUsername());
+			guideDto.setAvatar(guide.getUser().getAvatar());
 			guideDtoList.add(guideDto);
 		}
 		
-		return new PageImpl<>(guideDtoList, sortedPageable, guidePage.getTotalElements());
+		return new PageImpl<>(guideDtoList, pageable, guidePage.getTotalElements());
 	}
 	
 	
@@ -167,7 +114,7 @@ public class KitchenService {
 	    Guide guide = kitchenRepository.findById(id)
 	            .orElseThrow(() -> new ApiException(KitchenErrorCode.KITCHEN_NOT_FOUND));
 	    
-	    GuideReadResponseDto guideDto = guideMapper.toReadResponseDto(guide);
+	    GuideReadResponseDto guideDto = kitchenMapper.toReadResponseDto(guide);
 
 	    long likeCount = likeService.countLike("guide", guide.getId());
 	    guideDto.setLikecount(likeCount);
@@ -266,12 +213,12 @@ public class KitchenService {
 	    }
 	    
 	    // 엔티티 변환 및 저장
-	    Guide guide = guideMapper.toEntity(guideRequestDto);
+	    Guide guide = kitchenMapper.toEntity(guideRequestDto);
 	    guide.setPostdate(new Date());
 	    
 	    try {
 	        guide = kitchenRepository.save(guide);
-	        return guideMapper.toCreateResponseDto(guide);
+	        return kitchenMapper.toCreateResponseDto(guide);
 	    } catch (Exception e) {
 	        throw new ApiException(KitchenErrorCode.KITCHEN_CREATE_FAIL);
 	    }
@@ -367,7 +314,7 @@ public class KitchenService {
 	    // 이벤트 수정
  		try {
  			guide = kitchenRepository.save(guide);
- 			return guideMapper.toUpdateResponseDto(guide);
+ 			return kitchenMapper.toUpdateResponseDto(guide);
  		}
  		catch (Exception e) {
  			throw new ApiException(KitchenErrorCode.KITCHEN_UPDATE_FAIL);
@@ -378,7 +325,7 @@ public class KitchenService {
 
 	
 	// 사용자가 저장한 가이드 목록 조회
-    public Page<GuideReadMySavedResponseDto> readSavedGuidePageByUserId(Integer userId, Pageable pageable) {
+    public Page<GuideReadResponseDto> readSavedGuidePageByUserId(Integer userId, Pageable pageable) {
 
         if (userId == null || pageable == null) {
             throw new ApiException(KitchenErrorCode.KITCHEN_INVALID_INPUT);
@@ -397,10 +344,10 @@ public class KitchenService {
 
         Page<Guide> guidePage = kitchenRepository.findByIdIn(guideIds, pageable);
 
-        List<GuideReadMySavedResponseDto> dtoList = new ArrayList<>();
+        List<GuideReadResponseDto> dtoList = new ArrayList<>();
         for (Guide guide : guidePage) {
-            GuideReadMySavedResponseDto dto = guideMapper.toReadMySavedResponseDto(guide);
-            dto.setLikecount(likeService.countLike("guide", guide.getId())); // 좋아요 수 세팅
+        	GuideReadResponseDto dto = kitchenMapper.toReadResponseDto(guide);
+            dto.setLikecount(likeService.countLike("guide", guide.getId()));
             dtoList.add(dto);
         }
 

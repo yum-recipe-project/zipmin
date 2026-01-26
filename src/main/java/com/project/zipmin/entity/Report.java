@@ -23,8 +23,8 @@ import lombok.NoArgsConstructor;
 public class Report {
 	
 	@Id
-	@GeneratedValue(generator = "seq_report_id")
-	@SequenceGenerator(name = "seq_report_id", sequenceName = "SEQ_REPORT_ID", allocationSize = 1)
+	@GeneratedValue(generator = "SEQ_REPORT_ID")
+	@SequenceGenerator(name = "SEQ_REPORT_ID", sequenceName = "SEQ_REPORT_ID", allocationSize = 1)
 	private int id;
 	private String tablename;
 	private int recodenum;

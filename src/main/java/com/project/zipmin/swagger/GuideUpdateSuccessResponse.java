@@ -1,6 +1,6 @@
 package com.project.zipmin.swagger;
 
-import com.project.zipmin.dto.GuideUpdateResponseDto;
+import com.project.zipmin.dto.kitchen.GuideUpdateResponseDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

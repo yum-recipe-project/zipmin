@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.kitchen;
 
 import java.util.Date;
 
@@ -19,6 +19,7 @@ public class GuideCreateResponseDto {
 	private Date postdate;
 	private String content;
 	private int userId;
+	
 }
 
 

@@ -21,6 +21,7 @@ import com.project.zipmin.api.KitchenErrorCode;
 import com.project.zipmin.api.KitchenSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
+import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.kitchen.GuideCreateRequestDto;
 import com.project.zipmin.dto.kitchen.GuideCreateResponseDto;
 import com.project.zipmin.dto.kitchen.GuideReadResponseDto;
@@ -87,13 +88,13 @@ public class KitchenController {
 	@ApiResponses(value = {
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "200",
-	            description = "가이드 목록 조회 성공",
+	            description = "키친가이드 목록 조회 성공",
 	            content = @Content(
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = GuideReadListSuccessResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
-				description = "가이드 목록 조회 실패",
+				description = "키친가이드 목록 조회 실패",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = GuideReadListFailResponse.class))),
@@ -131,14 +132,16 @@ public class KitchenController {
 	
 	
 
-	// 가이드 조회
+	
+	
+	// 키친가이드 상세 조회
 	@Operation(
 	    summary = "키친가이드 상세 조회"
 	)
 	@ApiResponses(value = {
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "200",
-	            description = "가이드 상세 조회 성공",
+	            description = "키친가이드 상세 조회 성공",
 	            content = @Content(
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = GuideReadSuccessResponse.class))),
@@ -182,17 +185,19 @@ public class KitchenController {
 	    return ResponseEntity.status(KitchenSuccessCode.KITCHEN_READ_SUCCESS.getStatus())
 	            .body(ApiResponse.success(KitchenSuccessCode.KITCHEN_READ_SUCCESS, guide));
 	}
-
+	
+	
 
 	
 	
+	// 키친가이드 작성 (관리자)
 	@Operation(
-	    summary = "새 키친가이드 등록 (관리자 전용)"
+	    summary = "키친가이드 작성"
 	)
 	@ApiResponses(value = {
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-	            responseCode = "200",
-	            description = "가이드 등록 성공",
+	            responseCode = "201",
+	            description = "가이드 작성 성공",
 	            content = @Content(
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = GuideCreateSuccessResponse.class))),
@@ -204,13 +209,13 @@ public class KitchenController {
 	                    schema = @Schema(implementation = GuideInvalidInputResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "401",
-	            description = "로그인되지 않은 사용자 접근",
+	            description = "로그인되지 않은 사용자",
 	            content = @Content(
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = GuideUnauthorizedAccessResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "403",
-	            description = "관리자 권한 없음",
+	            description = "권한 없는 사용자",
 	            content = @Content(
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = GuideForbiddenResponse.class))),
@@ -221,7 +226,7 @@ public class KitchenController {
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = GuideCreateFailResponse.class)))
 	})
-	// 새 가이드 등록 (관리자)
+	// 키친가이드 작성 (관리자)
 	@PostMapping("/guides")
 	public ResponseEntity<?> writeGuide(
 			@Parameter(description = "키친가이드 작성 요청 정보") @RequestBody GuideCreateRequestDto guideRequestDto) {
@@ -231,6 +236,17 @@ public class KitchenController {
 	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 	        throw new ApiException(KitchenErrorCode.KITCHEN_UNAUTHORIZED);
 	    }
+	    
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto currentUser = userService.readUserByUsername(username);
+		
+		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(KitchenErrorCode.KITCHEN_FORBIDDEN);
+			}
+		}
+		guideRequestDto.setUserId(currentUser.getId());
 
 	    GuideCreateResponseDto guideResponseDto = kitchenService.createGuide(guideRequestDto);
 

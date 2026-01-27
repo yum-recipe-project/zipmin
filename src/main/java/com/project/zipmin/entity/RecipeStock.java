@@ -32,7 +32,6 @@ public class RecipeStock {
 	private String unit;
 	private String note;
 	
-	// private String recipeId;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "RECIPE_ID")
 	private Recipe recipe;

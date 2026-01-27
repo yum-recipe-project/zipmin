@@ -3,14 +3,23 @@ package com.project.zipmin.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.project.zipmin.dto.RecipeCategoryCreateRequestDto;
-import com.project.zipmin.dto.RecipeCategoryCreateResponseDto;
-import com.project.zipmin.dto.RecipeCategoryReadResponseDto;
-import com.project.zipmin.dto.RecipeStepCreateResponseDto;
+import com.project.zipmin.dto.recipe.RecipeCategoryCreateRequestDto;
+import com.project.zipmin.dto.recipe.RecipeCategoryCreateResponseDto;
+import com.project.zipmin.dto.recipe.RecipeCategoryReadResponseDto;
+import com.project.zipmin.dto.recipe.RecipeStepCreateResponseDto;
 import com.project.zipmin.entity.RecipeCategory;
 
 @Mapper(componentModel = "spring")
 public interface RecipeCategoryMapper {
+	
+	// Read
+	@Mapping(target = "recipe.id", source = "recipeId")
+	RecipeCategory toEntity(RecipeCategoryReadResponseDto categoryDto);
+	
+	@Mapping(target = "recipeId", source = "recipe.id")
+	RecipeCategoryReadResponseDto toReadResponseDto(RecipeCategory category);
+	
+	
 	
 	// Create
 	@Mapping(target = "recipe.id", source = "recipeId")
@@ -24,14 +33,5 @@ public interface RecipeCategoryMapper {
 	
 	@Mapping(target = "recipeId", source = "recipe.id")
 	RecipeCategoryCreateResponseDto toCreateResponseDto(RecipeCategory category);
-	
-	
-	
-	// Read
-	@Mapping(target = "recipe.id", source = "recipeId")
-	RecipeCategory toEntity(RecipeCategoryReadResponseDto categoryDto);
-	
-	@Mapping(target = "recipeId", source = "recipe.id")
-	RecipeCategoryReadResponseDto toReadResponseDto(RecipeCategory category);
 	
 }

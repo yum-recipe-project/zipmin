@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.recipe;
 
 import java.util.Date;
 import java.util.List;

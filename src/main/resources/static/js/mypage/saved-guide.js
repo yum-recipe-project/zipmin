@@ -7,7 +7,7 @@ let totalPages = 0;
 let guideList = [];
 
 document.addEventListener('DOMContentLoaded', function() {
-    fetchSavedGuideList();
+	fetchSavedGuideList();
 
 	document.querySelector('.btn_more').addEventListener('click', function() {
 		fetchSavedGuideList();
@@ -22,46 +22,46 @@ document.addEventListener('DOMContentLoaded', function() {
  * 사용자가 저장한 키친가이드 목록 데이터를 가져오는 함수
  */
 async function fetchSavedGuideList() {
-    try {
-        const token = localStorage.getItem('accessToken');
-        const payload = parseJwt(token);
+	try {
+		const token = localStorage.getItem('accessToken');
+		const payload = parseJwt(token);
+	
+		const params = new URLSearchParams({
+			page: page,
+			size: size
+		}).toString();
 
-        const params = new URLSearchParams({
-            page: page,
-            size: size
-        }).toString();
+		const response = await instance.get(`/users/${payload.id}/guides/likes?${params}`);
+		const result = response.data;
 
-        const response = await instance.get(`/users/${payload.id}/guides/likes?${params}`);
-        const result = response.data;
+		if (result.code === 'USER_READ_LIST_SUCCESS') {
+			const savedGuides = result.data.content || [];
+			page = result.data.number + 1;
+			totalPages = result.data.totalPages;
 
-        if (result.code === 'USER_READ_LIST_SUCCESS') {
-            const savedGuides = result.data.content || [];
-            page = result.data.number + 1;
-            totalPages = result.data.totalPages;
-
-            renderSavedGuideList(savedGuides);
-            document.getElementById('guideCount').innerText = result.data.totalElements + '개';
-            document.querySelector('.btn_more').style.display = page >= totalPages ? 'none' : 'block';
-        }
-        else if (result.code === 'USER_INVALID_INPUT') {
-            alertDanger('입력값이 유효하지 않습니다.');
-        }
-        else if (result.code === 'USER_UNAUTHORIZED_ACCESS') {
-            alertDanger('로그인이 필요합니다.');
-        }
-        else if (result.code === 'USER_FORBIDDEN') {
-            alertDanger('권한이 없습니다.');
-        }
-        else if (result.code === 'INTERVAL_SERVER_ERROR') {
-            alertDanger('서버 내부에서 오류가 발생했습니다.');
-        }
-        else {
-            console.log('알 수 없는 에러:', result);
-        }
-    } catch (error) {
-        console.error(error);
-        alertDanger('저장한 키친가이드 목록 조회 중 오류가 발생했습니다.');
-    }
+			renderSavedGuideList(savedGuides);
+			document.getElementById('guideCount').innerText = result.data.totalElements + '개';
+			document.querySelector('.btn_more').style.display = page >= totalPages ? 'none' : 'block';
+		}
+		else if (result.code === 'USER_INVALID_INPUT') {
+			alertDanger('입력값이 유효하지 않습니다.');
+		}
+		else if (result.code === 'USER_UNAUTHORIZED_ACCESS') {
+			alertDanger('로그인이 필요합니다.');
+		}
+		else if (result.code === 'USER_FORBIDDEN') {
+			alertDanger('권한이 없습니다.');
+		}
+		else if (result.code === 'INTERVAL_SERVER_ERROR') {
+			alertDanger('서버 내부에서 오류가 발생했습니다.');
+		}
+		else {
+			console.log('알 수 없는 에러:', result);
+		}
+	} catch (error) {
+		console.error(error);
+		alertDanger('저장한 키친가이드 목록 조회 중 오류가 발생했습니다.');
+	}
 }
 
 
@@ -75,75 +75,75 @@ async function fetchSavedGuideList() {
  */
 function renderSavedGuideList(guideList) {
 	
-    const container = document.getElementById('savedGuideList');
+	const container = document.getElementById('savedGuideList');
 	
 	// 목록이 비어있는 경우 처리
 	if (!guideList || guideList.length === 0) {
-	    const emptyDiv = document.createElement('div');
-	    emptyDiv.className = 'list_empty';
-	    const span = document.createElement('span');
-	    span.textContent = '저장한 키친가이드가 없습니다.';
-	    emptyDiv.appendChild(span);
-	    container.appendChild(emptyDiv);
-	    return;
+		const emptyDiv = document.createElement('div');
+		emptyDiv.className = 'list_empty';
+		const span = document.createElement('span');
+		span.textContent = '저장한 키친가이드가 없습니다.';
+		emptyDiv.appendChild(span);
+		container.appendChild(emptyDiv);
+		return;
 	}
 
-    guideList.forEach(guide => {
-        const li = document.createElement('li');
-        li.className = 'guide_item';
-        li.dataset.id = guide.id;
+	guideList.forEach(guide => {
+		const li = document.createElement('li');
+		li.className = 'guide_item';
+		li.dataset.id = guide.id;
 		
 		// 상세보기 링크
 		const link = document.createElement('a');
 		link.href = `/kitchen/viewGuide.do?id=${guide.id}`; 
 		link.className = 'guide_link';
 
-        const guideDetails = document.createElement('div');
-        guideDetails.className = 'guide_details';
+		const guideDetails = document.createElement('div');
+		guideDetails.className = 'guide_details';
 
-        // 상단: 부제 + 찜 버튼
-        const guideTop = document.createElement('div');
-        guideTop.className = 'guide_top';
+		// 상단: 부제 + 찜 버튼
+		const guideTop = document.createElement('div');
+		guideTop.className = 'guide_top';
 
-        const subtitleSpan = document.createElement('span');
-        subtitleSpan.textContent = guide.subtitle;
+		const subtitleSpan = document.createElement('span');
+		subtitleSpan.textContent = guide.subtitle;
 
-        const favBtn = renderLikeButton(guide.id, guide.likecount, true);
-        guideTop.append(subtitleSpan, favBtn);
+		const favBtn = renderLikeButton(guide.id, guide.likecount, true);
+		guideTop.append(subtitleSpan, favBtn);
 
-        // 제목
-        const titleSpan = document.createElement('span');
-        titleSpan.textContent = guide.title;
+		// 제목
+		const titleSpan = document.createElement('span');
+		titleSpan.textContent = guide.title;
 
-        // 정보: 스크랩 수 + 작성일
-        const infoDiv = document.createElement('div');
-        infoDiv.className = 'info';
+		// 정보: 스크랩 수 + 작성일
+		const infoDiv = document.createElement('div');
+		infoDiv.className = 'info';
 
-        const scrapP = document.createElement('p');
-        scrapP.textContent = `스크랩 ${guide.likecount}`;
-        const dateP = document.createElement('p');
-        dateP.textContent = formatDate(guide.postdate);
+		const scrapP = document.createElement('p');
+		scrapP.textContent = `스크랩 ${guide.likecount}`;
+		const dateP = document.createElement('p');
+		dateP.textContent = formatDate(guide.postdate);
 
-        infoDiv.append(scrapP, dateP);
+		infoDiv.append(scrapP, dateP);
 
-        // 작성자
-        const writerDiv = document.createElement('div');
-        writerDiv.className = 'writer';
-        const profileSpan = document.createElement('span');
-        profileSpan.className = 'profile_img';
-        writerDiv.appendChild(profileSpan);
+		// 작성자
+		const writerDiv = document.createElement('div');
+		writerDiv.className = 'writer';
+		const profileSpan = document.createElement('span');
+		profileSpan.className = 'profile_img';
+		writerDiv.appendChild(profileSpan);
 
-        const nicknameP = document.createElement('p');
-        nicknameP.textContent = guide.nickname || '집밥의민족';
-        writerDiv.appendChild(nicknameP);
+		const nicknameP = document.createElement('p');
+		nicknameP.textContent = guide.nickname || '집밥의민족';
+		writerDiv.appendChild(nicknameP);
 
-        guideDetails.append(guideTop, titleSpan, infoDiv, writerDiv);
+		guideDetails.append(guideTop, titleSpan, infoDiv, writerDiv);
 		
 		
 		link.appendChild(guideDetails);
 		li.appendChild(link);
-        container.appendChild(li);
-    });
+		container.appendChild(li);
+	});
 }
 
 
@@ -175,10 +175,10 @@ function renderLikeButton(id, likecount, isLiked) {
 		}
 		
 		// 스크랩 수 요소 
-	    const likeCountElement = button.closest('.guide_item').querySelector('.info p:first-child');
+		const likeCountElement = button.closest('.guide_item').querySelector('.info p:first-child');
 
-	    // 현재 스크랩 수 계산 (likecount + 버튼 상태)
-	    let currentCount = likecount;
+		// 현재 스크랩 수 계산 (likecount + 버튼 상태)
+		let currentCount = likecount;
 
 		// 좋아요 취소
 		if (isLiked) {
@@ -197,8 +197,8 @@ function renderLikeButton(id, likecount, isLiked) {
 					isLiked = false;
 					img.src = '/images/recipe/star_empty.png';
 					currentCount = Math.max(0, currentCount - 1); 
-	                likeCountElement.textContent = `스크랩 ${currentCount}`;
-	                likecount = currentCount;
+					likeCountElement.textContent = `스크랩 ${currentCount}`;
+					likecount = currentCount;
 					
 					// 좋아요 취소한 가이드 제거
 					const guideItem = button.closest('.guide_item');
@@ -206,16 +206,16 @@ function renderLikeButton(id, likecount, isLiked) {
 						guideItem.remove();
 					}
 					
-				    const guideCountEl = document.getElementById('guideCount');
-				    if (guideCountEl) {
-				        const currentTotal = parseInt(guideCountEl.innerText) || 0;
-				        guideCountEl.innerText = `${Math.max(0, currentTotal - 1)}개`;
-				    }
+					const guideCountEl = document.getElementById('guideCount');
+					if (guideCountEl) {
+						const currentTotal = parseInt(guideCountEl.innerText) || 0;
+						guideCountEl.innerText = `${Math.max(0, currentTotal - 1)}개`;
+					}
 
-				    if (page >= totalPages) {
-				        const loadMoreBtn = document.querySelector('.btn_more');
-				        if (loadMoreBtn) loadMoreBtn.style.display = 'none';
-				    }
+					if (page >= totalPages) {
+						const loadMoreBtn = document.querySelector('.btn_more');
+						if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+					}
 				}
 			} catch (error) {
 				const code = error?.response?.data?.code;

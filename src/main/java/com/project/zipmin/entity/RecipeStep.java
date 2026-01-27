@@ -23,13 +23,13 @@ import lombok.NoArgsConstructor;
 public class RecipeStep {
 	
 	@Id
-	@GeneratedValue(generator = "seq_recipe_step_id")
-	@SequenceGenerator(name = "seq_recipe_step_id", sequenceName = "SEQ_RECIPE_STEP_ID", allocationSize = 1)
+	@GeneratedValue(generator = "SEQ_RECIPE_STEP_ID")
+	@SequenceGenerator(name = "SEQ_RECIPE_STEP_ID", sequenceName = "SEQ_RECIPE_STEP_ID", allocationSize = 1)
 	private int id;
+	
 	private String image;
 	private String content;
 	
-	// private int recipeId;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "recipe_id")
 	private Recipe recipe;

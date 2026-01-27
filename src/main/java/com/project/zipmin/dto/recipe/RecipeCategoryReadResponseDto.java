@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.recipe;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -7,12 +7,11 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class RecipeStockCreateRequestDto {
+public class RecipeCategoryReadResponseDto {
 
-	private String name;
-	private Integer amount;
-	private String unit;
-	private String note;
+	private Integer id;
+	private String type;
+	private String tag;
 	private Integer recipeId;
 	
 }

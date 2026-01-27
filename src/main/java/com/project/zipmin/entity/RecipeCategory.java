@@ -23,14 +23,13 @@ import lombok.NoArgsConstructor;
 public class RecipeCategory {
 	
 	@Id
-	@GeneratedValue(generator = "seq_recipe_category_id")
-	@SequenceGenerator(name = "seq_recipe_category_id", sequenceName = "SEQ_RECIPE_CATEGORY_ID", allocationSize = 1)
+	@GeneratedValue(generator = "SEQ_RECIPE_CATEGORY_ID")
+	@SequenceGenerator(name = "SEQ_RECIPE_CATEGORY_ID", sequenceName = "SEQ_RECIPE_CATEGORY_ID", allocationSize = 1)
 	private int id;
 	
 	private String type;
 	private String tag;
 	
-	// private int recipeId;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "RECIPE_ID")
 	private Recipe recipe;

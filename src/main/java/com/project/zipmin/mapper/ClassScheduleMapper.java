@@ -10,9 +10,9 @@ import com.project.zipmin.entity.Class;
 import com.project.zipmin.dto.ClassScheduleCreateRequestDto;
 import com.project.zipmin.dto.ClassScheduleCreateResponseDto;
 import com.project.zipmin.dto.ClassScheduleReadResponseDto;
-import com.project.zipmin.dto.RecipeCategoryCreateRequestDto;
-import com.project.zipmin.dto.RecipeCategoryCreateResponseDto;
-import com.project.zipmin.dto.RecipeStepCreateResponseDto;
+import com.project.zipmin.dto.recipe.RecipeCategoryCreateRequestDto;
+import com.project.zipmin.dto.recipe.RecipeCategoryCreateResponseDto;
+import com.project.zipmin.dto.recipe.RecipeStepCreateResponseDto;
 import com.project.zipmin.entity.ClassSchedule;
 import com.project.zipmin.entity.RecipeCategory;
 

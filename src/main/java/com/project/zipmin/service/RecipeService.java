@@ -257,7 +257,7 @@ public class RecipeService {
 	
 	
 	// 레시피 상세 조회
-	public RecipeReadResponseDto readRecipdById(int id) {
+	public RecipeReadResponseDto readRecipeById(int id) {
 		
 		if (id == 0) {
 			throw new ApiException(RecipeErrorCode.RECIPE_INVALID_INPUT);

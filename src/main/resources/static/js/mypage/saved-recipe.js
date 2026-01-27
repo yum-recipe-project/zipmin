@@ -24,7 +24,7 @@ async function fetchSavedRecipeList() {
             size: size
         }).toString();
 
-        const response = await instance.get(`/users/${payload.id}/likes/recipes?${params}`);
+        const response = await instance.get(`/users/${payload.id}/recipes/likes?${params}`);
 		
         renderSavedRecipeList(response.data.data.content);
 

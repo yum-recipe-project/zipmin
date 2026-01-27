@@ -2,7 +2,6 @@ package com.project.zipmin.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -24,14 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
-import com.project.zipmin.api.CommentErrorCode;
-import com.project.zipmin.api.KitchenErrorCode;
-import com.project.zipmin.api.KitchenSuccessCode;
 import com.project.zipmin.api.RecipeErrorCode;
 import com.project.zipmin.api.RecipeSuccessCode;
-import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
-import com.project.zipmin.api.VoteErrorCode;
+import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.like.LikeCreateRequestDto;
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
 import com.project.zipmin.dto.like.LikeDeleteRequestDto;
@@ -44,7 +38,6 @@ import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.UserInvalidInputResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
-import com.project.zipmin.swagger.VoteUpdateSuccessResponse;
 import com.project.zipmin.swagger.recipe.RecipeCategoryCreateFailResponse;
 import com.project.zipmin.swagger.recipe.RecipeCategoryInvalidInputResponse;
 import com.project.zipmin.swagger.recipe.RecipeCategoryReadListFailResponse;
@@ -79,13 +72,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RecipeController {
 	
-	private static RecipeService recipeService;
-	private static UserService userService;
+	private final RecipeService recipeService;
+	private final UserService userService;
 	
 	
 	
 	
 	
+	// 레시피 목록 조회
 	@Operation(
 	    summary = "레시피 목록 조회"
 	)
@@ -135,6 +129,7 @@ public class RecipeController {
 	
 	
 	
+	// 레시피 조회
 	@Operation(
 	    summary = "레시피 조회"
 	)
@@ -168,6 +163,12 @@ public class RecipeController {
 				description = "입력값이 유효하지 않음",
 				content = @Content(
 						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
@@ -193,7 +194,7 @@ public class RecipeController {
 	public ResponseEntity<?> viewRecipe(
 			@Parameter(description = "레시피의 일련번호") @PathVariable int id) {
 		
-		RecipeReadResponseDto recipeDto = recipeService.readRecipdById(id);
+		RecipeReadResponseDto recipeDto = recipeService.readRecipeById(id);
 		
 		return ResponseEntity.status(RecipeSuccessCode.RECIPE_READ_SUCCESS.getStatus())
 				.body(ApiResponse.success(RecipeSuccessCode.RECIPE_READ_SUCCESS, recipeDto));
@@ -203,6 +204,7 @@ public class RecipeController {
 	
 
 	
+	// 레시피 작성
 	@Operation(
 	    summary = "레시피 작성"
 	)
@@ -269,7 +271,7 @@ public class RecipeController {
 						schema = @Schema(implementation = RecipeStepInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "로그인 되지 않은 사용자",
+				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = RecipeUnauthorizedResponse.class))),
@@ -322,8 +324,9 @@ public class RecipeController {
 	
 	
 	
+	// 레시피 삭제
 	@Operation(
-	    summary = "레시피 조회"
+	    summary = "레시피 삭제"
 	)
 	@ApiResponses(value = {
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -358,7 +361,7 @@ public class RecipeController {
 						schema = @Schema(implementation = RecipeUnauthorizedResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
-				description = "권한 없는 사용자의 접근",
+				description = "권한 없는 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = RecipeForbiddenResponse.class))),
@@ -399,30 +402,22 @@ public class RecipeController {
 	}
 	
 	
+
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// 레시피 저장
+	// 레시피 좋아요
 	@PostMapping("/recipes/{id}/likes")
 	public ResponseEntity<?> likeRecipes(
-			@PathVariable("id") int recipeId,
-			@RequestBody LikeCreateRequestDto likeRequestDto) {
+			@Parameter(description = "레시피의 일련번호") @PathVariable int id,
+			@Parameter(description = "좋아요 작성 요청 정보") @RequestBody LikeCreateRequestDto likeRequestDto) {
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(RecipeErrorCode.RECIPE_UNAUTHORIZED);
 		}
-		
 		likeRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
+		
 		LikeCreateResponseDto likeResponseDto = recipeService.likeRecipe(likeRequestDto);
 
 		return ResponseEntity.status(RecipeSuccessCode.RECIPE_LIKE_SUCCESS.getStatus())
@@ -433,27 +428,24 @@ public class RecipeController {
 	
 	
 	
-	// 레시피 저장 취소
+	// 레시피 좋아요 취소
 	@DeleteMapping("/recipes/{id}/likes")
 	public ResponseEntity<?> unlikeRecipes(
-	        @PathVariable("id") int guideId,
-	        @RequestBody LikeDeleteRequestDto likeDto) {
+			@Parameter(description = "레시피의 일련번호") @PathVariable int id,
+			@Parameter(description = "좋아요 작성 요청 정보") @RequestBody LikeDeleteRequestDto likeDto) {
 
 	    // 로그인 여부 확인
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 	        throw new ApiException(RecipeErrorCode.RECIPE_UNAUTHORIZED);
 	    }
-
 	    likeDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 
-	    // 서비스 호출
 	    recipeService.unlikeRecipe(likeDto);
 
 	    return ResponseEntity.status(RecipeSuccessCode.RECIPE_UNLIKE_SUCCESS.getStatus())
 	            .body(ApiResponse.success(RecipeSuccessCode.RECIPE_UNLIKE_SUCCESS, null));
 	}
-	
 	
 	
 	
@@ -476,9 +468,28 @@ public class RecipeController {
 			@Parameter(description = "페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지 크기") @RequestParam int size) {
 		
-		// 입력값 검증
-		if (id == null) {
-			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+	    // 로그인 여부 확인
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+	        throw new ApiException(RecipeErrorCode.RECIPE_UNAUTHORIZED);
+	    }
+	    
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto currentUser = userService.readUserByUsername(username);
+		
+		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserById(id).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+					throw new ApiException(RecipeErrorCode.RECIPE_FORBIDDEN);
+				}
+				if (userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name()) && currentUser.getId() != id) {
+					throw new ApiException(RecipeErrorCode.RECIPE_FORBIDDEN);
+				}
+			}
+			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != id) {
+				throw new ApiException(RecipeErrorCode.RECIPE_FORBIDDEN);
+			}
 		}
 		
 		Pageable pageable = PageRequest.of(page, size);
@@ -493,42 +504,41 @@ public class RecipeController {
 	
 	
 	// 사용자가 저장한 레시피 목록 조회
-	@GetMapping("/users/{id}/likes/recipes")
+	@GetMapping("/users/{id}/recipes/likes")
 	public ResponseEntity<?> readUserSavedRecipeList(
-			@PathVariable Integer id,
+			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
 			@RequestParam int page,
 			@RequestParam int size) {
 		
-		// 입력값 검증
-		if (id == null) {
-			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-		}
+	    // 로그인 여부 확인
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+	        throw new ApiException(RecipeErrorCode.RECIPE_UNAUTHORIZED);
+	    }
 		
-		// 인증 여부 확인 (비로그인)
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
-		}
-		
-		// 로그인 정보
+		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto currentUser = userService.readUserByUsername(username);
 		
-		// 본인 확인
-		if (!userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name())) {
-			if (id != userService.readUserByUsername(username).getId()) {
-				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserById(id).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+					throw new ApiException(RecipeErrorCode.RECIPE_FORBIDDEN);
+				}
+				if (userService.readUserById(id).getRole().equals(Role.ROLE_ADMIN.name()) && currentUser.getId() != id) {
+					throw new ApiException(RecipeErrorCode.RECIPE_FORBIDDEN);
+				}
+			}
+			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != id) {
+				throw new ApiException(RecipeErrorCode.RECIPE_FORBIDDEN);
 			}
 		}
 		
 		Pageable pageable = PageRequest.of(page, size);
-		
-		// 레시피 저장 페이지 조회
 		Page<RecipeReadResponseDto> savedRecipePage = recipeService.readSavedRecipePageByUserId(id, pageable);
 		
 		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, savedRecipePage));
 	}
-	
-	
 	
 }

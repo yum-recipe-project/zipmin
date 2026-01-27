@@ -337,7 +337,7 @@ public class AdminController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(RecipeErrorCode.RECIPE_UNAUTHORIZED_ACCESS);
+			throw new ApiException(RecipeErrorCode.RECIPE_UNAUTHORIZED);
 		}
 		
 		// 권한 확인
@@ -349,7 +349,7 @@ public class AdminController {
 		}
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<RecipeReadResponseDto> recipePage = recipeService.readRecipePage(categoryList, keyword, sort, pageable);
+		Page<RecipeReadResponseDto> recipePage = recipeService.readRecipePage(keyword, categoryList, sort, pageable);
 		
 		return ResponseEntity.status(RecipeSuccessCode.RECIPE_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(RecipeSuccessCode.RECIPE_READ_LIST_SUCCESS, recipePage));

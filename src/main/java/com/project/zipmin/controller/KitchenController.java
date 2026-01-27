@@ -19,7 +19,6 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.KitchenErrorCode;
 import com.project.zipmin.api.KitchenSuccessCode;
-import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.kitchen.GuideCreateRequestDto;
 import com.project.zipmin.dto.kitchen.GuideCreateResponseDto;
@@ -542,7 +541,7 @@ public class KitchenController {
 	// 키친가이드 좋아요
 	@PostMapping("/guides/{id}/likes")
 	public ResponseEntity<?> likeGuide(
-			@Parameter(description = "키친가이드의 일련번호") @PathVariable("id") int guideId,
+			@Parameter(description = "키친가이드의 일련번호") @PathVariable int id,
 			@Parameter(description = "좋아요 작성 요청 정보") @RequestBody LikeCreateRequestDto likeRequestDto) {
 		
 		// 로그인 여부 확인
@@ -745,8 +744,8 @@ public class KitchenController {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<GuideReadResponseDto> guidePage = kitchenService.readUserGuidePage(id, pageable);
 		
-		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, guidePage));
+		return ResponseEntity.status(KitchenErrorCode.KITCHEN_READ_LIST_FAIL.getStatus())
+				.body(ApiResponse.success(KitchenErrorCode.KITCHEN_READ_LIST_FAIL, guidePage));
 	}
 	
 }

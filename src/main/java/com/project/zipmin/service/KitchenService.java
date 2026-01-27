@@ -111,7 +111,7 @@ public class KitchenService {
 	
 	
 	// 사용자가 저장한 키친가이드 목록 조회
-	public Page<GuideReadResponseDto> readUserGuidePage(int userId, Pageable pageable) {
+	public Page<GuideReadResponseDto> readLikedGuidePageByUserId(int userId, Pageable pageable) {
 
 		// 입력값 검증
 		if (userId == 0 || pageable == null) {

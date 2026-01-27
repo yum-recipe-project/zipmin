@@ -214,7 +214,7 @@ public class RecipeService {
 
 	
 	// 사용자가 좋아요한 레시피 목록 조회
-	public Page<RecipeReadResponseDto> readSavedRecipePageByUserId(int userId, Pageable pageable) {
+	public Page<RecipeReadResponseDto> readLikedRecipePageByUserId(int userId, Pageable pageable) {
 		
 		// 입력값 검증
 		if (userId == 0 || pageable == null) {

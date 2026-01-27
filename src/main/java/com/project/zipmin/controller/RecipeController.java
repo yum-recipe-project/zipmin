@@ -38,6 +38,9 @@ import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.UserInvalidInputResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
+import com.project.zipmin.swagger.like.LikeDeleteFailResponse;
+import com.project.zipmin.swagger.like.LikeInvalidInputResponse;
+import com.project.zipmin.swagger.like.LikeNotFoundResponse;
 import com.project.zipmin.swagger.recipe.RecipeCategoryCreateFailResponse;
 import com.project.zipmin.swagger.recipe.RecipeCategoryInvalidInputResponse;
 import com.project.zipmin.swagger.recipe.RecipeCategoryReadListFailResponse;
@@ -48,6 +51,8 @@ import com.project.zipmin.swagger.recipe.RecipeDeleteSuccessResponse;
 import com.project.zipmin.swagger.recipe.RecipeFileUploadFailResponse;
 import com.project.zipmin.swagger.recipe.RecipeForbiddenResponse;
 import com.project.zipmin.swagger.recipe.RecipeInvalidInputResponse;
+import com.project.zipmin.swagger.recipe.RecipeLikeFailResponse;
+import com.project.zipmin.swagger.recipe.RecipeLikeSuccessResponse;
 import com.project.zipmin.swagger.recipe.RecipeNotFoundResponse;
 import com.project.zipmin.swagger.recipe.RecipeReadListFailResponse;
 import com.project.zipmin.swagger.recipe.RecipeReadListSuccessResponse;
@@ -60,6 +65,8 @@ import com.project.zipmin.swagger.recipe.RecipeStockCreateFailResponse;
 import com.project.zipmin.swagger.recipe.RecipeStockInvalidInputResponse;
 import com.project.zipmin.swagger.recipe.RecipeStockReadListFailResponse;
 import com.project.zipmin.swagger.recipe.RecipeUnauthorizedResponse;
+import com.project.zipmin.swagger.recipe.RecipeUnlikeFailResponse;
+import com.project.zipmin.swagger.recipe.RecipeUnlikeSuccessResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -406,6 +413,59 @@ public class RecipeController {
 	
 	
 	// 레시피 좋아요
+	@Operation(
+	    summary = "레시피 좋아요"
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "레시피 좋아요 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeLikeSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "레시피 좋아요 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeLikeFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeUnauthorizedResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "권한 없는 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 레시피를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
 	@PostMapping("/recipes/{id}/likes")
 	public ResponseEntity<?> likeRecipes(
 			@Parameter(description = "레시피의 일련번호") @PathVariable int id,
@@ -428,6 +488,78 @@ public class RecipeController {
 	
 	
 	
+	// 레시피 좋아요 취소
+	@Operation(
+	    summary = "레시피 좋아요 취소"
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "레시피 좋아요 취소 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeUnlikeSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "레시피 좋아요 취소 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeUnlikeFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "좋아요 삭제 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = LikeDeleteFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = LikeInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeUnauthorizedResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "권한 없는 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 레시피를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 좋아요를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = LikeNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
 	// 레시피 좋아요 취소
 	@DeleteMapping("/recipes/{id}/likes")
 	public ResponseEntity<?> unlikeRecipes(
@@ -452,14 +584,59 @@ public class RecipeController {
 	
 	
 	// 사용자의 레시피 목록 조회
-	// RECIPE_READ_LIST_SUCCESS
-	// RECIPE_READ_LIST_FAIL
-	// LIKE_COUNT_FAIL
-	// USER_INVALID_INPUT
-	// RECIPE_INVALID_INPUT
-	// LIKE_INVALID_INPUT
-	// INTERNAL_SERVER_ERROR
-	
+	@Operation(
+	    summary = "사용자의 레시피 목록 조회"
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "레시피 목록 조회 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeReadListSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "레시피 목록 조회 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeReadListFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeUnauthorizedResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "권한 없는 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
 	// 사용자의 레시피 목록 조회
 	@GetMapping("/users/{id}/recipes")
 	public ResponseEntity<?> readUserRecipeList(
@@ -504,6 +681,59 @@ public class RecipeController {
 	
 	
 	// 사용자가 저장한 레시피 목록 조회
+	@Operation(
+	    summary = "사용자가 저장한 레시피 목록 조회"
+	)
+	@ApiResponses(value = {
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "200",
+				description = "레시피 목록 조회 성공",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeReadListSuccessResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "레시피 목록 조회 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeReadListFailResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "401",
+				description = "로그인되지 않은 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeUnauthorizedResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "403",
+				description = "권한 없는 사용자",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = RecipeForbiddenResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
 	@GetMapping("/users/{id}/recipes/likes")
 	public ResponseEntity<?> readUserSavedRecipeList(
 			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
@@ -535,7 +765,7 @@ public class RecipeController {
 		}
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<RecipeReadResponseDto> savedRecipePage = recipeService.readSavedRecipePageByUserId(id, pageable);
+		Page<RecipeReadResponseDto> savedRecipePage = recipeService.readLikedRecipePageByUserId(id, pageable);
 		
 		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, savedRecipePage));

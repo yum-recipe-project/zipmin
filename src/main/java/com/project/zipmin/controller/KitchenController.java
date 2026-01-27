@@ -440,7 +440,7 @@ public class KitchenController {
 						schema = @Schema(implementation = KitchenForbiddenResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
-				description = "해당 가이드를 찾을 수 없음",
+				description = "해당 키친가이드를 찾을 수 없음",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = KitchenNotFoundResponse.class))),
@@ -527,7 +527,7 @@ public class KitchenController {
 						schema = @Schema(implementation = LikeForbiddenResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
-				description = "해당 가이드를 찾을 수 없음",
+				description = "해당 키친가이드를 찾을 수 없음",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = KitchenNotFoundResponse.class))),
@@ -616,16 +616,16 @@ public class KitchenController {
 						schema = @Schema(implementation = LikeForbiddenResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
+				description = "해당 키친가이드를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = KitchenNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
 				description = "해당 좋아요를 찾을 수 없음",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = LikeNotFoundResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "404",
-				description = "해당 가이드를 찾을 수 없음",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = KitchenNotFoundResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "500",
 				description = "서버 내부 오류",
@@ -742,7 +742,7 @@ public class KitchenController {
 		}
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<GuideReadResponseDto> guidePage = kitchenService.readUserGuidePage(id, pageable);
+		Page<GuideReadResponseDto> guidePage = kitchenService.readLikedGuidePageByUserId(id, pageable);
 		
 		return ResponseEntity.status(KitchenErrorCode.KITCHEN_READ_LIST_FAIL.getStatus())
 				.body(ApiResponse.success(KitchenErrorCode.KITCHEN_READ_LIST_FAIL, guidePage));

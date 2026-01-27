@@ -11,6 +11,6 @@ public class RecipeCategoryCreateRequestDto {
 
 	private String type;
 	private String tag;
-	private Integer recipeId;
+	private int recipeId;
 	
 }

@@ -21,7 +21,7 @@ public class RecipeCreateRequestDto {
 	private String spicy;
 	private String portion;
 	private String tip;
-	private Integer userId;
+	private int userId;
 	
 	private List<RecipeCategoryCreateRequestDto> categoryDtoList;
 	private List<RecipeStockCreateRequestDto> stockDtoList;

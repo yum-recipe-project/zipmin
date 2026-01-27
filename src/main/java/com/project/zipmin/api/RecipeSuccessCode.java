@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum RecipeSuccessCode implements Code {
 	
-	// 데이터 처리
 	RECIPE_READ_LIST_SUCCESS(HttpStatus.OK, "레시피 목록 조회 성공"),
 	RECIPE_READ_SUCCESS(HttpStatus.OK, "레시피 조회 성공"),
 	RECIPE_CREATE_SUCCESS(HttpStatus.CREATED, "레시피 작성 성공."),
@@ -17,8 +16,7 @@ public enum RecipeSuccessCode implements Code {
     
     RECIPE_LIKE_SUCCESS(HttpStatus.OK, "레시피 좋아요 성공"),
     RECIPE_UNLIKE_SUCCESS(HttpStatus.OK, "레시피 좋아요 취소 성공"),
-    RECIPE_REPORT_SUCCESS(HttpStatus.OK, "레시피 신고 성공"),
-    RECIPE_UNREPORT_SUCCESS(HttpStatus.OK, "레시피 신고 취소 성공");
+    RECIPE_REPORT_SUCCESS(HttpStatus.OK, "레시피 신고 성공");
 	
 	private final HttpStatus status;
 	private final String message;

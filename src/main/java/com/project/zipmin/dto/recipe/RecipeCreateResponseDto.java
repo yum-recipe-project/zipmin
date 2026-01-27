@@ -12,7 +12,7 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class RecipeCreateResponseDto {
 	
-	private Integer id;
+	private int id;
 	private String image;
 	private String title;
 	private String introduce;
@@ -22,7 +22,7 @@ public class RecipeCreateResponseDto {
 	private String spicy;
 	private String portion;
 	private String tip;
-	private Integer userId;
+	private int userId;
 	
 	private List<RecipeCategoryCreateResponseDto> categoryDto;
 	private List<RecipeStockCreateResponseDto> stockDto;

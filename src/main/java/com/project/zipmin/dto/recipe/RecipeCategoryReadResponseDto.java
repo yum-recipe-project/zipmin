@@ -9,9 +9,9 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class RecipeCategoryReadResponseDto {
 
-	private Integer id;
+	private int id;
 	private String type;
 	private String tag;
-	private Integer recipeId;
+	private int recipeId;
 	
 }

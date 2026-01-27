@@ -10,9 +10,9 @@ import lombok.Data;
 public class RecipeStockCreateRequestDto {
 
 	private String name;
-	private Integer amount;
+	private int amount;
 	private String unit;
 	private String note;
-	private Integer recipeId;
+	private int recipeId;
 	
 }

@@ -9,11 +9,11 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class RecipeStockCreateResponseDto {
 
-	private Integer id;
+	private int id;
 	private String name;
-	private Integer amount;
+	private int amount;
 	private String unit;
 	private String note;
-	private Integer recipeId;
+	private int recipeId;
 	
 }

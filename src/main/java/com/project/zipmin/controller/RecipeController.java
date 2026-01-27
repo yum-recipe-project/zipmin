@@ -37,56 +37,53 @@ import com.project.zipmin.dto.like.LikeCreateResponseDto;
 import com.project.zipmin.dto.like.LikeDeleteRequestDto;
 import com.project.zipmin.dto.recipe.RecipeCreateRequestDto;
 import com.project.zipmin.dto.recipe.RecipeCreateResponseDto;
-import com.project.zipmin.dto.recipe.RecipeReadMyResponseDto;
-import com.project.zipmin.dto.recipe.RecipeReadMySavedResponseDto;
 import com.project.zipmin.dto.recipe.RecipeReadResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.RecipeService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
-import com.project.zipmin.swagger.RecipeCategoryCreateFailResponse;
-import com.project.zipmin.swagger.RecipeCategoryInvalidInputResponse;
-import com.project.zipmin.swagger.RecipeCategoryReadListFailResponse;
-import com.project.zipmin.swagger.RecipeCreateFailResponse;
-import com.project.zipmin.swagger.RecipeCreateSuccessResponse;
-import com.project.zipmin.swagger.RecipeDeleteFailResponse;
-import com.project.zipmin.swagger.RecipeDeleteSuccessResponse;
-import com.project.zipmin.swagger.RecipeFileUploadFailResponse;
-import com.project.zipmin.swagger.RecipeForbiddenResponse;
-import com.project.zipmin.swagger.RecipeInvalidInputResponse;
-import com.project.zipmin.swagger.RecipeNotFoundResponse;
-import com.project.zipmin.swagger.RecipeReadListFailResponse;
-import com.project.zipmin.swagger.RecipeReadListSuccessResponse;
-import com.project.zipmin.swagger.RecipeReadSuccessResponse;
-import com.project.zipmin.swagger.RecipeStepCreateFailResponse;
-import com.project.zipmin.swagger.RecipeStepFileUploadFailResponse;
-import com.project.zipmin.swagger.RecipeStepInvalidInputResponse;
-import com.project.zipmin.swagger.RecipeStepReadListFailResponse;
-import com.project.zipmin.swagger.RecipeStockCreateFailResponse;
-import com.project.zipmin.swagger.RecipeStockInvalidInputResponse;
-import com.project.zipmin.swagger.RecipeStockReadListFailResponse;
-import com.project.zipmin.swagger.RecipeUnauthorizedAccessResponse;
 import com.project.zipmin.swagger.UserInvalidInputResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
 import com.project.zipmin.swagger.VoteUpdateSuccessResponse;
+import com.project.zipmin.swagger.recipe.RecipeCategoryCreateFailResponse;
+import com.project.zipmin.swagger.recipe.RecipeCategoryInvalidInputResponse;
+import com.project.zipmin.swagger.recipe.RecipeCategoryReadListFailResponse;
+import com.project.zipmin.swagger.recipe.RecipeCreateFailResponse;
+import com.project.zipmin.swagger.recipe.RecipeCreateSuccessResponse;
+import com.project.zipmin.swagger.recipe.RecipeDeleteFailResponse;
+import com.project.zipmin.swagger.recipe.RecipeDeleteSuccessResponse;
+import com.project.zipmin.swagger.recipe.RecipeFileUploadFailResponse;
+import com.project.zipmin.swagger.recipe.RecipeForbiddenResponse;
+import com.project.zipmin.swagger.recipe.RecipeInvalidInputResponse;
+import com.project.zipmin.swagger.recipe.RecipeNotFoundResponse;
+import com.project.zipmin.swagger.recipe.RecipeReadListFailResponse;
+import com.project.zipmin.swagger.recipe.RecipeReadListSuccessResponse;
+import com.project.zipmin.swagger.recipe.RecipeReadSuccessResponse;
+import com.project.zipmin.swagger.recipe.RecipeStepCreateFailResponse;
+import com.project.zipmin.swagger.recipe.RecipeStepFileUploadFailResponse;
+import com.project.zipmin.swagger.recipe.RecipeStepInvalidInputResponse;
+import com.project.zipmin.swagger.recipe.RecipeStepReadListFailResponse;
+import com.project.zipmin.swagger.recipe.RecipeStockCreateFailResponse;
+import com.project.zipmin.swagger.recipe.RecipeStockInvalidInputResponse;
+import com.project.zipmin.swagger.recipe.RecipeStockReadListFailResponse;
+import com.project.zipmin.swagger.recipe.RecipeUnauthorizedResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequiredArgsConstructor
 public class RecipeController {
 	
-	@Autowired
-	RecipeService recipeService;
-	
-	@Autowired
-	UserService userService;
+	private static RecipeService recipeService;
+	private static UserService userService;
 	
 	
-
+	
 	
 	
 	@Operation(
@@ -121,14 +118,14 @@ public class RecipeController {
 	// 레시피 목록 조회
 	@GetMapping("/recipes")
 	public ResponseEntity<?> readRecipe(
-			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) List<String> categoryList,
 			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
+			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) List<String> categoryList,
 			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
 			@Parameter(description = "페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지 크기") @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<RecipeReadResponseDto> recipePage = recipeService.readRecipePage(categoryList, keyword, sort, pageable);
+		Page<RecipeReadResponseDto> recipePage = recipeService.readRecipePage(keyword, categoryList, sort, pageable);
 		
 		return ResponseEntity.status(RecipeSuccessCode.RECIPE_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(RecipeSuccessCode.RECIPE_READ_LIST_SUCCESS, recipePage));
@@ -275,7 +272,7 @@ public class RecipeController {
 				description = "로그인 되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = RecipeUnauthorizedAccessResponse.class))),
+						schema = @Schema(implementation = RecipeUnauthorizedResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
 				description = "해당 사용자를 찾을 수 없음",
@@ -311,7 +308,7 @@ public class RecipeController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(RecipeErrorCode.RECIPE_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(RecipeErrorCode.RECIPE_UNAUTHORIZED);
 		}
 		recipeRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 		
@@ -358,7 +355,7 @@ public class RecipeController {
 				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = RecipeUnauthorizedAccessResponse.class))),
+						schema = @Schema(implementation = RecipeUnauthorizedResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
 				description = "권한 없는 사용자의 접근",
@@ -392,7 +389,7 @@ public class RecipeController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(RecipeErrorCode.RECIPE_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(RecipeErrorCode.RECIPE_UNAUTHORIZED);
 		}
 		
 		recipeService.deleteRecipe(id);
@@ -422,7 +419,7 @@ public class RecipeController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(RecipeErrorCode.RECIPE_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(RecipeErrorCode.RECIPE_UNAUTHORIZED);
 		}
 		
 		likeRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
@@ -445,7 +442,7 @@ public class RecipeController {
 	    // 로그인 여부 확인
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-	        throw new ApiException(RecipeErrorCode.RECIPE_UNAUTHORIZED_ACCESS);
+	        throw new ApiException(RecipeErrorCode.RECIPE_UNAUTHORIZED);
 	    }
 
 	    likeDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
@@ -485,7 +482,7 @@ public class RecipeController {
 		}
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<RecipeReadMyResponseDto> recipePage = recipeService.readRecipePageByUserId(id, sort, pageable);
+		Page<RecipeReadResponseDto> recipePage = recipeService.readRecipePageByUserId(id, sort, pageable);
 		
 		return ResponseEntity.status(RecipeSuccessCode.RECIPE_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(RecipeSuccessCode.RECIPE_READ_LIST_SUCCESS, recipePage));
@@ -526,7 +523,7 @@ public class RecipeController {
 		Pageable pageable = PageRequest.of(page, size);
 		
 		// 레시피 저장 페이지 조회
-		Page<RecipeReadMySavedResponseDto> savedRecipePage = recipeService.readSavedRecipePageByUserId(id, pageable);
+		Page<RecipeReadResponseDto> savedRecipePage = recipeService.readSavedRecipePageByUserId(id, pageable);
 		
 		return ResponseEntity.status(UserSuccessCode.USER_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserSuccessCode.USER_READ_LIST_SUCCESS, savedRecipePage));

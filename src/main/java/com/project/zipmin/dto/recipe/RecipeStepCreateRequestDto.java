@@ -11,6 +11,6 @@ public class RecipeStepCreateRequestDto {
 
 	private String image;
 	private String content;
-	private Integer recipeId;
+	private int recipeId;
 	
 }

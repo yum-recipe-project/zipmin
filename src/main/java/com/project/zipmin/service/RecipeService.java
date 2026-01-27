@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -30,8 +32,6 @@ import com.project.zipmin.dto.recipe.RecipeCategoryCreateResponseDto;
 import com.project.zipmin.dto.recipe.RecipeCategoryReadResponseDto;
 import com.project.zipmin.dto.recipe.RecipeCreateRequestDto;
 import com.project.zipmin.dto.recipe.RecipeCreateResponseDto;
-import com.project.zipmin.dto.recipe.RecipeReadMyResponseDto;
-import com.project.zipmin.dto.recipe.RecipeReadMySavedResponseDto;
 import com.project.zipmin.dto.recipe.RecipeReadResponseDto;
 import com.project.zipmin.dto.recipe.RecipeStepCreateRequestDto;
 import com.project.zipmin.dto.recipe.RecipeStepCreateResponseDto;
@@ -82,66 +82,21 @@ public class RecipeService {
 	
 	
 	// 레시피 목록 조회
-	public Page<RecipeReadResponseDto> readRecipePage(List<String> categoryList, String keyword, String sort, Pageable pageable) {
+	public Page<RecipeReadResponseDto> readRecipePage(String keyword, List<String> categoryList, String sort, Pageable pageable) {
 		
 		// 입력값 검증
 		if (pageable == null) {
 			throw new ApiException(RecipeErrorCode.RECIPE_INVALID_INPUT);
 		}
 		
-		// 정렬 문자열을 객체로 변환
-		Sort sortSpec = Sort.by(Sort.Order.desc("id"));
+		// 정렬
+		Sort order = Sort.by(Sort.Order.desc("id"));
 		if (sort != null && !sort.isBlank()) {
-			switch (sort) {
-				case "id-desc":
-					sortSpec = Sort.by(Sort.Order.desc("id"));
-					break;
-				case "id-asc":
-					sortSpec = Sort.by(Sort.Order.asc("id"));
-					break;
-				case "title-desc":
-					sortSpec = Sort.by(Sort.Order.desc("title"), Sort.Order.desc("id"));
-					break;
-				case "title-asc":
-					sortSpec = Sort.by(Sort.Order.asc("title"), Sort.Order.desc("id"));
-					break;
-				case "postdate-desc":
-					sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id"));
-					break;
-				case "postdate-asc":
-					sortSpec = Sort.by(Sort.Order.asc("postdate"), Sort.Order.asc("id"));
-					break;
-				case "commentcount-desc":
-					sortSpec = Sort.by(Sort.Order.desc("commentcount"), Sort.Order.desc("id"));
-					break;
-				case "commentcount-asc":
-					sortSpec = Sort.by(Sort.Order.asc("commentcount"), Sort.Order.desc("id"));
-					break;
-				case "likecount-desc":
-					sortSpec = Sort.by(Sort.Order.desc("likecount"), Sort.Order.desc("id"));
-					break;
-				case "likecount-asc":
-					sortSpec = Sort.by(Sort.Order.asc("likecount"), Sort.Order.desc("id"));
-					break;
-				case "reviewscore-desc":
-					sortSpec = Sort.by(Sort.Order.desc("reviewscore"), Sort.Order.desc("id"));
-					break;
-				case "reviewscore-asc":
-					sortSpec = Sort.by(Sort.Order.asc("reviewscore"), Sort.Order.desc("id"));
-					break;
-				case "reportcount-desc":
-					sortSpec = Sort.by(Sort.Order.desc("reportcount"), Sort.Order.desc("id"));
-					break;
-				case "reportcount-asc":
-					sortSpec = Sort.by(Sort.Order.asc("reportcount"), Sort.Order.desc("id"));
-					break;
-				default:
-					break;
-		    }
+			String field = sort.split("-")[0];
+			Direction direction = "asc".equals(sort.split("-")[1]) ? Direction.ASC : Direction.DESC;
+			order = Sort.by(new Order(direction, field), Order.desc("id"));
 		}
-		
-		// 기존 페이지 객체에 정렬 주입
-		Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
+		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), order);
 		
 		// 레시피 목록 조회
 		Page<Recipe> recipePage;
@@ -149,25 +104,16 @@ public class RecipeService {
 			boolean hasKeyword = keyword != null && !keyword.isBlank();
 			boolean hasCategory = categoryList != null && !categoryList.isEmpty();
 			
-			if (!hasCategory) {
-				// 카테고리 없음
+			if (hasCategory) {
 				recipePage = hasKeyword
-						? recipeRepository.findAllByTitleContainingIgnoreCase(keyword, sortedPageable)
-						: recipeRepository.findAll(sortedPageable);
-			} 
-			else if (categoryList.size() == 1) {
-				// 카테고리 1개
-				recipePage = hasKeyword
-						? recipeRepository.findDistinctByCategoryList_TagAndTitleContainingIgnoreCase(categoryList.get(0), keyword, sortedPageable)
-						: recipeRepository.findDistinctByCategoryList_Tag(categoryList.get(0), sortedPageable);
+						? recipeRepository.findAllDistinctByCategoryList_TagInAndTitleContainingIgnoreCase(categoryList, keyword, pageable)
+						: recipeRepository.findAllDistinctByCategoryList_TagIn(categoryList, pageable);
 			} 
 			else {
-				// 카테고리 여러 개
 				recipePage = hasKeyword
-						? recipeRepository.findDistinctByCategoryList_TagInAndTitleContainingIgnoreCase(categoryList, keyword, sortedPageable)
-						: recipeRepository.findDistinctByCategoryList_TagIn(categoryList, sortedPageable);
+						? recipeRepository.findAllByTitleContainingIgnoreCase(keyword, pageable)
+						: recipeRepository.findAll(pageable);
 			}
-
 		}
 		catch (Exception e) {
 			throw new ApiException(RecipeErrorCode.RECIPE_READ_LIST_FAIL);
@@ -177,15 +123,9 @@ public class RecipeService {
 		List<RecipeReadResponseDto> recipeDtoList = new ArrayList<RecipeReadResponseDto>();
 		for (Recipe recipe : recipePage) {
 			RecipeReadResponseDto recipeDto = recipeMapper.toReadResponseDto(recipe);
-			
-			// 작성자
-			UserReadResponseDto userDto = userService.readUserById(recipeDto.getUserId());
-			recipeDto.setUsername(userDto.getUsername());
-			recipeDto.setNickname(userDto.getNickname());
-			
-			// 이미지
+			recipeDto.setUsername(recipe.getUser().getUsername());
+			recipeDto.setNickname(recipe.getUser().getNickname());
 			recipeDto.setImage(publicPath + "/" + recipeDto.getImage());	
-			
 			recipeDtoList.add(recipeDto);
 		}
 		
@@ -196,7 +136,8 @@ public class RecipeService {
 	
 	
 	
-	// 레시피 목록 조회 (냉장고 파먹기용)
+	// 레시피 목록 조회 (냉장고 파먹기)
+	// TODO : 수정 필요
 	public List<RecipeReadResponseDto> readRecipeList() {
 		
 		// 레시피 목록 조회
@@ -234,51 +175,36 @@ public class RecipeService {
 	
 	
 	// 사용자의 레시피 목록 조회
-	public Page<RecipeReadMyResponseDto> readRecipePageByUserId(Integer userId, String sort, Pageable pageable) {
+	public Page<RecipeReadResponseDto> readRecipePageByUserId(Integer userId, String sort, Pageable pageable) {
 	    
 		// 입력값 검증
 	    if (userId == null || pageable == null) {
 	        throw new ApiException(RecipeErrorCode.RECIPE_INVALID_INPUT);
 	    }
 	    
-		// 정렬 문자열을 객체로 변환
-		Sort sortSpec = Sort.by(Sort.Order.desc("id"));
+		// 정렬
+		Sort order = Sort.by(Sort.Order.desc("id"));
 		if (sort != null && !sort.isBlank()) {
-			switch (sort) {
-				case "postdate-desc":
-					sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id"));
-					break;
-				case "likecount-desc":
-					sortSpec = Sort.by(Sort.Order.desc("likecount"), Sort.Order.desc("id"));
-					break;
-				case "reviewscore-desc":
-					sortSpec = Sort.by(Sort.Order.desc("reviewscore"), Sort.Order.desc("id"));
-					break;
-				default:
-					break;
-		    }
+			String field = sort.split("-")[0];
+			Direction direction = "asc".equals(sort.split("-")[1]) ? Direction.ASC : Direction.DESC;
+			order = Sort.by(new Order(direction, field), Order.desc("id"));
 		}
+		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), order);
 		
-		// 기존 페이지 객체에 정렬 주입
-		Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
-
 	    // 레시피 목록 조회
 	    Page<Recipe> recipePage;
 	    try {
-	        recipePage = recipeRepository.findAllByUserId(userId, sortedPageable);
+	        recipePage = recipeRepository.findAllByUserId(userId, pageable);
 	    }
 	    catch (Exception e) {
 	        throw new ApiException(RecipeErrorCode.RECIPE_READ_LIST_FAIL);
 	    }
 
 	    // 레시피 목록 응답 구성
-	    List<RecipeReadMyResponseDto> recipeDtoList = new ArrayList<>();
+	    List<RecipeReadResponseDto> recipeDtoList = new ArrayList<>();
 	    for (Recipe recipe : recipePage) {
-	        RecipeReadMyResponseDto recipeDto = recipeMapper.toReadMyResponseDto(recipe);
-	        
+	    	RecipeReadResponseDto recipeDto = recipeMapper.toReadResponseDto(recipe);
 	     	recipeDto.setImage(publicPath + "/" + recipeDto.getImage());	
-	        // recipeDto.setLikecount(likeService.countLike("recipe", recipe.getId()));
-
 	        recipeDtoList.add(recipeDto);
 	    }
 
@@ -287,10 +213,12 @@ public class RecipeService {
 
 	
 	
+
 	
 	// 사용자가 좋아요한 레시피 목록 조회
-	public Page<RecipeReadMySavedResponseDto> readSavedRecipePageByUserId(Integer userId, Pageable pageable) {
-
+	public Page<RecipeReadResponseDto> readSavedRecipePageByUserId(Integer userId, Pageable pageable) {
+		
+		// 입력값 검증
 	    if (userId == null || pageable == null) {
 	        throw new ApiException(RecipeErrorCode.RECIPE_INVALID_INPUT);
 	    }

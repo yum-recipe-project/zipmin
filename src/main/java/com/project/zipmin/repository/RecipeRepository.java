@@ -16,12 +16,8 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
 	Page<Recipe> findAllByUserId(int userId, Pageable pageable);
 	Page<Recipe> findAllByTitleContainingIgnoreCase(String keyword, Pageable pageable);
 	
-	Page<Recipe> findDistinctByCategoryList_Tag(String tag, Pageable pageable);
-	Page<Recipe> findDistinctByCategoryList_TagAndTitleContainingIgnoreCase(String tag, String keyword, Pageable pageable);
-	
-	// 카테고리 여러개 (OR)
-	Page<Recipe> findDistinctByCategoryList_TagIn(Collection<String> tags, Pageable pageable);
-    Page<Recipe> findDistinctByCategoryList_TagInAndTitleContainingIgnoreCase(Collection<String> tags, String keyword, Pageable pageable);
+	Page<Recipe> findAllDistinctByCategoryList_TagIn(Collection<String> tags, Pageable pageable);
+    Page<Recipe> findAllDistinctByCategoryList_TagInAndTitleContainingIgnoreCase(Collection<String> tags, String keyword, Pageable pageable);
     
     // 사용자가 좋아요 한 레시피
     Page<Recipe> findByIdIn(List<Integer> ids, Pageable pageable);

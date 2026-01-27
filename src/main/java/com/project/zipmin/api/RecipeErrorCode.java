@@ -9,17 +9,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum RecipeErrorCode implements Code {
 	
-	// 인증/인가
-	RECIPE_UNAUTHORIZED_ACCESS(HttpStatus.UNAUTHORIZED, "로그인되지 않은 사용자"),
-	RECIPE_FORBIDDEN(HttpStatus.FORBIDDEN, "권한 없는 사용자의 접근"),
+	RECIPE_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "로그인되지 않은 사용자"),
+	RECIPE_FORBIDDEN(HttpStatus.FORBIDDEN, "권한 없는 사용자"),
 	
-	// 입력값 오류
 	RECIPE_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
 	RECIPE_STEP_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
 	RECIPE_CATEGORY_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
 	RECIPE_STOCK_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
 	
-	// 데이터 처리
 	RECIPE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 레시피를 찾을 수 없음"),
     RECIPE_CREATE_FAIL(HttpStatus.BAD_REQUEST, "레시피 작성 실패"),
     RECIPE_READ_LIST_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "레시피 목록 조회 실패"),
@@ -48,7 +45,6 @@ public enum RecipeErrorCode implements Code {
     RECIPE_REPORT_FAIL(HttpStatus.BAD_REQUEST, "레시피 신고 실패"),
     RECIPE_UNREPORT_FAIL(HttpStatus.BAD_REQUEST, "레시피 신고 삭제 실패"),
 	
-	// 기타
 	RECIPE_UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "예외 처리되지 않은 내부 오류");
 	
 	private final HttpStatus status;

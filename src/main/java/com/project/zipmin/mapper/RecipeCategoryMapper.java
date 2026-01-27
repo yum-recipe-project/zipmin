@@ -1,5 +1,7 @@
 package com.project.zipmin.mapper;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -18,6 +20,9 @@ public interface RecipeCategoryMapper {
 	
 	@Mapping(target = "recipeId", source = "recipe.id")
 	RecipeCategoryReadResponseDto toReadResponseDto(RecipeCategory category);
+	
+	@Mapping(target = "recipeId", source = "recipe.id")
+	List<RecipeCategoryReadResponseDto> toReadResponseDtoList(List<RecipeCategory> recipeList);
 	
 	
 	

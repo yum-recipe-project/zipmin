@@ -1,7 +1,5 @@
 package com.project.zipmin.service;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -364,6 +362,11 @@ public class KitchenService {
 				|| likeDto.getRecodenum() == 0
 				|| likeDto.getUserId() == 0) {
 			throw new ApiException(KitchenErrorCode.KITCHEN_INVALID_INPUT);
+		}
+		
+		// 키친가이드 존재 여부 확인
+		if (!kitchenRepository.existsById(likeDto.getRecodenum())) {
+			throw new ApiException(KitchenErrorCode.KITCHEN_NOT_FOUND);
 		}
 		
 		// 좋아요 삭제

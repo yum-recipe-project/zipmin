@@ -219,10 +219,9 @@ public class CommentController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
-		// 400 LIKE_COUNT_FAIL
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "로그인 되지 않은 사용자",
+				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = CommentUnauthorizedAccessResponse.class))),
@@ -305,7 +304,7 @@ public class CommentController {
 						schema = @Schema(implementation = CommentUnauthorizedAccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "권한 없는 사용자의 접근",
+				description = "권한 없는 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = CommentForbiddenResponse.class))),
@@ -382,13 +381,13 @@ public class CommentController {
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "로그인 되지 않은 사용자",
+				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = CommentUnauthorizedAccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "권한 없는 사용자의 접근",
+				description = "권한 없는 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = CommentForbiddenResponse.class))),
@@ -476,13 +475,13 @@ public class CommentController {
 						schema = @Schema(implementation = LikeInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "로그인 되지 않은 사용자",
+				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = CommentUnauthorizedAccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
-				description = "권한 없는 사용자의 접근",
+				description = "권한 없는 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = LikeForbiddenResponse.class))),
@@ -577,19 +576,19 @@ public class CommentController {
 						schema = @Schema(implementation = LikeInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "로그인 되지 않은 사용자",
+				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = CommentUnauthorizedAccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "권한 없는 사용자의 접근",
+				description = "권한 없는 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = CommentForbiddenResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "권한 없는 사용자의 접근",
+				description = "권한 없는 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = LikeForbiddenResponse.class))),
@@ -679,13 +678,13 @@ public class CommentController {
 						schema = @Schema(implementation = ReportInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "로그인 되지 않은 사용자",
+				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = CommentUnauthorizedAccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "권한 없는 사용자의 접근",
+				description = "권한 없는 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = ReportForbiddenResponse.class))),
@@ -800,13 +799,13 @@ public class CommentController {
 						schema = @Schema(implementation = KitchenInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "로그인 되지 않은 사용자",
+				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = CommentUnauthorizedAccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "권한 없는 사용자의 접근",
+				description = "권한 없는 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = CommentForbiddenResponse.class))),

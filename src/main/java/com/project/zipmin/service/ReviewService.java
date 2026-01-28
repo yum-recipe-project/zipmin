@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.CommentErrorCode;
+import com.project.zipmin.api.RecipeErrorCode;
 import com.project.zipmin.api.ReviewErrorCode;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.like.LikeCreateRequestDto;
@@ -441,7 +442,7 @@ public class ReviewService {
 			throw e;
 		}
 		catch (Exception e) {
-			throw new ApiException(CommentErrorCode.COMMENT_REPORT_FAIL);
+			throw new ApiException(RecipeErrorCode.RECIPE_REPORT_FAIL);
 		}
 	}
 	

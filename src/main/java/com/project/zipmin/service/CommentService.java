@@ -251,14 +251,13 @@ public class CommentService {
 		Comment comment = commentMapper.toEntity(commentRequestDto);
 		
 		// 댓글 참조
-//		if (commentRequestDto.getCommId() != 0) {
-//			Comment parent = commentRepository.findById(commentRequestDto.getCommId())
-//				.orElseThrow(() -> new ApiException(CommentErrorCode.COMMENT_NOT_FOUND));
-//			comment.setComment(parent);
-//		}
-		
-		// 댓글 존재 여부 확인
-		if (commentRequestDto.getCommId() != 0 && !commentRepository.existsById(commentRequestDto.getCommId())) {
+		try {
+			if (commentRequestDto.getCommId() != 0) {
+				Comment parent = commentRepository.findById(commentRequestDto.getCommId());
+				comment.setComment(parent);
+			}
+		}
+		catch (Exception e) {
 			throw new ApiException(CommentErrorCode.COMMENT_NOT_FOUND);
 		}
 		

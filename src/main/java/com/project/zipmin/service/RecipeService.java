@@ -19,7 +19,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 	
 import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.RecipeErrorCode;
+import com.project.zipmin.api.ReviewErrorCode;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.like.LikeCreateRequestDto;
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
@@ -37,6 +39,8 @@ import com.project.zipmin.dto.recipe.RecipeStepReadResponseDto;
 import com.project.zipmin.dto.recipe.RecipeStockCreateRequestDto;
 import com.project.zipmin.dto.recipe.RecipeStockCreateResponseDto;
 import com.project.zipmin.dto.recipe.RecipeStockReadResponseDto;
+import com.project.zipmin.dto.report.ReportCreateRequestDto;
+import com.project.zipmin.dto.report.ReportCreateResponseDto;
 import com.project.zipmin.entity.Recipe;
 import com.project.zipmin.entity.RecipeCategory;
 import com.project.zipmin.entity.RecipeStep;
@@ -62,15 +66,14 @@ public class RecipeService {
 	private final RecipeCategoryRepository categoryRepository;
 	private final RecipeStockRepository stockRepository;
 	private final RecipeStepRepository stepRepository;
-	
-	private final UserService userService;
-	private final FileService fileService;
-	private final LikeService likeService;
-	
 	private final RecipeMapper recipeMapper;
 	private final RecipeCategoryMapper categoryMapper;
 	private final RecipeStockMapper stockMapper;
 	private final RecipeStepMapper stepMapper;
+	private final UserService userService;
+	private final FileService fileService;
+	private final LikeService likeService;
+	private final ReportService reportService;
 	
 	@Value("${app.upload.public-path:/files}")
 	private String publicPath;
@@ -580,4 +583,36 @@ public class RecipeService {
 			throw new ApiException(RecipeErrorCode.RECIPE_UNLIKE_FAIL);
 		}
 	}
+	
+	
+	
+	
+	
+	// 리뷰 신고
+	public ReportCreateResponseDto reportReview(ReportCreateRequestDto reportDto) {
+		
+		// 입력값 검증
+		if (reportDto == null || reportDto.getTablename() == null
+				|| reportDto.getRecodenum() == 0 || reportDto.getReason() == null
+				|| reportDto.getUserId() == 0) {
+			throw new ApiException(RecipeErrorCode.RECIPE_INVALID_INPUT);
+		}
+		
+		// 리뷰 존재 여부 확인
+		if (!recipeRepository.existsById(reportDto.getRecodenum())) {
+			throw new ApiException(RecipeErrorCode.RECIPE_NOT_FOUND);
+		}
+		
+		// 신고 작성
+		try {
+			return reportService.createReport(reportDto);
+		}
+		catch (ApiException e) {
+			throw e;
+		}
+		catch (Exception e) {
+			throw new ApiException(RecipeErrorCode.RECIPE_REPORT_FAIL);
+		}
+	}
+	
 }

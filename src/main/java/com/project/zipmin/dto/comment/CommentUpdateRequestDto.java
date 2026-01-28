@@ -1,6 +1,4 @@
-package com.project.zipmin.dto;
-
-import java.util.Date;
+package com.project.zipmin.dto.comment;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -13,17 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class CommentCreateResponseDto {
+public class CommentUpdateRequestDto {
 	
-	private Integer id;
-	private Date postdate;
+	private int id;
 	private String content;
-	private String tablename;
-	private Integer recodenum;
-	private Integer commId;
-	private Integer userId;
 	
-	private String nickname;
-	private long likecount;
-	private boolean likestatus;
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Formula;
 
 import jakarta.persistence.CascadeType;
@@ -19,8 +18,6 @@ import jakarta.persistence.OrderBy;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,8 +33,8 @@ import lombok.NoArgsConstructor;
 public class Comment {
 	
 	@Id
-	@GeneratedValue(generator = "seq_comments_id")
-	@SequenceGenerator(name = "seq_comments_id", sequenceName = "SEQ_COMMENTS_ID", allocationSize = 1)
+	@GeneratedValue(generator = "SEQ_COMMENTS_ID")
+	@SequenceGenerator(name = "SEQ_COMMENTS_ID", sequenceName = "SEQ_COMMENTS_ID", allocationSize = 1)
 	private int id;
 	
 	private Date postdate;
@@ -45,12 +42,10 @@ public class Comment {
 	private String tablename;
 	private int recodenum;
 	
-	// private int user_id;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")
 	private User user;
 	
-	// private int comm_id;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "COMM_ID")
 	private Comment comment;

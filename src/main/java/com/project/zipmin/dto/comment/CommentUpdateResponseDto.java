@@ -1,7 +1,6 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.comment;
 
 import java.util.Date;
-import java.util.List;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -11,27 +10,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class CommentReadResponseDto {
+public class CommentUpdateResponseDto {
 	
-	private Integer id;
+	private int id;
 	private Date postdate;
 	private String content;
 	private String tablename;
-	private Integer recodenum;
-	private Integer commId;
-	private Integer userId;
+	private int recodenum;
+	private int commId;
+	private int userId;
 	
-	private String username;
 	private String nickname;
-	private String avatar;
-	private String role;
-	
-	private int likecount;
-	private int reportcount;
-	private boolean isLiked;
-	private List<CommentReadResponseDto> subcommentList;
+	private long likecount;
+	private boolean likestatus;
 	
 }

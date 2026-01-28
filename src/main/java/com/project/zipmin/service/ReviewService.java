@@ -16,11 +16,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.ReviewErrorCode;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.like.LikeCreateRequestDto;
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
 import com.project.zipmin.dto.like.LikeDeleteRequestDto;
+import com.project.zipmin.dto.report.ReportCreateRequestDto;
+import com.project.zipmin.dto.report.ReportCreateResponseDto;
 import com.project.zipmin.dto.review.ReviewCreateRequestDto;
 import com.project.zipmin.dto.review.ReviewCreateResponseDto;
 import com.project.zipmin.dto.review.ReviewReadResponseDto;
@@ -170,10 +173,10 @@ public class ReviewService {
 		
 		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
-				if (userService.readUserById(userId).getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+				if (userService.readUserById(userId).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 					throw new ApiException(ReviewErrorCode.REVIEW_FORBIDDEN);
 				}
-				if (userService.readUserById(userId).getRole().equals(Role.ROLE_ADMIN) && currentUser.getId() != userId) {
+				if (userService.readUserById(userId).getRole().equals(Role.ROLE_ADMIN.name()) && currentUser.getId() != userId) {
 					throw new ApiException(ReviewErrorCode.REVIEW_FORBIDDEN);
 				}
 			}
@@ -195,11 +198,13 @@ public class ReviewService {
 		List<ReviewReadResponseDto> reviewDtoList = new ArrayList<>();
 		for (Review review : reviewPage) {
 			ReviewReadResponseDto reviewDto = reviewMapper.toReadResponseDto(review);
-			if (review.getTablename().equals("review")) {
-				reviewDto.setTitle(recipeService.readRecipeById(userId).getTitle());
-			}
 			reviewDto.setNickname(review.getUser().getNickname());
 			reviewDtoList.add(reviewDto);
+			String title = switch (review.getTablename()) {
+				case "recipe" -> recipeService.readRecipeById(userId).getTitle();
+				default -> null;
+			};
+			reviewDto.setTitle(title);
 		}
 
 		return new PageImpl<>(reviewDtoList, pageable, reviewPage.getTotalElements());
@@ -406,6 +411,37 @@ public class ReviewService {
 		} 
 		catch (Exception e) {
 			throw new ApiException(ReviewErrorCode.REVIEW_UNLIKE_FAIL);
+		}
+	}
+	
+	
+	
+	
+	
+	// 리뷰 신고
+	public ReportCreateResponseDto reportReview(ReportCreateRequestDto reportDto) {
+		
+		// 입력값 검증
+		if (reportDto == null || reportDto.getTablename() == null
+				|| reportDto.getRecodenum() == 0 || reportDto.getReason() == null
+				|| reportDto.getUserId() == 0) {
+			throw new ApiException(ReviewErrorCode.REVIEW_INVALID_INPUT);
+		}
+		
+		// 리뷰 존재 여부 확인
+		if (!reviewRepository.existsById(reportDto.getRecodenum())) {
+			throw new ApiException(ReviewErrorCode.REVIEW_NOT_FOUND);
+		}
+		
+		// 신고 작성
+		try {
+			return reportService.createReport(reportDto);
+		}
+		catch (ApiException e) {
+			throw e;
+		}
+		catch (Exception e) {
+			throw new ApiException(CommentErrorCode.COMMENT_REPORT_FAIL);
 		}
 	}
 	

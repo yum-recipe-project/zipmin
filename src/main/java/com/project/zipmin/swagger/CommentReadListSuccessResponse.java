@@ -1,6 +1,6 @@
 package com.project.zipmin.swagger;
 
-import com.project.zipmin.dto.CommentReadResponseDto;
+import com.project.zipmin.dto.comment.CommentReadResponseDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

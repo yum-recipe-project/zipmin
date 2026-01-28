@@ -37,10 +37,10 @@ import com.project.zipmin.api.WithdrawErrorCode;
 import com.project.zipmin.api.WithdrawSuccessCode;
 import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
-import com.project.zipmin.dto.CommentReadResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.WithdrawReadResponseDto;
 import com.project.zipmin.dto.chomp.ChompReadResponseDto;
+import com.project.zipmin.dto.comment.CommentReadResponseDto;
 import com.project.zipmin.dto.kitchen.GuideReadResponseDto;
 import com.project.zipmin.dto.recipe.RecipeReadResponseDto;
 import com.project.zipmin.dto.report.ReportReadRequestDto;
@@ -778,8 +778,8 @@ public class AdminController {
 	// 댓글 목록 조회
 	@GetMapping("/admin/comments")
 	public ResponseEntity<?> readAdminComment(
-			@Parameter(description = "테이블명", required = false) @RequestParam(required = false) String tablename,
 			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
+			@Parameter(description = "테이블명", required = false) @RequestParam(required = false) String tablename,
 			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
 			@Parameter(description = "페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지 크기") @RequestParam int size) {
@@ -799,7 +799,7 @@ public class AdminController {
 		}
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<CommentReadResponseDto> commentPage = commentService.readAdminCommentPage(tablename, keyword, sort, pageable);
+		Page<CommentReadResponseDto> commentPage = commentService.readCommentPage(keyword, tablename, sort, pageable);
 		
 		return ResponseEntity.status(CommentSuccessCode.COMMENT_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(CommentSuccessCode.COMMENT_READ_LIST_SUCCESS, commentPage));

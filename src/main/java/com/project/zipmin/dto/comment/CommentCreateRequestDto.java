@@ -1,4 +1,6 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.comment;
+
+import java.util.Date;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -11,9 +13,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class CommentDeleteRequestDto {
+public class CommentCreateRequestDto {
 	
-	private Integer id;
-	private Integer userId;
-
+	private Date postdate;
+	private String content;
+	private String tablename;
+	private int recodenum;
+	private int commId;
+	private int userId;
+	
 }

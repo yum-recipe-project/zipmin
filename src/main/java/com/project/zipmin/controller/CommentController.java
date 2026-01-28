@@ -19,17 +19,17 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.CommentSuccessCode;
-import com.project.zipmin.dto.CommentCreateRequestDto;
-import com.project.zipmin.dto.CommentCreateResponseDto;
 import com.project.zipmin.dto.UserCommentReadesponseDto;
+import com.project.zipmin.dto.comment.CommentCreateRequestDto;
+import com.project.zipmin.dto.comment.CommentCreateResponseDto;
+import com.project.zipmin.dto.comment.CommentReadResponseDto;
+import com.project.zipmin.dto.comment.CommentUpdateRequestDto;
+import com.project.zipmin.dto.comment.CommentUpdateResponseDto;
 import com.project.zipmin.dto.like.LikeCreateRequestDto;
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
 import com.project.zipmin.dto.like.LikeDeleteRequestDto;
 import com.project.zipmin.dto.report.ReportCreateRequestDto;
 import com.project.zipmin.dto.report.ReportCreateResponseDto;
-import com.project.zipmin.dto.CommentReadResponseDto;
-import com.project.zipmin.dto.CommentUpdateRequestDto;
-import com.project.zipmin.dto.CommentUpdateResponseDto;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.CommentCreateFailResponse;
@@ -48,7 +48,6 @@ import com.project.zipmin.swagger.CommentReportSuccessResponse;
 import com.project.zipmin.swagger.CommentUnauthorizedAccessResponse;
 import com.project.zipmin.swagger.CommentUnlikeFailResponse;
 import com.project.zipmin.swagger.CommentUnlikeSuccessResponse;
-import com.project.zipmin.swagger.CommentUnreportSuccessResponse;
 import com.project.zipmin.swagger.CommentUpdateFailResponse;
 import com.project.zipmin.swagger.CommentUpdateSuccessResponse;
 import com.project.zipmin.swagger.EventInvalidInputResponse;
@@ -74,11 +73,9 @@ import com.project.zipmin.swagger.recipe.RecipeInvalidInputResponse;
 import com.project.zipmin.swagger.recipe.RecipeNotFoundResponse;
 import com.project.zipmin.swagger.report.ReportCountFailResponse;
 import com.project.zipmin.swagger.report.ReportCreateFailResponse;
-import com.project.zipmin.swagger.report.ReportDeleteFailResponse;
 import com.project.zipmin.swagger.report.ReportDuplicatedResponse;
 import com.project.zipmin.swagger.report.ReportForbiddenResponse;
 import com.project.zipmin.swagger.report.ReportInvalidInputResponse;
-import com.project.zipmin.swagger.report.ReportNotFoundResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -102,7 +99,7 @@ public class CommentController {
 	
 	// 댓글 목록 조회
 	@Operation(
-	    summary = "댓글 목록 조회"
+		summary = "댓글 목록 조회"
 	)
 	@ApiResponses(value = {
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -183,10 +180,10 @@ public class CommentController {
 			@Parameter(description = "페이지 크기") @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<CommentReadResponseDto> commentPage = commentService.readCommentPage(tablename, recodenum, sort, pageable);
+		Page<CommentReadResponseDto> commentPage = commentService.readCommentPageByTablenameAndRecodenum(tablename, recodenum, sort, pageable);
 		
 		return ResponseEntity.status(CommentSuccessCode.COMMENT_READ_LIST_SUCCESS.getStatus())
-        		.body(ApiResponse.success(CommentSuccessCode.COMMENT_READ_LIST_SUCCESS, commentPage));
+				.body(ApiResponse.success(CommentSuccessCode.COMMENT_READ_LIST_SUCCESS, commentPage));
 	}
 	
 
@@ -195,7 +192,7 @@ public class CommentController {
 	
 	// 댓글 작성
 	@Operation(
-	    summary = "댓글 작성"
+		summary = "댓글 작성"
 	)
 	@ApiResponses(value = {
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -257,7 +254,7 @@ public class CommentController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
+			throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
 		}
 		commentRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 		
@@ -273,7 +270,7 @@ public class CommentController {
 	
 	// 댓글 수정
 	@Operation(
-	    summary = "댓글 수정"
+		summary = "댓글 수정"
 	)
 	@ApiResponses(value = {
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -341,7 +338,7 @@ public class CommentController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
+			throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
 		}
 		
 		CommentUpdateResponseDto commentResponseDto = commentService.updateComment(commentRequestDto);
@@ -356,7 +353,7 @@ public class CommentController {
 	
 	// 댓글 삭제
 	@Operation(
-	    summary = "댓글 삭제"
+		summary = "댓글 삭제"
 	)
 	@ApiResponses(value = {
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -423,7 +420,7 @@ public class CommentController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
+			throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
 		}
 		
 		commentService.deleteComment(id);
@@ -438,7 +435,7 @@ public class CommentController {
 	
 	// 댓글 좋아요
 	@Operation(
-	    summary = "댓글 좋아요"
+		summary = "댓글 좋아요"
 	)
 	@ApiResponses(value = {
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -523,7 +520,7 @@ public class CommentController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
+			throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
 		}
 		likeRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 		
@@ -539,7 +536,7 @@ public class CommentController {
 	
 	// 댓글 좋아요 취소
 	@Operation(
-	    summary = "댓글 좋아요 취소"
+		summary = "댓글 좋아요 취소"
 	)
 	@ApiResponses(value = {
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -625,7 +622,7 @@ public class CommentController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
+			throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
 		}
 		likeDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 		
@@ -641,7 +638,7 @@ public class CommentController {
 	
 	// 댓글 신고
 	@Operation(
-	    summary = "댓글 신고"
+		summary = "댓글 신고"
 	)
 	@ApiResponses(value = {
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -727,7 +724,7 @@ public class CommentController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
+			throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
 		}
 		reportRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 		
@@ -744,7 +741,7 @@ public class CommentController {
 	
 	// 사용자의 댓글 목록 조회
 	@Operation(
-	    summary = "사용자의 댓글 목록 조회"
+		summary = "사용자의 댓글 목록 조회"
 	)
 	@ApiResponses(value = {
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -867,7 +864,7 @@ public class CommentController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
+			throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
 		}
 
 		Pageable pageable = PageRequest.of(page, size);

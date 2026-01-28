@@ -2,18 +2,36 @@ package com.project.zipmin.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
 
-import com.project.zipmin.dto.CommentCreateRequestDto;
-import com.project.zipmin.dto.CommentCreateResponseDto;
 import com.project.zipmin.dto.UserCommentReadesponseDto;
-import com.project.zipmin.dto.CommentReadResponseDto;
-import com.project.zipmin.dto.CommentUpdateRequestDto;
-import com.project.zipmin.dto.CommentUpdateResponseDto;
+import com.project.zipmin.dto.comment.CommentCreateRequestDto;
+import com.project.zipmin.dto.comment.CommentCreateResponseDto;
+import com.project.zipmin.dto.comment.CommentReadResponseDto;
+import com.project.zipmin.dto.comment.CommentUpdateRequestDto;
+import com.project.zipmin.dto.comment.CommentUpdateResponseDto;
 import com.project.zipmin.entity.Comment;
 
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
+	
+	// Read
+	@Mapping(target = "comment.id", source = "commId")
+	@Mapping(target = "user.id", source = "userId")
+	Comment toEntity(CommentReadResponseDto commentDto);
+	
+	@Mapping(target = "commId", source = "comment.id")
+	@Mapping(target = "userId", source = "user.id")
+	CommentReadResponseDto toReadResponseDto(Comment comment);
+	
+	@Mapping(target = "comment.id", source = "commId")
+	@Mapping(target = "user.id", source = "userId")
+	Comment toEntity(UserCommentReadesponseDto commentDto);
+	
+	@Mapping(target = "commId", source = "comment.id")
+	@Mapping(target = "userId", source = "user.id")
+	UserCommentReadesponseDto toReadMyResponseDto(Comment comment);
+	
+	
 	
 	// Create
 	@Mapping(target = "comment", ignore = true)
@@ -34,29 +52,17 @@ public interface CommentMapper {
 	
 	
 	
-	// Read
-	@Mapping(target = "comment.id", source = "commId")
-	@Mapping(target = "user.id", source = "userId")
-	Comment toEntity(CommentReadResponseDto commentDto);
-	
-	@Mapping(target = "commId", source = "comment.id")
-	@Mapping(target = "userId", source = "user.id")
-	CommentReadResponseDto toReadResponseDto(Comment comment);
-	
-	@Mapping(target = "comment.id", source = "commId")
-	@Mapping(target = "user.id", source = "userId")
-	Comment toEntity(UserCommentReadesponseDto commentDto);
-
-	@Mapping(target = "commId", source = "comment.id")
-	@Mapping(target = "userId", source = "user.id")
-	UserCommentReadesponseDto toReadMyResponseDto(Comment comment);
-	
-	
-	
 	// Update
 	Comment toEntity(CommentUpdateRequestDto commentDto);
-	Comment toEntity(CommentUpdateResponseDto commentDto);
+	
 	CommentUpdateRequestDto toUpdateRequestDto(Comment comment);
+	
+	@Mapping(target = "comment.id", source = "commId")
+	@Mapping(target = "user.id", source = "userId")
+	Comment toEntity(CommentUpdateResponseDto commentDto);
+	
+	@Mapping(target = "commId", source = "comment.id")
+	@Mapping(target = "userId", source = "user.id")
 	CommentUpdateResponseDto toUpdateResponseDto(Comment comment);
 	
 }

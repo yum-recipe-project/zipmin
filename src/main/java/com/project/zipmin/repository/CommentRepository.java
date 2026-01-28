@@ -9,17 +9,18 @@ import com.project.zipmin.entity.Comment;
 
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 	
+	// 상세 조회
+	Comment findById(int id);
+	
 	// 목록 조회
-	Page<Comment> findAllByTablenameAndRecodenumAndCommentIsNull(String tablename, Integer recodenum, Pageable pageable);
-	
 	Page<Comment> findAll(Pageable pageable);
-	Page<Comment> findAllByContentContainingIgnoreCase(String keyword, Pageable pageable);
-	
+	Page<Comment> findAllByUserId(int userId, Pageable pageable);
 	Page<Comment> findAllByTablename(String tablename, Pageable pageable);
+	Page<Comment> findAllByTablenameAndRecodenum(String tablename, int recodenum, Pageable pageable);
+	Page<Comment> findAllByTablenameAndRecodenumAndCommentIsNull(String tablename, int recodenum, Pageable pageable);
+	Page<Comment> findAllByContentContainingIgnoreCase(String keyword, Pageable pageable);
 	Page<Comment> findAllByTablenameAndContentContainingIgnoreCase(String tablename, String keyword, Pageable pageable);
-	
 
-	
-    Page<Comment> findByUserId(int userId, Pageable pageable);
-    int countByTablenameAndRecodenum(String tablename, Integer recodenum);
+	// 기타
+    int countByTablenameAndRecodenum(String tablename, int recodenum);
 }

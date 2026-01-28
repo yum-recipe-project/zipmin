@@ -486,7 +486,7 @@ public class ReviewController {
 	@PostMapping("/reviews/{id}/likes")
 	public ResponseEntity<?> likeReview(
 			@Parameter(description = "리뷰의 일련번호")  @PathVariable int id,
-			@Parameter(description = "리뷰 작성 요청 정보") LikeCreateRequestDto likeRequestDto) {
+			@Parameter(description = "리뷰 작성 요청 정보") @RequestBody LikeCreateRequestDto likeRequestDto) {
 
 	    // 로그인 여부 확인
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

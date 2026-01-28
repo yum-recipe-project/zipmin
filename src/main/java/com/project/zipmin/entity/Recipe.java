@@ -55,10 +55,10 @@ public class Recipe {
 	@Formula("(SELECT COUNT(*) FROM comments c WHERE c.recodenum = id AND c.tablename = 'recipe')")
 	private int commentcount;
 	
-	@Formula("(SELECT COUNT(*) FROM review r WHERE r.recipe_id = id)")
+	@Formula("(SELECT COUNT(*) FROM review r WHERE r.recodenum = id AND r.tablename = 'recipe')")
 	private int reviewcount;
 	
-	@Formula("(SELECT NVL(ROUND(AVG(r.score), 1), 0) FROM review r WHERE r.recipe_id = id)")
+	@Formula("(SELECT NVL(ROUND(AVG(r.score), 1), 0) FROM review r WHERE r.recodenum = id AND r.tablename = 'recipe')")
 	private double reviewscore;
 	
 	@Formula("(SELECT COUNT(*) FROM likes l WHERE l.recodenum = id AND l.tablename = 'recipe')")

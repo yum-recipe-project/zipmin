@@ -15,20 +15,19 @@ public class ReviewReadResponseDto {
 	private Date postdate;
 	private int score;
 	private String content;
-	// private int recipeId;
 	private String tablename;
 	private int recodenum;
 	private int userId;
 	
-	// Review Info
+	// 리뷰 정보
 	private int likecount;
 	private int reportcount;
 	private boolean isLiked;
 	
-	// Recipe Info
+	// 레시피 정보
 	private String title;
 	
-	// User Info
+	// 사용자 정보
 	private String username;
 	private String nickname;
 	private String avatar;

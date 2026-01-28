@@ -293,6 +293,7 @@ COMMIT;
 
 
 
+
 -- ==================
 -- RECIPE_STOCK 테이블
 -- ==================
@@ -373,7 +374,9 @@ COMMIT;
 
 
 
+-- ===========
 -- CHOMP 테이블
+-- ===========
 CREATE TABLE chomp (
     id NUMBER primary key,
     title VARCHAR2(100) NOT NULL,
@@ -494,12 +497,13 @@ CREATE TABLE review (
     postdate DATE DEFAULT sysdate NOT NULL,
     score NUMBER NOT NULL,
     content VARCHAR2(2000) NOT NULL,
-    recipe_id NUMBER NOT NULL,
+    tablename VARCHAR2(100) NOT NULL,
+    recodenum NUMBER NOT NULL,
     user_id NUMBER NOT NULL
 );
-ALTER TABLE review
-    ADD CONSTRAINT const_review_recipe FOREIGN KEY(recipe_id)
-    REFERENCES recipe(id) ON DELETE CASCADE;
+-- ALTER TABLE review
+--     ADD CONSTRAINT const_review_recipe FOREIGN KEY(recipe_id)
+--     REFERENCES recipe(id) ON DELETE CASCADE;
 ALTER TABLE review
     ADD CONSTRAINT const_review_users FOREIGN KEY(user_id)
     REFERENCES users(id) ON DELETE CASCADE;
@@ -752,7 +756,7 @@ CREATE TABLE withdraw (
     account_id NUMBER NOT NULL,
     point NUMBER NOT NULL,
     claimdate DATE DEFAULT SYSDATE NOT NULL,
-    status NUMBER DEFAULT 0 NOT NULL,
+    status NUMBER DEFAULT 2 NOT NULL,
     settledate DATE,
     admin_id NUMBER
 );

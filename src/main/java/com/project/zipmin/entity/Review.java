@@ -35,11 +35,6 @@ public class Review {
 	private Date postdate;
 	private int score;
 	private String content;
-	
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name = "RECIPE_ID")
-//	private Recipe recipe;
-	
 	private String tablename;
 	private int recodenum;
 	

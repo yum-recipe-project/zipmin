@@ -153,6 +153,7 @@ async function fetchReviewList() {
         const id = new URLSearchParams(window.location.search).get('id');
 
         const params = new URLSearchParams({
+			tablename: 'recipe',
             recodenum: id,
             sort: reviewSort,
             page: reviewPage,
@@ -406,7 +407,7 @@ function renderReviewLikeButton(id, likecount, isLiked) {
 				try {
 					const data = {
 						tablename: 'review',
-						recodenum: id,
+						recodenum: id
 					}
 					
 					const response = await instance.delete(`/reviews/${id}/likes`, {
@@ -415,7 +416,6 @@ function renderReviewLikeButton(id, likecount, isLiked) {
 					});
 					
 					if (response.data.code === 'REVIEW_UNLIKE_SUCCESS') {
-						alertPrimary('리뷰 좋아요 취소에 성공했습니다.');
 						isLiked = false;
 						img.src = '/images/common/thumb_up_empty.png';
 						likeCountP.textContent = Number(likeCountP.textContent) - 1;
@@ -473,7 +473,6 @@ function renderReviewLikeButton(id, likecount, isLiked) {
 					});
 					
 					if (response.data.code === 'REVIEW_LIKE_SUCCESS') {
-						alertPrimary('리뷰 좋아요에 성공했습니다.');
 						isLiked = true;
 						img.src = '/images/common/thumb_up_full.png';
 						likeCountP.textContent = Number(likeCountP.textContent) + 1;
@@ -545,7 +544,8 @@ document.addEventListener('DOMContentLoaded', function () {
 			const data = {
 			    score: Number(document.getElementById('writeReviewStar').value || 0), 
 			    content: document.getElementById('writeReviewContent').value.trim(),  
-			    recipe_id: Number(recipeId)                                           
+				tablename: 'recipe',
+			    recodenum: Number(recipeId)                                           
 			};
 
 
@@ -768,8 +768,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 		const reviewId = document.getElementById('reportReviewId').value;
 		const reason = document.querySelector('input[name="reason"]:checked')?.value;
-		
-		console.log("reason:"+ reason);
 		
 		try {
 			const data = {

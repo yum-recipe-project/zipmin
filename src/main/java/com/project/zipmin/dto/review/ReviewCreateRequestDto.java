@@ -14,7 +14,6 @@ public class ReviewCreateRequestDto {
 	private Date postdate;
 	private int score;
 	private String content;
-	// private int recipeId;
 	private String tablename;
 	private int recodenum;
 	private int userId;

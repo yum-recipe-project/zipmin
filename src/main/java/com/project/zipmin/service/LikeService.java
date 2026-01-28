@@ -3,18 +3,15 @@ package com.project.zipmin.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.LikeErrorCode;
-import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.like.LikeCreateRequestDto;
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
 import com.project.zipmin.dto.like.LikeDeleteRequestDto;
 import com.project.zipmin.dto.like.LikeReadResponseDto;
 import com.project.zipmin.entity.Like;
-import com.project.zipmin.entity.Role;
 import com.project.zipmin.mapper.LikeMapper;
 import com.project.zipmin.repository.LikeRepository;
 

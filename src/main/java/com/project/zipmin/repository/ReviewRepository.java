@@ -19,7 +19,4 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
 	Page<Review> findAllByContentContainingIgnoreCase(String keyword, Pageable pageable);
 	Page<Review> findAllByTablenameAndContentContainingIgnoreCase(String tablename, String keyword, Pageable pageable);
 	
-	// 기타
-	int countByRecipeId(Integer recipeId);
-	
 }

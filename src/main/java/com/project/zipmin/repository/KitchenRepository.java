@@ -12,10 +12,10 @@ import com.project.zipmin.entity.Guide;
 @Repository
 public interface KitchenRepository extends JpaRepository<Guide, Integer> {
 	
-	// Read
+	// 상세 조회
 	Guide findById(int id);
 	
-	// Read List
+	// 목록 조회
 	Page<Guide> findAll(Pageable pageable);
 	Page<Guide> findAllByCategory(String category, Pageable pageable);
 	Page<Guide> findAllByTitleContainingIgnoreCase(String keyword, Pageable pageable);

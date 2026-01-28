@@ -1,6 +1,6 @@
-package com.project.zipmin.swagger;
+package com.project.zipmin.swagger.review;
 
-import com.project.zipmin.dto.ReviewReadResponseDto;
+import com.project.zipmin.dto.review.ReviewReadResponseDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

@@ -203,10 +203,10 @@ public class CommentService {
 		// 댓글 목록 조회
 		Page<Comment> commentPage = null;
 		try {
-			boolean hasTable = tablename != null && !tablename.isBlank();
 			boolean hasKeyword = keyword != null && !keyword.isBlank();
+			boolean hasTablename = tablename != null && !tablename.isBlank();
 			
-			if (!hasTable) {
+			if (!hasTablename) {
 				// 전체
 				commentPage = hasKeyword
 						? commentRepository.findAllByContentContainingIgnoreCase(keyword, sortedPageable)
@@ -309,7 +309,7 @@ public class CommentService {
 					title = chompService.readEventById(comment.getRecodenum()).getTitle();
 					break;
 				case "recipe" :
-					title = recipeService.readRecipdById(comment.getRecodenum()).getTitle();
+					title = recipeService.readRecipeById(comment.getRecodenum()).getTitle();
 					break;
 				case "guide" :
 					title = kitchenService.readGuideById(comment.getRecodenum()).getTitle();

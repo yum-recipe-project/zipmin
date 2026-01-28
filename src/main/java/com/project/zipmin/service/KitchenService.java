@@ -40,9 +40,7 @@ import lombok.RequiredArgsConstructor;
 public class KitchenService {
 	
 	private final KitchenRepository kitchenRepository;
-	
 	private final KitchenMapper kitchenMapper;
-	
 	private final UserService userService;
 	private final LikeService likeService;
 	

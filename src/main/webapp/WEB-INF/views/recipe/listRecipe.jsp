@@ -152,7 +152,7 @@
 				
 					<!-- 레시피 정렬 요소 -->
 					<div class="recipe_util">
-						<p class="total">23개</p>
+						<p class="total"></p>
 					</div>
 					
 					<!-- 레시피 목록 -->

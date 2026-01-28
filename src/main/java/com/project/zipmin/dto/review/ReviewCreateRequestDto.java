@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.review;
 
 import java.util.Date;
 
@@ -10,10 +10,13 @@ import lombok.Data;
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ReviewCreateRequestDto {
-	
-//	private Date postdate;
-	private Integer score;   
-    private String content;  
-    private Integer recipeId;
-    private Integer userId;
+
+	private Date postdate;
+	private int score;
+	private String content;
+	// private int recipeId;
+	private String tablename;
+	private int recodenum;
+	private int userId;
+
 }

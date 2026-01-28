@@ -25,9 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class ReportService {
 
 	private final ReportRepository reportRepository;
-	
 	private final ReportMapper reportMapper;
-	
 	private final UserService userService;
 	
 	

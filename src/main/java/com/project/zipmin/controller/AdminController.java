@@ -38,7 +38,6 @@ import com.project.zipmin.api.WithdrawSuccessCode;
 import com.project.zipmin.dto.ClassApprovalUpdateRequestDto;
 import com.project.zipmin.dto.ClassReadResponseDto;
 import com.project.zipmin.dto.CommentReadResponseDto;
-import com.project.zipmin.dto.ReviewReadResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.WithdrawReadResponseDto;
 import com.project.zipmin.dto.chomp.ChompReadResponseDto;
@@ -46,6 +45,7 @@ import com.project.zipmin.dto.kitchen.GuideReadResponseDto;
 import com.project.zipmin.dto.recipe.RecipeReadResponseDto;
 import com.project.zipmin.dto.report.ReportReadRequestDto;
 import com.project.zipmin.dto.report.ReportReadResponseDto;
+import com.project.zipmin.dto.review.ReviewReadResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
@@ -842,6 +842,7 @@ public class AdminController {
 	@GetMapping("/admin/reviews")
 	public ResponseEntity<?> readAdminReview(
 			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
+			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
 			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
 			@Parameter(description = "페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지 크기") @RequestParam int size) {
@@ -849,7 +850,7 @@ public class AdminController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(ReviewErrorCode.REVIEW_UNAUTHORIZED_ACCESS);
+			throw new ApiException(ReviewErrorCode.REVIEW_UNAUTHORIZED);
 		}
 		
 		// 권한 확인
@@ -861,7 +862,7 @@ public class AdminController {
 		}
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<ReviewReadResponseDto> reviewPage = reviewService.readAdminReviewPage(keyword, sort, pageable);
+		Page<ReviewReadResponseDto> reviewPage = reviewService.readReviewPage(keyword, category, sort, pageable);
 		
 		return ResponseEntity.status(ReviewSuccessCode.REVIEW_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(ReviewSuccessCode.REVIEW_READ_LIST_SUCCESS, reviewPage));

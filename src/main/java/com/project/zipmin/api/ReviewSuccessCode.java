@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ReviewSuccessCode implements Code {
 	
-	 // 데이터 처리
     REVIEW_READ_LIST_SUCCESS(HttpStatus.OK, "리뷰 목록 조회 성공"),
     REVIEW_READ_SUCCESS(HttpStatus.OK, "리뷰 조회 성공"),
     REVIEW_CREATE_SUCCESS(HttpStatus.CREATED, "리뷰 작성 성공"),
@@ -18,8 +17,7 @@ public enum ReviewSuccessCode implements Code {
     
     REVIEW_LIKE_SUCCESS(HttpStatus.OK, "리뷰 좋아요 성공"),
     REVIEW_UNLIKE_SUCCESS(HttpStatus.OK, "리뷰 좋아요 취소 성공"),
-    REVIEW_REPORT_SUCCESS(HttpStatus.OK, "리뷰 신고 성공"),
-    REVIEW_UNREPORT_SUCCESS(HttpStatus.OK, "리뷰 신고 취소 성공");
+    REVIEW_REPORT_SUCCESS(HttpStatus.OK, "리뷰 신고 성공");
     
     private final HttpStatus status;
     private final String message;

@@ -26,20 +26,23 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "REVIEW")
 public class Review {
+	
 	@Id
-	@GeneratedValue(generator = "seq_review_id")
-	@SequenceGenerator(name = "seq_review_id", sequenceName = "SEQ_REVIEW_ID", allocationSize = 1)
+	@GeneratedValue(generator = "SEQ_REVIEW_ID")
+	@SequenceGenerator(name = "SEQ_REVIEW_ID", sequenceName = "SEQ_REVIEW_ID", allocationSize = 1)
 	private int id;
+	
 	private Date postdate;
 	private int score;
 	private String content;
 	
-	// private int recipeId;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "RECIPE_ID")
-	private Recipe recipe;
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "RECIPE_ID")
+//	private Recipe recipe;
 	
-	// private int userId;
+	private String tablename;
+	private int recodenum;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")
 	private User user;
@@ -47,10 +50,14 @@ public class Review {
 	@Formula("(SELECT COUNT(*) FROM likes l WHERE l.recodenum = id AND l.tablename = 'review')")
 	private int likecount;
 	
+	@Formula("(SELECT COUNT(*) FROM report r WHERE r.recodenum = id AND r.tablename = 'review')")
+	private int reportcount;
+	
 	@PrePersist
-    public void prePersist() {
-        if (this.postdate == null) {
-            this.postdate = new Date();
-        }
-    }
+	public void prePersist() {
+		if (this.postdate == null) {
+			this.postdate = new Date();
+		}
+	}
+	
 }

@@ -25,9 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class LikeService {
 	
 	private final LikeRepository likeRepository;
-	
 	private final LikeMapper likeMapper;
-	
 	// private final UserService userService;
 	
 	
@@ -90,7 +88,7 @@ public class LikeService {
 	
 	
 	
-	// 좋아요 목록 조회 (레코드번호 조회)
+	// 좋아요 목록 조회 (레코드번호 기반)
 	public List<LikeReadResponseDto> readLikeListByTablenameAndRecodenum(String tablename, Integer recodenum) {
 		
 		// 입력값 검증

@@ -150,7 +150,7 @@ public class LikeService {
 	
 	
 	
-	// 좋아요 삭제 1
+	// 좋아요 삭제
 	public void deleteLike(LikeDeleteRequestDto likeDto) {
 		
 		// 입력값 검증
@@ -190,54 +190,6 @@ public class LikeService {
 		// 좋아요 삭제
 		try {
 			likeRepository.deleteById(like.getId());
-		}
-		catch (Exception e) {
-			throw new ApiException(LikeErrorCode.LIKE_DELETE_FAIL);
-		}
-	}
-	
-	
-	
-	
-	
-	// 좋아요 삭제 2
-	public void deleteLike2(int id) {
-		
-		// 입력값 검증
-		if (id == 0) {
-			throw new ApiException(LikeErrorCode.LIKE_INVALID_INPUT);
-		}
-		
-		// 좋아요 조회
-		Like like;
-		try {
-			like = likeRepository.findById(id);
-		}
-		catch (Exception e) {
-			throw new ApiException(LikeErrorCode.LIKE_NOT_FOUND);
-		}
-		
-		// 권한 확인
-//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-//		UserReadResponseDto currentUser = userService.readUserByUsername(username);
-//		
-//		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-//			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
-//				if (like.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
-//					throw new ApiException(LikeErrorCode.LIKE_FORBIDDEN);
-//				}
-//				if (like.getUser().getRole().equals(Role.ROLE_ADMIN) && currentUser.getId() != like.getUser().getId()) {
-//					throw new ApiException(LikeErrorCode.LIKE_FORBIDDEN);
-//				}
-//			}
-//			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != like.getUser().getId()) {
-//				throw new ApiException(LikeErrorCode.LIKE_FORBIDDEN);
-//			}
-//		}
-		
-		// 좋아요 삭제
-		try {
-			likeRepository.deleteById(id);
 		}
 		catch (Exception e) {
 			throw new ApiException(LikeErrorCode.LIKE_DELETE_FAIL);

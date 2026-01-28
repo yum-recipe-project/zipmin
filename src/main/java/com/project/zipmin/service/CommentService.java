@@ -287,7 +287,7 @@ public class CommentService {
 		}
 		
 		// 댓글 목록 응답 구성
-		List<UserCommentReadesponseDto> commentDtoList = new ArrayList<UserCommentReadesponseDto>();
+		List<UserCommentReadesponseDto> commentDtoList = new ArrayList<>();
 		for (Comment comment : commentPage) {
 			UserCommentReadesponseDto commentDto = commentMapper.toReadMyResponseDto(comment);
 			

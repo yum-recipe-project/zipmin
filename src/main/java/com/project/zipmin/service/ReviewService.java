@@ -41,6 +41,7 @@ public class ReviewService {
 	private final ReviewRepository reviewRepository;
 	private final ReviewMapper reviewMapper;
 	private final UserService userService;
+	private final RecipeService recipeService;
 	private final LikeService likeService;
 	private final ReportService reportService;
 	
@@ -155,8 +156,54 @@ public class ReviewService {
 	
 	
 	
-	
-	
+	// 사용자의 리뷰 목록 조회
+	public Page<ReviewReadResponseDto> readReviewPageByUserId(int userId, Pageable pageable) {
+
+		// 입력값 검증
+		if (userId == 0 || pageable == null) {
+			throw new ApiException(ReviewErrorCode.REVIEW_INVALID_INPUT);
+		}
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto currentUser = userService.readUserByUsername(username);
+		
+		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserById(userId).getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(ReviewErrorCode.REVIEW_FORBIDDEN);
+				}
+				if (userService.readUserById(userId).getRole().equals(Role.ROLE_ADMIN) && currentUser.getId() != userId) {
+					throw new ApiException(ReviewErrorCode.REVIEW_FORBIDDEN);
+				}
+			}
+			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != userId) {
+				throw new ApiException(ReviewErrorCode.REVIEW_FORBIDDEN);
+			}
+		}
+
+		// 리뷰 목록 조회
+		Page<Review> reviewPage;
+		try {
+			reviewPage = reviewRepository.findAllByUserId(userId, pageable);
+		}
+		catch (Exception e) {
+			throw new ApiException(ReviewErrorCode.REVIEW_READ_LIST_FAIL);
+		}
+
+		// 리뷰 목록 응답 구성
+		List<ReviewReadResponseDto> reviewDtoList = new ArrayList<>();
+		for (Review review : reviewPage) {
+			ReviewReadResponseDto reviewDto = reviewMapper.toReadResponseDto(review);
+			if (review.getTablename().equals("review")) {
+				reviewDto.setTitle(recipeService.readRecipeById(userId).getTitle());
+			}
+			reviewDto.setNickname(review.getUser().getNickname());
+			reviewDtoList.add(reviewDto);
+		}
+
+		return new PageImpl<>(reviewDtoList, pageable, reviewPage.getTotalElements());
+	}
 	
 	
 	
@@ -209,13 +256,10 @@ public class ReviewService {
 			throw new ApiException(ReviewErrorCode.REVIEW_INVALID_INPUT);
 		}
 		
-		// 리뷰 존재 여부 판단
-		Review review = reviewRepository.findById(reviewDto.getId())
-				.orElseThrow(() -> new ApiException(ReviewErrorCode.REVIEW_NOT_FOUND));
-		
 		// 리뷰 조회
+		Review review;
 		try {
-			
+			review = reviewRepository.findById(reviewDto.getId());
 		}
 		catch (Exception e) {
 			throw new ApiException(ReviewErrorCode.REVIEW_NOT_FOUND);
@@ -223,31 +267,27 @@ public class ReviewService {
 		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		UserReadResponseDto user = userService.readUserByUsername(username);
-		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			// 관리자
-			if (user.getRole().equals(Role.ROLE_ADMIN.name())) {
+		UserReadResponseDto currentUser = userService.readUserByUsername(username);
+		
+		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (review.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
 					throw new ApiException(ReviewErrorCode.REVIEW_FORBIDDEN);
 				}
-				else if (review.getUser().getRole().equals(Role.ROLE_ADMIN)) {
-					if (user.getId() != review.getUser().getId()) {
-						throw new ApiException(ReviewErrorCode.REVIEW_FORBIDDEN);
-					}
-				}
-			}
-			// 일반 회원
-			else {
-				if (user.getId() != review.getUser().getId()) {
+				if (review.getUser().getRole().equals(Role.ROLE_ADMIN) && currentUser.getId() != review.getUser().getId()) {
 					throw new ApiException(ReviewErrorCode.REVIEW_FORBIDDEN);
 				}
 			}
+			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != review.getUser().getId()) {
+				throw new ApiException(ReviewErrorCode.REVIEW_FORBIDDEN);
+			}
 		}
 		
-		// 변경 값 설정
-		review.setContent(reviewDto.getContent());
+		// 값 설정
 		review.setScore(reviewDto.getScore());
+		review.setContent(reviewDto.getContent());
 
+		// 리뷰 수정
 		try {
 			review = reviewRepository.save(review);
 			return reviewMapper.toUpdateResponseDto(review);
@@ -260,52 +300,54 @@ public class ReviewService {
 	
 	
 
+	
 	// 리뷰 삭제
-	public void deleteReview(Integer id) {
+	public void deleteReview(int id) {
 
 		// 입력값 검증
-		if (id == null) {
+		if (id == 0) {
 			throw new ApiException(ReviewErrorCode.REVIEW_INVALID_INPUT);
 		}
 
-		// 리뷰 존재 여부 판단
-		Review review = reviewRepository.findById(id)
-				.orElseThrow(() -> new ApiException(ReviewErrorCode.REVIEW_NOT_FOUND));
+		// 리뷰 조회
+		Review review;
+		try {
+			review = reviewRepository.findById(id);
+		}
+		catch (Exception e) {
+			throw new ApiException(ReviewErrorCode.REVIEW_NOT_FOUND);
+		}
 
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		UserReadResponseDto user = userService.readUserByUsername(username);
-
-		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			// 관리자
-			if (user.getRole().equals(Role.ROLE_ADMIN.name())) {
+		UserReadResponseDto currentUser = userService.readUserByUsername(username);
+		
+		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (review.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
 					throw new ApiException(ReviewErrorCode.REVIEW_FORBIDDEN);
 				}
-				else if (review.getUser().getRole().equals(Role.ROLE_ADMIN)) {
-					if (user.getId() != review.getUser().getId()) {
-						throw new ApiException(ReviewErrorCode.REVIEW_FORBIDDEN);
-					}
-				}
-			}
-			// 일반 회원
-			else {
-				if (user.getId() != review.getUser().getId()) {
+				if (review.getUser().getRole().equals(Role.ROLE_ADMIN) && currentUser.getId() != review.getUser().getId()) {
 					throw new ApiException(ReviewErrorCode.REVIEW_FORBIDDEN);
 				}
+			}
+			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != review.getUser().getId()) {
+				throw new ApiException(ReviewErrorCode.REVIEW_FORBIDDEN);
 			}
 		}
 
 		// 리뷰 삭제
 		try {
 			reviewRepository.deleteById(id);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new ApiException(ReviewErrorCode.REVIEW_DELETE_FAIL);
 		}
 	}
 
 	
 
+	
 	
 	// 리뷰 좋아요
 	public LikeCreateResponseDto likeReview(LikeCreateRequestDto likeDto) {
@@ -326,12 +368,17 @@ public class ReviewService {
 		// 좋아요 저장
 		try {
 			return likeService.createLike(likeDto);
-		} catch (ApiException e) {
+		}
+		catch (ApiException e) {
 			throw e;
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new ApiException(ReviewErrorCode.REVIEW_LIKE_FAIL);
 		}
 	}
+	
+	
+	
 	
 	
 	// 리뷰 좋아요 취소
@@ -350,7 +397,7 @@ public class ReviewService {
 			throw new ApiException(ReviewErrorCode.REVIEW_NOT_FOUND);
 		}
 
-		// 좋아요 취소
+		// 좋아요 삭제
 		try {
 			likeService.deleteLike(likeDto);
 		} 
@@ -360,41 +407,6 @@ public class ReviewService {
 		catch (Exception e) {
 			throw new ApiException(ReviewErrorCode.REVIEW_UNLIKE_FAIL);
 		}
-	}
-
-
-
-	// 사용자가 작성한 리뷰 목록을 조회하는 함수
-	public Page<ReviewReadResponseDto> readReviewPageByUserId(Integer userId, Pageable pageable) {
-
-		if (userId == null || pageable == null) {
-			throw new ApiException(ReviewErrorCode.REVIEW_INVALID_INPUT);
-		}
-
-		// 리뷰 목록 조회
-		Page<Review> reviewPage;
-		try {
-			reviewPage = reviewRepository.findByUserId(userId, pageable);
-		} catch (Exception e) {
-			throw new ApiException(ReviewErrorCode.REVIEW_READ_LIST_FAIL);
-		}
-
-		List<ReviewReadResponseDto> reviewDtoList = new ArrayList<>();
-		for (Review review : reviewPage) {
-			ReviewReadResponseDto reviewDto = reviewMapper.toReadResponseDto(review);
-			reviewDto.setNickname(review.getUser().getNickname());
-
-			// 리뷰가 속한 레시피 제목 가져오기
-			String title = null;
-			if (review.getRecipe() != null) {
-				title = review.getRecipe().getTitle();
-			}
-			reviewDto.setTitle(title);
-
-			reviewDtoList.add(reviewDto);
-		}
-
-		return new PageImpl<>(reviewDtoList, pageable, reviewPage.getTotalElements());
 	}
 	
 }

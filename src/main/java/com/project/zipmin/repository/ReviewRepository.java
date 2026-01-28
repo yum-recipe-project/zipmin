@@ -14,7 +14,7 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
 	// 목록 조회
 	Page<Review> findAll(Pageable pageable);
 	Page<Review> findAllByTablename(String tablename, Pageable pageable);
-	Page<Review> findAllByTablenameAndUserId(int userId, Pageable pageable);
+	Page<Review> findAllByUserId(int userId, Pageable pageable);
 	Page<Review> findAllByTablenameAndRecodenum(String tablename, int recodenum, Pageable pageable);
 	Page<Review> findAllByContentContainingIgnoreCase(String keyword, Pageable pageable);
 	Page<Review> findAllByTablenameAndContentContainingIgnoreCase(String tablename, String keyword, Pageable pageable);

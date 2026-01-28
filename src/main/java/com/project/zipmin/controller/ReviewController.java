@@ -21,7 +21,6 @@ import com.project.zipmin.api.ReviewErrorCode;
 import com.project.zipmin.api.ReviewSuccessCode;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
-import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.like.LikeCreateRequestDto;
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
 import com.project.zipmin.dto.like.LikeDeleteRequestDto;
@@ -30,7 +29,6 @@ import com.project.zipmin.dto.review.ReviewCreateResponseDto;
 import com.project.zipmin.dto.review.ReviewReadResponseDto;
 import com.project.zipmin.dto.review.ReviewUpdateRequestDto;
 import com.project.zipmin.dto.review.ReviewUpdateResponseDto;
-import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.ReviewService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
@@ -101,23 +99,23 @@ public class ReviewController {
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = ReviewReadListFailResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-	            responseCode = "400",
-	            description = "좋아요 집계 실패",
-	            content = @Content(
-	                    mediaType = "application/json",
-	                    schema = @Schema(implementation = LikeCountFailResponse.class))),
+	    		responseCode = "400",
+	    		description = "좋아요 존재 여부 확인 실패",
+	    		content = @Content(
+	    				mediaType = "application/json",
+	    				schema = @Schema(implementation = LikeExistFailResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-	            responseCode = "400",
-	            description = "신고 집계 실패",
-	            content = @Content(
-	                    mediaType = "application/json",
-	                    schema = @Schema(implementation = ReportCountFailResponse.class))),
+	    		responseCode = "400",
+	    		description = "입력값이 유효하지 않음",
+	    		content = @Content(
+	    				mediaType = "application/json",
+	    				schema = @Schema(implementation = ReviewInvalidInputResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-	            responseCode = "400",
-	            description = "좋아요 여부 확인 실패",
-	            content = @Content(
-	                    mediaType = "application/json",
-	                    schema = @Schema(implementation = LikeExistFailResponse.class))),
+	    		responseCode = "400",
+	    		description = "입력값이 유효하지 않음",
+	    		content = @Content(
+	    				mediaType = "application/json",
+	    				schema = @Schema(implementation = LikeInvalidInputResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
 				description = "해당 사용자를 찾을 수 없음",
@@ -125,27 +123,23 @@ public class ReviewController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserNotFoundResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "404",
-				description = "해당 레시피를 찾을 수 없음",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = RecipeNotFoundResponse.class))),
-	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "500",
 	            description = "서버 내부 오류",
 	            content = @Content(
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
+	// 리뷰 목록 조회
 	@GetMapping("/reviews")
 	public ResponseEntity<?> readReview(
-			@Parameter(description = "레코드 번호", required = false)  @RequestParam(required = false) Integer recodenum,
-			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String sort,
+			@Parameter(description = "테이블명", required = false)  @RequestParam(required = false) String tablename,
+			@Parameter(description = "레코드 번호", required = false)  @RequestParam(required = false) int recodenum,
+			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
 			@Parameter(description = "페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지 크기") @RequestParam int size) {
 		
 	    Pageable pageable = PageRequest.of(page, size);
-	    Page<ReviewReadResponseDto> reviewPage = reviewService.readReviewPageByRecipeId(recodenum, sort, pageable);
+	    Page<ReviewReadResponseDto> reviewPage = reviewService.readReviewPageByTablenameAndRecodenum(tablename, recodenum, sort, pageable);
 	    
 	    return ResponseEntity.status(ReviewSuccessCode.REVIEW_READ_LIST_SUCCESS.getStatus())
 	            .body(ApiResponse.success(ReviewSuccessCode.REVIEW_READ_LIST_SUCCESS, reviewPage));
@@ -155,6 +149,7 @@ public class ReviewController {
 	
 	
 	
+	// 리뷰 작성
 	@Operation(
 	    summary = "리뷰 작성"
 	)
@@ -185,10 +180,16 @@ public class ReviewController {
 	                    schema = @Schema(implementation = UserInvalidInputResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "401",
-	            description = "로그인 되지 않은 사용자",
+	            description = "로그인되지 않은 사용자",
 	            content = @Content(
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = ReviewUnauthorizedResponse.class))),
+	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+	    		responseCode = "404",
+	    		description = "해당 레시피를 찾을 수 없음",
+	    		content = @Content(
+	    				mediaType = "application/json",
+	    				schema = @Schema(implementation = RecipeNotFoundResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
 				description = "해당 사용자를 찾을 수 없음",
@@ -196,18 +197,13 @@ public class ReviewController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserNotFoundResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "404",
-				description = "해당 레시피를 찾을 수 없음",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = RecipeNotFoundResponse.class))),
-	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "500",
 	            description = "서버 내부 오류",
 	            content = @Content(
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
+	// 리뷰 작성
 	@PostMapping("/reviews")
 	public ResponseEntity<?> createReview(
 			@Parameter(description = "리뷰 작성 요청 정보")  @RequestBody ReviewCreateRequestDto reviewRequestDto) {
@@ -217,14 +213,10 @@ public class ReviewController {
 	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 	        throw new ApiException(ReviewErrorCode.REVIEW_UNAUTHORIZED);
 	    }
-
-	    // 작성자 userId 설정
 	    reviewRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 	    
-	    // 리뷰 생성 서비스 호출
 	    ReviewCreateResponseDto reviewResponseDto = reviewService.createReview(reviewRequestDto);
 
-	    // 응답 반환
 	    return ResponseEntity.status(ReviewSuccessCode.REVIEW_CREATE_SUCCESS.getStatus())
 	            .body(ApiResponse.success(ReviewSuccessCode.REVIEW_CREATE_SUCCESS, reviewResponseDto));
 	}
@@ -257,6 +249,12 @@ public class ReviewController {
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = ReviewInvalidInputResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+	    		responseCode = "400",
+	    		description = "입력값이 유효하지 않음",
+	    		content = @Content(
+	    				mediaType = "application/json",
+	    				schema = @Schema(implementation = UserInvalidInputResponse.class))),
+	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "401",
 	            description = "로그인되지 않은 사용자",
 	            content = @Content(
@@ -264,7 +262,7 @@ public class ReviewController {
 	                    schema = @Schema(implementation = ReviewUnauthorizedResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "403",
-	            description = "권한 없는 사용자의 접근",
+	            description = "권한 없는 사용자",
 	            content = @Content(
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = ReviewForbiddenResponse.class))),
@@ -293,18 +291,18 @@ public class ReviewController {
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
+	// 리뷰 수정
 	@PatchMapping("/reviews/{id}")
 	public ResponseEntity<?> updateReview(
 			@Parameter(description = "리뷰의 일련번호") @PathVariable int id,
 			@Parameter(description = "리뷰 수정 요청 정보") @RequestBody ReviewUpdateRequestDto reviewRequestDto) {
 	    
-	    // 인증 여부 확인 (비로그인)
+	    // 로그인 여부 확인
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 	        throw new ApiException(ReviewErrorCode.REVIEW_UNAUTHORIZED);
 	    }
 
-	    // 서비스 호출 (리뷰 수정)
 	    ReviewUpdateResponseDto reviewResponseDto = reviewService.updateReview(reviewRequestDto);
 
 	    return ResponseEntity.status(ReviewSuccessCode.REVIEW_UPDATE_SUCCESS.getStatus())
@@ -314,7 +312,8 @@ public class ReviewController {
 	
 	
 	
-	
+
+	// 리뷰 삭제
 	@Operation(
 	    summary = "리뷰 삭제"
 	)
@@ -338,6 +337,12 @@ public class ReviewController {
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = ReviewInvalidInputResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+	    		responseCode = "400",
+	    		description = "입력값이 유효하지 않음",
+	    		content = @Content(
+	    				mediaType = "application/json",
+	    				schema = @Schema(implementation = UserInvalidInputResponse.class))),
+	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "401",
 	            description = "로그인되지 않은 사용자",
 	            content = @Content(
@@ -345,7 +350,7 @@ public class ReviewController {
 	                    schema = @Schema(implementation = ReviewUnauthorizedResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "403",
-	            description = "권한 없는 사용자의 접근",
+	            description = "권한 없는 사용자",
 	            content = @Content(
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = ReviewForbiddenResponse.class))),
@@ -374,6 +379,7 @@ public class ReviewController {
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
+	// 리뷰 삭제
 	@DeleteMapping("/reviews/{id}")
 	public ResponseEntity<?> deleteReview(
 			@Parameter(description = "리뷰의 일련번호")  @PathVariable int id) {
@@ -384,10 +390,8 @@ public class ReviewController {
 	        throw new ApiException(ReviewErrorCode.REVIEW_UNAUTHORIZED);
 	    }
 
-	    // 리뷰 삭제 서비스 호출
 	    reviewService.deleteReview(id);
 
-	    // 삭제 성공 응답 반환
 	    return ResponseEntity.status(ReviewSuccessCode.REVIEW_DELETE_SUCCESS.getStatus())
 	            .body(ApiResponse.success(ReviewSuccessCode.REVIEW_DELETE_SUCCESS, null));
 	}
@@ -396,6 +400,7 @@ public class ReviewController {
 	
 	
 	
+	// 리뷰 좋아요
 	@Operation(
 	    summary = "리뷰 좋아요"
 	)
@@ -438,13 +443,13 @@ public class ReviewController {
 						schema = @Schema(implementation = LikeInvalidInputResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "401",
-	            description = "로그인 되지 않은 사용자",
+	            description = "로그인되지 않은 사용자",
 	            content = @Content(
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = ReviewUnauthorizedResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
-				description = "권한 없는 사용자의 접근",
+				description = "권한 없는 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = LikeForbiddenResponse.class))),
@@ -478,7 +483,8 @@ public class ReviewController {
 	            content = @Content(
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = InternalServerErrorResponse.class)))
-	})	
+	})
+	// 리뷰 좋아요
 	@PostMapping("/reviews/{id}/likes")
 	public ResponseEntity<?> likeReview(
 			@Parameter(description = "리뷰의 일련번호")  @PathVariable int id,
@@ -489,14 +495,10 @@ public class ReviewController {
 	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 	        throw new ApiException(ReviewErrorCode.REVIEW_UNAUTHORIZED);
 	    }
-
-	    // 좋아요 작성자 userId 설정
 	    likeRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 
-	    // 리뷰 좋아요 서비스 호출
 	    LikeCreateResponseDto likeResponseDto = reviewService.likeReview(likeRequestDto);
 
-	    // 응답 반환
 	    return ResponseEntity.status(ReviewSuccessCode.REVIEW_LIKE_SUCCESS.getStatus())
 	            .body(ApiResponse.success(ReviewSuccessCode.REVIEW_LIKE_SUCCESS, likeResponseDto));
 	}
@@ -504,7 +506,8 @@ public class ReviewController {
 	
 	
 	
-	
+
+	// 리뷰 좋아요 취소
 	@Operation(
 	    summary = "리뷰 좋아요 취소"
 	)
@@ -547,13 +550,13 @@ public class ReviewController {
 						schema = @Schema(implementation = LikeInvalidInputResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "401",
-	            description = "로그인 되지 않은 사용자",
+	            description = "로그인되지 않은 사용자",
 	            content = @Content(
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = ReviewUnauthorizedResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
-				description = "권한 없는 사용자의 접근",
+				description = "권한 없는 사용자",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = LikeForbiddenResponse.class))),
@@ -582,6 +585,7 @@ public class ReviewController {
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
+	// 리뷰 좋아요 취소
 	@DeleteMapping("/reviews/{id}/likes")
 	public ResponseEntity<?> unlikeReview(
 			@Parameter(description = "리뷰의 일련번호")  @PathVariable int id,
@@ -592,11 +596,8 @@ public class ReviewController {
 	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 	        throw new ApiException(ReviewErrorCode.REVIEW_UNAUTHORIZED);
 	    }
-
-	    // 현재 로그인 유저 ID 설정
 	    likeDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 
-	    // 좋아요 취소 서비스 호출
 	    reviewService.unlikeReview(likeDto);
 
 	    return ResponseEntity.status(ReviewSuccessCode.REVIEW_UNLIKE_SUCCESS.getStatus())
@@ -606,8 +607,10 @@ public class ReviewController {
 	
 	
 	
+	
+	// 사용자의 리뷰 목록 조회
 	@Operation(
-	    summary = "사용자가 작성한 리뷰 목록 조회"
+	    summary = "사용자의 리뷰 목록 조회"
 	)
 	@ApiResponses(value = {
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -636,13 +639,13 @@ public class ReviewController {
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "401",
-	            description = "로그인 되지 않은 사용자",
+	            description = "로그인되지 않은 사용자",
 	            content = @Content(
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = ReviewUnauthorizedResponse.class))),
 	    @io.swagger.v3.oas.annotations.responses.ApiResponse(
 	            responseCode = "403",
-	            description = "권한 없는 사용자의 접근",
+	            description = "권한 없는 사용자",
 	            content = @Content(
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = ReviewForbiddenResponse.class))),
@@ -665,31 +668,17 @@ public class ReviewController {
 	                    mediaType = "application/json",
 	                    schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
-	// 사용자가 작성한 리뷰 조회
+	// 사용자의 리뷰 목록 조회
 	@GetMapping("/users/{id}/reviews")
 	public ResponseEntity<?> readUserReviewList(
-			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
+			@Parameter(description = "사용자의 일련번호") @PathVariable int id,
 			@Parameter(description = "페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지 크기") @RequestParam int size) {
-
-	    // 입력값 검증
-	    if (id == null) {
-	        throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-	    }
-
-	    // 인증 여부 확인 (비로그인)
+		
+	    // 로그인 여부 확인
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 	        throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
-	    }
-
-	    // 로그인 정보
-	    String username = authentication.getName();
-
-	    // 본인 확인 (관리자가 아니면 본인만 조회 가능)
-	    UserReadResponseDto loginUser = userService.readUserByUsername(username);
-	    if (!loginUser.getRole().equals(Role.ROLE_ADMIN.name()) && !id.equals(loginUser.getId())) {
-	        throw new ApiException(UserErrorCode.USER_FORBIDDEN);
 	    }
 
 	    Pageable pageable = PageRequest.of(page, size);
@@ -700,5 +689,3 @@ public class ReviewController {
 	}
 
 }
-
-

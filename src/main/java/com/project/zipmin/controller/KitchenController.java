@@ -634,9 +634,9 @@ public class KitchenController {
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
 	// 키친가이드 좋아요 취소
-	@DeleteMapping("/guides/{guideId}/likes")
+	@DeleteMapping("/guides/{id}/likes")
 	public ResponseEntity<?> unlikeGuide(
-			@Parameter(description = "키친가이드의 일련번호") @PathVariable int guideId,
+			@Parameter(description = "키친가이드의 일련번호") @PathVariable int id,
 			@Parameter(description = "좋아요 삭제 요청 정보") @RequestBody LikeDeleteRequestDto likeDto) {
 
 		// 로그인 여부 확인

@@ -55,58 +55,61 @@ import com.project.zipmin.dto.chomp.VoteUpdateResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.UserService;
-import com.project.zipmin.swagger.ChompInvalidInputResponse;
-import com.project.zipmin.swagger.ChompReadListFailResponse;
-import com.project.zipmin.swagger.ChompReadListSuccessResponse;
-import com.project.zipmin.swagger.EventCreateFailResponse;
-import com.project.zipmin.swagger.EventCreateSuccessResponse;
-import com.project.zipmin.swagger.EventDeleteFailResponse;
-import com.project.zipmin.swagger.EventDeleteSuccessResponse;
-import com.project.zipmin.swagger.EventFileUploadFailResponse;
-import com.project.zipmin.swagger.EventForbiddenResponse;
-import com.project.zipmin.swagger.EventInvalidFileResponse;
-import com.project.zipmin.swagger.EventInvalidInputResponse;
-import com.project.zipmin.swagger.EventInvalidPeriodResponse;
-import com.project.zipmin.swagger.EventNotFoundResponse;
-import com.project.zipmin.swagger.EventReadSuccessResponse;
-import com.project.zipmin.swagger.EventUnauthorizedAccessResponse;
-import com.project.zipmin.swagger.EventUpdateFailResponse;
-import com.project.zipmin.swagger.EventUpdateSuccessResponse;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
-import com.project.zipmin.swagger.MegazineCreateFailResponse;
-import com.project.zipmin.swagger.MegazineCreateSuccessResponse;
-import com.project.zipmin.swagger.MegazineDeleteFailResponse;
-import com.project.zipmin.swagger.MegazineDeleteSuccessResponse;
-import com.project.zipmin.swagger.MegazineForbiddenResponse;
-import com.project.zipmin.swagger.MegazineInvalidInputResponse;
-import com.project.zipmin.swagger.MegazineNotFoundResponse;
-import com.project.zipmin.swagger.MegazineReadSuccessResponse;
-import com.project.zipmin.swagger.MegazineUnauthorizedAccessResponse;
-import com.project.zipmin.swagger.MegazineUpdateFailResponse;
-import com.project.zipmin.swagger.MegazineUpdateSuccessResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
-import com.project.zipmin.swagger.VoteChoiceInvalidInputResponse;
-import com.project.zipmin.swagger.VoteCreateFailResponse;
-import com.project.zipmin.swagger.VoteCreateSuccessResponse;
-import com.project.zipmin.swagger.VoteDeleteFailResponse;
-import com.project.zipmin.swagger.VoteDeleteSuccessResponse;
-import com.project.zipmin.swagger.VoteForbiddenResponse;
-import com.project.zipmin.swagger.VoteInvalidInputResponse;
-import com.project.zipmin.swagger.VoteInvalidPeriodResponse;
-import com.project.zipmin.swagger.VoteNotFoundResponse;
-import com.project.zipmin.swagger.VoteNotOpenedResponse;
-import com.project.zipmin.swagger.VoteReadSuccessResponse;
-import com.project.zipmin.swagger.VoteRecordCreateFailResponse;
-import com.project.zipmin.swagger.VoteRecordCreateSuccessResponse;
-import com.project.zipmin.swagger.VoteRecordDeleteFailResponse;
-import com.project.zipmin.swagger.VoteRecordDeleteSuccessResponse;
-import com.project.zipmin.swagger.VoteRecordDuplicateResponse;
-import com.project.zipmin.swagger.VoteRecordInvalidInputResponse;
-import com.project.zipmin.swagger.VoteRecordNotFoundResponse;
-import com.project.zipmin.swagger.VoteRecordReadFailResponse;
-import com.project.zipmin.swagger.VoteUnauthorizedAccessResponse;
-import com.project.zipmin.swagger.VoteUpdateFailResponse;
-import com.project.zipmin.swagger.VoteUpdateSuccessResponse;
+import com.project.zipmin.swagger.chomp.ChompInvalidInputResponse;
+import com.project.zipmin.swagger.chomp.ChompReadListFailResponse;
+import com.project.zipmin.swagger.chomp.ChompReadListSuccessResponse;
+import com.project.zipmin.swagger.chomp.EventCreateFailResponse;
+import com.project.zipmin.swagger.chomp.EventCreateSuccessResponse;
+import com.project.zipmin.swagger.chomp.EventDeleteFailResponse;
+import com.project.zipmin.swagger.chomp.EventDeleteSuccessResponse;
+import com.project.zipmin.swagger.chomp.EventFileUploadFailResponse;
+import com.project.zipmin.swagger.chomp.EventForbiddenResponse;
+import com.project.zipmin.swagger.chomp.EventInvalidFileResponse;
+import com.project.zipmin.swagger.chomp.EventInvalidInputResponse;
+import com.project.zipmin.swagger.chomp.EventInvalidPeriodResponse;
+import com.project.zipmin.swagger.chomp.EventNotFoundResponse;
+import com.project.zipmin.swagger.chomp.EventReadSuccessResponse;
+import com.project.zipmin.swagger.chomp.EventUnauthorizedResponse;
+import com.project.zipmin.swagger.chomp.EventUpdateFailResponse;
+import com.project.zipmin.swagger.chomp.EventUpdateSuccessResponse;
+import com.project.zipmin.swagger.chomp.MegazineCreateFailResponse;
+import com.project.zipmin.swagger.chomp.MegazineCreateSuccessResponse;
+import com.project.zipmin.swagger.chomp.MegazineDeleteFailResponse;
+import com.project.zipmin.swagger.chomp.MegazineDeleteSuccessResponse;
+import com.project.zipmin.swagger.chomp.MegazineFileUploadFailResponse;
+import com.project.zipmin.swagger.chomp.MegazineForbiddenResponse;
+import com.project.zipmin.swagger.chomp.MegazineInvalidInputResponse;
+import com.project.zipmin.swagger.chomp.MegazineNotFoundResponse;
+import com.project.zipmin.swagger.chomp.MegazineReadSuccessResponse;
+import com.project.zipmin.swagger.chomp.MegazineUnauthorizedResponse;
+import com.project.zipmin.swagger.chomp.MegazineUpdateFailResponse;
+import com.project.zipmin.swagger.chomp.MegazineUpdateSuccessResponse;
+import com.project.zipmin.swagger.chomp.VoteChoiceInvalidInputResponse;
+import com.project.zipmin.swagger.chomp.VoteChoiceReadListFailResponse;
+import com.project.zipmin.swagger.chomp.VoteCreateFailResponse;
+import com.project.zipmin.swagger.chomp.VoteCreateSuccessResponse;
+import com.project.zipmin.swagger.chomp.VoteDeleteFailResponse;
+import com.project.zipmin.swagger.chomp.VoteDeleteSuccessResponse;
+import com.project.zipmin.swagger.chomp.VoteFileUploadFailResponse;
+import com.project.zipmin.swagger.chomp.VoteForbiddenResponse;
+import com.project.zipmin.swagger.chomp.VoteInvalidInputResponse;
+import com.project.zipmin.swagger.chomp.VoteInvalidPeriodResponse;
+import com.project.zipmin.swagger.chomp.VoteNotFoundResponse;
+import com.project.zipmin.swagger.chomp.VoteNotOpenedResponse;
+import com.project.zipmin.swagger.chomp.VoteReadSuccessResponse;
+import com.project.zipmin.swagger.chomp.VoteRecordCreateFailResponse;
+import com.project.zipmin.swagger.chomp.VoteRecordCreateSuccessResponse;
+import com.project.zipmin.swagger.chomp.VoteRecordDeleteFailResponse;
+import com.project.zipmin.swagger.chomp.VoteRecordDeleteSuccessResponse;
+import com.project.zipmin.swagger.chomp.VoteRecordDuplicateResponse;
+import com.project.zipmin.swagger.chomp.VoteRecordInvalidInputResponse;
+import com.project.zipmin.swagger.chomp.VoteRecordNotFoundResponse;
+import com.project.zipmin.swagger.chomp.VoteRecordReadFailResponse;
+import com.project.zipmin.swagger.chomp.VoteUnauthorizedResponse;
+import com.project.zipmin.swagger.chomp.VoteUpdateFailResponse;
+import com.project.zipmin.swagger.chomp.VoteUpdateSuccessResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -181,14 +184,24 @@ public class ChompController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = VoteReadSuccessResponse.class))),
-		// 400 VOTE_CHOICE_READ_LIST_FAIL 투표 옵션 목록 조회 실패
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "투표 옵션 목록 조회 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteChoiceReadListFailResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
 				description = "투표 기록 조회 실패",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = VoteRecordReadFailResponse.class))),
-		// 400 VOTE INVALID INPUT 입력값이 유효하지 않음
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
 				description = "해당 투표를 찾을 수 없음",
@@ -246,7 +259,12 @@ public class ChompController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = VoteInvalidPeriodResponse.class))),
-		// 400 VOTE_FILE_UPLOAD_FAIL 파일이 유효하지 않음
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "파일이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
 				description = "입력값이 유효하지 않음",
@@ -258,7 +276,7 @@ public class ChompController {
 				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = VoteUnauthorizedAccessResponse.class))),
+						schema = @Schema(implementation = VoteUnauthorizedResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
 				description = "권한 없는 사용자",
@@ -271,7 +289,12 @@ public class ChompController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserNotFoundResponse.class))),
-		// 500 VOTE_FILE_UPLOAD_FAIL 투표 파일 업로드 실패
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "투표 파일 업로드 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteFileUploadFailResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "500",
 				description = "서버 내부 오류",
@@ -335,7 +358,7 @@ public class ChompController {
 						schema = @Schema(implementation = VoteInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
-				description = "투표 기간 설정이 유효하지 않음",
+				description = "기간이 유효하지 않음",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = VoteInvalidPeriodResponse.class))),
@@ -350,7 +373,7 @@ public class ChompController {
 				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = VoteUnauthorizedAccessResponse.class))),
+						schema = @Schema(implementation = VoteUnauthorizedResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
 				description = "권한 없는 사용자",
@@ -369,6 +392,12 @@ public class ChompController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "투표 파일 업로드 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = VoteFileUploadFailResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "500",
 				description = "서버 내부 오류",
@@ -436,7 +465,7 @@ public class ChompController {
 				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = VoteUnauthorizedAccessResponse.class))),
+						schema = @Schema(implementation = VoteUnauthorizedResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
 				description = "권한 없는 사용자",
@@ -518,7 +547,7 @@ public class ChompController {
 				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = VoteUnauthorizedAccessResponse.class))),
+						schema = @Schema(implementation = VoteUnauthorizedResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
 				description = "투표 기간 외 접근 시도",
@@ -601,7 +630,7 @@ public class ChompController {
 				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = VoteUnauthorizedAccessResponse.class))),
+						schema = @Schema(implementation = VoteUnauthorizedResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
 				description = "권한 없는 사용자",
@@ -665,6 +694,12 @@ public class ChompController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = MegazineReadSuccessResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
 				description = "해당 매거진을 찾을 수 없음",
 				content = @Content(
@@ -719,7 +754,7 @@ public class ChompController {
 				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = MegazineUnauthorizedAccessResponse.class))),
+						schema = @Schema(implementation = MegazineUnauthorizedResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
 				description = "권한 없는 사용자",
@@ -732,6 +767,12 @@ public class ChompController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "매거진 파일 업로드 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineFileUploadFailResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "500",
 				description = "서버 내부 오류",
@@ -798,7 +839,7 @@ public class ChompController {
 				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = MegazineUnauthorizedAccessResponse.class))),
+						schema = @Schema(implementation = MegazineUnauthorizedResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
 				description = "권한 없는 사용자",
@@ -817,6 +858,12 @@ public class ChompController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "매거진 파일 업로드 실패",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = MegazineFileUploadFailResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "500",
 				description = "서버 내부 오류",
@@ -884,7 +931,7 @@ public class ChompController {
 				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = MegazineUnauthorizedAccessResponse.class))),
+						schema = @Schema(implementation = MegazineUnauthorizedResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
 				description = "권한 없는 사용자",
@@ -955,6 +1002,12 @@ public class ChompController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = EventNotFoundResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = EventInvalidInputResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "500",
 				description = "서버 내부 오류",
 				content = @Content(
@@ -1000,7 +1053,7 @@ public class ChompController {
 						schema = @Schema(implementation = EventInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
-				description = "이벤트 기간 설정이 유효하지 않음",
+				description = "기간이 유효하지 않음",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = EventInvalidPeriodResponse.class))),
@@ -1015,7 +1068,7 @@ public class ChompController {
 				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = EventUnauthorizedAccessResponse.class))),
+						schema = @Schema(implementation = EventUnauthorizedResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
 				description = "권한 없는 사용자",
@@ -1057,7 +1110,7 @@ public class ChompController {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+				throw new ApiException(EventErrorCode.EVENT_FORBIDDEN);
 			}
 		}
 		eventRequestDto.setUserId(userService.readUserByUsername(username).getId());
@@ -1097,7 +1150,7 @@ public class ChompController {
 						schema = @Schema(implementation = EventInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
-				description = "이벤트 기간 설정이 유효하지 않음",
+				description = "기간이 유효하지 않음",
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = EventInvalidPeriodResponse.class))),
@@ -1106,7 +1159,7 @@ public class ChompController {
 				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = EventUnauthorizedAccessResponse.class))),
+						schema = @Schema(implementation = EventUnauthorizedResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
 				description = "권한 없는 사용자",
@@ -1155,7 +1208,7 @@ public class ChompController {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+				throw new ApiException(EventErrorCode.EVENT_FORBIDDEN);
 			}
 		}
 		eventRequestDto.setUserId(userService.readUserByUsername(username).getId());
@@ -1198,7 +1251,7 @@ public class ChompController {
 				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = EventUnauthorizedAccessResponse.class))),
+						schema = @Schema(implementation = EventUnauthorizedResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
 				description = "권한 없는 사용자",
@@ -1239,7 +1292,7 @@ public class ChompController {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+				throw new ApiException(EventErrorCode.EVENT_FORBIDDEN);
 			}
 		}
 		

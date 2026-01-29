@@ -17,7 +17,7 @@ import com.project.zipmin.dto.MemoUpdateRequestDto;
 import com.project.zipmin.dto.MemoUpdateResponseDto;
 import com.project.zipmin.dto.RecipeStockMemoCreateRequestDto;
 import com.project.zipmin.dto.UserReadResponseDto;
-import com.project.zipmin.entity.Memo;
+import com.project.zipmin.entity.FridgeMemo;
 import com.project.zipmin.mapper.MemoMapper;
 import com.project.zipmin.repository.MemoRepository;
 
@@ -39,7 +39,7 @@ public class MemoService {
 	
 	// 장보기 메모 조회
 	public List<MemoReadResponseDto> readMemoList(Integer userId) {
-	    List<Memo> memoList = memoRepository.findAllByUserId(userId);
+	    List<FridgeMemo> memoList = memoRepository.findAllByUserId(userId);
 	    return memoList.stream()
 	            .map(memoMapper::toReadResponseDto)
 	            .collect(Collectors.toList());
@@ -60,7 +60,7 @@ public class MemoService {
 	        throw new ApiException(MemoErrorCode.MEMO_INVALID_INPUT);
 	    
 	    // 엔티티 변환 및 저장
-	    Memo memo = memoMapper.toEntity(memoRequestDto);
+	    FridgeMemo memo = memoMapper.toEntity(memoRequestDto);
 	    
 	    try {
 	        memo = memoRepository.save(memo);
@@ -83,7 +83,7 @@ public class MemoService {
 	    }
 
 	    // 메모 존재 여부 확인
-	    Memo memo = memoRepository.findById(memoId)
+	    FridgeMemo memo = memoRepository.findById(memoId)
 	            .orElseThrow(() -> new ApiException(MemoErrorCode.MEMO_NOT_FOUND));
 
 	    // 작성자 확인 (본인만 수정 가능)
@@ -120,7 +120,7 @@ public class MemoService {
 	    }
 
 	    // 메모 존재 여부 판단
-	    Memo memo = memoRepository.findById(memoId)
+	    FridgeMemo memo = memoRepository.findById(memoId)
 	            .orElseThrow(() -> new ApiException(MemoErrorCode.MEMO_NOT_FOUND));
 
 	    // 권한 확인 (로그인한 사용자와 메모 작성자 일치 여부)

@@ -8,7 +8,7 @@ import com.project.zipmin.dto.MemoCreateResponseDto;
 import com.project.zipmin.dto.MemoReadResponseDto;
 import com.project.zipmin.dto.MemoUpdateRequestDto;
 import com.project.zipmin.dto.MemoUpdateResponseDto;
-import com.project.zipmin.entity.Memo;
+import com.project.zipmin.entity.FridgeMemo;
 
 @Mapper(componentModel = "spring")
 public interface MemoMapper {
@@ -16,24 +16,24 @@ public interface MemoMapper {
 	
 	// Read
     @Mapping(target = "user.id", source = "userId")
-    Memo toEntity(MemoReadResponseDto memoDTO);
+    FridgeMemo toEntity(MemoReadResponseDto memoDTO);
     
     @Mapping(target = "userId", source = "user.id")
-    MemoReadResponseDto toReadResponseDto(Memo memo);
+    MemoReadResponseDto toReadResponseDto(FridgeMemo memo);
    
 	
 	// Create
     @Mapping(target = "id", ignore = true)
 	@Mapping(target = "user.id", source = "userId")
-	Memo toEntity(MemoCreateRequestDto memoDTO);
+	FridgeMemo toEntity(MemoCreateRequestDto memoDTO);
 	
 	@Mapping(target = "userId", source = "user.id")
-	MemoCreateResponseDto toCreateResponseDto(Memo memo);
+	MemoCreateResponseDto toCreateResponseDto(FridgeMemo memo);
 	
 	// Update
-    Memo toEntity(MemoUpdateRequestDto memoDTO);
+    FridgeMemo toEntity(MemoUpdateRequestDto memoDTO);
 
-    MemoUpdateResponseDto toUpdateResponseDto(Memo memo);
+    MemoUpdateResponseDto toUpdateResponseDto(FridgeMemo memo);
     
 	
 }

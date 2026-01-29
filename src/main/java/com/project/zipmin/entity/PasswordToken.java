@@ -25,14 +25,13 @@ import lombok.NoArgsConstructor;
 public class PasswordToken {
 
 	@Id
-	@GeneratedValue(generator = "seq_password_token_id")
-	@SequenceGenerator(name = "seq_password_token_id", sequenceName = "SEQ_PASSWORD_TOKEN_ID", allocationSize = 1)
+	@GeneratedValue(generator = "SEQ_PASSWORD_TOKEN_ID")
+	@SequenceGenerator(name = "SEQ_PASSWORD_TOKEN_ID", sequenceName = "SEQ_PASSWORD_TOKEN_ID", allocationSize = 1)
 	private int id;
 	
 	private String token;
 	private Date expiresAt;
 	
-	// private int userId;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")
 	private User user;

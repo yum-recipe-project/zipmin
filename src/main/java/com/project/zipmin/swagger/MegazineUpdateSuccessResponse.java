@@ -1,6 +1,6 @@
 package com.project.zipmin.swagger;
 
-import com.project.zipmin.dto.MegazineUpdateResponseDto;
+import com.project.zipmin.dto.chomp.MegazineUpdateResponseDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

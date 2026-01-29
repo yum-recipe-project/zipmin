@@ -1,4 +1,6 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.chomp;
+
+import java.util.Date;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -7,11 +9,13 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class VoteRecordReadResponseDto {
+public class EventUpdateRequestDto {
 	
 	private int id;
-	private int chompId;
-	private int userId;
-	private int choiceId;
+	private String title;
+	private Date opendate;
+	private Date closedate;
+	private String content;
+	private String image;
 	
 }

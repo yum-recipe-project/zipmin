@@ -20,11 +20,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "FRIDGE_MEMO")
-public class Memo {
+public class FridgeMemo {
 	
 	@Id
-	@GeneratedValue(generator = "seq_fridge_memo_id")
-	@SequenceGenerator(name = "seq_fridge_memo_id", sequenceName = "SEQ_FRIDGE_MEMO_ID", allocationSize = 1)
+	@GeneratedValue(generator = "SEQ_FRIDGE_MEMO_ID")
+	@SequenceGenerator(name = "SEQ_FRIDGE_MEMO_ID", sequenceName = "SEQ_FRIDGE_MEMO_ID", allocationSize = 1)
 	private int id;
 	
 	private String name;

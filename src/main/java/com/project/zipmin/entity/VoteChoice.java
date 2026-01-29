@@ -23,14 +23,14 @@ import lombok.NoArgsConstructor;
 public class VoteChoice {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_vote_choice_id")
-	@SequenceGenerator(name = "seq_vote_choice_id", sequenceName = "SEQ_VOTE_CHOICE_ID", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_VOTE_CHOICE_ID")
+	@SequenceGenerator(name = "SEQ_VOTE_CHOICE_ID", sequenceName = "SEQ_VOTE_CHOICE_ID", allocationSize = 1)
 	private int id;
 	
 	private String choice;
 	
-	// private int chomp_id;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CHOMP_ID")
 	private Chomp chomp;
+	
 }

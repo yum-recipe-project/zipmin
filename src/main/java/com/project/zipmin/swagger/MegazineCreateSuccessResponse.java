@@ -1,7 +1,7 @@
 package com.project.zipmin.swagger;
 
-import com.project.zipmin.dto.MegazineCreateResponseDto;
-import com.project.zipmin.dto.VoteRecordCreateResponseDto;
+import com.project.zipmin.dto.chomp.MegazineCreateResponseDto;
+import com.project.zipmin.dto.chomp.VoteRecordCreateResponseDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

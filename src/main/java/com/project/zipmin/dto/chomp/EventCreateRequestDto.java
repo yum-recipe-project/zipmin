@@ -1,24 +1,22 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.chomp;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import lombok.Data;
-import lombok.ToString;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class MegazineReadResponseDto {
+public class EventCreateRequestDto {
 	
-	private int id;
 	private String title;
+	private Date opendate;
 	private Date closedate;
 	private String content;
 	private String image;
-	private int userId;
+	private String category;
+	private Integer userId;
 	
-	private int commentCount;
 }

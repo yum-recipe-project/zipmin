@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.chomp;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -7,11 +7,10 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class MegazineUpdateRequestDto {
-	
-	private Integer id;
-	private String title;
-	private String content;
-	private Integer userId;
+public class VoteChoiceCreateResponseDto {
+
+	private int id;
+	private String choice;
+	private int chompId;
 	
 }

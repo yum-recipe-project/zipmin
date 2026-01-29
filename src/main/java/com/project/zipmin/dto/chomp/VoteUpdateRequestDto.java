@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.chomp;
 
 import java.util.Date;
 import java.util.List;
@@ -12,10 +12,13 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class VoteUpdateRequestDto {
 	
-	private Integer id;
+	private int id;
 	private String title;
 	private Date opendate;
 	private Date closedate;
+	private String image;
+	private int userId;
 	
 	private List<VoteChoiceUpdateRequestDto> choiceList;
+	
 }

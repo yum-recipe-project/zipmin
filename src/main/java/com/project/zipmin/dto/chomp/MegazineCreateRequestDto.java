@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.chomp;
 
 import java.util.Date;
 
@@ -9,16 +9,13 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class EventReadResponseDto {
+public class MegazineCreateRequestDto {
 	
-	private int id;
 	private String title;
-	private Date opendate;
 	private Date closedate;
 	private String content;
 	private String image;
+	private String category;
 	private int userId;
-	
-	private int commentcount;
 	
 }

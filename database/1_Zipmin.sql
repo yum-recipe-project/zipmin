@@ -501,9 +501,6 @@ CREATE TABLE review (
     recodenum NUMBER NOT NULL,
     user_id NUMBER NOT NULL
 );
--- ALTER TABLE review
---     ADD CONSTRAINT const_review_recipe FOREIGN KEY(recipe_id)
---     REFERENCES recipe(id) ON DELETE CASCADE;
 ALTER TABLE review
     ADD CONSTRAINT const_review_users FOREIGN KEY(user_id)
     REFERENCES users(id) ON DELETE CASCADE;

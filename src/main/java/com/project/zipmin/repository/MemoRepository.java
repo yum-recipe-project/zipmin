@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.project.zipmin.entity.Memo;
+import com.project.zipmin.entity.FridgeMemo;
 
 @Repository
-public interface MemoRepository extends JpaRepository<Memo, Integer> {
-    List<Memo> findAllByUserId(Integer userId);
+public interface MemoRepository extends JpaRepository<FridgeMemo, Integer> {
+    List<FridgeMemo> findAllByUserId(Integer userId);
 }

@@ -9,9 +9,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ChompErrorCode implements Code {
 	
-	CHOMP_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
 	CHOMP_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "로그인되지 않은 사용자"),
 	CHOMP_FORBIDDEN(HttpStatus.FORBIDDEN, "권한 없는 사용자"),
+	
+	CHOMP_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
 
 	CHOMP_READ_LIST_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "쩝쩝박사 목록 조회 실패"),
 	

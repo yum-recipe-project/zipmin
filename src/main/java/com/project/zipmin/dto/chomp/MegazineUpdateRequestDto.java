@@ -1,6 +1,4 @@
-package com.project.zipmin.dto;
-
-import java.util.Date;
+package com.project.zipmin.dto.chomp;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -9,14 +7,12 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class MegazineCreateResponseDto {
+public class MegazineUpdateRequestDto {
 	
 	private int id;
 	private String title;
-	private Date postdate;
 	private String content;
-	private String userId;
-	
-	private String nickname;
+	private String image;
+	private int userId;
 	
 }

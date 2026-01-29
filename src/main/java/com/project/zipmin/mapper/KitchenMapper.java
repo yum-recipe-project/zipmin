@@ -38,13 +38,13 @@ public interface KitchenMapper {
 	
 	
 	// Update
-    @Mapping(target = "id", source = "id")
+    @Mapping(target = "user.id", source = "userId")
     Guide toEntity(GuideUpdateRequestDto guideDTO);
     
     @Mapping(target = "userId", source = "user.id")
     GuideUpdateRequestDto toUpdateRequestDto(Guide guide);
     
-    @Mapping(target = "id", source = "id")
+    @Mapping(target = "user.id", source = "userId")
     Guide toEntity(GuideUpdateResponseDto guideDTO);
     
     @Mapping(target = "userId", source = "user.id")

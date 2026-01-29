@@ -15,8 +15,8 @@ public class VoteCreateResponseDto {
 	private String title;
 	private Date opendate;
 	private Date closedate;
-	private String category;
 	private String image;
+	private String category;
 	private int userId;
 	
 }

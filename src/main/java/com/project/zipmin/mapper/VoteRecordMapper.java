@@ -4,9 +4,9 @@ package com.project.zipmin.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.project.zipmin.dto.VoteRecordCreateRequestDto;
-import com.project.zipmin.dto.VoteRecordCreateResponseDto;
-import com.project.zipmin.dto.VoteRecordReadResponseDto;
+import com.project.zipmin.dto.chomp.VoteRecordCreateRequestDto;
+import com.project.zipmin.dto.chomp.VoteRecordCreateResponseDto;
+import com.project.zipmin.dto.chomp.VoteRecordReadResponseDto;
 import com.project.zipmin.entity.VoteRecord;
 
 @Mapper(componentModel = "spring")

@@ -3,10 +3,11 @@ package com.project.zipmin.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.project.zipmin.dto.VoteChoiceUpdateRequestDto;
-import com.project.zipmin.dto.VoteChoiceUpdateResponseDto;
 import com.project.zipmin.dto.chomp.VoteChoiceCreateRequestDto;
+import com.project.zipmin.dto.chomp.VoteChoiceCreateResponseDto;
 import com.project.zipmin.dto.chomp.VoteChoiceReadResponseDto;
+import com.project.zipmin.dto.chomp.VoteChoiceUpdateRequestDto;
+import com.project.zipmin.dto.chomp.VoteChoiceUpdateResponseDto;
 import com.project.zipmin.entity.VoteChoice;
 
 @Mapper(componentModel = "spring")
@@ -27,6 +28,12 @@ public interface VoteChoiceMapper {
 	
 	@Mapping(target = "chompId", source = "chomp.id")
 	VoteChoiceCreateRequestDto toCreateRequestDto(VoteChoice choice);
+	
+	@Mapping(target = "chomp.id", source = "chompId")
+	VoteChoice toEntity(VoteChoiceCreateResponseDto choiceDto);
+	
+	@Mapping(target = "chompId", source = "chomp.id")
+	VoteChoiceCreateResponseDto toCreateResponseDto(VoteChoice choice);
 	
 	
 	

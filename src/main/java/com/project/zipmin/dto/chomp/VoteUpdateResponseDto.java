@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.chomp;
 
 import java.util.Date;
 
@@ -15,6 +15,8 @@ public class VoteUpdateResponseDto {
 	private String title;
 	private Date opendate;
 	private Date closedate;
+	private String image;
 	private String category;
 	private int userId;
+	
 }

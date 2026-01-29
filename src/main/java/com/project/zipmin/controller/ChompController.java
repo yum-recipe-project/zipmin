@@ -25,13 +25,6 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.project.zipmin.dto.EventCreateRequestDto;
-import com.project.zipmin.dto.EventCreateResponseDto;
-import com.project.zipmin.dto.EventReadResponseDto;
-import com.project.zipmin.dto.EventUpdateRequestDto;
-import com.project.zipmin.dto.EventUpdateResponseDto;
-import com.project.zipmin.dto.MegazineCreateRequestDto;
-import com.project.zipmin.dto.MegazineCreateResponseDto;
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.ChompErrorCode;
@@ -42,17 +35,24 @@ import com.project.zipmin.api.MegazineErrorCode;
 import com.project.zipmin.api.MegazineSuccessCode;
 import com.project.zipmin.api.VoteErrorCode;
 import com.project.zipmin.api.VoteSuccessCode;
-import com.project.zipmin.dto.MegazineReadResponseDto;
-import com.project.zipmin.dto.MegazineUpdateRequestDto;
-import com.project.zipmin.dto.MegazineUpdateResponseDto;
-import com.project.zipmin.dto.VoteRecordCreateRequestDto;
-import com.project.zipmin.dto.VoteRecordCreateResponseDto;
-import com.project.zipmin.dto.VoteUpdateRequestDto;
-import com.project.zipmin.dto.VoteUpdateResponseDto;
 import com.project.zipmin.dto.chomp.ChompReadResponseDto;
+import com.project.zipmin.dto.chomp.EventCreateRequestDto;
+import com.project.zipmin.dto.chomp.EventCreateResponseDto;
+import com.project.zipmin.dto.chomp.EventReadResponseDto;
+import com.project.zipmin.dto.chomp.EventUpdateRequestDto;
+import com.project.zipmin.dto.chomp.EventUpdateResponseDto;
+import com.project.zipmin.dto.chomp.MegazineCreateRequestDto;
+import com.project.zipmin.dto.chomp.MegazineCreateResponseDto;
+import com.project.zipmin.dto.chomp.MegazineReadResponseDto;
+import com.project.zipmin.dto.chomp.MegazineUpdateRequestDto;
+import com.project.zipmin.dto.chomp.MegazineUpdateResponseDto;
 import com.project.zipmin.dto.chomp.VoteCreateRequestDto;
 import com.project.zipmin.dto.chomp.VoteCreateResponseDto;
 import com.project.zipmin.dto.chomp.VoteReadResponseDto;
+import com.project.zipmin.dto.chomp.VoteRecordCreateRequestDto;
+import com.project.zipmin.dto.chomp.VoteRecordCreateResponseDto;
+import com.project.zipmin.dto.chomp.VoteUpdateRequestDto;
+import com.project.zipmin.dto.chomp.VoteUpdateResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
@@ -729,6 +729,8 @@ public class ChompController {
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(MegazineErrorCode.MEGAZINE_UNAUTHORIZED_ACCESS);
 		}
+		
+		// TODO : userid랑 관리자
 		
 		MegazineCreateResponseDto megazineResponseDto = chompService.createMegazine(megazineRequestDto, file);
 		

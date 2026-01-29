@@ -11,9 +11,10 @@ import com.project.zipmin.entity.VoteChoice;
 @Repository
 public interface VoteChoiceRepository extends JpaRepository<VoteChoice, Integer> {
 	
+	// 목록 조회
 	List<VoteChoice> findAllByChompId(int chompId);
 	
-	
+	// 기타
 	void deleteAllByChompId(int chompId);
 	void deleteAllByChompIdAndIdNotIn(int chompId, Collection<Integer> ids);
 }

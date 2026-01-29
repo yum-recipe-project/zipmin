@@ -8,14 +8,12 @@ import com.project.zipmin.entity.VoteRecord;
 @Repository
 public interface VoteRecordRepository extends JpaRepository<VoteRecord, Integer> {
 	
+	// 상세 조회
 	VoteRecord findByUserIdAndChompId(int userId, int chompId);
 	
-	int countByChompIdAndChoiceId(int chompId, int choiceId);
+	// 기타
 	int countByChompId(int chompId);
-	
+	int countByChompIdAndChoiceId(int chompId, int choiceId);
 	boolean existsByUserIdAndChompId(int userId, int chompId);
 	
-	
-	
-
 }

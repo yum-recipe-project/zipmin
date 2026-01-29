@@ -28,12 +28,14 @@ import lombok.NoArgsConstructor;
 public class Class {
 	
 	@Id
-	@GeneratedValue(generator = "seq_classes_id")
-	@SequenceGenerator(name = "seq_classes_id", sequenceName = "SEQ_CLASSES_ID", allocationSize = 1)
+	@GeneratedValue(generator = "SEQ_CLASSES_ID")
+	@SequenceGenerator(name = "SEQ_CLASSES_ID", sequenceName = "SEQ_CLASSES_ID", allocationSize = 1)
 	private int id;
 	
 	private String title;
 	private String category;
+	private String image;
+	private String introduce;
 	private String place;
 	private Date postdate;
 	private Date eventdate;
@@ -42,11 +44,8 @@ public class Class {
 	private Date noticedate;
 	private int headcount;
 	private String need;
-	private String image;
-	private String introduce;
 	private int approval;
 	
-	// private String userId;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")
 	private User user;

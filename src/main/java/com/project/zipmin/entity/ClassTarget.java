@@ -23,13 +23,12 @@ import lombok.NoArgsConstructor;
 public class ClassTarget {
 	
 	@Id
-	@GeneratedValue(generator = "seq_class_target_id")
-	@SequenceGenerator(name = "seq_class_target_id", sequenceName = "SEQ_CLASS_TARGET_ID", allocationSize = 1)
+	@GeneratedValue(generator = "SEQ_CLASS_TARGET_ID")
+	@SequenceGenerator(name = "SEQ_CLASS_TARGET_ID", sequenceName = "SEQ_CLASS_TARGET_ID", allocationSize = 1)
 	private int id;
 	
 	private String content;
 	
-	// private int classId;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CLASS_ID")
 	private Class classs;

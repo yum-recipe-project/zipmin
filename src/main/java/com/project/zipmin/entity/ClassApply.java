@@ -26,8 +26,8 @@ import lombok.NoArgsConstructor;
 public class ClassApply {
 	
 	@Id
-	@GeneratedValue(generator = "seq_class_apply_id")
-	@SequenceGenerator(name = "seq_class_apply_id", sequenceName = "SEQ_CLASS_APPLY_ID", allocationSize = 1)
+	@GeneratedValue(generator = "SEQ_CLASS_APPLY_ID")
+	@SequenceGenerator(name = "SEQ_CLASS_APPLY_ID", sequenceName = "SEQ_CLASS_APPLY_ID", allocationSize = 1)
 	private int id;
 	
 	private Date applydate;
@@ -36,12 +36,10 @@ public class ClassApply {
 	private int selected;
 	private int attend;
 	
-	// private int classId;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CLASS_ID")
 	private Class classs;
 	
-	// private int userId;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")
 	private User user;

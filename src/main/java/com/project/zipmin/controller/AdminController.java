@@ -67,11 +67,6 @@ import com.project.zipmin.swagger.ClassReadListSuccessResponse;
 import com.project.zipmin.swagger.ClassUnauthorizedAccessResponse;
 import com.project.zipmin.swagger.ClassUpdateApprovalFailResponse;
 import com.project.zipmin.swagger.ClassUpdateApprovalSuccessResponse;
-import com.project.zipmin.swagger.CommentForbiddenResponse;
-import com.project.zipmin.swagger.CommentInvalidInputResponse;
-import com.project.zipmin.swagger.CommentReadListFailResponse;
-import com.project.zipmin.swagger.CommentReadListSuccessResponse;
-import com.project.zipmin.swagger.CommentUnauthorizedAccessResponse;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.UserForbiddenResponse;
 import com.project.zipmin.swagger.UserInvalidInputResponse;
@@ -79,6 +74,11 @@ import com.project.zipmin.swagger.UserNotFoundResponse;
 import com.project.zipmin.swagger.UserReadListFailResponse;
 import com.project.zipmin.swagger.UserReadListSuccessResponse;
 import com.project.zipmin.swagger.UserUnauthorizedAccessResponse;
+import com.project.zipmin.swagger.comment.CommentForbiddenResponse;
+import com.project.zipmin.swagger.comment.CommentInvalidInputResponse;
+import com.project.zipmin.swagger.comment.CommentReadListFailResponse;
+import com.project.zipmin.swagger.comment.CommentReadListSuccessResponse;
+import com.project.zipmin.swagger.comment.CommentUnauthorizedResponse;
 import com.project.zipmin.swagger.kitchen.KitchenInvalidInputResponse;
 import com.project.zipmin.swagger.kitchen.KitchenReadListFailResponse;
 import com.project.zipmin.swagger.kitchen.KitchenReadListSuccessResponse;
@@ -755,7 +755,7 @@ public class AdminController {
 				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = CommentUnauthorizedAccessResponse.class))),
+						schema = @Schema(implementation = CommentUnauthorizedResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
 				description = "권한 없는 사용자",

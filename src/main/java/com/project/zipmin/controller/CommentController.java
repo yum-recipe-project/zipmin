@@ -32,24 +32,6 @@ import com.project.zipmin.dto.report.ReportCreateRequestDto;
 import com.project.zipmin.dto.report.ReportCreateResponseDto;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.UserService;
-import com.project.zipmin.swagger.CommentCreateFailResponse;
-import com.project.zipmin.swagger.CommentCreateSuccessResponse;
-import com.project.zipmin.swagger.CommentDeleteFailResponse;
-import com.project.zipmin.swagger.CommentDeleteSuccessResponse;
-import com.project.zipmin.swagger.CommentForbiddenResponse;
-import com.project.zipmin.swagger.CommentInvalidInputResponse;
-import com.project.zipmin.swagger.CommentLikeFailResponse;
-import com.project.zipmin.swagger.CommentLikeSuccessResponse;
-import com.project.zipmin.swagger.CommentNotFoundResponse;
-import com.project.zipmin.swagger.CommentReadListFailResponse;
-import com.project.zipmin.swagger.CommentReadListSuccessResponse;
-import com.project.zipmin.swagger.CommentReportFailResponse;
-import com.project.zipmin.swagger.CommentReportSuccessResponse;
-import com.project.zipmin.swagger.CommentUnauthorizedAccessResponse;
-import com.project.zipmin.swagger.CommentUnlikeFailResponse;
-import com.project.zipmin.swagger.CommentUnlikeSuccessResponse;
-import com.project.zipmin.swagger.CommentUpdateFailResponse;
-import com.project.zipmin.swagger.CommentUpdateSuccessResponse;
 import com.project.zipmin.swagger.EventInvalidInputResponse;
 import com.project.zipmin.swagger.EventNotFoundResponse;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
@@ -59,9 +41,26 @@ import com.project.zipmin.swagger.UserInvalidInputResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
 import com.project.zipmin.swagger.VoteInvalidInputResponse;
 import com.project.zipmin.swagger.VoteNotFoundResponse;
+import com.project.zipmin.swagger.comment.CommentCreateFailResponse;
+import com.project.zipmin.swagger.comment.CommentCreateSuccessResponse;
+import com.project.zipmin.swagger.comment.CommentDeleteFailResponse;
+import com.project.zipmin.swagger.comment.CommentDeleteSuccessResponse;
+import com.project.zipmin.swagger.comment.CommentForbiddenResponse;
+import com.project.zipmin.swagger.comment.CommentInvalidInputResponse;
+import com.project.zipmin.swagger.comment.CommentLikeFailResponse;
+import com.project.zipmin.swagger.comment.CommentLikeSuccessResponse;
+import com.project.zipmin.swagger.comment.CommentNotFoundResponse;
+import com.project.zipmin.swagger.comment.CommentReadListFailResponse;
+import com.project.zipmin.swagger.comment.CommentReadListSuccessResponse;
+import com.project.zipmin.swagger.comment.CommentReportFailResponse;
+import com.project.zipmin.swagger.comment.CommentReportSuccessResponse;
+import com.project.zipmin.swagger.comment.CommentUnauthorizedResponse;
+import com.project.zipmin.swagger.comment.CommentUnlikeFailResponse;
+import com.project.zipmin.swagger.comment.CommentUnlikeSuccessResponse;
+import com.project.zipmin.swagger.comment.CommentUpdateFailResponse;
+import com.project.zipmin.swagger.comment.CommentUpdateSuccessResponse;
 import com.project.zipmin.swagger.kitchen.KitchenInvalidInputResponse;
 import com.project.zipmin.swagger.kitchen.KitchenNotFoundResponse;
-import com.project.zipmin.swagger.like.LikeCountFailResponse;
 import com.project.zipmin.swagger.like.LikeCreateFailResponse;
 import com.project.zipmin.swagger.like.LikeDeleteFailResponse;
 import com.project.zipmin.swagger.like.LikeDuplicatedResponse;
@@ -71,7 +70,6 @@ import com.project.zipmin.swagger.like.LikeInvalidInputResponse;
 import com.project.zipmin.swagger.like.LikeNotFoundResponse;
 import com.project.zipmin.swagger.recipe.RecipeInvalidInputResponse;
 import com.project.zipmin.swagger.recipe.RecipeNotFoundResponse;
-import com.project.zipmin.swagger.report.ReportCountFailResponse;
 import com.project.zipmin.swagger.report.ReportCreateFailResponse;
 import com.project.zipmin.swagger.report.ReportDuplicatedResponse;
 import com.project.zipmin.swagger.report.ReportForbiddenResponse;
@@ -116,18 +114,6 @@ public class CommentController {
 						schema = @Schema(implementation = CommentReadListFailResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "400",
-				description = "좋아요 집계 실패",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = LikeCountFailResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "400",
-				description = "신고 집계 실패",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = ReportCountFailResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "400",
 				description = "좋아요 여부 확인 실패",
 				content = @Content(
 						mediaType = "application/json",
@@ -150,12 +136,6 @@ public class CommentController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = LikeInvalidInputResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "400",
-				description = "입력값이 유효하지 않음",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = ReportInvalidInputResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
 				description = "해당 사용자를 찾을 수 없음",
@@ -224,7 +204,7 @@ public class CommentController {
 				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = CommentUnauthorizedAccessResponse.class))),
+						schema = @Schema(implementation = CommentUnauthorizedResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
 				description = "해당 댓글을 찾을 수 없음",
@@ -301,7 +281,7 @@ public class CommentController {
 				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = CommentUnauthorizedAccessResponse.class))),
+						schema = @Schema(implementation = CommentUnauthorizedResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
 				description = "권한 없는 사용자",
@@ -384,7 +364,7 @@ public class CommentController {
 				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = CommentUnauthorizedAccessResponse.class))),
+						schema = @Schema(implementation = CommentUnauthorizedResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
 				description = "권한 없는 사용자",
@@ -478,7 +458,7 @@ public class CommentController {
 				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = CommentUnauthorizedAccessResponse.class))),
+						schema = @Schema(implementation = CommentUnauthorizedResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "403",
 				description = "권한 없는 사용자",
@@ -579,7 +559,7 @@ public class CommentController {
 				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = CommentUnauthorizedAccessResponse.class))),
+						schema = @Schema(implementation = CommentUnauthorizedResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
 				description = "권한 없는 사용자",
@@ -681,7 +661,7 @@ public class CommentController {
 				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = CommentUnauthorizedAccessResponse.class))),
+						schema = @Schema(implementation = CommentUnauthorizedResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
 				description = "권한 없는 사용자",
@@ -802,7 +782,7 @@ public class CommentController {
 				description = "로그인되지 않은 사용자",
 				content = @Content(
 						mediaType = "application/json",
-						schema = @Schema(implementation = CommentUnauthorizedAccessResponse.class))),
+						schema = @Schema(implementation = CommentUnauthorizedResponse.class))),
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "401",
 				description = "권한 없는 사용자",

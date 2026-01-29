@@ -1,9 +1,9 @@
-package com.project.zipmin.swagger;
+package com.project.zipmin.swagger.comment;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(name = "CommentUnauthorizedAccessResponse")
-public class CommentUnauthorizedAccessResponse {
+public class CommentUnauthorizedResponse {
 	
     @Schema(example = "COMMENT_UNAUTHORIZED_ACCESS", description = "에러 코드")
     public String code;

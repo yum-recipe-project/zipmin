@@ -1,4 +1,4 @@
-package com.project.zipmin.swagger;
+package com.project.zipmin.swagger.comment;
 
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
 

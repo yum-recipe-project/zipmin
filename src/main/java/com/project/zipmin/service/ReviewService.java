@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
-import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.RecipeErrorCode;
 import com.project.zipmin.api.ReviewErrorCode;
 import com.project.zipmin.dto.UserReadResponseDto;

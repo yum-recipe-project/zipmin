@@ -400,7 +400,7 @@ public class ChompService {
 	
 	
 	
-	// 투표 기록 작성
+	// 투표 참여 (투표 기록 작성)
 	public VoteRecordCreateResponseDto createVoteRecord(VoteRecordCreateRequestDto recordDto) {
 		
 		// 입력값 검증
@@ -446,7 +446,7 @@ public class ChompService {
 	
 	
 	
-	// 투표 기록 삭제
+	// 투표 참여 취소 (투표 기록 삭제)
 	public void deleteVoteRecord(int id) {
 		
 		// 입력값 검증

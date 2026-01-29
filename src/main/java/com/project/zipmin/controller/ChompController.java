@@ -27,7 +27,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
-import com.project.zipmin.api.ChompErrorCode;
 import com.project.zipmin.api.ChompSuccessCode;
 import com.project.zipmin.api.EventErrorCode;
 import com.project.zipmin.api.EventSuccessCode;
@@ -55,7 +54,6 @@ import com.project.zipmin.dto.chomp.VoteUpdateRequestDto;
 import com.project.zipmin.dto.chomp.VoteUpdateResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.ChompService;
-import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.ChompInvalidInputResponse;
 import com.project.zipmin.swagger.ChompReadListFailResponse;
@@ -311,7 +309,8 @@ public class ChompController {
 	
 	
 	
-	
+
+	// 투표 수정 (관리자)
 	@Operation(
 	    summary = "투표 수정"
 	)
@@ -390,6 +389,15 @@ public class ChompController {
 		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED);
 		}
 		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+			}
+		}
+		voteRequestDto.setUserId(userService.readUserByUsername(username).getId());
+		
 		VoteUpdateResponseDto voteResponseDto = chompService.updateVote(voteRequestDto, file);
 		
 		return ResponseEntity.status(VoteSuccessCode.VOTE_UPDATE_SUCCESS.getStatus())
@@ -399,7 +407,8 @@ public class ChompController {
 	
 	
 	
-	
+
+	// 투표 삭제 (관리자)
 	@Operation(
 	    summary = "투표 삭제"
 	)
@@ -463,6 +472,14 @@ public class ChompController {
 		    throw new ApiException(VoteErrorCode.VOTE_UNAUTHORIZED);
 		}
 		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+			}
+		}
+		
 		chompService.deleteVote(id);
 		
 		return ResponseEntity.status(VoteSuccessCode.VOTE_DELETE_SUCCESS.getStatus())
@@ -473,6 +490,7 @@ public class ChompController {
 	
 	
 	
+	// 투표 참여
 	@Operation(
 	    summary = "투표 참여"
 	)
@@ -555,6 +573,7 @@ public class ChompController {
 	
 
 	
+	// 투표 참여 취소
 	@Operation(
 	    summary = "투표 참여 취소"
 	)
@@ -633,7 +652,8 @@ public class ChompController {
 
 	
 	
-	
+
+	// 매거진 상세 조회
 	@Operation(
 	    summary = "매거진 상세 조회"
 	)
@@ -671,6 +691,7 @@ public class ChompController {
 	
 	
 	
+	// 매거진 작성
 	@Operation(
 	    summary = "매거진 작성"
 	)
@@ -730,7 +751,14 @@ public class ChompController {
 		    throw new ApiException(MegazineErrorCode.MEGAZINE_UNAUTHORIZED_ACCESS);
 		}
 		
-		// TODO : userid랑 관리자
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+			}
+		}
+		megazineRequestDto.setUserId(userService.readUserByUsername(username).getId());
 		
 		MegazineCreateResponseDto megazineResponseDto = chompService.createMegazine(megazineRequestDto, file);
 		
@@ -742,6 +770,7 @@ public class ChompController {
 	
 	
 	
+	// 매거진 수정 (관리자)
 	@Operation(
 	    summary = "매거진 수정"
 	)
@@ -808,6 +837,15 @@ public class ChompController {
 		    throw new ApiException(MegazineErrorCode.MEGAZINE_UNAUTHORIZED_ACCESS);
 		}
 		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+			}
+		}
+		megazineRequestDto.setUserId(userService.readUserByUsername(username).getId());
+		
 		MegazineUpdateResponseDto megazineResponseDto = chompService.updateMegazine(megazineRequestDto, file);
 		
 		return ResponseEntity.status(MegazineSuccessCode.MEGAZINE_UPDATE_SUCCESS.getStatus())
@@ -817,7 +855,8 @@ public class ChompController {
 	
 	
 	
-	
+
+	// 매거진 삭제 (관리자)
 	@Operation(
 	    summary = "매거진 삭제"
 	)
@@ -881,6 +920,13 @@ public class ChompController {
 		    throw new ApiException(MegazineErrorCode.MEGAZINE_UNAUTHORIZED_ACCESS);
 		}
 		
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(MegazineErrorCode.MEGAZINE_FORBIDDEN);
+			}
+		}
+		
 		chompService.deleteMegazine(id);
 		
 		return ResponseEntity.status(MegazineSuccessCode.MEGAZINE_DELETE_SUCCESS.getStatus())
@@ -891,6 +937,7 @@ public class ChompController {
 	
 	
 	
+	// 이벤트 상세 조회
 	@Operation(
 	    summary = "이벤트 상세 조회"
 	)
@@ -928,6 +975,7 @@ public class ChompController {
 	
 	
 	
+	// 이벤트 작성 (관리자)
 	@Operation(
 	    summary = "이벤트 작성"
 	)
@@ -1004,6 +1052,15 @@ public class ChompController {
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(EventErrorCode.EVENT_UNAUTHORIZED_ACCESS);
 		}
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+			}
+		}
+		eventRequestDto.setUserId(userService.readUserByUsername(username).getId());
 	
 		EventCreateResponseDto eventResponseDto = chompService.createEvent(eventRequestDto, file);
 		
@@ -1015,6 +1072,7 @@ public class ChompController {
 	
 
 	
+	// 이벤트 수정 (관리자)
 	@Operation(
 	    summary = "이벤트 수정"
 	)
@@ -1093,6 +1151,15 @@ public class ChompController {
 		    throw new ApiException(EventErrorCode.EVENT_UNAUTHORIZED_ACCESS);
 		}
 		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+			}
+		}
+		eventRequestDto.setUserId(userService.readUserByUsername(username).getId());
+		
 		EventUpdateResponseDto eventResponseDto = chompService.updateEvent(eventRequestDto, file);
 		
 		return ResponseEntity.status(EventSuccessCode.EVENT_UPDATE_SUCCESS.getStatus())
@@ -1103,6 +1170,7 @@ public class ChompController {
 	
 	
 	
+	// 이벤트 삭제 (관리자)
 	@Operation(
 	    summary = "이벤트 삭제"
 	)
@@ -1165,6 +1233,14 @@ public class ChompController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(EventErrorCode.EVENT_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(VoteErrorCode.VOTE_FORBIDDEN);
+			}
 		}
 		
 		chompService.deleteEvent(id);

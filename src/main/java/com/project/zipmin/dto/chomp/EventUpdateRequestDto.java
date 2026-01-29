@@ -17,5 +17,6 @@ public class EventUpdateRequestDto {
 	private Date closedate;
 	private String content;
 	private String image;
+	private int userId;
 	
 }

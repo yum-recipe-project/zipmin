@@ -1,6 +1,6 @@
 package com.project.zipmin.swagger;
 
-import com.project.zipmin.dto.ClassApplyCreateResponseDto;
+import com.project.zipmin.dto.cooking.ClassApplyCreateResponseDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

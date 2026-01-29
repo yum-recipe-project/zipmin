@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.cooking;
 
 import java.util.Date;
 import java.util.List;
@@ -15,6 +15,8 @@ public class ClassReadResponseDto {
 	private int id;
 	private String title;
 	private String category;
+	private String image;
+	private String introduce;
 	private String place;
 	private Date postdate;
 	private Date eventdate;
@@ -23,8 +25,6 @@ public class ClassReadResponseDto {
 	private Date noticedate;
 	private int headcount;
 	private String need;
-	private String image;
-	private String introduce;
 	private int approval;
 	private int userId;
 	
@@ -39,8 +39,12 @@ public class ClassReadResponseDto {
 	private boolean isEvented;
 	private boolean isAble;
 	
-	// 개설 신청자 정보
+	// 작성자 정보
 	private String username;
 	private String nickname;
+	
+//	private int selected;
+//	private int applyId;
+//	private boolean isPlanned;
 	
 }

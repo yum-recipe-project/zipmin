@@ -1,15 +1,11 @@
 package com.project.zipmin.mapper;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.project.zipmin.dto.ClassTutorCreateReqeustDto;
-import com.project.zipmin.dto.ClassTutorCreateResponseDto;
-import com.project.zipmin.dto.ClassTutorReadResponseDto;
-import com.project.zipmin.entity.Class;
+import com.project.zipmin.dto.cooking.ClassTutorCreateReqeustDto;
+import com.project.zipmin.dto.cooking.ClassTutorCreateResponseDto;
+import com.project.zipmin.dto.cooking.ClassTutorReadResponseDto;
 import com.project.zipmin.entity.ClassTutor;
 
 @Mapper(componentModel = "spring")
@@ -21,6 +17,8 @@ public interface ClassTutorMapper {
 	
 	@Mapping(target = "classId", source = "classs.id")
 	ClassTutorReadResponseDto toReadResponseDto(ClassTutor tutor);
+	
+	
 	
 	// Create
 	@Mapping(target = "classs.id", source = "classId")
@@ -34,30 +32,5 @@ public interface ClassTutorMapper {
 	
 	@Mapping(target = "classId", source = "classs.id")
 	ClassTutorCreateResponseDto toCreateResponseDto(ClassTutor tutor);
-	
-	
-	
-	
-	// Create
-	// DTO → Entity 변환
-    default ClassTutor toEntity(ClassTutorCreateReqeustDto tutorDto, Class classEntity) {
-        if (tutorDto == null || classEntity == null) return null;
-
-        return ClassTutor.builder()
-                .name(tutorDto.getName())
-                .image(tutorDto.getImage())
-                .career(tutorDto.getCareer())
-                .classs(classEntity)  // Class 엔티티 연결
-                .build();
-    }
-
-    // 리스트 변환
-    default List<ClassTutor> toEntityList(List<ClassTutorCreateReqeustDto> tutorList, Class classEntity) {
-        if (tutorList == null || tutorList.isEmpty()) return List.of();
-
-        return tutorList.stream()
-                .map(tutor -> toEntity(tutor, classEntity))
-                .collect(Collectors.toList());
-    }
 	
 }

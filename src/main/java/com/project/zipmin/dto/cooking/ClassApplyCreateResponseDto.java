@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.cooking;
 
 import java.util.Date;
 
@@ -17,8 +17,8 @@ public class ClassApplyCreateResponseDto {
 	private String question;
 	private int selected;
 	private int attend;
-	private int userId;
 	private int classId;
+	private int userId;
 	
 }
 

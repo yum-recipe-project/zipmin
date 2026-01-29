@@ -3,7 +3,6 @@ package com.project.zipmin.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.project.zipmin.dto.UserCommentReadesponseDto;
 import com.project.zipmin.dto.comment.CommentCreateRequestDto;
 import com.project.zipmin.dto.comment.CommentCreateResponseDto;
 import com.project.zipmin.dto.comment.CommentReadResponseDto;
@@ -22,14 +21,6 @@ public interface CommentMapper {
 	@Mapping(target = "commId", source = "comment.id")
 	@Mapping(target = "userId", source = "user.id")
 	CommentReadResponseDto toReadResponseDto(Comment comment);
-	
-	@Mapping(target = "comment.id", source = "commId")
-	@Mapping(target = "user.id", source = "userId")
-	Comment toEntity(UserCommentReadesponseDto commentDto);
-	
-	@Mapping(target = "commId", source = "comment.id")
-	@Mapping(target = "userId", source = "user.id")
-	UserCommentReadesponseDto toReadMyResponseDto(Comment comment);
 	
 	
 	

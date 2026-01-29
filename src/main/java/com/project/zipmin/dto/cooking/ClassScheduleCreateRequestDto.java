@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.cooking;
 
 import java.util.Date;
 
@@ -9,19 +9,13 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class UserAppliedClassResponseDto {
+public class ClassScheduleCreateRequestDto {
 	
 	private int id;
-	private String title;
-	private Date eventdate;
 	private Date starttime;
 	private Date endtime;
-	private Date noticedate;
-	private String image;
+	private String title;
+	private int classId;
 	
-	private int selected;
-	private int applyId;
-	
-	private boolean isOpened;
-	private boolean isPlanned;
 }
+

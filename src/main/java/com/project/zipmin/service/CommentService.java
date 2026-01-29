@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.CommentErrorCode;
-import com.project.zipmin.dto.UserCommentReadesponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.comment.CommentCreateRequestDto;
 import com.project.zipmin.dto.comment.CommentCreateResponseDto;
@@ -177,7 +176,7 @@ public class CommentService {
 	
 	
 	// 사용자의 댓글 목록 조회
-	public Page<UserCommentReadesponseDto> readCommentPageByUserId(int userId, Pageable pageable) {
+	public Page<CommentReadResponseDto> readCommentPageByUserId(int userId, Pageable pageable) {
 		
 		// 입력값 검증
 		if (userId == 0 || pageable == null) {
@@ -212,9 +211,9 @@ public class CommentService {
 		}
 		
 		// 댓글 목록 응답 구성
-		List<UserCommentReadesponseDto> commentDtoList = new ArrayList<>();
+		List<CommentReadResponseDto> commentDtoList = new ArrayList<>();
 		for (Comment comment : commentPage) {
-			UserCommentReadesponseDto commentDto = commentMapper.toReadMyResponseDto(comment);
+			CommentReadResponseDto commentDto = commentMapper.toReadResponseDto(comment);
 			commentDto.setNickname(comment.getUser().getNickname());
 			commentDto.setAvatar(comment.getUser().getAvatar());
 			String title = switch (comment.getTablename()) {

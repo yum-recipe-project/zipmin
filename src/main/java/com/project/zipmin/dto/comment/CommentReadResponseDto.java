@@ -24,14 +24,19 @@ public class CommentReadResponseDto {
 	private Integer commId;
 	private Integer userId;
 	
+	// 작성자 정보
 	private String username;
 	private String nickname;
 	private String avatar;
 	private String role;
 	
+	// 게시글 정보
+	private String title;
+	
 	private int likecount;
 	private int reportcount;
 	private boolean isLiked;
 	private List<CommentReadResponseDto> subcommentList;
+	
 	
 }

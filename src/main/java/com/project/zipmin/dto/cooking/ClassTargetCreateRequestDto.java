@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.cooking;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -7,12 +7,9 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ClassApplyStatusUpdateRequestDto {
+public class ClassTargetCreateRequestDto {
 	
-	private Integer id;
-	private String selected;
-	private String attend;
-	private Integer classId;
+	private String content;  
+	private int classId;
 	
 }
-

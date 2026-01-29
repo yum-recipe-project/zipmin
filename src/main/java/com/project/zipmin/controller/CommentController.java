@@ -19,7 +19,6 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.CommentSuccessCode;
-import com.project.zipmin.dto.UserCommentReadesponseDto;
 import com.project.zipmin.dto.comment.CommentCreateRequestDto;
 import com.project.zipmin.dto.comment.CommentCreateResponseDto;
 import com.project.zipmin.dto.comment.CommentReadResponseDto;
@@ -847,7 +846,7 @@ public class CommentController {
 		}
 
 		Pageable pageable = PageRequest.of(page, size);
-		Page<UserCommentReadesponseDto> commentPage = commentService.readCommentPageByUserId(id, pageable);
+		Page<CommentReadResponseDto> commentPage = commentService.readCommentPageByUserId(id, pageable);
 		
 		return ResponseEntity.status(CommentSuccessCode.COMMENT_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(CommentSuccessCode.COMMENT_READ_LIST_SUCCESS, commentPage));

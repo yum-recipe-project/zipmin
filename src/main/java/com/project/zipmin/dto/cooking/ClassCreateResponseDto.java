@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.cooking;
 
 import java.util.Date;
 import java.util.List;
@@ -11,12 +11,14 @@ import lombok.Data;
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ClassCreateResponseDto {
-    private Integer id;
+	
+    private int id;
     private String title;
     private String category;
     private String image;
     private String introduce;
     private String place;
+    private Date postdate;
     private Date eventdate;
     private Date starttime;
     private Date endtime;
@@ -29,4 +31,5 @@ public class ClassCreateResponseDto {
     private List<ClassTargetCreateResponseDto> targetList;
     private List<ClassScheduleCreateResponseDto> scheduleList;
     private List<ClassTutorCreateResponseDto> tutorList;
+    
 }

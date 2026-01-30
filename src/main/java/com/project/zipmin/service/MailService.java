@@ -21,8 +21,14 @@ public class MailService {
 	@Value("${spring.mail.username}")
 	private String from;
 	
+	
+	
+	
+	
+	// 이메일 전송
 	public void sendEmail(MailDto mailDto) {
 		
+		// 이메일 전송
 		try {
 			MimeMessage mimeMessage = mailSender.createMimeMessage();
 			
@@ -37,7 +43,6 @@ public class MailService {
 		catch (Exception e) {
 			throw new ApiException(UserErrorCode.USER_SEND_EMAIL_FAIL);
 		}
-		
 	}
 
 }

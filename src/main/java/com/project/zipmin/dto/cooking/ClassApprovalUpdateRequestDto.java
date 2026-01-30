@@ -8,8 +8,8 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ClassApprovalUpdateRequestDto {
 	
-	private Integer id;
-	private String approval;
+	private int id;
+	private int approval;
 	
 }
 

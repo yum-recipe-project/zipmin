@@ -1,5 +1,7 @@
 package com.project.zipmin.service;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,6 +15,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -21,8 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ClassErrorCode;
-import com.project.zipmin.dto.UserAppliedClassResponseDto;
-import com.project.zipmin.dto.UserClassReadResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.cooking.ClassApplyCreateRequestDto;
 import com.project.zipmin.dto.cooking.ClassApplyCreateResponseDto;
@@ -42,16 +44,14 @@ import com.project.zipmin.dto.cooking.ClassTargetReadResponseDto;
 import com.project.zipmin.dto.cooking.ClassTutorCreateReqeustDto;
 import com.project.zipmin.dto.cooking.ClassTutorCreateResponseDto;
 import com.project.zipmin.dto.cooking.ClassTutorReadResponseDto;
-import com.project.zipmin.entity.Approval;
-import com.project.zipmin.entity.Attend;
+import com.project.zipmin.dto.cooking.ClassUpdateRequestDto;
+import com.project.zipmin.dto.cooking.ClassUpdateResponseDto;
 import com.project.zipmin.entity.Class;
 import com.project.zipmin.entity.ClassApply;
 import com.project.zipmin.entity.ClassSchedule;
 import com.project.zipmin.entity.ClassTarget;
 import com.project.zipmin.entity.ClassTutor;
 import com.project.zipmin.entity.Role;
-import com.project.zipmin.entity.Selected;
-import com.project.zipmin.entity.Status;
 import com.project.zipmin.mapper.ClassApplyMapper;
 import com.project.zipmin.mapper.ClassMapper;
 import com.project.zipmin.mapper.ClassScheduleMapper;
@@ -75,15 +75,13 @@ public class CookingService {
 	private final ClassScheduleRepository scheduleRepository;
 	private final ClassTutorRepository tutorRepository;
 	private final ClassApplyRepository applyRepository;
-	
-	private final UserService userService;
-	private final FileService fileService;
-	
 	private final ClassMapper classMapper;
 	private final ClassTargetMapper targetMapper;
 	private final ClassScheduleMapper scheduleMapper;
 	private final ClassTutorMapper tutorMapper;
 	private final ClassApplyMapper applyMapper;
+	private final UserService userService;
+	private final FileService fileService;
 	
 	@Value("${app.upload.public-path:/files}")
 	private String publicPath;
@@ -93,169 +91,79 @@ public class CookingService {
 	
 	
 	// 클래스 목록 조회
-	public Page<ClassReadResponseDto> readClassPage(String category, String keyword, String approval, String status, String sort, Pageable pageable) {
+	public Page<ClassReadResponseDto> readClassPage(String keyword, String category, Integer approval, Integer status, String sort, Pageable pageable) {
 		
 		// 입력값 검증
 		if (pageable == null) {
 			throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
 		}
 		
-		// 정렬 문자열을 객체로 변환
-		Sort sortSpec = Sort.by(Sort.Order.desc("id"));
+		// 정렬
+		Sort order = Sort.by(Sort.Order.desc("id"));
 		if (sort != null && !sort.isBlank()) {
-			switch (sort) {
-				case "id-desc":
-					sortSpec = Sort.by(Sort.Order.desc("id"));
-					break;
-				case "id-asc":
-					sortSpec = Sort.by(Sort.Order.asc("id"));
-					break;
-				case "postdate-desc":
-					sortSpec = Sort.by(Sort.Order.desc("postdate"), Sort.Order.desc("id"));
-					break;
-				case "postdate-asc":
-					sortSpec = Sort.by(Sort.Order.asc("postdate"), Sort.Order.asc("id"));
-					break;
-				case "eventdate-desc":
-					sortSpec = Sort.by(Sort.Order.desc("eventdate"), Sort.Order.desc("id"));
-					break;
-				case "eventdate-asc":
-					sortSpec = Sort.by(Sort.Order.asc("eventdate"), Sort.Order.desc("id"));
-					break;
-				case "title-desc":
-					sortSpec = Sort.by(Sort.Order.desc("title"), Sort.Order.desc("id"));
-					break;
-				case "title-asc":
-					sortSpec = Sort.by(Sort.Order.asc("title"), Sort.Order.desc("id"));
-					break;
-				case "applycount-desc":
-					sortSpec = Sort.by(Sort.Order.desc("applycount"), Sort.Order.desc("id"));
-					break;
-				case "applycount-asc":
-					sortSpec = Sort.by(Sort.Order.asc("applycount"), Sort.Order.desc("id"));
-					break;
-				default:
-					break;
-		    }
+			String field = sort.split("-")[0];
+			Direction direction = "asc".equals(sort.split("-")[1]) ? Direction.ASC : Direction.DESC;
+			order = Sort.by(new Order(direction, field), Order.desc("id"));
 		}
-		
-		// 기존 페이지 객체에 정렬 주입
-		Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
+		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), order);
 		
 		// 쿠킹클래스 목록 조회
-		Page<Class> classPage = null;
-		
+		Page<Class> classPage;
 		try {
-			boolean hasCategory = category != null && !category.isBlank();
 			boolean hasKeyword = keyword != null && !keyword.isBlank();
-			boolean hasApproval = approval != null && !approval.isBlank();
-			boolean hasStatus = status != null && !status.isBlank();
-			Date today = new Date();
+			boolean hasCategory = category != null && !category.isBlank();
+			boolean hasApproval = approval != null;
+			boolean hasStatus = status != null;
 			
-			// 승인 상태
-			Integer approvalCode = null;
-			if (hasApproval) {
-				try {
-					approvalCode = Approval.valueOf(approval).getCode();
-				}
-				catch (Exception e) {
-					throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
-				}
-			}
-			
-			if (!hasCategory) {
-				// 전체 카테고리
-				if (!hasStatus) {
-					// 진행 상태 없음
-					if (!hasApproval) {
-						// 승인 상태 없음
+			if (hasCategory) {
+				if (hasApproval) {
+					if (hasStatus) {
 						classPage = hasKeyword
-								? classRepository.findAllByTitleContainingIgnoreCase(keyword, sortedPageable)
-								: classRepository.findAll(sortedPageable);
+								? classRepository.findAllByCategoryAndApprovalAndStatusAndTitleContainingIgnoreCase(category, approval, status, keyword, pageable)
+								: classRepository.findAllByCategoryAndApprovalAndStatus(category, approval, status, pageable);
 					}
 					else {
-						// 승인 상태 있음
 						classPage = hasKeyword
-								? classRepository.findAllByApprovalAndTitleContainingIgnoreCase(approvalCode, keyword, sortedPageable)
-								: classRepository.findAllByApproval(approvalCode, sortedPageable);
-	                }
-	            }
+								? classRepository.findAllByCategoryAndApprovalAndTitleContainingIgnoreCase(category, approval, keyword, pageable)
+								: classRepository.findAllByCategoryAndApproval(category, approval, pageable);
+					}
+				}
 				else {
-					// 진행 상태 있음
-					if ("open".equals(status)) {
-						if (!hasApproval) {
-							classPage = hasKeyword
-									? classRepository.findAllByTitleContainingIgnoreCaseAndNoticedateAfter(keyword, today, sortedPageable)
-									: classRepository.findAllByNoticedateAfter(today, sortedPageable);
-							}
-						else {
-							classPage = hasKeyword
-									? classRepository.findAllByApprovalAndTitleContainingIgnoreCaseAndNoticedateAfter(approvalCode, keyword, today, sortedPageable)
-									: classRepository.findAllByApprovalAndNoticedateAfter(approvalCode, today, sortedPageable);
-						}
-					}
-					else if ("close".equals(status)) {
-						if (!hasApproval) {
-							classPage = hasKeyword
-									? classRepository.findAllByTitleContainingIgnoreCaseAndNoticedateBefore(keyword, today, sortedPageable)
-									: classRepository.findAllByNoticedateBefore(today, sortedPageable);
-						}
-						else {
-							classPage = hasKeyword
-									? classRepository.findAllByApprovalAndTitleContainingIgnoreCaseAndNoticedateBefore(approvalCode, keyword, today, sortedPageable)
-									: classRepository.findAllByApprovalAndNoticedateBefore(approvalCode, today, sortedPageable);
-						}
+					if (hasStatus) {
+						classPage = hasKeyword
+								? classRepository.findAllByCategoryAndStatusAndTitleContainingIgnoreCase(category, status, keyword, pageable)
+								: classRepository.findAllByCategoryAndStatus(category, status, pageable);
 					}
 					else {
-						throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
+						classPage = hasKeyword
+								? classRepository.findAllByCategoryAndTitleContainingIgnoreCase(category, keyword, pageable)
+								: classRepository.findAllByCategory(category, pageable);
 					}
-	            }
+				}
 			}
 			else {
-				// 카테고리 지정
-				if (!hasStatus) {
-					// 진행 상태 없음
-					if (!hasApproval) {
-						// 승인 상태 없음
+				if (hasApproval) {
+					if (hasStatus) {
 						classPage = hasKeyword
-								? classRepository.findAllByCategoryAndTitleContainingIgnoreCase(category, keyword, sortedPageable)
-								: classRepository.findAllByCategory(category, sortedPageable);
+								? classRepository.findAllByApprovalAndStatusAndTitleContainingIgnoreCase(approval, status, keyword, pageable)
+								: classRepository.findAllByApprovalAndStatus(approval, status, pageable);
 					}
 					else {
-						// 승인 상태 있음
 						classPage = hasKeyword
-								? classRepository.findAllByCategoryAndApprovalAndTitleContainingIgnoreCase(category, approvalCode, keyword, sortedPageable)
-								: classRepository.findAllByCategoryAndApproval(category, approvalCode, sortedPageable);
+								? classRepository.findAllByApprovalAndTitleContainingIgnoreCase(approval, keyword, pageable)
+								: classRepository.findAllByApproval(approval, pageable);
 					}
-	            }
+				}
 				else {
-					// 진행 상태 있음
-					if ("open".equals(status)) {
-						if (!hasApproval) {
-							classPage = hasKeyword
-									? classRepository.findAllByCategoryAndTitleContainingIgnoreCaseAndNoticedateAfter(category, keyword, today, sortedPageable)
-									: classRepository.findAllByCategoryAndNoticedateAfter(category, today, sortedPageable);
-						}
-						else {
-							classPage = hasKeyword
-									? classRepository.findAllByCategoryAndApprovalAndTitleContainingIgnoreCaseAndNoticedateAfter(category, approvalCode, keyword, today, sortedPageable)
-									: classRepository.findAllByCategoryAndApprovalAndNoticedateAfter(category, approvalCode, today, sortedPageable);
-						}
-					}
-					else if ("close".equals(status)) {
-						if (!hasApproval) {
-							classPage = hasKeyword
-									? classRepository.findAllByCategoryAndTitleContainingIgnoreCaseAndNoticedateBefore(category, keyword, today, sortedPageable)
-									: classRepository.findAllByCategoryAndNoticedateBefore(category, today, sortedPageable);
-						}
-						else {
-							classPage = hasKeyword
-									? classRepository.findAllByCategoryAndApprovalAndTitleContainingIgnoreCaseAndNoticedateBefore(category, approvalCode, keyword, today, sortedPageable)
-									: classRepository.findAllByCategoryAndApprovalAndNoticedateBefore(category, approvalCode, today, sortedPageable);
-						}
+					if (hasStatus) {
+						classPage = hasKeyword
+								? classRepository.findAllByStatusAndTitleContainingIgnoreCase(status, keyword, pageable)
+								: classRepository.findAllByStatus(approval, pageable);
 					}
 					else {
-						throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
+						classPage = hasKeyword
+								? classRepository.findAllByTitleContainingIgnoreCase(keyword, pageable)
+								: classRepository.findAll(pageable);
 					}
 				}
 			}
@@ -265,24 +173,12 @@ public class CookingService {
 		}
 		
 		// 쿠킹클래스 목록 응답 구성
-		Date today = new Date();
 		List<ClassReadResponseDto> classDtoList = new ArrayList<>();
 		for (Class classs : classPage) {
 			ClassReadResponseDto classDto = classMapper.toReadResponseDto(classs);
-			
-			// 클래스 개설자 정보
 			classDto.setUsername(classs.getUser().getUsername());			
 			classDto.setNickname(classs.getUser().getNickname());			
-			
-			// 이미지
-			if (classs.getImage() != null) {
-				classDto.setImage(publicPath + "/" + classDto.getImage());
-			}
-			
-			// 상태
-			Boolean isOpened = today.before(classDto.getNoticedate());
-			classDto.setOpened(isOpened);
-			
+			classDto.setImage(publicPath + "/" + classDto.getImage());
 			classDtoList.add(classDto);
 		}
 		
@@ -293,51 +189,79 @@ public class CookingService {
 	
 	
 	
-	// 클래스 상세 조회
-	public ClassReadResponseDto readClassById(Integer id) {
+	// 쿠킹클래스 상세 조회
+	public ClassReadResponseDto readClassById(int id) {
 		
 		// 입력값 검증
-		if (id == null) {
+		if (id == 0) {
 			throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
 		}
 		
-		// 클래스 조회
-		Class classs = classRepository.findById(id)
-				.orElseThrow(() -> new ApiException(ClassErrorCode.CLASS_NOT_FOUND));
-		ClassReadResponseDto classDto = classMapper.toReadResponseDto(classs);
-		classDto.setImage(publicPath + "/" + classDto.getImage());
-		
-		// 클래스 대상 조회
+		// 쿠킹클래스 조회
+		Class classs;
+		ClassReadResponseDto classDto;
 		try {
-			List<ClassTarget> targetList = targetRepository.findByClasssId(id);
-			List<ClassTargetReadResponseDto> targetDtoList = new ArrayList<>();
-			for (ClassTarget target : targetList) {
-				ClassTargetReadResponseDto targetDto = targetMapper.toReadResponseDto(target);
-				targetDtoList.add(targetDto);
+			classs = classRepository.findById(id);
+			classDto = classMapper.toReadResponseDto(classs);
+			classDto.setImage(publicPath + "/" + classDto.getImage());
+			
+			// 쿠킹클래스 오픈 여부 조회
+//			Date today = new Date();
+//			if (classs.getApproval() == 1 && today.before(classs.getNoticedate())) {
+//				classDto.setOpened(true);
+//			}
+//			
+			// 쿠킹클래스 진행 완료 여부 조회
+//			Calendar nextweek = Calendar.getInstance();
+//			nextweek.setTime(classDto.getEventdate());
+//			nextweek.add(Calendar.DAY_OF_YEAR, 7);
+//			if (classs.getApproval() == 1 && today.after(classs.getEventdate()) && today.before(nextweek.getTime())) {
+//				classDto.setEvented(true);
+//			}
+			
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			if (authentication != null && authentication.isAuthenticated() && !authentication.getPrincipal().equals("anonymousUser")) {
+				UserReadResponseDto userDto = userService.readUserByUsername(authentication.getName());
+				classDto.setApplied(applyRepository.existsByClasssIdAndUserId(id, userDto.getId()));
+				if (countClassAttend(userDto.getId()) < 3) {
+					classDto.setAble(true);
+				}
+				
 			}
+			
+		}
+		catch (Exception e) {
+			throw new ApiException(ClassErrorCode.CLASS_NOT_FOUND);
+		}
+		
+		// 쿠킹클래스 교육대상 목록 조회
+		List<ClassTarget> targetList;
+		List<ClassTargetReadResponseDto> targetDtoList;
+		try {
+			targetList = targetRepository.findAllByClasssId(id);
+			targetDtoList = targetMapper.toReadResponseDtoList(targetList);
 			classDto.setTargetList(targetDtoList);
 		}
 		catch (Exception e) {
 			throw new ApiException(ClassErrorCode.CLASS_TARGET_READ_LIST_FAIL);
 		}
 		
-		// 클래스 커리큘럼 조회
+		// 쿠킹클래스 커리큘럼 목록 조회
+		List<ClassSchedule> scheduleList;
+		List<ClassScheduleReadResponseDto> scheduleDtoList;
 		try {
-			List<ClassSchedule> scheduleList = scheduleRepository.findByClasssId(id);
-			List<ClassScheduleReadResponseDto> scheduleDtoList = new ArrayList<>();
-			for (ClassSchedule schedule : scheduleList) {
-				ClassScheduleReadResponseDto scheduleDto = scheduleMapper.toReadResponseDto(schedule);
-				scheduleDtoList.add(scheduleDto);
-			}
+			scheduleList = scheduleRepository.findByClasssId(id);
+			scheduleDtoList = scheduleMapper.toReadResponseDtoList(scheduleList);
 			classDto.setScheduleList(scheduleDtoList);
 		}
 		catch (Exception e) {
 			throw new ApiException(ClassErrorCode.CLASS_SCHEDULE_READ_LIST_FAIL);
 		}
 		
-		// 클래스 강사 조회
+		// 쿠킹클래스 강사 목록 조회
+		List<ClassTutor> tutorList;
 		try {
-			List<ClassTutor> tutorList = tutorRepository.findByClasssId(id);
+			tutorList = tutorRepository.findByClasssId(id);
 			List<ClassTutorReadResponseDto> tutorDtoList = new ArrayList<>();
 			for (ClassTutor tutor : tutorList) {
 				ClassTutorReadResponseDto tutorDto = tutorMapper.toReadResponseDto(tutor);
@@ -348,35 +272,6 @@ public class CookingService {
 		}
 		catch (Exception e) {
 			throw new ApiException(ClassErrorCode.CLASS_TUTOR_READ_LIST_FAIL);
-		}
-		
-		// 클래스 오픈 여부 조회
-		Date today = new Date();
-		if (classs.getApproval() == 1 && today.before(classs.getNoticedate())) {
-			classDto.setOpened(true);
-		}
-		
-		// 클래스 진행 완료 여부 조회
-		Calendar nextweek = Calendar.getInstance();
-		nextweek.setTime(classDto.getEventdate());
-		nextweek.add(Calendar.DAY_OF_YEAR, 7);
-		if (classs.getApproval() == 1 && today.after(classs.getEventdate()) && today.before(nextweek.getTime())) {
-			classDto.setEvented(true);
-		}
-		
-		// 클래스 신청 여부와 가능 여부 조회
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			classDto.setApplied(false);
-			classDto.setAble(false);
-			return classDto;
-		}
-		else {
-			int userId = userService.readUserByUsername(authentication.getName()).getId();
-			classDto.setApplied(applyRepository.existsByClasssIdAndUserId(id, userId));
-			if (countClassAttend(userId) < 3) {
-				classDto.setAble(true);
-			}
 		}
 		
 		return classDto;
@@ -390,8 +285,18 @@ public class CookingService {
 	public ClassCreateResponseDto createClass(ClassCreateRequestDto createRequestDto, MultipartFile classImage, List<MultipartFile> tutorImages)  {
 		
 		// 입력값 검증
-		if (createRequestDto == null || createRequestDto.getTitle() == null
-				|| createRequestDto.getCategory() == null || createRequestDto.getUserId() == 0) {
+		if (createRequestDto == null
+				|| createRequestDto.getTitle() == null
+				|| createRequestDto.getCategory() == null
+				|| createRequestDto.getIntroduce() == null
+				|| createRequestDto.getPlace() == null
+				|| createRequestDto.getEventdate() == null
+				|| createRequestDto.getStarttime() == null
+				|| createRequestDto.getEndtime() == null
+				// || createRequestDto.getNoticedate() == null
+				|| createRequestDto.getHeadcount() == 0
+				|| createRequestDto.getNeed() == null
+				|| createRequestDto.getUserId() == 0) {
 			throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
 		}
 		if (classImage == null) {
@@ -400,40 +305,40 @@ public class CookingService {
 		
 		// 입력값 검증 (교육대상)
 		if (createRequestDto.getTargetList() == null) {
-		    throw new ApiException(ClassErrorCode.CLASS_TARGET_INVALID_INPUT);
+			throw new ApiException(ClassErrorCode.CLASS_TARGET_INVALID_INPUT);
 		}
 		for (ClassTargetCreateRequestDto targetDto : createRequestDto.getTargetList()) {
-		    if (targetDto.getContent() == null) {
-		        throw new ApiException(ClassErrorCode.CLASS_TARGET_INVALID_INPUT);
-		    }
+			if (targetDto.getContent() == null) {
+				throw new ApiException(ClassErrorCode.CLASS_TARGET_INVALID_INPUT);
+			}
 		}
 		
 		// 입력값 검증 (교육일정)
 		if (createRequestDto.getScheduleList() == null || createRequestDto.getScheduleList().isEmpty()) {
-		    throw new ApiException(ClassErrorCode.CLASS_SCHEDULE_INVALID_INPUT);
+			throw new ApiException(ClassErrorCode.CLASS_SCHEDULE_INVALID_INPUT);
 		}
 		for (ClassScheduleCreateRequestDto scheduleDto : createRequestDto.getScheduleList()) {
-		    if (scheduleDto.getStarttime() == null || scheduleDto.getEndtime() == null ||
-		        scheduleDto.getTitle() == null || scheduleDto.getTitle().trim().isEmpty()) {
-		        throw new ApiException(ClassErrorCode.CLASS_SCHEDULE_INVALID_INPUT);
-		    }
-		    if (scheduleDto.getEndtime().before(scheduleDto.getStarttime())) {
-		        throw new ApiException(ClassErrorCode.CLASS_SCHEDULE_INVALID_INPUT);
-		    }
+			if (scheduleDto.getStarttime() == null || scheduleDto.getEndtime() == null ||
+				scheduleDto.getTitle() == null || scheduleDto.getTitle().trim().isEmpty()) {
+				throw new ApiException(ClassErrorCode.CLASS_SCHEDULE_INVALID_INPUT);
+			}
+			if (scheduleDto.getEndtime().before(scheduleDto.getStarttime())) {
+				throw new ApiException(ClassErrorCode.CLASS_SCHEDULE_INVALID_INPUT);
+			}
 		}
 
 		// 입력값 검증 (강사)
 		if (createRequestDto.getTutorList() == null || createRequestDto.getTutorList().isEmpty()) {
-		    throw new ApiException(ClassErrorCode.CLASS_TUTOR_INVALID_INPUT);
+			throw new ApiException(ClassErrorCode.CLASS_TUTOR_INVALID_INPUT);
 		}
 		for (ClassTutorCreateReqeustDto tutorDto : createRequestDto.getTutorList()) {
-		    if (tutorDto.getName() == null || tutorDto.getName().trim().isEmpty() ||
-		        tutorDto.getCareer() == null || tutorDto.getCareer().trim().isEmpty()) {
-		        throw new ApiException(ClassErrorCode.CLASS_TUTOR_INVALID_INPUT);
-		    }
+			if (tutorDto.getName() == null || tutorDto.getName().trim().isEmpty() ||
+				tutorDto.getCareer() == null || tutorDto.getCareer().trim().isEmpty()) {
+				throw new ApiException(ClassErrorCode.CLASS_TUTOR_INVALID_INPUT);
+			}
 		}
 
-		// 중복 개설 검사 
+		// 중복 검사 
 		if (classRepository.existsByTitleAndUserId(createRequestDto.getTitle(), createRequestDto.getUserId())) {
 			throw new ApiException(ClassErrorCode.CLASS_CREATE_DUPLICATE);
 		}
@@ -446,115 +351,105 @@ public class CookingService {
 		catch (Exception e) {
 			throw new ApiException(ClassErrorCode.CLASS_FILE_UPLOAD_FAIL);
 		}
-        
-		// 클래스 저장
-        Class classEntity = classMapper.toEntity(createRequestDto);
-        try {
-            classEntity = classRepository.save(classEntity);
-            ClassCreateResponseDto classResponseDto = classMapper.toCreateResponseDto(classEntity);
-
-            // 교육대상 저장
-            List<ClassTargetCreateResponseDto> targetResponseList = new ArrayList<>();
-
-            for (ClassTargetCreateRequestDto targetDto : createRequestDto.getTargetList()) {
-                targetDto.setClassId(classResponseDto.getId());
-                ClassTarget targetEntity = targetMapper.toEntity(targetDto);
-
-                try {
-                    targetEntity = targetRepository.save(targetEntity);
-                } catch (Exception e) {
-                    throw new ApiException(ClassErrorCode.CLASS_TARGET_CREATE_FAIL);
-                }
-
-                targetResponseList.add(targetMapper.toCreateResponseDto(targetEntity));
-            }
-
-            classResponseDto.setTargetList(targetResponseList);
-
-            List<ClassScheduleCreateResponseDto> scheduleResponseList = new ArrayList<>();
-            for (ClassScheduleCreateRequestDto scheduleDto : createRequestDto.getScheduleList()) {
-                scheduleDto.setClassId(classResponseDto.getId());
-
-                ClassSchedule scheduleEntity = scheduleMapper.toEntity(scheduleDto);
-                try {
-                    scheduleEntity = scheduleRepository.save(scheduleEntity);
-                } catch (Exception e) {
-                    throw new ApiException(ClassErrorCode.CLASS_SCHEDULE_CREATE_FAIL);
-                }
-                scheduleResponseList.add(scheduleMapper.toCreateResponseDto(scheduleEntity));
-            }
-            classResponseDto.setScheduleList(scheduleResponseList);
-            
-            // 클래스 강사 저장
-            List<ClassTutorCreateResponseDto> tutorResponseList = new ArrayList<>();
-            for (int i = 0; i < createRequestDto.getTutorList().size(); i++) {
-                ClassTutorCreateReqeustDto tutorDto = createRequestDto.getTutorList().get(i);
-                tutorDto.setClassId(classResponseDto.getId());
-
-                // 강사 이미지 저장
-                try {
-                    if (tutorImages != null && tutorImages.size() > i && !tutorImages.get(i).isEmpty()) {
-                        String image = fileService.store(tutorImages.get(i));
-                        tutorDto.setImage(image);
-                    }
-                }
-                catch (Exception e) {
-                    throw new ApiException(ClassErrorCode.CLASS_TUTOR_FILE_UPLOAD_FAIL);
-                }
-
-                // DB 저장
-                ClassTutor tutorEntity = tutorMapper.toEntity(tutorDto);
-                try {
-                    tutorEntity = tutorRepository.save(tutorEntity);
-                }
-                catch (Exception e) {
-                    throw new ApiException(ClassErrorCode.CLASS_TUTOR_CREATE_FAIL);
-                }
-
-                tutorResponseList.add(tutorMapper.toCreateResponseDto(tutorEntity));
-            }
-            classResponseDto.setTutorList(tutorResponseList);
-            
-            return classResponseDto;
-        }
-        catch (Exception e) {
-            throw new ApiException(ClassErrorCode.CLASS_CREATE_FAIL);
-        }
-	}
-	
-	
-	
-	
-	
-	// 클래스 수정
-	public void updateClass() {
 		
+		// 클래스 저장
+		Class classEntity = classMapper.toEntity(createRequestDto);
+		try {
+			classEntity = classRepository.save(classEntity);
+			ClassCreateResponseDto classResponseDto = classMapper.toCreateResponseDto(classEntity);
+
+			// 교육대상 저장
+			List<ClassTargetCreateResponseDto> targetResponseList = new ArrayList<>();
+
+			for (ClassTargetCreateRequestDto targetDto : createRequestDto.getTargetList()) {
+				targetDto.setClassId(classResponseDto.getId());
+				ClassTarget targetEntity = targetMapper.toEntity(targetDto);
+
+				try {
+					targetEntity = targetRepository.save(targetEntity);
+				} catch (Exception e) {
+					throw new ApiException(ClassErrorCode.CLASS_TARGET_CREATE_FAIL);
+				}
+
+				targetResponseList.add(targetMapper.toCreateResponseDto(targetEntity));
+			}
+
+			classResponseDto.setTargetList(targetResponseList);
+
+			List<ClassScheduleCreateResponseDto> scheduleResponseList = new ArrayList<>();
+			for (ClassScheduleCreateRequestDto scheduleDto : createRequestDto.getScheduleList()) {
+				scheduleDto.setClassId(classResponseDto.getId());
+
+				ClassSchedule scheduleEntity = scheduleMapper.toEntity(scheduleDto);
+				try {
+					scheduleEntity = scheduleRepository.save(scheduleEntity);
+				} catch (Exception e) {
+					throw new ApiException(ClassErrorCode.CLASS_SCHEDULE_CREATE_FAIL);
+				}
+				scheduleResponseList.add(scheduleMapper.toCreateResponseDto(scheduleEntity));
+			}
+			classResponseDto.setScheduleList(scheduleResponseList);
+			
+			// 클래스 강사 저장
+			List<ClassTutorCreateResponseDto> tutorResponseList = new ArrayList<>();
+			for (int i = 0; i < createRequestDto.getTutorList().size(); i++) {
+				ClassTutorCreateReqeustDto tutorDto = createRequestDto.getTutorList().get(i);
+				tutorDto.setClassId(classResponseDto.getId());
+
+				// 강사 이미지 저장
+				try {
+					if (tutorImages != null && tutorImages.size() > i && !tutorImages.get(i).isEmpty()) {
+						String image = fileService.store(tutorImages.get(i));
+						tutorDto.setImage(image);
+					}
+				}
+				catch (Exception e) {
+					throw new ApiException(ClassErrorCode.CLASS_TUTOR_FILE_UPLOAD_FAIL);
+				}
+
+				// DB 저장
+				ClassTutor tutorEntity = tutorMapper.toEntity(tutorDto);
+				try {
+					tutorEntity = tutorRepository.save(tutorEntity);
+				}
+				catch (Exception e) {
+					throw new ApiException(ClassErrorCode.CLASS_TUTOR_CREATE_FAIL);
+				}
+
+				tutorResponseList.add(tutorMapper.toCreateResponseDto(tutorEntity));
+			}
+			classResponseDto.setTutorList(tutorResponseList);
+			
+			return classResponseDto;
+		}
+		catch (Exception e) {
+			throw new ApiException(ClassErrorCode.CLASS_CREATE_FAIL);
+		}
 	}
 	
 	
 	
 	
 	
-	// 클래스 승인 수정
-	public void updateClassApproval(ClassApprovalUpdateRequestDto classDto) {
+	// TODO : 더 수정
+	// 클래스 수정
+	public ClassUpdateResponseDto updateClass(ClassUpdateRequestDto classDto) {
 		
 		// 입력값 검증
-		if (classDto == null || classDto.getId() == null || classDto.getApproval() == null) {
+		if (classDto == null || classDto.getId() == 0) {
 			throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
 		}
 		
-		// 클래스 존재 여부 확인
-		Class classs = classRepository.findById(classDto.getId())
-				.orElseThrow(() -> new ApiException(ClassErrorCode.CLASS_NOT_FOUND));
-		
-		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		UserReadResponseDto user = userService.readUserByUsername(username);
-		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (!user.getRole().equals(Role.ROLE_ADMIN.name())) {
-				throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
-			}
+		// 쿠킹클래스 조회
+		Class classs;
+		try {
+			classs = classRepository.findById(classDto.getId());
 		}
+		catch (Exception e) {
+			throw new ApiException(ClassErrorCode.CLASS_NOT_FOUND);
+		}
+		
+		// TODO : 권한 확인
 		
 		// 클래스 기간 검증
 		Date today = new Date();
@@ -562,24 +457,16 @@ public class CookingService {
 			throw new ApiException(ClassErrorCode.CLASS_ALREADY_ENDED);
 		}
 		
-		// 승인 상태
-		Integer approvalCode = null;
-		try {
-			approvalCode = Approval.valueOf(classDto.getApproval()).getCode();
-		}
-		catch (Exception e) {
-			throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
-		}
-		
-		// 변경 값 설정
-		classs.setApproval(approvalCode);
+		// 값 설정
+		classs.setApproval(classDto.getApproval());
 		
 		// 클래스 수정
 		try {
 			classs = classRepository.save(classs);
+			return classMapper.toUpdateResponseDto(classs);
 		}
 		catch (Exception e) {
-			throw new ApiException(ClassErrorCode.CLASS_UPDATE_APPROVAL_FAIL);
+			throw new ApiException(ClassErrorCode.CLASS_UPDATE_FAIL);
 		}
 	}
 	
@@ -672,17 +559,6 @@ public class CookingService {
 		try {
 			boolean hasSelected = seleted != null && !seleted.isBlank();
 			
-			// 선정 상태
-			Integer selectedCode = null;
-			if (hasSelected) {
-				try {
-					selectedCode = Selected.valueOf(seleted).getCode();
-				}
-				catch (Exception e) {
-					throw new ApiException(ClassErrorCode.CLASS_APPLY_INVALID_INPUT);
-				}
-			}
-			
 			if (!hasSelected) {
 				applyPage = applyRepository.findByClasssId(id, pageable);
 			}
@@ -713,8 +589,10 @@ public class CookingService {
 	public ClassApplyCreateResponseDto createApply(ClassApplyCreateRequestDto applyDto) {
 		
 		// 입력값 검증
-		if (applyDto == null || applyDto.getClassId() == null
-				|| applyDto.getReason() == null || applyDto.getUserId() == null) {
+		if (applyDto == null
+				|| applyDto.getClassId() == 0
+				|| applyDto.getReason() == null
+				|| applyDto.getUserId() == 0) {
 			throw new ApiException(ClassErrorCode.CLASS_APPLY_INVALID_INPUT);
 		}
 		
@@ -876,7 +754,7 @@ public class CookingService {
 			}
 		}
 		
-	    // 클래스 존재 여부 판단
+		// 클래스 존재 여부 판단
 		Class classs = classRepository.findById(apply.getClasss().getId())
 				.orElseThrow(() -> new ApiException(ClassErrorCode.CLASS_NOT_FOUND));
 		if (classs.getId() != classId) {
@@ -904,7 +782,7 @@ public class CookingService {
 	
 	
 	// 사용자의 클래스 목록 조회
-	public Page<UserClassReadResponseDto> readClassPageByUserId(Integer userId,  String approval, String status, Pageable pageable) {
+	public Page<ClassReadResponseDto> readClassPageByUserId(Integer userId,  String approval, String status, Pageable pageable) {
 		
 		// 입력값 검증
 		if (userId == null || pageable == null) {
@@ -922,36 +800,11 @@ public class CookingService {
 			lastweek.setTime(today);
 			lastweek.add(Calendar.DAY_OF_YEAR, -7);
 			
-			// 승인
-			Integer approvalCode = null;
-			if (hasApproval) {
-				try {
-					approvalCode = Approval.valueOf(approval).getCode();
-				}
-				catch (Exception e) {
-					throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
-				}
+			if (!hasStatus) {
+				classPage = hasApproval
+						? classRepository.findAllByUserIdAndApproval(userId, approvalCode, pageable)
+						: classRepository.findAllByUserId(userId, pageable);
 			}
-			System.err.println("hasApproval 변환성공");
-			
-			// 상태
-			Integer statusCode = null;
-			if (hasStatus) {
-				try {
-					statusCode = Status.valueOf(status).getCode();
-				}
-				catch (Exception e) {
-					throw new ApiException(ClassErrorCode.CLASS_INVALID_INPUT);
-				}
-			}
-			System.err.println("statusCode 변환성공");
-
-			
-	    	if (!hasStatus) {
-	    		classPage = hasApproval
-	    				? classRepository.findAllByUserIdAndApproval(userId, approvalCode, pageable)
-	    				: classRepository.findAllByUserId(userId, pageable);
-            }
 			else {
 				if (statusCode == 0) {
 					classPage = hasApproval
@@ -960,33 +813,33 @@ public class CookingService {
 				}
 				else if (statusCode == 1) {
 					classPage = hasApproval
-		    				? classRepository.findAllByUserIdAndApprovalAndNoticedateAfter(userId, approvalCode, today, pageable)
-		    				: classRepository.findAllByUserIdAndApprovalNotAndNoticedateAfterOrUserIdAndApprovalAndEventdateAfter(userId, 1, today, userId, 1, lastweek, pageable);
+							? classRepository.findAllByUserIdAndApprovalAndNoticedateAfter(userId, approvalCode, today, pageable)
+							: classRepository.findAllByUserIdAndApprovalNotAndNoticedateAfterOrUserIdAndApprovalAndEventdateAfter(userId, 1, today, userId, 1, lastweek, pageable);
 				}
-            }
+			}
 		}
 		catch (Exception e) {
 			throw new ApiException(ClassErrorCode.CLASS_READ_LIST_FAIL);
 		}
 		
 		// 클래스 목록 응답 구성
-		List<UserClassReadResponseDto> classDtoList = new ArrayList<UserClassReadResponseDto>();
+		List<ClassReadResponseDto> classDtoList = new ArrayList<ClassReadResponseDto>();
 		for (Class classs : classPage) {
-			UserClassReadResponseDto classDto = classMapper.toReadUserResponseDto(classs);
+			ClassReadResponseDto classDto = classMapper.toReadResponseDto(classs);
 			
 			// 이미지
 			classDto.setImage(publicPath + "/" + classDto.getImage());
 			
-			// 상태
-			Date today = new Date();
-			if (today.before(classs.getNoticedate())) {
-				classDto.setOpened(true);
-			}
-			
-			// 클래스 진행 완료 여부
-			if (today.after(classs.getEventdate())) {
-				classDto.setEvented(true);
-			}
+//			// 상태
+//			Date today = new Date();
+//			if (today.before(classs.getNoticedate())) {
+//				classDto.setOpened(true);
+//			}
+//			
+//			// 클래스 진행 완료 여부
+//			if (today.after(classs.getEventdate())) {
+//				classDto.setEvented(true);
+//			}
 
 			classDtoList.add(classDto);
 		}
@@ -999,7 +852,7 @@ public class CookingService {
 	
 	
 	// 사용자가 신청한 클래스 목록 조회
-	public Page<UserAppliedClassResponseDto> readAppliedClassPageByUserId(Integer userId, String status, Pageable pageable) {
+	public Page<ClassReadResponseDto> readAppliedClassPageByUserId(Integer userId, String status, Pageable pageable) {
 		
 		// 입력값 검증
 		if (userId == null || pageable == null) {
@@ -1032,40 +885,40 @@ public class CookingService {
 		
 		// 신청한 클래스 일련번호 목록 추출
 		List<Integer> classIds = new ArrayList<>(applyMap.keySet());
-	    
-	    // 신청한 클래스 목록 조회
-	    Page<Class> classPage = null;
-	    try {
-	    	boolean hasStatus = status != null && !status.isBlank();
-	    	Date today = new Date();
-	    	
-	    	if (!hasStatus) {
-	    		classPage = classRepository.findByIdIn(classIds, pageable); 	    
-	    	}
-	    	else {
-	    		if ("open".equals(status)) {
-	    			classPage = classRepository.findByIdInAndNoticedateAfter(classIds, today, pageable);
-	    		}
-	    		else if ("close".equals(status)) {
-	    			classPage = classRepository.findByIdInAndNoticedateBefore(classIds, today, pageable);
-	    		}
-	    	}
-	    }
-	    catch (Exception e) {
-	    	throw new ApiException(ClassErrorCode.CLASS_READ_LIST_FAIL);
-		}
-	    
-	    // 신청한 클래스 목록 응답 구성
-	    List<UserAppliedClassResponseDto> classDtoList = new ArrayList<>();
-	    for (Class classs : classPage) {
-	    	ClassApply apply = applyMap.get(classs.getId());
-	    	UserAppliedClassResponseDto classDto = classMapper.toReadUserAppliedResponseDto(classs, apply);
-	        
-	    	// 상태
-	    	Date today = new Date();
-			if (classs.getApproval() == 1 && today.before(classs.getNoticedate())) {
-				classDto.setOpened(true);
+		
+		// 신청한 클래스 목록 조회
+		Page<Class> classPage = null;
+		try {
+			boolean hasStatus = status != null && !status.isBlank();
+			Date today = new Date();
+			
+			if (!hasStatus) {
+				classPage = classRepository.findByIdIn(classIds, pageable); 		
 			}
+			else {
+				if ("open".equals(status)) {
+					classPage = classRepository.findByIdInAndNoticedateAfter(classIds, today, pageable);
+				}
+				else if ("close".equals(status)) {
+					classPage = classRepository.findByIdInAndNoticedateBefore(classIds, today, pageable);
+				}
+			}
+		}
+		catch (Exception e) {
+			throw new ApiException(ClassErrorCode.CLASS_READ_LIST_FAIL);
+		}
+		
+		// 신청한 클래스 목록 응답 구성
+		List<ClassReadResponseDto> classDtoList = new ArrayList<>();
+		for (Class classs : classPage) {
+			ClassApply apply = applyMap.get(classs.getId());
+			ClassReadResponseDto classDto = classMapper.toReadResponseDto(classs);
+			
+//			// 상태
+//			Date today = new Date();
+//			if (classs.getApproval() == 1 && today.before(classs.getNoticedate())) {
+//				classDto.setOpened(true);
+//			}
 			
 			// 이미지
 			if (classs.getImage() != null) {
@@ -1073,14 +926,14 @@ public class CookingService {
 			}
 			
 			// 클래스 진행 예정 여부 조회
-			if (classs.getApproval() == 1 && today.after(classs.getNoticedate()) && today.before(classs.getEventdate())) {
-				classDto.setPlanned(true);
-			}
+//			if (classs.getApproval() == 1 && today.after(classs.getNoticedate()) && today.before(classs.getEventdate())) {
+//				// classDto.setPlanned(true);
+//			}
 
-	        classDtoList.add(classDto);
-	    }
-	    
-	    return new PageImpl<>(classDtoList, pageable, classPage.getTotalElements());
+			classDtoList.add(classDto);
+		}
+		
+		return new PageImpl<>(classDtoList, pageable, classPage.getTotalElements());
 	}
 	
 	

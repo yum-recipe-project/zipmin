@@ -1,38 +1,33 @@
 package com.project.zipmin.service;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.access.method.P;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
-import com.project.zipmin.api.CommentErrorCode;
-import com.project.zipmin.api.EventErrorCode;
 import com.project.zipmin.api.FridgeErrorCode;
-import com.project.zipmin.dto.FridgeCreateRequestDto;
-import com.project.zipmin.dto.FridgeCreateResponseDto;
-import com.project.zipmin.dto.FridgeReadResponseDto;
-import com.project.zipmin.dto.FridgeUpdateRequestDto;
-import com.project.zipmin.dto.FridgeUpdateResponseDto;
-import com.project.zipmin.dto.UserFridgeCreateRequestDto;
-import com.project.zipmin.dto.UserFridgeCreateResponseDto;
-import com.project.zipmin.dto.UserFridgeReadResponseDto;
-import com.project.zipmin.dto.UserFridgeUpdateRequestDto;
-import com.project.zipmin.dto.UserFridgeUpdateResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
+import com.project.zipmin.dto.fridge.FridgeCreateRequestDto;
+import com.project.zipmin.dto.fridge.FridgeCreateResponseDto;
+import com.project.zipmin.dto.fridge.FridgeReadResponseDto;
+import com.project.zipmin.dto.fridge.FridgeUpdateRequestDto;
+import com.project.zipmin.dto.fridge.FridgeUpdateResponseDto;
+import com.project.zipmin.dto.fridge.UserFridgeCreateRequestDto;
+import com.project.zipmin.dto.fridge.UserFridgeCreateResponseDto;
+import com.project.zipmin.dto.fridge.UserFridgeReadResponseDto;
+import com.project.zipmin.dto.fridge.UserFridgeUpdateRequestDto;
+import com.project.zipmin.dto.fridge.UserFridgeUpdateResponseDto;
 import com.project.zipmin.dto.like.LikeCreateRequestDto;
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
 import com.project.zipmin.dto.like.LikeDeleteRequestDto;
@@ -40,9 +35,7 @@ import com.project.zipmin.dto.like.LikeReadResponseDto;
 import com.project.zipmin.dto.recipe.RecipeReadResponseDto;
 import com.project.zipmin.dto.recipe.RecipeStockReadResponseDto;
 import com.project.zipmin.entity.Fridge;
-import com.project.zipmin.entity.Like;
 import com.project.zipmin.entity.Role;
-import com.project.zipmin.entity.User;
 import com.project.zipmin.entity.UserFridge;
 import com.project.zipmin.mapper.FridgeMapper;
 import com.project.zipmin.mapper.UserFridgeMapper;
@@ -59,68 +52,48 @@ public class FridgeService {
 	
 	private final FridgeRepository fridgeRepository;
 	private final UserFridgeRepository userFridgeRepository;
-	
+	private final FridgeMapper fridgeMapper;
+	private final UserFridgeMapper userFridgeMapper;
 	private final RecipeService recipeService;
 	private final UserService userService;
 	private final LikeService likeService;
-	
-	private final FridgeMapper fridgeMapper;
-	private final UserFridgeMapper userFridgeMapper;
 	
 	
 	
 	
 	
 	// 냉장고 목록 조회
-	public Page<FridgeReadResponseDto> readFridgePage(String category, String keyword, String sort, Pageable pageable) {
+	public Page<FridgeReadResponseDto> readFridgePage(String keyword, String category, String sort, Pageable pageable) {
 		
 		// 입력값 검증
 		if (pageable == null) {
 			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
 		}
 		
-		// 정렬 문자열을 객체로 변환
-		Sort sortSpec = Sort.by(Sort.Order.desc("id"));
+		// 정렬
+		Sort order = Sort.by(Sort.Order.desc("id"));
 		if (sort != null && !sort.isBlank()) {
-			switch (sort) {
-				case "id-desc":
-					sortSpec = Sort.by(Sort.Order.desc("id"));
-					break;
-				case "id-asc":
-					sortSpec = Sort.by(Sort.Order.asc("id"));
-					break;
-				case "name-desc":
-					sortSpec = Sort.by(Sort.Order.desc("name"), Sort.Order.desc("id"));
-					break;
-				case "name-asc":
-					sortSpec = Sort.by(Sort.Order.asc("name"), Sort.Order.desc("id"));
-					break;
-				default:
-					break;
-				// ***** TODO : 사용된 횟수 추가하기 *****
-			}
+			String field = sort.split("-")[0];
+			Direction direction = "asc".equals(sort.split("-")[1]) ? Direction.ASC : Direction.DESC;
+			order = Sort.by(new Order(direction, field), Order.desc("id"));
 		}
-		
-		// 기존 페이지 객체에 정렬 주입
-		Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortSpec);
+		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), order);
 		
 		// 냉장고 목록 조회
 		Page<Fridge> fridgePage;
 		try {
-			boolean hasCategory = category != null && !category.isBlank();
 			boolean hasKeyword = keyword != null && !keyword.isBlank();
+			boolean hasCategory = category != null && !category.isBlank();
 			
 			if (!hasCategory) {
-				// 전체
 				fridgePage = hasKeyword
-						? fridgeRepository.findAllByNameContainingIgnoreCase(keyword, sortedPageable)
-						: fridgeRepository.findAll(sortedPageable);
+						? fridgeRepository.findAllByNameContainingIgnoreCase(keyword, pageable)
+						: fridgeRepository.findAll(pageable);
 			}
 			else {
-				// 카테고리
 				fridgePage = hasKeyword
-						? fridgeRepository.findAllByCategoryAndNameContainingIgnoreCase(category, keyword, sortedPageable)
-						: fridgeRepository.findAllByCategory(category, sortedPageable);
+						? fridgeRepository.findAllByCategoryAndNameContainingIgnoreCase(category, keyword, pageable)
+						: fridgeRepository.findAllByCategory(category, pageable);
 			}
 		}
 		catch (Exception e) {
@@ -131,15 +104,11 @@ public class FridgeService {
 		List<FridgeReadResponseDto> fridgeDtoList = new ArrayList<>();
 		for (Fridge fridge : fridgePage) {
 			FridgeReadResponseDto fridgeDto = fridgeMapper.toReadResponseDto(fridge);
-			
-			// 좋아요 여부
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
-				String username = authentication.getName();
-				int userId = userService.readUserByUsername(username).getId();
-				fridgeDto.setLiked(likeService.existLike("fridge", fridgeDto.getId(), userId));
+				UserReadResponseDto userDto = userService.readUserByUsername(authentication.getName());
+				fridgeDto.setLiked(likeService.existLike("fridge", fridgeDto.getId(), userDto.getId()));
 			}
-			
 			fridgeDtoList.add(fridgeDto);
 		}
 		
@@ -150,56 +119,49 @@ public class FridgeService {
 	
 	
 	
-	// 사용자 냉장고 목록 조회
-	public List<UserFridgeReadResponseDto> readUserFridgeList(Integer id) {
+	// 나의 냉장고 목록 조회
+	public List<UserFridgeReadResponseDto> readUserFridgeList(int userId) {
 		
 		// 입력값 검증
-		if (id == null) {
-			throw new ApiException(FridgeErrorCode.USER_FRIDGE_INVALID_INPUT);
+		if (userId == 0) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
 		}
 		
 		// 권한 확인
-		UserReadResponseDto userDto = userService.readUserById(id);
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			// 관리자
-			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				if (userDto.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-					throw new ApiException(FridgeErrorCode.USER_FRIDGE_FORBIDDEN);
+		UserReadResponseDto currentUser = userService.readUserByUsername(username);
+		
+		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserById(userId).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
 				}
-				if (userDto.getRole().equals(Role.ROLE_ADMIN.name())) {
-					if (userService.readUserByUsername(username).getId() != userDto.getId()) {
-						throw new ApiException(FridgeErrorCode.USER_FRIDGE_FORBIDDEN);
-					}
+				if (userService.readUserById(userId).getRole().equals(Role.ROLE_ADMIN.name()) && currentUser.getId() != userId) {
+					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
 				}
 			}
-			// 일반 회원
-			else {
-				if (userService.readUserByUsername(username).getId() != userDto.getId()) {
-					throw new ApiException(FridgeErrorCode.USER_FRIDGE_FORBIDDEN);
-				}
+			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != userId) {
+				throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
 			}
 		}
 		
 		// 사용자 냉장고 목록 조회
 		List<UserFridge> userFridgeList;
 		try {
-			userFridgeList = userFridgeRepository.findAllByUserId(id);
+			userFridgeList = userFridgeRepository.findAllByUserId(userId);
 		}
 		catch (Exception e) {
-			throw new ApiException(FridgeErrorCode.USER_FRIDGE_READ_LIST_FAIL);
+			throw new ApiException(FridgeErrorCode.FRIDGE_READ_LIST_FAIL);
 		}
 		
 		// 사용자 냉장고 목록 응답 구성
-		List<UserFridgeReadResponseDto> userFridgeDtoList = new ArrayList<UserFridgeReadResponseDto>();
+		List<UserFridgeReadResponseDto> userFridgeDtoList = new ArrayList<>();
 		for (UserFridge userFridge : userFridgeList) {
 			UserFridgeReadResponseDto userFridgeDto = userFridgeMapper.toReadResponseDto(userFridge);
-			
 			userFridgeDto.setName(userFridge.getFridge().getName());
 			userFridgeDto.setImage(userFridge.getFridge().getImage());
 			userFridgeDto.setCategory(userFridge.getFridge().getCategory());
 			userFridgeDto.setZone(userFridge.getFridge().getZone());
-			
 			userFridgeDtoList.add(userFridgeDto);
 		}
 		
@@ -210,16 +172,34 @@ public class FridgeService {
 	
 	
 	
-	// 작성한 냉장고 목록 조회
-	public List<FridgeReadResponseDto> readCreatedFridgeList(Integer userId) {
+	// 사용자의 냉장고 목록 조회
+	public List<FridgeReadResponseDto> readFridgePageByUserId(int userId) {
 		
 		// 입력값 검증
-		if (userId == null) {
+		if (userId == 0) {
 			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
 		}
 		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto currentUser = userService.readUserByUsername(username);
+		
+		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserById(userId).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
+				}
+				if (userService.readUserById(userId).getRole().equals(Role.ROLE_ADMIN.name()) && currentUser.getId() != userId) {
+					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
+				}
+			}
+			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != userId) {
+				throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
+			}
+		}
+		
 		// 냉장고 목록 조회
-		List<Fridge> fridgeList = new ArrayList<>();
+		List<Fridge> fridgeList;
 		try {
 			fridgeList = fridgeRepository.findAllByUserId(userId);
 		}
@@ -231,10 +211,7 @@ public class FridgeService {
 		List<FridgeReadResponseDto> fridgeDtoList = new ArrayList<>();
 		for (Fridge fridge : fridgeList) {
 			FridgeReadResponseDto fridgeDto = fridgeMapper.toReadResponseDto(fridge);
-			
-			// 좋아요 여부
 			fridgeDto.setLiked(likeService.existLike("fridge", fridgeDto.getId(), userId));
-			
 			fridgeDtoList.add(fridgeDto);
 		}
 		
@@ -246,28 +223,27 @@ public class FridgeService {
 	
 	
 	// 좋아요한 냉장고 목록 조회
-	public List<FridgeReadResponseDto> readLikedFridgeList(Integer userId) {
+	public List<FridgeReadResponseDto> readLikedFridgeListByUserId(int userId) {
 		
 		// 입력값 검증
-		if (userId == null) {
+		if (userId == 0) {
 			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
 		}
 		
-		// 좋아요 일련번호 목록 조회
+		// 좋아요한 냉장고 일련번호 추출
 		List<LikeReadResponseDto> likeDtoList = likeService.readLikeListByTablenameAndUserId("fridge", userId);
-		List<Integer> idList = likeDtoList.stream()
+		List<Integer> fridgeIdList = likeDtoList.stream()
 				.map(LikeReadResponseDto::getRecodenum)
-				.collect(Collectors.toCollection(LinkedHashSet::new))
-				.stream().toList();
+				.toList();
 		
-		if (idList.isEmpty()) {
-            return Collections.emptyList();
-        }
+		if (fridgeIdList.isEmpty()) {
+			return Collections.emptyList();
+		}
 		
 		// 냉장고 목록 조회
-		List<Fridge> fridgeList = null;
+		List<Fridge> fridgeList;
 		try {
-			fridgeList = fridgeRepository.findAllByIdIn(idList);
+			fridgeList = fridgeRepository.findAllByIdIn(fridgeIdList);
 		}
 		catch (Exception e) {
 			throw new ApiException(FridgeErrorCode.FRIDGE_READ_LIST_FAIL);
@@ -277,10 +253,7 @@ public class FridgeService {
 		List<FridgeReadResponseDto> fridgeDtoList = new ArrayList<>();
 		for (Fridge fridge : fridgeList) {
 			FridgeReadResponseDto fridgeDto = fridgeMapper.toReadResponseDto(fridge);
-			
-			// 좋아요 여부
-			fridgeDto.setLiked(likeService.existLike("fridge", fridgeDto.getId(), userId));
-			
+			fridgeDto.setLiked(true);
 			fridgeDtoList.add(fridgeDto);
 		}
 		
@@ -292,54 +265,58 @@ public class FridgeService {
 	
 	
 	// 냉장고 파먹기 목록 조회
-	public List<RecipeReadResponseDto> readPickList(Integer id) {
+	// TODO : 다시 구현
+	public List<RecipeReadResponseDto> readPickList(int userId) {
 		
 		// 입력값 검증
-		if (id == null) {
-			throw new ApiException(FridgeErrorCode.USER_FRIDGE_INVALID_INPUT);
+		if (userId == 0) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
 		}
 		
 		List<RecipeReadResponseDto> pickDtoList = new ArrayList<>();
 		
 		// 레시피 목록 조회
 		List<RecipeReadResponseDto> recipeDtoList = recipeService.readRecipeList();
-		List<UserFridgeReadResponseDto> userFridgeDtoList = readUserFridgeList(id);
+		List<UserFridgeReadResponseDto> userFridgeDtoList = readUserFridgeList(userId);
 		
 		for (RecipeReadResponseDto recipeDto : recipeDtoList) {
 			List<RecipeStockReadResponseDto> stockDtoList = recipeDto.getStockList();
-		    long count = stockDtoList.stream()
-		            .filter(stock -> userFridgeDtoList.stream()
-		                .anyMatch(fridge -> fridge.getName().equals(stock.getName()))
-		            ).count();
-		    
-		    double rate = (count * 100.0) / stockDtoList.size();
-		    
-		    if (rate >= 70.0) {
-		    	recipeDto.setRate(rate);
-		    	pickDtoList.add(recipeDto);
-		    }
+			long count = stockDtoList.stream()
+					.filter(stock -> userFridgeDtoList.stream()
+						.anyMatch(fridge -> fridge.getName().equals(stock.getName()))
+					).count();
+			
+			double rate = (count * 100.0) / stockDtoList.size();
+			
+			if (rate >= 70.0) {
+				recipeDto.setRate(rate);
+				pickDtoList.add(recipeDto);
+			}
 		}
 		
 		return pickDtoList;
-	}
-
+	}	
 	
 	
 	
 	
 	
 	// 냉장고 작성
-	public FridgeCreateResponseDto createFridge(FridgeCreateRequestDto fridgeDto) {
+	public FridgeCreateResponseDto createFridge(FridgeCreateRequestDto fridgeRequestDto) {
 		
 		// 입력값 검증
-		if (fridgeDto == null || fridgeDto.getImage() == null || fridgeDto.getName() == null
-				|| fridgeDto.getCategory() == null || fridgeDto.getUserId() == null) {
+		if (fridgeRequestDto == null
+				|| fridgeRequestDto.getImage() == null
+				|| fridgeRequestDto.getName() == null
+				|| fridgeRequestDto.getCategory() == null
+				|| fridgeRequestDto.getZone() == null
+				|| fridgeRequestDto.getUserId() == 0) {
 			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
 		}
 		
-		// 냉장고 저장
-		Fridge fridge = fridgeMapper.toEntity(fridgeDto);
+		// 냉장고 작성
 		try {
+			Fridge fridge = fridgeMapper.toEntity(fridgeRequestDto);
 			fridge = fridgeRepository.save(fridge);
 			return fridgeMapper.toCreateResponseDto(fridge);
 		}
@@ -352,24 +329,27 @@ public class FridgeService {
 	
 	
 	
-	// 사용자 냉장고 작성
+	
+	// 나의 냉장고 작성
 	public UserFridgeCreateResponseDto createUserFridge(UserFridgeCreateRequestDto userFridgeDto) {
 		
 		// 입력값 검증
-		if (userFridgeDto == null || userFridgeDto.getAmount() == null
-				|| userFridgeDto.getUnit() == null || userFridgeDto.getExpdate() == null
-				|| userFridgeDto.getFridgeId() == null) {
-			throw new ApiException(FridgeErrorCode.USER_FRIDGE_INVALID_INPUT);
+		if (userFridgeDto == null
+				|| userFridgeDto.getAmount() == 0
+				|| userFridgeDto.getUnit() == null
+				|| userFridgeDto.getExpdate() == null
+				|| userFridgeDto.getFridgeId() == 0) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
 		}
 		
-		// 사용자 냉장고 저장
-		UserFridge userFridge = userFridgeMapper.toEntity(userFridgeDto);
+		// 나의 냉장고 작성
 		try {
+			UserFridge userFridge = userFridgeMapper.toEntity(userFridgeDto);
 			userFridge = userFridgeRepository.save(userFridge);
 			return userFridgeMapper.toCreateResponseDto(userFridge);
 		}
 		catch (Exception e) {
-			throw new ApiException(FridgeErrorCode.USER_FRIDGE_CREATE_FAIL);
+			throw new ApiException(FridgeErrorCode.FRIDGE_CREATE_FAIL);
 		}
 	}
 	
@@ -377,45 +357,51 @@ public class FridgeService {
 	
 	
 	
-	// 냉장고 수정 (관리자)
+	// 냉장고 수정
 	public FridgeUpdateResponseDto updateFridge(FridgeUpdateRequestDto fridgeDto) {
 		
 		// 입력값 검증
-		if (fridgeDto == null || fridgeDto.getId() == null
-				|| fridgeDto.getImage() == null || fridgeDto.getName() == null
-				||  fridgeDto.getCategory() == null || fridgeDto.getUserId() == null) {
+		if (fridgeDto == null
+				|| fridgeDto.getId() == 0
+				|| fridgeDto.getImage() == null
+				|| fridgeDto.getName() == null
+				|| fridgeDto.getCategory() == null
+				|| fridgeDto.getZone() == null
+				|| fridgeDto.getUserId() == 0) {
 			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
 		}
 		
-		// 냉장고 존재 여부 확인
-		Fridge fridge = fridgeRepository.findById(fridgeDto.getId())
-				.orElseThrow(() -> new ApiException(FridgeErrorCode.FRIDGE_NOT_FOUND));
+		// 냉장고 조회
+		Fridge fridge;
+		try {
+			fridge = fridgeRepository.findById(fridgeDto.getId());
+		}
+		catch (Exception e) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_NOT_FOUND);
+		}
 		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			// 관리자
-			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+		UserReadResponseDto currentUser = userService.readUserByUsername(username);
+		
+		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (fridge.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
 					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
 				}
-				if (fridge.getUser().getRole().equals(Role.ROLE_ADMIN)) {
-					if (userService.readUserByUsername(username).getId() != fridge.getUser().getId()) {
-						throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
-					}
-				}
-			}
-			// 일반 회원
-			else {
-				if (userService.readUserByUsername(username).getId() != fridge.getUser().getId()) {
+				if (fridge.getUser().getRole().equals(Role.ROLE_ADMIN) && currentUser.getId() != fridge.getUser().getId()) {
 					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
 				}
 			}
+			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != fridge.getUser().getId()) {
+				throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
+			}
 		}
 		
-		// 변경 값 설정
+		// 값 설정
 		fridge.setName(fridgeDto.getName());
 		fridge.setCategory(fridgeDto.getCategory());
+		fridge.setZone(fridgeDto.getZone());
 		fridge.setImage(fridgeDto.getImage());
 		
 		// 냉장고 수정
@@ -432,56 +418,60 @@ public class FridgeService {
 	
 	
 	
-	// 사용자 냉장고 수정
+	
+	// 나의 냉장고 수정
 	public UserFridgeUpdateResponseDto updateUserFridge(UserFridgeUpdateRequestDto userFridgeRequestDto) {
 		
 		// 입력값 검증
-		if (userFridgeRequestDto == null || userFridgeRequestDto.getId() == null
-				|| userFridgeRequestDto.getAmount() == null || userFridgeRequestDto.getUnit() == null
-				|| userFridgeRequestDto.getExpdate() == null || userFridgeRequestDto.getFridgeId() == null
-				|| userFridgeRequestDto.getUserId() == null) {
-			throw new ApiException(FridgeErrorCode.USER_FRIDGE_INVALID_INPUT);
+		if (userFridgeRequestDto == null
+				|| userFridgeRequestDto.getId() == 0
+				|| userFridgeRequestDto.getAmount() == 0
+				|| userFridgeRequestDto.getUnit() == null
+				|| userFridgeRequestDto.getExpdate() == null
+				|| userFridgeRequestDto.getFridgeId() == 0
+				|| userFridgeRequestDto.getUserId() == 0) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
 		}
 		
-		// 사용자 냉장고 존재 여부 확인
-		UserFridge userFridge = userFridgeRepository.findById(userFridgeRequestDto.getId())
-				.orElseThrow(() -> new ApiException(FridgeErrorCode.USER_FRIDGE_NOT_FOUND));
+		// 나의 냉장고 조회
+		UserFridge userFridge;
+		try {
+			userFridge = userFridgeRepository.findById(userFridgeRequestDto.getId());
+		}
+		catch (Exception e) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_NOT_FOUND);
+		}
 		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		UserReadResponseDto user = userService.readUserByUsername(username);
-		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			// 관리자
-			if (user.getRole().equals(Role.ROLE_ADMIN.name())) {
+		UserReadResponseDto currentUser = userService.readUserByUsername(username);
+		
+		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (userFridge.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
-					throw new ApiException(FridgeErrorCode.USER_FRIDGE_FORBIDDEN);
+					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
 				}
-				if (userFridge.getUser().getRole().equals(Role.ROLE_ADMIN)) {
-					if (user.getId() != userFridge.getUser().getId()) {
-						throw new ApiException(FridgeErrorCode.USER_FRIDGE_FORBIDDEN);
-					}
+				if (userFridge.getUser().getRole().equals(Role.ROLE_ADMIN) && currentUser.getId() != userFridge.getUser().getId()) {
+					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
 				}
 			}
-			// 일반 회원
-			else {
-				if (user.getId() != userFridge.getUser().getId()) {
-					throw new ApiException(FridgeErrorCode.USER_FRIDGE_FORBIDDEN);
-				}
+			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != userFridge.getUser().getId()) {
+				throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
 			}
 		}
 		
-		// 변경 값 설정
+		// 값 설정
 		userFridge.setAmount(userFridgeRequestDto.getAmount());
 		userFridge.setUnit(userFridgeRequestDto.getUnit());
 		userFridge.setExpdate(userFridgeRequestDto.getExpdate());
 		
-		// 사용자 냉장고 수정
+		// 나의 냉장고 수정
 		try {
 			userFridge = userFridgeRepository.save(userFridge);
 			return userFridgeMapper.toUpdateResponseDto(userFridge);
 		}
 		catch (Exception e) {
-			throw new ApiException(FridgeErrorCode.USER_FRIDGE_UPDATE_FAIL);
+			throw new ApiException(FridgeErrorCode.FRIDGE_UPDATE_FAIL);
 		}
 	}
 	
@@ -490,36 +480,37 @@ public class FridgeService {
 	
 	
 	// 냉장고 삭제
-	public void deleteFridge(Integer id) {
+	public void deleteFridge(int id) {
 		
 		// 입력값 검증
-		if (id == null) {
+		if (id == 0) {
 			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
 		}
 		
-		// 냉장고 존재 여부 확인
-		Fridge fridge = fridgeRepository.findById(id)
-				.orElseThrow(() -> new ApiException(FridgeErrorCode.FRIDGE_NOT_FOUND));
+		// 냉장고 조회
+		Fridge fridge;
+		try {
+			fridge = fridgeRepository.findById(id);
+		}
+		catch (Exception e) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_NOT_FOUND);
+		}
 		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			// 관리자
-			if (userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+		UserReadResponseDto currentUser = userService.readUserByUsername(username);
+		
+		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (fridge.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
 					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
 				}
-				if (fridge.getUser().getRole().equals(Role.ROLE_ADMIN)) {
-					if (userService.readUserByUsername(username).getId() != fridge.getUser().getId()) {
-						throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
-					}
-				}
-			}
-			// 일반 회원
-			else {
-				if (userService.readUserByUsername(username).getId() != fridge.getUser().getId()) {
+				if (fridge.getUser().getRole().equals(Role.ROLE_ADMIN) && currentUser.getId() != fridge.getUser().getId()) {
 					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
 				}
+			}
+			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != fridge.getUser().getId()) {
+				throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
 			}
 		}
 		
@@ -534,38 +525,41 @@ public class FridgeService {
 	}
 	
 	
-	// 사용자 냉장고 삭제
-	public void deleteUserFridge(Integer id) {
+	
+	
+	
+	// 나의 냉장고 삭제
+	public void deleteUserFridge(int id) {
 		
 		// 입력값 검증
-		if (id == null) {
-			throw new ApiException(FridgeErrorCode.USER_FRIDGE_INVALID_INPUT);
+		if (id == 0) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
 		}
 		
-		// 사용자 냉장고 존재 여부 확인
-		UserFridge userFridge = userFridgeRepository.findById(id)
-				.orElseThrow(() -> new ApiException(FridgeErrorCode.USER_FRIDGE_NOT_FOUND));
+		// 나의 냉장고 조회
+		UserFridge userFridge;
+		try {
+			userFridge = userFridgeRepository.findById(id);
+		}
+		catch (Exception e) {
+			throw new ApiException(FridgeErrorCode.FRIDGE_NOT_FOUND);
+		}
 		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		UserReadResponseDto user = userService.readUserByUsername(username);
-		if (!user.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			// 관리자
-			if (user.getRole().equals(Role.ROLE_ADMIN.name())) {
+		UserReadResponseDto currentUser = userService.readUserByUsername(username);
+		
+		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (userFridge.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
-					throw new ApiException(FridgeErrorCode.USER_FRIDGE_FORBIDDEN);
+					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
 				}
-				if (userFridge.getUser().getRole().equals(Role.ROLE_ADMIN)) {
-					if (user.getId() != userFridge.getUser().getId()) {
-						throw new ApiException(FridgeErrorCode.USER_FRIDGE_FORBIDDEN);
-					}
+				if (userFridge.getUser().getRole().equals(Role.ROLE_ADMIN) && currentUser.getId() != userFridge.getUser().getId()) {
+					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
 				}
 			}
-			// 일반 회원
-			else {
-				if (user.getId() != userFridge.getUser().getId()) {
-					throw new ApiException(FridgeErrorCode.USER_FRIDGE_FORBIDDEN);
-				}
+			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != userFridge.getUser().getId()) {
+				throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
 			}
 		}
 		
@@ -574,7 +568,7 @@ public class FridgeService {
 			userFridgeRepository.deleteById(id);
 		}
 		catch (Exception e) {
-			throw new ApiException(FridgeErrorCode.USER_FRIDGE_DELETE_FAIL);
+			throw new ApiException(FridgeErrorCode.FRIDGE_DELETE_FAIL);
 		}
 	}
 	
@@ -600,13 +594,13 @@ public class FridgeService {
 		
 		// 좋아요 저장
 		try {
-		    return likeService.createLike(likeDto);
+			return likeService.createLike(likeDto);
 		}
 		catch (ApiException e) {
-		    throw e;
+			throw e;
 		}
 		catch (Exception e) {
-		    throw new ApiException(FridgeErrorCode.FRIDGE_LIKE_FAIL);
+			throw new ApiException(FridgeErrorCode.FRIDGE_LIKE_FAIL);
 		}
 		
 	}
@@ -631,7 +625,7 @@ public class FridgeService {
 			new ApiException(FridgeErrorCode.FRIDGE_NOT_FOUND);
 		}
 		
-		// 좋아요 저장
+		// 좋아요 삭제
 		try {
 			likeService.deleteLike(likeDto);
 		}
@@ -644,12 +638,4 @@ public class FridgeService {
 		
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-
 }

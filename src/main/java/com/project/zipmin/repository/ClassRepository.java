@@ -14,38 +14,28 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ClassRepository extends JpaRepository<Class, Integer> {
 	
+	// 상세 조회
+	Class findById(int id);
+	
+	// 목록 조회
 	Page<Class> findAll(Pageable pageable);
-	Page<Class> findAllByTitleContainingIgnoreCase(String keyword, Pageable pageable);
-	Page<Class> findAllByApproval(Integer approval, Pageable pageable);
-	Page<Class> findAllByApprovalAndTitleContainingIgnoreCase(Integer approval, String keyword, Pageable pageable);
-	
-	Page<Class> findAllByNoticedateAfter(Date now, Pageable pageable);
-	Page<Class> findAllByTitleContainingIgnoreCaseAndNoticedateAfter(String keyword, Date now, Pageable pageable);
-	Page<Class> findAllByApprovalAndNoticedateAfter(Integer approval, Date today, Pageable pageable);
-	Page<Class> findAllByApprovalAndTitleContainingIgnoreCaseAndNoticedateAfter(Integer approval, String keyword, Date today, Pageable pageable);
-	
-	Page<Class> findAllByNoticedateBefore(Date now, Pageable pageable);
-	Page<Class> findAllByTitleContainingIgnoreCaseAndNoticedateBefore(String keyword, Date now, Pageable pageable);
-	Page<Class> findAllByApprovalAndNoticedateBefore(Integer approval, Date today, Pageable pageable);
-	Page<Class> findAllByApprovalAndTitleContainingIgnoreCaseAndNoticedateBefore(Integer approval, String keyword, Date today, Pageable pageable);
-	
 	Page<Class> findAllByCategory(String category, Pageable pageable);
+	Page<Class> findAllByStatus(int approval, Pageable pageable);
+	Page<Class> findAllByApproval(int approval, Pageable pageable);
+	Page<Class> findAllByTitleContainingIgnoreCase(String keyword, Pageable pageable);
+	Page<Class> findAllByCategoryAndApproval(String category, int approval, Pageable pageable);
+	Page<Class> findAllByCategoryAndStatus(String category, int status, Pageable pageable);
+	Page<Class> findAllByApprovalAndStatus(int approval, int status, Pageable pageable);
+	Page<Class> findAllByStatusAndTitleContainingIgnoreCase(int status, String keyword, Pageable pageable);
 	Page<Class> findAllByCategoryAndTitleContainingIgnoreCase(String category, String keyword, Pageable pageable);
-	Page<Class> findAllByCategoryAndApproval(String category, Integer approval, Pageable pageable);
-	Page<Class> findAllByCategoryAndApprovalAndTitleContainingIgnoreCase(String category, Integer approval, String keyword, Pageable pageable);
+	Page<Class> findAllByApprovalAndTitleContainingIgnoreCase(int approval, String keyword, Pageable pageable);
+	Page<Class> findAllByCategoryAndApprovalAndStatus(String category, int approval, int status, Pageable pageable);
+	Page<Class> findAllByCategoryAndStatusAndTitleContainingIgnoreCase(String category, int status, String keyword, Pageable pageable);
+	Page<Class> findAllByCategoryAndApprovalAndTitleContainingIgnoreCase(String category, int approval, String keyword, Pageable pageable);
+	Page<Class> findAllByApprovalAndStatusAndTitleContainingIgnoreCase(int approval, int status, String keyword, Pageable pageable);
+	Page<Class> findAllByCategoryAndApprovalAndStatusAndTitleContainingIgnoreCase(String category, int approval, int status, String keyword, Pageable pageable);
 	
-	Page<Class> findAllByCategoryAndNoticedateAfter(String category, Date now, Pageable pageable);
-	Page<Class> findAllByCategoryAndTitleContainingIgnoreCaseAndNoticedateAfter(String category, String keyword, Date now, Pageable pageable);
-	Page<Class> findAllByCategoryAndApprovalAndNoticedateAfter(String category, Integer approval, Date today, Pageable pageable);
-	Page<Class> findAllByCategoryAndApprovalAndTitleContainingIgnoreCaseAndNoticedateAfter(String category, Integer approval, String keyword, Date today, Pageable pageable);
-	
-	Page<Class> findAllByCategoryAndNoticedateBefore(String category, Date now, Pageable pageable);
-	Page<Class> findAllByCategoryAndTitleContainingIgnoreCaseAndNoticedateBefore(String category, String keyword, Date now, Pageable pageable);
-	Page<Class> findAllByCategoryAndApprovalAndNoticedateBefore(String category, Integer approval, Date today, Pageable pageable);
-	Page<Class> findAllByCategoryAndApprovalAndTitleContainingIgnoreCaseAndNoticedateBefore(String category, Integer approval, String keyword, Date today, Pageable pageable);
-
-	
-	// 쿠킹 클래스 개설 -> 중복 개설 확인
+	// 기타
 	boolean existsByTitleAndUserId(String title, int userId);
 	
 	

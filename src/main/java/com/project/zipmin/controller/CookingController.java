@@ -24,8 +24,6 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.ClassErrorCode;
 import com.project.zipmin.api.ClassSuccessCode;
-import com.project.zipmin.dto.UserAppliedClassResponseDto;
-import com.project.zipmin.dto.UserClassReadResponseDto;
 import com.project.zipmin.dto.cooking.ClassApplyCreateRequestDto;
 import com.project.zipmin.dto.cooking.ClassApplyCreateResponseDto;
 import com.project.zipmin.dto.cooking.ClassApplyReadResponseDto;
@@ -36,35 +34,35 @@ import com.project.zipmin.dto.cooking.ClassCreateResponseDto;
 import com.project.zipmin.dto.cooking.ClassReadResponseDto;
 import com.project.zipmin.service.CookingService;
 import com.project.zipmin.service.UserService;
-import com.project.zipmin.swagger.ClassAlreadyEndedResponse;
-import com.project.zipmin.swagger.ClassApplyCreateFailResponse;
-import com.project.zipmin.swagger.ClassApplyCreateSuccessResponse;
-import com.project.zipmin.swagger.ClassApplyDeleteFailResponse;
-import com.project.zipmin.swagger.ClassApplyDeleteSuccessResponse;
-import com.project.zipmin.swagger.ClassApplyDuplicateResponse;
-import com.project.zipmin.swagger.ClassApplyInvalidInputResponse;
-import com.project.zipmin.swagger.ClassApplyNotFoundResponse;
-import com.project.zipmin.swagger.ClassApplyReadListFailResponse;
-import com.project.zipmin.swagger.ClassApplyReadListSuccessResponse;
-import com.project.zipmin.swagger.ClassApplyUnableResponse;
-import com.project.zipmin.swagger.ClassApplyUpdateFailResponse;
-import com.project.zipmin.swagger.ClassApplyUpdateSuccessResponse;
-import com.project.zipmin.swagger.ClassCountAttendSuccessResponse;
-import com.project.zipmin.swagger.ClassDeleteFailResponse;
-import com.project.zipmin.swagger.ClassDeleteSuccessResponse;
-import com.project.zipmin.swagger.ClassForbiddenResponse;
-import com.project.zipmin.swagger.ClassInvalidInputResponse;
-import com.project.zipmin.swagger.ClassNotFoundResponse;
-import com.project.zipmin.swagger.ClassReadListFailResponse;
-import com.project.zipmin.swagger.ClassReadListSuccessResponse;
-import com.project.zipmin.swagger.ClassReadSuccessResponse;
-import com.project.zipmin.swagger.ClassScheduleReadListFailResponse;
-import com.project.zipmin.swagger.ClassTargetReadListFailResponse;
-import com.project.zipmin.swagger.ClassTutorReadListFailResponse;
-import com.project.zipmin.swagger.ClassUnauthorizedAccessResponse;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.UserInvalidInputResponse;
 import com.project.zipmin.swagger.UserNotFoundResponse;
+import com.project.zipmin.swagger.cooking.ClassAlreadyEndedResponse;
+import com.project.zipmin.swagger.cooking.ClassApplyCreateFailResponse;
+import com.project.zipmin.swagger.cooking.ClassApplyCreateSuccessResponse;
+import com.project.zipmin.swagger.cooking.ClassApplyDeleteFailResponse;
+import com.project.zipmin.swagger.cooking.ClassApplyDeleteSuccessResponse;
+import com.project.zipmin.swagger.cooking.ClassApplyDuplicateResponse;
+import com.project.zipmin.swagger.cooking.ClassApplyInvalidInputResponse;
+import com.project.zipmin.swagger.cooking.ClassApplyNotFoundResponse;
+import com.project.zipmin.swagger.cooking.ClassApplyReadListFailResponse;
+import com.project.zipmin.swagger.cooking.ClassApplyReadListSuccessResponse;
+import com.project.zipmin.swagger.cooking.ClassApplyUnableResponse;
+import com.project.zipmin.swagger.cooking.ClassApplyUpdateFailResponse;
+import com.project.zipmin.swagger.cooking.ClassApplyUpdateSuccessResponse;
+import com.project.zipmin.swagger.cooking.ClassCountAttendSuccessResponse;
+import com.project.zipmin.swagger.cooking.ClassDeleteFailResponse;
+import com.project.zipmin.swagger.cooking.ClassDeleteSuccessResponse;
+import com.project.zipmin.swagger.cooking.ClassForbiddenResponse;
+import com.project.zipmin.swagger.cooking.ClassInvalidInputResponse;
+import com.project.zipmin.swagger.cooking.ClassNotFoundResponse;
+import com.project.zipmin.swagger.cooking.ClassReadListFailResponse;
+import com.project.zipmin.swagger.cooking.ClassReadListSuccessResponse;
+import com.project.zipmin.swagger.cooking.ClassReadSuccessResponse;
+import com.project.zipmin.swagger.cooking.ClassScheduleReadListFailResponse;
+import com.project.zipmin.swagger.cooking.ClassTargetReadListFailResponse;
+import com.project.zipmin.swagger.cooking.ClassTutorReadListFailResponse;
+import com.project.zipmin.swagger.cooking.ClassUnauthorizedAccessResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -136,7 +134,7 @@ public class CookingController {
 	public ResponseEntity<?> listClass(
 			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
 			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
-			@Parameter(description = "승인 상태", required = false) @RequestParam(required = false) String approval,
+			@Parameter(description = "승인 상태", required = false) @RequestParam(required = false) int approval,
 			@Parameter(description = "진행 상태", required = false) @RequestParam(required = false) String status,
 			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
 		    @Parameter(description = "페이지 번호") @RequestParam int page,
@@ -232,8 +230,6 @@ public class CookingController {
 	
 	// 클래스 작성
 	
-	// TODO : API 문서 작성
-	
 	@PostMapping(value = "/classes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<?> writeClass(
 			@RequestPart ClassCreateRequestDto createRequestDto,
@@ -243,7 +239,7 @@ public class CookingController {
 	    // 로그인 여부 확인
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-	        throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
+	        throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED);
 	    }
 	    createRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 	    
@@ -334,7 +330,7 @@ public class CookingController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
+			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED);
 		}
 		
 		cookingService.deleteClass(id);
@@ -420,7 +416,7 @@ public class CookingController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
+			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED);
 		}
 		
 		Pageable pageable = PageRequest.of(page, size);
@@ -517,7 +513,7 @@ public class CookingController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED);
 		}
 		applyRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 		
@@ -615,7 +611,7 @@ public class CookingController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
+			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED);
 		}
 		
 		ClassApplyUpdateResponseDto applyResponseDto = cookingService.updateApplySelected(applyRequestDto);
@@ -705,7 +701,7 @@ public class CookingController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
+			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED);
 		}
 		
 		cookingService.deleteApply(classId, applyId);
@@ -764,7 +760,7 @@ public class CookingController {
 		// 로그인 여부 확인
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<UserClassReadResponseDto> classPage = cookingService.readClassPageByUserId(id, approval, status, pageable);
+		Page<ClassReadResponseDto> classPage = cookingService.readClassPageByUserId(id, approval, status, pageable);
 		
 		return ResponseEntity.status(ClassSuccessCode.CLASS_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_READ_LIST_SUCCESS, classPage));
@@ -849,11 +845,11 @@ public class CookingController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
+			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED);
 		}
 				
 		Pageable pageable = PageRequest.of(page, size);
-		Page<UserAppliedClassResponseDto> applyPage = cookingService.readAppliedClassPageByUserId(id, status, pageable);
+		Page<ClassReadResponseDto> applyPage = cookingService.readAppliedClassPageByUserId(id, status, pageable);
 		
 		return ResponseEntity.status(ClassSuccessCode.CLASS_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_READ_LIST_SUCCESS, applyPage));
@@ -934,7 +930,7 @@ public class CookingController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
+			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED);
 		}
 		
 		int count = cookingService.countClassAttend(id);

@@ -26,6 +26,7 @@ public class ClassReadResponseDto {
 	private int headcount;
 	private String need;
 	private int approval;
+	private int status;
 	private int userId;
 	
 	// 추가 정보
@@ -35,8 +36,8 @@ public class ClassReadResponseDto {
 	
 	private boolean isApplied;
 	private int applycount;
-	private boolean isOpened;
-	private boolean isEvented;
+	// private boolean isOpened;
+	// private boolean isEvented;
 	private boolean isAble;
 	
 	// 작성자 정보

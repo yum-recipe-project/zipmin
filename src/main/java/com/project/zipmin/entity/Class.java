@@ -45,6 +45,7 @@ public class Class {
 	private int headcount;
 	private String need;
 	private int approval;
+	private int status;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")

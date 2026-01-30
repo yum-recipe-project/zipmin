@@ -28,7 +28,8 @@ public class ClassUpdateRequestDto {
 	private String need;
 	private String image;
 	private String introduce;
-	// private String approval;
+	private int approval;
+	private int status;
 	private Integer userId;
 	
 }

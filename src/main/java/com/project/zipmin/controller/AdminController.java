@@ -39,8 +39,9 @@ import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.WithdrawReadResponseDto;
 import com.project.zipmin.dto.chomp.ChompReadResponseDto;
 import com.project.zipmin.dto.comment.CommentReadResponseDto;
-import com.project.zipmin.dto.cooking.ClassApprovalUpdateRequestDto;
 import com.project.zipmin.dto.cooking.ClassReadResponseDto;
+import com.project.zipmin.dto.cooking.ClassUpdateRequestDto;
+import com.project.zipmin.dto.cooking.ClassUpdateResponseDto;
 import com.project.zipmin.dto.kitchen.GuideReadResponseDto;
 import com.project.zipmin.dto.recipe.RecipeReadResponseDto;
 import com.project.zipmin.dto.report.ReportReadRequestDto;
@@ -56,15 +57,6 @@ import com.project.zipmin.service.RecipeService;
 import com.project.zipmin.service.ReportService;
 import com.project.zipmin.service.ReviewService;
 import com.project.zipmin.service.UserService;
-import com.project.zipmin.swagger.ClassAlreadyEndedResponse;
-import com.project.zipmin.swagger.ClassForbiddenResponse;
-import com.project.zipmin.swagger.ClassInvalidInputResponse;
-import com.project.zipmin.swagger.ClassNotFoundResponse;
-import com.project.zipmin.swagger.ClassReadListFailResponse;
-import com.project.zipmin.swagger.ClassReadListSuccessResponse;
-import com.project.zipmin.swagger.ClassUnauthorizedAccessResponse;
-import com.project.zipmin.swagger.ClassUpdateApprovalFailResponse;
-import com.project.zipmin.swagger.ClassUpdateApprovalSuccessResponse;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.UserForbiddenResponse;
 import com.project.zipmin.swagger.UserInvalidInputResponse;
@@ -79,6 +71,15 @@ import com.project.zipmin.swagger.comment.CommentInvalidInputResponse;
 import com.project.zipmin.swagger.comment.CommentReadListFailResponse;
 import com.project.zipmin.swagger.comment.CommentReadListSuccessResponse;
 import com.project.zipmin.swagger.comment.CommentUnauthorizedResponse;
+import com.project.zipmin.swagger.cooking.ClassAlreadyEndedResponse;
+import com.project.zipmin.swagger.cooking.ClassForbiddenResponse;
+import com.project.zipmin.swagger.cooking.ClassInvalidInputResponse;
+import com.project.zipmin.swagger.cooking.ClassNotFoundResponse;
+import com.project.zipmin.swagger.cooking.ClassReadListFailResponse;
+import com.project.zipmin.swagger.cooking.ClassReadListSuccessResponse;
+import com.project.zipmin.swagger.cooking.ClassUnauthorizedAccessResponse;
+import com.project.zipmin.swagger.cooking.ClassUpdateApprovalFailResponse;
+import com.project.zipmin.swagger.cooking.ClassUpdateApprovalSuccessResponse;
 import com.project.zipmin.swagger.kitchen.KitchenInvalidInputResponse;
 import com.project.zipmin.swagger.kitchen.KitchenReadListFailResponse;
 import com.project.zipmin.swagger.kitchen.KitchenReadListSuccessResponse;
@@ -579,8 +580,8 @@ public class AdminController {
 	public ResponseEntity<?> listClass(
 			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
 			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
-			@Parameter(description = "승인 상태", required = false) @RequestParam(required = false) String approval,
-			@Parameter(description = "진행 상태", required = false) @RequestParam(required = false) String status,
+			@Parameter(description = "승인 상태", required = false) @RequestParam(required = false) int approval,
+			@Parameter(description = "진행 상태", required = false) @RequestParam(required = false) int status,
 			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
 		    @Parameter(description = "페이지 번호") @RequestParam int page,
 		    @Parameter(description = "페이지 크기") @RequestParam int size) {
@@ -588,7 +589,7 @@ public class AdminController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
+			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED);
 		}
 		
 		// 권한 확인
@@ -600,7 +601,7 @@ public class AdminController {
 		}
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<ClassReadResponseDto> classPage = cookingService.readClassPage(category, keyword, approval, status, sort, pageable);
+		Page<ClassReadResponseDto> classPage = cookingService.readClassPage(keyword, category, approval, status, sort, pageable);
 		
 		return ResponseEntity.status(ClassSuccessCode.CLASS_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_READ_LIST_SUCCESS, classPage));
@@ -679,18 +680,18 @@ public class AdminController {
 	@PatchMapping("/admin/classes/{id}/approval")
 	public ResponseEntity<?>  updateClassApproval(
 			@Parameter(description = "클래스의 일련번호") @PathVariable int id,
-			@Parameter(description = "승인 상태") @RequestBody ClassApprovalUpdateRequestDto classDto) {
+			@Parameter(description = "승인 상태") @RequestBody ClassUpdateRequestDto classRequestDto) {
 	
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED_ACCESS);
+			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED);
 		}
 		
-		cookingService.updateClassApproval(classDto);
+		ClassUpdateResponseDto classResponseDto = cookingService.updateClass(classRequestDto);
 		
 		return ResponseEntity.status(ClassSuccessCode.CLASS_UPDATE_APPROVAL_SUCCESS.getStatus())
-				.body(ApiResponse.success(ClassSuccessCode.CLASS_UPDATE_APPROVAL_SUCCESS, null));
+				.body(ApiResponse.success(ClassSuccessCode.CLASS_UPDATE_APPROVAL_SUCCESS, classResponseDto));
 	}
 	
 	

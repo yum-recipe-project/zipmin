@@ -1,5 +1,7 @@
 package com.project.zipmin.mapper;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -17,6 +19,9 @@ public interface ClassTargetMapper {
 	
 	@Mapping(target = "classId", source = "classs.id")
 	ClassTargetReadResponseDto toReadResponseDto(ClassTarget target);
+	
+	@Mapping(target = "classId", source = "classs.id")
+	List<ClassTargetReadResponseDto> toReadResponseDtoList(List<ClassTarget> targetList);
 	
 	
 	

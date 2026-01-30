@@ -3,12 +3,12 @@ package com.project.zipmin.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.project.zipmin.dto.UserFridgeCreateRequestDto;
-import com.project.zipmin.dto.UserFridgeCreateResponseDto;
-import com.project.zipmin.dto.UserFridgeReadResponseDto;
-import com.project.zipmin.dto.UserFridgeUpdateRequestDto;
-import com.project.zipmin.dto.UserFridgeUpdateResponseDto;
 import com.project.zipmin.dto.UserUpdateRequestDto;
+import com.project.zipmin.dto.fridge.UserFridgeCreateRequestDto;
+import com.project.zipmin.dto.fridge.UserFridgeCreateResponseDto;
+import com.project.zipmin.dto.fridge.UserFridgeReadResponseDto;
+import com.project.zipmin.dto.fridge.UserFridgeUpdateRequestDto;
+import com.project.zipmin.dto.fridge.UserFridgeUpdateResponseDto;
 import com.project.zipmin.entity.UserFridge;
 
 @Mapper(componentModel = "spring")
@@ -22,8 +22,6 @@ public interface UserFridgeMapper {
 	@Mapping(target = "fridgeId", source = "fridge.id")
 	@Mapping(target = "userId", source ="user.id")
 	UserFridgeReadResponseDto toReadResponseDto(UserFridge userFridge);
-	
-	
 	
 	
 	
@@ -43,9 +41,6 @@ public interface UserFridgeMapper {
 	@Mapping(target = "fridgeId", source = "fridge.id")
 	@Mapping(target = "userId", source ="user.id")
 	UserFridgeCreateResponseDto toCreateResponseDto(UserFridge userFridge);
-	
-	
-	
 	
 	
 	

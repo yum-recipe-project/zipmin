@@ -142,9 +142,7 @@ public class KitchenController {
 			@Parameter(description = "페이지 크기") @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<GuideReadResponseDto> guidePage = null;
-		
-		guidePage = kitchenService.readGuidePage(keyword, category, sort, pageable);
+		Page<GuideReadResponseDto> guidePage = kitchenService.readGuidePage(keyword, category, sort, pageable);
 		
 		return ResponseEntity.status(KitchenSuccessCode.KITCHEN_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(KitchenSuccessCode.KITCHEN_READ_LIST_SUCCESS, guidePage));

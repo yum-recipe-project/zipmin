@@ -24,8 +24,8 @@ import lombok.NoArgsConstructor;
 public class Fridge {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_fridge_id")
-	@SequenceGenerator(name = "seq_fridge_id", sequenceName = "SEQ_FRIDGE_ID", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_FRIDGE_ID")
+	@SequenceGenerator(name = "SEQ_FRIDGE_ID", sequenceName = "SEQ_FRIDGE_ID", allocationSize = 1)
 	private int id;
 	
 	private String image;
@@ -33,7 +33,6 @@ public class Fridge {
 	private String category;
 	private String zone;
 	
-	// private int userId;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")
 	private User user;

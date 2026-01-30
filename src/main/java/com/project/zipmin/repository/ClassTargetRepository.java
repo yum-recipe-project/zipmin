@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ClassTargetRepository extends JpaRepository<ClassTarget, Integer> {
 	
-	List<ClassTarget> findByClasssId(int classId);
+	// 목록 조회
+	List<ClassTarget> findAllByClasssId(int classId);
 	
 }

@@ -99,8 +99,8 @@ public class ChompService {
 		// 쩝쩝박사 목록 조회
 		Page<Chomp> chompPage;
 		try {
-			boolean hasCategory = category != null && !category.isBlank();
 			boolean hasKeyword = keyword != null && !keyword.isBlank();
+			boolean hasCategory = category != null && !category.isBlank();
 			
 			if (hasCategory) {
 				chompPage = hasKeyword

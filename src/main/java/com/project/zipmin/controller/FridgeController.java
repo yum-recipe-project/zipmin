@@ -22,22 +22,23 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.FridgeErrorCode;
 import com.project.zipmin.api.FridgeSuccessCode;
-import com.project.zipmin.dto.FridgeCreateRequestDto;
-import com.project.zipmin.dto.FridgeCreateResponseDto;
-import com.project.zipmin.dto.FridgeReadResponseDto;
-import com.project.zipmin.dto.FridgeUpdateRequestDto;
-import com.project.zipmin.dto.FridgeUpdateResponseDto;
-import com.project.zipmin.dto.UserFridgeCreateRequestDto;
-import com.project.zipmin.dto.UserFridgeCreateResponseDto;
-import com.project.zipmin.dto.UserFridgeReadResponseDto;
-import com.project.zipmin.dto.UserFridgeUpdateRequestDto;
-import com.project.zipmin.dto.UserFridgeUpdateResponseDto;
+import com.project.zipmin.dto.fridge.FridgeCreateRequestDto;
+import com.project.zipmin.dto.fridge.FridgeCreateResponseDto;
+import com.project.zipmin.dto.fridge.FridgeReadResponseDto;
+import com.project.zipmin.dto.fridge.FridgeUpdateRequestDto;
+import com.project.zipmin.dto.fridge.FridgeUpdateResponseDto;
+import com.project.zipmin.dto.fridge.UserFridgeCreateRequestDto;
+import com.project.zipmin.dto.fridge.UserFridgeCreateResponseDto;
+import com.project.zipmin.dto.fridge.UserFridgeReadResponseDto;
+import com.project.zipmin.dto.fridge.UserFridgeUpdateRequestDto;
+import com.project.zipmin.dto.fridge.UserFridgeUpdateResponseDto;
 import com.project.zipmin.dto.like.LikeCreateRequestDto;
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
 import com.project.zipmin.dto.like.LikeDeleteRequestDto;
 import com.project.zipmin.dto.recipe.RecipeReadResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.FridgeService;
+import com.project.zipmin.service.ReviewService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.UserInvalidInputResponse;
@@ -49,16 +50,15 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequiredArgsConstructor
 @Tag(name = "Fridge API", description = "냉장고 관련 API")
 public class FridgeController {
 	
-	@Autowired
-	FridgeService fridgeService;
-	
-	@Autowired
-	UserService userService;
+	private final FridgeService fridgeService;
+	private final UserService userService;
 	
 	
 	
@@ -81,14 +81,14 @@ public class FridgeController {
 	// 냉장고 목록 조회
 	@GetMapping("/fridges")
 	public ResponseEntity<?> readFridge(
-			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
 			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
+			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
 			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
 		    @Parameter(description = "페이지 번호") @RequestParam int page,
 		    @Parameter(description = "페이지 크기") @RequestParam int size) {
 
 		Pageable pageable = PageRequest.of(page, size);
-		Page<FridgeReadResponseDto> fridgePage = fridgeService.readFridgePage(category, keyword, sort, pageable);
+		Page<FridgeReadResponseDto> fridgePage = fridgeService.readFridgePage(keyword, category, sort, pageable);
 
 		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS, fridgePage));
@@ -111,8 +111,8 @@ public class FridgeController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
-		// 401 USER_FRIDGE_UNAUTHORIZED_ACCESS
-		// 403 USER_FRIDGE_FORBIDDEN
+		// 401 FRIDGE_UNAUTHORIZED
+		// 403 FRIDGE_FORBIDDEN
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
 				description = "해당 사용자를 찾을 수 없음",
@@ -129,12 +129,12 @@ public class FridgeController {
 	// 사용자 냉장고 목록 조회
 	@GetMapping("/users/{id}/fridges")
 	public ResponseEntity<?> readUserFridge(
-			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id) {
+			@Parameter(description = "사용자의 일련번호") @PathVariable int id) {
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(FridgeErrorCode.USER_FRIDGE_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
 		
 		List<UserFridgeReadResponseDto> fridgeList = fridgeService.readUserFridgeList(id);
@@ -160,7 +160,7 @@ public class FridgeController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
-		// 401 FRIDGE_UNAUTHORIZED_ACCESS
+		// 401 FRIDGE_UNAUTHORIZED
 		// 403 FRIDGE_FORBIDDEN
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
@@ -178,25 +178,15 @@ public class FridgeController {
 	// 작성한 냉장고 목록 조회
 	@GetMapping("/users/{id}/created-fridges")
 	public ResponseEntity<?> listAddFridgeList(
-			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id) {
+			@Parameter(description = "사용자의 일련번호") @PathVariable int id) {
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
 		
-		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				if (userService.readUserByUsername(username).getId() != id) {
-					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
-				}
-			}
-		}
-		
-		List<FridgeReadResponseDto> fridgeList = fridgeService.readCreatedFridgeList(id);
+		List<FridgeReadResponseDto> fridgeList = fridgeService.readFridgePageByUserId(id);
 		
 		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS, fridgeList));
@@ -221,7 +211,7 @@ public class FridgeController {
 						mediaType = "application/json", 
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
 		// 400 LIKE_INVALID_INPUT
-		// 401 FRIDGE_UNAUTHORIZED_ACCESS
+		// 401 FRIDGE_UNAUTHORIZED
 		// 403 FRIDGE_FOBIDDEN
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
@@ -239,30 +229,15 @@ public class FridgeController {
 	// 좋아요한 냉장고 목록 조회
 	@GetMapping("/users/{id}/liked-fridges")
 	public ResponseEntity<?> listLikedFridgeList(
-			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id) {
-		
-		// 입력값 검증
-		if (id == null) {
-			throw new ApiException(FridgeErrorCode.FRIDGE_INVALID_INPUT);
-		}
+			@Parameter(description = "사용자의 일련번호") @PathVariable int id) {
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
 		
-		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				if (userService.readUserByUsername(username).getId() != id) {
-					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
-				}
-			}
-		}
-		
-		List<FridgeReadResponseDto> fridgeList = fridgeService.readLikedFridgeList(id);
+		List<FridgeReadResponseDto> fridgeList = fridgeService.readLikedFridgeListByUserId(id);
 		
 		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS, fridgeList));
@@ -273,7 +248,7 @@ public class FridgeController {
 	
 	// FRIDGE_PICK_LIST_SUCCESS
 	// USER_FRIDGE_READ_LIST_FAIL
-	// USER_FRIDGE_UNAUTHORIZED_ACCESS
+	// FRIDGE_UNAUTHORIZED
 	// USER_INVALID_INPUT
 	// USER_NOT_FOUND
 	// USER_FRDIGE_INVALID_INPUT
@@ -283,12 +258,12 @@ public class FridgeController {
 	// 냉장고 파먹기 목록 조회
 	@GetMapping("/users/{id}/picked-fridges")
 	public ResponseEntity<?> pickFridge(
-			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id) {
+			@Parameter(description = "사용자의 일련번호") @PathVariable int id) {
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(FridgeErrorCode.USER_FRIDGE_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
 		
 		// 권한 확인
@@ -296,7 +271,7 @@ public class FridgeController {
 		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (userService.readUserByUsername(username).getId() != id) {
-					throw new ApiException(FridgeErrorCode.USER_FRIDGE_FORBIDDEN);
+					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
 				}
 			}
 		}
@@ -325,7 +300,7 @@ public class FridgeController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
-		// 401 FRIDGE_UNAUTHORIZED_ACCESS
+		// 401 FRIDGE_UNAUTHORIZED
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
 				description = "해당 사용자를 찾을 수 없음",
@@ -347,7 +322,7 @@ public class FridgeController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
 		fridgeRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 		
@@ -365,8 +340,8 @@ public class FridgeController {
 	// USER_FRIDGE_CREATE_FAIL
 	// USER_FRIDGE_INVALID_INPUT
 	// USER_INVALID_INPUT
-	// USER_FRIDGE_UNAUTHORIZED_ACCESS
-	// USER_FRIDGE_FORBIDDEN
+	// FRIDGE_UNAUTHORIZED
+	// FRIDGE_FORBIDDEN
 	// USER_NOT_FOUND
 	
 	// 사용자 냉장고 작성
@@ -378,7 +353,7 @@ public class FridgeController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(FridgeErrorCode.USER_FRIDGE_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
 		
 		// 권한 확인
@@ -386,7 +361,7 @@ public class FridgeController {
 		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (userService.readUserByUsername(username).getId() != id) {
-					throw new ApiException(FridgeErrorCode.USER_FRIDGE_FORBIDDEN);
+					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
 				}
 			}
 		}
@@ -415,7 +390,7 @@ public class FridgeController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
-		// 401 FRIDGE_UNAUTHORIZED_ACCESS
+		// 401 FRIDGE_UNAUTHORIZED
 		// 404 FRIDGE_FORDBIDDEN
 		// 404 FRIDGE_NOT_FOUND
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -440,7 +415,7 @@ public class FridgeController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
 		
 		FridgeUpdateResponseDto fridgeResponseDto = fridgeService.updateFridge(fridgeRequestDto);
@@ -456,8 +431,8 @@ public class FridgeController {
 	// USER_FRIDGE_UPDATE_FAIL
 	// USER_FRIDGE_INVALID_INPUT
 	// USER_INVALID_INPUT
-	// USER_FRIDGE_UNAUTHORIZED_ACCESS
-	// USER_FRIDGE_FORBIDDEN
+	// FRIDGE_UNAUTHORIZED
+	// FRIDGE_FORBIDDEN
 	// USER_FRIDGE_NOT_FOUND
 	// USER_NOT_FOUND
 	// INTERNAL_SERVER_ERROR
@@ -472,7 +447,7 @@ public class FridgeController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(FridgeErrorCode.USER_FRIDGE_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
 		userFridgeRequestDto.setUserId(userId);
 		
@@ -499,7 +474,7 @@ public class FridgeController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
-		// 401 FRIDGE_UNAUTHORIZED_ACCESS
+		// 401 FRIDGE_UNAUTHORIZED
 		// 404 FRIDGE_FORDBIDDEN
 		// 404 FRIDGE_NOT_FOUND
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -523,7 +498,7 @@ public class FridgeController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
 		
 		fridgeService.deleteFridge(id);
@@ -546,7 +521,7 @@ public class FridgeController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(FridgeErrorCode.USER_FRIDGE_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
 		
 		fridgeService.deleteUserFridge(fridgeId);
@@ -574,7 +549,7 @@ public class FridgeController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
 		// 400 LIKE_INVALID_INPUT
-		// 401 FRIDGE_UNAUTHORIZED_ACCESS
+		// 401 FRIDGE_UNAUTHORIZED
 		// 404 FRIDGE_NOT_FOUND
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
@@ -599,7 +574,7 @@ public class FridgeController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
 		likeRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 		
@@ -619,7 +594,7 @@ public class FridgeController {
 	// FRIDGE_INVALID_INPUT
 	// USER_INVALID_INPUT
 	// LIKE_INVALID_INPUT
-	// FRIDGE_UNAUTHORIZED_ACCESS
+	// FRIDGE_UNAUTHORIZED
 	// LIKE_FORBIDDEN
 	// FRIDGE_NOT_FOUND
 	// USER_NOT_FOUND
@@ -634,7 +609,7 @@ public class FridgeController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED_ACCESS);
+		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
 		likeDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 		

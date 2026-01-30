@@ -30,4 +30,3 @@ public class ClassCreateRequestDto {
     private List<ClassTutorCreateReqeustDto> tutorList;
     
 }
-

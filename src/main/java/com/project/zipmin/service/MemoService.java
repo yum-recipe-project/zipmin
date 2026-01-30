@@ -10,15 +10,15 @@ import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.MemoErrorCode;
-import com.project.zipmin.dto.MemoCreateRequestDto;
-import com.project.zipmin.dto.MemoCreateResponseDto;
-import com.project.zipmin.dto.MemoReadResponseDto;
-import com.project.zipmin.dto.MemoUpdateRequestDto;
-import com.project.zipmin.dto.MemoUpdateResponseDto;
 import com.project.zipmin.dto.RecipeStockMemoCreateRequestDto;
 import com.project.zipmin.dto.UserReadResponseDto;
+import com.project.zipmin.dto.fridge.MemoCreateRequestDto;
+import com.project.zipmin.dto.fridge.MemoCreateResponseDto;
+import com.project.zipmin.dto.fridge.MemoReadResponseDto;
+import com.project.zipmin.dto.fridge.MemoUpdateRequestDto;
+import com.project.zipmin.dto.fridge.MemoUpdateResponseDto;
 import com.project.zipmin.entity.FridgeMemo;
-import com.project.zipmin.mapper.MemoMapper;
+import com.project.zipmin.mapper.FridgeMemoMapper;
 import com.project.zipmin.repository.MemoRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ public class MemoService {
 	private UserService userService;
 	
 	@Autowired
-	private final MemoMapper memoMapper;
+	private final FridgeMemoMapper memoMapper;
 	
 	
 	// 장보기 메모 조회

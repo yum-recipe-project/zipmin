@@ -26,20 +26,18 @@ import lombok.NoArgsConstructor;
 public class UserFridge {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_user_fridge_id")
-	@SequenceGenerator(name = "seq_user_fridge_id", sequenceName = "SEQ_USER_FRIDGE_ID", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USER_FRIDGE_ID")
+	@SequenceGenerator(name = "SEQ_USER_FRIDGE_ID", sequenceName = "SEQ_USER_FRIDGE_ID", allocationSize = 1)
 	private int id;
 	
 	private int amount;
 	private String unit;
 	private Date expdate;
 	
-	// private int fridgeId;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "FRIDGE_ID")
 	private Fridge fridge;	
 	
-	// private int userId;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")
 	private User user;

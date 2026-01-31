@@ -9,6 +9,7 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class MemoUpdateRequestDto {
 
+	private int id;
 	private String name;
 	private int amount;
 	private String unit;

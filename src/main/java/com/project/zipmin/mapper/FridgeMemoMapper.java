@@ -1,5 +1,7 @@
 package com.project.zipmin.mapper;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -19,6 +21,9 @@ public interface FridgeMemoMapper {
 	
 	@Mapping(target = "userId", source = "user.id")
 	MemoReadResponseDto toReadResponseDto(FridgeMemo memo);
+	
+	@Mapping(target = "userId", source = "user.id")
+	List<MemoReadResponseDto> toReadResponseDtoList(List<FridgeMemo> memoList);
 	
 	
 	

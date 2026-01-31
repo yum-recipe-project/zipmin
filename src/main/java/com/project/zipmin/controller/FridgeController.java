@@ -325,7 +325,7 @@ public class FridgeController {
 		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
 		fridgeRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
-		
+	
 		FridgeCreateResponseDto fridgeResponseDto = fridgeService.createFridge(fridgeRequestDto);
 		
 		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_CREATE_SUCCESS.getStatus())
@@ -618,27 +618,5 @@ public class FridgeController {
 		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_UNLIKE_SUCCESS.getStatus())
 				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_UNLIKE_SUCCESS, null));
 	}
-	
-	
-
-	
-	
-	
-	// 장보기 메모 
-//	@GetMapping("/users/{id}/fridge-memo")
-//	public ResponseEntity<?> listMemo(
-//		    @RequestParam int page,
-//		    @RequestParam int size) {
-//		
-//		Pageable pageable = PageRequest.of(page, size);
-//		Page<MemoReadResponseDto> guidePage = null;
-//		
-//		MemoPage = fridgeService.readMemoPage(pageable);
-//		
-//        return ResponseEntity.status(FridgeSuccessCode.memo_READ_LIST_SUCCESS.getStatus())
-//                .body(ApiResponse.success(FridgeSuccessCode.KITCHEN_READ_LIST_SUCCESS, guidePage));
-//	}
-		
-	
 
 }

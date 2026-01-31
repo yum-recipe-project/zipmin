@@ -19,7 +19,7 @@ import com.project.zipmin.dto.fridge.MemoUpdateRequestDto;
 import com.project.zipmin.dto.fridge.MemoUpdateResponseDto;
 import com.project.zipmin.entity.FridgeMemo;
 import com.project.zipmin.mapper.FridgeMemoMapper;
-import com.project.zipmin.repository.MemoRepository;
+import com.project.zipmin.repository.FridgeMemoRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class MemoService {
 	
 	@Autowired
-	private final MemoRepository memoRepository;
+	private final FridgeMemoRepository memoRepository;
 	
 	@Autowired
 	private UserService userService;

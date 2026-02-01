@@ -32,8 +32,6 @@ import com.project.zipmin.dto.report.ReportCreateResponseDto;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
-import com.project.zipmin.swagger.UserInvalidInputResponse;
-import com.project.zipmin.swagger.UserNotFoundResponse;
 import com.project.zipmin.swagger.chomp.EventInvalidInputResponse;
 import com.project.zipmin.swagger.chomp.EventNotFoundResponse;
 import com.project.zipmin.swagger.chomp.MegazineInvalidInputResponse;
@@ -73,6 +71,8 @@ import com.project.zipmin.swagger.report.ReportCreateFailResponse;
 import com.project.zipmin.swagger.report.ReportDuplicatedResponse;
 import com.project.zipmin.swagger.report.ReportForbiddenResponse;
 import com.project.zipmin.swagger.report.ReportInvalidInputResponse;
+import com.project.zipmin.swagger.user.UserInvalidInputResponse;
+import com.project.zipmin.swagger.user.UserNotFoundResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

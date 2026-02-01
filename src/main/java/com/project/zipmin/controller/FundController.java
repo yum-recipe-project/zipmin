@@ -38,8 +38,8 @@ import com.project.zipmin.dto.WithdrawUpdateResponseDto;
 import com.project.zipmin.service.FundService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
-import com.project.zipmin.swagger.UserInvalidInputResponse;
-import com.project.zipmin.swagger.UserNotFoundResponse;
+import com.project.zipmin.swagger.user.UserInvalidInputResponse;
+import com.project.zipmin.swagger.user.UserNotFoundResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

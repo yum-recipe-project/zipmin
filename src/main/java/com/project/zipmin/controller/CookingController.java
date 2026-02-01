@@ -35,8 +35,6 @@ import com.project.zipmin.dto.cooking.ClassReadResponseDto;
 import com.project.zipmin.service.CookingService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
-import com.project.zipmin.swagger.UserInvalidInputResponse;
-import com.project.zipmin.swagger.UserNotFoundResponse;
 import com.project.zipmin.swagger.cooking.ClassAlreadyEndedResponse;
 import com.project.zipmin.swagger.cooking.ClassApplyCreateFailResponse;
 import com.project.zipmin.swagger.cooking.ClassApplyCreateSuccessResponse;
@@ -63,6 +61,8 @@ import com.project.zipmin.swagger.cooking.ClassScheduleReadListFailResponse;
 import com.project.zipmin.swagger.cooking.ClassTargetReadListFailResponse;
 import com.project.zipmin.swagger.cooking.ClassTutorReadListFailResponse;
 import com.project.zipmin.swagger.cooking.ClassUnauthorizedAccessResponse;
+import com.project.zipmin.swagger.user.UserInvalidInputResponse;
+import com.project.zipmin.swagger.user.UserNotFoundResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

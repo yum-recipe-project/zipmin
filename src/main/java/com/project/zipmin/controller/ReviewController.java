@@ -32,8 +32,6 @@ import com.project.zipmin.dto.review.ReviewUpdateResponseDto;
 import com.project.zipmin.service.ReviewService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
-import com.project.zipmin.swagger.UserInvalidInputResponse;
-import com.project.zipmin.swagger.UserNotFoundResponse;
 import com.project.zipmin.swagger.like.LikeCreateFailResponse;
 import com.project.zipmin.swagger.like.LikeDeleteFailResponse;
 import com.project.zipmin.swagger.like.LikeDuplicatedResponse;
@@ -58,6 +56,8 @@ import com.project.zipmin.swagger.review.ReviewUnlikeFailResponse;
 import com.project.zipmin.swagger.review.ReviewUnlikeSuccessResponse;
 import com.project.zipmin.swagger.review.ReviewUpdateFailResponse;
 import com.project.zipmin.swagger.review.ReviewUpdateSuccessResponse;
+import com.project.zipmin.swagger.user.UserInvalidInputResponse;
+import com.project.zipmin.swagger.user.UserNotFoundResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

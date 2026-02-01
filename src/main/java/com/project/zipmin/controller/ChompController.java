@@ -56,7 +56,6 @@ import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
-import com.project.zipmin.swagger.UserNotFoundResponse;
 import com.project.zipmin.swagger.chomp.ChompInvalidInputResponse;
 import com.project.zipmin.swagger.chomp.ChompReadListFailResponse;
 import com.project.zipmin.swagger.chomp.ChompReadListSuccessResponse;
@@ -110,6 +109,7 @@ import com.project.zipmin.swagger.chomp.VoteRecordReadFailResponse;
 import com.project.zipmin.swagger.chomp.VoteUnauthorizedResponse;
 import com.project.zipmin.swagger.chomp.VoteUpdateFailResponse;
 import com.project.zipmin.swagger.chomp.VoteUpdateSuccessResponse;
+import com.project.zipmin.swagger.user.UserNotFoundResponse;
 
 @RestController
 @RequiredArgsConstructor

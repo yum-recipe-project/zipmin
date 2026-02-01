@@ -32,8 +32,6 @@ import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.KitchenService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
-import com.project.zipmin.swagger.UserInvalidInputResponse;
-import com.project.zipmin.swagger.UserNotFoundResponse;
 import com.project.zipmin.swagger.kitchen.KitchenCreateFailResponse;
 import com.project.zipmin.swagger.kitchen.KitchenCreateSuccessResponse;
 import com.project.zipmin.swagger.kitchen.KitchenDeleteFailResponse;
@@ -56,6 +54,8 @@ import com.project.zipmin.swagger.like.LikeExistFailResponse;
 import com.project.zipmin.swagger.like.LikeForbiddenResponse;
 import com.project.zipmin.swagger.like.LikeInvalidInputResponse;
 import com.project.zipmin.swagger.like.LikeNotFoundResponse;
+import com.project.zipmin.swagger.user.UserInvalidInputResponse;
+import com.project.zipmin.swagger.user.UserNotFoundResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

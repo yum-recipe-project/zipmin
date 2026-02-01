@@ -36,8 +36,6 @@ import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.RecipeService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
-import com.project.zipmin.swagger.UserInvalidInputResponse;
-import com.project.zipmin.swagger.UserNotFoundResponse;
 import com.project.zipmin.swagger.like.LikeDeleteFailResponse;
 import com.project.zipmin.swagger.like.LikeInvalidInputResponse;
 import com.project.zipmin.swagger.like.LikeNotFoundResponse;
@@ -67,6 +65,8 @@ import com.project.zipmin.swagger.recipe.RecipeStockReadListFailResponse;
 import com.project.zipmin.swagger.recipe.RecipeUnauthorizedResponse;
 import com.project.zipmin.swagger.recipe.RecipeUnlikeFailResponse;
 import com.project.zipmin.swagger.recipe.RecipeUnlikeSuccessResponse;
+import com.project.zipmin.swagger.user.UserInvalidInputResponse;
+import com.project.zipmin.swagger.user.UserNotFoundResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

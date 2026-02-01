@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class UserFridgeCreateRequestDto {
+public class FridgeStorageCreateRequestDto {
 	
 	private int amount;
 	private String unit;

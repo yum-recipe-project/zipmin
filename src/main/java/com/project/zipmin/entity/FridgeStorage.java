@@ -22,12 +22,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Entity
-@Table(name = "USER_FRIDGE")
-public class UserFridge {
+@Table(name = "FRIDGE_STORAGE")
+public class FridgeStorage {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USER_FRIDGE_ID")
-	@SequenceGenerator(name = "SEQ_USER_FRIDGE_ID", sequenceName = "SEQ_USER_FRIDGE_ID", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_FRIDGE_STORAGE_ID")
+	@SequenceGenerator(name = "SEQ_FRIDGE_STORAGE_ID", sequenceName = "SEQ_FRIDGE_STORAGE_ID", allocationSize = 1)
 	private int id;
 	
 	private int amount;

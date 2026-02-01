@@ -14,10 +14,12 @@ public interface FridgeRepository extends JpaRepository<Fridge, Integer> {
 	Fridge findById(int id);
 	
 	// 목록 조회
-	List<Fridge> findAllByUserId(int userId);
-	List<Fridge> findAllByIdIn(List<Integer> idList);
 	Page<Fridge> findAll(Pageable pageable);
+	List<Fridge> findAllByUserId(int userId);
+	List<Fridge> findAllByIdIn(List<Integer> ids);
+	List<Fridge> findAllByUserIdIn(List<Integer> userIds);
 	Page<Fridge> findAllByCategory(String category, Pageable pageable);
 	Page<Fridge> findAllByNameContainingIgnoreCase(String keyword, Pageable pageable);
+	List<Fridge> findAllByNameContainingIgnoreCaseAndUserIdIn(String keyword, List<Integer> userIds);
 	Page<Fridge> findAllByCategoryAndNameContainingIgnoreCase(String category, String keyword, Pageable pageable);
 }

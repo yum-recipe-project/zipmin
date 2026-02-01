@@ -2,10 +2,6 @@ package com.project.zipmin.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,20 +21,24 @@ import com.project.zipmin.api.FridgeSuccessCode;
 import com.project.zipmin.dto.fridge.FridgeCreateRequestDto;
 import com.project.zipmin.dto.fridge.FridgeCreateResponseDto;
 import com.project.zipmin.dto.fridge.FridgeReadResponseDto;
+import com.project.zipmin.dto.fridge.FridgeStorageCreateRequestDto;
+import com.project.zipmin.dto.fridge.FridgeStorageCreateResponseDto;
+import com.project.zipmin.dto.fridge.FridgeStorageReadResponseDto;
+import com.project.zipmin.dto.fridge.FridgeStorageUpdateRequestDto;
+import com.project.zipmin.dto.fridge.FridgeStorageUpdateResponseDto;
 import com.project.zipmin.dto.fridge.FridgeUpdateRequestDto;
 import com.project.zipmin.dto.fridge.FridgeUpdateResponseDto;
-import com.project.zipmin.dto.fridge.UserFridgeCreateRequestDto;
-import com.project.zipmin.dto.fridge.UserFridgeCreateResponseDto;
-import com.project.zipmin.dto.fridge.UserFridgeReadResponseDto;
-import com.project.zipmin.dto.fridge.UserFridgeUpdateRequestDto;
-import com.project.zipmin.dto.fridge.UserFridgeUpdateResponseDto;
+import com.project.zipmin.dto.fridge.MemoCreateRequestDto;
+import com.project.zipmin.dto.fridge.MemoCreateResponseDto;
+import com.project.zipmin.dto.fridge.MemoReadResponseDto;
+import com.project.zipmin.dto.fridge.MemoUpdateRequestDto;
+import com.project.zipmin.dto.fridge.MemoUpdateResponseDto;
 import com.project.zipmin.dto.like.LikeCreateRequestDto;
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
 import com.project.zipmin.dto.like.LikeDeleteRequestDto;
 import com.project.zipmin.dto.recipe.RecipeReadResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.FridgeService;
-import com.project.zipmin.service.ReviewService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
 import com.project.zipmin.swagger.UserInvalidInputResponse;
@@ -71,6 +71,8 @@ public class FridgeController {
 		// 200 FRIDGE_READ_LIST_SUCCESS
 		// 400 FRIDGE_READ_LIST_FAIL
 		// 400 FRIDGE_INVALID_INPUT
+		// 400 USER_INVALID_INPUT
+		// 404 USER_NOT_FOUND
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "500",
 				description = "서버 내부 오류",
@@ -82,13 +84,10 @@ public class FridgeController {
 	@GetMapping("/fridges")
 	public ResponseEntity<?> readFridge(
 			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
-			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
-			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
-		    @Parameter(description = "페이지 번호") @RequestParam int page,
-		    @Parameter(description = "페이지 크기") @RequestParam int size) {
+			@Parameter(description = "사용자의 일련번호") int userId) {
 
-		Pageable pageable = PageRequest.of(page, size);
-		Page<FridgeReadResponseDto> fridgePage = fridgeService.readFridgePage(keyword, category, sort, pageable);
+		// 냉장고 목록 조회
+		List<FridgeReadResponseDto> fridgePage = fridgeService.readFridgeList(keyword, userId);
 
 		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS, fridgePage));
@@ -99,56 +98,7 @@ public class FridgeController {
 	
 	
 	@Operation(
-	    summary = "사용자 냉장고 목록 조회"
-	)
-	@ApiResponses(value = {
-		// 200 USER_FRIDGE_READ_LIST_SUCCESS
-		// 400 USER_FRIDGE_READ_LIST_FAIL
-		// 400 USER_FRIDGE_INVALID_INPUT
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "400",
-				description = "입력값이 유효하지 않음",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = UserInvalidInputResponse.class))),
-		// 401 FRIDGE_UNAUTHORIZED
-		// 403 FRIDGE_FORBIDDEN
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "404",
-				description = "해당 사용자를 찾을 수 없음",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = UserNotFoundResponse.class))),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-				responseCode = "500",
-				description = "서버 내부 오류",
-				content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = InternalServerErrorResponse.class)))
-	})
-	// 사용자 냉장고 목록 조회
-	@GetMapping("/users/{id}/fridges")
-	public ResponseEntity<?> readUserFridge(
-			@Parameter(description = "사용자의 일련번호") @PathVariable int id) {
-		
-		// 로그인 여부 확인
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
-		}
-		
-		List<UserFridgeReadResponseDto> fridgeList = fridgeService.readUserFridgeList(id);
-
-		return ResponseEntity.status(FridgeSuccessCode.USER_FRIDGE_READ_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(FridgeSuccessCode.USER_FRIDGE_READ_LIST_SUCCESS, fridgeList));
-	}
-	
-	
-	
-	
-	
-	@Operation(
-	    summary = "작성한 냉장고 목록 조회"
+	    summary = "사용자의 냉장고 목록 조회"
 	)
 	@ApiResponses(value = {
 		// 200 FRIDGE_READ_LIST_SUCCESS
@@ -175,8 +125,8 @@ public class FridgeController {
 						mediaType = "application/json",
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})
-	// 작성한 냉장고 목록 조회
-	@GetMapping("/users/{id}/created-fridges")
+	// 사용자의 냉장고 목록 조회
+	@GetMapping("/users/{id}/fridges")
 	public ResponseEntity<?> listAddFridgeList(
 			@Parameter(description = "사용자의 일련번호") @PathVariable int id) {
 		
@@ -186,6 +136,7 @@ public class FridgeController {
 		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
 		
+		// 사용자의 냉장고 목록 조회
 		List<FridgeReadResponseDto> fridgeList = fridgeService.readFridgePageByUserId(id);
 		
 		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS.getStatus())
@@ -237,6 +188,7 @@ public class FridgeController {
 		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
 		
+		// 좋아요한 냉장고 목록 조회
 		List<FridgeReadResponseDto> fridgeList = fridgeService.readLikedFridgeListByUserId(id);
 		
 		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS.getStatus())
@@ -246,8 +198,58 @@ public class FridgeController {
 	
 	
 	
+	
+	@Operation(
+	    summary = "나의 냉장고 목록 조회"
+	)
+	@ApiResponses(value = {
+		// 200 FRIDGE_STORAGE_READ_LIST_SUCCESS
+		// 400 FRIDGE_STORAGE_READ_LIST_FAIL
+		// 400 FRIDGE_STORAGE_INVALID_INPUT
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "400",
+				description = "입력값이 유효하지 않음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserInvalidInputResponse.class))),
+		// 401 FRIDGE_UNAUTHORIZED
+		// 403 FRIDGE_FORBIDDEN
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "404",
+				description = "해당 사용자를 찾을 수 없음",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = UserNotFoundResponse.class))),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+	})
+	// 나의 냉장고 목록 조회
+	@GetMapping("/users/{id}/storages")
+	public ResponseEntity<?> readUserFridge(
+			@Parameter(description = "사용자의 일련번호") @PathVariable int id) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
+		}
+		
+		// 나의 냉장고 목록 조회
+		List<FridgeStorageReadResponseDto> fridgeList = fridgeService.readStorageByUserId(id);
+
+		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_STORAGE_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_STORAGE_READ_LIST_SUCCESS, fridgeList));
+	}
+	
+	
+	
+	
 	// FRIDGE_PICK_LIST_SUCCESS
-	// USER_FRIDGE_READ_LIST_FAIL
+	// FRIDGE_STORAGE_READ_LIST_FAIL
 	// FRIDGE_UNAUTHORIZED
 	// USER_INVALID_INPUT
 	// USER_NOT_FOUND
@@ -278,9 +280,39 @@ public class FridgeController {
 		
 		List<RecipeReadResponseDto> recipeList = fridgeService.readPickList(id);
 		
-		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_PICK_LIST_SUCCESS.getStatus())
-				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_PICK_LIST_SUCCESS, recipeList));
+		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS.getStatus())
+				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS, recipeList));
 		
+	}
+	
+	
+	
+	
+	
+	// 장보기 메모 조회
+	
+	// FRIDGE_MEMO_READ_LIST_SUCCESS
+	// FRIDGE_MEMO_READ_LIST_FAIL
+	// FRIDGE_UNAUTHORIZED
+	// FRIDGE_FORBIDDEN
+	// 
+	
+	// 장보기 메모 목록 조회
+	@GetMapping("/users/{id}/memos")
+	public ResponseEntity<?> readMemoList (
+			@Parameter(description = "사용자의 일련번호") @PathVariable int id) {
+
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
+		}
+
+		// 장보기 메모 목록 조회
+	    List<MemoReadResponseDto> memoList = fridgeService.readMemoListByUserId(id);
+
+	    return ResponseEntity.status(FridgeSuccessCode.FRIDGE_MEMO_READ_LIST_SUCCESS.getStatus())
+	            .body(ApiResponse.success(FridgeSuccessCode.FRIDGE_MEMO_READ_LIST_SUCCESS, memoList));
 	}
 	
 	
@@ -324,8 +356,8 @@ public class FridgeController {
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
-		fridgeRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 	
+		// 냉장고 작성
 		FridgeCreateResponseDto fridgeResponseDto = fridgeService.createFridge(fridgeRequestDto);
 		
 		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_CREATE_SUCCESS.getStatus())
@@ -336,19 +368,18 @@ public class FridgeController {
 	
 	
 	
-	// USER_FRIDGE_CREATE_SUCCESS
-	// USER_FRIDGE_CREATE_FAIL
-	// USER_FRIDGE_INVALID_INPUT
+	// FRIDGE_STORAGE_CREATE_SUCCESS
+	// FRIDGE_STORAGE_CREATE_FAIL
+	// FRIDGE_STORAGE_INVALID_INPUT
 	// USER_INVALID_INPUT
 	// FRIDGE_UNAUTHORIZED
 	// FRIDGE_FORBIDDEN
 	// USER_NOT_FOUND
 	
-	// 사용자 냉장고 작성
-	@PostMapping("/users/{id}/fridges")
+	// 나의 냉장고 작성
+	@PostMapping("/storages")
 	public ResponseEntity<?> createUserFridge(
-			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
-			@Parameter(description = "사용자 냉장고 작성 요청 정보") @RequestBody UserFridgeCreateRequestDto fridgeRequestDto) {
+			@Parameter(description = "사용자 냉장고 작성 요청 정보") @RequestBody FridgeStorageCreateRequestDto fridgeRequestDto) {
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -356,26 +387,38 @@ public class FridgeController {
 		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
 		
-		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				if (userService.readUserByUsername(username).getId() != id) {
-					throw new ApiException(FridgeErrorCode.FRIDGE_FORBIDDEN);
-				}
-			}
-		}
-		fridgeRequestDto.setUserId(id);
+		// 나의 냉장고 작성
+		FridgeStorageCreateResponseDto fridgeResponseDto = fridgeService.createStorage(fridgeRequestDto);
 		
-		UserFridgeCreateResponseDto fridgeResponseDto = fridgeService.createUserFridge(fridgeRequestDto);
-		
-		return ResponseEntity.status(FridgeSuccessCode.USER_FRIDGE_CREATE_SUCCESS.getStatus())
-				.body(ApiResponse.success(FridgeSuccessCode.USER_FRIDGE_CREATE_SUCCESS, fridgeResponseDto));
+		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_STORAGE_CREATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_STORAGE_CREATE_SUCCESS, fridgeResponseDto));
 	}
 	
 	
 	
 
+	// 장보기 메모 작성
+	@PostMapping("/memos")
+	public ResponseEntity<?> writeMemo(
+			@Parameter(description = "장보기 메모 작성 요청 정보") @RequestBody MemoCreateRequestDto memoRequestDto) {
+	    
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
+		}
+		
+		// 장보기 메모 작성
+		MemoCreateResponseDto memoResponseDto = fridgeService.createMemo(memoRequestDto);
+		
+		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_STORAGE_CREATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_STORAGE_CREATE_SUCCESS, memoResponseDto));
+		
+	}	
+	
+	
+	
+	
 	
 	@Operation(
 	    summary = "냉장고 수정"
@@ -418,6 +461,7 @@ public class FridgeController {
 		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
 		
+		// 냉장고 수정
 		FridgeUpdateResponseDto fridgeResponseDto = fridgeService.updateFridge(fridgeRequestDto);
 		
 		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_UPDATE_SUCCESS.getStatus())
@@ -428,33 +472,54 @@ public class FridgeController {
 	
 	
 	
-	// USER_FRIDGE_UPDATE_FAIL
-	// USER_FRIDGE_INVALID_INPUT
+	// FRIDGE_STORAGE_UPDATE_FAIL
+	// FRIDGE_STORAGE_INVALID_INPUT
 	// USER_INVALID_INPUT
 	// FRIDGE_UNAUTHORIZED
 	// FRIDGE_FORBIDDEN
-	// USER_FRIDGE_NOT_FOUND
+	// FRIDGE_STORAGE_NOT_FOUND
 	// USER_NOT_FOUND
 	// INTERNAL_SERVER_ERROR
 	
-	// 사용자 냉장고 수정
-	@PatchMapping("/users/{userId}/fridges/{fridgeId}")
+	// 나의 냉장고 수정
+	@PatchMapping("/storages/{id}")
 	public ResponseEntity<?> updateUserFridge(
-			@Parameter(description = "사용자의 일련번호") @PathVariable Integer userId,
-			@Parameter(description = "냉장고의 일련번호") @PathVariable int fridgeId,
-			@Parameter(description = "사용자 냉장고 수정 요청 정보") @RequestBody UserFridgeUpdateRequestDto userFridgeRequestDto) {
+			@Parameter(description = "냉장고의 일련번호") @PathVariable int id,
+			@Parameter(description = "사용자 냉장고 수정 요청 정보") @RequestBody FridgeStorageUpdateRequestDto storageRequestDto) {
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
-		userFridgeRequestDto.setUserId(userId);
 		
-		UserFridgeUpdateResponseDto userFridgeResponseDto = fridgeService.updateUserFridge(userFridgeRequestDto);
+		// 나의 냉장고 수정
+		FridgeStorageUpdateResponseDto storageResponseDto = fridgeService.updateStorage(storageRequestDto);
 		
-		return ResponseEntity.status(FridgeSuccessCode.USER_FRIDGE_UPDATE_SUCCESS.getStatus())
-				.body(ApiResponse.success(FridgeSuccessCode.USER_FRIDGE_UPDATE_SUCCESS, userFridgeResponseDto));
+		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_STORAGE_UPDATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_STORAGE_UPDATE_SUCCESS, storageResponseDto));
+	}
+	
+	
+	
+	
+	// 장보기 메모 수정
+	@PatchMapping("/memos/{id}")
+	public ResponseEntity<?> updateMemo (
+			@Parameter(description = "메모의 일련번호") @PathVariable int id,
+			@Parameter(description = "메모 수정 요청 정보") @RequestBody MemoUpdateRequestDto memoRequestDto) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
+		}
+		
+		// 장보기 메모 수정
+		MemoUpdateResponseDto memoResponseDto = fridgeService.updateMemo(memoRequestDto);
+		
+		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_MEMO_UPDATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_MEMO_UPDATE_SUCCESS, memoResponseDto));
 	}
 	
 	
@@ -501,6 +566,7 @@ public class FridgeController {
 		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
 		
+		// 냉장고 삭제
 		fridgeService.deleteFridge(id);
 		
 		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_DELETE_SUCCESS.getStatus())
@@ -512,11 +578,10 @@ public class FridgeController {
 	
 	
 	
-	// 사용자 냉장고 삭제
-	@DeleteMapping("/users/{userId}/fridges/{fridgeId}")
-	public ResponseEntity<?> deleteFridge(
-			@Parameter(description = "사용자의 일련번호") @PathVariable Integer userId,
-			@Parameter(description = "냉장고의 일련번호") @PathVariable int fridgeId) {
+	// 나의 냉장고 삭제
+	@DeleteMapping("/storages/{id}")
+	public ResponseEntity<?> deleteFridgeStorage(
+			@Parameter(description = "냉장고의 일련번호") @PathVariable int id) {
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -524,10 +589,34 @@ public class FridgeController {
 		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
 		
-		fridgeService.deleteUserFridge(fridgeId);
+		// 나의 냉장고 삭제
+		fridgeService.deleteStorage(id);
 		
-		return ResponseEntity.status(FridgeSuccessCode.USER_FRIDGE_DELETE_SUCCESS.getStatus())
-				.body(ApiResponse.success(FridgeSuccessCode.USER_FRIDGE_DELETE_SUCCESS, null));
+		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_STORAGE_DELETE_SUCCESS.getStatus())
+				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_STORAGE_DELETE_SUCCESS, null));
+	}
+	
+	
+	
+	
+	
+	// 장보기 메모 삭제
+	@DeleteMapping("/memos/{id}")
+	public ResponseEntity<?> deleteFridgeMemo(
+			@Parameter(description = "메모의 일련번호") @PathVariable int id) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
+		}
+		
+		// 장보기 메모 삭제
+		fridgeService.deleteMemo(id);
+		
+		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_MEMO_DELETE_SUCCESS.getStatus())
+				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_MEMO_DELETE_SUCCESS, null));
+		
 	}
 	
 
@@ -576,7 +665,6 @@ public class FridgeController {
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
-		likeRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 		
 		LikeCreateResponseDto likeResponseDto = fridgeService.likeFridge(likeRequestDto);
 		
@@ -611,7 +699,6 @@ public class FridgeController {
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 		    throw new ApiException(FridgeErrorCode.FRIDGE_UNAUTHORIZED);
 		}
-		likeDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 		
 		fridgeService.unlikeFridge(likeDto);
 		

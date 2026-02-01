@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class UserFridgeReadResponseDto {
+public class FridgeStorageCreateResponseDto {
 	
 	private int id;
 	private int amount;
@@ -21,10 +21,5 @@ public class UserFridgeReadResponseDto {
 	private Date expdate;
 	private int fridgeId;
 	private int userId;
-	
-	private String name;
-	private String image;
-	private String category;
-	private String zone;
 	
 }

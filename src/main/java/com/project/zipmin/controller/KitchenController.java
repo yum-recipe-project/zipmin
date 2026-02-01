@@ -709,7 +709,7 @@ public class KitchenController {
 						schema = @Schema(implementation = InternalServerErrorResponse.class)))
 	})	  
 	// 사용자가 저장한 키친가이드 목록 조회
-	@GetMapping("/users/{id}/guides/likes")
+	@GetMapping("/users/{id}/liked-guides")
 	public ResponseEntity<?> readUserSavedGuideList(
 			@Parameter(description = "사용자의 일련번호") @PathVariable int id,
 			@Parameter(description = "페이지 번호") @RequestParam int page,

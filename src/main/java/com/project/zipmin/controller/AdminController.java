@@ -23,6 +23,7 @@ import com.project.zipmin.api.ClassErrorCode;
 import com.project.zipmin.api.ClassSuccessCode;
 import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.CommentSuccessCode;
+import com.project.zipmin.api.FridgeSuccessCode;
 import com.project.zipmin.api.KitchenErrorCode;
 import com.project.zipmin.api.KitchenSuccessCode;
 import com.project.zipmin.api.RecipeErrorCode;
@@ -42,6 +43,7 @@ import com.project.zipmin.dto.comment.CommentReadResponseDto;
 import com.project.zipmin.dto.cooking.ClassReadResponseDto;
 import com.project.zipmin.dto.cooking.ClassUpdateRequestDto;
 import com.project.zipmin.dto.cooking.ClassUpdateResponseDto;
+import com.project.zipmin.dto.fridge.FridgeReadResponseDto;
 import com.project.zipmin.dto.kitchen.GuideReadResponseDto;
 import com.project.zipmin.dto.recipe.RecipeReadResponseDto;
 import com.project.zipmin.dto.report.ReportReadRequestDto;
@@ -951,4 +953,50 @@ public class AdminController {
 		return ResponseEntity.status(ReportSuccessCode.REPORT_READ_LIST_SUCCESS.getStatus())
         		.body(ApiResponse.success(ReportSuccessCode.REPORT_READ_LIST_SUCCESS, reportList));
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//	@Operation(
+//	    summary = "냉장고 목록 조회"
+//	)
+//	@ApiResponses(value = {
+//		// 200 FRIDGE_READ_LIST_SUCCESS
+//		// 400 FRIDGE_READ_LIST_FAIL
+//		// 400 FRIDGE_INVALID_INPUT
+//		// 400 USER_INVALID_INPUT
+//		// 404 USER_NOT_FOUND
+//		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+//				responseCode = "500",
+//				description = "서버 내부 오류",
+//				content = @Content(
+//						mediaType = "application/json",
+//						schema = @Schema(implementation = InternalServerErrorResponse.class)))
+//	})
+//	// 냉장고 목록 조회
+//	@GetMapping("/fridges")
+//	public ResponseEntity<?> readFridge(
+//			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
+//			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
+//			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
+//		    @Parameter(description = "페이지 번호") @RequestParam int page,
+//		    @Parameter(description = "페이지 크기") @RequestParam int size) {
+//
+//		// 냉장고 목록 조회
+//		Pageable pageable = PageRequest.of(page, size);
+//		Page<FridgeReadResponseDto> fridgePage = fridgeService.readFridgePage(keyword, category, sort, pageable);
+//
+//		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS.getStatus())
+//				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS, fridgePage));
+//	}
 }

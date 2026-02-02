@@ -135,13 +135,13 @@ public class CookingController {
 			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
 			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
 			@Parameter(description = "승인 상태", required = false) @RequestParam(required = false) int approval,
-			@Parameter(description = "진행 상태", required = false) @RequestParam(required = false) String status,
+			@Parameter(description = "진행 상태", required = false) @RequestParam(required = false) int status,
 			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
 		    @Parameter(description = "페이지 번호") @RequestParam int page,
 		    @Parameter(description = "페이지 크기") @RequestParam int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<ClassReadResponseDto> classPage = cookingService.readClassPage(category, keyword, approval, status, sort, pageable);
+		Page<ClassReadResponseDto> classPage = cookingService.readClassPage(keyword, category, approval, status, sort, pageable);
 		
 		return ResponseEntity.status(ClassSuccessCode.CLASS_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_READ_LIST_SUCCESS, classPage));
@@ -409,7 +409,7 @@ public class CookingController {
 	@GetMapping("/classes/{id}/applies")
 	public ResponseEntity<?> listClassApply(
 			@Parameter(description = "클래스의 일련번호") @PathVariable int id,
-			@Parameter(description = "선정 상태") @RequestParam String selected,
+			@Parameter(description = "선정 상태") @RequestParam int selected,
 			@Parameter(description = "페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지 크기") @RequestParam int size) {
 		
@@ -751,9 +751,9 @@ public class CookingController {
 	// js/mypage/profile.js
 	@GetMapping("/users/{id}/classes")
 	public ResponseEntity<?> listUserClass(
-			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
-			@Parameter(description = "승인 상태", required = false) @RequestParam(required = false) String approval,
-			@Parameter(description = "진행 상태", required = false) @RequestParam(required = false) String status,
+			@Parameter(description = "사용자의 일련번호") @PathVariable int id,
+			@Parameter(description = "승인 상태", required = false) @RequestParam(required = false) int approval,
+			@Parameter(description = "진행 상태", required = false) @RequestParam(required = false) int status,
 			@Parameter(description = "조회할 페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지의 항목 수") @RequestParam int size) {
 		
@@ -836,9 +836,10 @@ public class CookingController {
 	// js/mypage/applied-class.js
 	@GetMapping("/users/{id}/applied-classes")
 	public ResponseEntity<?> readUserClassApplyList(
-			@Parameter(description = "사용자의 일련번호") @PathVariable Integer id,
-			@Parameter(description = "승인 상태", required = false) @RequestParam(required = false) String approval,
-			@Parameter(description = "진행 상태", required = false) @RequestParam(required = false) String status,
+			@Parameter(description = "사용자의 일련번호") @PathVariable int id,
+			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
+			@Parameter(description = "승인 상태", required = false) @RequestParam(required = false) int approval,
+			@Parameter(description = "진행 상태", required = false) @RequestParam(required = false) int status,
 			@Parameter(description = "페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지 크기") @RequestParam int size) {
 		
@@ -849,7 +850,7 @@ public class CookingController {
 		}
 				
 		Pageable pageable = PageRequest.of(page, size);
-		Page<ClassReadResponseDto> applyPage = cookingService.readAppliedClassPageByUserId(id, status, pageable);
+		Page<ClassReadResponseDto> applyPage = cookingService.readAppliedClassPageByUserId(id, keyword, status, pageable);
 		
 		return ResponseEntity.status(ClassSuccessCode.CLASS_READ_LIST_SUCCESS.getStatus())
 				.body(ApiResponse.success(ClassSuccessCode.CLASS_READ_LIST_SUCCESS, applyPage));

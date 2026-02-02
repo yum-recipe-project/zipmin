@@ -17,7 +17,7 @@ public class WithdrawCreateResponseDto {
     private Date settledate;
     private int status;
     private int userId;
-    private int accoundId;
+    private int accountId;
     private int adminId;
     
 }

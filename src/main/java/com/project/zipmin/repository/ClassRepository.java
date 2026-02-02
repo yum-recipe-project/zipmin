@@ -35,6 +35,15 @@ public interface ClassRepository extends JpaRepository<Class, Integer> {
 	Page<Class> findAllByApprovalAndStatusAndTitleContainingIgnoreCase(int approval, int status, String keyword, Pageable pageable);
 	Page<Class> findAllByCategoryAndApprovalAndStatusAndTitleContainingIgnoreCase(String category, int approval, int status, String keyword, Pageable pageable);
 	
+	Page<Class> findAllByUserIdAndStatus(int userId, int status, Pageable pageable);
+	Page<Class> findAllByUserIdAndApprovalAndStatus(int userId, int approval, int status, Pageable pageable);
+	
+	Page<Class> findAllByIdIn(List<Integer> ids, Pageable pageable);
+	Page<Class> findAllByIdInAndStatus(List<Integer> ids, int status, Pageable pageable);
+	Page<Class> findAllByIdInAndTitleContainingIgnoreCase(List<Integer> ids, String keyword, Pageable pageable);
+	Page<Class> findAllByIdInAndStatusAndTitleContainingIgnoreCase(List<Integer> ids, int status, String keyword, Pageable pageable);
+	
+	
 	// 기타
 	boolean existsByTitleAndUserId(String title, int userId);
 	
@@ -55,8 +64,7 @@ public interface ClassRepository extends JpaRepository<Class, Integer> {
 	
 	
 	
-	Page<Class> findByIdIn(List<Integer> ids, Pageable pageable);
-	Page<Class> findByIdInAndNoticedateAfter(List<Integer> ids, Date now, Pageable pageable);
+	Page<Class> findAllByIdInAndNoticedateAfter(List<Integer> ids, Date now, Pageable pageable);
 	Page<Class> findByIdInAndNoticedateBefore(List<Integer> ids, Date now, Pageable pageable);
 
 	List<Class> findAllByIdIn(List<Integer> ids);

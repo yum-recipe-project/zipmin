@@ -2,7 +2,6 @@ package com.project.zipmin.controller.view;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class MypageViewController {
@@ -11,14 +10,17 @@ public class MypageViewController {
 	public String comment() {
 		return "mypage/comment";
 	}
+	
 	@GetMapping("/mypage/comment/content.do")
 	public String commentContent() {
 		return "mypage/commentContent";
 	}
+	
 	@GetMapping("/mypage/revenue.do")
 	public String myPoint() {
 		return "mypage/revenue";
 	}
+	
 	@GetMapping("/mypage/withdraw.do")
 	public String withdraw() {
 		return "mypage/withdraw";
@@ -28,6 +30,7 @@ public class MypageViewController {
 	public String review() {
 		return "mypage/review";
 	}
+	
 	@GetMapping("/mypage/review/review.do")
 	public String reviewContent() {
 		return "mypage/reviewContent";
@@ -82,8 +85,5 @@ public class MypageViewController {
 	public String myClassApplication() {
 		return "mypage/application";
 	}
-
-	
-	
 
 }

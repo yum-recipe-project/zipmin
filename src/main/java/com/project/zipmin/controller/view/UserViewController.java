@@ -2,7 +2,6 @@ package com.project.zipmin.controller.view;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class UserViewController {
@@ -61,12 +60,6 @@ public class UserViewController {
 	@GetMapping("/user/userInfo.do")
 	public String userInfo() {
 		return "user/userInfo";
-	}
-	
-	// 제거 할 것
-	@GetMapping("/user/viewMemberInfo.do")
-	public String viewMemberInfo() {
-		return "user/viewMemberInfo";
 	}
 	
 	@GetMapping("/oauth2-jwt-header")

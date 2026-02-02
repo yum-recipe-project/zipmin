@@ -9,10 +9,10 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ClassApplyStatusUpdateRequestDto {
 	
-	private Integer id;
-	private String selected;
-	private String attend;
-	private Integer classId;
+	private int id;
+	private int selected;
+	private int attend;
+	private int classId;
 	
 }
 

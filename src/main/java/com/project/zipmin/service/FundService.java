@@ -402,7 +402,7 @@ public class FundService {
 	
 	
 	// 후원 목록 조회 (관리자)
-	public Page<FundReadResponseDto> readFundPage(String keyword, String category, String sort, Pageable pageable) {
+	public Page<FundReadResponseDto> readFundPage(String keyword, String sort, Pageable pageable) {
 		
 		// 입력값 검증
 		if (pageable == null) {
@@ -430,18 +430,10 @@ public class FundService {
 		Page<Fund> fundPage;
 		try {
 			boolean hasKeyword = keyword != null && !keyword.isBlank();
-			boolean hasCategory = category != null && !category.isBlank();
 			
-			if (hasCategory) {
-				fundPage = hasKeyword
-						? fundRepository.findAllByCategoryAndFunderUsernameContainingIgnoreCase(category, keyword, pageable)
-						: fundRepository.findAllByCategory(category, pageable);
-			}
-			else {
-				fundPage = hasKeyword
-						? fundRepository.findAllByFunderUsernameContainingIgnoreCase(keyword, pageable)
-						: fundRepository.findAll(pageable);
-			}
+			fundPage = hasKeyword
+					? fundRepository.findAllByFunderUsernameContainingIgnoreCase(keyword, pageable)
+					: fundRepository.findAll(pageable);
 		}
 		catch (Exception e) {
 			throw new ApiException(FundErrorCode.FUND_READ_LIST_FAIL);

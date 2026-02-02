@@ -26,13 +26,13 @@ import com.project.zipmin.dto.UserCreateRequestDto;
 import com.project.zipmin.dto.UserCreateResponseDto;
 import com.project.zipmin.dto.UserPasswordCheckRequestDto;
 import com.project.zipmin.dto.UserPasswordUpdateRequestDto;
-import com.project.zipmin.dto.UserPointReadResponseDto;
 import com.project.zipmin.dto.UserProfileReadResponseDto;
 import com.project.zipmin.dto.UserReadPasswordRequestDto;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.UserReadUsernameRequestDto;
 import com.project.zipmin.dto.UserUpdateRequestDto;
 import com.project.zipmin.dto.UserUpdateResponseDto;
+import com.project.zipmin.dto.fund.UserPointReadResponseDto;
 import com.project.zipmin.dto.like.LikeCreateRequestDto;
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
 import com.project.zipmin.dto.like.LikeDeleteRequestDto;
@@ -759,47 +759,5 @@ public class UserService {
 
 	    return userMapper.toReadPointResponseDto(user);
 	}
-	
-	
-	
-
-	
-	// 사용자 포인트 충전
-	public UserPointReadResponseDto addPointToUser(Integer id, int addPoint) {
-	    // 입력값 검증
-	    if (id == null) {
-	        throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-	    }
-
-	    // 사용자 조회
-	    User user = userRepository.findById(id)
-	            .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
-
-	    // 포인트 충전
-	    int newPoint = user.getPoint() + addPoint;
-	    user.setPoint(newPoint);
-	    
-	    userRepository.save(user);
-	    
-	    return userMapper.toReadPointResponseDto(user);
-	}
-	
-	
-	
-
-	
-	// 사용자 포인트 정보 업데이트
-	public User saveUser(User user) {
-        if (user == null) {
-        	throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-        }
-        return userRepository.save(user);
-    }
-
-
-
-
-	
-
 
 }

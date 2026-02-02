@@ -26,9 +26,12 @@ import lombok.NoArgsConstructor;
 public class Fund {
 
     @Id
-    @GeneratedValue(generator = "seq_fund_id")
-    @SequenceGenerator(name = "seq_fund_id", sequenceName = "SEQ_FUND_ID", allocationSize = 1)
+    @GeneratedValue(generator = "SEQ_FUND_ID")
+    @SequenceGenerator(name = "SEQ_FUND_ID", sequenceName = "SEQ_FUND_ID", allocationSize = 1)
     private int id;
+    
+    private int point;
+    private Date funddate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FUNDER_ID")
@@ -42,17 +45,11 @@ public class Fund {
     @JoinColumn(name = "RECIPE_ID")
     private Recipe recipe;
 
-    private int point;
-    private Date funddate;
-
-    // 출금 상태
-    private int status;
-
-    // 후원 생성 시 funddate 기본값 설정
     @PrePersist
     public void prePersist() {
         if (this.funddate == null) {
             this.funddate = new Date();
         }
     }
+    
 }

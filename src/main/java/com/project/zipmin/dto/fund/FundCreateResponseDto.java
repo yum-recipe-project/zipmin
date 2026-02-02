@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.fund;
 
 import java.util.Date;
 
@@ -9,18 +9,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class FundReadResponseDto {
+@AllArgsConstructor
+public class FundCreateResponseDto {
 	
 	private int id;           
+	private int point;
+	private Date funddate;
 	private int funderId;  
 	private int fundeeId;
 	private int recipeId;       
-	private int point;           
-	private Date funddate;
-	
-	private String nickname;  
-	private String title;
-	private String image;
+
 }

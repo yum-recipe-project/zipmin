@@ -96,15 +96,15 @@ public class FridgeService {
 			boolean hasKeyword = keyword != null && !keyword.isBlank();
 			boolean hasCategory = category != null && !category.isBlank();
 			
-			if (!hasCategory) {
-				fridgePage = hasKeyword
-						? fridgeRepository.findAllByNameContainingIgnoreCase(keyword, pageable)
-						: fridgeRepository.findAll(pageable);
-			}
-			else {
+			if (hasCategory) {
 				fridgePage = hasKeyword
 						? fridgeRepository.findAllByCategoryAndNameContainingIgnoreCase(category, keyword, pageable)
 						: fridgeRepository.findAllByCategory(category, pageable);
+			}
+			else {
+				fridgePage = hasKeyword
+						? fridgeRepository.findAllByNameContainingIgnoreCase(keyword, pageable)
+						: fridgeRepository.findAll(pageable);
 			}
 		}
 		catch (Exception e) {

@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.fund;
 
 import java.util.Date;
 
@@ -16,8 +16,8 @@ public class WithdrawReadResponseDto {
     private Date claimdate;
     private Date settledate;
     private int status;
-    private Integer userId;
-    private Integer accountId;
+    private int userId;
+    private int accountId;
     
     private String name;
     private String username;

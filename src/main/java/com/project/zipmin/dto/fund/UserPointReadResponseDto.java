@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.fund;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -7,10 +7,8 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class PointCreateResponseDto {
+public class UserPointReadResponseDto {
 	
-	private int id;
-	private String username;
-	private int point;
-	
+    private int userId;
+    private int point;
 }

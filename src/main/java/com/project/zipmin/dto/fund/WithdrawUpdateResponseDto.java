@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.fund;
 
 import java.util.Date;
 
@@ -23,4 +23,5 @@ public class WithdrawUpdateResponseDto {
     private String name;
     private String username;
     private String accountnum;
+    
 }

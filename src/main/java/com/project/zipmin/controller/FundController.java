@@ -19,22 +19,25 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.FundErrorCode;
 import com.project.zipmin.api.FundSuccessCode;
+import com.project.zipmin.api.PaymentSuccessCode;
 import com.project.zipmin.api.UserAccountErrorCode;
 import com.project.zipmin.api.UserAccountSuccessCode;
 import com.project.zipmin.api.WithdrawErrorCode;
 import com.project.zipmin.api.WithdrawSuccessCode;
-import com.project.zipmin.dto.FundCreateRequestDto;
-import com.project.zipmin.dto.FundCreateResponseDto;
-import com.project.zipmin.dto.FundReadResponseDto;
 import com.project.zipmin.dto.UserAccountCreateRequestDto;
 import com.project.zipmin.dto.UserAccountCreateResponseDto;
 import com.project.zipmin.dto.UserAccountReadResponseDto;
 import com.project.zipmin.dto.UserAccountUpdateRequestDto;
 import com.project.zipmin.dto.UserAccountUpdateResponseDto;
-import com.project.zipmin.dto.WithdrawCreateRequestDto;
-import com.project.zipmin.dto.WithdrawReadResponseDto;
-import com.project.zipmin.dto.WithdrawUpdateRequestDto;
-import com.project.zipmin.dto.WithdrawUpdateResponseDto;
+import com.project.zipmin.dto.fund.FundCreateRequestDto;
+import com.project.zipmin.dto.fund.FundCreateResponseDto;
+import com.project.zipmin.dto.fund.FundReadResponseDto;
+import com.project.zipmin.dto.fund.PaymentCreateRequestDto;
+import com.project.zipmin.dto.fund.PaymentCreateResponseDto;
+import com.project.zipmin.dto.fund.WithdrawCreateRequestDto;
+import com.project.zipmin.dto.fund.WithdrawReadResponseDto;
+import com.project.zipmin.dto.fund.WithdrawUpdateRequestDto;
+import com.project.zipmin.dto.fund.WithdrawUpdateResponseDto;
 import com.project.zipmin.service.FundService;
 import com.project.zipmin.service.UserService;
 import com.project.zipmin.swagger.InternalServerErrorResponse;
@@ -106,6 +109,29 @@ public class FundController {
 
 		return ResponseEntity.status(UserAccountSuccessCode.USER_ACCOUNT_READ_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserAccountSuccessCode.USER_ACCOUNT_READ_SUCCESS, accountDto));
+	}
+	
+	
+	
+	
+	// 결제 작성 (포인트 충전)
+	@PostMapping("/users/{id}/point")
+	public ResponseEntity<?> createUserPoint(
+			@Parameter(description = "사용자의 일련번호") @PathVariable int id,
+			@Parameter(description = "결제 작성 요청 정보") @RequestBody PaymentCreateRequestDto paymentRequestDto) {
+		
+		// 로그인 여부 확인
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_UNAUTHORIZED_ACCESS);
+		}
+		
+		// 결제 작성
+		PaymentCreateResponseDto paymentResponseDto = fundService.createPayment(paymentRequestDto);
+		
+		return ResponseEntity.status(PaymentSuccessCode.PAYMENT_CREATE_SUCCESS.getStatus())
+				.body(ApiResponse.success(PaymentSuccessCode.PAYMENT_CREATE_SUCCESS, paymentResponseDto));
+		
 	}
 	
 	
@@ -227,8 +253,8 @@ public class FundController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
-		// 401 FUND_UNAUTHORIZED_ACCESS 로그인되지 않은 사용자
-		// 403 FUND_FORBIDDEN 권한 없는 사용자의 접근
+		// 401 FUND_UNAUTHORIZED 로그인되지 않은 사용자
+		// 403 FUND_FORBIDDEN 권한 없는 사용자
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
 				description = "해당 사용자를 찾을 수 없음",
@@ -253,7 +279,7 @@ public class FundController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(FundErrorCode.FUND_UNAUTHORIZED_ACCESS);
+			throw new ApiException(FundErrorCode.FUND_UNAUTHORIZED);
 		}
 		
 		Pageable pageable = PageRequest.of(page, size);
@@ -280,7 +306,7 @@ public class FundController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
-		// 401 FUND_UNAUTHORIZED_ACCESS 로그인되지 않은 사용자
+		// 401 FUND_UNAUTHORIZED 로그인되지 않은 사용자
 		// 403 FUND_FORBIDDEN 권한 없는 사용자의 접근
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
@@ -304,13 +330,13 @@ public class FundController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(FundErrorCode.FUND_UNAUTHORIZED_ACCESS);
+			throw new ApiException(FundErrorCode.FUND_UNAUTHORIZED);
 		}
 		
 		int sum = fundService.sumFundByUserId(id);
 		
-		return ResponseEntity.status(FundSuccessCode.FUND_READ_SUM_SUCCESS.getStatus())
-				.body(ApiResponse.success(FundSuccessCode.FUND_READ_SUM_SUCCESS, sum));
+		return ResponseEntity.status(FundSuccessCode.FUND_SUM_SUCCESS.getStatus())
+				.body(ApiResponse.success(FundSuccessCode.FUND_SUM_SUCCESS, sum));
 	}
 	
 	
@@ -332,7 +358,7 @@ public class FundController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
-		// 401 FUND_UNAUTHORIZED_ACCESS 로그인되지 않은 사용자
+		// 401 FUND_UNAUTHORIZED 로그인되지 않은 사용자
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
 				description = "해당 사용자를 찾을 수 없음",
@@ -355,7 +381,7 @@ public class FundController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(FundErrorCode.FUND_UNAUTHORIZED_ACCESS);
+			throw new ApiException(FundErrorCode.FUND_UNAUTHORIZED);
 		}
 		fundRequestDto.setFunderId(userService.readUserByUsername(authentication.getName()).getId());
 		
@@ -382,7 +408,7 @@ public class FundController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
-		// 401 WITHDRAW_UNAUTHORIZED_ACCESS 로그인되지 않은 사용자
+		// 401 WITHDRAW_UNAUTHORIZED 로그인되지 않은 사용자
 		// 403 WITHDRAW_FORBIDDEN 권한 없는 사용자의 접근
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
@@ -408,7 +434,7 @@ public class FundController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(WithdrawErrorCode.WITHDRAW_UNAUTHORIZED_ACCESS);
+			throw new ApiException(WithdrawErrorCode.WITHDRAW_UNAUTHORIZED);
 		}
 
 		Pageable pageable = PageRequest.of(page, size);
@@ -435,7 +461,7 @@ public class FundController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
-		// 401 WITHDRAW_UNAUTHORIZED_ACCESS 로그인되지 않은 사용자
+		// 401 WITHDRAW_UNAUTHORIZED 로그인되지 않은 사용자
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
 				description = "해당 사용자를 찾을 수 없음",
@@ -458,7 +484,7 @@ public class FundController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(WithdrawErrorCode.WITHDRAW_UNAUTHORIZED_ACCESS);
+			throw new ApiException(WithdrawErrorCode.WITHDRAW_UNAUTHORIZED);
 		}
 		withdrawRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 
@@ -476,7 +502,7 @@ public class FundController {
 	// WITHDRAW_UPDATE_FAIL
 	// WITHDRAW_INVALID_INPUT
 	// USER_INVALID_INPUT
-	// WITHDRAW_UNAUTHORIZED_ACCESS
+	// WITHDRAW_UNAUTHORIZED
 	// WITHDRAW_FORBIDDEN
 	// WITHDRAW_NOT_FOUND
 	// USER_NOT_FOUND
@@ -490,7 +516,7 @@ public class FundController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(WithdrawErrorCode.WITHDRAW_UNAUTHORIZED_ACCESS);
+			throw new ApiException(WithdrawErrorCode.WITHDRAW_UNAUTHORIZED);
 		}
 		
 		WithdrawUpdateResponseDto withdrawResponseDto = fundService.updateWithdraw(withdrawRequestDto);
@@ -507,7 +533,7 @@ public class FundController {
 	// WITHDRAW_DELETE_FAIL
 	// WITHDRAW_INVALID_INPUT
 	// USER_INVALID_INPUT
-	// WITHDRAW_UNAUTHORIZED_ACCESS
+	// WITHDRAW_UNAUTHORIZED
 	// WITHDRAW_FORBIDDEN
 	// WITHDRAW_NOT_FOUND
 	// USER_NOT_FOUND
@@ -520,7 +546,7 @@ public class FundController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(WithdrawErrorCode.WITHDRAW_UNAUTHORIZED_ACCESS);
+			throw new ApiException(WithdrawErrorCode.WITHDRAW_UNAUTHORIZED);
 		}
 		
 		fundService.deleteWithdraw(id);

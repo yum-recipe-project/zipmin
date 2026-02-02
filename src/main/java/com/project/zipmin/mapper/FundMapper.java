@@ -1,16 +1,19 @@
 package com.project.zipmin.mapper;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.project.zipmin.dto.FundCreateRequestDto;
-import com.project.zipmin.dto.FundCreateResponseDto;
-import com.project.zipmin.dto.FundReadResponseDto;
+import com.project.zipmin.dto.fund.FundCreateRequestDto;
+import com.project.zipmin.dto.fund.FundCreateResponseDto;
+import com.project.zipmin.dto.fund.FundReadResponseDto;
 import com.project.zipmin.entity.Fund;
 
 @Mapper(componentModel = "spring")
 public interface FundMapper {
 	
+	// Read
 	@Mapping(target = "funder.id", source = "funderId")
 	@Mapping(target = "fundee.id", source = "fundeeId")
 	@Mapping(target = "recipe.id", source = "recipeId")
@@ -23,6 +26,7 @@ public interface FundMapper {
 	
 	
 
+	// Create
 	@Mapping(target = "funder.id", source = "funderId")
 	@Mapping(target = "fundee.id", source = "fundeeId")
 	@Mapping(target = "recipe.id", source = "recipeId")

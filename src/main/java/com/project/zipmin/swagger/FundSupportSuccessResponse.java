@@ -1,6 +1,6 @@
 package com.project.zipmin.swagger;
 
-import com.project.zipmin.dto.FundCreateResponseDto;
+import com.project.zipmin.dto.fund.FundCreateResponseDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

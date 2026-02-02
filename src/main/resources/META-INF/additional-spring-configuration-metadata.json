@@ -18,5 +18,15 @@
     "name": "app.base.url",
     "type": "java.lang.String",
     "description": "A description for 'app.base.url'"
+  },
+  {
+    "name": "spring.iamport.api-key",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.iamport.api-key'"
+  },
+  {
+    "name": "spring.iamport.api-secret",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.iamport.api-secret'"
   }
 ]}

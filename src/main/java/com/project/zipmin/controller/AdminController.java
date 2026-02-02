@@ -36,12 +36,12 @@ import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.api.WithdrawErrorCode;
 import com.project.zipmin.api.WithdrawSuccessCode;
 import com.project.zipmin.dto.UserReadResponseDto;
-import com.project.zipmin.dto.WithdrawReadResponseDto;
 import com.project.zipmin.dto.chomp.ChompReadResponseDto;
 import com.project.zipmin.dto.comment.CommentReadResponseDto;
 import com.project.zipmin.dto.cooking.ClassReadResponseDto;
 import com.project.zipmin.dto.cooking.ClassUpdateRequestDto;
 import com.project.zipmin.dto.cooking.ClassUpdateResponseDto;
+import com.project.zipmin.dto.fund.WithdrawReadResponseDto;
 import com.project.zipmin.dto.kitchen.GuideReadResponseDto;
 import com.project.zipmin.dto.recipe.RecipeReadResponseDto;
 import com.project.zipmin.dto.report.ReportReadRequestDto;
@@ -249,15 +249,7 @@ public class AdminController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(WithdrawErrorCode.WITHDRAW_UNAUTHORIZED_ACCESS);
-		}
-		
-		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
-			}
+			throw new ApiException(WithdrawErrorCode.WITHDRAW_UNAUTHORIZED);
 		}
 
 	    Pageable pageable = PageRequest.of(page, size);

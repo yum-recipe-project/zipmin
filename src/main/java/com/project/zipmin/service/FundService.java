@@ -1,5 +1,6 @@
 package com.project.zipmin.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,29 +11,37 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.FundErrorCode;
+import com.project.zipmin.api.PaymentErrorCode;
 import com.project.zipmin.api.UserAccountErrorCode;
 import com.project.zipmin.api.WithdrawErrorCode;
-import com.project.zipmin.dto.FundCreateRequestDto;
-import com.project.zipmin.dto.FundCreateResponseDto;
-import com.project.zipmin.dto.FundReadResponseDto;
 import com.project.zipmin.dto.UserAccountCreateRequestDto;
 import com.project.zipmin.dto.UserAccountCreateResponseDto;
 import com.project.zipmin.dto.UserAccountReadResponseDto;
 import com.project.zipmin.dto.UserAccountUpdateRequestDto;
 import com.project.zipmin.dto.UserAccountUpdateResponseDto;
 import com.project.zipmin.dto.UserReadResponseDto;
-import com.project.zipmin.dto.WithdrawCreateRequestDto;
-import com.project.zipmin.dto.WithdrawReadResponseDto;
-import com.project.zipmin.dto.WithdrawUpdateRequestDto;
-import com.project.zipmin.dto.WithdrawUpdateResponseDto;
+import com.project.zipmin.dto.UserUpdateRequestDto;
+import com.project.zipmin.dto.UserUpdateResponseDto;
+import com.project.zipmin.dto.fund.FundCreateRequestDto;
+import com.project.zipmin.dto.fund.FundCreateResponseDto;
+import com.project.zipmin.dto.fund.FundReadResponseDto;
+import com.project.zipmin.dto.fund.PaymentCreateRequestDto;
+import com.project.zipmin.dto.fund.PaymentCreateResponseDto;
+import com.project.zipmin.dto.fund.WithdrawCreateRequestDto;
+import com.project.zipmin.dto.fund.WithdrawReadResponseDto;
+import com.project.zipmin.dto.fund.WithdrawUpdateRequestDto;
+import com.project.zipmin.dto.fund.WithdrawUpdateResponseDto;
 import com.project.zipmin.entity.Fund;
 import com.project.zipmin.entity.Role;
+import com.project.zipmin.entity.User;
 import com.project.zipmin.entity.UserAccount;
 import com.project.zipmin.entity.Withdraw;
 import com.project.zipmin.mapper.FundMapper;
@@ -42,6 +51,9 @@ import com.project.zipmin.mapper.WithdrawMapper;
 import com.project.zipmin.repository.FundRepository;
 import com.project.zipmin.repository.UserAccountRepository;
 import com.project.zipmin.repository.WithdrawRepository;
+import com.siot.IamportRestClient.IamportClient;
+import com.siot.IamportRestClient.response.IamportResponse;
+import com.siot.IamportRestClient.response.Payment;
 
 import lombok.RequiredArgsConstructor;
 
@@ -53,16 +65,76 @@ public class FundService {
 	private final UserAccountRepository accountRepository;
 	private final FundRepository fundRepository;
 	private final WithdrawRepository withdrawRepository;
-	
 	private final UserAccountMapper accountMapper;
 	private final FundMapper fundMapper;
 	private final WithdrawMapper withdrawMapper;
 	private final UserMapper userMapper;
-	
 	private final UserService userService;
+	
+	private final IamportClient iamportClient;
 	
 	@Value("${app.upload.public-path:/files}")
 	private String publicPath;
+	
+	
+	
+	
+	
+	// 계좌 목록 조회 (관리자)
+	public Page<UserAccountReadResponseDto> readAccountPage(String field, String keyword, String sort, Pageable pageable) {
+		
+		// 입력값 검증
+		if (pageable == null) {
+			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_INVALID_INPUT);
+		}
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(FundErrorCode.FUND_FORBIDDEN);
+			}
+		}
+		
+		// 정렬
+		Sort order = Sort.by(Sort.Order.desc("id"));
+		if (sort != null && !sort.isBlank()) {
+			String sortField = sort.split("-")[0];
+			Direction direction = "asc".equals(sort.split("-")[1]) ? Direction.ASC : Direction.DESC;
+			order = Sort.by(new Order(direction, sortField), Order.desc("id"));
+		}
+		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), order);
+		
+		// 계좌 목록 조회
+		Page<UserAccount> accountPage = null;
+		try {
+			boolean hasKeyword = keyword != null && !keyword.isBlank();
+			
+			if (hasKeyword) {
+				if (field.equalsIgnoreCase("name")) {
+					accountPage = accountRepository.findAllByUserNameContainingIgnoreCase(keyword, pageable);
+				}
+				else if (field.equalsIgnoreCase("username")) {
+					accountPage = accountRepository.findAllByUserUsernameContainingIgnoreCase(keyword, pageable);
+				}
+			}
+			else {
+				accountPage = accountRepository.findAll(pageable);
+			}
+		}
+		catch (Exception e) {
+			throw new ApiException(FundErrorCode.FUND_READ_LIST_FAIL);
+		}
+		
+		// 계좌 목록 응답 구성
+		List<UserAccountReadResponseDto> accountDtoList = new ArrayList<UserAccountReadResponseDto>();
+		for (UserAccount account : accountPage) {
+			UserAccountReadResponseDto accountDto = accountMapper.toReadResponseDto(account);
+			accountDtoList.add(accountDto);
+		}
+		
+		return new PageImpl<>(accountDtoList, pageable, accountPage.getTotalElements());
+	}
 	
 	
 	
@@ -77,8 +149,30 @@ public class FundService {
 		}
 		
 		// 계좌 상세 조회
-		UserAccount account = accountRepository.findById(id)
-				.orElseThrow(() -> new ApiException(UserAccountErrorCode.USER_ACCOUNT_NOT_FOUND));
+		UserAccount account;
+		try {
+			account = accountRepository.findById(id);
+		}
+		catch (Exception e) {
+			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_NOT_FOUND);
+		}
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserReadResponseDto currentUser = userService.readUserByUsername(username);
+		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (account.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_FORBIDDEN);
+				}
+				if (account.getUser().getRole().equals(Role.ROLE_ADMIN) && currentUser.getId() != account.getUser().getId()) {
+					throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_FORBIDDEN);
+				}
+			}
+			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != account.getUser().getId()) {
+				throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_FORBIDDEN);
+			}
+		}
 		
 		return accountMapper.toReadResponseDto(account);
 	}
@@ -87,7 +181,7 @@ public class FundService {
 	
 	
 	
-	// 사용자 계좌 상세 조회
+	// 사용자의 계좌 상세 조회
 	public UserAccountReadResponseDto readAccountByUserId(int userId) {
 
 		// 입력값 검증
@@ -95,31 +189,42 @@ public class FundService {
 			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_INVALID_INPUT);
 		}
 		
-		// 권한 확인
+		// 본인 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		UserReadResponseDto currentUser = userService.readUserByUsername(username);
-		
-		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			// 관리자
-			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
-				if (userService.readUserById(userId).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserByUsername(username).getId() != userId) {
 					throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_FORBIDDEN);
 				}
-				if (userService.readUserById(userId).getRole().equals(Role.ROLE_ADMIN.name()) && currentUser.getId() != userId) {
-					throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_FORBIDDEN);
-				}
-			}
-			// 일반회원
-			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != userId) {
-				throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_FORBIDDEN);
 			}
 		}
 		
 		// 계좌 조회
-		UserAccount userAccount = accountRepository.findByUserId(userId)
-				.orElseThrow(() -> new ApiException(UserAccountErrorCode.USER_ACCOUNT_NOT_FOUND));
-
-		return accountMapper.toReadResponseDto(userAccount);
+		UserAccount account;
+		try {
+			account = accountRepository.findByUserId(userId);
+		}
+		catch (Exception e) {
+			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_NOT_FOUND);
+		}
+		
+		// 권한 확인
+		UserReadResponseDto currentUser = userService.readUserByUsername(username);
+		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (account.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
+					throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_FORBIDDEN);
+				}
+				if (account.getUser().getRole().equals(Role.ROLE_ADMIN) && currentUser.getId() != account.getUser().getId()) {
+					throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_FORBIDDEN);
+				}
+			}
+			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != account.getUser().getId()) {
+				throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_FORBIDDEN);
+			}
+		}
+		
+		return accountMapper.toReadResponseDto(account);
 	}
 	
 	
@@ -134,8 +239,18 @@ public class FundService {
 				|| accountRequestDto.getBank() == null 
 				|| accountRequestDto.getAccountnum() == null
 				|| accountRequestDto.getName() == null
-				|| accountRequestDto.getUserId() == 0) {
+				|| accountRequestDto.getUserId() < 0) {
 			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_INVALID_INPUT);
+		}
+		
+		// 본인 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserByUsername(username).getId() != accountRequestDto.getUserId()) {
+					throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_FORBIDDEN);
+				}
+			}
 		}
 		
 		// 계좌 저장
@@ -157,24 +272,36 @@ public class FundService {
 	public UserAccountUpdateResponseDto updateAccount(UserAccountUpdateRequestDto accountRequestDto) {
 
 		// 입력값 검증
-		if (accountRequestDto == null 
-				|| accountRequestDto.getUserId() == 0
+		if (accountRequestDto == null
+				|| accountRequestDto.getUserId() < 0
 				|| accountRequestDto.getBank() == null
 				|| accountRequestDto.getAccountnum() == null
 				|| accountRequestDto.getName() == null) {
 			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_INVALID_INPUT);
 		}
 		
-		// 계좌 조회
-		UserAccount account = accountRepository.findByUserId(accountRequestDto.getUserId())
-				.orElseThrow(() -> new ApiException(UserAccountErrorCode.USER_ACCOUNT_NOT_FOUND));
-
-		// 권한 확인
+		// 본인 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		UserReadResponseDto currentUser = userService.readUserByUsername(username);
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserByUsername(username).getId() != accountRequestDto.getUserId()) {
+					throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_FORBIDDEN);
+				}
+			}
+		}
 		
+		// 계좌 조회
+		UserAccount account;
+		try {
+			account = accountRepository.findByUserId(accountRequestDto.getUserId());
+		}
+		catch (Exception e) {
+			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_NOT_FOUND);
+		}
+		
+		// 권한 확인
+		UserReadResponseDto currentUser = userService.readUserByUsername(username);
 		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			// 관리자
 			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (account.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
 					throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_FORBIDDEN);
@@ -183,17 +310,17 @@ public class FundService {
 					throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_FORBIDDEN);
 				}
 			}
-			// 일반회원
 			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != account.getUser().getId()) {
 				throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_FORBIDDEN);
 			}
 		}
 		
-		// 변경 값 설정
+		// 값 설정
 		account.setBank(accountRequestDto.getBank());
 		account.setAccountnum(accountRequestDto.getAccountnum());
 		account.setName(accountRequestDto.getName());
 
+		// 계좌 수정
 		try {
 			account = accountRepository.save(account);
 			return accountMapper.toUpdateResponseDto(account);
@@ -207,38 +334,114 @@ public class FundService {
 	
 	
 	
-	// 후원 목록 조회
-	public Page<FundReadResponseDto> readFundPage(String keyword, String sort, Pageable pageable) {
+	// TODO : 결제 목록 조회
+	
+	
+	
+	
+	
+	// 결제 작성 (포인트 충전)
+	public PaymentCreateResponseDto createPayment(PaymentCreateRequestDto paymentRequestDto) {
+		
+		// 입력값 검증
+		if (paymentRequestDto == null
+				|| paymentRequestDto.getImpUid() == null
+				|| paymentRequestDto.getMerchantUid() == null
+				|| paymentRequestDto.getAmount() < 0
+				|| paymentRequestDto.getName() == null
+				|| paymentRequestDto.getTel() == null
+				|| paymentRequestDto.getUserId() < 0) {
+			throw new ApiException(PaymentErrorCode.PAYMENT_INVALID_INPUT);
+		}
+		
+		// 포트원 결제 조회
+		IamportResponse<Payment> iamportResponse;
+		try {
+			iamportResponse =  iamportClient.paymentByImpUid(paymentRequestDto.getImpUid());
+		}
+		catch (Exception e) {
+			throw new ApiException(PaymentErrorCode.PAYMENT_LOOKUP_FAIL);
+		}
+		Payment payment = iamportResponse.getResponse();
+		
+		// 포인트 검증
+		if (iamportResponse.getResponse().getAmount().compareTo(BigDecimal.valueOf(paymentRequestDto.getAmount())) != 0) {
+			throw new ApiException(PaymentErrorCode.PAYMENT_INVALID_POINT);
+		}
+		
+		// 결제 상태 검증 
+        if (!"paid".equals(payment.getStatus())) {
+            throw new ApiException(PaymentErrorCode.PAYMENT_INVALID_STATUS);
+        }
+		
+		// 본인 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserByUsername(username).getId() != paymentRequestDto.getUserId()) {
+					throw new ApiException(FundErrorCode.FUND_FORBIDDEN);
+				}
+			}
+		}
+		
+		// 포인트 충전
+		User user = userMapper.toEntity(userService.readUserById(paymentRequestDto.getUserId()));
+		user.setPoint(user.getPoint() + paymentRequestDto.getAmount());
+		UserUpdateRequestDto userRequestDto = userMapper.toUpdateRequestDto(user);
+		UserUpdateResponseDto userResponseDto = userService.updateUser(userRequestDto);
+
+		// TODO : 결제 응답 구성
+		PaymentCreateResponseDto paymentResponseDto = new PaymentCreateResponseDto();
+		paymentResponseDto.setUsername(userResponseDto.getUsername());
+		
+		return paymentResponseDto;
+	}
+	
+	
+	
+	
+	
+	// 후원 목록 조회 (관리자)
+	public Page<FundReadResponseDto> readFundPage(String keyword, String category, String sort, Pageable pageable) {
 		
 		// 입력값 검증
 		if (pageable == null) {
 			throw new ApiException(FundErrorCode.FUND_INVALID_INPUT);
 		}
 		
-		// 정렬
-		Sort orderBy = Sort.by(Sort.Order.desc("id"));
-		if (sort != null && !sort.isBlank()) {
-			switch (sort) {
-				case "id-desc":
-					orderBy = Sort.by(Sort.Order.desc("id"));
-					break;
-				case "id-asc":
-					orderBy = Sort.by(Sort.Order.asc("id"));
-					break;
-				default:
-					break;
-		    }
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(FundErrorCode.FUND_FORBIDDEN);
+			}
 		}
-		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), orderBy);
+		
+		// 정렬
+		Sort order = Sort.by(Sort.Order.desc("id"));
+		if (sort != null && !sort.isBlank()) {
+			String field = sort.split("-")[0];
+			Direction direction = "asc".equals(sort.split("-")[1]) ? Direction.ASC : Direction.DESC;
+			order = Sort.by(new Order(direction, field), Order.desc("id"));
+		}
+		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), order);
 		
 		// 후원 목록 조회
 		Page<Fund> fundPage;
 		try {
 			boolean hasKeyword = keyword != null && !keyword.isBlank();
+			boolean hasCategory = category != null && !category.isBlank();
 			
-			fundPage = hasKeyword
-					? fundRepository.findAllByFunderUsernameContainingIgnoreCase(keyword, pageable)
-					: fundRepository.findAll(pageable);
+			if (hasCategory) {
+				fundPage = hasKeyword
+						? fundRepository.findAllByCategoryAndFunderUsernameContainingIgnoreCase(category, keyword, pageable)
+						: fundRepository.findAllByCategory(category, pageable);
+			}
+			else {
+				fundPage = hasKeyword
+						? fundRepository.findAllByFunderUsernameContainingIgnoreCase(keyword, pageable)
+						: fundRepository.findAll(pageable);
+			}
 		}
 		catch (Exception e) {
 			throw new ApiException(FundErrorCode.FUND_READ_LIST_FAIL);
@@ -248,7 +451,6 @@ public class FundService {
 		List<FundReadResponseDto> fundDtoList = new ArrayList<>();
 		for (Fund fund : fundPage) {
 			FundReadResponseDto fundDto = fundMapper.toReadResponseDto(fund);
-			
 			fundDtoList.add(fundDto);
 		}
 	
@@ -260,30 +462,20 @@ public class FundService {
 	
 	
 	// 사용자의 후원 목록 조회
-	public Page<FundReadResponseDto> readFundPageByUserId(Integer userId, Pageable pageable) {
+	public Page<FundReadResponseDto> readFundPageByUserId(int userId, Pageable pageable) {
 
 		// 입력값 검증
-		if (userId == null || pageable == null) {
+		if (userId < 0 || pageable == null) {
 			throw new ApiException(FundErrorCode.FUND_INVALID_INPUT);
 		}
 		
-		// 권한 확인
+		// 본인 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		UserReadResponseDto currentUser = userService.readUserByUsername(username);
-	
-		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			// 관리자
-			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
-				if (userService.readUserById(userId).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserByUsername(username).getId() != userId) {
 					throw new ApiException(FundErrorCode.FUND_FORBIDDEN);
 				}
-				if (userService.readUserById(userId).getRole().equals(Role.ROLE_ADMIN.name()) && currentUser.getId() != userId) {
-					throw new ApiException(FundErrorCode.FUND_FORBIDDEN);
-				}
-			}
-			// 일반회원
-			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != userId) {
-				throw new ApiException(FundErrorCode.FUND_FORBIDDEN);
 			}
 		}
 		
@@ -300,11 +492,9 @@ public class FundService {
  		List<FundReadResponseDto> fundDtoList = new ArrayList<FundReadResponseDto>();
  		for (Fund fund : fundPage) {
  			FundReadResponseDto fundDto = fundMapper.toReadResponseDto(fund);
- 			
  			fundDto.setNickname(fund.getFunder().getNickname());
 			fundDto.setTitle(fund.getRecipe().getTitle());
 			fundDto.setImage(fund.getRecipe().getImage());
-
 			fundDtoList.add(fundDto);
 		}
  		
@@ -316,19 +506,18 @@ public class FundService {
 	
 	
 	// 사용자의 후원 총합 조회
-	public int sumFundByUserId(Integer userId) {
+	// TODO : 수정 userDto.revenue
+	public int sumFundByUserId(int userId) {
 		
 		// 입력값 검증
-		if (userId == null) {
+		if (userId < 0) {
 			throw new ApiException(FundErrorCode.FUND_INVALID_INPUT);
 		}
 
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		UserReadResponseDto currentUser = userService.readUserByUsername(username);
-		
 		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			// 관리자
 			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (userService.readUserById(userId).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 					throw new ApiException(FundErrorCode.FUND_FORBIDDEN);
@@ -337,7 +526,6 @@ public class FundService {
 					throw new ApiException(FundErrorCode.FUND_FORBIDDEN);
 				}
 			}
-			// 일반회원
 			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != userId) {
 				throw new ApiException(FundErrorCode.FUND_FORBIDDEN);
 			}
@@ -348,7 +536,7 @@ public class FundService {
 			 return fundRepository.sumPointByFundeeId(userId);
 		}
 		catch (Exception e) {
-			throw new ApiException(FundErrorCode.FUND_READ_SUM_FAIL);
+			throw new ApiException(FundErrorCode.FUND_SUM_FAIL);
 		}
 	}
 	
@@ -361,11 +549,21 @@ public class FundService {
 
 		// 입력값 검증
 		if (fundRequestDto == null
-				|| fundRequestDto.getFundeeId() == 0
-				|| fundRequestDto.getFundeeId() == 0
-				|| fundRequestDto.getRecipeId() == 0
-				|| fundRequestDto.getPoint() == 0) {
+				|| fundRequestDto.getFunderId() < 0
+				|| fundRequestDto.getFundeeId() < 0
+				|| fundRequestDto.getRecipeId() < 0
+				|| fundRequestDto.getPoint() < 0) {
 			throw new ApiException(FundErrorCode.FUND_INVALID_INPUT);
+		}
+		
+		// 본인 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserByUsername(username).getId() != fundRequestDto.getFunderId()) {
+					throw new ApiException(FundErrorCode.FUND_FORBIDDEN);
+				}
+			}
 		}
 		
 		// 사용자 조회
@@ -378,16 +576,13 @@ public class FundService {
 		}
 		
 		// 후원 저장
-		Fund fund = fundMapper.toEntity(fundRequestDto);
 		try {
+			Fund fund = fundMapper.toEntity(fundRequestDto);
 			fund = fundRepository.save(fund);
-			
-			// 사용자 갱신
 			funderDto.setPoint(funderDto.getPoint() - fundRequestDto.getPoint());
 			fundeeDto.setRevenue(fundeeDto.getRevenue() + fundRequestDto.getPoint());
 			userService.updateUser(userMapper.toUpdateRequestDto(userMapper.toEntity(funderDto)));
 			userService.updateUser(userMapper.toUpdateRequestDto(userMapper.toEntity(fundeeDto)));
-			
 			return fundMapper.toCreateResponseDto(fund);
 		}
 		catch (Exception e) {
@@ -407,39 +602,22 @@ public class FundService {
 			throw new ApiException(WithdrawErrorCode.WITHDRAW_INVALID_INPUT);
 		}
 		
-		// 정렬
-		Sort orderBy = Sort.by(Sort.Order.desc("id"));
-		if (sort != null && !sort.isBlank()) {
-			switch (sort) {
-				case "id-desc":
-					orderBy = Sort.by(Sort.Order.desc("id"));
-					break;
-				case "id-asc":
-					orderBy = Sort.by(Sort.Order.asc("id"));
-					break;
-				case "point-desc":
-					orderBy = Sort.by(Sort.Order.desc("point"));
-					break;
-				case "point-asc":
-					orderBy = Sort.by(Sort.Order.asc("point"));
-					break;
-				case "claimdate-desc":
-					orderBy = Sort.by(Sort.Order.desc("claimdate"));
-					break;
-				case "claimdate-asc":
-					orderBy = Sort.by(Sort.Order.asc("claimdate"));
-					break;
-				case "settledate-desc":
-					orderBy = Sort.by(Sort.Order.desc("settledate"));
-					break;
-				case "settledate-asc":
-					orderBy = Sort.by(Sort.Order.asc("settledate"));
-					break;
-				default:
-					break;
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
 			}
 		}
-		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), orderBy);
+		
+		// 정렬
+		Sort order = Sort.by(Sort.Order.desc("id"));
+		if (sort != null && !sort.isBlank()) {
+			String sortField = sort.split("-")[0];
+			Direction direction = "asc".equals(sort.split("-")[1]) ? Direction.ASC : Direction.DESC;
+			order = Sort.by(new Order(direction, sortField), Order.desc("id"));
+		}
+		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), order);
 		
 		// 출금 목록 조회
 		Page<Withdraw> withdrawPage = null;
@@ -482,11 +660,9 @@ public class FundService {
 		List<WithdrawReadResponseDto> withdrawDtoList = new ArrayList<>();
 		for (Withdraw withdraw : withdrawPage) {
 			WithdrawReadResponseDto withdrawDto = withdrawMapper.toReadResponseDto(withdraw);
-			
 			withdrawDto.setName(withdraw.getUser().getName());
 			withdrawDto.setUsername(withdraw.getUser().getUsername());
 			withdrawDto.setAccountnum(withdraw.getAccount().getAccountnum());
-			
 			withdrawDtoList.add(withdrawDto);
 		}
 
@@ -505,21 +681,13 @@ public class FundService {
 			throw new ApiException(WithdrawErrorCode.WITHDRAW_INVALID_INPUT);
 		}
 		
-		// 권한 확인
+		// 본인 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		UserReadResponseDto currentUser = userService.readUserByUsername(username);
-		
-		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
-				if (userService.readUserById(userId).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserByUsername(username).getId() != userId) {
 					throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
 				}
-				if (userService.readUserById(userId).getRole().equals(Role.ROLE_ADMIN.name()) && currentUser.getId() != userId) {
-					throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
-				}
-			}
-			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != userId) {
-				throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
 			}
 		}
 		
@@ -557,6 +725,16 @@ public class FundService {
 			throw new ApiException(WithdrawErrorCode.WITHDRAW_INVALID_INPUT);
 		}
 		
+		// 본인 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserByUsername(username).getId() != withdrawRequestDto.getUserId()) {
+					throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
+				}
+			}
+		}
+		
 		// 사용자 조회
 		UserReadResponseDto userDto = userService.readUserById(withdrawRequestDto.getUserId());
 		
@@ -588,7 +766,7 @@ public class FundService {
 	
 	
 	
-	
+
 	
 	// 출금 수정
 	public WithdrawUpdateResponseDto updateWithdraw(WithdrawUpdateRequestDto withdrawDto) {
@@ -598,16 +776,28 @@ public class FundService {
 			throw new ApiException(WithdrawErrorCode.WITHDRAW_INVALID_INPUT);
 		}
 		
-		// 출금 존재 여부 확인
-		Withdraw withdraw = withdrawRepository.findById(withdrawDto.getId())
-				.orElseThrow(() -> new ApiException(WithdrawErrorCode.WITHDRAW_NOT_FOUND));
-
-		// 권한 확인
+		// 본인 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		UserReadResponseDto currentUser = userService.readUserByUsername(username);
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				if (userService.readUserByUsername(username).getId() != withdrawDto.getUserId()) {
+					throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
+				}
+			}
+		}
+
+		// 출금 조회
+		Withdraw withdraw;
+		try {
+			withdraw = withdrawRepository.findById(withdrawDto.getId());
+		}
+		catch (Exception e) {
+			throw new ApiException(WithdrawErrorCode.WITHDRAW_NOT_FOUND);
+		}
 		
+		// 권한 확인
+		UserReadResponseDto currentUser = userService.readUserByUsername(username);
 		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			// 관리자
 			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (withdraw.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
 					throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
@@ -616,13 +806,12 @@ public class FundService {
 					throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
 				}
 			}
-			// 일반회원
 			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != withdraw.getUser().getId()) {
 				throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
 			}
 		}
 		
-		// 변경 값 설정
+		// 값 설정
 		if (withdrawDto.getPoint() != 0) {
 			withdraw.setPoint(withdrawDto.getPoint());
 		}
@@ -672,16 +861,19 @@ public class FundService {
 			throw new ApiException(WithdrawErrorCode.WITHDRAW_INVALID_INPUT);
 		}
 		
-		// 출금 존재 여부 확인
-		Withdraw withdraw = withdrawRepository.findById(id)
-				.orElseThrow(() -> new ApiException(WithdrawErrorCode.WITHDRAW_NOT_FOUND));
+		// 출금 조회
+		Withdraw withdraw;
+		try {
+			withdraw = withdrawRepository.findById(id);
+		}
+		catch (Exception e) {
+			throw new ApiException(WithdrawErrorCode.WITHDRAW_NOT_FOUND);
+		}
 		
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		UserReadResponseDto currentUser = userService.readUserByUsername(username);
-		
 		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			// 관리자
 			if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (withdraw.getUser().getRole().equals(Role.ROLE_SUPER_ADMIN)) {
 					throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
@@ -690,7 +882,6 @@ public class FundService {
 					throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
 				}
 			}
-			// 일반회원
 			else if (currentUser.getRole().equals(Role.ROLE_USER.name()) && currentUser.getId() != withdraw.getUser().getId()) {
 				throw new ApiException(WithdrawErrorCode.WITHDRAW_FORBIDDEN);
 			}
@@ -703,6 +894,6 @@ public class FundService {
 		catch (Exception e) {
 			throw new ApiException(WithdrawErrorCode.WITHDRAW_DELETE_FAIL);
 		}
-		
 	}
+	
 }

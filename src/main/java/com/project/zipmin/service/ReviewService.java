@@ -237,7 +237,7 @@ public class ReviewService {
 			throw new ApiException(ReviewErrorCode.REVIEW_CREATE_FAIL);
 		}
 		
-		// 리뷰 응답 구성
+		// TODO : 리뷰 응답 구성
 		// ReviewCreateResponseDto reviewResponseDto = reviewMapper.toCreateResponseDto(review);
 		//reviewResponseDto.setNickname(userService.readUserById(reviewRequestDto.getUserId()).getNickname());
 		//reviewResponseDto.setLikecount(likeService.countLike("review", review.getId()));

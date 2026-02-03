@@ -15,8 +15,8 @@ public enum WithdrawErrorCode implements Code {
 	WITHDRAW_INVALID_POINT(HttpStatus.BAD_REQUEST, "포인트가 유효하지 않음"),
 	
 	WITHDRAW_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 출금을 찾을 수 없음"),
-	WITHDRAW_CREATE_FAIL(HttpStatus.BAD_REQUEST, "출금 작성 실패"),
 	WITHDRAW_READ_LIST_FAIL(HttpStatus.BAD_REQUEST, "출금 목록 조회 실패"),
+	WITHDRAW_CREATE_FAIL(HttpStatus.BAD_REQUEST, "출금 작성 실패"),
 	WITHDRAW_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "출금 수정 실패"),
 	WITHDRAW_DELETE_FAIL(HttpStatus.BAD_REQUEST, "출금 삭제 실패"),
 	

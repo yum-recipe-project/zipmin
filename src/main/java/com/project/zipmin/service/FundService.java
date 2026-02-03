@@ -92,7 +92,7 @@ public class FundService {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				throw new ApiException(FundErrorCode.FUND_FORBIDDEN);
+				throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_FORBIDDEN);
 			}
 		}
 		
@@ -111,11 +111,13 @@ public class FundService {
 			boolean hasKeyword = keyword != null && !keyword.isBlank();
 			
 			if (hasKeyword) {
-				if (field.equalsIgnoreCase("name")) {
-					accountPage = accountRepository.findAllByUserNameContainingIgnoreCase(keyword, pageable);
-				}
-				else if (field.equalsIgnoreCase("username")) {
-					accountPage = accountRepository.findAllByUserUsernameContainingIgnoreCase(keyword, pageable);
+				switch (field.toLowerCase()) {
+				    case "name":
+				        accountPage = accountRepository.findAllByUserNameContainingIgnoreCase(keyword, pageable);
+				        break;
+				    case "username":
+				        accountPage = accountRepository.findAllByUserUsernameContainingIgnoreCase(keyword, pageable);
+				        break;
 				}
 			}
 			else {
@@ -123,7 +125,7 @@ public class FundService {
 			}
 		}
 		catch (Exception e) {
-			throw new ApiException(FundErrorCode.FUND_READ_LIST_FAIL);
+			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_READ_FAIL);
 		}
 		
 		// 계좌 목록 응답 구성
@@ -379,7 +381,7 @@ public class FundService {
 		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
 				if (userService.readUserByUsername(username).getId() != paymentRequestDto.getUserId()) {
-					throw new ApiException(FundErrorCode.FUND_FORBIDDEN);
+					throw new ApiException(PaymentErrorCode.PAYMENT_FORBIDDEN);
 				}
 			}
 		}
@@ -498,7 +500,7 @@ public class FundService {
 	
 	
 	// 사용자의 후원 총합 조회
-	// TODO : 수정 userDto.revenue
+	// TODO : 수정 (제거) userDto.revenue
 	public int sumFundByUserId(int userId) {
 		
 		// 입력값 검증
@@ -619,11 +621,13 @@ public class FundService {
 			
 			if (hasStatus) {
 				if (hasKeyword) {
-					if (field.equalsIgnoreCase("username")) {
-						withdrawPage = withdrawRepository.findAllByStatusAndUserUsernameContainingIgnoreCase(status, keyword, pageable);
-					}
-					else if (field.equalsIgnoreCase("name")) {
-						withdrawPage = withdrawRepository.findAllByStatusAndUserNameContainingIgnoreCase(status, keyword, pageable);
+					switch (field.toLowerCase()) {
+					    case "name":
+					    	withdrawPage = withdrawRepository.findAllByStatusAndUserNameContainingIgnoreCase(status, keyword, pageable);
+					        break;
+					    case "username":
+					    	withdrawPage = withdrawRepository.findAllByStatusAndUserUsernameContainingIgnoreCase(status, keyword, pageable);
+					        break;
 					}
 				}
 				else {
@@ -632,11 +636,13 @@ public class FundService {
 			}
 			else {
 				if (hasKeyword) {
-					if (field.equalsIgnoreCase("username")) {
-						withdrawPage = withdrawRepository.findAllByUserUsernameContainingIgnoreCase(keyword, pageable);
-					}
-					else if (field.equalsIgnoreCase("name")) {
-						withdrawPage = withdrawRepository.findAllByUserNameContainingIgnoreCase(keyword, pageable);
+					switch (field.toLowerCase()) {
+					    case "name":
+					    	withdrawPage = withdrawRepository.findAllByUserNameContainingIgnoreCase(keyword, pageable);
+					        break;
+					    case "username":
+					    	withdrawPage = withdrawRepository.findAllByUserUsernameContainingIgnoreCase(keyword, pageable);
+					        break;
 					}
 				}
 				else {

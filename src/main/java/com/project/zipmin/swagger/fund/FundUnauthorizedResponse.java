@@ -1,9 +1,9 @@
-package com.project.zipmin.swagger;
+package com.project.zipmin.swagger.fund;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(name = "FundUnauthorizedFailResponse")
-public class FundUnauthorizedFailResponse {
+@Schema(name = "FundUnauthorizedResponse")
+public class FundUnauthorizedResponse {
 	
     @Schema(example = "FUND_UNAUTHORIZED", description = "에러 코드")
     public String code;

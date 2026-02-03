@@ -9,17 +9,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum UserAccountErrorCode implements Code {
 	
-	USER_ACCOUNT_UNAUTHORIZED_ACCESS(HttpStatus.UNAUTHORIZED, "로그인되지 않은 사용자"),
-	USER_ACCOUNT_FORBIDDEN(HttpStatus.FORBIDDEN, "권한 없는 사용자의 접근"),
+	USER_ACCOUNT_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "로그인되지 않은 사용자"),
+	USER_ACCOUNT_FORBIDDEN(HttpStatus.FORBIDDEN, "권한 없는 사용자"),
 	
 	USER_ACCOUNT_INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음"),
 	
 	USER_ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 계좌를 찾을 수 없음"),
-	USER_ACCOUNT_CREATE_FAIL(HttpStatus.BAD_REQUEST, "계좌 작성 실패"),
+	USER_ACCOUNT_READ_LIST_FAIL(HttpStatus.BAD_REQUEST, "계좌 목록 조회 실패"),
 	USER_ACCOUNT_READ_FAIL(HttpStatus.BAD_REQUEST, "계좌 조회 실패"),
+	USER_ACCOUNT_CREATE_FAIL(HttpStatus.BAD_REQUEST, "계좌 작성 실패"),
 	USER_ACCOUNT_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "계좌 수정 실패"),
+	USER_ACCOUNT_DELETE_FAIL(HttpStatus.BAD_REQUEST, "계좌 삭제 실패"),
 
-	// 기타
 	USER_UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "예외 처리되지 않은 내부 오류");
 	
 	private final HttpStatus status;

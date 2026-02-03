@@ -77,7 +77,7 @@ public class FundController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
-		// 401 USER_ACCOUNT_UNAUTHORIZED_ACCESS 로그인되지 않은 사용자
+		// 401 USER_ACCOUNT_UNAUTHORIZED 로그인되지 않은 사용자
 		// 403 USER_ACCOUNT_FORBIDDEN 권한 없는 사용자의 접근
 		// 404 USER_ACCOUNT_NOT_FOUND 해당 계좌를 찾을 수 없음
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -102,7 +102,7 @@ public class FundController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_UNAUTHORIZED_ACCESS);
+			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_UNAUTHORIZED);
 		}
 		
 		UserAccountReadResponseDto accountDto = fundService.readAccountByUserId(id);
@@ -123,7 +123,7 @@ public class FundController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_UNAUTHORIZED_ACCESS);
+			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_UNAUTHORIZED);
 		}
 		
 		// 결제 작성
@@ -151,7 +151,7 @@ public class FundController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
-		// 401 USER_ACCOUNT_UNAUTHORIZED_ACCESS 로그인되지 않은 사용자
+		// 401 USER_ACCOUNT_UNAUTHORIZED 로그인되지 않은 사용자
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
 				responseCode = "404",
 				description = "해당 사용자를 찾을 수 없음",
@@ -174,7 +174,7 @@ public class FundController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_UNAUTHORIZED_ACCESS);
+			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_UNAUTHORIZED);
 		}
 		accountRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 
@@ -201,7 +201,7 @@ public class FundController {
 				content = @Content(
 						mediaType = "application/json",
 						schema = @Schema(implementation = UserInvalidInputResponse.class))),
-		// 401 USER_ACCOUNT_UNAUTHORIZED_ACCESS 로그인되지 않은 사용자
+		// 401 USER_ACCOUNT_UNAUTHORIZED 로그인되지 않은 사용자
 		// 403 USER_ACCOUNT_FORBIDDEN 권한 없는 사용자의 접근
 		// 404 USER_ACCOUNT_NOT_FOUND 해당 계좌를 찾을 수 없음
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -226,7 +226,7 @@ public class FundController {
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_UNAUTHORIZED_ACCESS);
+			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_UNAUTHORIZED);
 		}
 		accountRequestDto.setUserId(userService.readUserByUsername(authentication.getName()).getId());
 

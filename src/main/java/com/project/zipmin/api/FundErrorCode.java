@@ -15,9 +15,9 @@ public enum FundErrorCode implements Code {
 	FUND_INVALID_POINT(HttpStatus.BAD_REQUEST, "포인트가 유효하지 않음"),
 	
 	FUND_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 후원을 찾을 수 없음"),
+	FUND_READ_LIST_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "후원 목록 조회 실패"),
 	FUND_CREATE_FAIL(HttpStatus.BAD_REQUEST, "후원 작성 실패"),
-	FUND_READ_LIST_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "후원 조회 실패"),
-	FUND_SUM_FAIL(HttpStatus.BAD_REQUEST, "후원 합계 조회 실패"),
+	FUND_SUM_FAIL(HttpStatus.BAD_REQUEST, "후원 합계 실패"),
 	
 	FUND_UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "예외 처리되지 않은 내부 오류"); 
 

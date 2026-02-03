@@ -128,17 +128,17 @@ public class CookingController {
 		
 	})
 	// 클래스 목록 조회
-	// js/admin/list-class.js
-	// js/cooking/list-class.js
 	@GetMapping("/classes")
 	public ResponseEntity<?> listClass(
-			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
 			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
+			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
 			@Parameter(description = "승인 상태", required = false) @RequestParam(required = false) int approval,
 			@Parameter(description = "진행 상태", required = false) @RequestParam(required = false) int status,
 			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
 		    @Parameter(description = "페이지 번호") @RequestParam int page,
 		    @Parameter(description = "페이지 크기") @RequestParam int size) {
+		
+		System.err.println("컨트롤러");
 		
 		Pageable pageable = PageRequest.of(page, size);
 		Page<ClassReadResponseDto> classPage = cookingService.readClassPage(keyword, category, approval, status, sort, pageable);

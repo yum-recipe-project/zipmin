@@ -1,12 +1,13 @@
 /**
  * 전역변수
  */
-let totalPages = 0;
 let page = 0;
-const size = 10;
-let keyword = '';
+let size = 10;
+let totalPages = 0;
+let totalElements = 0;
 let category = '';
-let status = '';
+let keyword = '';
+let state = -1;
 let classList = [];
 
 
@@ -57,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			document.querySelector('.btn_sort.active')?.classList.remove('active');
 			btn.classList.add('active');
 			
-			status = btn.dataset.status;
+			state = btn.dataset.status;
 			page = 0;
 			classList = [];
 			
@@ -79,10 +80,10 @@ async function fetchClassList() {
 	
 	try {
 		const params = new URLSearchParams({
-			category: category,
-			approval: 'APPROVED',
-			status: status,
 			keyword : keyword,
+			category: category,
+			approval: 1,
+			status: state,
 			page : page,
 			size : size
 		}).toString();
@@ -94,16 +95,19 @@ async function fetchClassList() {
 		
 		const result = await response.json();
 		
+		console.log(result);
+		
 		if (result.code === 'CLASS_READ_LIST_SUCCESS') {
 			// 전역변수 설정
 			page = result.data.number;
 			totalPages = result.data.totalPages;
+			totalElements = result.data.totalElements;
 			classList = result.data.content;
 			
 			// 렌더링
 			renderClassList(classList);
 			renderPagination(fetchClassList);
-			document.querySelector('.class_util .total').innerText = `총 ${result.data.totalElements}개`;
+			document.querySelector('.class_util .total').innerText = `총 ${totalElements}개`;
 			
 			// 스크롤 최상단 이동
 			window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -174,14 +178,14 @@ function renderClassList(classList) {
 		title.textContent = classs.title;
 		
 		const flag = document.createElement('p');
-		flag.className = classs.opened ? 'flag open' : 'flag';
-		flag.textContent = classs.opened ? '모집중' : '마감';
+		flag.className = classs.status ? 'flag open' : 'flag';
+		flag.textContent = classs.status ? '모집중' : '마감';
 		
 		const date = document.createElement('p');
 		date.className = 'date';
 		date.textContent = `${formatDate(classs.eventdate)}`;
 
-	    infoDiv.append(title, flag, date);
+		infoDiv.append(title, flag, date);
 		link.append(thumbnailDiv, infoDiv);
 		li.appendChild(link);
 		

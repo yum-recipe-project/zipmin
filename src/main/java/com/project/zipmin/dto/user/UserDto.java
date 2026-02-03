@@ -1,4 +1,4 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.user;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -7,20 +7,22 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class UserUpdateRequestDto {
-	
-	private Integer id;
-	private String password;
+public class UserDto {
+	private int id;
 	private String username;
+	private String password;
 	private String name;
 	private String nickname;
 	private String tel;
 	private String email;
-	
 	private String avatar;
-	private String introduce;
-	private String link;
 	private int point;
-	private Integer revenue;
+	private int revenue;
+	private String role;
+	private int enable;
 	
+	private String provider;
+	private String providerId;
+	private String refresh;
+	private String expiration;
 }

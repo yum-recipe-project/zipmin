@@ -1,16 +1,18 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.fund;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class UserReadUsernameRequestDto {
-	
-	private String name;
-	private String tel;
+public class AccountUpdateRequestDto {
+
+	private int id;
+	private String bank;     
+	private String accountnum;   
+	private String name;         
+	private int userId;      
 	
 }

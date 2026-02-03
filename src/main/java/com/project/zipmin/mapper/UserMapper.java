@@ -2,16 +2,13 @@ package com.project.zipmin.mapper;
 
 import org.mapstruct.Mapper;
 
-import com.project.zipmin.dto.UserAccountReadResponseDto;
-import com.project.zipmin.dto.UserCreateRequestDto;
-import com.project.zipmin.dto.UserCreateResponseDto;
-import com.project.zipmin.dto.UserProfileReadResponseDto;
-import com.project.zipmin.dto.UserReadResponseDto;
-import com.project.zipmin.dto.UserUpdateRequestDto;
-import com.project.zipmin.dto.UserUpdateResponseDto;
-import com.project.zipmin.dto.fund.UserPointReadResponseDto;
+import com.project.zipmin.dto.user.UserCreateRequestDto;
+import com.project.zipmin.dto.user.UserCreateResponseDto;
+import com.project.zipmin.dto.user.UserProfileReadResponseDto;
+import com.project.zipmin.dto.user.UserReadResponseDto;
+import com.project.zipmin.dto.user.UserUpdateRequestDto;
+import com.project.zipmin.dto.user.UserUpdateResponseDto;
 import com.project.zipmin.entity.User;
-import com.project.zipmin.entity.UserAccount;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
@@ -22,10 +19,6 @@ public interface UserMapper {
 	
 	User toEntity(UserProfileReadResponseDto userDto);
 	UserProfileReadResponseDto toReadProfileResponseDto(User user);
-	
-	UserPointReadResponseDto toReadPointResponseDto(User user);
-	UserAccountReadResponseDto toReadAccountResponseDto(UserAccount account);
-	
 	
 	
 	

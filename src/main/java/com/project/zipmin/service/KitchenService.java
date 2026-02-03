@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.KitchenErrorCode;
-import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.kitchen.GuideCreateRequestDto;
 import com.project.zipmin.dto.kitchen.GuideCreateResponseDto;
 import com.project.zipmin.dto.kitchen.GuideReadResponseDto;
@@ -27,6 +26,7 @@ import com.project.zipmin.dto.like.LikeCreateRequestDto;
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
 import com.project.zipmin.dto.like.LikeDeleteRequestDto;
 import com.project.zipmin.dto.like.LikeReadResponseDto;
+import com.project.zipmin.dto.user.UserReadResponseDto;
 import com.project.zipmin.entity.Guide;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.mapper.KitchenMapper;

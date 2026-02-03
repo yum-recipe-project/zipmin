@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ReportErrorCode;
-import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.report.ReportCreateRequestDto;
 import com.project.zipmin.dto.report.ReportCreateResponseDto;
 import com.project.zipmin.dto.report.ReportReadRequestDto;
 import com.project.zipmin.dto.report.ReportReadResponseDto;
+import com.project.zipmin.dto.user.UserReadResponseDto;
 import com.project.zipmin.entity.Report;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.mapper.ReportMapper;
@@ -40,6 +40,14 @@ public class ReportService {
 				|| reportRequestDto.getTablename() == null
 				|| reportRequestDto.getRecodenum() == 0) {
 			throw new ApiException(ReportErrorCode.REPORT_INVALID_INPUT);
+		}
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(ReportErrorCode.REPORT_FORBIDDEN);
+			}
 		}
 		
 		// 신고 목록 조회

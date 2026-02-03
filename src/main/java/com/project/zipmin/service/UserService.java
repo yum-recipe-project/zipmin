@@ -22,21 +22,21 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.dto.MailDto;
 import com.project.zipmin.dto.PasswordTokenDto;
-import com.project.zipmin.dto.UserCreateRequestDto;
-import com.project.zipmin.dto.UserCreateResponseDto;
-import com.project.zipmin.dto.UserPasswordCheckRequestDto;
-import com.project.zipmin.dto.UserPasswordUpdateRequestDto;
-import com.project.zipmin.dto.UserProfileReadResponseDto;
-import com.project.zipmin.dto.UserReadPasswordRequestDto;
-import com.project.zipmin.dto.UserReadResponseDto;
-import com.project.zipmin.dto.UserReadUsernameRequestDto;
-import com.project.zipmin.dto.UserUpdateRequestDto;
-import com.project.zipmin.dto.UserUpdateResponseDto;
 import com.project.zipmin.dto.fund.UserPointReadResponseDto;
 import com.project.zipmin.dto.like.LikeCreateRequestDto;
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
 import com.project.zipmin.dto.like.LikeDeleteRequestDto;
 import com.project.zipmin.dto.like.LikeReadResponseDto;
+import com.project.zipmin.dto.user.UserCreateRequestDto;
+import com.project.zipmin.dto.user.UserCreateResponseDto;
+import com.project.zipmin.dto.user.UserPasswordCheckRequestDto;
+import com.project.zipmin.dto.user.UserPasswordUpdateRequestDto;
+import com.project.zipmin.dto.user.UserProfileReadResponseDto;
+import com.project.zipmin.dto.user.UserReadPasswordRequestDto;
+import com.project.zipmin.dto.user.UserReadResponseDto;
+import com.project.zipmin.dto.user.UserReadUsernameRequestDto;
+import com.project.zipmin.dto.user.UserUpdateRequestDto;
+import com.project.zipmin.dto.user.UserUpdateResponseDto;
 import com.project.zipmin.entity.PasswordToken;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.entity.User;
@@ -76,6 +76,14 @@ public class UserService {
 		// 입력값 검증
 		if (pageable == null) {
 			throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
+		}
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
+			}
 		}
 		
 		// 정렬
@@ -744,20 +752,6 @@ public class UserService {
 	
 	
 	
-	
-	// 아이디로 사용자 포인트 조회
-	public UserPointReadResponseDto readUserPointById(Integer id) {
 
-	    // 입력값 검증
-	    if (id == null) {
-	        throw new ApiException(UserErrorCode.USER_INVALID_INPUT);
-	    }
-
-	    // 사용자 조회
-	    User user = userRepository.findById(id)
-	            .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
-
-	    return userMapper.toReadPointResponseDto(user);
-	}
 
 }

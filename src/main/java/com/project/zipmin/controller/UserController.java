@@ -21,20 +21,19 @@ import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.dto.TokenDto;
-import com.project.zipmin.dto.UserCreateRequestDto;
-import com.project.zipmin.dto.UserCreateResponseDto;
-import com.project.zipmin.dto.UserPasswordCheckRequestDto;
-import com.project.zipmin.dto.UserPasswordUpdateRequestDto;
-import com.project.zipmin.dto.UserProfileReadResponseDto;
-import com.project.zipmin.dto.UserReadPasswordRequestDto;
-import com.project.zipmin.dto.UserReadResponseDto;
-import com.project.zipmin.dto.UserReadUsernameRequestDto;
-import com.project.zipmin.dto.UserUpdateRequestDto;
-import com.project.zipmin.dto.UserUpdateResponseDto;
-import com.project.zipmin.dto.fund.UserPointReadResponseDto;
 import com.project.zipmin.dto.like.LikeCreateRequestDto;
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
 import com.project.zipmin.dto.like.LikeDeleteRequestDto;
+import com.project.zipmin.dto.user.UserCreateRequestDto;
+import com.project.zipmin.dto.user.UserCreateResponseDto;
+import com.project.zipmin.dto.user.UserPasswordCheckRequestDto;
+import com.project.zipmin.dto.user.UserPasswordUpdateRequestDto;
+import com.project.zipmin.dto.user.UserProfileReadResponseDto;
+import com.project.zipmin.dto.user.UserReadPasswordRequestDto;
+import com.project.zipmin.dto.user.UserReadResponseDto;
+import com.project.zipmin.dto.user.UserReadUsernameRequestDto;
+import com.project.zipmin.dto.user.UserUpdateRequestDto;
+import com.project.zipmin.dto.user.UserUpdateResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.ReissueService;
 import com.project.zipmin.service.UserService;
@@ -978,26 +977,5 @@ public class UserController {
 	
 
 	
-	
-	// 사용자 포인트 조회
-//	@GetMapping("/users/{id}/point")
-//	public ResponseEntity<?> readUserPoint(
-//	        @PathVariable int id) {
-//
-//	    UserPointReadResponseDto pointDto = userService.readUserPointById(id);
-//
-//	    return ResponseEntity.status(UserSuccessCode.USER_READ_SUCCESS.getStatus())
-//	            .body(ApiResponse.success(UserSuccessCode.USER_READ_SUCCESS, pointDto));
-//	}
-//
-//
-//	
-	
-	
-	
-	
-	
-	
-
 	
 }

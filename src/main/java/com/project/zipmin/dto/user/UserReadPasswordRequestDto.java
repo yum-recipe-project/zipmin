@@ -1,15 +1,16 @@
-package com.project.zipmin.dto;
+package com.project.zipmin.dto.user;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class UserPasswordCheckRequestDto {
+public class UserReadPasswordRequestDto {
 	
-	private Integer id;
-	private String password;
+	private String username;
+	private String email;
 	
 }

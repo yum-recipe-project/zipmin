@@ -22,34 +22,34 @@ import com.project.zipmin.api.FundErrorCode;
 import com.project.zipmin.api.PaymentErrorCode;
 import com.project.zipmin.api.UserAccountErrorCode;
 import com.project.zipmin.api.WithdrawErrorCode;
-import com.project.zipmin.dto.UserAccountCreateRequestDto;
-import com.project.zipmin.dto.UserAccountCreateResponseDto;
-import com.project.zipmin.dto.UserAccountReadResponseDto;
-import com.project.zipmin.dto.UserAccountUpdateRequestDto;
-import com.project.zipmin.dto.UserAccountUpdateResponseDto;
-import com.project.zipmin.dto.UserReadResponseDto;
-import com.project.zipmin.dto.UserUpdateRequestDto;
-import com.project.zipmin.dto.UserUpdateResponseDto;
 import com.project.zipmin.dto.fund.FundCreateRequestDto;
 import com.project.zipmin.dto.fund.FundCreateResponseDto;
 import com.project.zipmin.dto.fund.FundReadResponseDto;
 import com.project.zipmin.dto.fund.PaymentCreateRequestDto;
 import com.project.zipmin.dto.fund.PaymentCreateResponseDto;
+import com.project.zipmin.dto.fund.AccountCreateRequestDto;
+import com.project.zipmin.dto.fund.AccountCreateResponseDto;
+import com.project.zipmin.dto.fund.AccountReadResponseDto;
+import com.project.zipmin.dto.fund.AccountUpdateRequestDto;
+import com.project.zipmin.dto.fund.AccountUpdateResponseDto;
 import com.project.zipmin.dto.fund.WithdrawCreateRequestDto;
 import com.project.zipmin.dto.fund.WithdrawReadResponseDto;
 import com.project.zipmin.dto.fund.WithdrawUpdateRequestDto;
 import com.project.zipmin.dto.fund.WithdrawUpdateResponseDto;
+import com.project.zipmin.dto.user.UserReadResponseDto;
+import com.project.zipmin.dto.user.UserUpdateRequestDto;
+import com.project.zipmin.dto.user.UserUpdateResponseDto;
 import com.project.zipmin.entity.Fund;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.entity.User;
-import com.project.zipmin.entity.UserAccount;
+import com.project.zipmin.entity.Account;
 import com.project.zipmin.entity.Withdraw;
 import com.project.zipmin.mapper.FundMapper;
-import com.project.zipmin.mapper.UserAccountMapper;
+import com.project.zipmin.mapper.AccountMapper;
 import com.project.zipmin.mapper.UserMapper;
 import com.project.zipmin.mapper.WithdrawMapper;
 import com.project.zipmin.repository.FundRepository;
-import com.project.zipmin.repository.UserAccountRepository;
+import com.project.zipmin.repository.AccountRepository;
 import com.project.zipmin.repository.WithdrawRepository;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.response.IamportResponse;
@@ -62,10 +62,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FundService {
 	
-	private final UserAccountRepository accountRepository;
+	private final AccountRepository accountRepository;
 	private final FundRepository fundRepository;
 	private final WithdrawRepository withdrawRepository;
-	private final UserAccountMapper accountMapper;
+	private final AccountMapper accountMapper;
 	private final FundMapper fundMapper;
 	private final WithdrawMapper withdrawMapper;
 	private final UserMapper userMapper;
@@ -81,7 +81,7 @@ public class FundService {
 	
 	
 	// 계좌 목록 조회 (관리자)
-	public Page<UserAccountReadResponseDto> readAccountPage(String field, String keyword, String sort, Pageable pageable) {
+	public Page<AccountReadResponseDto> readAccountPage(String field, String keyword, String sort, Pageable pageable) {
 		
 		// 입력값 검증
 		if (pageable == null) {
@@ -106,7 +106,7 @@ public class FundService {
 		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), order);
 		
 		// 계좌 목록 조회
-		Page<UserAccount> accountPage = null;
+		Page<Account> accountPage = null;
 		try {
 			boolean hasKeyword = keyword != null && !keyword.isBlank();
 			
@@ -129,9 +129,9 @@ public class FundService {
 		}
 		
 		// 계좌 목록 응답 구성
-		List<UserAccountReadResponseDto> accountDtoList = new ArrayList<UserAccountReadResponseDto>();
-		for (UserAccount account : accountPage) {
-			UserAccountReadResponseDto accountDto = accountMapper.toReadResponseDto(account);
+		List<AccountReadResponseDto> accountDtoList = new ArrayList<AccountReadResponseDto>();
+		for (Account account : accountPage) {
+			AccountReadResponseDto accountDto = accountMapper.toReadResponseDto(account);
 			accountDtoList.add(accountDto);
 		}
 		
@@ -143,7 +143,7 @@ public class FundService {
 	
 	
 	// 계좌 상세 조회
-	public UserAccountReadResponseDto readAccountById(int id) {
+	public AccountReadResponseDto readAccountById(int id) {
 		
 		// 입력값 검증
 		if (id < 0) {
@@ -151,7 +151,7 @@ public class FundService {
 		}
 		
 		// 계좌 상세 조회
-		UserAccount account;
+		Account account;
 		try {
 			account = accountRepository.findById(id);
 		}
@@ -184,7 +184,7 @@ public class FundService {
 	
 	
 	// 사용자의 계좌 상세 조회
-	public UserAccountReadResponseDto readAccountByUserId(int userId) {
+	public AccountReadResponseDto readAccountByUserId(int userId) {
 
 		// 입력값 검증
 		if (userId < 0) {
@@ -202,7 +202,7 @@ public class FundService {
 		}
 		
 		// 계좌 조회
-		UserAccount account;
+		Account account;
 		try {
 			account = accountRepository.findByUserId(userId);
 		}
@@ -234,7 +234,7 @@ public class FundService {
 	
 	
 	// 계좌 작성
-	public UserAccountCreateResponseDto createAccount(UserAccountCreateRequestDto accountRequestDto) {
+	public AccountCreateResponseDto createAccount(AccountCreateRequestDto accountRequestDto) {
 		
 		// 입력값 검증
 		if (accountRequestDto == null 
@@ -256,7 +256,7 @@ public class FundService {
 		}
 		
 		// 계좌 저장
-		UserAccount userAccount = accountMapper.toEntity(accountRequestDto);
+		Account userAccount = accountMapper.toEntity(accountRequestDto);
 		try {
 			userAccount = accountRepository.save(userAccount);
 			return accountMapper.toCreateResponseDto(userAccount);
@@ -271,7 +271,7 @@ public class FundService {
 	
 	
 	// 계좌 수정
-	public UserAccountUpdateResponseDto updateAccount(UserAccountUpdateRequestDto accountRequestDto) {
+	public AccountUpdateResponseDto updateAccount(AccountUpdateRequestDto accountRequestDto) {
 
 		// 입력값 검증
 		if (accountRequestDto == null
@@ -293,7 +293,7 @@ public class FundService {
 		}
 		
 		// 계좌 조회
-		UserAccount account;
+		Account account;
 		try {
 			account = accountRepository.findByUserId(accountRequestDto.getUserId());
 		}
@@ -748,7 +748,7 @@ public class FundService {
 		}
 		
 		// 계좌 설정
-		UserAccountReadResponseDto accountDto = readAccountByUserId(withdrawRequestDto.getUserId());
+		AccountReadResponseDto accountDto = readAccountByUserId(withdrawRequestDto.getUserId());
 		withdrawRequestDto.setAccountId(accountDto.getId());
 		
 		// 출금 저장
@@ -834,7 +834,7 @@ public class FundService {
 			withdraw.setUser(userMapper.toEntity(userDto));
 		}
 		if (withdrawDto.getAccountId() != 0) {
-			UserAccountReadResponseDto accountDto = readAccountById(withdrawDto.getId());
+			AccountReadResponseDto accountDto = readAccountById(withdrawDto.getId());
 			withdraw.setAccount(accountMapper.toEntity(accountDto));
 		}
 		if (withdrawDto.getAdminId() != 0) {

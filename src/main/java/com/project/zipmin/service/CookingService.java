@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ClassErrorCode;
-import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.cooking.ClassApplyCreateRequestDto;
 import com.project.zipmin.dto.cooking.ClassApplyCreateResponseDto;
 import com.project.zipmin.dto.cooking.ClassApplyReadResponseDto;
@@ -41,6 +40,7 @@ import com.project.zipmin.dto.cooking.ClassTutorCreateResponseDto;
 import com.project.zipmin.dto.cooking.ClassTutorReadResponseDto;
 import com.project.zipmin.dto.cooking.ClassUpdateRequestDto;
 import com.project.zipmin.dto.cooking.ClassUpdateResponseDto;
+import com.project.zipmin.dto.user.UserReadResponseDto;
 import com.project.zipmin.entity.Class;
 import com.project.zipmin.entity.ClassApply;
 import com.project.zipmin.entity.ClassSchedule;
@@ -319,10 +319,9 @@ public class CookingService {
 		}
 		
 		// 쿠킹클래스 조회
-		Class classs;
 		ClassReadResponseDto classDto;
 		try {
-			classs = classRepository.findById(id);
+			Class classs = classRepository.findById(id);
 			classDto = classMapper.toReadResponseDto(classs);
 			classDto.setImage(publicPath + "/" + classDto.getImage());
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -334,18 +333,15 @@ public class CookingService {
 				}
 				
 			}
-			
 		}
 		catch (Exception e) {
 			throw new ApiException(ClassErrorCode.CLASS_NOT_FOUND);
 		}
 		
 		// 쿠킹클래스 교육대상 목록 조회
-		List<ClassTarget> targetList;
-		List<ClassTargetReadResponseDto> targetDtoList;
 		try {
-			targetList = targetRepository.findAllByClasssId(id);
-			targetDtoList = targetMapper.toReadResponseDtoList(targetList);
+			List<ClassTarget> targetList = targetRepository.findAllByClasssId(id);
+			List<ClassTargetReadResponseDto> targetDtoList = targetMapper.toReadResponseDtoList(targetList);
 			classDto.setTargetList(targetDtoList);
 		}
 		catch (Exception e) {
@@ -353,11 +349,9 @@ public class CookingService {
 		}
 		
 		// 쿠킹클래스 커리큘럼 목록 조회
-		List<ClassSchedule> scheduleList;
-		List<ClassScheduleReadResponseDto> scheduleDtoList;
 		try {
-			scheduleList = scheduleRepository.findByClasssId(id);
-			scheduleDtoList = scheduleMapper.toReadResponseDtoList(scheduleList);
+			List<ClassSchedule> scheduleList = scheduleRepository.findByClasssId(id);
+			List<ClassScheduleReadResponseDto> scheduleDtoList = scheduleMapper.toReadResponseDtoList(scheduleList);
 			classDto.setScheduleList(scheduleDtoList);
 		}
 		catch (Exception e) {
@@ -365,9 +359,8 @@ public class CookingService {
 		}
 		
 		// 쿠킹클래스 강사 목록 조회
-		List<ClassTutor> tutorList;
 		try {
-			tutorList = tutorRepository.findByClasssId(id);
+			List<ClassTutor> tutorList = tutorRepository.findByClasssId(id);
 			List<ClassTutorReadResponseDto> tutorDtoList = new ArrayList<>();
 			for (ClassTutor tutor : tutorList) {
 				ClassTutorReadResponseDto tutorDto = tutorMapper.toReadResponseDto(tutor);
@@ -388,6 +381,7 @@ public class CookingService {
 	
 	
 	// 클래스 작성
+	// TODO : Noticedate
 	public ClassCreateResponseDto createClass(ClassCreateRequestDto createRequestDto, MultipartFile classImage, List<MultipartFile> tutorImages)  {
 		
 		// 입력값 검증
@@ -399,7 +393,6 @@ public class CookingService {
 				|| createRequestDto.getEventdate() == null
 				|| createRequestDto.getStarttime() == null
 				|| createRequestDto.getEndtime() == null
-				// || createRequestDto.getNoticedate() == null
 				|| createRequestDto.getHeadcount() == 0
 				|| createRequestDto.getNeed() == null
 				|| createRequestDto.getUserId() == 0) {
@@ -466,7 +459,6 @@ public class CookingService {
 
 			// 교육대상 저장
 			List<ClassTargetCreateResponseDto> targetResponseList = new ArrayList<>();
-
 			for (ClassTargetCreateRequestDto targetDto : createRequestDto.getTargetList()) {
 				targetDto.setClassId(classResponseDto.getId());
 				ClassTarget targetEntity = targetMapper.toEntity(targetDto);

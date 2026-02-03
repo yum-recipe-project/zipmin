@@ -138,8 +138,6 @@ public class CookingController {
 		    @Parameter(description = "페이지 번호") @RequestParam int page,
 		    @Parameter(description = "페이지 크기") @RequestParam int size) {
 		
-		System.err.println("컨트롤러");
-		
 		Pageable pageable = PageRequest.of(page, size);
 		Page<ClassReadResponseDto> classPage = cookingService.readClassPage(keyword, category, approval, status, sort, pageable);
 		
@@ -213,7 +211,6 @@ public class CookingController {
 		
 	})
 	// 클래스 상세 조회
-	// js/cooking/view-class.js
 	@GetMapping("/classes/{id}")
 	public ResponseEntity<?> viewClass(
 			@Parameter(description = "클래스의 일련번호") @PathVariable int id) {

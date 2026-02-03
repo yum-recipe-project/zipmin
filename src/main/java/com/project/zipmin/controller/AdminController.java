@@ -35,7 +35,6 @@ import com.project.zipmin.api.UserErrorCode;
 import com.project.zipmin.api.UserSuccessCode;
 import com.project.zipmin.api.WithdrawErrorCode;
 import com.project.zipmin.api.WithdrawSuccessCode;
-import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.chomp.ChompReadResponseDto;
 import com.project.zipmin.dto.comment.CommentReadResponseDto;
 import com.project.zipmin.dto.cooking.ClassReadResponseDto;
@@ -47,6 +46,7 @@ import com.project.zipmin.dto.recipe.RecipeReadResponseDto;
 import com.project.zipmin.dto.report.ReportReadRequestDto;
 import com.project.zipmin.dto.report.ReportReadResponseDto;
 import com.project.zipmin.dto.review.ReviewReadResponseDto;
+import com.project.zipmin.dto.user.UserReadResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
@@ -188,14 +188,7 @@ public class AdminController {
 			throw new ApiException(UserErrorCode.USER_UNAUTHORIZED_ACCESS);
 		}
 		
-		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				throw new ApiException(UserErrorCode.USER_FORBIDDEN);
-			}
-		}
-		
+		// 사용자 목록 조회
 		Pageable pageable = PageRequest.of(page, size);
 		Page<UserReadResponseDto> userPage = userService.readUserPage(category, field, keyword, sort, pageable);
 		
@@ -252,6 +245,7 @@ public class AdminController {
 			throw new ApiException(WithdrawErrorCode.WITHDRAW_UNAUTHORIZED);
 		}
 
+		// 출금 목록 조회
 	    Pageable pageable = PageRequest.of(page, size);
 	    Page<WithdrawReadResponseDto> withdrawPage = fundService.readAdminWithdrawPage(field, keyword, status, sort, pageable);
 
@@ -333,14 +327,7 @@ public class AdminController {
 			throw new ApiException(RecipeErrorCode.RECIPE_UNAUTHORIZED);
 		}
 		
-		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				throw new ApiException(RecipeErrorCode.RECIPE_FORBIDDEN);
-			}
-		}
-		
+		// 레시피 목록 조회
 		Pageable pageable = PageRequest.of(page, size);
 		Page<RecipeReadResponseDto> recipePage = recipeService.readRecipePage(keyword, categoryList, sort, pageable);
 		
@@ -422,14 +409,7 @@ public class AdminController {
 			throw new ApiException(KitchenErrorCode.KITCHEN_UNAUTHORIZED);
 		}
 		
-		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				throw new ApiException(KitchenErrorCode.KITCHEN_FORBIDDEN);
-			}
-		}
-		
+		// 키친가이드 목록 조회
 		Pageable pageable = PageRequest.of(page, size);
 		Page<GuideReadResponseDto> guidePage = kitchenService.readGuidePage(category, keyword, sort, pageable);
 		
@@ -494,14 +474,7 @@ public class AdminController {
 			throw new ApiException(ChompErrorCode.CHOMP_UNAUTHORIZED);
 		}
 		
-		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				throw new ApiException(ChompErrorCode.CHOMP_FORBIDDEN);
-			}
-		}
-		
+		// 쩝쩝박사 목록 조회
 		Pageable pageable = PageRequest.of(page, size);
 		Page<ChompReadResponseDto> chompPage = chompService.readChompPage(category, keyword, sort, pageable);
 
@@ -584,14 +557,7 @@ public class AdminController {
 			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED);
 		}
 		
-		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				throw new ApiException(ClassErrorCode.CLASS_FORBIDDEN);
-			}
-		}
-		
+		// 쿠킹클래스 목록 조회
 		Pageable pageable = PageRequest.of(page, size);
 		Page<ClassReadResponseDto> classPage = cookingService.readClassPage(keyword, category, approval, status, sort, pageable);
 		
@@ -680,6 +646,7 @@ public class AdminController {
 			throw new ApiException(ClassErrorCode.CLASS_UNAUTHORIZED);
 		}
 		
+		// 클래스 승인 수정
 		ClassUpdateResponseDto classResponseDto = cookingService.updateClass(classRequestDto);
 		
 		return ResponseEntity.status(ClassSuccessCode.CLASS_UPDATE_APPROVAL_SUCCESS.getStatus())
@@ -782,15 +749,8 @@ public class AdminController {
 		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
 			throw new ApiException(CommentErrorCode.COMMENT_UNAUTHORIZED_ACCESS);
 		}
-		
-		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				throw new ApiException(CommentErrorCode.COMMENT_FORBIDDEN);
-			}
-		}
-		
+
+		// 댓글 목록 조회
 		Pageable pageable = PageRequest.of(page, size);
 		Page<CommentReadResponseDto> commentPage = commentService.readCommentPage(keyword, tablename, sort, pageable);
 		
@@ -846,14 +806,7 @@ public class AdminController {
 			throw new ApiException(ReviewErrorCode.REVIEW_UNAUTHORIZED);
 		}
 		
-		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				throw new ApiException(RecipeErrorCode.RECIPE_FORBIDDEN);
-			}
-		}
-		
+		// 리뷰 목록 조회
 		Pageable pageable = PageRequest.of(page, size);
 		Page<ReviewReadResponseDto> reviewPage = reviewService.readReviewPage(keyword, category, sort, pageable);
 		
@@ -930,63 +883,11 @@ public class AdminController {
 			throw new ApiException(ReportErrorCode.REPORT_UNAUTHORIZED);
 		}
 		
-		// 권한 확인
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
-			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
-				throw new ApiException(ReportErrorCode.REPORT_FORBIDDEN);
-			}
-		}
-		
+		// 신고 목록 조회
 		List<ReportReadResponseDto> reportList = reportService.readReportList(reportRequestDto);
 		
 		return ResponseEntity.status(ReportSuccessCode.REPORT_READ_LIST_SUCCESS.getStatus())
         		.body(ApiResponse.success(ReportSuccessCode.REPORT_READ_LIST_SUCCESS, reportList));
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-//	@Operation(
-//	    summary = "냉장고 목록 조회"
-//	)
-//	@ApiResponses(value = {
-//		// 200 FRIDGE_READ_LIST_SUCCESS
-//		// 400 FRIDGE_READ_LIST_FAIL
-//		// 400 FRIDGE_INVALID_INPUT
-//		// 400 USER_INVALID_INPUT
-//		// 404 USER_NOT_FOUND
-//		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-//				responseCode = "500",
-//				description = "서버 내부 오류",
-//				content = @Content(
-//						mediaType = "application/json",
-//						schema = @Schema(implementation = InternalServerErrorResponse.class)))
-//	})
-//	// 냉장고 목록 조회
-//	@GetMapping("/fridges")
-//	public ResponseEntity<?> readFridge(
-//			@Parameter(description = "검색어", required = false) @RequestParam(required = false) String keyword,
-//			@Parameter(description = "카테고리", required = false) @RequestParam(required = false) String category,
-//			@Parameter(description = "정렬", required = false) @RequestParam(required = false) String sort,
-//		    @Parameter(description = "페이지 번호") @RequestParam int page,
-//		    @Parameter(description = "페이지 크기") @RequestParam int size) {
-//
-//		// 냉장고 목록 조회
-//		Pageable pageable = PageRequest.of(page, size);
-//		Page<FridgeReadResponseDto> fridgePage = fridgeService.readFridgePage(keyword, category, sort, pageable);
-//
-//		return ResponseEntity.status(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS.getStatus())
-//				.body(ApiResponse.success(FridgeSuccessCode.FRIDGE_READ_LIST_SUCCESS, fridgePage));
-//	}
 }

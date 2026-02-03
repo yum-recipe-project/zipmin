@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 	
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.RecipeErrorCode;
-import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.like.LikeCreateRequestDto;
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
 import com.project.zipmin.dto.like.LikeDeleteRequestDto;
@@ -39,6 +38,7 @@ import com.project.zipmin.dto.recipe.RecipeStockCreateResponseDto;
 import com.project.zipmin.dto.recipe.RecipeStockReadResponseDto;
 import com.project.zipmin.dto.report.ReportCreateRequestDto;
 import com.project.zipmin.dto.report.ReportCreateResponseDto;
+import com.project.zipmin.dto.user.UserReadResponseDto;
 import com.project.zipmin.entity.Recipe;
 import com.project.zipmin.entity.RecipeCategory;
 import com.project.zipmin.entity.RecipeStep;

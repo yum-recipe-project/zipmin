@@ -19,12 +19,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Entity
-@Table(name = "USER_ACCOUNT")
-public class UserAccount {
+@Table(name = "ACCOUNT")
+public class Account {
 	
 	@Id
-	@GeneratedValue(generator = "seq_user_account_id")
-	@SequenceGenerator(name = "seq_user_account_id", sequenceName = "SEQ_USER_ACCOUNT_ID", allocationSize = 1)
+	@GeneratedValue(generator = "SEQ_ACCOUNT_ID")
+	@SequenceGenerator(name = "SEQ_ACCOUNT_ID", sequenceName = "SEQ_ACCOUNT_ID", allocationSize = 1)
 	private int id;
 	private String bank;
 	private String accountnum;

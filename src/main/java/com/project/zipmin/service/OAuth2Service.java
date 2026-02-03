@@ -37,7 +37,6 @@ public class OAuth2Service {
 		
 		// access token이 없으면 예외 발생
 		if (access == null) {
-			System.err.println("OAuth2Service.java");
 			throw new ApiException(AuthErrorCode.AUTH_TOKEN_MISSING);
 		}
 		

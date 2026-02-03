@@ -25,16 +25,16 @@ import com.project.zipmin.api.UserAccountErrorCode;
 import com.project.zipmin.api.UserAccountSuccessCode;
 import com.project.zipmin.api.WithdrawErrorCode;
 import com.project.zipmin.api.WithdrawSuccessCode;
-import com.project.zipmin.dto.UserAccountCreateRequestDto;
-import com.project.zipmin.dto.UserAccountCreateResponseDto;
-import com.project.zipmin.dto.UserAccountReadResponseDto;
-import com.project.zipmin.dto.UserAccountUpdateRequestDto;
-import com.project.zipmin.dto.UserAccountUpdateResponseDto;
 import com.project.zipmin.dto.fund.FundCreateRequestDto;
 import com.project.zipmin.dto.fund.FundCreateResponseDto;
 import com.project.zipmin.dto.fund.FundReadResponseDto;
 import com.project.zipmin.dto.fund.PaymentCreateRequestDto;
 import com.project.zipmin.dto.fund.PaymentCreateResponseDto;
+import com.project.zipmin.dto.fund.AccountCreateRequestDto;
+import com.project.zipmin.dto.fund.AccountCreateResponseDto;
+import com.project.zipmin.dto.fund.AccountReadResponseDto;
+import com.project.zipmin.dto.fund.AccountUpdateRequestDto;
+import com.project.zipmin.dto.fund.AccountUpdateResponseDto;
 import com.project.zipmin.dto.fund.WithdrawCreateRequestDto;
 import com.project.zipmin.dto.fund.WithdrawReadResponseDto;
 import com.project.zipmin.dto.fund.WithdrawUpdateRequestDto;
@@ -168,7 +168,7 @@ public class FundController {
 		}
 		
 		// 계좌 상세 조회
-		UserAccountReadResponseDto accountDto = fundService.readAccountByUserId(id);
+		AccountReadResponseDto accountDto = fundService.readAccountByUserId(id);
 
 		return ResponseEntity.status(UserAccountSuccessCode.USER_ACCOUNT_READ_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserAccountSuccessCode.USER_ACCOUNT_READ_SUCCESS, accountDto));
@@ -237,7 +237,7 @@ public class FundController {
 	// 계좌 작성
 	@PostMapping("/users/{id}/account")
 	public ResponseEntity<?> createUserAccount(
-			@Parameter(description = "계좌 작성 요청 정보") @RequestBody UserAccountCreateRequestDto accountRequestDto) {
+			@Parameter(description = "계좌 작성 요청 정보") @RequestBody AccountCreateRequestDto accountRequestDto) {
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -245,7 +245,7 @@ public class FundController {
 			throw new ApiException(UserAccountErrorCode.USER_ACCOUNT_UNAUTHORIZED);
 		}
 
-		UserAccountCreateResponseDto accountResponseDto = fundService.createAccount(accountRequestDto);
+		AccountCreateResponseDto accountResponseDto = fundService.createAccount(accountRequestDto);
 
 		return ResponseEntity.status(UserAccountSuccessCode.USER_ACCOUNT_CREATE_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserAccountSuccessCode.USER_ACCOUNT_CREATE_SUCCESS, accountResponseDto));
@@ -319,7 +319,7 @@ public class FundController {
 	// 계좌 수정
 	@PatchMapping("/users/{id}/account")
 	public ResponseEntity<?> updateUserAccount(
-			@Parameter(description = "계좌 수정 요청 정보") @RequestBody UserAccountUpdateRequestDto accountRequestDto) {
+			@Parameter(description = "계좌 수정 요청 정보") @RequestBody AccountUpdateRequestDto accountRequestDto) {
 		
 		// 로그인 여부 확인
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -328,7 +328,7 @@ public class FundController {
 		}
 
 		// 계좌 수정
-		UserAccountUpdateResponseDto accountResponseDto = fundService.updateAccount(accountRequestDto);
+		AccountUpdateResponseDto accountResponseDto = fundService.updateAccount(accountRequestDto);
 
 		return ResponseEntity.status(UserAccountSuccessCode.USER_ACCOUNT_UPDATE_SUCCESS.getStatus())
 				.body(ApiResponse.success(UserAccountSuccessCode.USER_ACCOUNT_UPDATE_SUCCESS, accountResponseDto));

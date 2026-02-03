@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.RecipeErrorCode;
 import com.project.zipmin.api.ReviewErrorCode;
-import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.like.LikeCreateRequestDto;
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
 import com.project.zipmin.dto.like.LikeDeleteRequestDto;
@@ -29,6 +28,7 @@ import com.project.zipmin.dto.review.ReviewCreateResponseDto;
 import com.project.zipmin.dto.review.ReviewReadResponseDto;
 import com.project.zipmin.dto.review.ReviewUpdateRequestDto;
 import com.project.zipmin.dto.review.ReviewUpdateResponseDto;
+import com.project.zipmin.dto.user.UserReadResponseDto;
 import com.project.zipmin.entity.Review;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.mapper.ReviewMapper;
@@ -58,6 +58,14 @@ public class ReviewService {
 		// 입력값 검증
 		if (pageable == null) {
 			throw new ApiException(ReviewErrorCode.REVIEW_INVALID_INPUT);
+		}
+		
+		// 권한 확인
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
+			if (!userService.readUserByUsername(username).getRole().equals(Role.ROLE_ADMIN.name())) {
+				throw new ApiException(RecipeErrorCode.RECIPE_FORBIDDEN);
+			}
 		}
 
 		// 정렬

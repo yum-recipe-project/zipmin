@@ -123,5 +123,3 @@ INSERT INTO review VALUES (seq_review_id.NEXTVAL, SYSDATE, 3, '캠핑 가서 해
 INSERT INTO review VALUES (seq_review_id.NEXTVAL, SYSDATE, 5, '마무리로 딱 좋은 디저트예요.', 'recipe', 255, 5); -- 120
 
 COMMIT;
-
-

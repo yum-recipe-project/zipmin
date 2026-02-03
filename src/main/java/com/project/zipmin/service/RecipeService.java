@@ -19,9 +19,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 	
 import com.project.zipmin.api.ApiException;
-import com.project.zipmin.api.CommentErrorCode;
 import com.project.zipmin.api.RecipeErrorCode;
-import com.project.zipmin.api.ReviewErrorCode;
 import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.like.LikeCreateRequestDto;
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
@@ -119,6 +117,8 @@ public class RecipeService {
 		catch (Exception e) {
 			throw new ApiException(RecipeErrorCode.RECIPE_READ_LIST_FAIL);
 		}
+		
+		System.err.println("서비스 3");
 		
 		// 레시피 목록 응답 구성
 		List<RecipeReadResponseDto> recipeDtoList = new ArrayList<RecipeReadResponseDto>();

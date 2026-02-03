@@ -1,7 +1,5 @@
 package com.project.zipmin.entity;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -28,9 +26,10 @@ import lombok.NoArgsConstructor;
 @Table(name = "USERS")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class User {
+	
 	@Id
-	@GeneratedValue(generator = "seq_user_id")
-	@SequenceGenerator(name = "seq_user_id", sequenceName = "SEQ_USER_ID", allocationSize = 1)
+	@GeneratedValue(generator = "SEQ_USER_ID")
+	@SequenceGenerator(name = "SEQ_USER_ID", sequenceName = "SEQ_USER_ID", allocationSize = 1)
 	private int id;
 	private String username;
 	private String password;

@@ -7011,8 +7011,4 @@ INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, '1218a619d8d7457e81c
 INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, 'cdbe978e6c8c48a1a81a9c005820fbb2.png', '버무린 멸치를 3분간 전자레인지에 넣는다.', 258);
 INSERT INTO recipe_step VALUES (seq_recipe_step_id.NEXTVAL, 'a4460f529c6d4f40b84597396cf2e13f.png', '전자레인지에서 꺼낸멸치에 올리고당, 참깨를 넣어 버무려 완성한다.', 258);
 
-
-
-
-
 COMMIT;

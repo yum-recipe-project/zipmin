@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "USER_ACCOUNT")
 public class UserAccount {
+	
 	@Id
 	@GeneratedValue(generator = "seq_user_account_id")
 	@SequenceGenerator(name = "seq_user_account_id", sequenceName = "SEQ_USER_ACCOUNT_ID", allocationSize = 1)
@@ -29,8 +30,8 @@ public class UserAccount {
 	private String accountnum;
 	private String name;
 	
-	// private String userId;
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")
 	private User user;
+	
 }

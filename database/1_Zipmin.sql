@@ -1,9 +1,9 @@
 -- =======
 -- 계정 생성
 -- =======
--- ALTER SESSION SET "_ORACLE_SCRIPT"=true;
--- CREATE USER zipmin IDENTIFIED BY 1234;
--- GRANT CONNECT, RESOURCE, UNLIMITED TABLESPACE TO zipmin;
+-- alter session set "_ORACLE_SCRIPT"=true;
+-- create user zipmin identified by 1234;
+-- grant connect, resource, unlimited tablespace to zipmin;
 
 
 
@@ -13,54 +13,55 @@
 -- 테이블과 시퀀스 일괄 삭제
 -- ===================
 DROP TABLE withdraw;
-DROP SEQUENCE seq_withdraw_id;
 DROP TABLE fund;
-DROP SEQUENCE seq_fund_id;
 DROP TABLE vote_record;
-DROP SEQUENCE seq_vote_record_id;
 DROP TABLE vote_choice;
-DROP SEQUENCE seq_vote_choice_id;
 DROP TABLE chomp;
-DROP SEQUENCE seq_chomp_id;
 DROP TABLE class_apply;
-DROP SEQUENCE seq_class_apply_id;
 DROP TABLE class_target;
-DROP SEQUENCE seq_class_target_id;
 DROP TABLE class_schedule;
-DROP SEQUENCE seq_class_schedule_id;
 DROP TABLE class_tutor;
-DROP SEQUENCE seq_class_tutor_id;
 DROP TABLE classes;
-DROP SEQUENCE seq_classes_id;
 DROP TABLE report;
-DROP SEQUENCE seq_report_id;
 DROP TABLE likes;
-DROP SEQUENCE seq_likes_id;
 DROP TABLE fridge_memo;
-DROP SEQUENCE seq_fridge_memo_id;
-DROP TABLE user_fridge;
-DROP SEQUENCE seq_user_fridge_id;
+DROP TABLE fridge_storage;
 DROP TABLE fridge;
-DROP SEQUENCE seq_fridge_id;
 DROP TABLE review;
-DROP SEQUENCE seq_review_id;
 DROP TABLE comments;
-DROP SEQUENCE seq_comments_id;
 DROP TABLE guide;
-DROP SEQUENCE seq_guide_id;
 DROP TABLE recipe_step;
-DROP SEQUENCE seq_recipe_step_id;
 DROP TABLE recipe_stock;
-DROP SEQUENCE seq_recipe_stock_id;
 DROP TABLE recipe_category;
-DROP SEQUENCE seq_recipe_category_id;
 DROP TABLE recipe;
-DROP SEQUENCE seq_recipe_id;
 DROP TABLE password_token;
-DROP SEQUENCE seq_password_token_id;
 DROP TABLE user_account;
-DROP SEQUENCE seq_user_account_id;
 DROP TABLE users;
+
+DROP SEQUENCE seq_withdraw_id;
+DROP SEQUENCE seq_fund_id;
+DROP SEQUENCE seq_vote_record_id;
+DROP SEQUENCE seq_vote_choice_id;
+DROP SEQUENCE seq_chomp_id;
+DROP SEQUENCE seq_class_apply_id;
+DROP SEQUENCE seq_class_target_id;
+DROP SEQUENCE seq_class_schedule_id;
+DROP SEQUENCE seq_class_tutor_id;
+DROP SEQUENCE seq_classes_id;
+DROP SEQUENCE seq_report_id;
+DROP SEQUENCE seq_likes_id;
+DROP SEQUENCE seq_fridge_memo_id;
+DROP SEQUENCE seq_fridge_storage_id;
+DROP SEQUENCE seq_fridge_id;
+DROP SEQUENCE seq_review_id;
+DROP SEQUENCE seq_comments_id;
+DROP SEQUENCE seq_guide_id;
+DROP SEQUENCE seq_recipe_step_id;
+DROP SEQUENCE seq_recipe_stock_id;
+DROP SEQUENCE seq_recipe_category_id;
+DROP SEQUENCE seq_recipe_id;
+DROP SEQUENCE seq_password_token_id;
+DROP SEQUENCE seq_user_account_id;
 DROP SEQUENCE seq_user_id;
 
 
@@ -181,10 +182,10 @@ COMMIT;
 
 
 
--- =================
--- USER_FRIDGE 테이블
--- =================
-CREATE TABLE user_fridge (
+-- ====================
+-- FRIDGE_STORAGE 테이블
+-- ====================
+CREATE TABLE fridge_storage (
     id NUMBER primary key,
     amount NUMBER,
     unit VARCHAR2(30),
@@ -192,13 +193,13 @@ CREATE TABLE user_fridge (
     fridge_id NUMBER NOT NULL,
     user_id NUMBER NOT NULL
 );
-ALTER TABLE user_fridge
-    ADD CONSTRAINT const_user_fridge_fridge FOREIGN KEY(fridge_id)
+ALTER TABLE fridge_storage
+    ADD CONSTRAINT const_fridge_storage_fridge FOREIGN KEY(fridge_id)
     REFERENCES fridge(id) ON DELETE CASCADE;
-ALTER TABLE user_fridge
-    ADD CONSTRAINT const_user_fridge_users FOREIGN KEY(user_id)
+ALTER TABLE fridge_storage
+    ADD CONSTRAINT const_fridge_storage_users FOREIGN KEY(user_id)
     REFERENCES users(id) ON DELETE CASCADE;
-CREATE SEQUENCE seq_user_fridge_id
+CREATE SEQUENCE seq_fridge_storage_id
     INCREMENT BY 1
     START WITH 1
     MINVALUE 1
@@ -380,7 +381,7 @@ COMMIT;
 CREATE TABLE chomp (
     id NUMBER primary key,
     title VARCHAR2(100) NOT NULL,
-    opendate date,
+    opendate DATE,
     closedate DATE NOT NULL,
     content CLOB,
     image VARCHAR2(500),
@@ -497,7 +498,7 @@ CREATE TABLE review (
     postdate DATE DEFAULT sysdate NOT NULL,
     score NUMBER NOT NULL,
     content VARCHAR2(2000) NOT NULL,
-    tablename VARCHAR2(100) NOT NULL,
+    tablename VARCHAR(100) NOT NULL,
     recodenum NUMBER NOT NULL,
     user_id NUMBER NOT NULL
 );
@@ -568,7 +569,7 @@ COMMIT;
 
 
 
--- -- ==========
+-- =============
 -- CLASSES 테이블
 -- =============
 CREATE TABLE classes (
@@ -753,7 +754,7 @@ CREATE TABLE withdraw (
     account_id NUMBER NOT NULL,
     point NUMBER NOT NULL,
     claimdate DATE DEFAULT SYSDATE NOT NULL,
-    status NUMBER DEFAULT 2 NOT NULL,
+    status NUMBER DEFAULT 0 NOT NULL,
     settledate DATE,
     admin_id NUMBER
 );

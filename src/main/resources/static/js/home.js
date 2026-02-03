@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	  '갈치조림', '두부조림', '멸치볶음', '소시지야채볶음',
 	  '라면', '잔치국수'
 	];
+	
 	const randomList = [...foodList];
 	for (let i = randomList.length - 1; i > 0; i--) {
 	  const j = Math.floor(Math.random() * (i + 1));

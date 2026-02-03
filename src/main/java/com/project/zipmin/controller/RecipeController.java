@@ -125,6 +125,8 @@ public class RecipeController {
 			@Parameter(description = "페이지 번호") @RequestParam int page,
 			@Parameter(description = "페이지 크기") @RequestParam int size) {
 		
+		
+		System.err.println("controller 진입");
 		Pageable pageable = PageRequest.of(page, size);
 		Page<RecipeReadResponseDto> recipePage = recipeService.readRecipePage(keyword, categoryList, sort, pageable);
 		

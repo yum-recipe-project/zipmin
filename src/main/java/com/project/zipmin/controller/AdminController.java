@@ -47,7 +47,6 @@ import com.project.zipmin.dto.report.ReportReadRequestDto;
 import com.project.zipmin.dto.report.ReportReadResponseDto;
 import com.project.zipmin.dto.review.ReviewReadResponseDto;
 import com.project.zipmin.dto.user.UserReadResponseDto;
-import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.ChompService;
 import com.project.zipmin.service.CommentService;
 import com.project.zipmin.service.CookingService;

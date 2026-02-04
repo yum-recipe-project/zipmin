@@ -8,8 +8,8 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.project.zipmin.dto.UserDto;
 import com.project.zipmin.entity.User;
+import com.project.zipmin.dto.user.UserDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.oauth2.CustomOAuth2User;
 import com.project.zipmin.oauth2.GoogleResponse;

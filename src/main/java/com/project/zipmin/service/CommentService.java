@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.CommentErrorCode;
-import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.comment.CommentCreateRequestDto;
 import com.project.zipmin.dto.comment.CommentCreateResponseDto;
 import com.project.zipmin.dto.comment.CommentReadResponseDto;
@@ -28,6 +27,7 @@ import com.project.zipmin.dto.like.LikeCreateResponseDto;
 import com.project.zipmin.dto.like.LikeDeleteRequestDto;
 import com.project.zipmin.dto.report.ReportCreateRequestDto;
 import com.project.zipmin.dto.report.ReportCreateResponseDto;
+import com.project.zipmin.dto.user.UserReadResponseDto;
 import com.project.zipmin.entity.Comment;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.mapper.CommentMapper;

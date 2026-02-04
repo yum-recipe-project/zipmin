@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.FridgeErrorCode;
-import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.fridge.FridgeCreateRequestDto;
 import com.project.zipmin.dto.fridge.FridgeCreateResponseDto;
 import com.project.zipmin.dto.fridge.FridgeReadResponseDto;
@@ -40,6 +39,7 @@ import com.project.zipmin.dto.like.LikeDeleteRequestDto;
 import com.project.zipmin.dto.like.LikeReadResponseDto;
 import com.project.zipmin.dto.recipe.RecipeReadResponseDto;
 import com.project.zipmin.dto.recipe.RecipeStockReadResponseDto;
+import com.project.zipmin.dto.user.UserReadResponseDto;
 import com.project.zipmin.entity.Fridge;
 import com.project.zipmin.entity.FridgeMemo;
 import com.project.zipmin.entity.Role;

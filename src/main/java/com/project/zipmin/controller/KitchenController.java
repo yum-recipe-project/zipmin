@@ -19,7 +19,6 @@ import com.project.zipmin.api.ApiException;
 import com.project.zipmin.api.ApiResponse;
 import com.project.zipmin.api.KitchenErrorCode;
 import com.project.zipmin.api.KitchenSuccessCode;
-import com.project.zipmin.dto.UserReadResponseDto;
 import com.project.zipmin.dto.kitchen.GuideCreateRequestDto;
 import com.project.zipmin.dto.kitchen.GuideCreateResponseDto;
 import com.project.zipmin.dto.kitchen.GuideReadResponseDto;
@@ -28,6 +27,7 @@ import com.project.zipmin.dto.kitchen.GuideUpdateResponseDto;
 import com.project.zipmin.dto.like.LikeCreateRequestDto;
 import com.project.zipmin.dto.like.LikeCreateResponseDto;
 import com.project.zipmin.dto.like.LikeDeleteRequestDto;
+import com.project.zipmin.dto.user.UserReadResponseDto;
 import com.project.zipmin.entity.Role;
 import com.project.zipmin.service.KitchenService;
 import com.project.zipmin.service.UserService;
@@ -295,7 +295,6 @@ public class KitchenController {
 		// 권한 확인
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		UserReadResponseDto currentUser = userService.readUserByUsername(username);
-		
 		if (!currentUser.getRole().equals(Role.ROLE_SUPER_ADMIN.name())) {
 			if (!currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
 				throw new ApiException(KitchenErrorCode.KITCHEN_FORBIDDEN);

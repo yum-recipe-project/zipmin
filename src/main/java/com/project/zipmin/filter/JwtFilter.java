@@ -2,19 +2,15 @@ package com.project.zipmin.filter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Collections;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.project.zipmin.dto.CustomUserDetails;
-import com.project.zipmin.dto.UserDto;
 import com.project.zipmin.entity.User;
 import com.project.zipmin.entity.Role;
-import com.project.zipmin.oauth2.CustomOAuth2User;
 import com.project.zipmin.util.JwtUtil;
 
 import io.jsonwebtoken.ExpiredJwtException;

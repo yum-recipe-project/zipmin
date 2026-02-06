@@ -1,6 +1,6 @@
 package com.project.zipmin.swagger.user;
 
-import com.project.zipmin.dto.UserCreateResponseDto;
+import com.project.zipmin.dto.user.UserCreateResponseDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

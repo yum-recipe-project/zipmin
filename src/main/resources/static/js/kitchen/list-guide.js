@@ -94,7 +94,7 @@ async function fetchGuideList(scroll = true) {
 		const result = await response.json();
 		
 		if (result.code === 'KITCHEN_READ_LIST_SUCCESS') {
-
+			
 			page = result.data.number;
 			totalPages = result.data.totalPages;
 			totalElements = result.data.totalElements;
@@ -143,16 +143,16 @@ async function fetchGuideList(scroll = true) {
 
 
 /**
- * 키친가이드 목록을 화면에 렌더링하는 함수
+ * TODO : 키친가이드 목록을 화면에 렌더링하는 함수
  */
 function renderGuideList(guideList) {
 	
-	const container = document.querySelector('.guide_list');
+	const container = document.querySelector('.guide_ul');
 	container.innerHTML = '';
 	
 	// 키친가이드 목록이 존재하지 않는 경우
 	if (guideList == null || guideList.length === 0) {
-		document.querySelector('.guide_list').style.display = 'none';
+		document.querySelector('.guide_ul').style.display = 'none';
 		document.querySelector('.search_empty')?.remove();
 		document.querySelector('.guide_content').insertAdjacentElement('afterend', renderSearchEmpty());
 		return;
@@ -164,17 +164,15 @@ function renderGuideList(guideList) {
 	
 	guideList.forEach(guide => {
 		const li = document.createElement('li');
+		const a = createLink(`/kitchen/viewGuide.do?id=${guide.id}`);
 
-		const a = document.createElement('a');
-		a.href = `/kitchen/viewGuide.do?id=${guide.id}`;
-
-		const itemDiv = createDiv('guide_item');
-		const detailDiv = createDiv('guide_details');
+		const itemDiv = createDiv('guide_li');
+		const detailDiv = createDiv('guide');
 		
 		const topDiv = createDiv('guide_top');
 		const subtitleDiv = createSpan(guide.subtitle);
 		
-		const likeButton = createButton('favorite_btn');
+		const likeButton = createButton('like_btn');
 		const likeImg = createImg(
 			guide.likestatus ? '/images/common/star_full.png' : '/images/recipe/star_empty.png'
 		);
@@ -198,18 +196,11 @@ function renderGuideList(guideList) {
 		const titleSpan = createSpan(guide.title);
 
 		const infoDiv = createDiv('info');
-		infoDiv.append(
-			createP(`스크랩 ${guide.likecount}`),
-			createP(formatDate(guide.postdate))
-		);
+		infoDiv.appendChild(createP(`스크랩 ${guide.likecount}`));
+		infoDiv.appendChild(createP(formatDate(guide.postdate)));
 
 		const writerDiv = createDiv('writer');
-		if (guide.avatar) {
-			writerDiv.appendChild(createImg(guide.avatar));
-		}
-		else {
-			writerDiv.appendChild(createSpan('', profile_img));
-		}
+		writerDiv.appendChild(createImg(guide.avatar));
 		writerDiv.appendChild(createP('집밥의민족'));
 
 		detailDiv.append(topDiv, titleSpan, infoDiv, writerDiv);

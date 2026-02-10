@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -7,9 +6,7 @@
 		<title>집밥의민족</title>
 		<%@include file="../common/head.jsp" %>
 		<link rel="stylesheet" href="/css/kitchen/list-guide.css">
-		<link rel="stylesheet" href="/css/common/pagination.css">
 		<script src="/js/kitchen/list-guide.js"></script>
-		<script src="/js/common/pagination.js"></script>
 	</head>
 	<body>
 		<%@include file="../common/header.jsp" %>
@@ -17,12 +14,9 @@
 		<main id="container">
 			<div class="content">
 			
+				<!-- 키친가이드 헤더 -->
 				<div class="guide_header">
 					<h2>키친가이드</h2>
-					
-					<!-- todo: 키친가이드 작성 관리자 페이지로 이동하기 -->
-					<!-- <a href="/kitchen/writeGuide.do">키친가이드 작성하기</a> -->
-				
 					<div class="tab">
 						<a class="btn_tab active" href="" data-category=""><span>전체</span></a>
 						<a class="btn_tab" href="" data-category="preparation"><span>손질법</span></a>
@@ -32,9 +26,8 @@
 					</div>
 				</div>
 				
+				<!-- 키친가이드 내용 -->
 				<div class="guide_content">
-				
-					<!-- 가이드 정렬 요소 -->
 					<div class="guide_util">
 						<p class="total"></p>
 						<div class="guide_sort">
@@ -42,18 +35,10 @@
 							<button class="btn_sort" data-sort="likecount-desc">인기순</button>
 						</div>
 					</div>
-					
-					<div id="guideList"></div>
-					
-					<!-- 키친가이드 목록 -->
-					<ul class="guide_list"></ul>
+					<ul class="guide_ul"></ul>
 				</div>
 	
-				<div class="pagination_wrap">
-					<div class="pagination">
-					    <ul></ul>
-					</div>
-				</div>
+				<div class="pagination_wrap"></div>
 				
 			</div>
 		</main>

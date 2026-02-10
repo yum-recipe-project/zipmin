@@ -291,7 +291,7 @@ function createSpan(text, className) {
 
 
 /**
- * Div 생성
+ * DIV를 생성하는 함수
  */
 function createDiv(className) {
 	const div = document.createElement('div');
@@ -326,7 +326,7 @@ function createImg(src, className) {
 
 
 /**
- * a 엘리먼트를 생성한다
+ * 
  */
 function createLink(href, className) {
 	const a = document.createElement('a');

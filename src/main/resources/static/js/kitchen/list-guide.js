@@ -143,7 +143,7 @@ async function fetchGuideList(scroll = true) {
 
 
 /**
- * TODO : 키친가이드 목록을 화면에 렌더링하는 함수
+ * 키친가이드 목록을 화면에 렌더링하는 함수
  */
 function renderGuideList(guideList) {
 	

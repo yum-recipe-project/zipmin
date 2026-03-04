@@ -7,6 +7,7 @@ pipeline {
 		DEPLOY_HOST = "54.252.222.44"
 		DEPLOY_USER = "ec2-user"
     }
+    
 
     stages {
 		// 소스 코드 체크아웃

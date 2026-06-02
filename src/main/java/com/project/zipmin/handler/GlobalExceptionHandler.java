@@ -1,8 +1,13 @@
-package com.project.zipmin.api;
+package com.project.zipmin.handler;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.project.zipmin.api.ApiException;
+import com.project.zipmin.api.ApiResponse;
+import com.project.zipmin.api.Code;
+import com.project.zipmin.api.ErrorCode;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

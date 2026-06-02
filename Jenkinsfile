@@ -1,6 +1,7 @@
 pipeline {
     agent any
     
+    
 	environment {
 		APP_NAME = "zipmin"
 		DOCKER_IMAGE = "yumrecipe/zipmin:latest"
